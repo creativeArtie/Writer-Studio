@@ -21,6 +21,7 @@ import com.creativeartie.jwriter.main.*;
 public abstract class Document extends SpanNode<SpanBranch>{
 
     private final Cache<Span, Range<Integer>> spanRanges;
+    private final Cache<Span, List<SpanLeaf>> spanLeaves;
 
     private ArrayList<SpanBranch> documentChildren;
     private CatalogueMap catalogueMap;
@@ -30,6 +31,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         documentChildren = new ArrayList<>();
         catalogueMap = new CatalogueMap();
         spanRanges = CacheBuilder.newBuilder().weakKeys().build();
+        spanLeaves = CacheBuilder.newBuilder().weakKeys().build();
     }
 
     protected Document(String raw, SetupParser ... parsers){
@@ -37,6 +39,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         Checker.checkNotNull(parsers, "parsers");
 
         spanRanges = CacheBuilder.newBuilder().weakKeys().build();
+        spanLeaves = CacheBuilder.newBuilder().weakKeys().build();
         documentParsers = parsers;
 
         /// Setup for building the doc and a pointer to use
@@ -174,6 +177,16 @@ public abstract class Document extends SpanNode<SpanBranch>{
         Checker.checkNotNull(caller, "caller");
         try {
             return spanRanges.get(child, caller);
+        } catch (ExecutionException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    List<SpanLeaf> getLeaves(SpanBranch child, Callable<List<SpanLeaf>> caller){
+        Checker.checkNotNull(child, "branch");
+        Checker.checkNotNull(caller, "caller");
+        try {
+            return spanLeaves.get(child, caller);
         } catch (ExecutionException ex) {
             throw new RuntimeException(ex);
         }
