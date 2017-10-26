@@ -131,7 +131,7 @@ public class FormatSpanDebug {
         FormatContentTest content3 = new FormatContentTest()
             .setBegin(false).setEnd(false)
             .setText("n");
-    
+
         main.test(       doc, 5, raw,  0);
         content1.test(   doc, 1, "g",  0, 0);
         doc.assertTextLeaf(0, 1, "g",  0, 0, 0);
@@ -150,7 +150,7 @@ public class FormatSpanDebug {
         ///           012 34567890
         String raw = "g_e\\_e`dd_";
         DocumentAssert doc = assertDoc(1, raw, parsers);
-        
+
         FormatMainTest main = new FormatMainTest()
             .setPublishCount(1).setNoteCount(0);
         FormatContentTest content1 = new FormatContentTest()
@@ -167,14 +167,14 @@ public class FormatSpanDebug {
         main.test(       doc,  6, raw,     0);
         content1.test(   doc,  1, "g",     0, 0);
         doc.assertTextLeaf(0,  1, "g",     0, 0, 0);
-        doc.assertKeyLeaf( 1,  2, "_",     0, 1); 
+        doc.assertKeyLeaf( 1,  2, "_",     0, 1);
         content2.test(   doc,  3, "e\\_e", 0, 2);
-        doc.assertTextLeaf(2,  3, "e",     0, 2, 0); 
+        doc.assertTextLeaf(2,  3, "e",     0, 2, 0);
         escape.test(     doc,  2, "\\_",   0, 2, 1);
         doc.assertKeyLeaf( 3,  4, "\\",    0, 2, 1, 0);
         doc.assertTextLeaf(4,  5, "_",     0, 2, 1, 1);
         doc.assertTextLeaf(5,  6, "e",     0, 2, 2);
-        doc.assertKeyLeaf( 6,  7, "`",     0, 3); 
+        doc.assertKeyLeaf( 6,  7, "`",     0, 3);
         content3.test(   doc,  1, "dd",    0, 4);
         doc.assertTextLeaf(7,  9, "dd",    0, 4, 0);
         doc.assertKeyLeaf( 9, 10, "_",     0, 5);
@@ -187,13 +187,16 @@ public class FormatSpanDebug {
         ///           01234
         String raw = "_abc  ab";
         DocumentAssert doc = assertDoc(1, raw, parsers);
-        SpanBranch main = doc.assertChild(2, raw,   0);
-        SpanBranch text = doc.assertChild(1, "abc  ab", 0, 1);
 
-        assertMain(main, 2, 0);
-        assertContent(text, "abc ab", false, false, FormatType.UNDERLINE);
+        FormatMainTest main = new FormatMainTest()
+            .setPublishCount(2).setNoteCount(0);
+        FormatContentTest content = new FormatContentTest()
+            .setBegin(false).setEnd(false)
+            .setText("abc ab").setFormats(FormatType.UNDERLINE);
 
-        doc.assertKeyLeaf( 0, 1, "_",   0, 0);
+        main.test(       doc, 2, raw,       0);
+        doc.assertKeyLeaf( 0, 1, "_",       0, 0);
+        content.test(    doc, 1, "abc  ab", 0, 1);
         doc.assertTextLeaf(1, 8, "abc  ab", 0, 1, 0);
 
         doc.assertIds();
@@ -204,25 +207,36 @@ public class FormatSpanDebug {
         ///           01234567890
         String raw = "_{*abc}pee";
         DocumentAssert doc = assertDoc(1, raw, parsers);
-        SpanBranch main = doc.assertChild(3, raw,      0);
-        SpanBranch cite = doc.assertChild(3, "{*abc}", 0, 1);
-        SpanBranch id   = doc.assertChild(1, "abc",    0, 1, 1);
-        SpanBranch text = doc.assertChild(1, "pee",    0, 2);
 
         IDBuilder builder = FormatCurlyDebug.buildEndnoteId("abc");
         doc.addRef(builder, CatalogueStatus.NOT_FOUND, 0);
 
-        assertMain(main, 1, 0);
-        FormatCurlyDebug.assertNote(cite, DirectoryType.ENDNOTE,
-            CatalogueStatus.NOT_FOUND, builder, FormatType.UNDERLINE);
-        DirectoryDebug.assertId(id, DirectoryType.ENDNOTE, builder);
-        assertContent(text, "pee", false, false, FormatType.UNDERLINE);
+        FormatMainTest main = new FormatMainTest()
+            .setPublishCount(1).setNoteCount(0);
+        FormatNoteTest cite = new FormatNoteTest()
+            .setDirectoryType(DirectoryType.ENDNOTE)
+            .setCatalogued(CatalogueStatus.NOT_FOUND, builder)
+            .setFormats(FormatType.UNDERLINE);
+        DirectoryTest id = new DirectoryTest()
+            .setPurpose(DirectoryType.ENDNOTE)
+            .setIdentity(builder);
+        ContentTest idText = new ContentTest()
+            .setText("abc") .setBegin(false)
+            .setEnd(false).setCount(1);
+        FormatContentTest content = new FormatContentTest()
+            .setBegin(false).setEnd(false)
+            .setText("pee").setFormats(FormatType.UNDERLINE);
 
-        doc.assertKeyLeaf( 0,  1, "_",   0, 0);
-        doc.assertKeyLeaf( 1,  3, "{*",  0, 1, 0);
-        doc.assertIdLeaf(  3,  6, "abc", 0, 1, 1, 0, 0);
-        doc.assertKeyLeaf( 6,  7, "}",   0, 1, 2);
-        doc.assertTextLeaf(7, 10, "pee", 0, 2, 0);
+        main.test(       doc,  3, raw,      0);
+        doc.assertKeyLeaf( 0,  1, "_",      0, 0);
+        cite.test(       doc,  3, "{*abc}", 0, 1);
+        doc.assertKeyLeaf( 1,  3, "{*",     0, 1, 0);
+        id.test(         doc,  1, "abc",    0, 1, 1);
+        idText.test(     doc,  1, "abc",    0, 1, 1, 0);
+        doc.assertIdLeaf(  3,  6, "abc",    0, 1, 1, 0, 0);
+        doc.assertKeyLeaf( 6,  7, "}",      0, 1, 2);
+        content.test(    doc,  1, "pee",    0, 2);
+        doc.assertTextLeaf(7, 10, "pee",    0, 2, 0);
         doc.assertIds();
     }
 
@@ -230,39 +244,44 @@ public class FormatSpanDebug {
     public void betweenTodos(){
         String raw = "{!todo}  abc ddd {!abc}";
         DocumentAssert doc = assertDoc(1, raw, parsers);
-        SpanBranch main      = doc.assertChild(3, raw,          0);
-        SpanBranch todo1     = doc.assertChild(3, "{!todo}",    0, 0);
-        SpanBranch todo1Text = doc.assertChild(1, "todo",       0, 0, 1);
-        SpanBranch text      = doc.assertChild(1, "  abc ddd ", 0, 1);
-        SpanBranch todo2     = doc.assertChild(3, "{!abc}",     0, 2);
-        SpanBranch todo2Text = doc.assertChild(1, "abc",        0, 2, 1);
 
         IDBuilder builder = FormatAgendaDebug.buildId("00");
         doc.addId(builder, 0);
 
-        assertMain(main, 2, 2);
-        FormatAgendaDebug.assertAgenda(todo1, "todo", builder);
-        new BranchTest.ContentTest().setText("todo").setBegin(false)
-            .setEnd(false).setCount(1).test(doc, 1, "todo", 0, 0, 1);
-
-        assertContent(text, "abc ddd", true, true);
-
+        String text = "  abc ddd ";
+        FormatMainTest main = new FormatMainTest()
+            .setPublishCount(2).setNoteCount(2);
+        FormatAgendaTest todo1 = new FormatAgendaTest()
+            .setCatalogued(builder).setText("todo");
+        ContentTest todo1Text = new ContentTest()
+            .setText("todo").setBegin(false)
+            .setEnd(false).setCount(1);
+        FormatContentTest content = new FormatContentTest()
+            .setText(text).setBegin(false)
+            .setEnd(false);
 
         builder = FormatAgendaDebug.buildId("17");
         doc.addId(builder, 1);
 
-        FormatAgendaDebug.assertAgenda(todo2, "abc", builder);
-        new BranchTest.ContentTest().setText("abc").setBegin(false)
-            .setEnd(false).setCount(1).test(doc, 1, "abc", 0, 2, 1);
+        FormatAgendaTest todo2 = new FormatAgendaTest()
+            .setCatalogued(builder).setText("abc");
+        ContentTest todo2Text = new ContentTest()
+            .setText("abc").setBegin(false)
+            .setEnd(false).setCount(1);
 
-
-        doc.assertKeyLeaf(  0,  2, "{!",         0, 0, 0);
-        doc.assertTextLeaf( 2,  6, "todo",       0, 0, 1, 0);
-        doc.assertKeyLeaf(  6,  7, "}",          0, 0, 2);
-        doc.assertTextLeaf( 7, 17, "  abc ddd ", 0, 1, 0);
-        doc.assertKeyLeaf( 17, 19, "{!",         0, 2, 0);
-        doc.assertTextLeaf(19, 22, "abc",        0, 2, 1, 0);
-        doc.assertKeyLeaf( 22, 23, "}",          0, 2, 2);
+        main.test(        doc, 3, raw,       0);
+        todo1.test(       doc, 3, "{!todo}", 0, 0);
+        doc.assertKeyLeaf(  0,  2, "{!",     0, 0, 0);
+        todo1Text.test(   doc, 1, "todo",    0, 0, 1);
+        doc.assertTextLeaf( 2,  6, "todo",   0, 0, 1, 0);
+        doc.assertKeyLeaf(  6,  7, "}",      0, 0, 2);
+        content.test(     doc,  1, text,     0, 1);
+        doc.assertTextLeaf( 7, 17, text,     0, 1, 0);
+        todo2.test(       doc,  3, "{!abc}", 0, 2);
+        doc.assertKeyLeaf( 17, 19, "{!",     0, 2, 0);
+        todo2Text.test(   doc,  1, "abc",    0, 2, 1);
+        doc.assertTextLeaf(19, 22, "abc",    0, 2, 1, 0);
+        doc.assertKeyLeaf( 22, 23, "}",      0, 2, 2);
         doc.assertIds();
     }
 

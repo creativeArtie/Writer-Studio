@@ -41,10 +41,10 @@ public class FormatAgendaDebug{
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         IDBuilder id = buildId("0");
-
-        FormatAgendaTest agenda = new FormatAgendaTest().setCatalogued(id)
-            .setText("Agenda");
         doc.addId(id,  0);
+
+        FormatAgendaTest agenda = new FormatAgendaTest()
+            .setCatalogued(id).setText("Agenda");
         ContentTest content = new ContentTest()
             .setText("Agenda").setBegin(false)
             .setEnd(false)    .setCount(1);
