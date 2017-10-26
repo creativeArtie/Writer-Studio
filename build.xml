@@ -9,12 +9,10 @@
     <property name="usr.main" value="com.creativeartie.jwriter.main.Main" />
     <!-- archive file postfix -->
     <property name="usr.version" value="0.0.9" />
-    <!-- do backup with archive and lib if true -->
-    <property name="usr.backup-all" value="false" />
     <!-- ......................... Javadoc Data ......................... -->
     <!-- Document up to public/protect/default/private level-->
     <property name="usr-access" value="public" />
-    
+
     <!-- ........................ Debugging Data ........................ -->
     <!-- Test batch time out -->
     <property name="usr.timeout" value="10000" /> <!-- 10 seconds -->
@@ -31,8 +29,7 @@
     <property name="loc.test" value="test/" />
     <property name="loc.lib" value="lib/" />
     <property name="loc.design" value="design/" />
-    <property name="loc.archive" value="archive/" />
-    
+
     <!-- ........................ Code Location ......................... -->
     <property name="dir.src" location="${loc.src}" />
     <property name="dir.test" location="${loc.test}" />
@@ -57,26 +54,19 @@
     <!-- Junit report files -->
     <property name="dir.report" location="${dir.out}/report" />
     <property name="dir.report-raw"  location="${dir.out}/raw-report" />
-    
-    <!-- ....................... Archive Folders ........................ -->
-    <property name="dir.archive" location="${loc.archive}" />
-    <property name="dir.store" 
-        location="${dir.archive}/${ant.project.name}_${usr.version}.zip"
-    />
-    <property name="dir.backup" location="${ant.project.name}.zip" />
-    
+
     <!-- ......................... Data Folder .......................... -->
     <property name="dir.data"      location="${loc.data}" />
     <property name="dir.data-run"  location="${dir.data}/run" />
     <property name="dir.data-jar"  location="${dir.data}/jar" />
     <property name="dir.data-test" location="${dir.data}/tests" />
-    
+
     <!-- .......................... Libraries ........................... -->
     <property name="dir.lib"  location="${loc.lib}" />
     <property name="dir.junit" location="${dir.lib}/junit4" />
     <property name="dir.3rd"  location="${dir.lib}/3rdparty" />
     <property name="dir.off"  location="${dir.lib}/docs" />
-    
+
     <!-- ............................ Others ............................ -->
     <property name="dir.design" location="${loc.design}" />
 
@@ -91,7 +81,7 @@
         <fileset dir="${dir.test}" />
         <fileset dir="${dir.junit}" />
     </path>
-    
+
     <!-- ......................... Class Paths .......................... -->
     <path id="run.path">
         <dirset dir="${dir.run}" />
@@ -103,7 +93,7 @@
         <fileset dir="${dir.junit}" />
         <fileset dir="${dir.3rd}" />
     </path>
-    
+
 <!-- ================================ Targets ============================== -->
     <!-- ......................... Run Targets .......................... -->
     <target name="compile.run">
@@ -114,7 +104,7 @@
             <fileset dir="${dir.data-jar}" />
         </copy>
         <!-- compile from ${dir.src} -->
-        <javac 
+        <javac
             destdir="${dir.run}"
             srcdir="${dir.src}"
             classpathref="src-run.path"
@@ -123,20 +113,20 @@
            <compilerarg value="${args.src-javac}" />
         </javac>
     </target>
-    
+
     <target name="run" depends="compile.run">
-        <java 
-            classname="${usr.main}" 
-            classpathref="run.path" 
+        <java
+            classname="${usr.main}"
+            classpathref="run.path"
             fork="true"
             dir="${dir.run}"
         />
     </target>
-    
+
     <target name="trial" depends="compile.debug">
-        <java 
-            classname="${usr.main}" 
-            classpathref="debug.path" 
+        <java
+            classname="${usr.main}"
+            classpathref="debug.path"
             fork="true"
             dir="${dir.debug}"
         >
@@ -181,11 +171,11 @@
         <!-- set execute flag -->
         <chmod file="${dir.jar-main}" perm="u+x" />
     </target>
-    
+
     <target name="jar" depends="compile.jar">
         <java jar="${dir.jar-main}" fork="true" dir="${dir.jar}"/>
     </target>
-    
+
     <!-- ......................... Test Targets ......................... -->
     <target name="compile.debug">
         <!-- copy data -->
@@ -196,18 +186,18 @@
             <fileset dir="${dir.data-test}" />
         </copy>
         <!-- compile from ${dir.src} -->
-        <javac 
+        <javac
             destdir="${dir.debug}"
             srcdir="${dir.src}"
             classpathref="src-run.path"
             includeantruntime="false"
             debug="on"
-            
+
         >
              <compilerarg line="${args.test-src-javac}"/>
         </javac>
         <!-- compile from ${dir.test} -->
-        <javac 
+        <javac
             destdir="${dir.debug}"
             srcdir="${dir.test}"
             classpathref="src-debug.path"
@@ -248,16 +238,16 @@
         <!-- clean up -->
         <delete dir="${dir.report-raw}" />
     </target>
-    
+
     <target name="debug" depends="clean, test" />
-    
+
     <!-- ............................ Others ............................ -->
     <!-- document the project -->
     <!-- target name="javadoc">
-        <javadoc sourcepath="${dir.src}" destdir="${dir.doc}" 
+        <javadoc sourcepath="${dir.src}" destdir="${dir.doc}"
             access="${usr-access}" classpathref="src-run.path" />
     </target -->
-    
+
     <!-- archive verisons -->
     <target name="archive">
         <mkdir dir="${dir.archive}" />
@@ -268,61 +258,22 @@
             <zipfileset dir="${dir.lib}" prefix="${loc.lib}" />
         </zip>
     </target>
-    
-    <!-- create a backup -->
-    <target name="backup-props">
-        <condition property="back.dir.lib" 
-            value="${dir.lib}"
-            else="${dir.design}" 
-        >
-            <istrue value="${usr.backup-all}" />
-        </condition>
-        <condition property="back.lib" 
-            value="${loc.lib}"
-            else="${loc.design}" 
-        >
-            <istrue value="${usr.backup-all}" />
-        </condition>
-        <condition property="back.archive" 
-            value="${loc.archive}"
-            else="${loc.design}" 
-        >
-            <istrue value="${usr.backup-all}" />
-        </condition>
-        <condition property="back.dir.archive" 
-            value="${dir.archive}"
-            else="${dir.design}" 
-        >
-            <istrue value="${usr.backup-all}" />
-        </condition>
-    </target>
-    <target name="backup" depends="backup-props">
-        <zip destfile="${dir.backup}" duplicate="preserve">
-            <zipfileset dir="${dir.src}" prefix="${loc.src}" />
-            <zipfileset dir="${dir.data}" prefix="${loc.data}" />
-            <zipfileset dir="${dir.test}" prefix="${loc.test}" />
-            <zipfileset dir="${dir.design}" prefix="${loc.design}" />
-            <zipfileset dir="${back.dir.lib}" prefix="${back.lib}" />
-            <zipfileset dir="${back.dir.archive}" prefix="${back.archive}" />
-            <zipfileset dir="${basedir}" includes="build.xml"/>
-        </zip>
-    </target>
 
     <!-- clear generated things -->
     <target name="clean">
         <delete dir="${dir.out}" />
         <delete file="${dir.backup}" />
     </target>
-    
+
     <!-- clear test folder only -->
     <target name="debug.clean">
         <delete dir="${dir.debug}" />
     </target>
-    
+
     <!-- show java version -->
-    <target name="java-version"> 
-       <echo>Java/JVM version: ${ant.java.version}</echo> 
-       <echo>Java/JVM detail version: ${java.version}</echo> 
+    <target name="java-version">
+       <echo>Java/JVM version: ${ant.java.version}</echo>
+       <echo>Java/JVM detail version: ${java.version}</echo>
     </target>
 
     <!-- show build file properties and class paths -->
@@ -338,33 +289,33 @@
         <echoproperties prefix="back" />
         <echo/>
 
-        <pathconvert property="src-run.path" 
-            refid="src-run.path" 
-            pathsep="${line.separator}|-- " 
+        <pathconvert property="src-run.path"
+            refid="src-run.path"
+            pathsep="${line.separator}|-- "
         />
         <echo message="src-run.path"/>
         <echo message="|-- ${src-run.path}"/>
         <echo/>
 
-        <pathconvert property="src-debug.path" 
-            refid="src-debug.path" 
-            pathsep="${line.separator}|-- " 
+        <pathconvert property="src-debug.path"
+            refid="src-debug.path"
+            pathsep="${line.separator}|-- "
         />
         <echo message="src-debug.path"/>
         <echo message="|-- ${src-test.path}"/>
         <echo/>
 
-        <pathconvert property="run.path" 
-            refid="run.path" 
-            pathsep="${line.separator}|-- " 
+        <pathconvert property="run.path"
+            refid="run.path"
+            pathsep="${line.separator}|-- "
         />
         <echo message="run.path"/>
         <echo message="|-- ${run.path}"/>
         <echo/>
 
-        <pathconvert property="debug.path" 
-            refid="debug.path" 
-            pathsep="${line.separator}|-- " 
+        <pathconvert property="debug.path"
+            refid="debug.path"
+            pathsep="${line.separator}|-- "
         />
         <echo message="debug.path"/>
         <echo message="|-- ${debug.path}"/>
