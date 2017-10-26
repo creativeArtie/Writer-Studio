@@ -250,14 +250,14 @@ public class FormatSpanDebug {
 
         String text = "  abc ddd ";
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(2).setNoteCount(2);
+            .setPublishCount(2)    .setNoteCount(2);
         FormatAgendaTest todo1 = new FormatAgendaTest()
             .setCatalogued(builder).setText("todo");
         ContentTest todo1Text = new ContentTest()
             .setText("todo").setBegin(false)
-            .setEnd(false).setCount(1);
+            .setEnd(false)  .setCount(1);
         FormatContentTest content = new FormatContentTest()
-            .setText(text).setBegin(false)
+            .setText(text)  .setBegin(false)
             .setEnd(false);
 
         builder = FormatAgendaDebug.buildId("17");
@@ -266,8 +266,8 @@ public class FormatSpanDebug {
         FormatAgendaTest todo2 = new FormatAgendaTest()
             .setCatalogued(builder).setText("abc");
         ContentTest todo2Text = new ContentTest()
-            .setText("abc").setBegin(false)
-            .setEnd(false).setCount(1);
+            .setText("abc")        .setBegin(false)
+            .setEnd(false)         .setCount(1);
 
         main.test(        doc, 3, raw,       0);
         todo1.test(       doc, 3, "{!todo}", 0, 0);
@@ -290,105 +290,136 @@ public class FormatSpanDebug {
         String raw = "Begin\\\\* Say**'s_ Hi `Joy`**_{@note} " +
             "<@link><a.ca| web>{!todo} see";
         DocumentAssert doc = assertDoc(1, raw, parsers);
-        SpanBranch main     = doc.assertChild(18, raw,           0);
-        SpanBranch text1    = doc.assertChild( 2, "Begin\\\\",   0, 0);
-        SpanBranch escape   = doc.assertChild( 2, "\\\\",        0, 0, 1);
-        SpanBranch text2    = doc.assertChild( 1, " Say",        0, 2);
-        SpanBranch text3    = doc.assertChild( 1, "'s",          0, 4);
-        SpanBranch text4    = doc.assertChild( 1, " Hi ",        0, 6);
-        SpanBranch text5    = doc.assertChild( 1, "Joy",         0, 8);
-        SpanBranch cite     = doc.assertChild( 3, "{@note}",     0, 12);
-        SpanBranch citeId   = doc.assertChild( 1, "note",        0, 12, 1);
-        SpanBranch text6    = doc.assertChild( 1, " ",           0, 13);
-        SpanBranch ref      = doc.assertChild( 3, "<@link>",     0, 14);
-        SpanBranch refId    = doc.assertChild( 1, "link",        0, 14, 1);
-        SpanBranch link     = doc.assertChild( 5, "<a.ca| web>", 0, 15);
-        SpanBranch linkPath = doc.assertChild( 1, "a.ca",        0, 15, 1);
-        SpanBranch linkText = doc.assertChild( 1, " web",        0, 15, 3);
-        SpanBranch todo     = doc.assertChild( 3, "{!todo}",     0, 16);
-        SpanBranch todoText = doc.assertChild( 1, "todo",        0, 16, 1);
-        SpanBranch text7    = doc.assertChild( 1, " see",        0, 17);
 
-        assertMain(main, 6, 1);
+        FormatMainTest main = new FormatMainTest()
+            .setPublishCount(6).setNoteCount(1);
 
-        assertContent(text1, "Begin\\", false, false);
-        new BranchTest.EscapeTest().setEscape("\\").test(doc, 2, "\\\\", 0, 0, 1);
+        FormatContentTest text1 = new FormatContentTest()
+            .setText("Begin\\").setBegin(false).setEnd(false);
+        EscapeTest escape = new EscapeTest()
+            .setEscape("\\");
 
-        assertContent(text2, "Say", true, false, FormatType.ITALICS);
-        assertContent(text3, "'s", false, false, FormatType.BOLD,
-            FormatType.ITALICS);
-        assertContent(text4, "Hi", true, true, FormatType.BOLD,
-            FormatType.ITALICS, FormatType.UNDERLINE);
-        assertContent(text5, "Joy", false, false, FormatType.BOLD,
-            FormatType.ITALICS, FormatType.UNDERLINE, FormatType.CODED);
+        FormatContentTest text2 = new FormatContentTest()
+            .setText("Say").setBegin(true).setEnd(false)
+            .setFormats(FormatType.ITALICS);
+        FormatContentTest text3 = new FormatContentTest()
+            .setText("'s").setBegin(false).setEnd(false)
+            .setFormats(FormatType.BOLD, FormatType.ITALICS);
+        FormatContentTest text4 = new FormatContentTest()
+            .setText("Hi").setBegin(true).setEnd(true)
+            .setFormats(FormatType.BOLD, FormatType.ITALICS,
+                       FormatType.UNDERLINE);
+        FormatContentTest text5 = new FormatContentTest()
+            .setText("Joy").setBegin(false).setEnd(false)
+            .setFormats(FormatType.BOLD, FormatType.ITALICS,
+                       FormatType.UNDERLINE, FormatType.CODED);
 
         IDBuilder builder = FormatCurlyDebug.buildNoteId("note");
         doc.addRef(builder, 2);
 
-        FormatCurlyDebug.assertNote(cite, DirectoryType.NOTE,
-            CatalogueStatus.NOT_FOUND, builder, FormatType.ITALICS);
-        DirectoryDebug.assertId(citeId, DirectoryType.NOTE, builder);
+        FormatNoteTest cite = new FormatNoteTest()
+            .setDirectoryType(DirectoryType.NOTE)
+            .setCatalogued(CatalogueStatus.NOT_FOUND, builder)
+            .setFormats(FormatType.ITALICS);
+        DirectoryTest citeId = new DirectoryTest()
+            .setPurpose(DirectoryType.NOTE)
+            .setIdentity(builder);
 
-        assertContent(text6, "", true, true, FormatType.ITALICS);
+        FormatContentTest text6 = new FormatContentTest()
+            .setText("").setBegin(true).setEnd(true)
+            .setFormats(FormatType.ITALICS);
 
         builder = FormatLinkDebug.buildLinkId("link");
         doc.addRef(builder, 1);
 
-        FormatLinkDebug.assertRefLink(ref, "", "",
-            CatalogueStatus.NOT_FOUND, builder, FormatType.ITALICS);
-        DirectoryDebug.assertId(refId, DirectoryType.LINK, builder);
-        FormatLinkDebug.assertDirLink(link, "a.ca", "web", FormatType.ITALICS);
-        new BranchTest.ContentTest().setText("a.ca").setBegin(false)
-            .setEnd(false).setCount(1).test(doc, 1, "a.ca", 0, 15, 1);
+        FormatLinkTest ref = new FormatLinkTest()
+            .setPath("").setText("")
+            .setCatalogued(CatalogueStatus.NOT_FOUND, builder)
+            .setFormats(FormatType.ITALICS);
+        DirectoryTest refId = new DirectoryTest()
+            .setPurpose(DirectoryType.LINK).setIdentity(builder);
+        ContentTest refIdText = new BranchTest.ContentTest()
+            .setText("link").setBegin(false)
+            .setEnd(false) .setCount(1);
 
-        new BranchTest.ContentTest().setText("web").setBegin(true).setEnd(false)
-            .setCount(1).test(doc, 1, " web", 0, 15, 3);
+
+        FormatLinkTest link = new FormatLinkTest()
+            .setPath("a.ca").setText("web")
+            .setFormats(FormatType.ITALICS);
+        ContentTest linkPath = new BranchTest.ContentTest()
+            .setText("a.ca").setBegin(false)
+            .setEnd(false)  .setCount(1);
+        ContentTest linkText = new BranchTest.ContentTest()
+            .setText("web").setBegin(true)
+            .setEnd(false) .setCount(1);
 
 
         builder = FormatAgendaDebug.buildId("55");
         doc.addId(builder, 0);
 
-        FormatAgendaDebug.assertAgenda(todo, "todo", builder);
-        new BranchTest.ContentTest().setText("todo").setBegin(false)
-            .setEnd(false).setCount(1).test(doc, 1, "todo", 0, 16, 1);
+        FormatAgendaTest todo = new FormatAgendaTest().
+            setCatalogued(builder).setText("todo");
+        ContentTest todoText = new ContentTest()
+            .setText("todo").setBegin(false)
+            .setEnd(false).setCount(1);
 
-
-        assertContent(text7, "see", true, false, FormatType.ITALICS);
+        FormatContentTest text7 = new FormatContentTest()
+            .setText("see").setBegin(true).setEnd(false)
+            .setFormats(FormatType.ITALICS);
 
 
         ///0           1         2         3         4         5         6
         ///01234 5 6789012345678901234567890123456789012345678901234567890123456
         ///Begin\\\\* Say**'s_ Hi `Joy`**_{@note} <@link><a.ca| web>{!todo} see
-        doc.assertTextLeaf( 0, 5, "Begin", 0, 0, 0);
-        doc.assertKeyLeaf(  5, 6,    "\\", 0, 0, 1, 0);
-        doc.assertTextLeaf( 6, 7,    "\\", 0, 0, 1, 1);
-        doc.assertKeyLeaf(  7, 8,     "*", 0, 1);
-        doc.assertTextLeaf( 8, 12, " Say", 0, 2, 0);
-        doc.assertKeyLeaf( 12, 14,   "**", 0, 3);
-        doc.assertTextLeaf(14, 16,   "'s", 0, 4, 0);
-        doc.assertKeyLeaf( 16, 17,    "_", 0, 5);
-        doc.assertTextLeaf(17, 21, " Hi ", 0, 6, 0);
-        doc.assertKeyLeaf( 21, 22,    "`", 0, 7);
-        doc.assertTextLeaf(22, 25,  "Joy", 0, 8, 0);
-        doc.assertKeyLeaf( 25, 26,    "`", 0, 9);
-        doc.assertKeyLeaf( 26, 28,   "**", 0, 10);
-        doc.assertKeyLeaf( 28, 29,    "_", 0, 11);
-        doc.assertKeyLeaf( 29, 31,   "{@", 0, 12, 0);
-        doc.assertIdLeaf(  31, 35, "note", 0, 12, 1, 0, 0);
-        doc.assertKeyLeaf( 35, 36,    "}", 0, 12, 2);
-        doc.assertTextLeaf(36, 37,    " ", 0, 13, 0);
-        doc.assertKeyLeaf( 37, 39,   "<@", 0, 14, 0);
-        doc.assertIdLeaf(  39, 43, "link", 0, 14, 1, 0, 0);
-        doc.assertKeyLeaf( 43, 44,    ">", 0, 14, 2);
-        doc.assertKeyLeaf( 44, 45,    "<", 0, 15, 0);
-        doc.assertPathLeaf(45, 49, "a.ca", 0, 15, 1, 0);
-        doc.assertKeyLeaf( 49, 50,    "|", 0, 15, 2);
-        doc.assertTextLeaf(50, 54, " web", 0, 15, 3, 0);
-        doc.assertKeyLeaf( 54, 55,    ">", 0, 15, 4);
-        doc.assertKeyLeaf( 55, 57,   "{!", 0, 16, 0);
-        doc.assertTextLeaf(57, 61, "todo", 0, 16, 1, 0);
-        doc.assertKeyLeaf( 61, 62,    "}", 0, 16, 2);
-        doc.assertTextLeaf(62, 66, " see", 0, 17, 0);
+        main.test(        doc, 18, raw,          0);
+        text1.test(       doc, 2, "Begin\\\\",   0, 0);
+        doc.assertTextLeaf( 0, 5, "Begin",       0, 0, 0);
+        escape.test(      doc, 2, "\\\\",        0, 0, 1);
+        doc.assertKeyLeaf(  5, 6,    "\\",       0, 0, 1, 0);
+        doc.assertTextLeaf( 6, 7,    "\\",       0, 0, 1, 1);
+        doc.assertKeyLeaf(  7, 8,     "*",       0, 1);
+        text2.test(       doc, 1, " Say",        0, 2);
+        doc.assertTextLeaf( 8, 12, " Say",       0, 2, 0);
+        doc.assertKeyLeaf( 12, 14,   "**",       0, 3);
+        text3.test(       doc, 1, "'s",          0, 4);
+        doc.assertTextLeaf(14, 16,   "'s",       0, 4, 0);
+        doc.assertKeyLeaf( 16, 17,    "_",       0, 5);
+        text4.test(       doc, 1, " Hi ",        0, 6);
+        doc.assertTextLeaf(17, 21, " Hi ",       0, 6, 0);
+        doc.assertKeyLeaf( 21, 22,    "`",       0, 7);
+        text5.test(       doc, 1, "Joy",         0, 8);
+        doc.assertTextLeaf(22, 25,  "Joy",       0, 8, 0);
+        doc.assertKeyLeaf( 25, 26,    "`",       0, 9);
+        doc.assertKeyLeaf( 26, 28,   "**",       0, 10);
+        doc.assertKeyLeaf( 28, 29,    "_",       0, 11);
+        cite.test(        doc, 3, "{@note}",     0, 12);
+        doc.assertKeyLeaf( 29, 31,   "{@",       0, 12, 0);
+        citeId.test(      doc, 1, "note",        0, 12, 1);
+        doc.assertIdLeaf(  31, 35, "note",       0, 12, 1, 0, 0);
+        doc.assertKeyLeaf( 35, 36,    "}",       0, 12, 2);
+        text6.test(       doc, 1, " ",           0, 13);
+        doc.assertTextLeaf(36, 37,    " ",       0, 13, 0);
+        ref.test(         doc, 3, "<@link>",     0, 14);
+        doc.assertKeyLeaf( 37, 39,   "<@",       0, 14, 0);
+        refId.test(       doc,  1, "link",       0, 14, 1);
+        refIdText.test(   doc,  1, "link",       0, 14, 1, 0);
+        doc.assertIdLeaf(  39, 43, "link",       0, 14, 1, 0, 0);
+        doc.assertKeyLeaf( 43, 44,    ">",       0, 14, 2);
+        doc.assertKeyLeaf( 44, 45,    "<",       0, 15, 0);
+        link.test(        doc, 5, "<a.ca| web>", 0, 15);
+        linkPath.test(    doc, 1, "a.ca",        0, 15, 1);
+        doc.assertPathLeaf(45, 49, "a.ca",       0, 15, 1, 0);
+        doc.assertKeyLeaf( 49, 50,    "|",       0, 15, 2);
+        linkText.test(    doc, 1, " web",        0, 15, 3);
+        doc.assertTextLeaf(50, 54, " web",       0, 15, 3, 0);
+        doc.assertKeyLeaf( 54, 55,    ">",       0, 15, 4);
+        todo.test(        doc, 3, "{!todo}",     0, 16);
+        doc.assertKeyLeaf( 55, 57,   "{!",       0, 16, 0);
+        todoText.test(    doc, 1, "todo",        0, 16, 1);
+        doc.assertTextLeaf(57, 61, "todo",       0, 16, 1, 0);
+        doc.assertKeyLeaf( 61, 62,    "}",       0, 16, 2);
+        text7.test(       doc, 1, " see",        0, 17);
+        doc.assertTextLeaf(62, 66, " see",       0, 17, 0);
         ///Begin\\\\* Say**'s_ Hi `Joy`**_{@note} <@link><a.ca| web>{!todo} see
         ///01234 5 6789012345678901234567890123456789012345678901234567890123456
         ///0           1         2         3         4         5         6
