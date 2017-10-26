@@ -1,0 +1,52 @@
+=Chapter 1
+!# Story hook
+!## Question
+!# Scene 1
+!## Intro
+!### Setting
+!### Events
+!#### Character do this...
+!#### Response with this...
+!#### Ends like this
+!# Chapter end
+==Sub chapter
+!# Intro to computers
+!## Computer terms
+!### RAM
+!### Hard drive
+!### Mouse
+!## Basic Terms
+!### Kill the parent node
+!### How to kill orphans nodes
+!## Tree Terms
+!### See above
+== More random sub
+!# Day of life in the ocean
+!## Rising monster
+!## No more monsters
+=Chapter 2
+=Chapter 3
+== Scuba, laser and teaser 
+== seesaw, outlaw, in-law
+== beaver, otter, moose!!!!
+=== more on moose
+=== moose on dolphin
+=== sky-to-sea highway
+== I see you?!
+== you have ice
+== rabbit-like dinosauar
+=== ABC
+==== DEFG
+==== HIGK
+==== LMNO
+=== PQR
+=== STUV
+=== WXYZ
+= Chapter 4
+!# action to see you
+== Final heading
+!# final major outline point
+!## finalize second level outline point
+!#### ?? 
+!### illuminati confirmed!
+!## story is finally over!!!!

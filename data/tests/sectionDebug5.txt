@@ -1,0 +1,46 @@
+!% Nameless Note
+!> error: adfasdf
+!%  @Basic Note: Title 1
+!> source: abc
+!%Some text here *abc*
+!%More Text here
+!%  @Sourced: From some book unkown
+!% lalalala <@hello|some text>
+!> source: Berndt, T. J. (2002). Friendship quality and social development. *Current Directions in Psychological Science*, 11, 7-10.
+!> in-text: Chapter 1 _abc_
+!% @a-b: bbb
+!> footnote: abc
+!% @a-c: aaa
+!% @a-b-a: welcome
+!% @a-b-c: to
+!% @a-b-d: break up note into
+!% random lines, except for
+!% *this* one!!!
+=@Ch 1: Sing along{*unknowable}
+See here. {@random} Cite there {@Sourced}.
+!*footnote 1: some text with *bold* and _underlined_
+!*funny: funny joke in the wrong place
+=More text
+abc{*funny} <@hello> *<www.google.com|google.com>*.
+!! Todo list 1 2 3
+!! more todos
+{! local todo} yah :( {!even more} boo!!!
+!@hello:HelloWorld.com
+!*a:lists
+!*b-a:abc
+!*b-a:first!!!
+!*b-a:repeated
+!*b-b:id b
+!*b-c:id c
+!*b-d:id d
+!*b-e:id e
+!*b-f:id f
+!*b-g:id g
+!*b-h:id h
+!*b-i:id i
+!*b-j:id j
+!*b-k:id k
+!*b-ka:id ka
+!*b-kb:id kb
+!*b-l:id l
+!*b-m:id m

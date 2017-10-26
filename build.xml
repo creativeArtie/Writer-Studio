@@ -1,0 +1,372 @@
+<project name="JWriter">
+    <description>
+    This is an ant build file JWriter, a note take and writing program.
+    </description>
+<!-- ==================== Program Environment Variables ==================== -->
+    <!-- ** Edit these ones!!! ** -->
+    <!-- ..................... Manifest/Running data .................... -->
+    <!-- main(String[]) Location -->
+    <property name="usr.main" value="com.creativeartie.jwriter.main.Main" />
+    <!-- archive file postfix -->
+    <property name="usr.version" value="0.0.9" />
+    <!-- do backup with archive and lib if true -->
+    <property name="usr.backup-all" value="false" />
+    <!-- ......................... Javadoc Data ......................... -->
+    <!-- Document up to public/protect/default/private level-->
+    <property name="usr-access" value="public" />
+    
+    <!-- ........................ Debugging Data ........................ -->
+    <!-- Test batch time out -->
+    <property name="usr.timeout" value="10000" /> <!-- 10 seconds -->
+    <!-- The postfix of the file names to test. -->
+    <property name="usr.testers" value="Debug" />
+    <!-- ........................ Arguments Data ........................ -->
+    <property name="args.src-javac" value="-Xlint" />
+    <property name="args.test-src-javac" value="-Xlint -Xdiags:verbose" />
+    <property name="args.test-junit-javac" value="-Xdiags:verbose" />
+<!-- =========================== Program Folders =========================== -->
+    <!-- ........................ Major Folders ......................... -->
+    <property name="loc.src" value="src/" />
+    <property name="loc.data" value="data/" />
+    <property name="loc.test" value="test/" />
+    <property name="loc.lib" value="lib/" />
+    <property name="loc.design" value="design/" />
+    <property name="loc.archive" value="archive/" />
+    
+    <!-- ........................ Code Location ......................... -->
+    <property name="dir.src" location="${loc.src}" />
+    <property name="dir.test" location="${loc.test}" />
+
+    <!-- ........................ Output Folder ......................... -->
+    <property name="dir.out" location="out/" />
+    <!-- running java classes and data -->
+    <property name="dir.run"      location="${dir.out}/run/" />
+    <property name="dir.run-data" location="${dir.run}/data" />
+    <!-- testing java classes and data -->
+    <property name="dir.debug"      location="${dir.out}/${loc.test}" />
+    <property name="dir.debug-data" location="${dir.debug}/data" />
+    <!-- Jar and assoicated files -->
+    <property name="dir.jar"      location="${dir.out}/jar" />
+    <property name="dir.jar-tmp"  location="${dir.out}/tmp" />
+    <property name="dir.jar-res"  location="${dir.jar-tmp}/data" />
+    <property name="dir.jar-data" location="${dir.jar}/data" />
+    <property name="dir.jar-lib"  location="${dir.jar}/lib" />
+    <property name="dir.jar-main" location="${dir.jar}/${ant.project.name}.jar" />
+    <!-- Javadoc files -->
+    <property name="dir.doc"  location="${dir.out}/doc/" />
+    <!-- Junit report files -->
+    <property name="dir.report" location="${dir.out}/report" />
+    <property name="dir.report-raw"  location="${dir.out}/raw-report" />
+    
+    <!-- ....................... Archive Folders ........................ -->
+    <property name="dir.archive" location="${loc.archive}" />
+    <property name="dir.store" 
+        location="${dir.archive}/${ant.project.name}_${usr.version}.zip"
+    />
+    <property name="dir.backup" location="${ant.project.name}.zip" />
+    
+    <!-- ......................... Data Folder .......................... -->
+    <property name="dir.data"      location="${loc.data}" />
+    <property name="dir.data-run"  location="${dir.data}/run" />
+    <property name="dir.data-jar"  location="${dir.data}/jar" />
+    <property name="dir.data-test" location="${dir.data}/tests" />
+    
+    <!-- .......................... Libraries ........................... -->
+    <property name="dir.lib"  location="${loc.lib}" />
+    <property name="dir.junit" location="${dir.lib}/junit4" />
+    <property name="dir.3rd"  location="${dir.lib}/3rdparty" />
+    <property name="dir.off"  location="${dir.lib}/docs" />
+    
+    <!-- ............................ Others ............................ -->
+    <property name="dir.design" location="${loc.design}" />
+
+<!-- ============================== Class Path ============================= -->
+    <!-- .......................... Java Path ........................... -->
+    <path id="src-run.path">
+        <fileset dir="${dir.3rd}" />
+    </path>
+
+    <path id="src-debug.path">
+        <path refid="src-run.path" />
+        <fileset dir="${dir.test}" />
+        <fileset dir="${dir.junit}" />
+    </path>
+    
+    <!-- ......................... Class Paths .......................... -->
+    <path id="run.path">
+        <dirset dir="${dir.run}" />
+        <fileset dir="${dir.3rd}" />
+    </path>
+
+    <path id="debug.path">
+        <dirset dir="${dir.debug}" />
+        <fileset dir="${dir.junit}" />
+        <fileset dir="${dir.3rd}" />
+    </path>
+    
+<!-- ================================ Targets ============================== -->
+    <!-- ......................... Run Targets .......................... -->
+    <target name="compile.run">
+        <!-- copy data -->
+        <mkdir dir="${dir.run-data}" />
+        <copy toDir="${dir.run-data}" overwrite="true">
+            <fileset dir="${dir.data-run}" />
+            <fileset dir="${dir.data-jar}" />
+        </copy>
+        <!-- compile from ${dir.src} -->
+        <javac 
+            destdir="${dir.run}"
+            srcdir="${dir.src}"
+            classpathref="src-run.path"
+            includeantruntime="false"
+        >
+           <compilerarg value="${args.src-javac}" />
+        </javac>
+    </target>
+    
+    <target name="run" depends="compile.run">
+        <java 
+            classname="${usr.main}" 
+            classpathref="run.path" 
+            fork="true"
+            dir="${dir.run}"
+        />
+    </target>
+    
+    <target name="trial" depends="compile.debug">
+        <java 
+            classname="${usr.main}" 
+            classpathref="debug.path" 
+            fork="true"
+            dir="${dir.debug}"
+        >
+             <assertions><enable/></assertions>
+        </java>
+    </target>
+
+    <!-- ......................... Jar Targets .......................... -->
+    <target name="compile.jar" depends="compile.run">
+        <!-- copy data -->
+        <copy toDir="${dir.jar-data}" overwrite="true">
+            <fileset dir="${dir.data-run}" />
+        </copy>
+        <!-- copy 3rd party libraries -->
+        <copy toDir="${dir.jar-lib}" overwrite="true">
+            <fileset dir="${dir.3rd}" />
+        </copy>
+        <!-- set up temp folder -->
+        <copy toDir="${dir.jar-tmp}" overwrite="true">
+            <fileset dir="${dir.run}">
+                <exclude name="${loc.data}" />
+            </fileset>
+        </copy>
+        <copy toDir="${dir.jar-res}" overwrite="true">
+            <fileset dir="${dir.data-jar}" />
+        </copy>
+        <!-- setup manifest library class paths -->
+        <manifestclasspath property="lib.path" jarfile="${dir.jar-main}">
+            <classpath>
+                <fileset dir="${dir.jar-lib}" />
+            </classpath>
+        </manifestclasspath>
+        <!-- jar classes -->
+        <jar destfile="${dir.jar-main}" baseDir="${dir.jar-tmp}">
+            <!-- setup manifest file -->
+            <manifest>
+                <attribute name="Program-Name" value="${ant.project.name}" />
+                <attribute name="Main-Class" value="${usr.main}" />
+                <attribute name="Class-Path" value="${lib.path}" />
+            </manifest>
+        </jar>
+        <!-- set execute flag -->
+        <chmod file="${dir.jar-main}" perm="u+x" />
+    </target>
+    
+    <target name="jar" depends="compile.jar">
+        <java jar="${dir.jar-main}" fork="true" dir="${dir.jar}"/>
+    </target>
+    
+    <!-- ......................... Test Targets ......................... -->
+    <target name="compile.debug">
+        <!-- copy data -->
+        <mkdir dir="${dir.debug-data}" />
+        <copy toDir="${dir.debug-data}" overwrite="true">
+            <fileset dir="${dir.data-run}" />
+            <fileset dir="${dir.data-jar}" />
+            <fileset dir="${dir.data-test}" />
+        </copy>
+        <!-- compile from ${dir.src} -->
+        <javac 
+            destdir="${dir.debug}"
+            srcdir="${dir.src}"
+            classpathref="src-run.path"
+            includeantruntime="false"
+            debug="on"
+            
+        >
+             <compilerarg line="${args.test-src-javac}"/>
+        </javac>
+        <!-- compile from ${dir.test} -->
+        <javac 
+            destdir="${dir.debug}"
+            srcdir="${dir.test}"
+            classpathref="src-debug.path"
+            includeantruntime="false"
+            debug="on"
+        >
+             <compilerarg line="${args.test-junit-javac}"/>
+        </javac>
+    </target>
+
+    <target name="test" depends="compile.debug">
+        <!-- prepares the folders -->
+        <mkdir dir="${dir.report-raw}" />
+        <junit fork="yes"
+            timeout="${usr.timeout}"
+            dir="${dir.debug}"
+            printSummary="on"
+            showOutput="on"
+            tempdir="${dir.report-raw}"
+        >
+            <assertions><enable/></assertions>
+            <classpath refid="debug.path" />
+            <formatter type="xml" />
+            <!-- run the tests -->
+            <batchtest toDir="${dir.report-raw}">
+                <fileset dir="${dir.debug}">
+                    <include name="**/*${usr.testers}*"/>
+                    <exclude name="**/*$*"/>
+                </fileset>
+            </batchtest>
+        </junit>
+        <!-- produce report -->
+        <delete dir="${dir.report}" />
+        <junitreport toDir="${dir.report-raw}">
+            <fileset dir="${dir.report-raw}" />
+            <report format="frames" todir="${dir.report}"/>
+        </junitreport>
+        <!-- clean up -->
+        <delete dir="${dir.report-raw}" />
+    </target>
+    
+    <target name="debug" depends="clean, test" />
+    
+    <!-- ............................ Others ............................ -->
+    <!-- document the project -->
+    <!-- target name="javadoc">
+        <javadoc sourcepath="${dir.src}" destdir="${dir.doc}" 
+            access="${usr-access}" classpathref="src-run.path" />
+    </target -->
+    
+    <!-- archive verisons -->
+    <target name="archive">
+        <mkdir dir="${dir.archive}" />
+        <zip destfile="${dir.store}">
+            <zipfileset dir="${dir.src}" prefix="${loc.src}" />
+            <zipfileset dir="${dir.data}" prefix="${loc.data}" />
+            <zipfileset dir="${dir.test}" prefix="${loc.test}" />
+            <zipfileset dir="${dir.lib}" prefix="${loc.lib}" />
+        </zip>
+    </target>
+    
+    <!-- create a backup -->
+    <target name="backup-props">
+        <condition property="back.dir.lib" 
+            value="${dir.lib}"
+            else="${dir.design}" 
+        >
+            <istrue value="${usr.backup-all}" />
+        </condition>
+        <condition property="back.lib" 
+            value="${loc.lib}"
+            else="${loc.design}" 
+        >
+            <istrue value="${usr.backup-all}" />
+        </condition>
+        <condition property="back.archive" 
+            value="${loc.archive}"
+            else="${loc.design}" 
+        >
+            <istrue value="${usr.backup-all}" />
+        </condition>
+        <condition property="back.dir.archive" 
+            value="${dir.archive}"
+            else="${dir.design}" 
+        >
+            <istrue value="${usr.backup-all}" />
+        </condition>
+    </target>
+    <target name="backup" depends="backup-props">
+        <zip destfile="${dir.backup}" duplicate="preserve">
+            <zipfileset dir="${dir.src}" prefix="${loc.src}" />
+            <zipfileset dir="${dir.data}" prefix="${loc.data}" />
+            <zipfileset dir="${dir.test}" prefix="${loc.test}" />
+            <zipfileset dir="${dir.design}" prefix="${loc.design}" />
+            <zipfileset dir="${back.dir.lib}" prefix="${back.lib}" />
+            <zipfileset dir="${back.dir.archive}" prefix="${back.archive}" />
+            <zipfileset dir="${basedir}" includes="build.xml"/>
+        </zip>
+    </target>
+
+    <!-- clear generated things -->
+    <target name="clean">
+        <delete dir="${dir.out}" />
+        <delete file="${dir.backup}" />
+    </target>
+    
+    <!-- clear test folder only -->
+    <target name="debug.clean">
+        <delete dir="${dir.debug}" />
+    </target>
+    
+    <!-- show java version -->
+    <target name="java-version"> 
+       <echo>Java/JVM version: ${ant.java.version}</echo> 
+       <echo>Java/JVM detail version: ${java.version}</echo> 
+    </target>
+
+    <!-- show build file properties and class paths -->
+    <target name="props" depends="backup-props">
+        <echoproperties prefix="usr" />
+        <echo/>
+        <echoproperties prefix="args" />
+        <echo />
+        <echoproperties prefix="loc" />
+        <echo/>
+        <echoproperties prefix="dir" />
+        <echo/>
+        <echoproperties prefix="back" />
+        <echo/>
+
+        <pathconvert property="src-run.path" 
+            refid="src-run.path" 
+            pathsep="${line.separator}|-- " 
+        />
+        <echo message="src-run.path"/>
+        <echo message="|-- ${src-run.path}"/>
+        <echo/>
+
+        <pathconvert property="src-debug.path" 
+            refid="src-debug.path" 
+            pathsep="${line.separator}|-- " 
+        />
+        <echo message="src-debug.path"/>
+        <echo message="|-- ${src-test.path}"/>
+        <echo/>
+
+        <pathconvert property="run.path" 
+            refid="run.path" 
+            pathsep="${line.separator}|-- " 
+        />
+        <echo message="run.path"/>
+        <echo message="|-- ${run.path}"/>
+        <echo/>
+
+        <pathconvert property="debug.path" 
+            refid="debug.path" 
+            pathsep="${line.separator}|-- " 
+        />
+        <echo message="debug.path"/>
+        <echo message="|-- ${debug.path}"/>
+    </target>
+</project>

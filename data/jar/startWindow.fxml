@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane fx:controller="com.creativeartie.jwriter.window.StartWindow"
+    xmlns:fx="http://javafx.com/fxml"
+    alignment="center" hgap="10" vgap="10">
+    <padding><Insets top="25" right="25" bottom="10" left="25" /></padding>
+    <Text text="Document Start Page."
+        GridPane.columnIndex="0" GridPane.rowIndex="0"
+        GridPane.columnSpan="2"
+    />
+    <Label text="Project Name"
+        GridPane.columnIndex="0" GridPane.rowIndex="1"
+    />
+    <TextField
+        GridPane.columnIndex="1" GridPane.rowIndex="1"
+    />
+    <Label text="File path"
+        GridPane.columnIndex="0" GridPane.rowIndex="2"
+    />
+    <TextField
+        GridPane.columnIndex="1" GridPane.rowIndex="2"
+    />
+    <Label text="Date Start"
+        GridPane.columnIndex="0" GridPane.rowIndex="3"
+    />
+    <TextField
+        GridPane.columnIndex="1" GridPane.rowIndex="3"
+    />
+</GridPane>

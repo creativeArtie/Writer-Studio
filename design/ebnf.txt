@@ -1,0 +1,79 @@
+(* About===============================================================
+ * This uses the Extended Backus–Naur form with the following syntax
+ * definition       =
+ * concatenation    ,
+ * termination      ;
+ * alternation      |
+ * optional         [ ... ]
+ * repetition       { ... }
+ * grouping         ( ... )
+ * terminal string  " ... "
+ * terminal string  ' ... '
+ * comment          (* ... *)
+ * special sequence ? ... ?
+ * exception        -
+ *)
+
+Manuscripte = (Section | Note), [\n, (Section | Note)], [\n];
+
+Section     = (LinedHeading | LinedOutline, [{\n, SectionLine}]) |
+              (SectionLine, [{\n, SectionLine}];
+               
+SectionLine = (LinedParagraph | LinedBreak | LinedAgenda | LinedFootnote | 
+               LinedEndnote | LinedLink);
+LinedParagrah = Content;
+LinedBreak    = "***", \n;
+LinedAgenda   = "!!", Content;
+LinedFootnote = "!^", Directory, [[":"], Content];
+LinedEndnote  = "!*", Directory, [[":"], Content];
+LinedLink     = "!@", Directory, [[":"], Content];
+LinedHeading  = HeadingStart, LineId;
+LinedOutline  = OutlineStart, LineId;
+LinedQuote    = QuoteStart, Format;
+LinedNumbered = NumberedStart, Format;
+LinedBullet   = BulletStart, Format;
+LineId = (Spaces, "@", Directory, [":", [Format], [Edition]]) |
+        ([Format], [Edition]);
+
+HeadingStart  = "=", [ "=", ["=", ["=", ["=", ["="] ] ] ] ];
+OutlineStart  = "!", \t, [ \t, [\t, [\t, [\t, [\t] ] ] ] ];
+QuoteStart    = ">", [ ">", [">", [">", [">", [">"] ] ] ] ];
+NumberedStart = \t, [ \t, [\t, [\t, [\t, [\t] ] ] ] ], #;
+BulletStart   = \t, [ \t, [\t, [\t, [\t, [\t] ] ] ] ], -;
+
+
+Note     = (LinedNoteHead, [{\n SectionNoteLine}]) | 
+           (SectionNoteLine, [{\n SectionNoteLine}];
+NoteLine = LinedNote | LinedCite;
+LinedNoteHead = "!%", Spaces, "@", Directory, [":", [Format]];
+LinedNoteLine = "!%", Format;
+
+LinedCite = "!>", ((InfoFieldFootnote| InfoFieldIntext), [[Spaces, [":"]] InfoDataText]) | 
+            (InfoFieldSource, [[Spaces, [":"], InfoDataFormatted]) | Content;
+InfoFieldFootnote = Spaces, "footnote";
+InfoFieldIntext   = Spaces, "in-text";
+InfoFieldSource   = Spaces, "source";
+InfoDataText      = Content (* End with ":" *);
+InfoDataFormatted = Format  (* End with ":" *);
+
+Format = {FormatAgenda | FormatFootnote | FormatEndnote | FormatNote |
+          FormatDirectLink | FormatRefLink | "**" | "*" | "_" | "`" | FormatContent};
+FormatRefLink    =  "<@", Content, ">";
+FormatDirectLink =  "<", Content, ">";
+FormatNote       = "{@", Directory, "}";
+FormatEndnote    = "{^", Directory, "}";
+FormatFootnote   = "{*", Directory, "}";
+FormatContent    = Basic
+FormatAgenda     = "{!", Content, "}";
+
+Edition   = ("#STUB" | "#DRAFT" | "#FINAL"), Content;
+Directory = Content, {"-", Content};
+Content   = Basic;
+
+Basic  = {Raw, Escape};
+Raw    = {-("\" | ?next termial string? | ?new line character?)};
+Escape = "\", ?any unicode character?;
+
+\n     = ? new line ?
+\t     = ? new tab ?
+Spaces = [{? white space ?}];

@@ -1,0 +1,7 @@
+=@Chapter 1: Story of nobody
+#An outline thing.
+See me fly{^random footnote}
+!^footnote:text for the foot note
+!%Add some random note
+Paragraph *continue* from above
+=@Chapter 2: More #STUB abc\dee

@@ -1,0 +1,18 @@
+
+==Hello *World!* \\# abc # Hello
+!#@outlne:Outline 1 #DRAFT
+#number **_line **1_
+#number line 2 <google.com|google> <@apple | text>.
+!@apple:apple.com
+!@amazon:amanzon.com
+!!more todo
+Some more text{@unknown}
+!%Note 1
+!%@Note 2: Proper note <@apple>
+!>source:abc *abc* **ddd**
+!>error
+>quote with _underline_, *italics*, `code`, and **bold{*endnote}
+=Chapter 2 {!help}
+Simple paragraph with footnote{^1} and {!in line to do}
+!^1: Some text
+!*a: unused endnote
