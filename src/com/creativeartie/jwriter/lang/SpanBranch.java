@@ -87,6 +87,20 @@ public abstract class SpanBranch extends SpanNode<Span> {
 
     public abstract List<DetailStyle> getBranchStyles();
 
+    public List<SpanLeaf> getLeaves(){
+        return getDocument().getLeaves(this, () -> {
+            ImmutableList.Builder<SpanLeaf> builder = ImmutableList.builder();
+            for(Span span: this){
+                if (span instanceof SpanLeaf){
+                    builder.add((SpanLeaf)span);
+                } else if (span instanceof SpanBranch){
+                    builder.addAll(((SpanBranch)span).getLeaves());
+                }
+            }
+            return builder.build();
+        });
+    }
+
     void getStyles(List<DetailStyle> styles){
         if (spanParent instanceof SpanBranch){
             ((SpanBranch)spanParent).getStyles(styles);

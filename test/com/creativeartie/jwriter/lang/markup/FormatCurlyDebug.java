@@ -71,7 +71,6 @@ public class FormatCurlyDebug {
         ContentTest content2 = new ContentTest()
             .setText("-bc").setBegin(false)
             .setEnd(false) .setCount(1);
-
         EscapeTest escape = new EscapeTest().setEscape("-");
 
         note.test(      doc, 3, raw,       0);

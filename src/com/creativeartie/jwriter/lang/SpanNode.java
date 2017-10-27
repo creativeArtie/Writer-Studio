@@ -5,24 +5,24 @@ import java.util.function.*;
 
 /**
  * Common methods for {@link Document} and {@link SpanBranch}.
- * @param <T> 
+ * @param <T>
  *      Type of span stored
  */
 public abstract class SpanNode<T extends Span> extends Span
         implements List<T> {
-    
+
     protected SpanNode(){}
-    
+
     @Override
     public final String getRaw(){
         StringBuilder builder = new StringBuilder();
-        
+
         for (Span span: this){
             builder.append(span.getRaw());
         }
         return builder.toString();
     }
-    
+
     @Override
     public int getLength(){
         int ans = 0;
@@ -31,7 +31,7 @@ public abstract class SpanNode<T extends Span> extends Span
         }
         return ans;
     }
-    
+
     @Override
     public void setRemove(){
         super.setRemove();
@@ -39,23 +39,23 @@ public abstract class SpanNode<T extends Span> extends Span
             child.setRemove();
         }
     }
-    
+
     abstract Span removeChild(int idx);
-    
+
     abstract void addChildren(int idx, List<Span> children);
 
     public abstract List<T> delegate();
-    
+
     @Override
     public boolean add(T e){
         return delegate().add(e);
     }
-    
+
     @Override
     public void add(int index, T element){
         delegate().add(index, element);
     }
-    
+
     @Override
     public boolean addAll(Collection<? extends T> c){
         return delegate().addAll(c);
@@ -185,12 +185,12 @@ public abstract class SpanNode<T extends Span> extends Span
     public <T> T[] toArray(T[] a){
         return delegate().toArray(a);
     }
-    
+
     @Override
     public String toString(){
         return delegate().toString();
     }
-    
+
     protected <T extends SpanBranch> Optional<T> spanAtFirst(Class<T> clazz){
         if (isEmpty()){
             return Optional.empty();
@@ -200,7 +200,7 @@ public abstract class SpanNode<T extends Span> extends Span
         }
         return Optional.empty();
     }
-    
+
     protected <T extends SpanBranch> Optional<T> spanFromFirst(Class<T> clazz){
         for(Span span: this){
             if (clazz.isInstance(span)){
@@ -209,7 +209,7 @@ public abstract class SpanNode<T extends Span> extends Span
         }
         return Optional.empty();
     }
-    
+
     protected <T extends SpanBranch> Optional<T> spanAtLast(Class<T> clazz){
         if (isEmpty()){
             return Optional.empty();
@@ -219,7 +219,7 @@ public abstract class SpanNode<T extends Span> extends Span
         }
         return Optional.empty();
     }
-    
+
     protected <T extends SpanBranch> Optional<T> spanFromLast(Class<T> clazz){
         for(int i = size() - 1; i >= 0; i--){
             Span span = get(i);
@@ -229,7 +229,7 @@ public abstract class SpanNode<T extends Span> extends Span
         }
         return Optional.empty();
     }
-    
+
     protected Optional<SpanLeaf> leafFromFrist(SetupLeafStyle info){
         for (Span span: this){
             if (span instanceof SpanLeaf){
@@ -241,7 +241,7 @@ public abstract class SpanNode<T extends Span> extends Span
         }
         return Optional.empty();
     }
-    
+
     protected Optional<SpanLeaf> leafFromLast(SetupLeafStyle info){
         for(int i = size() - 1; i >= 0; i++){
             Span span = get(i);
