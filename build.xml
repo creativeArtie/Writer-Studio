@@ -277,7 +277,7 @@
     </target>
 
     <!-- show build file properties and class paths -->
-    <target name="props" depends="backup-props">
+    <target name="props">
         <echoproperties prefix="usr" />
         <echo/>
         <echoproperties prefix="args" />
