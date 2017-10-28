@@ -44,7 +44,7 @@
     <property name="dir.debug-data" location="${dir.debug}/data" />
     <!-- Jar and assoicated files -->
     <property name="dir.jar"      location="${dir.out}/jar" />
-    <property name="dir.jar-tmp"  location="${dir.out}/tmp" />
+    <property name="dir.jar-tmp"  location="${dir.out}/jar-bin" />
     <property name="dir.jar-res"  location="${dir.jar-tmp}/data" />
     <property name="dir.jar-data" location="${dir.jar}/data" />
     <property name="dir.jar-lib"  location="${dir.jar}/lib" />
@@ -60,6 +60,7 @@
     <property name="dir.data-run"  location="${dir.data}/run" />
     <property name="dir.data-jar"  location="${dir.data}/jar" />
     <property name="dir.data-test" location="${dir.data}/tests" />
+    <property name="dir.jar-root"  location="${dir.data}/jar-root" />
 
     <!-- .......................... Libraries ........................... -->
     <property name="dir.lib"  location="${loc.lib}" />
@@ -136,9 +137,12 @@
 
     <!-- ......................... Jar Targets .......................... -->
     <target name="compile.jar" depends="compile.run">
-        <!-- copy data -->
+        <!-- copy files -->
         <copy toDir="${dir.jar-data}" overwrite="true">
             <fileset dir="${dir.data-run}" />
+        </copy>
+        <copy toDir="${dir.jar}" overwrite="true">
+            <fileset dir="${dir.jar-root}" />
         </copy>
         <!-- copy 3rd party libraries -->
         <copy toDir="${dir.jar-lib}" overwrite="true">
@@ -150,6 +154,7 @@
                 <exclude name="${loc.data}" />
             </fileset>
         </copy>
+        <!-- copy files into future jar file-->
         <copy toDir="${dir.jar-res}" overwrite="true">
             <fileset dir="${dir.data-jar}" />
         </copy>
@@ -169,7 +174,7 @@
             </manifest>
         </jar>
         <!-- set execute flag -->
-        <chmod file="${dir.jar-main}" perm="u+x" />
+        <chmod file="${dir.jar-main}" perm="a+x" />
     </target>
 
     <target name="jar" depends="compile.jar">

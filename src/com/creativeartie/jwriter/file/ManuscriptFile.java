@@ -4,6 +4,7 @@ import com.creativeartie.jwriter.lang.markup.*;
 
 import java.io.*;
 import java.util.zip.*;
+import java.util.*;
 
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import com.creativeartie.jwriter.main.Checker;
@@ -15,16 +16,7 @@ public class ManuscriptFile {
     private static final String POST_FIX = ".txt";
     private final ManuscriptDocument documentText;
     private final RecordTable recordsFile;
-    private final File zipFile;
-
-    /*public ManuscriptFile(File file){
-        zipFile = file;
-        if (file.exists()){
-        } else {
-            documentText = new ManuscriptDocument();
-            recordsFile = new RecordTable();
-        }
-    }*/
+    private Optional<File> zipFile;
 
     public static ManuscriptFile open(File file) throws IOException{
         try (ZipInputStream input = new ZipInputStream(new
@@ -57,26 +49,27 @@ public class ManuscriptFile {
         }
     }
 
-    public static ManuscriptFile newFile(File file) throws IOException{
-        if (file.exists()){
-            throw new IOException("File exists.");
-        }
-        return new ManuscriptFile(file, new ManuscriptDocument(),
+    public static ManuscriptFile newFile() {
+        return new ManuscriptFile(null, new ManuscriptDocument(),
             new RecordTable());
     }
 
     private ManuscriptFile(File file, ManuscriptDocument doc,
         RecordTable table)
     {
-        zipFile = file;
+        zipFile = Optional.ofNullable(file);
         documentText = doc;
         recordsFile = table;
     }
 
-    public ManuscriptFile(File file, File doc) throws IOException{
-        zipFile = file;
+    public ManuscriptFile(File doc) throws IOException{
+        zipFile = Optional.empty();
         documentText = new ManuscriptDocument(doc);
         recordsFile = new RecordTable();
+    }
+
+    public void setSave(File file){
+        zipFile = Optional.of(file);
     }
 
     public ManuscriptDocument getDocument(){
@@ -87,9 +80,16 @@ public class ManuscriptFile {
         return recordsFile;
     }
 
+    public boolean canSave(){
+        return zipFile.isPresent();
+    }
+
     public void save() throws IOException{
+        if (! zipFile.isPresent()){
+            throw new IOException("No file to save.");
+        }
         try (ZipOutputStream writeTo = new ZipOutputStream(new FileOutputStream
-            (zipFile)))
+            (zipFile.get())))
         {
             save(writeTo, MAIN + POST_FIX, documentText.getRaw());
             save(writeTo, RECORDS + POST_FIX, recordsFile.getSaveText());

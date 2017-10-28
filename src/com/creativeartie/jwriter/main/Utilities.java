@@ -55,7 +55,7 @@ public class Utilities{
 
     public static ResourceBundle getWindowText(){
         if (texts == null){
-            texts = PropertyResourceBundle.getBundle("window_text");
+            texts = PropertyResourceBundle.getBundle("data.windowText", Locale.ENGLISH);
         }
         return texts;
     }

@@ -18,7 +18,7 @@ public class Main extends Application{
     private Stage mainStage;
 
     public final static ResourceBundle TEXTS = PropertyResourceBundle
-        .getBundle("data.window_text");
+        .getBundle("data.windowText", Locale.ENGLISH);
 
     public static void main(String[] args) {
         launch(args);
@@ -29,15 +29,24 @@ public class Main extends Application{
         stage.setTitle(TEXTS.getString("MainWindow.Title"));
 
         // testStatsWindow(stage);
-        testMainWindow(stage);
+        // testMainWindow(stage);
+        jarMainWindow(stage);
     }
 
     private void testMainWindow(Stage stage) throws Exception{
+        setupWindow(stage, new File("data/help-text.txt"));
+    }
+
+    private void jarMainWindow(Stage stage) throws Exception{
+        File classPath = new File(System.getProperty("java.class.path"));
+        File file = new File(classPath.getParent(), "data/help-text.txt");
+        setupWindow(stage, file);
+    }
+
+    private void setupWindow(Stage stage, File file) throws Exception{
         SceneWriterControl writer = new SceneWriterControl(stage);
         Scene scene = new Scene(writer, 800, 600);
-        writer.setManuscriptFile(new ManuscriptFile(
-            new File("testDoc2.zip"), new File("data/sectionDebug4.txt")
-        ));
+        writer.setManuscriptFile(new ManuscriptFile(file));
         stage.setScene(scene);
         stage.setMaximized(true);
         stage.show();
