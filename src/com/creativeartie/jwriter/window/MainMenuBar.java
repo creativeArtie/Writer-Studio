@@ -90,23 +90,21 @@ public class MainMenuBar extends MenuBar{
     }
 
     private void newFile(){
-        File file = chooser.showSaveDialog(mainWindow);
-        if (file != null){
-            try {
-                manuscriptFile.setValue(ManuscriptFile.newFile(file));
-            } catch (Exception ex){
-                System.err.println("unhandled exception (MainMenuBar#saveFile):");
-                ex.printStackTrace();
-                System.exit(-1);
-            }
-        }
+        manuscriptFile.setValue(ManuscriptFile.newFile());
     }
 
     private void saveFile(){
         try {
-            ManuscriptFile file = getManuscriptFile();
-            if (file != null){
-                file.save();
+            ManuscriptFile data = getManuscriptFile();
+            if (data != null){
+                if (! data.canSave()){
+                    File file = chooser.showSaveDialog(mainWindow);
+                    if (file == null){
+                        return;
+                    }
+                    data.setSave(file);
+                }
+                data.save();
             }
         } catch (Exception ex){
             System.err.println("unhandled exception (MainMenuBar#saveFile):");
@@ -116,10 +114,12 @@ public class MainMenuBar extends MenuBar{
     }
     private void exit(){
         try {
-            saveFile();
+            if (getManuscriptFile().canSave()){
+                saveFile();
+            }
             Platform.exit();
         } catch (Exception ex){
-            System.err.println("unhandled exception (MainMenuBar#saveFile):");
+            System.err.println("unhandled exception (MainMenuBar#exite):");
             ex.printStackTrace();
             System.exit(-1);
         }
