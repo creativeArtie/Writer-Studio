@@ -34,7 +34,9 @@ public class PaneMonthControl extends PaneMonthView{
             getDayPane(i).emptyDay(date);
         // System.out.println(ptr); /// Print start of month
         ptr = getRecordTable().getStartMonth().equals(value)?
-            loadRecord(it, emptyDay, noRecord, day, ptr):
+            (getRecordTable().getEndMonth().equals(value)?
+                loadRecord(it, emptyDay, emptyDay, day, ptr):
+                loadRecord(it, emptyDay, noRecord, day, ptr)):
             (getRecordTable().getEndMonth().equals(value)?
                 loadRecord(it, noRecord, emptyDay, day, ptr):
                 loadRecord(it, noRecord, noRecord, day, ptr)); 
