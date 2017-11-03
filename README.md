@@ -40,7 +40,7 @@ heading, or is before the first section with headings.
 
 ### Heading and outline
 
-A heading or an outline can have an [id](#Id) that can be linked to a
+A heading or an outline can have an [id](#id) that can be linked to a
 different point of file.  The syntax is `@category>id:` and it set before the
 first text, other than the syntax used to indicated the heading and outline
 style. Refers to the section by using [`<@id>`](#hyperlink).
@@ -81,7 +81,7 @@ In addition there are footnote, and endnote, that can be referred to even
 outside of the section that the line belongs in. Footnotes appears at end of a
 page, while endnote appears at the end of either a section or a document.
 
-All footnote and endnotes will have an [id](#Id) and text before they can appear
+All footnote and endnotes will have an [id](#id) and text before they can appear
 in the printed document.
 
 |Types      |Line Syntax |In Text Syntax|
@@ -91,7 +91,7 @@ in the printed document.
 
 Footnote will count by numbers, while endnot count by letters.
 
-### Hyperlinks
+### Hyperlink
 
 Hyperlinks can be link to a section or a webpage. If the referred link points to
 
@@ -99,7 +99,7 @@ A referred link needs a line somewhere with the following syntax:
 
     !@id:webpage path
 
-A referred link needs to have an [id](#Id) and text before it can appears in the
+A referred link needs to have an [id](#id) and text before it can appears in the
 printed document.
 
 Both referred link and section links has the following sytnax: `<@id|text>` while
@@ -124,7 +124,7 @@ Note has the following syntax:
     !% more text
     !>source: sources
 
-[Id](#Id) and sources are optional, but both are required if the note is from
+[Id](#id) and sources are optional, but both are required if the note is from
 research and is being use as a citation.
 
 Sources has requires two things:
