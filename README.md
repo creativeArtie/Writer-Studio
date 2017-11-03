@@ -89,6 +89,8 @@ in the printed document.
 |Footnote   | `!^id:text`| `{^id}`      |
 |Endnote    | `!*id:text`| `{*id}`      |
 
+Footnote will count by numbers, while endnot count by letters.
+
 ### Hyperlinks
 
 Hyperlinks can be link to a section or a webpage. If the referred link points to
@@ -105,6 +107,15 @@ direct links has the following syntax: `<web page path| text>`. Text (include th
 symbol `|` are optional, and will be replace by the web page path or the section
 title if none is found.
 
+### Agenda
+Agenda marks parts of the document to be work on later. There are two types of
+agendas, in text or a single line.
+
+In text agenda uses the following syntax `{@text}` while a single line of agenda
+uses the following syntax:
+
+    !! to do text
+
 ## Notes
 
 Note has the following syntax:
@@ -120,13 +131,16 @@ Sources has requires two things:
 
 - a line of formated text to appear in the word cited section at the end of
   document or section which starts with `!>source:`
-- a way to cite in text
-
-    AGENDA(LinedParseRest.AGENDA, LINED_AGENDA),
-    SOURCE(LinedParseCite.INSTANCE, LINED_CITE),
+- a way to cite in text with start the line with one of the following:
+    - `!>in-text:` appears in the text
+    - `!>footnote:` appears as a footnote
 
 ## Id
 
+Ids have an category and title. There are unlimited number of categories and
+unlimited of nested subcategories avaiable. the categories and titles are sorted
+in the alphabethical order and are not case sensitive. The syntax of an id is
+`category>subcategory>...>title`.
 
 ## Screen shots
 ![Main Window](design/main.png)
