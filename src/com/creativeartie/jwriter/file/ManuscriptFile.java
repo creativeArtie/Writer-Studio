@@ -54,18 +54,12 @@ public class ManuscriptFile {
             new RecordTable());
     }
 
-    private ManuscriptFile(File file, ManuscriptDocument doc,
+    public ManuscriptFile(File file, ManuscriptDocument doc,
         RecordTable table)
     {
         zipFile = Optional.ofNullable(file);
         documentText = doc;
         recordsFile = table;
-    }
-
-    public ManuscriptFile(File doc) throws IOException{
-        zipFile = Optional.empty();
-        documentText = new ManuscriptDocument(doc);
-        recordsFile = new RecordTable();
     }
 
     public void setSave(File file){

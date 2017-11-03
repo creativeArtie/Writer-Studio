@@ -29,24 +29,26 @@ public class Main extends Application{
         stage.setTitle(TEXTS.getString("MainWindow.Title"));
 
         // testStatsWindow(stage);
-        // testMainWindow(stage);
-        jarMainWindow(stage);
+        openMainWindow(stage);
     }
 
-    private void testMainWindow(Stage stage) throws Exception{
-        setupWindow(stage, new File("data/help-text.txt"));
+    private void openMainWindow(Stage stage) throws Exception{
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream in = getClass().getResourceAsStream("/data/help-text.txt");
+        StringBuilder builder = new StringBuilder();
+        int read = in.read();
+        while (read != -1){
+            builder.append((char) read);
+            read = in.read();
+        }
+        setupWindow(stage, new ManuscriptFile(null,
+            new ManuscriptDocument(builder.toString()), new RecordTable()));
     }
 
-    private void jarMainWindow(Stage stage) throws Exception{
-        File classPath = new File(System.getProperty("java.class.path"));
-        File file = new File(classPath.getParent(), "data/help-text.txt");
-        setupWindow(stage, file);
-    }
-
-    private void setupWindow(Stage stage, File file) throws Exception{
+    private void setupWindow(Stage stage, ManuscriptFile file) {
         SceneWriterControl writer = new SceneWriterControl(stage);
         Scene scene = new Scene(writer, 800, 600);
-        writer.setManuscriptFile(new ManuscriptFile(file));
+        writer.setManuscriptFile(file);
         stage.setScene(scene);
         stage.setMaximized(true);
         stage.show();
