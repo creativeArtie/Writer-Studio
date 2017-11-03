@@ -41,7 +41,7 @@ heading, or is before the first section with headings.
 ### Heading and outline
 
 A heading or an outline can have an [id](#id) that can be linked to a
-different point of file.  The syntax is `@category>id:` and it set before the
+different point of file.  The syntax is `@category-id:` and it set before the
 first text, other than the syntax used to indicated the heading and outline
 style. Refers to the section by using [`<@id>`](#hyperlink).
 
@@ -54,7 +54,7 @@ the line.
 
 The syntax of a heading is:
 
-    = @category>id:Title for largest heading # status
+    = @category-id:Title for largest heading # status
     == Title for heading 2 #DRAFT
     ======Smallest headings
 
@@ -140,7 +140,7 @@ Sources has requires two things:
 Ids have an category and title. There are unlimited number of categories and
 unlimited of nested subcategories avaiable. the categories and titles are sorted
 in the alphabethical order and are not case sensitive. The syntax of an id is
-`category>subcategory>...>title`.
+`category-subcategory-...-title`.
 
 ## Screen shots
 ![Main Window](design/main.png)
