@@ -28,8 +28,8 @@ to one line.
 |Code     |`\`Text\``    |
 
 There are also [footnote (syntax `{^footnote}`), endnote (syntax `{*endnote}`)](#note-styles),
-[links (syntax `<@reference id|link text>` or `<link path|link text>`)](#hyperlink) and
-[agenda (syntax `{! todo}`)](#agenda).
+[links (syntax `<@reference id|link text>` or `<link path|link text>`)](#hyperlink),
+[agenda (syntax `{! todo}`)](#agenda), and [citation (sytnax `{@id}`)](#notes).
 
 ## Sections
 Each section had a heading or an outline point at the top of the section. This
@@ -40,9 +40,10 @@ heading, or is before the first section with headings.
 
 ### Heading and outline
 
-A heading or an outline can have an [id](Id) that can be linked to a different
-point of file.  The syntax is `@category>id:` and it set before the first text,
-other than the syntax used to indicated the heading and outline style.
+A heading or an outline can have an [id](#Id) that can be linked to a
+different point of file.  The syntax is `@category>id:` and it set before the
+first text, other than the syntax used to indicated the heading and outline
+style. Refers to the section by using [`<@id>`](#hyperlink).
 
 There are six level for both headings and outlines.
 
@@ -52,17 +53,16 @@ the status, there are details to go with the status. It will be at the end of
 the line.
 
 The syntax of a heading is:
-~~~
-= @category>id:Title for largest heading # status
-== Title for heading 2 #DRAFT
-======Smallest headings
-~~~
+
+    = @category>id:Title for largest heading # status
+    == Title for heading 2 #DRAFT
+    ======Smallest headings
 
 The syntax of a outline is:
-~~~
-!# Largest outline point
-!######Smallest outline pointe
-~~~
+
+    !# Largest outline point
+    !######Smallest outline pointe
+
 
 ### Main Line Styles
 
@@ -81,13 +81,46 @@ In addition there are footnote, and endnote, that can be referred to even
 outside of the section that the line belongs in. Footnotes appears at end of a
 page, while endnote appears at the end of either a section or a document.
 
-|Line styles|Syntax      |
-|-----------|------------|
-|Footnote   | `!^id:text`|
-|Endnote    | `!*id:text`|
+All footnote and endnotes will have an [id](#Id) and text before they can appear
+in the printed document.
 
+|Types      |Line Syntax |In Text Syntax|
+|-----------|------------|--------------|
+|Footnote   | `!^id:text`| `{^id}`      |
+|Endnote    | `!*id:text`| `{*id}`      |
 
-    NOTE(LinedParseRest.NOTE, LINED_NOTE),
+### Hyperlinks
+
+Hyperlinks can be link to a section or a webpage. If the referred link points to
+
+A referred link needs a line somewhere with the following syntax:
+
+    !@id:webpage path
+
+A referred link needs to have an [id](#Id) and text before it can appears in the
+printed document.
+
+Both referred link and section links has the following sytnax: `<@id|text>` while
+direct links has the following syntax: `<web page path| text>`. Text (include the
+symbol `|` are optional, and will be replace by the web page path or the section
+title if none is found.
+
+## Notes
+
+Note has the following syntax:
+
+    !% @id: text
+    !% more text
+    !>source: sources
+
+[Id](#Id) and sources are optional, but both are required if the note is from
+research and is being use as a citation.
+
+Sources has requires two things:
+
+- a line of formated text to appear in the word cited section at the end of
+  document or section which starts with `!>source:`
+- a way to cite in text
 
     AGENDA(LinedParseRest.AGENDA, LINED_AGENDA),
     SOURCE(LinedParseCite.INSTANCE, LINED_CITE),
