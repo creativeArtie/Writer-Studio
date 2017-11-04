@@ -177,5 +177,30 @@ public class BranchTest {
         }
     }
 
+    public static class FieldTest extends SpanBranchAssert<FieldTest>{
+        private InfoFieldType fieldType;
+
+        public FieldTest(){
+            super(FieldTest.class);
+        }
+
+        public FieldTest setType(InfoFieldType type){
+            fieldType = type;
+            return this;
+        }
+
+        @Override
+        public void setup(){
+            setStyles(fieldType);
+        }
+
+        @Override
+        public void test(SpanBranch span){
+            InfoFieldSpan test = assertClass(span, InfoFieldSpan.class);
+
+            assertEquals(getError("type", test), fieldType, test.getFieldType());
+        }
+    }
+
     private BranchTest(){}
 }

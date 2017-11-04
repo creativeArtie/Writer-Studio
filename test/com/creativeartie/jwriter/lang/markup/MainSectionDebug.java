@@ -2,6 +2,9 @@ package com.creativeartie.jwriter.lang.markup;
 
 import static org.junit.Assert.*;
 import static com.creativeartie.jwriter.lang.DocumentAssert.*;
+import static com.creativeartie.jwriter.lang.markup.BranchTest.*;
+import static com.creativeartie.jwriter.lang.markup.BranchLineTest.*;
+import static com.creativeartie.jwriter.lang.markup.BranchFormatTest.*;
 
 
 import org.junit.*;
@@ -50,7 +53,7 @@ public class MainSectionDebug {
         doc.addId(builder, 0);
         doc.assertIds();
 
-        assertSection(section, null, 1, 0, EditionType.NONE, 
+        assertSection(section, null, 1, 0, EditionType.NONE,
             CatalogueStatus.UNUSED, builder);
         LinedRestDebug.assertParagraph(line, format, 1, 0);
     }
@@ -135,7 +138,7 @@ public class MainSectionDebug {
         IDBuilder builder = buildId("00");
         doc.addId(builder, 0);
 
-        assertSection(section, null, 4, 0, EditionType.NONE, 
+        assertSection(section, null, 4, 0, EditionType.NONE,
             CatalogueStatus.UNUSED, builder);
         for (int i = 0; i < texts.length; i++){
             LinedLevelRestDebug.assertLevel(lines[i],
@@ -161,7 +164,7 @@ public class MainSectionDebug {
         IDBuilder builder = buildId("00");
         doc.addId(builder, 0);
 
-        assertSection(section, line1, 2, 0, EditionType.DRAFT, 
+        assertSection(section, line1, 2, 0, EditionType.DRAFT,
             CatalogueStatus.UNUSED, builder);
 
         builder = LinedLevelHeadDebug.buildId("a");
@@ -197,7 +200,7 @@ public class MainSectionDebug {
         LinedRestDebug.assertQuote(line1, quote, 1, 0);
 
         doc.addId(builder.reset().addCategory("head").setId("07"), 1);
-        assertSection(section2, line2, 2, 0, EditionType.STUB, 
+        assertSection(section2, line2, 2, 0, EditionType.STUB,
             CatalogueStatus.UNUSED, builder);
         LinedLevelHeadDebug.assertHeading(line2, heading, LinedType.HEADING, 1,
             null, EditionType.STUB, 1, 0, CatalogueStatus.NO_ID);
