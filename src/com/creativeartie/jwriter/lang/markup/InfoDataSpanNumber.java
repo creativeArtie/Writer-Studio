@@ -6,13 +6,14 @@ import com.google.common.base.*;
 
 import com.creativeartie.jwriter.lang.*;
 
+@Deprecated
 public class InfoDataSpanNumber extends InfoDataSpan<Integer>{
-    
+
     @Override
     public InfoDataSpanNumber cast(){
         return this;
     }
-    
+
     @Override
     public Integer getData(){
         String raw = CharMatcher.whitespace().removeFrom(get(0).getRaw());
@@ -22,7 +23,7 @@ public class InfoDataSpanNumber extends InfoDataSpan<Integer>{
             throw new IllegalStateException("No integer found.", ex);
         }
     }
-    
+
     InfoDataSpanNumber(List<Span> children){
         super(children, InfoDataType.NUMBER);
     }

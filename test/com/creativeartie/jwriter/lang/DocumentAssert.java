@@ -101,6 +101,13 @@ public class DocumentAssert {
         return new Span[]{span, parent};
     }
 
+    public SpanBranch getChild(int ... idx){
+        Span child = getFamily(idx)[0];
+        assertTrue("Expects instance of SpanBranch, gotten " + child.getClass(),
+            child instanceof SpanBranch);
+        return (SpanBranch) child;
+    }
+
     public SpanBranch assertChild(int size, String rawText, int ... idx){
         Span[] prep = getFamily(idx);
 

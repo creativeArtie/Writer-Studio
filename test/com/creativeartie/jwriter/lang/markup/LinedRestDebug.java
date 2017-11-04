@@ -2,6 +2,9 @@ package com.creativeartie.jwriter.lang.markup;
 
 import static org.junit.Assert.*;
 import static com.creativeartie.jwriter.lang.DocumentAssert.*;
+import static com.creativeartie.jwriter.lang.markup.BranchTest.*;
+import static com.creativeartie.jwriter.lang.markup.BranchLineTest.*;
+import static com.creativeartie.jwriter.lang.markup.BranchFormatTest.*;
 
 import org.junit.*;
 import org.junit.runner.*;
@@ -76,10 +79,10 @@ public class LinedRestDebug {
     public void testBreak(){
         String raw = "***\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
-        SpanBranch span = doc.assertChild(1, raw, 0);
 
-        assertBreak(span);
+        BreakLineTest line = new BreakLineTest();
 
+        line.test(      doc, 1, raw,      0);
         doc.assertKeyLeaf(0, 4, "***\n",  0, 0);
 
         doc.assertIds();
