@@ -95,9 +95,26 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         return span;
     }
 
-    public static <T> T assertClass(SpanBranch span, Class<T> clazz){
+    protected static <T> T assertClass(SpanBranch span, Class<T> clazz){
         assertEquals(getError("class", span), clazz, span.getClass());
         return clazz.cast(span);
+    }
+
+    protected <T> void assertSpan(String field, SpanBranch span,
+        Optional<T> base, Optional<T> expect)
+    {
+        assertSpan(field, span, base.orElse(null), expect);
+    }
+
+    protected <T> void assertSpan(String field, SpanBranch span, T test,
+        Optional<T> expect)
+    {
+        if (expect.isPresent()){
+            assertNotNull(getError(field, span), test);
+            assertSame(getError(field, span), test, expect.get());
+        } else {
+            assertNull(getError(field, span), test);
+        }
     }
 
     public static String getError(String name, Object test){

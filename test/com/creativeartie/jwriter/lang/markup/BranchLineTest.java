@@ -61,6 +61,48 @@ public class BranchLineTest {
         }
     }
 
+    public static class CiteLineTest extends LineTest<CiteLineTest>{
+
+        private InfoFieldType infoType;
+        private Optional<InfoDataSpan<?>> dataSpan;
+
+        public CiteLineTest(){
+            super(CiteLineTest.class);
+            setLinedType(LinedType.SOURCE);
+            dataSpan = Optional.empty();
+        }
+
+        public CiteLineTest setInfoType(InfoFieldType type){
+            infoType = type;
+            return this;
+        }
+
+        public CiteLineTest setDataSpan(DocumentAssert doc, int ... idx){
+            SpanBranch span = doc.getChild(idx);
+            if (span instanceof InfoDataSpan){
+                dataSpan = Optional.of((InfoDataSpan<?>) span);
+            }
+            return this;
+        }
+
+        @Override
+        public void setup(){
+            setLinedType(LinedType.SOURCE);
+            setStyles(LinedType.SOURCE);
+            if ( ! dataSpan.isPresent()){
+                addStyles(AuxiliaryStyle.DATA_ERROR);
+            }
+        }
+
+        @Override
+        public void test(SpanBranch span){
+            LinedSpanCite test = assertClass(span, LinedSpanCite.class);
+            assertEquals(getError("field", test), infoType, test.getFieldType());
+            assertSpan("data", span, dataSpan, test.getData());
+            super.test(span);
+        }
+    }
+
     public static class BreakLineTest extends SimpleStyleTest<BreakLineTest>{
 
         public BreakLineTest(){

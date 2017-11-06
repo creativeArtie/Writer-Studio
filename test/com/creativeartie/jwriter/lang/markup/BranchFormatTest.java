@@ -53,8 +53,9 @@ public class BranchFormatTest {
             return this;
         }
 
-        public FormatNoteTest setTarget(DocumentAssert doc, int .. idx){
+        public FormatNoteTest setTarget(DocumentAssert doc, int ... idx){
             target = Optional.of(doc.getChild(idx));
+            return this;
         }
 
         public FormatType[] getFormats(){
