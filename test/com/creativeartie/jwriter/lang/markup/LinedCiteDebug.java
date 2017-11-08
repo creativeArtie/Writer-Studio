@@ -2,6 +2,9 @@ package com.creativeartie.jwriter.lang.markup;
 
 import static org.junit.Assert.*;
 import static com.creativeartie.jwriter.lang.DocumentAssert.*;
+import static com.creativeartie.jwriter.lang.markup.BranchLineTest.*;
+import static com.creativeartie.jwriter.lang.markup.BranchDataTest.*;
+import static com.creativeartie.jwriter.lang.markup.BranchTest.*;
 
 import org.junit.*;
 import org.junit.runner.*;
@@ -38,15 +41,24 @@ public class LinedCiteDebug {
     @Test
     public void inTextComplete(){
         String raw = "!>in-text:a";
-        DocumentAssert doc = assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);/*
         SpanBranch cite  = doc.assertChild(4, raw,       0);
         SpanBranch field = doc.assertChild(1, "in-text", 0, 1);
         SpanBranch data  = doc.assertChild(1, "a",       0, 3);
-        SpanBranch text  = doc.assertChild(1, "a",       0, 3, 0);
+        SpanBranch text  = doc.assertChild(1, "a",       0, 3, 0);*/
 
-        assertCite(cite, InfoFieldType.IN_TEXT, data, 1);
-        InfoDebug.assertField(field, InfoFieldType.IN_TEXT);
-        InfoDebug.assertDataText(data, text);
+        CiteLineTest cite = new CiteLineTest()
+            .setInfoType(InfoFieldType.IN_TEXT)
+            .setDataSpan(doc, 0, 3, 0).setNoteCount(1);
+        FieldTest field = new FieldTest()
+            .setType(InfoFieldType.IN_TEXT);
+        ContentDataTest data = new ContentDataTest()
+            .setData(doc, 0, 3);
+
+
+        /*
+        InfoDebug.assertField(field,
+        InfoDebug.assertDataText(data, text);*/
 
         doc.assertKeyLeaf(  0,  2, "!>",      0, 0);
         doc.assertFieldLeaf(2,  9, "in-text", 0, 1, 0);

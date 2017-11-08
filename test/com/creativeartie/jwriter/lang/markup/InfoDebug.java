@@ -68,7 +68,7 @@ public class InfoDebug {
             InfoDataParser.FORMATTED);
 
         FormatDataTest data = new FormatDataTest()
-            .setData(doc.getChild(0, 0));
+            .setData(doc, 0, 0);
         FormatMainTest format = new FormatMainTest()
             .setPublishCount(1).setNoteCount(0);
         FormatContentTest text1 = new FormatContentTest()
@@ -102,7 +102,7 @@ public class InfoDebug {
             InfoDataParser.TEXT);
 
         ContentDataTest data = new ContentDataTest()
-            .setData(doc.getChild(0, 0));
+            .setData(doc, 0, 0);
         ContentTest text = new ContentTest()
             .setText("**a").setBegin(false)
             .setEnd(false) .setCount(1);

@@ -37,15 +37,18 @@ public class BranchDataTest {
     }
 
     public static class FormatDataTest extends DataTest<FormatDataTest>{
-        private Span spanData;
+        private FormatSpanMain spanData;
 
         public FormatDataTest(){
             super(FormatDataTest.class);
             setType(InfoDataType.FORMATTED);
         }
 
-        public FormatDataTest setData(SpanBranch span){
-            spanData = span;
+        public FormatDataTest setData(DocumentAssert doc, int ... idx){
+            SpanBranch span = doc.getChild(idx);
+            if (span instanceof FormatSpanMain){
+                spanData = (FormatSpanMain) span;
+            }
             return this;
         }
 
@@ -65,7 +68,8 @@ public class BranchDataTest {
             setType(InfoDataType.TEXT);
         }
 
-        public ContentDataTest setData(SpanBranch span){
+        public ContentDataTest setData(DocumentAssert doc, int ... idx){
+            Span span = doc.getChild(idx);
             spanData = span;
             return this;
         }
