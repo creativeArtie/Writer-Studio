@@ -41,28 +41,24 @@ public class LinedCiteDebug {
     @Test
     public void inTextComplete(){
         String raw = "!>in-text:a";
-        DocumentAssert doc = assertDoc(1, raw, parsers);/*
-        SpanBranch cite  = doc.assertChild(4, raw,       0);
-        SpanBranch field = doc.assertChild(1, "in-text", 0, 1);
-        SpanBranch data  = doc.assertChild(1, "a",       0, 3);
-        SpanBranch text  = doc.assertChild(1, "a",       0, 3, 0);*/
+        DocumentAssert doc = assertDoc(1, raw, parsers);
 
         CiteLineTest cite = new CiteLineTest()
             .setInfoType(InfoFieldType.IN_TEXT)
-            .setDataSpan(doc, 0, 3, 0).setNoteCount(1);
+            .setDataSpan(doc, 0, 3).setNoteCount(1);
         FieldTest field = new FieldTest()
             .setType(InfoFieldType.IN_TEXT);
         ContentDataTest data = new ContentDataTest()
-            .setData(doc, 0, 3);
+            .setData(doc, 0, 3, 0);
 
 
-        /*
-        InfoDebug.assertField(field,
-        InfoDebug.assertDataText(data, text);*/
-
+        cite.test(        doc,  4, raw,       0);
         doc.assertKeyLeaf(  0,  2, "!>",      0, 0);
+        field.test(       doc,  1, "in-text", 0, 1);
         doc.assertFieldLeaf(2,  9, "in-text", 0, 1, 0);
         doc.assertKeyLeaf(  9, 10, ":",       0, 2);
+        data.test(        doc,  1, "a",       0, 3);
+        doc.assertChild(    1,     "a",       0, 3, 0);
         doc.assertDataLeaf(10, 11, "a",       0, 3, 0, 0);
 
         doc.assertIds();

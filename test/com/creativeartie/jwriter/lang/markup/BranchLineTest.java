@@ -81,6 +81,10 @@ public class BranchLineTest {
             SpanBranch span = doc.getChild(idx);
             if (span instanceof InfoDataSpan){
                 dataSpan = Optional.of((InfoDataSpan<?>) span);
+            } else {
+                throw new IllegalArgumentException(span +
+                    " is not of type InfoDataSpan. Gotten: " + span.getClass());
+
             }
             return this;
         }

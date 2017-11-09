@@ -48,6 +48,9 @@ public class BranchDataTest {
             SpanBranch span = doc.getChild(idx);
             if (span instanceof FormatSpanMain){
                 spanData = (FormatSpanMain) span;
+            } else {
+                throw new IllegalArgumentException(span +
+                    " is not of type FormatSpanMain");
             }
             return this;
         }
@@ -61,7 +64,7 @@ public class BranchDataTest {
         }
     }
     public static class ContentDataTest extends DataTest<ContentDataTest>{
-        private Span spanData;
+        private ContentSpan spanData;
 
         public ContentDataTest(){
             super(ContentDataTest.class);
@@ -69,8 +72,13 @@ public class BranchDataTest {
         }
 
         public ContentDataTest setData(DocumentAssert doc, int ... idx){
-            Span span = doc.getChild(idx);
-            spanData = span;
+            SpanBranch span = doc.getChild(idx);
+            if (span instanceof ContentSpan){
+                spanData = (ContentSpan) span;
+            } else {
+                throw new IllegalArgumentException(span +
+                    " is not of type ContentSpan");
+            }
             return this;
         }
 
