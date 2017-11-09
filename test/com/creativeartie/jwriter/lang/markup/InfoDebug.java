@@ -100,7 +100,6 @@ public class InfoDebug {
         String raw = "*\\*a";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
             InfoDataParser.TEXT);
-
         ContentDataTest data = new ContentDataTest()
             .setData(doc, 0, 0);
         ContentTest text = new ContentTest()
@@ -119,6 +118,67 @@ public class InfoDebug {
 
         doc.assertIds();
     }
+
+    @Test
+    public void dataNumber(){
+        ///           012
+        String raw = "48";
+        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
+            InfoDataParser.NUMBER);
+        SpanBranch data   = doc.assertChild(1, raw,  0);
+
+        assertDataNumber(data, 48);
+
+        doc.assertDataLeaf(0, 2, "48", 0, 0);
+
+        doc.assertIds();
+    }
+
+    @Test
+    public void dataNumberRightSpaces(){
+        ///           01234
+        String raw = "  48";
+        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
+            InfoDataParser.NUMBER);
+        SpanBranch data   = doc.assertChild(1, raw,  0);
+
+        assertDataNumber(data, 48);
+
+        doc.assertDataLeaf(0, 4, "  48", 0, 0);
+
+        doc.assertIds();
+    }
+
+    @Test
+    public void dataNumberLeftSpaces(){
+        ///           01 234
+        String raw = "48\t ";
+        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
+            InfoDataParser.NUMBER);
+        SpanBranch data   = doc.assertChild(1, raw,  0);
+
+        assertDataNumber(data, 48);
+
+        doc.assertDataLeaf(0, 4, "48\t ", 0, 0);
+
+        doc.assertIds();
+    }
+
+    /*
+    @Test
+    public void fieldPages(){
+        ///           012345
+        String raw = "pages";
+        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
+            InfoFieldParser.getParsers());
+        SpanBranch field = doc.assertChild(1, raw, 0);
+
+        assertField(field, InfoFieldType.PAGES);
+
+        doc.assertFieldLeaf(0, 5, raw, 0, 0);
+
+        doc.assertIds();
+    }*/
 
     @Test
     public void fieldSource(){
@@ -156,7 +216,6 @@ public class InfoDebug {
         String raw = "footnote";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
             InfoFieldParser.getParsers());
-
         FieldTest field = new FieldTest()
             .setType(InfoFieldType.FOOTNOTE);
 
