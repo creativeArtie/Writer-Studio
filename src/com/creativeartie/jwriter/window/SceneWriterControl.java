@@ -15,13 +15,17 @@ import com.creativeartie.jwriter.lang.markup.*;
 
 public class SceneWriterControl extends SceneWriterView {
 
-    private long timer;
+    private long updateTimer;
+    private long editTimer;
+    private static final long TIMER_START = -2;
     private static final long TIMER_OFF = -1;
+    private static final long EDIT_LENGTH = 30 * 1000000000l;
     private static final long TIMER_LENGHT = 1000;
 
     public SceneWriterControl(javafx.stage.Stage window){
         super(window);
-        timer = TIMER_OFF;
+        updateTimer = TIMER_OFF;
+        editTimer = TIMER_OFF;
     }
 
     protected void controlSetup(){
@@ -31,11 +35,13 @@ public class SceneWriterControl extends SceneWriterView {
                 RecordTable record = getRecords();
                 ManuscriptDocument doc = getDocument();
                 if (record != null && doc != null){
-                    if (isEdited()){
-                        setEdited(false);
-                        record.startWriting(doc.getPublishCount(),
-                            doc.getNoteCount());
-                    } else {
+	    if (editTimer == TIMER_START){
+                       editTimer = now;
+                       record.startWriting(doc.getPublishCount(),
+                          doc.getNoteCount());
+                    }
+                    else if (editTimer + EDIT_LENGTH == now){
+                        editTimer = TIMER_OFF;
                         record.stopWriting(doc.getPublishCount(),
                             doc.getNoteCount());
                     }
@@ -75,13 +81,13 @@ public class SceneWriterControl extends SceneWriterView {
     }
 
     private void updateDoc(){
-        if (timer == TIMER_OFF && isTextReady()) {
+        if (updateTimer == TIMER_OFF && isTextReady()) {
             new AnimationTimer(){
                 @Override
                 public void handle(long now) {
-                    if (timer == TIMER_OFF){
-                        timer = now;
-                    } else if (timer + TIMER_LENGHT < now){
+                    if (updateTimer == TIMER_OFF){
+                        updateTimer = now;
+                    } else if (updateTimer + TIMER_LENGHT < now){
                         getTableOfContent().loadHeadings(getDocument());
                         getAgendaList().fillAgenda(getDocument());
                         int pos = getTextArea().getPosition();
@@ -90,7 +96,7 @@ public class SceneWriterControl extends SceneWriterView {
                         getTextArea().updateCss(getDocument());
                         getUserLists().refreshPane(getDocument());
                         getTextArea().returnFocus();
-                        timer = TIMER_OFF;
+                        updateTimer = TIMER_OFF;
                         stop();
                     }
                 }
@@ -107,6 +113,7 @@ public class SceneWriterControl extends SceneWriterView {
             getDocument().delete(pos, change.getRemovalEnd());
             getDocument().insert(pos, change.getInserted());
             updateDoc();
+            editTimer = TIMER_START;
         }
     }
 
