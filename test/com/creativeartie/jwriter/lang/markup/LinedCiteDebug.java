@@ -66,17 +66,20 @@ public class LinedCiteDebug {
 
     @Test
     public void inTextNoColonNewline(){
-        String raw = "!>in-text\n";
+        String raw = "!>in-text:\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
-        SpanBranch cite  = doc.assertChild(3, raw,      0);
-        SpanBranch field = doc.assertChild(1, "in-text", 0, 1);
 
-        assertCite(cite, InfoFieldType.IN_TEXT, null, 0);
-        InfoDebug.assertField(field, InfoFieldType.IN_TEXT);
+        CiteLineTest cite = new CiteLineTest()
+            .setInfoType(InfoFieldType.IN_TEXT);
+        FieldTest field = new FieldTest()
+            .setType(InfoFieldType.IN_TEXT);
 
+        cite.test(        doc,  4, raw,       0);
         doc.assertKeyLeaf(  0,  2, "!>",      0, 0);
+        field.test(       doc,  1, "in-text", 0, 1);
         doc.assertFieldLeaf(2,  9, "in-text", 0, 1, 0);
-        doc.assertKeyLeaf(  9, 10, "\n",      0, 2);
+        doc.assertKeyLeaf(  9, 10, ":",       0, 2);
+        doc.assertDataLeaf(10, 11, "\n",      0, 3);
 
         doc.assertIds();
     }
