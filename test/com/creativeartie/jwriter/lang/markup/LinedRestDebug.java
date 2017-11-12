@@ -206,14 +206,21 @@ public class LinedRestDebug {
 
     @Test
     public void fullParagraph(){
-        String raw = "ddHi\\\\\n";
+        String text = "ddHi\\\\";
+        String raw = text + "\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
-        SpanBranch paragraph = doc.assertChild(2, raw, 0);
-        SpanBranch content   = doc.assertChild(1, "ddHi\\\\", 0 , 0);
 
-        assertParagraph(paragraph, content, 1, 0);
+        ParagraphLineTest paragraph = new ParagraphLineTest()
+            .setPublishCount(1).setNoteCount(0)
+            .setFormattedSpan(doc, 0, 0);
+        FormatMainTest main = new FormatMainTest()
+            .setPublishCount(1).setNoteCount(0);
 
+        paragraph.test(  doc, 2, raw,    0);
+        main.test(       doc, 1, text,   0, 0);
+        doc.assertChild(      2, text,   0, 0, 0);
         doc.assertTextLeaf(0, 4, "ddHi", 0, 0, 0, 0);
+        doc.assertChild(      2, "\\\\", 0, 0, 0, 1);
         doc.assertKeyLeaf( 4, 5, "\\",   0, 0, 0, 1, 0);
         doc.assertTextLeaf(5, 6, "\\",   0, 0, 0, 1, 1);
         doc.assertKeyLeaf( 6, 7, "\n",   0, 1);
@@ -225,11 +232,16 @@ public class LinedRestDebug {
     public void simpleParagraph(){
         String raw = "abc";
         DocumentAssert doc = assertDoc(1, raw, parsers);
-        SpanBranch paragraph = doc.assertChild(1, raw, 0);
-        SpanBranch content   = doc.assertChild(1, "abc", 0 , 0);
 
-        assertParagraph(paragraph, content, 1, 0);
+        ParagraphLineTest paragraph = new ParagraphLineTest()
+            .setPublishCount(1).setNoteCount(0)
+            .setFormattedSpan(doc, 0, 0);
+        FormatMainTest main = new FormatMainTest()
+            .setPublishCount(1).setNoteCount(0);
 
+        paragraph.test(  doc, 1, raw,   0);
+        main.test(       doc, 1, "abc", 0, 0);
+        doc.assertChild(      1, "abc", 0, 0, 0);
         doc.assertTextLeaf(0, 3, "abc", 0, 0, 0, 0);
 
         doc.assertIds();

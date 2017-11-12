@@ -49,7 +49,6 @@ public class LinedLevelHeadDebug {
         assertHeading(heading, text, LinedType.HEADING, 3,
             builder, EditionType.OTHER, 1, 0, CatalogueStatus.UNUSED);
 
-
         DirectoryDebug.assertId(id, DirectoryType.LINK, builder);
         FormatSpanDebug.assertMain(text, 1, 0);
         EditionDebug.assertEdition(edition, EditionType.OTHER, "abc");

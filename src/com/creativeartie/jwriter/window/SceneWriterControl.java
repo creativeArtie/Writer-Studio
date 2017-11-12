@@ -35,12 +35,12 @@ public class SceneWriterControl extends SceneWriterView {
                 RecordTable record = getRecords();
                 ManuscriptDocument doc = getDocument();
                 if (record != null && doc != null){
-	    if (editTimer == TIMER_START){
+                    if (editTimer == TIMER_START){
                        editTimer = now;
                        record.startWriting(doc.getPublishCount(),
                           doc.getNoteCount());
                     }
-                    else if (editTimer + EDIT_LENGTH == now){
+                    else if (editTimer + EDIT_LENGTH >= now){
                         editTimer = TIMER_OFF;
                         record.stopWriting(doc.getPublishCount(),
                             doc.getNoteCount());

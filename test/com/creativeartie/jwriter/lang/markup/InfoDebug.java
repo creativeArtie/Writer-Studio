@@ -16,49 +16,6 @@ import com.creativeartie.jwriter.lang.*;
 
 @RunWith(JUnit4.class)
 public class InfoDebug {
-    public static void assertDataFormatted(SpanBranch span, Span data){
-        InfoDataSpanFormatted test = assertClass(span,
-            InfoDataSpanFormatted.class);
-
-        InfoDataType type = InfoDataType.FORMATTED;
-        assertSame(getError("data", test), data, test.getData());
-        assertData(test, type);
-    }
-
-    public static void assertDataNumber(SpanBranch span, int data){
-        InfoDataSpanNumber test = assertClass(span, InfoDataSpanNumber.class);
-
-        InfoDataType type = InfoDataType.NUMBER;
-
-        assertEquals(getError("data", test), new Integer(data), test.getData());
-        assertData(test, type);
-    }
-
-    public static void assertDataText(SpanBranch span, Span data){
-        InfoDataSpanText test = assertClass(span, InfoDataSpanText.class);
-
-        InfoDataType type = InfoDataType.TEXT;
-
-        assertSame(getError("data", test), data, test.getData());
-        assertData(test, type);
-    }
-
-    private static void assertData(InfoDataSpan test, InfoDataType type)
-    {
-        DetailStyle[] styles = new DetailStyle[]{type};
-
-        assertEquals(getError("type", test), type, test.getDataType());
-        assertBranch(test, styles);
-    }
-
-    public static void assertField(SpanBranch span, InfoFieldType type){
-        InfoFieldSpan test = assertClass(span, InfoFieldSpan.class);
-
-        DetailStyle[] styles = new DetailStyle[]{type};
-
-        assertEquals(getError("type", test), type, test.getFieldType());
-        assertBranch(test, styles);
-    }
 
     @Test
     public void dataFormatted(){
@@ -118,67 +75,6 @@ public class InfoDebug {
 
         doc.assertIds();
     }
-
-    @Test
-    public void dataNumber(){
-        ///           012
-        String raw = "48";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
-            InfoDataParser.NUMBER);
-        SpanBranch data   = doc.assertChild(1, raw,  0);
-
-        assertDataNumber(data, 48);
-
-        doc.assertDataLeaf(0, 2, "48", 0, 0);
-
-        doc.assertIds();
-    }
-
-    @Test
-    public void dataNumberRightSpaces(){
-        ///           01234
-        String raw = "  48";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
-            InfoDataParser.NUMBER);
-        SpanBranch data   = doc.assertChild(1, raw,  0);
-
-        assertDataNumber(data, 48);
-
-        doc.assertDataLeaf(0, 4, "  48", 0, 0);
-
-        doc.assertIds();
-    }
-
-    @Test
-    public void dataNumberLeftSpaces(){
-        ///           01 234
-        String raw = "48\t ";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
-            InfoDataParser.NUMBER);
-        SpanBranch data   = doc.assertChild(1, raw,  0);
-
-        assertDataNumber(data, 48);
-
-        doc.assertDataLeaf(0, 4, "48\t ", 0, 0);
-
-        doc.assertIds();
-    }
-
-    /*
-    @Test
-    public void fieldPages(){
-        ///           012345
-        String raw = "pages";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
-            InfoFieldParser.getParsers());
-        SpanBranch field = doc.assertChild(1, raw, 0);
-
-        assertField(field, InfoFieldType.PAGES);
-
-        doc.assertFieldLeaf(0, 5, raw, 0, 0);
-
-        doc.assertIds();
-    }*/
 
     @Test
     public void fieldSource(){
