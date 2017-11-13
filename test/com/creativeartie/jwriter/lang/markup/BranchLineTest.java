@@ -151,8 +151,29 @@ public class BranchLineTest {
         }
     }
 
+    public static class HeadLevelLineTest extends
+            LevelLineTest<HeadLevelLineTest>{
+
+        private EditionType edition;
+
+        public HeadLevelLineTest(){
+            super(HeadLevelLineTest.class);
+        }
+
+        public HeadLevelLineTest setEdition(EditionType ed){
+            edition = ed;
+            return this;
+        }
+
+        protected LinedSpanLevel testSubclass(SpanBranch span){
+            LinedSpanSection test = assertClass(span, LinedSpanSection.class);
+            assertEquals(getError("edition", span), edition, test.getEdition());
+            return test;
+        }
+    }
+
     public static class BasicLevelLineTest extends
-        LevelLineTest<BasicLevelLineTest>{
+                LevelLineTest<BasicLevelLineTest>{
 
         public BasicLevelLineTest(){
             super(BasicLevelLineTest.class);
