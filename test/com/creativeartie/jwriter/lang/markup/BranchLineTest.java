@@ -184,6 +184,26 @@ public class BranchLineTest {
         }
     }
 
+    public static class PointerLinkTest extends SimpleStyleTest<PointerLinkTest>{
+        private String path;
+
+        public PointerLinkTest(){
+            super(PointerLinkTest.class, LinedType.HYPERLINK);
+        }
+
+        public PointerLinkTest setPath(String str){
+            path = str;
+            return this;
+        }
+
+        @Override
+        public void test(SpanBranch span){
+            LinedSpanPointLink test = assertClass(span, LinedSpanPointLink.class);
+            assertEquals(getError("path", test), path, test.getPath());
+            super.test(span);
+        }
+    }
+
     public static class BreakLineTest extends SimpleStyleTest<BreakLineTest>{
 
         public BreakLineTest(){
@@ -277,6 +297,20 @@ public class BranchLineTest {
             assertSpan("data", span, getFormatSpan(), test.getFormattedSpan());
             assertEquals(getError("id", span), buildId.orElse(null),
                 test.buildId());
+            super.test(span);
+        }
+    }
+
+    public static class PointerNoteTest extends CommonLineTest<PointerNoteTest>{
+
+        public PointerNoteTest(){
+            super(PointerNoteTest.class, null);
+        }
+
+        @Override
+        public void test(SpanBranch span){
+            LinedSpanPointNote test = assertClass(span, LinedSpanPointNote.class);
+            assertSpan("data", span, getFormatSpan(), test.getFormattedSpan());
             super.test(span);
         }
     }
