@@ -53,18 +53,6 @@ public class FormatSpanDebug {
         assertBranch(span);
     }
 
-    public static void assertContent(SpanBranch span, String text,
-        boolean isBegin, boolean isEnd, FormatType ... formats)
-    {
-
-        FormatSpanContent test = assertClass(span, FormatSpanContent.class);
-
-        assertEquals("Wrong text for " + span, text, test.getParsed());
-        ContentDebug.assertBasics(test, text, isBegin, isEnd);
-        assertFormats(test, formats);
-        assertBranch(span, formats);
-    }
-
     private static final SetupParser[] parsers = new SetupParser[]{
         new FormatParser()};
 

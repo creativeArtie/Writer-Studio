@@ -17,16 +17,6 @@ import com.creativeartie.jwriter.lang.*;
 @RunWith(JUnit4.class)
 public class FormatAgendaDebug{
 
-    public static void assertAgenda(SpanBranch span, String text, IDBuilder id){
-        FormatSpanAgenda test = assertClass(span, FormatSpanAgenda.class);
-
-        DetailStyle[] styles = new DetailStyle[]{AuxiliaryStyle.AGENDA};
-
-        assertEquals(getError("agenda", test), text, test.getAgenda());
-        assertSpanIdentity(test, id);
-        assertBranch(span, styles, CatalogueStatus.UNUSED);
-    }
-
     static IDBuilder buildId(String id){
         return new IDBuilder().addCategory("agenda").setId(id);
     }

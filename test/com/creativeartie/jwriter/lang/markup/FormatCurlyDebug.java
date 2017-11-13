@@ -28,25 +28,6 @@ public class FormatCurlyDebug {
         return new IDBuilder().addCategory("end").setId(name);
     }
 
-    public static void assertNote(SpanBranch span, DirectoryType type,
-        FormatType ... formats)
-    {
-        assertNote(span, type, CatalogueStatus.NO_ID, null, formats);
-    }
-
-    public static void assertNote(SpanBranch span, DirectoryType type,
-        CatalogueStatus status, IDBuilder id, FormatType ... formats)
-    {
-        FormatSpanDirectory test = assertClass(span, FormatSpanDirectory.class);
-        DetailStyle[] baseStyles = new DetailStyle[]{type, status};
-        DetailStyle[] styles = FormatSpanDebug.mergeStyle(baseStyles, formats);
-
-        assertEquals(getError("name", test), type, test.getIdType());
-        FormatSpanDebug.assertFormats(test, formats);
-        assertBranch(test, styles, status);
-        assertSpanIdentity(span, id);
-    }
-
     private static final SetupParser[] parsers =
         FormatParseDirectory.getParsers(new boolean[4]);
 

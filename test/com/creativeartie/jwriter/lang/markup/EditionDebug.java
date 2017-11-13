@@ -16,17 +16,6 @@ import com.creativeartie.jwriter.lang.*;
 @RunWith(JUnit4.class)
 public class EditionDebug {
 
-    public static void assertEdition(SpanBranch span, EditionType type,
-        String text
-    ){
-        EditionSpan test = assertClass(span, EditionSpan.class);
-
-        DetailStyle[] info = new DetailStyle[]{type};
-        assertEquals(getError("edition", test), type, test.getEdition());
-        assertEquals(getError("detail", test),  text, test.getDetail());
-        assertBranch(span, info);
-    }
-
     private static final SetupParser[] parsers = EditionParser.values();
 
     @Test
