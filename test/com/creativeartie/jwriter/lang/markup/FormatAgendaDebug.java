@@ -44,7 +44,7 @@ public class FormatAgendaDebug{
         doc.addId(id,  0);
 
         FormatAgendaTest agenda = new FormatAgendaTest()
-            .setCatalogued(id).setText("Agenda");
+            .setCatalogued(CatalogueStatus.UNUSED, id).setText("Agenda");
         ContentTest content = new ContentTest()
             .setText("Agenda").setBegin(false)
             .setEnd(false)    .setCount(1);
@@ -65,7 +65,7 @@ public class FormatAgendaDebug{
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormatAgendaTest agenda = new FormatAgendaTest()
-            .setCatalogued(doc.addId(buildId("0"), 0))
+            .setCatalogued(CatalogueStatus.UNUSED, doc.addId(buildId("0"), 0))
             .setText("abc");
         ContentTest content = new ContentTest()
             .setText("abc").setBegin(false)
@@ -88,7 +88,7 @@ public class FormatAgendaDebug{
         IDBuilder id = buildId("0");
 
         FormatAgendaTest agenda = new FormatAgendaTest()
-            .setCatalogued(doc.addId(buildId("0"), 0))
+            .setCatalogued(CatalogueStatus.UNUSED, doc.addId(buildId("0"), 0))
             .setText("");
 
         agenda.test(     doc, 1, raw,  0);
@@ -104,7 +104,7 @@ public class FormatAgendaDebug{
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormatAgendaTest agenda = new FormatAgendaTest()
-            .setCatalogued(doc.addId(buildId("0"), 0))
+            .setCatalogued(CatalogueStatus.UNUSED, doc.addId(buildId("0"), 0))
             .setText("");
 
         agenda.test(    doc, 2, raw,  0);

@@ -175,6 +175,26 @@ public class BranchLineTest {
         }
     }
 
+    public static class AgendaLineTest extends SimpleStyleTest<AgendaLineTest>{
+        private String agendaLine;
+
+        public AgendaLineTest(){
+            super(AgendaLineTest.class, LinedType.AGENDA);
+        }
+
+        public AgendaLineTest setAgenda(String agenda){
+            agendaLine = agenda;
+            return this;
+        }
+
+        @Override
+        public void test(SpanBranch span){
+            LinedSpanAgenda test = assertClass(span, LinedSpanAgenda.class);
+            assertEquals(getError("agenda", test), agendaLine, test.getAgenda());
+            super.test(span);
+        }
+    }
+
     public static class CommonLineTest<T extends CommonLineTest<T>>
             extends SimpleStyleTest<T>{
 
@@ -182,6 +202,7 @@ public class BranchLineTest {
 
         public CommonLineTest(Class<T> clazz, LinedType type){
             super(clazz, type);
+            lineText = Optional.empty();
         }
 
         public T setFormattedSpan(DocumentAssert doc, int ... idx){
@@ -203,16 +224,51 @@ public class BranchLineTest {
 
     public static class ParagraphLineTest extends CommonLineTest<ParagraphLineTest>{
 
-        private Optional<FormatSpanMain> lineText;
-
         public ParagraphLineTest(){
             super(ParagraphLineTest.class, LinedType.PARAGRAPH);
-            lineText = Optional.empty();
         }
 
         @Override
         public void test(SpanBranch span){
             LinedSpanParagraph test = assertClass(span, LinedSpanParagraph.class);
+            assertSpan("data", span, getFormatSpan(), test.getFormattedSpan());
+            super.test(span);
+        }
+    }
+
+    public static class NoteLineTest extends CommonLineTest<NoteLineTest>{
+
+        private Optional<CatalogueIdentity> buildId;
+
+        public NoteLineTest(){
+            super(NoteLineTest.class, LinedType.NOTE);
+            buildId = Optional.empty();
+        }
+
+        public NoteLineTest setBuildId(IDBuilder builder){
+            buildId = Optional.ofNullable(builder).map(found -> found.build());
+            return this;
+        }
+
+        @Override
+        public void test(SpanBranch span){
+            LinedSpanNote test = assertClass(span, LinedSpanNote.class);
+            assertSpan("data", span, getFormatSpan(), test.getFormattedSpan());
+            assertEquals(getError("id", span), buildId.orElse(null),
+                test.buildId());
+            super.test(span);
+        }
+    }
+
+    public static class QuoteLineTest extends CommonLineTest<QuoteLineTest>{
+
+        public QuoteLineTest(){
+            super(QuoteLineTest.class, LinedType.QUOTE);
+        }
+
+        @Override
+        public void test(SpanBranch span){
+            LinedSpanQuote test = assertClass(span, LinedSpanQuote.class);
             assertSpan("data", span, getFormatSpan(), test.getFormattedSpan());
             super.test(span);
         }

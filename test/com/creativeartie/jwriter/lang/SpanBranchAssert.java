@@ -31,10 +31,6 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         return setCatalogued(status, null);
     }
 
-    public T setCatalogued(IDBuilder builder){
-        return setCatalogued(CatalogueStatus.UNUSED, builder);
-    }
-
     public T setCatalogued(CatalogueStatus status, IDBuilder builder){
         expectId = Optional.ofNullable(builder).map(found -> found.build());
         expectStatus = status;

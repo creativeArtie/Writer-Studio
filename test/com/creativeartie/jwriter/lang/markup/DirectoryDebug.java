@@ -85,7 +85,6 @@ public class DirectoryDebug{
         ContentTest content1 = new ContentTest()
             .setText("cat").setBegin(false)
             .setEnd(false) .setCount(1);
-
         ContentTest content2 = new ContentTest()
             .setText("hi").setBegin(false)
             .setEnd(false).setCount(1);

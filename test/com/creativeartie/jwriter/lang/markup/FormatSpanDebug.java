@@ -252,7 +252,7 @@ public class FormatSpanDebug {
         FormatMainTest main = new FormatMainTest()
             .setPublishCount(2)    .setNoteCount(2);
         FormatAgendaTest todo1 = new FormatAgendaTest()
-            .setCatalogued(builder).setText("todo");
+            .setCatalogued(CatalogueStatus.UNUSED, builder).setText("todo");
         ContentTest todo1Text = new ContentTest()
             .setText("todo").setBegin(false)
             .setEnd(false)  .setCount(1);
@@ -264,7 +264,7 @@ public class FormatSpanDebug {
         doc.addId(builder, 1);
 
         FormatAgendaTest todo2 = new FormatAgendaTest()
-            .setCatalogued(builder).setText("abc");
+            .setCatalogued(CatalogueStatus.UNUSED, builder).setText("abc");
         ContentTest todo2Text = new ContentTest()
             .setText("abc")        .setBegin(false)
             .setEnd(false)         .setCount(1);
@@ -357,8 +357,8 @@ public class FormatSpanDebug {
         builder = FormatAgendaDebug.buildId("55");
         doc.addId(builder, 0);
 
-        FormatAgendaTest todo = new FormatAgendaTest().
-            setCatalogued(builder).setText("todo");
+        FormatAgendaTest todo = new FormatAgendaTest()
+            .setCatalogued(CatalogueStatus.UNUSED, builder).setText("todo");
         ContentTest todoText = new ContentTest()
             .setText("todo").setBegin(false)
             .setEnd(false).setCount(1);
