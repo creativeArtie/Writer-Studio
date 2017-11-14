@@ -31,17 +31,6 @@ public class DirectoryDebug{
         }
     }
 
-    static void assertId(SpanBranch span, DirectoryType type,
-        IDBuilder produces)
-    {
-        DirectorySpan test = assertClass(span, DirectorySpan.class);
-
-        CatalogueIdentity id = produces.build();
-
-        assertEquals(getError("purpose", test), type, test.getPurpose());
-        assertEquals(getError("id",      test), id,   test.buildId());
-    }
-
     private static final SetupParser[] parsers = new SetupParser[]{
         new DirectoryParser(DirectoryType.NOTE)};
 

@@ -36,6 +36,10 @@ public class BranchLineTest {
             return cast();
         }
 
+        LinedType getLinedType(){
+            return linedType;
+        }
+
         @Override
         public void test(SpanBranch span){
             LinedSpan test = (LinedSpan) span;
@@ -184,16 +188,22 @@ public class BranchLineTest {
         }
     }
 
-    public static class PointerLinkTest extends SimpleStyleTest<PointerLinkTest>{
+    public static class PointerLinkTest extends LineTest<PointerLinkTest>{
         private String path;
 
         public PointerLinkTest(){
-            super(PointerLinkTest.class, LinedType.HYPERLINK);
+            super(PointerLinkTest.class);
         }
 
         public PointerLinkTest setPath(String str){
             path = str;
             return this;
+        }
+
+        @Override
+        public void setup(){
+            setLinedType(LinedType.HYPERLINK);
+            setStyles(getLinedType(), getCatalogueStatus());
         }
 
         @Override
@@ -236,17 +246,17 @@ public class BranchLineTest {
         }
     }
 
-    public static class CommonLineTest<T extends CommonLineTest<T>>
-            extends SimpleStyleTest<T>{
+    public static class ParagraphLineTest
+            extends SimpleStyleTest<ParagraphLineTest>{
 
         private Optional<FormatSpanMain> lineText;
 
-        public CommonLineTest(Class<T> clazz, LinedType type){
-            super(clazz, type);
+        public ParagraphLineTest(){
+            super(ParagraphLineTest.class, LinedType.PARAGRAPH);
             lineText = Optional.empty();
         }
 
-        public T setFormattedSpan(DocumentAssert doc, int ... idx){
+        public ParagraphLineTest setFormattedSpan(DocumentAssert doc, int ... idx){
             SpanBranch span = doc.getChild(idx);
             if (span instanceof FormatSpanMain){
                 lineText = Optional.of((FormatSpanMain) span);
@@ -255,35 +265,26 @@ public class BranchLineTest {
                     " is not of type FormatSpanMain. Gotten: " + span.getClass());
 
             }
-            return cast();
-        }
-
-        protected Optional<FormatSpanMain> getFormatSpan(){
-            return lineText;
-        }
-    }
-
-    public static class ParagraphLineTest extends CommonLineTest<ParagraphLineTest>{
-
-        public ParagraphLineTest(){
-            super(ParagraphLineTest.class, LinedType.PARAGRAPH);
+            return this;
         }
 
         @Override
         public void test(SpanBranch span){
             LinedSpanParagraph test = assertClass(span, LinedSpanParagraph.class);
-            assertSpan("data", span, getFormatSpan(), test.getFormattedSpan());
+            assertSpan("data", span, lineText, test.getFormattedSpan());
             super.test(span);
         }
     }
 
-    public static class NoteLineTest extends CommonLineTest<NoteLineTest>{
+    public static class NoteLineTest extends SimpleStyleTest<NoteLineTest>{
 
         private Optional<CatalogueIdentity> buildId;
+        private Optional<FormatSpanMain> lineText;
 
         public NoteLineTest(){
             super(NoteLineTest.class, LinedType.NOTE);
             buildId = Optional.empty();
+            lineText = Optional.empty();
         }
 
         public NoteLineTest setBuildId(IDBuilder builder){
@@ -291,40 +292,85 @@ public class BranchLineTest {
             return this;
         }
 
+        public NoteLineTest setFormattedSpan(DocumentAssert doc, int ... idx){
+            SpanBranch span = doc.getChild(idx);
+            if (span instanceof FormatSpanMain){
+                lineText = Optional.of((FormatSpanMain) span);
+            } else {
+                throw new IllegalArgumentException(span +
+                    " is not of type FormatSpanMain. Gotten: " + span.getClass());
+
+            }
+            return this;
+        }
+
         @Override
         public void test(SpanBranch span){
             LinedSpanNote test = assertClass(span, LinedSpanNote.class);
-            assertSpan("data", span, getFormatSpan(), test.getFormattedSpan());
+            assertSpan("data", span, lineText, test.getFormattedSpan());
             assertEquals(getError("id", span), buildId.orElse(null),
                 test.buildId());
             super.test(span);
         }
     }
 
-    public static class PointerNoteTest extends CommonLineTest<PointerNoteTest>{
+    public static class PointerNoteTest extends SimpleStyleTest<PointerNoteTest>{
+        private Optional<FormatSpanMain> lineText;
 
         public PointerNoteTest(){
             super(PointerNoteTest.class, null);
+            lineText = Optional.empty();
+        }
+
+        public PointerNoteTest setFormattedSpan(DocumentAssert doc, int ... idx){
+            SpanBranch span = doc.getChild(idx);
+            if (span instanceof FormatSpanMain){
+                lineText = Optional.of((FormatSpanMain) span);
+            } else {
+                throw new IllegalArgumentException(span +
+                    " is not of type FormatSpanMain. Gotten: " + span.getClass());
+
+            }
+            return this;
+        }
+
+        @Override
+        public void setup(){
+            setStyles(getLinedType(), getCatalogueStatus());
         }
 
         @Override
         public void test(SpanBranch span){
             LinedSpanPointNote test = assertClass(span, LinedSpanPointNote.class);
-            assertSpan("data", span, getFormatSpan(), test.getFormattedSpan());
+            assertSpan("data", span, lineText, test.getFormattedSpan());
             super.test(span);
         }
     }
 
-    public static class QuoteLineTest extends CommonLineTest<QuoteLineTest>{
+    public static class QuoteLineTest extends SimpleStyleTest<QuoteLineTest>{
+        private Optional<FormatSpanMain> lineText;
 
         public QuoteLineTest(){
             super(QuoteLineTest.class, LinedType.QUOTE);
+            lineText = Optional.empty();
+        }
+
+        public QuoteLineTest setFormattedSpan(DocumentAssert doc, int ... idx){
+            SpanBranch span = doc.getChild(idx);
+            if (span instanceof FormatSpanMain){
+                lineText = Optional.of((FormatSpanMain) span);
+            } else {
+                throw new IllegalArgumentException(span +
+                    " is not of type FormatSpanMain. Gotten: " + span.getClass());
+
+            }
+            return this;
         }
 
         @Override
         public void test(SpanBranch span){
             LinedSpanQuote test = assertClass(span, LinedSpanQuote.class);
-            assertSpan("data", span, getFormatSpan(), test.getFormattedSpan());
+            assertSpan("data", span, lineText, test.getFormattedSpan());
             super.test(span);
         }
     }

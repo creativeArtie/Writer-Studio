@@ -214,17 +214,22 @@ public class LinedRestDebug {
 
     @Test
     public void quote(){
-        String raw = ">>@id:Text abc\n";
+        String text = ">@id:Text abc";
+        String raw = ">" + text + "\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
-        SpanBranch quote   = doc.assertChild(3, raw,            0);
-        SpanBranch content = doc.assertChild(1, ">@id:Text abc", 0, 1);
 
-        assertQuote(quote, content, 2, 0);
-        FormatSpanDebug.assertMain(content, 2, 0);
+        QuoteLineTest quote = new QuoteLineTest()
+            .setFormattedSpan(doc, 0, 1)
+            .setPublishCount(2).setNoteCount(0);
+        FormatMainTest main = new FormatMainTest()
+            .setPublishCount(2).setNoteCount(0);
 
-        doc.assertKeyLeaf( 0,  1, ">",             0, 0);
-        doc.assertTextLeaf(1, 14, ">@id:Text abc", 0, 1, 0, 0);
-        doc.assertKeyLeaf(14, 15, "\n",            0, 2);
+        quote.test(     doc,   3, raw,  0);
+        doc.assertKeyLeaf( 0,  1, ">",  0, 0);
+        main.test(       doc,  1, text, 0, 1);
+        doc.assertChild(       1, text, 0, 1, 0);
+        doc.assertTextLeaf(1, 14, text, 0, 1, 0, 0);
+        doc.assertKeyLeaf(14, 15, "\n", 0, 2);
 
         doc.assertIds();
     }

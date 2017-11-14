@@ -16,35 +16,6 @@ import com.creativeartie.jwriter.lang.*;
 @RunWith(JUnit4.class)
 public class FormatSpanDebug {
 
-    public static DetailStyle[] mergeStyle(DetailStyle[] styles,
-        FormatType ... formats)
-    {
-        DetailStyle[] info = new DetailStyle[formats.length + styles.length];
-        System.arraycopy(styles,  0, info, 0,             styles.length);
-        System.arraycopy(formats, 0, info, styles.length, formats.length);
-        return info;
-    }
-
-    public static void assertFormats(FormatSpan test, FormatType ... formats){
-        assertFormat(test, test.isBold(),      FormatType.BOLD, formats);
-        assertFormat(test, test.isItalics(),   FormatType.ITALICS, formats);
-        assertFormat(test, test.isUnderline(), FormatType.UNDERLINE, formats);
-        assertFormat(test, test.isCoded(),     FormatType.CODED, formats);
-    }
-
-    private static void assertFormat(FormatSpan span, boolean format,
-            FormatType type,  FormatType[] formats)
-    {
-        boolean isTrue = false;
-        for (FormatType expected: formats){
-            if (type == expected){
-                isTrue = true;
-            }
-        }
-        assertEquals(getError(type.name().toLowerCase() + " format", span),
-            isTrue, format);
-    }
-
     public static void assertMain(SpanBranch span, int publish, int note){
         FormatSpanMain test = assertClass(span, FormatSpanMain.class);
 
