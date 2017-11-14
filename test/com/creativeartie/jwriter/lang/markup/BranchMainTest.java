@@ -52,8 +52,16 @@ public class BranchMainTest {
             builder = ImmutableMultimap.builder();
         }
 
-        public MainNoteTest putData(InfoFieldType key, InfoDataSpan<?> value){
-            builder.put(key, value);
+        public MainNoteTest putData(InfoFieldType key, DocumentAssert doc,
+            int ... idx){
+            SpanBranch span = doc.getChild(idx);
+
+            if (span instanceof InfoDataSpan){
+                    builder.put(key, (InfoDataSpan) span);
+            } else {
+                throw new IllegalArgumentException(span +
+                    " is not of type FormatSpanMain. Gotten: " + span.getClass());
+            }
             return this;
         }
 

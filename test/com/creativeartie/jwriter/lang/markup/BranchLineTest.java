@@ -299,7 +299,6 @@ public class BranchLineTest {
             } else {
                 throw new IllegalArgumentException(span +
                     " is not of type FormatSpanMain. Gotten: " + span.getClass());
-
             }
             return this;
         }
