@@ -81,20 +81,26 @@ public class BranchMainTest {
 
     public static class MainSectionTest extends MainTest<MainSectionTest>{
 
-        private Multimap<InfoFieldType, InfoDataSpan<?>> sources;
+        private EditionType edition;
 
         public MainSectionTest(){
             super(MainSectionTest.class);
         }
 
+        public MainSectionTest setEdition(EditionType type){
+            edition = type;
+            return this;
+        }
+
         @Override
         public void setup(){
-            setStyles(AuxiliaryStyle.MAIN_SECTION, getCatalogueStatus());
+            setStyles(AuxiliaryStyle.MAIN_SECTION);
         }
 
         @Override
         public void test(SpanBranch span){
-            MainSpanNote test = assertClass(span, MainSpanNote.class);
+            MainSpanSection test = assertClass(span, MainSpanSection.class);
+            assertEquals(getError("edition", test), edition, test.getEdition());
             /// See SupplementSectionDebug for more details.
             super.test(span);
         }
