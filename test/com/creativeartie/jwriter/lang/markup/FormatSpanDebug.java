@@ -16,14 +16,6 @@ import com.creativeartie.jwriter.lang.*;
 @RunWith(JUnit4.class)
 public class FormatSpanDebug {
 
-    public static void assertMain(SpanBranch span, int publish, int note){
-        FormatSpanMain test = assertClass(span, FormatSpanMain.class);
-
-        assertEquals(getError("publish", test), publish, test.getPublishCount());
-        assertEquals(getError("note", test),    note,    test.getNoteCount());
-        assertBranch(span);
-    }
-
     private static final SetupParser[] parsers = new SetupParser[]{
         new FormatParser()};
 

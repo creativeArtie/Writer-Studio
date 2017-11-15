@@ -22,18 +22,6 @@ public class LinedLevelHeadDebug {
         return new IDBuilder().addCategory("link").setId(name);
     }
 
-    public static void assertHeading(SpanBranch span, Span text, LinedType lined,
-        int level, IDBuilder produces, EditionType edition, int publish,
-        int note, CatalogueStatus status)
-    {
-        LinedSpanSection test = assertClass(span, LinedSpanSection.class);
-
-        assertEquals(getError("edition", span),  edition, test.getEdition());
-        LinedLevelRestDebug.assertLevel(test, lined, level, text, status);
-        LinedRestDebug.assertLine(test, publish, note);
-        assertSpanIdentity(test, produces);
-    }
-
     private LinedParseLevel[] parsers = LinedParseLevel.values();
 
     @Test

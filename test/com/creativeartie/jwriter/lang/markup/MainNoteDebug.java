@@ -28,27 +28,6 @@ public class MainNoteDebug {
         return new IDBuilder().addCategory(category).setId(name);
     }
 
-    public static void assertNote(SpanBranch span,
-        Multimap<InfoFieldType, InfoDataSpan<?>> sources, int noteCount,
-        CatalogueStatus status, IDBuilder id)
-    {
-        MainSpanNote test = assertClass(span, MainSpanNote.class);
-
-        DetailStyle[] styles = new DetailStyle[]{AuxiliaryStyle.MAIN_NOTE,
-            status};
-
-        assertEquals(getError("sources", test), sources, test.getSources());
-        assertSpanIdentity(span, id);
-        assertMain(test, 0, noteCount);
-        assertBranch(span, styles, status);
-    }
-
-    public static final void assertMain(SpanBranch span, int publish, int note){
-        MainSpan test = (MainSpan) span;
-        assertEquals(getError("publish", span), publish, test.getPublishCount());
-        assertEquals(getError("note", span), note, test.getNoteCount());
-    }
-
     @Test
     public void noIDStyle(){
         String raw = "!%abc {!deed}";

@@ -32,30 +32,6 @@ public class LinedPointerDebug{
 
     private final SetupParser[] parsers = LinedParsePointer.values();
 
-    public static final void assertLink(SpanBranch span, String path, CatalogueStatus status, IDBuilder id)
-    {
-        LinedSpanPointLink link = assertClass(span, LinedSpanPointLink.class);
-
-        DetailStyle[] styles = new DetailStyle[]{LinedType.HYPERLINK, status};
-
-        assertEquals(getError("path", link), path, link.getPath());
-        assertSpanIdentity(link, id);
-        LinedRestDebug.assertLine(link, 0, 0);
-        assertBranch(link, styles, status);
-    }
-
-    public static final void assertNote(SpanBranch span, LinedType lined, Span formatted, CatalogueStatus status, IDBuilder id)
-    {
-        LinedSpanPointNote note = assertClass(span, LinedSpanPointNote.class);
-
-        DetailStyle[] styles = new DetailStyle[]{lined, status};
-
-        assertSpan("formated", formatted, note.getFormattedSpan());
-        assertSpanIdentity(note, id);
-        LinedRestDebug.assertLine(note, 0, 0);
-        assertBranch(note, styles, status);
-    }
-
     @Test
     public void linkFull(){
         String raw = "!@reddit:www.reddit.com\n";

@@ -28,20 +28,6 @@ public class MainSectionDebug {
         return new IDBuilder().addCategory("head").setId(id);
     }
 
-    public void assertSection(SpanBranch span, Span head, int publish, int note,
-        EditionType type, CatalogueStatus status, IDBuilder id)
-    {
-        MainSpanSection test = assertClass(span, MainSpanSection.class);
-
-        DetailStyle[] styles = new DetailStyle[]{AuxiliaryStyle.MAIN_SECTION};
-
-        assertSpan("head", head, test.getSelfSection());
-        assertEquals(getError("edition", test), type, test.getEdition());
-        assertSpanIdentity(span, id);
-        MainNoteDebug.assertMain(test, publish, note);
-        assertBranch(test, styles, status);
-    }
-
     @Test
     public void simple(){
         String raw = "abc";

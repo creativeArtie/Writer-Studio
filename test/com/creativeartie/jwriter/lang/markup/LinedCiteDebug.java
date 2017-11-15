@@ -18,23 +18,6 @@ import com.creativeartie.jwriter.lang.*;
 @RunWith(JUnit4.class)
 public class LinedCiteDebug {
 
-    public static void assertCite(SpanBranch span, InfoFieldType field,
-        Span data, int noteCount)
-    {
-        LinedSpanCite test = assertClass(span, LinedSpanCite.class);
-
-        LinedType lined = LinedType.SOURCE;
-        DetailStyle[] styles = data == null?
-            new DetailStyle[]{lined, field, AuxiliaryStyle.DATA_ERROR} :
-            new DetailStyle[]{lined, field};
-
-        assertEquals(getError("field", test), field, test.getFieldType());
-        assertEquals(getError("lined", test), lined, test.getLinedType());
-        assertSpan(  getError("data",  test), data,  test.getData());
-        LinedRestDebug.assertLine(test, 0, noteCount);
-        assertBranch(span, styles);
-    }
-
     private static final SetupParser[] parsers = new SetupParser[]{
             LinedParseCite.INSTANCE};
 

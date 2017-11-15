@@ -20,17 +20,6 @@ import com.creativeartie.jwriter.lang.*;
 @RunWith(JUnit4.class)
 public class DirectoryDebug{
 
-    static void assertBuildId(LinedSpan read, IDBuilder expected,
-        CatalogueIdentity test)
-    {
-        if (expected == null){
-            assertFalse("Identity should not be build.", test != null);
-        } else {
-            assertTrue("Identity should not be build", test != null);
-            assertEquals(getError("create id", read), expected.build(), test);
-        }
-    }
-
     private static final SetupParser[] parsers = new SetupParser[]{
         new DirectoryParser(DirectoryType.NOTE)};
 

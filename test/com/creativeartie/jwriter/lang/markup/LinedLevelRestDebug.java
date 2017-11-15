@@ -21,25 +21,6 @@ public class LinedLevelRestDebug {
         LinedParseRest.PARAGRAPH
     };
 
-    public static void assertLevel(SpanBranch span, LinedType lined, int level,
-        Span text, int publish, int note)
-    {
-        LinedSpanLevel test = assertClass(span, LinedSpanLevel.class);
-        assertLevel(test, lined, level, text, CatalogueStatus.NO_ID);
-        LinedRestDebug.assertLine(test, publish, note);
-    }
-    public static void assertLevel(LinedSpanLevel test, LinedType lined,
-        int level, Span text, CatalogueStatus status)
-    {
-        DetailStyle[] styles = new DetailStyle[]{lined};
-        assertEquals(getError("lined", test), lined,  test.getLinedType());
-        assertSpan(getError("text", test), text,  test.getFormattedSpan());
-        assertEquals(getError("level", test),      level,  test.getLevel());
-        assertBranch(test, styles, status);
-    }
-
-
-
     @Test
     public void numbered(){
         String raw = "\t\t\t\t#@id:Text abc\n";

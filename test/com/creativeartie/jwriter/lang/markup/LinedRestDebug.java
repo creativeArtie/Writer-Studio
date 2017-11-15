@@ -17,61 +17,6 @@ import com.creativeartie.jwriter.lang.*;
 
 @RunWith(JUnit4.class)
 public class LinedRestDebug {
-    public static final void assertLine(SpanBranch span, int publish, int note){
-        LinedSpan test = (LinedSpan) span;
-        assertEquals(getError("publish", span), publish, test.getPublishCount());
-        assertEquals(getError("note", span), note, test.getNoteCount());
-    }
-
-    public static final void assertBreak(SpanBranch span){
-        LinedSpanBreak test = assertClass(span, LinedSpanBreak.class);
-
-        DetailStyle[] styles = new DetailStyle[]{LinedType.BREAK};
-
-        assertEquals(getError("type", span), LinedType.BREAK, test.getLinedType());
-        assertLine(test, 0, 0);
-        assertBranch(span, styles);
-    }
-
-    public static final void assertAgenda(SpanBranch span, Span agenda, int note,
-        IDBuilder id)
-    {
-        LinedSpanAgenda test = assertClass(span, LinedSpanAgenda.class);
-
-        DetailStyle[] styles = new DetailStyle[]{LinedType.AGENDA};
-
-        assertEquals(getError("type", span), LinedType.AGENDA, test.getLinedType());
-        assertSpan("reason", agenda, test.getAgendaSpan());
-        assertSpanIdentity(span, id);
-        assertLine(test, 0, note);
-        assertBranch(span, styles, CatalogueStatus.UNUSED);
-    }
-
-    public static final void assertQuote(SpanBranch span, Span format,
-        int publish, int note)
-    {
-        LinedSpanQuote test = assertClass(span, LinedSpanQuote.class);
-
-        DetailStyle[] styles = new DetailStyle[]{LinedType.QUOTE};
-
-        assertEquals(getError("type", span), LinedType.QUOTE, test.getLinedType());
-        assertSpan("text", format, test.getFormattedSpan());
-        assertLine(test, publish, note);
-        assertBranch(span, styles);
-    }
-
-    public static final void assertParagraph(SpanBranch span, Span format,
-        int publish, int note)
-    {
-        LinedSpanParagraph test = assertClass(span, LinedSpanParagraph.class);
-
-        DetailStyle[] styles = new DetailStyle[]{LinedType.PARAGRAPH};
-
-        assertEquals(getError("type", span), LinedType.PARAGRAPH, test.getLinedType());
-        assertSpan("text", format, test.getFormattedSpan());
-        assertLine(test, publish, note);
-        assertBranch(span, styles);
-    }
 
     private static final SetupParser[] parsers = LinedParseRest.values();
 

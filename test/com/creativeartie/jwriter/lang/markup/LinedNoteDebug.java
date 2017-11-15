@@ -24,20 +24,6 @@ public class LinedNoteDebug {
 
     private final SetupParser[] parsers = new SetupParser[]{LinedParseRest.NOTE};
 
-    public static void assertNote(SpanBranch span, Span format, int noteCount,
-        IDBuilder id)
-    {
-        LinedSpanNote test = assertClass(span, LinedSpanNote.class);
-
-        DetailStyle[] styles = new DetailStyle[]{LinedType.NOTE};
-
-        assertSpan("format", format, test.getFormattedSpan());
-        assertEquals(getError("lined", span), LinedType.NOTE, test.getLinedType());
-        DirectoryDebug.assertBuildId(test, id, test.buildId());
-        LinedRestDebug.assertLine(test, 0, noteCount);
-        assertBranch(span, styles);
-    }
-
     @Test
     public void noteComplete(){
         String text = "_Text\\*_";
