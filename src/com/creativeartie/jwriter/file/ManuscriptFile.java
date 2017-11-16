@@ -54,7 +54,12 @@ public class ManuscriptFile {
             new RecordTable());
     }
 
-    public ManuscriptFile(File file, ManuscriptDocument doc,
+    @Deprecated
+    public static ManuscriptFile withManuscript(ManuscriptDocument doc){
+        return new ManuscriptFile(null, doc, new RecordTable());
+    }
+
+    private ManuscriptFile(File file, ManuscriptDocument doc,
         RecordTable table)
     {
         zipFile = Optional.ofNullable(file);

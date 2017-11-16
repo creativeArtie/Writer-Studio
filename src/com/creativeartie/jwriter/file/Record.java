@@ -73,11 +73,11 @@ public final class Record{
         }
     }
 
-    public static Record firstRecord(){
+    static Record firstRecord(){
         return new Record().new Builder().build();
     }
 
-    public static Record nextRecord(Record last){
+    static Record nextRecord(Record last){
         return new Record().new Builder(last)
             .setTimeGoal(last.timeGoal)
             .setPublishGoal(last.publishGoal)
@@ -86,7 +86,7 @@ public final class Record{
             .build();
     }
 
-    public static Builder builder(Record last){
+    static Builder builder(Record last){
         return new Record().new Builder(last);
     }
 

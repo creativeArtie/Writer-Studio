@@ -10,17 +10,22 @@ import com.google.common.collect.*;
 public class RecordTable extends ForwardingList<Record>{
     private final ArrayList<Record> recordList;
 
-    public RecordTable(){
+    RecordTable(){
         recordList = new ArrayList<>();
         recordList.add(Record.firstRecord());
     }
 
-    public RecordTable(String text){
+    RecordTable(String text){
         recordList = new ArrayList<>();
         fillData(new Scanner(text));
     }
 
-    public RecordTable(File file) throws IOException{
+    @Deprecated
+    public static RecordTable build(File file) throws IOException{
+        return new RecordTable(file);
+    }
+
+    RecordTable(File file) throws IOException{
         recordList = new ArrayList<>();
         try (Scanner data = new Scanner(file)){
             fillData(data);

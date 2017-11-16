@@ -41,8 +41,8 @@ public class Main extends Application{
             builder.append((char) read);
             read = in.read();
         }
-        setupWindow(stage, new ManuscriptFile(null,
-            new ManuscriptDocument(builder.toString()), new RecordTable()));
+        setupWindow(stage, ManuscriptFile.withManuscript(
+            new ManuscriptDocument(builder.toString())));
     }
 
     private void setupWindow(Stage stage, ManuscriptFile file) {
@@ -58,7 +58,7 @@ public class Main extends Application{
         Button button = new Button("Click");
         Scene scene = new Scene(new BorderPane(button), 800, 600);
         SceneStatsControl stats = new SceneStatsControl();
-        stats.setStatTable(new RecordTable(new File("data/record3.txt")));
+        stats.setStatTable(RecordTable.build(new File("data/record3.txt")));
         Stage tmp = SceneStatsControl.createStage(stats);
         button.setOnAction(event -> tmp.show());
         button.setDefaultButton(true);
