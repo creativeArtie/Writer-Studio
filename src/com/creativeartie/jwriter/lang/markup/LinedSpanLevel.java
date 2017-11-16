@@ -20,12 +20,12 @@ public class LinedSpanLevel extends LinedSpan {
     }
 
     @Override
-    public int getPublishCount(){
-        return getFormattedSpan().map(span -> span.getPublishCount()).orElse(0);
+    public int getPublishTotal(){
+        return getFormattedSpan().map(span -> span.getPublishTotal()).orElse(0);
     }
 
     @Override
-    public int getNoteCount(){
-        return getFormattedSpan().map(span -> span.getNoteCount()).orElse(0);
+    public int getNoteTotal(){
+        return getFormattedSpan().map(span -> span.getNoteTotal()).orElse(0);
     }
 }

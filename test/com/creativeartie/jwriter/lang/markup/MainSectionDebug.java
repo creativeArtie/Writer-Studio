@@ -38,11 +38,11 @@ public class MainSectionDebug {
         doc.assertIds();
 
         MainSectionTest section = new MainSectionTest()
-            .setPublishCount(1).setNoteCount(0)
+            .setPublishTotal(1).setNoteTotal(0)
             .setEdition(EditionType.NONE)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         ParagraphLineTest line = new ParagraphLineTest()
-            .setPublishCount(1).setNoteCount(0)
+            .setPublishTotal(1).setNoteTotal(0)
             .setFormattedSpan(doc, 0, 0, 0);
 
         section.test(doc, 1, raw, 0);
@@ -61,20 +61,20 @@ public class MainSectionDebug {
         doc.addId(builder, 3);
 
         MainSectionTest section = new MainSectionTest()
-            .setPublishCount(4).setNoteCount(1)
+            .setPublishTotal(4).setNoteTotal(1)
             .setEdition(EditionType.NONE)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         QuoteLineTest line1 = new QuoteLineTest()
             .setFormattedSpan(doc, 0, 0, 1)
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
         BasicLevelLineTest line2 = new BasicLevelLineTest()
             .setLinedType(LinedType.NUMBERED).setLevel(1)
-            .setFormattedSpan(doc, 0, 1, 1).setPublishCount(1)
-            .setNoteCount(0);
+            .setFormattedSpan(doc, 0, 1, 1).setPublishTotal(1)
+            .setNoteTotal(0);
         BasicLevelLineTest line3 = new BasicLevelLineTest()
             .setLinedType(LinedType.BULLET).setLevel(1)
-            .setFormattedSpan(doc, 0, 2, 1).setPublishCount(1)
-            .setNoteCount(0);
+            .setFormattedSpan(doc, 0, 2, 1).setPublishTotal(1)
+            .setNoteTotal(0);
 
         builder.reset().addCategory("link").setId("hyperlink");
         doc.addId(builder, 4);
@@ -103,11 +103,11 @@ public class MainSectionDebug {
         doc.addId(builder, 0);
 
         AgendaLineTest line7 = new AgendaLineTest()
-            .setAgenda("agenda").setNoteCount(1)
+            .setAgenda("agenda").setNoteTotal(1)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         BreakLineTest line8 = new BreakLineTest();
         ParagraphLineTest line9 = new ParagraphLineTest()
-            .setPublishCount(1).setNoteCount(0)
+            .setPublishTotal(1).setNoteTotal(0)
             .setFormattedSpan(doc, 0, 8, 0);
 
         int i = 0;
@@ -135,7 +135,7 @@ public class MainSectionDebug {
         doc.addId(builder, 0);
 
         MainSectionTest section = new MainSectionTest()
-            .setPublishCount(4).setNoteCount(0)
+            .setPublishTotal(4).setNoteTotal(0)
             .setEdition(EditionType.NONE)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
 
@@ -143,8 +143,8 @@ public class MainSectionDebug {
         for (int i = 0; i < texts.length; i++){
             lines[i] = new BasicLevelLineTest()
                 .setLinedType(LinedType.NUMBERED).setLevel(1)
-                .setFormattedSpan(doc, 0, i, 1).setPublishCount(1)
-                .setNoteCount(0);
+                .setFormattedSpan(doc, 0, i, 1).setPublishTotal(1)
+                .setNoteTotal(0);
         }
 
         section.test(doc, 4, raw, 0);
@@ -165,7 +165,7 @@ public class MainSectionDebug {
         doc.addId(builder, 0);
 
         MainSectionTest section = new MainSectionTest()
-            .setPublishCount(2).setNoteCount(0)
+            .setPublishTotal(2).setNoteTotal(0)
             .setEdition(EditionType.DRAFT)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
 
@@ -175,10 +175,10 @@ public class MainSectionDebug {
         HeadLevelLineTest line1 = new HeadLevelLineTest()
             .setFormattedSpan(doc, 0, 0, 4).setLinedType(LinedType.HEADING)
             .setLevel(1).setEdition(EditionType.DRAFT)
-            .setPublishCount(1).setNoteCount(0)
+            .setPublishTotal(1).setNoteTotal(0)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         ParagraphLineTest line2 = new ParagraphLineTest()
-            .setPublishCount(1).setNoteCount(0)
+            .setPublishTotal(1).setNoteTotal(0)
             .setFormattedSpan(doc, 0, 1, 0);
 
         section.test(doc, 2, raw, 0);
@@ -199,25 +199,25 @@ public class MainSectionDebug {
         doc.addId(builder, 0);
 
         MainSectionTest section1 = new MainSectionTest()
-            .setPublishCount(1).setNoteCount(0)
+            .setPublishTotal(1).setNoteTotal(0)
             .setEdition(EditionType.NONE)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         QuoteLineTest line1 = new QuoteLineTest()
             .setFormattedSpan(doc, 0, 0, 1)
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
 
         doc.addId(builder.reset().addCategory("head").setId("07"), 1);
 
         MainSectionTest section2 = new MainSectionTest()
-            .setPublishCount(2).setNoteCount(0)
+            .setPublishTotal(2).setNoteTotal(0)
             .setEdition(EditionType.STUB)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         HeadLevelLineTest line2 = new HeadLevelLineTest()
             .setFormattedSpan(doc, 1, 0, 1).setLinedType(LinedType.HEADING)
             .setLevel(1).setEdition(EditionType.STUB)
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
         ParagraphLineTest line3 = new ParagraphLineTest()
-            .setPublishCount(1).setNoteCount(0)
+            .setPublishTotal(1).setNoteTotal(0)
             .setFormattedSpan(doc, 1, 1, 0);
 
         section1.test(doc, 1, texts[0], 0);

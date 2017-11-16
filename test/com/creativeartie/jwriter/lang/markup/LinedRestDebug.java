@@ -45,7 +45,7 @@ public class LinedRestDebug {
         doc.addId(id, 0);
 
         AgendaLineTest agenda = new AgendaLineTest()
-            .setAgenda(text).setNoteCount(1)
+            .setAgenda(text).setNoteTotal(1)
             .setCatalogued(CatalogueStatus.UNUSED, id);
         ContentTest content = new ContentTest()
             .setText(text) .setBegin(false)
@@ -69,7 +69,7 @@ public class LinedRestDebug {
         doc.addId(id, 0);
 
         AgendaLineTest agenda = new AgendaLineTest()
-            .setAgenda("").setNoteCount(0)
+            .setAgenda("").setNoteTotal(0)
             .setCatalogued(CatalogueStatus.UNUSED, id);
 
         agenda.test(    doc,  1, raw,  0);
@@ -88,7 +88,7 @@ public class LinedRestDebug {
         doc.addId(id, 0);
 
         AgendaLineTest agenda = new AgendaLineTest()
-            .setAgenda("").setNoteCount(0)
+            .setAgenda("").setNoteTotal(0)
             .setCatalogued(CatalogueStatus.UNUSED, id);
         ContentTest content = new ContentTest()
             .setText("") .setBegin(true)
@@ -113,7 +113,7 @@ public class LinedRestDebug {
         doc.addId(id, 0);
 
         AgendaLineTest agenda = new AgendaLineTest()
-            .setAgenda("ab").setNoteCount(1)
+            .setAgenda("ab").setNoteTotal(1)
             .setCatalogued(CatalogueStatus.UNUSED, id);
         ContentTest content = new ContentTest()
             .setText("ab")  .setBegin(false)
@@ -139,7 +139,7 @@ public class LinedRestDebug {
         doc.addId(id, 0);
 
         AgendaLineTest agenda = new AgendaLineTest()
-            .setAgenda("Hi\\").setNoteCount(1)
+            .setAgenda("Hi\\").setNoteTotal(1)
             .setCatalogued(CatalogueStatus.UNUSED, id);
         ContentTest content = new ContentTest()
             .setText("Hi\\").setBegin(false)
@@ -165,9 +165,9 @@ public class LinedRestDebug {
 
         QuoteLineTest quote = new QuoteLineTest()
             .setFormattedSpan(doc, 0, 1)
-            .setPublishCount(2).setNoteCount(0);
+            .setPublishTotal(2).setNoteTotal(0);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(2).setNoteCount(0);
+            .setPublishTotal(2).setNoteTotal(0);
 
         quote.test(     doc,   3, raw,  0);
         doc.assertKeyLeaf( 0,  1, ">",  0, 0);
@@ -186,10 +186,10 @@ public class LinedRestDebug {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         ParagraphLineTest paragraph = new ParagraphLineTest()
-            .setPublishCount(1).setNoteCount(0)
+            .setPublishTotal(1).setNoteTotal(0)
             .setFormattedSpan(doc, 0, 0);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
 
         paragraph.test(  doc, 2, raw,    0);
         main.test(       doc, 1, text,   0, 0);
@@ -209,10 +209,10 @@ public class LinedRestDebug {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         ParagraphLineTest paragraph = new ParagraphLineTest()
-            .setPublishCount(1).setNoteCount(0)
+            .setPublishTotal(1).setNoteTotal(0)
             .setFormattedSpan(doc, 0, 0);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
 
         paragraph.test(  doc, 1, raw,   0);
         main.test(       doc, 1, "abc", 0, 0);

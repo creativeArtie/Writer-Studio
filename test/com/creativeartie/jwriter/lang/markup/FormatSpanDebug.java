@@ -24,7 +24,7 @@ public class FormatSpanDebug {
         String raw = "abc";
         DocumentAssert doc = assertDoc(1, raw, parsers);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
         FormatContentTest content = new FormatContentTest()
             .setText(raw) .setBegin(false)
             .setEnd(false);
@@ -42,7 +42,7 @@ public class FormatSpanDebug {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
         FormatContentTest content1 = new FormatContentTest()
             .setBegin(false).setEnd(false)
             .setText("or");
@@ -72,7 +72,7 @@ public class FormatSpanDebug {
         String raw = "g*ee*n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
         FormatContentTest content1 = new FormatContentTest()
             .setBegin(false).setEnd(false)
             .setText("g");
@@ -103,7 +103,7 @@ public class FormatSpanDebug {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
         FormatContentTest content1 = new FormatContentTest()
             .setBegin(false).setEnd(false)
             .setText("g");
@@ -140,7 +140,7 @@ public class FormatSpanDebug {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(2).setNoteCount(0);
+            .setPublishTotal(2).setNoteTotal(0);
         FormatContentTest content = new FormatContentTest()
             .setBegin(false).setEnd(false)
             .setText("abc ab").setFormats(FormatType.UNDERLINE);
@@ -163,7 +163,7 @@ public class FormatSpanDebug {
         doc.addRef(builder, CatalogueStatus.NOT_FOUND, 0);
 
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
         FormatNoteTest cite = new FormatNoteTest()
             .setDirectoryType(DirectoryType.ENDNOTE)
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder)
@@ -201,7 +201,7 @@ public class FormatSpanDebug {
 
         String text = "  abc ddd ";
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(2)    .setNoteCount(2);
+            .setPublishTotal(2)    .setNoteTotal(2);
         FormatAgendaTest todo1 = new FormatAgendaTest()
             .setCatalogued(CatalogueStatus.UNUSED, builder).setText("todo");
         ContentTest todo1Text = new ContentTest()
@@ -243,7 +243,7 @@ public class FormatSpanDebug {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(6).setNoteCount(1);
+            .setPublishTotal(6).setNoteTotal(1);
 
         FormatContentTest text1 = new FormatContentTest()
             .setText("Begin\\").setBegin(false).setEnd(false);

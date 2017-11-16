@@ -32,18 +32,18 @@ public abstract class MainSpan extends SpanBranch implements Catalogued{
     }
 
 
-    public int getPublishCount(){
+    public int getPublishTotal(){
         int publish = 0;
         for (Span span: this){
-            publish += ((LinedSpan)span).getPublishCount();
+            publish += ((LinedSpan)span).getPublishTotal();
         }
         return publish;
     }
 
-    public int getNoteCount(){
+    public int getNoteTotal(){
         int note = 0;
         for (Span span: this){
-            note += ((LinedSpan)span).getNoteCount();
+            note += ((LinedSpan)span).getNoteTotal();
         }
         return note;
     }

@@ -58,7 +58,7 @@ public class Main extends Application{
         Button button = new Button("Click");
         Scene scene = new Scene(new BorderPane(button), 800, 600);
         SceneStatsControl stats = new SceneStatsControl();
-        stats.setStatTable(RecordTable.build(new File("data/record3.txt")));
+        stats.setStatTable(RecordList.build(new File("data/record3.txt")));
         Stage tmp = SceneStatsControl.createStage(stats);
         button.setOnAction(event -> tmp.show());
         button.setDefaultButton(true);

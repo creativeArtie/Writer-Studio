@@ -33,13 +33,13 @@ public class LinedNoteDebug {
         IDBuilder createId = buildId("id").addCategory("sub");
 
         NoteLineTest line = new NoteLineTest()
-            .setFormattedSpan(doc, 0, 4).setNoteCount(1)
+            .setFormattedSpan(doc, 0, 4).setNoteTotal(1)
             .setBuildId(createId);
         DirectoryTest id = new DirectoryTest()
             .setPurpose(DirectoryType.NOTE)
             .setIdentity(createId);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
 
         line.test(        doc, 6, raw,        0);
         doc.assertKeyLeaf(  0,  2, "!%",      0, 0);
@@ -72,13 +72,13 @@ public class LinedNoteDebug {
         IDBuilder createId = buildId("id");
 
         NoteLineTest line = new NoteLineTest()
-            .setFormattedSpan(doc, 0, 4).setNoteCount(1)
+            .setFormattedSpan(doc, 0, 4).setNoteTotal(1)
             .setBuildId(createId);
         DirectoryTest id = new DirectoryTest()
             .setPurpose(DirectoryType.NOTE)
             .setIdentity(createId);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
 
         line.test(        doc, 5, raw,    0);
         doc.assertKeyLeaf( 0,  2, "!%",   0, 0);
@@ -103,7 +103,7 @@ public class LinedNoteDebug {
         IDBuilder createId = buildId("id");
 
         NoteLineTest line = new NoteLineTest()
-            .setNoteCount(0).setBuildId(createId);
+            .setNoteTotal(0).setBuildId(createId);
         DirectoryTest id = new DirectoryTest()
             .setPurpose(DirectoryType.NOTE)
             .setIdentity(createId);
@@ -127,7 +127,7 @@ public class LinedNoteDebug {
         IDBuilder createId = buildId("id");
 
         NoteLineTest line = new NoteLineTest()
-            .setNoteCount(0).setBuildId(createId);
+            .setNoteTotal(0).setBuildId(createId);
         DirectoryTest id = new DirectoryTest()
             .setPurpose(DirectoryType.NOTE)
             .setIdentity(createId);
@@ -148,9 +148,9 @@ public class LinedNoteDebug {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         NoteLineTest line = new NoteLineTest()
-            .setFormattedSpan(doc, 0, 3).setNoteCount(1);
+            .setFormattedSpan(doc, 0, 3).setNoteTotal(1);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
 
         line.test(       doc, 4, raw,    0);
         doc.assertKeyLeaf( 0, 2, "!%",   0, 0);
@@ -169,9 +169,9 @@ public class LinedNoteDebug {
         String raw = "!%Text";
         DocumentAssert doc = assertDoc(1, raw, parsers);
         NoteLineTest line = new NoteLineTest()
-            .setFormattedSpan(doc, 0, 1).setNoteCount(1);
+            .setFormattedSpan(doc, 0, 1).setNoteTotal(1);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
 
         line.test(       doc, 2, raw,    0);
         doc.assertKeyLeaf( 0, 2, "!%",   0, 0);
@@ -188,7 +188,7 @@ public class LinedNoteDebug {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         NoteLineTest line = new NoteLineTest()
-            .setNoteCount(0);
+            .setNoteTotal(0);
 
         line.test(       doc, 1, raw,  0);
         doc.assertKeyLeaf( 0, 2, "!%", 0, 0);
@@ -202,7 +202,7 @@ public class LinedNoteDebug {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         NoteLineTest line = new NoteLineTest()
-            .setNoteCount(0);
+            .setNoteTotal(0);
 
         line.test(        doc, 2, raw, 0);
         doc.assertKeyLeaf( 0, 2, "!%", 0, 0);

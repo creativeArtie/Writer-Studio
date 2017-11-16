@@ -32,18 +32,18 @@ public class SceneWriterControl extends SceneWriterView {
         new AnimationTimer(){
             @Override
             public void handle(long now) {
-                RecordTable record = getRecords();
+                RecordList record = getRecords();
                 ManuscriptDocument doc = getDocument();
                 if (record != null && doc != null){
                     if (editTimer == TIMER_START){
                        editTimer = now;
-                       record.startWriting(doc.getPublishCount(),
-                          doc.getNoteCount());
+                       record.startWriting(doc.getPublishTotal(),
+                          doc.getNoteTotal());
                     }
                     else if (editTimer + EDIT_LENGTH >= now){
                         editTimer = TIMER_OFF;
-                        record.stopWriting(doc.getPublishCount(),
-                            doc.getNoteCount());
+                        record.stopWriting(doc.getPublishTotal(),
+                            doc.getNoteTotal());
                     }
                 }
                 String time = DateTimeFormatter.ofPattern("HH:mm:ss")
@@ -56,10 +56,10 @@ public class SceneWriterControl extends SceneWriterView {
 
     private String getStats(){
         Record record = getRecords().getRecord();
-        int wordCount = record.getPublishCount();
+        int wordCount = record.getPublishTotal();
         double wordPrecent = (wordCount / (double) record.getPublishGoal()) * 100;
 
-        Duration timer = record.getWriteDuration();
+        Duration timer = record.getWriteTime();
         long hours = timer.toHours();
         long minutes = timer.toMinutes() % 60;
         long seconds = timer.getSeconds() % 60;

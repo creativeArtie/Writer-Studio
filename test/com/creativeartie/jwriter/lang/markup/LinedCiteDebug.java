@@ -28,7 +28,7 @@ public class LinedCiteDebug {
 
         CiteLineTest cite = new CiteLineTest()
             .setInfoType(InfoFieldType.IN_TEXT)
-            .setDataSpan(doc, 0, 3).setNoteCount(1);
+            .setDataSpan(doc, 0, 3).setNoteTotal(1);
         FieldTest field = new FieldTest()
             .setType(InfoFieldType.IN_TEXT);
         ContentDataTest data = new ContentDataTest()
@@ -108,7 +108,7 @@ public class LinedCiteDebug {
 
         CiteLineTest cite = new CiteLineTest()
             .setInfoType(InfoFieldType.IN_TEXT)
-            .setDataSpan(doc, 0, 2).setNoteCount(1);
+            .setDataSpan(doc, 0, 2).setNoteTotal(1);
         FieldTest field = new FieldTest()
             .setType(InfoFieldType.IN_TEXT);
         ContentDataTest data = new ContentDataTest()
@@ -228,7 +228,7 @@ public class LinedCiteDebug {
 
         CiteLineTest cite = new CiteLineTest()
             .setInfoType(InfoFieldType.FOOTNOTE)
-            .setDataSpan(doc, 0, 3).setNoteCount(1);
+            .setDataSpan(doc, 0, 3).setNoteTotal(1);
         FieldTest field = new FieldTest()
             .setType(InfoFieldType.FOOTNOTE);
         ContentDataTest data = new ContentDataTest()
@@ -257,7 +257,7 @@ public class LinedCiteDebug {
 
         CiteLineTest cite = new CiteLineTest()
             .setInfoType(InfoFieldType.SOURCE)
-            .setDataSpan(doc, 0, 3).setNoteCount(2);
+            .setDataSpan(doc, 0, 3).setNoteTotal(2);
         FieldTest field = new FieldTest()
             .setType(InfoFieldType.SOURCE);
         FormatDataTest data = new FormatDataTest()

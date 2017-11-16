@@ -20,7 +20,7 @@ public class LinedSpanNote extends LinedSpan{
     }
 
     @Override
-    public int getNoteCount(){
+    public int getNoteTotal(){
         return getFormattedSpan().map(span -> span.getTotalCount()).orElse(0);
     }
 

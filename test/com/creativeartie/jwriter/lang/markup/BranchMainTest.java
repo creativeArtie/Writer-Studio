@@ -14,30 +14,30 @@ import static com.creativeartie.jwriter.lang.DocumentAssert.*;
 public class BranchMainTest {
     private static class MainTest<T extends MainTest<T>> extends
             SpanBranchAssert<T> {
-        private int publishCount;
-        private int noteCount;
+        private int publishTotal;
+        private int noteTotal;
 
         MainTest(Class<T> clazz){
             super(clazz);
         }
 
-        public T setPublishCount(int count){
-            publishCount = count;
+        public T setPublishTotal(int count){
+            publishTotal = count;
             return cast();
         }
 
-        public T setNoteCount(int count){
-            noteCount = count;
+        public T setNoteTotal(int count){
+            noteTotal = count;
             return cast();
         }
 
         @Override
         public void test(SpanBranch span){
             MainSpan test = (MainSpan) span;
-            assertEquals(getError("publish", span), publishCount,
-                test.getPublishCount());
-            assertEquals(getError("note", span), noteCount,
-                test.getNoteCount());
+            assertEquals(getError("publish", span), publishTotal,
+                test.getPublishTotal());
+            assertEquals(getError("note", span), noteTotal,
+                test.getNoteTotal());
         }
 
     }

@@ -7,25 +7,30 @@ import java.util.function.*;
 
 import com.google.common.collect.*;
 
-public class RecordTable extends ForwardingList<Record>{
+/**
+ * A list of {@link Record} and methods to save and edit with today's Record.
+ */
+public class RecordList extends ForwardingList<Record>{
+
+    @Deprecated
+    public static RecordList build(File file) throws IOException{
+        return new RecordList(file);
+    }
+
     private final ArrayList<Record> recordList;
 
-    RecordTable(){
+    RecordList(){
         recordList = new ArrayList<>();
         recordList.add(Record.firstRecord());
     }
 
-    RecordTable(String text){
+    RecordList(String text){
         recordList = new ArrayList<>();
         fillData(new Scanner(text));
     }
 
     @Deprecated
-    public static RecordTable build(File file) throws IOException{
-        return new RecordTable(file);
-    }
-
-    RecordTable(File file) throws IOException{
+    RecordList(File file) throws IOException{
         recordList = new ArrayList<>();
         try (Scanner data = new Scanner(file)){
             fillData(data);
@@ -40,8 +45,8 @@ public class RecordTable extends ForwardingList<Record>{
                 .setRecordDate(LocalDate.ofYearDay(
                     data.nextInt(), data.nextInt())
                 )
-                .setPublishCount(data.nextInt())
-                .setNoteCount(data.nextInt())
+                .setPublishTotal(data.nextInt())
+                .setNoteTotal(data.nextInt())
                 .setWriteDuration(Duration.parse(data.next()))
                 .setPublishGoal(data.nextInt())
                 .setTimeGoal(Duration.parse(data.next()))
@@ -56,9 +61,9 @@ public class RecordTable extends ForwardingList<Record>{
         for (Record out: this){
             ans.append(out.getRecordDate().getYear()).append(" ");
             ans.append(out.getRecordDate().getDayOfYear()).append(" ");
-            ans.append(out.getPublishCount()).append(" ");
-            ans.append(out.getNoteCount()).append(" ");
-            ans.append(out.getWriteDuration()).append(" ");
+            ans.append(out.getPublishTotal()).append(" ");
+            ans.append(out.getNoteTotal()).append(" ");
+            ans.append(out.getWriteTime()).append(" ");
             ans.append(out.getPublishGoal()).append(" ");
             ans.append(out.getTimeGoal()).append("\n");
         }
@@ -89,7 +94,7 @@ public class RecordTable extends ForwardingList<Record>{
     private void updateRecord(){
         Record record = getRecord();
         if (!record.getRecordDate().equals(LocalDate.now())){
-            recordList.add(Record.nextRecord(record));
+            recordList.add(Record.newRecord(record));
         }
     }
 

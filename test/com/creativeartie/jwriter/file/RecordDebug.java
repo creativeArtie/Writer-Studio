@@ -11,6 +11,8 @@ import java.util.*;
 import java.io.*;
 import java.time.*;
 
+import com.google.common.io.*;
+
 @RunWith(Parameterized.class)
 public class RecordDebug {
 
@@ -43,12 +45,14 @@ public class RecordDebug {
         return data;
     }
 
-    private RecordTable records;
+    private RecordList records;
     private int expectedTotal;
 
     @Before
     public void before() throws Exception{
-        records = new RecordTable(new File("data/record1.txt"));
+        try (FileReader reader = new FileReader(new File("data/record1.txt"))){
+            records = new RecordList(CharStreams.toString(reader));
+        }
         expectedTotal = expectPublish + expectNote;
     }
 
@@ -63,7 +67,7 @@ public class RecordDebug {
         records.saveRecords(tmp);
 
         try {
-            RecordTable reload = new RecordTable(tmp);
+            RecordList reload = new RecordList(tmp);
             testCommon(reload.get(index));
         } catch(Exception ex){
             System.out.println(tmp);
@@ -75,14 +79,14 @@ public class RecordDebug {
     private void testCommon(Record test){
         assertEquals("Wrong date.", expectDate, test.getRecordDate());
         assertEquals("Wrong publish count.", expectPublish, test
-            .getPublishCount());
-        assertEquals("Wrong note count.", expectNote, test.getNoteCount());
+            .getPublishTotal());
+        assertEquals("Wrong note count.", expectNote, test.getNoteTotal());
         assertEquals("Wrong totalCount.", expectedTotal, test.getTotalCount());
         if (expectDuration != null){
-            assertEquals("Wrong duration.", expectDuration, test.getWriteDuration());
+            assertEquals("Wrong duration.", expectDuration, test.getWriteTime());
             assertEquals("Wrong publish written.", 100, test.getPublishWritten());
         } else {
-            /// System.out.println(test.getWriteDuration());
+            /// System.out.println(test.getWriteTime());
             assertEquals("Wrong publish written.", 0, test.getPublishWritten());
         }
     }

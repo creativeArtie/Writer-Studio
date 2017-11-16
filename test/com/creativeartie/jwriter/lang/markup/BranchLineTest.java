@@ -13,21 +13,21 @@ public class BranchLineTest {
     private static class LineTest<T extends LineTest<T>> extends
             SpanBranchAssert<T> {
 
-        private int publishCount;
-        private int noteCount;
+        private int publishTotal;
+        private int noteTotal;
         private LinedType linedType;
 
         public LineTest(Class<T> clazz){
             super(clazz);
         }
 
-        public T setPublishCount(int count){
-            publishCount = count;
+        public T setPublishTotal(int count){
+            publishTotal = count;
             return cast();
         }
 
-        public T setNoteCount(int count){
-            noteCount = count;
+        public T setNoteTotal(int count){
+            noteTotal = count;
             return cast();
         }
 
@@ -44,8 +44,8 @@ public class BranchLineTest {
         public void test(SpanBranch span){
             LinedSpan test = (LinedSpan) span;
             assertEquals(getError("type", span), linedType, test.getLinedType());
-            assertEquals(getError("publish", span), publishCount, test.getPublishCount());
-            assertEquals(getError("note", span), noteCount, test.getNoteCount());
+            assertEquals(getError("publish", span), publishTotal, test.getPublishTotal());
+            assertEquals(getError("note", span), noteTotal, test.getNoteTotal());
         }
     }
 

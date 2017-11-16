@@ -32,11 +32,11 @@ public abstract class LinedSpan extends SpanBranch {
         return ImmutableList.of(getLinedType());
     }
 
-    public int getPublishCount(){
+    public int getPublishTotal(){
         return 0;
     }
 
-    public int getNoteCount(){
+    public int getNoteTotal(){
         return 0;
     }
 

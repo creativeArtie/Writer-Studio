@@ -74,18 +74,18 @@ public class ManuscriptDocument extends Document{
         return ans;
     }
 
-    public int getPublishCount(){
+    public int getPublishTotal(){
         int count = 0;
         for (SpanBranch span: this){
-            count += ((MainSpan)span).getPublishCount();
+            count += ((MainSpan)span).getPublishTotal();
         }
         return count;
     }
 
-    public int getNoteCount(){
+    public int getNoteTotal(){
         int count = 0;
         for (SpanBranch span: this){
-            count += ((MainSpan)span).getNoteCount();
+            count += ((MainSpan)span).getNoteTotal();
         }
         return count;
     }

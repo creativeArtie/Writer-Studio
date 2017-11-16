@@ -34,13 +34,13 @@ public class LinedLevelHeadDebug {
         HeadLevelLineTest heading = new HeadLevelLineTest()
             .setFormattedSpan(doc, 0, 4).setLinedType(LinedType.HEADING)
             .setLevel(3).setEdition(EditionType.OTHER)
-            .setPublishCount(1).setNoteCount(0)
+            .setPublishTotal(1).setNoteTotal(0)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         DirectoryTest id = new DirectoryTest()
             .setPurpose(DirectoryType.LINK)
             .setIdentity(builder);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
         EditionTest edition = new EditionTest()
             .setEdition(EditionType.OTHER)
             .setText("abc");
@@ -80,7 +80,7 @@ public class LinedLevelHeadDebug {
         HeadLevelLineTest heading = new HeadLevelLineTest()
            .setFormattedSpan(doc, 0, 4).setLinedType(LinedType.OUTLINE)
             .setLevel(1).setEdition(EditionType.DRAFT)
-            .setPublishCount(0).setNoteCount(2)
+            .setPublishTotal(0).setNoteTotal(2)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
 
         doc.addId(FormatAgendaDebug.buildId("08"), 0);
@@ -89,7 +89,7 @@ public class LinedLevelHeadDebug {
             .setPurpose(DirectoryType.LINK)
             .setIdentity(builder);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(1);
+            .setPublishTotal(1).setNoteTotal(1);
         EditionTest edition = new EditionTest()
             .setEdition(EditionType.DRAFT)
             .setText("#1");
@@ -127,23 +127,23 @@ public class LinedLevelHeadDebug {
         HeadLevelLineTest heading1 = new HeadLevelLineTest()
            .setFormattedSpan(doc, 0, 1).setLinedType(LinedType.HEADING)
             .setLevel(1).setEdition(EditionType.NONE)
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
         FormatMainTest content1 = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
 
         HeadLevelLineTest heading2 = new HeadLevelLineTest()
            .setFormattedSpan(doc, 1, 1).setLinedType(LinedType.HEADING)
             .setLevel(1).setEdition(EditionType.NONE)
-            .setPublishCount(2).setNoteCount(0);
+            .setPublishTotal(2).setNoteTotal(0);
         FormatMainTest content2 = new FormatMainTest()
-            .setPublishCount(2).setNoteCount(0);
+            .setPublishTotal(2).setNoteTotal(0);
 
         HeadLevelLineTest heading3 = new HeadLevelLineTest()
            .setFormattedSpan(doc, 2, 1).setLinedType(LinedType.HEADING)
             .setLevel(1).setEdition(EditionType.NONE)
-            .setPublishCount(2).setNoteCount(0);
+            .setPublishTotal(2).setNoteTotal(0);
         FormatMainTest content3 = new FormatMainTest()
-            .setPublishCount(2).setNoteCount(0);
+            .setPublishTotal(2).setNoteTotal(0);
 
         heading1.test(    doc, 3, "=abc\n",       0);
         doc.assertKeyLeaf(  0, 1, "=",            0, 0);
@@ -178,13 +178,13 @@ public class LinedLevelHeadDebug {
         HeadLevelLineTest heading = new HeadLevelLineTest()
            .setFormattedSpan(doc, 0, 4).setLinedType(LinedType.HEADING)
             .setLevel(3).setEdition(EditionType.OTHER)
-            .setPublishCount(1).setNoteCount(0)
+            .setPublishTotal(1).setNoteTotal(0)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         DirectoryTest id = new DirectoryTest()
             .setPurpose(DirectoryType.LINK)
             .setIdentity(builder);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
         EditionTest edition = new EditionTest()
             .setEdition(EditionType.OTHER)
             .setText("abc");
@@ -219,14 +219,14 @@ public class LinedLevelHeadDebug {
         HeadLevelLineTest heading = new HeadLevelLineTest()
            .setFormattedSpan(doc, 0, 4).setLinedType(LinedType.HEADING)
             .setLevel(3).setEdition(EditionType.NONE)
-            .setPublishCount(1).setNoteCount(0)
+            .setPublishTotal(1).setNoteTotal(0)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
 
         DirectoryTest id = new DirectoryTest()
             .setPurpose(DirectoryType.LINK)
             .setIdentity(builder);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
 
         heading.test(    doc,  5, raw,     0);
         doc.assertKeyLeaf( 0,  3, "===",   0, 0);
@@ -254,7 +254,7 @@ public class LinedLevelHeadDebug {
         HeadLevelLineTest heading = new HeadLevelLineTest()
            .setLinedType(LinedType.HEADING)
            .setLevel(3).setEdition(EditionType.OTHER)
-           .setPublishCount(0).setNoteCount(0)
+           .setPublishTotal(0).setNoteTotal(0)
            .setCatalogued(CatalogueStatus.UNUSED, builder);
         DirectoryTest id = new DirectoryTest()
             .setPurpose(DirectoryType.LINK)
@@ -288,7 +288,7 @@ public class LinedLevelHeadDebug {
         HeadLevelLineTest heading = new HeadLevelLineTest()
            .setLinedType(LinedType.HEADING)
             .setLevel(3).setEdition(EditionType.NONE)
-            .setPublishCount(0).setNoteCount(0)
+            .setPublishTotal(0).setNoteTotal(0)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         DirectoryTest id = new DirectoryTest()
             .setPurpose(DirectoryType.LINK)
@@ -314,9 +314,9 @@ public class LinedLevelHeadDebug {
         HeadLevelLineTest heading = new HeadLevelLineTest()
            .setFormattedSpan(doc, 0, 1).setLinedType(LinedType.HEADING)
             .setLevel(3).setEdition(EditionType.OTHER)
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
         EditionTest edition = new EditionTest()
             .setEdition(EditionType.OTHER)
             .setText("abc");
@@ -343,7 +343,7 @@ public class LinedLevelHeadDebug {
         HeadLevelLineTest heading = new HeadLevelLineTest()
            .setLinedType(LinedType.HEADING)
             .setLevel(3).setEdition(EditionType.OTHER)
-            .setPublishCount(0).setNoteCount(0);
+            .setPublishTotal(0).setNoteTotal(0);
         EditionTest edition = new EditionTest()
             .setEdition(EditionType.OTHER)
             .setText("abc");
@@ -365,9 +365,9 @@ public class LinedLevelHeadDebug {
         HeadLevelLineTest heading = new HeadLevelLineTest()
            .setFormattedSpan(doc, 0, 1).setLinedType(LinedType.HEADING)
             .setLevel(6).setEdition(EditionType.NONE)
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
 
         heading.test(    doc,  3, raw,      0);
         doc.assertKeyLeaf( 0,  6, "======", 0, 0);
@@ -387,9 +387,9 @@ public class LinedLevelHeadDebug {
         HeadLevelLineTest heading = new HeadLevelLineTest()
            .setFormattedSpan(doc, 0, 1).setLinedType(LinedType.HEADING)
             .setLevel(1).setEdition(EditionType.NONE)
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
 
         heading.test(    doc, 3, raw,   0);
         doc.assertKeyLeaf( 0, 1, "=",   0, 0);

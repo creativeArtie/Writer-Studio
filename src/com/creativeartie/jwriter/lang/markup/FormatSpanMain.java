@@ -21,11 +21,11 @@ public final class FormatSpanMain extends SpanBranch {
         return ImmutableList.of();
     }
 
-    public int getPublishCount(){
+    public int getPublishTotal(){
         return getCount(true, false);
     }
 
-    public int getNoteCount(){
+    public int getNoteTotal(){
         return getCount(false, true);
     }
 

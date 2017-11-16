@@ -1,6 +1,5 @@
 package com.creativeartie.jwriter.lang;
 
-//TODO: add functions for highlighting, node creation and GUI editor
 import java.util.*;
 
 import com.google.common.collect.*;

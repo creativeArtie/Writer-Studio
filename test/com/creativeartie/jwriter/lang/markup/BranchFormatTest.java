@@ -99,12 +99,12 @@ public class BranchFormatTest {
             text = str;
             return cast();
         }
-        
+
         public FormatLinkTest setFormats(FormatType ... types){
             formats = types;
             return this;
         }
-        
+
         public FormatType[] getFormats(){
             return formats;
         }
@@ -134,21 +134,21 @@ public class BranchFormatTest {
             testFormats(test, formats);
         }
     }
-    
+
     public static class FormatContentTest extends BranchTest.ContentBasicTest<FormatContentTest> {
-        
+
         private FormatType[] formats;
 
         public FormatContentTest(){
             super(FormatContentTest.class);
             formats = new FormatType[0];
         }
-        
+
         public FormatContentTest setFormats(FormatType... types){
             formats = types;
             return this;
         }
-        
+
         public FormatType[] getFormats(){
             return formats;
         }
@@ -162,25 +162,25 @@ public class BranchFormatTest {
         public void test(SpanBranch span){
             FormatSpanContent test = assertClass(span, FormatSpanContent.class);
             testFormats(test, formats);
-            
+
         }
     }
-    
+
     public static class FormatMainTest extends SpanBranchAssert<FormatMainTest>
     {
-        private int publishCount;
-        private int noteCount;
+        private int publishTotal;
+        private int noteTotal;
         public FormatMainTest(){
             super(FormatMainTest.class);
         }
-        
-        public FormatMainTest setPublishCount(int count){
-            publishCount = count;
+
+        public FormatMainTest setPublishTotal(int count){
+            publishTotal = count;
             return this;
         }
-        
-        public FormatMainTest setNoteCount(int count){
-            noteCount = count;
+
+        public FormatMainTest setNoteTotal(int count){
+            noteTotal = count;
             return this;
         }
 
@@ -188,11 +188,11 @@ public class BranchFormatTest {
         protected void test(SpanBranch span) {
             FormatSpanMain test = assertClass(span, FormatSpanMain.class);
 
-            assertEquals(getError("publish", test), publishCount, 
-                test.getPublishCount());
-            assertEquals(getError("note", test), noteCount, 
-                test.getNoteCount());
+            assertEquals(getError("publish", test), publishTotal,
+                test.getPublishTotal());
+            assertEquals(getError("note", test), noteTotal,
+                test.getNoteTotal());
         }
-        
+
     }
 }

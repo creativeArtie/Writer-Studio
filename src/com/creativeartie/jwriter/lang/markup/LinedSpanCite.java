@@ -36,7 +36,7 @@ public class LinedSpanCite extends LinedSpan {
     }
 
     @Override
-    public int getNoteCount(){
+    public int getNoteTotal(){
         if (getFieldType() != InfoFieldType.ERROR){
             return getData().map(span -> getCount(span)).orElse(0);
         }
@@ -46,7 +46,7 @@ public class LinedSpanCite extends LinedSpan {
     private int getCount(InfoDataSpan<?> span){
         if (span instanceof InfoDataSpanFormatted){
             FormatSpanMain data = ((InfoDataSpanFormatted)span).getData();
-            return data.getPublishCount() + data.getNoteCount();
+            return data.getPublishTotal() + data.getNoteTotal();
         } else if (span instanceof InfoDataSpanText){
             return ((InfoDataSpanText)span).getData().wordCount();
         }

@@ -28,10 +28,10 @@ public class LinedLevelRestDebug {
 
         BasicLevelLineTest numbered = new BasicLevelLineTest()
             .setLinedType(LinedType.NUMBERED).setLevel(5)
-            .setFormattedSpan(doc, 0, 1).setPublishCount(2)
-            .setNoteCount(0);
+            .setFormattedSpan(doc, 0, 1).setPublishTotal(2)
+            .setNoteTotal(0);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(2).setNoteCount(0);
+            .setPublishTotal(2).setNoteTotal(0);
 
         numbered.test(   doc,  3,  raw,           0);
         doc.assertKeyLeaf( 0,  5, "\t\t\t\t#",    0, 0);
@@ -50,7 +50,7 @@ public class LinedLevelRestDebug {
 
         BasicLevelLineTest bullet = new BasicLevelLineTest()
             .setLinedType(LinedType.BULLET).setLevel(5)
-            .setPublishCount(0).setNoteCount(0);
+            .setPublishTotal(0).setNoteTotal(0);
 
         bullet.test(    doc, 2, raw,            0);
         doc.assertKeyLeaf(0, 5, "\t\t\t\t-",    0, 0);
@@ -68,10 +68,10 @@ public class LinedLevelRestDebug {
 
         BasicLevelLineTest bullet = new BasicLevelLineTest()
             .setLinedType(LinedType.BULLET).setLevel(5)
-            .setFormattedSpan(doc, 0, 1).setPublishCount(2)
-            .setNoteCount(0);
+            .setFormattedSpan(doc, 0, 1).setPublishTotal(2)
+            .setNoteTotal(0);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(2).setNoteCount(0);
+            .setPublishTotal(2).setNoteTotal(0);
 
         bullet.test(      doc, 3, raw,            0);
         doc.assertKeyLeaf( 0,  5, "\t\t\t\t-",    0, 0);
@@ -95,10 +95,10 @@ public class LinedLevelRestDebug {
 
         BasicLevelLineTest bullet = new BasicLevelLineTest()
             .setLinedType(LinedType.BULLET).setLevel(1)
-            .setFormattedSpan(doc, 0, 1).setPublishCount(0)
-            .setNoteCount(1);
+            .setFormattedSpan(doc, 0, 1).setPublishTotal(0)
+            .setNoteTotal(1);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(0).setNoteCount(1);
+            .setPublishTotal(0).setNoteTotal(1);
 
         bullet.test(      doc, 3, raw,         0);
         doc.assertKeyLeaf(  0, 1, "-",         0, 0);
@@ -126,10 +126,10 @@ public class LinedLevelRestDebug {
 
         BasicLevelLineTest bullet = new BasicLevelLineTest()
             .setLinedType(LinedType.BULLET).setLevel(6)
-            .setFormattedSpan(doc, 0, 1).setPublishCount(2)
-            .setNoteCount(0);
+            .setFormattedSpan(doc, 0, 1).setPublishTotal(2)
+            .setNoteTotal(0);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(2).setNoteCount(0);
+            .setPublishTotal(2).setNoteTotal(0);
 
         bullet.test(      doc,  2, raw,           0);
         doc.assertKeyLeaf(  0,  6, "\t\t\t\t\t-", 0, 0);
@@ -152,10 +152,10 @@ public class LinedLevelRestDebug {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         ParagraphLineTest paragraph = new ParagraphLineTest()
-            .setPublishCount(1).setNoteCount(0)
+            .setPublishTotal(1).setNoteTotal(0)
             .setFormattedSpan(doc, 0, 0);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
 
         paragraph.test(   doc,  2, raw,       0);
         main.test(        doc,  4, formatted, 0, 0);

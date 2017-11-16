@@ -19,7 +19,7 @@ abstract class SceneWriterView extends BorderPane{
     private PaneListsControl userLists;
     private SimpleObjectProperty<ManuscriptFile> manuscriptFile;
     private ReadOnlyObjectWrapper<ManuscriptDocument> document;
-    private ReadOnlyObjectWrapper<RecordTable> records;
+    private ReadOnlyObjectWrapper<RecordList> records;
     private SimpleBooleanProperty ready;
     private SimpleBooleanProperty isEdited;
 
@@ -133,11 +133,11 @@ abstract class SceneWriterView extends BorderPane{
     public ManuscriptDocument getDocument(){
         return document.getValue();
     }
-    public ReadOnlyObjectProperty<RecordTable> recordsPoperty(){
+    public ReadOnlyObjectProperty<RecordList> recordsPoperty(){
         return records.getReadOnlyProperty();
     }
 
-    public RecordTable getRecords(){
+    public RecordList getRecords(){
         return records.getValue();
     }
 
