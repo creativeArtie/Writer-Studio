@@ -14,20 +14,31 @@ import com.google.common.collect.*;
 public class PaneListsControl extends PaneListsView{
     private Optional<Range<Integer>> selectedRange;
     private Optional<DirectoryType> selectedType;
-    private HashMap<DirectoryType, ObservableList<PaneListsData>> data;
+    private HashMap<DirectoryType, ObservableList<PaneListsData>> dataMap;
 
     public PaneListsControl(){
         selectedRange = Optional.empty();
         selectedType = Optional.empty();
-        data = new HashMap<>();
+        dataMap = new HashMap<>();
     }
 
     public void loadDoc(ManuscriptDocument doc){
-        data.clear();
-        for (DirectoryType type: DirectoryType.values()){
-            data.put(type, PaneListsData.extractData(
-                doc.getCatalogue().getCategory(type.getCategory()).values(),
-            type));
+        dataMap.clear();
+        for (DirectoryType type: getTypes().getItems()){
+            if (type == DirectoryType.NOTE){
+                ObservableList<PaneListsData> data = PaneListsData.extractData(
+                    doc.getCatalogue().getCategory(
+                        DirectoryType.COMMENT.getCategory()
+                    ).values(), DirectoryType.COMMENT);
+                data.addAll(PaneListsData.extractData(
+                    doc.getCatalogue().getCategory(type.getCategory()).values(),
+                    DirectoryType.NOTE));
+                dataMap.put(type, data);
+            } else {
+                dataMap.put(type, PaneListsData.extractData(
+                    doc.getCatalogue().getCategory(type.getCategory()).values(),
+                    type));
+            }
         }
     }
 
@@ -45,9 +56,8 @@ public class PaneListsControl extends PaneListsView{
             setNoteDetailVisible(false);
             return;
         }
-        getDataTable().setItems(data.get(type));
-        boolean isNote = type == DirectoryType.NOTE ||
-            type == DirectoryType.COMMENT;
+        getDataTable().setItems(dataMap.get(type));
+        boolean isNote = type == DirectoryType.NOTE;
         getLineColumn().setVisible(! isNote);
         setNoteDetailVisible(isNote);
         getNoteDetail().clearData();

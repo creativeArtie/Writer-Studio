@@ -147,7 +147,7 @@ abstract class PaneListsView extends GridPane{
 
     public PaneListsView(){
         types = new ListView<>(FXCollections.observableArrayList(DirectoryType
-            .values()));
+            .getMenuList()));
         data = new TableView<>();
         noteDetail = new PaneListsNotePane();
 

@@ -19,15 +19,29 @@ public class ParseTextUtilities {
     }
 
     static TextFlow setFormat(Optional<FormatSpanMain> formatted){
+        return setFormat(formatted, null);
+    }
+
+    static TextFlow setFormat(Optional<FormatSpanMain> formatted, String extra){
         TextFlow ans = new TextFlow();
-        setFormat(ans, formatted);
+        setFormat(ans, formatted, extra);
         return ans;
     }
 
     static void setFormat(TextFlow node, FormatSpanMain formatted){
-        setFormat(node, Optional.ofNullable(formatted));
+        setFormat(node, Optional.ofNullable(formatted), null);
     }
+
+    static void setFormat(TextFlow node, FormatSpanMain formatted, String extra){
+        setFormat(node, Optional.ofNullable(formatted), extra);
+    }
+
     static void setFormat(TextFlow node, Optional<FormatSpanMain> formatted){
+        setFormat(node, formatted, null);
+    }
+    static void setFormat(TextFlow node, Optional<FormatSpanMain> formatted,
+        String extra)
+    {
         if (formatted.isPresent()){
             formatted.get().forEach((span) -> {
                 String css = "";
@@ -39,6 +53,9 @@ public class ParseTextUtilities {
                     Text input = new Text(add.getOutput());
                     for (FormatType type: add.listFormats()){
                         css += toCss(type.name());
+                    }
+                    if (extra != null){
+                        css += Utilities.getCss(extra);
                     }
                     input.setStyle(css);
                     node.getChildren().add(input);
