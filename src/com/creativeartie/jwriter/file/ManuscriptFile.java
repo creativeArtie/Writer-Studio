@@ -15,7 +15,7 @@ import com.creativeartie.jwriter.main.Checker;
 /**
  * Stores the {@link ManuscriptDocument} and {@link RecordList} in a zip file.
  */
-public class ManuscriptFile {
+public final class ManuscriptFile {
     private static final String TEXT = "manuscript";
     private static final String RECORDS = "records";
     private static final String EXTENSION = ".txt";

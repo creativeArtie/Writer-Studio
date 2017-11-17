@@ -75,7 +75,7 @@ public class PaneTextControl extends PaneTextView {
             break;
         case ID:
             leaf.getParent(Catalogued.class).ifPresent(span -> {
-                switch(span.getBranch().getIdStatus()){
+                switch(((SpanBranch)span).getIdStatus()){
                 case MULTIPLE:
                 case NOT_FOUND:
                     addProperty(list, "Error");

@@ -32,6 +32,32 @@ abstract class PaneListsView extends GridPane{
         }
     }
 
+    private class TextCell extends TableCell<PaneListsData, String> {
+        private String emptyKey;
+
+        TextCell(String key){
+            emptyKey = key;
+        }
+
+        @Override
+        protected void updateItem(String item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setText(null);
+                setGraphic(null);
+            } else {
+                Text out;
+                if (item.isEmpty()){
+                    out = new Text(Utilities.getString(emptyKey));
+                    out.setStyle(Utilities.getCss("Common.NoneFound"));
+                } else {
+                    out = new Text(item);
+                }
+                setGraphic(out);
+            }
+        }
+    }
+
     private class NameCell extends TableCell<PaneListsData, IdentityData> {
 
         @Override
@@ -110,10 +136,10 @@ abstract class PaneListsView extends GridPane{
     private ColumnConstraints noteColumn;
     private TableColumn<PaneListsData, Optional<SpanBranch>> lineColumn;
     private PaneListsNotePane noteDetail;
-    
+
     private ReadOnlyIntegerWrapper toLocation;
     private ReadOnlyBooleanWrapper childFocused;
-    
+
     private static double DATA_FULL_WIDHT = 85.0;
     private static double DATA_HALF_WIDHT = 45.0;
     private static double NOTE_FULL_WIDHT = 40.0;
@@ -136,7 +162,7 @@ abstract class PaneListsView extends GridPane{
             (data, oldValue, newValue) -> listenSelected(newValue));
 
         toLocation = new ReadOnlyIntegerWrapper(this, "toLocation");
-        
+
         childFocused = new ReadOnlyBooleanWrapper(this, "childFocused");
         childFocused.bind(types.focusedProperty().or(data.focusedProperty()));
     }
@@ -189,13 +215,15 @@ abstract class PaneListsView extends GridPane{
 
         TableColumn<PaneListsData, String> cat = setupColumn("Category",
             "catalogueCategory");
-
-        TableColumn<PaneListsData, String> ref = setupColumn("Ref",
-            "refText");
+        cat.setCellFactory(table -> new TextCell("ListView.NoCategory"));
 
         TableColumn<PaneListsData, IdentityData> name = setupColumn("Name",
             "catalogueIdentity");
         name.setCellFactory(table -> new NameCell());
+
+        TableColumn<PaneListsData, String> ref = setupColumn("Ref",
+            "refText");
+        ref.setCellFactory(table -> new TextCell("ListView.NoRef"));
 
         TableColumn<PaneListsData, Optional<Range<Integer>>> loc =
             setupColumn("Location", "spanLocation");
@@ -249,11 +277,11 @@ abstract class PaneListsView extends GridPane{
     public int getToLocation(){
         return toLocation.getValue();
     }
-    
+
     public ReadOnlyBooleanProperty childFocusedProperty(){
         return childFocused.getReadOnlyProperty();
     }
-    
+
     public boolean isChildFocused(){
         return childFocused.getValue();
     }

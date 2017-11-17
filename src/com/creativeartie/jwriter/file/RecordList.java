@@ -10,7 +10,7 @@ import com.google.common.collect.*;
 /**
  * A list of {@link Record} and methods to save and edit with today's Record.
  */
-public class RecordList extends ForwardingList<Record>{
+public final class RecordList extends ForwardingList<Record>{
 
     @Deprecated
     public static RecordList build(File file) throws IOException{
