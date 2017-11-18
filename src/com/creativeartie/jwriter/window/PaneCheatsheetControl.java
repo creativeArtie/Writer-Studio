@@ -12,5 +12,5 @@ import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 
-abstract class PaneCheatsheetControl extends PaneCheatsheetView{
+class PaneCheatsheetControl extends PaneCheatsheetView{
 }

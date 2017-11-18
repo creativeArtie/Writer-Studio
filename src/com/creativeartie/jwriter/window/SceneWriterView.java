@@ -17,6 +17,7 @@ abstract class SceneWriterView extends BorderPane{
     private PaneHeadingControl tableOfContent;
     private PaneAgendaControl agendaList;
     private PaneListsControl userLists;
+    private PaneCheatsheetControl langCheatsheet;
     private SimpleObjectProperty<ManuscriptFile> manuscriptFile;
     private ReadOnlyObjectWrapper<ManuscriptDocument> document;
     private ReadOnlyObjectWrapper<RecordList> records;
@@ -28,6 +29,7 @@ abstract class SceneWriterView extends BorderPane{
         tableOfContent = new PaneHeadingControl();
         agendaList = new PaneAgendaControl();
         userLists = new PaneListsControl();
+        langCheatsheet = new PaneCheatsheetControl();
 
         manuscriptFile = new SimpleObjectProperty<>(this, "manuscriptFile");
 
@@ -69,6 +71,7 @@ abstract class SceneWriterView extends BorderPane{
         layoutLeftPane();
         layoutRightPane();
         layoutTopPane(window);
+        layoutBottomPane();
         layoutCenterPane();
 
         controlSetup();
@@ -104,6 +107,7 @@ abstract class SceneWriterView extends BorderPane{
     private void layoutRightPane(){
         setRight(agendaList);
     }
+
     private void layoutTopPane(Stage window){
         VBox pane = new VBox();
         MainMenuBar bar = new MainMenuBar(window);
@@ -111,6 +115,10 @@ abstract class SceneWriterView extends BorderPane{
 
         pane.getChildren().addAll(bar, userLists);
         setTop(pane);
+    }
+
+    private void layoutBottomPane(){
+        setBottom(langCheatsheet);
     }
 
     /// Node Properties

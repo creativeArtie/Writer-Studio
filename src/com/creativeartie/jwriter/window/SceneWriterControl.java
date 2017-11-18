@@ -70,7 +70,7 @@ public class SceneWriterControl extends SceneWriterView {
     }
 
     @Override
-    protected void listenDoc(){
+    protected synchronized void listenDoc(){
         setTextReady(false);
         getTextArea().loadDoc(getDocument());
         getUserLists().loadDoc(getDocument());
@@ -105,8 +105,9 @@ public class SceneWriterControl extends SceneWriterView {
     }
 
     @Override
-    protected void listenTextChange(PlainTextChange change){
+    protected synchronized void listenTextChange(PlainTextChange change){
         setEdited(true);
+
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         if (isTextReady()){
             int pos = change.getPosition();
