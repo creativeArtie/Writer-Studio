@@ -13,7 +13,6 @@ import com.creativeartie.jwriter.lang.markup.*;
 
 abstract class PaneTextView extends BorderPane {
 
-    private final PaneTextEditControl buttons;
     private final InlineCssTextArea textArea;
     private final Label viewMode;
     private final Label currentStats;
@@ -23,14 +22,11 @@ abstract class PaneTextView extends BorderPane {
     private final ReadOnlyBooleanWrapper editorFocus;
 
     PaneTextView(){
-
-        buttons = new PaneTextEditControl();
         textArea = new InlineCssTextArea();
         viewMode = new Label();
         currentStats = new Label();
         currentTime = new Label();
 
-        // layoutTopPane();
         layoutCenterPane();
         layoutBottomPane();
 
@@ -39,7 +35,6 @@ abstract class PaneTextView extends BorderPane {
 
         position = new ReadOnlyIntegerWrapper(this, "position");
         position.bind(textArea.caretPositionProperty());
-        buttons.positionProperty().bind(position);
 
         editorFocus = new ReadOnlyBooleanWrapper(this, "editorFocus");
         editorFocus.bind(textArea.focusedProperty());
@@ -51,9 +46,6 @@ abstract class PaneTextView extends BorderPane {
         return textArea;
     }
 
-    protected PaneTextEditControl getButtonPane(){
-        return buttons;
-    }
 
     protected Label getViewModeLabel(){
         return viewMode;
@@ -68,10 +60,6 @@ abstract class PaneTextView extends BorderPane {
     }
 
     /// Layout Node
-    private void layoutTopPane(){
-        setTop(buttons);
-    }
-
     private void layoutCenterPane(){
         setCenter(textArea);
         textArea.setWrapText(true);

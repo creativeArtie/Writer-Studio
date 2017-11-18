@@ -17,8 +17,6 @@ public class PaneTextControl extends PaneTextView {
     public void loadDoc(ManuscriptDocument doc){
         getTextArea().replaceText(0, getTextArea().getLength(),
             doc.getRaw());
-        getButtonPane().setDocument(doc);
-        // getButtonPane().refreshButtons();
     }
 
     @Override
