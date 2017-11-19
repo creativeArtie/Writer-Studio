@@ -67,10 +67,4 @@ public enum LinedType implements DetailStyle{
         assert false;
         return null;
     }
-
-
-    @Override
-    public String getStyleClass(){
-        return DetailStyle.styleFromEnum(STYLE_LINED, name());
-    }
 }

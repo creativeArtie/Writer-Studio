@@ -20,9 +20,8 @@ public class LinedSpanCite extends LinedSpan {
         return InfoFieldType.ERROR;
     }
 
-    public Optional<InfoDataSpan<?>> getData(){
-        return spanFromLast(InfoDataSpan.class)
-            .map(value -> (InfoDataSpan<?>) value);
+    public Optional<InfoDataSpan> getData(){
+        return spanFromLast(InfoDataSpan.class);
     }
 
     @Override
@@ -43,7 +42,7 @@ public class LinedSpanCite extends LinedSpan {
         return 0;
     }
 
-    private int getCount(InfoDataSpan<?> span){
+    private int getCount(InfoDataSpan span){
         if (span instanceof InfoDataSpanFormatted){
             FormatSpanMain data = ((InfoDataSpanFormatted)span).getData();
             return data.getPublishTotal() + data.getNoteTotal();

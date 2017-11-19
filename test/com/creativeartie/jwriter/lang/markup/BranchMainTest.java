@@ -44,8 +44,8 @@ public class BranchMainTest {
 
     public static class MainNoteTest extends MainTest<MainNoteTest>{
 
-        private ImmutableMultimap.Builder<InfoFieldType, InfoDataSpan<?>> builder;
-        private Multimap<InfoFieldType, InfoDataSpan<?>> sources;
+        private ImmutableMultimap.Builder<InfoFieldType, InfoDataSpan> builder;
+        private Multimap<InfoFieldType, InfoDataSpan> sources;
 
         public MainNoteTest(){
             super(MainNoteTest.class);

@@ -7,7 +7,7 @@ import com.creativeartie.jwriter.main.*;
 import com.google.common.base.*;
 
 public enum EditIcon{
-    /// name() is used to convert LinedType to ImageIcon in PaneTextInsertView
+    /// Keeping the following code for the WYSIWYG mode
     /*PARAGRAPH_LINE(0, 0), QUOTE_LINE(1, 0),BREAK_LINE(2, 0),NUMBERED_LINE(3, 0),
     BULLET_LINE(4, 0), HEADING_LINE(5, 0), OUTLINE_LINE(6, 0), HYPERLINK_LINE(7, 0),
     DATA_TEXT(8, 0),

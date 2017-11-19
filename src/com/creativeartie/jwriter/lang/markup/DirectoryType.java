@@ -44,9 +44,4 @@ public enum DirectoryType implements DetailStyle{
     public String getCategory(){
         return baseCategory;
     }
-
-    @Override
-    public String getStyleClass(){
-        return DetailStyle.styleFromEnum(STYLE_CATEGORY, name());
-    }
 }

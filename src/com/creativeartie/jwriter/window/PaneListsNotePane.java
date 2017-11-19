@@ -56,7 +56,7 @@ public class PaneListsNotePane extends BorderPane{
                     firstLine = false;
                 } else if (child instanceof LinedSpanCite){
                     LinedSpanCite line = (LinedSpanCite)child;
-                    Optional<InfoDataSpan<?>> data = line.getData();
+                    Optional<InfoDataSpan> data = line.getData();
                     if (line.getFieldType() == InfoFieldType.SOURCE){
                         if (! hasText){
                             cite.add(newLabel("ListView.Source"), 0, 0);
@@ -89,7 +89,7 @@ public class PaneListsNotePane extends BorderPane{
         return ans;
     }
 
-    private void addSources(TextFlow source, Optional<InfoDataSpan<?>> data){
+    private void addSources(TextFlow source, Optional<InfoDataSpan> data){
         data.ifPresent(span -> {
             FormatSpanMain found = ((InfoDataSpanFormatted)span)
                 .getData();
@@ -97,7 +97,7 @@ public class PaneListsNotePane extends BorderPane{
         });
     }
 
-    private boolean addInText(GridPane cite, Optional<InfoDataSpan<?>> data,
+    private boolean addInText(GridPane cite, Optional<InfoDataSpan> data,
         String key)
     {
         if (data.isPresent()){

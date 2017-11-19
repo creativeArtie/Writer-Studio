@@ -84,19 +84,6 @@ public class SpanLeaf extends Span{
         return leafText.length();
     }
 
-    public String toCss(PropertyManager file){
-        Checker.checkNotNull(file, "file");
-        ArrayList<StyleProperty> list = new ArrayList<>();
-        for(DetailStyle info: getDetailStyle()){
-            String style = info.getStyleClass();
-            list.add(file.getStyleProperty(style));
-        }
-        list.add(file.getStyleProperty(DetailStyle.styleFromEnum(
-            SetupStrings.STYLE_BASIC, SetupStrings.STYLE_ALL
-        )));
-        return StyleProperty.toCss(list);
-    }
-
     @Override
     public void setRemove(){}
 

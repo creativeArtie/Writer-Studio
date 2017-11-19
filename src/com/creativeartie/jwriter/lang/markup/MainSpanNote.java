@@ -18,8 +18,8 @@ public class MainSpanNote extends MainSpan {
         return ImmutableList.of(AuxiliaryStyle.MAIN_NOTE, getIdStatus());
     }
 
-    public ImmutableListMultimap<InfoFieldType, InfoDataSpan<?>> getSources(){
-        ImmutableListMultimap.Builder<InfoFieldType, InfoDataSpan<?>> data =
+    public ImmutableListMultimap<InfoFieldType, InfoDataSpan> getSources(){
+        ImmutableListMultimap.Builder<InfoFieldType, InfoDataSpan> data =
             ImmutableListMultimap.builder();
         for (Span child: this){
             if (child instanceof LinedSpanCite){

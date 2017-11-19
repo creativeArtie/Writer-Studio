@@ -34,16 +34,76 @@ public abstract class SpanNode<T extends Span> extends Span
 
     @Override
     public void setRemove(){
-        super.setRemove();
         for(Span child: this){
             child.setRemove();
         }
     }
 
-    abstract Span removeChild(int idx);
+    protected <T extends SpanBranch> Optional<T> spanAtFirst(Class<T> clazz){
+        if (isEmpty()){
+            return Optional.empty();
+        }
+        if (clazz.isInstance(get(0))){
+            return Optional.of(clazz.cast(get(0)));
+        }
+        return Optional.empty();
+    }
 
-    abstract void addChildren(int idx, List<Span> children);
+    protected <T extends SpanBranch> Optional<T> spanFromFirst(Class<T> clazz){
+        for(Span span: this){
+            if (clazz.isInstance(span)){
+                return Optional.of(clazz.cast(span));
+            }
+        }
+        return Optional.empty();
+    }
 
+    protected <T extends SpanBranch> Optional<T> spanAtLast(Class<T> clazz){
+        if (isEmpty()){
+            return Optional.empty();
+        }
+        if (clazz.isInstance(get(size() - 1))){
+            return Optional.of(clazz.cast(get(size() - 1)));
+        }
+        return Optional.empty();
+    }
+
+    protected <T extends SpanBranch> Optional<T> spanFromLast(Class<T> clazz){
+        for(int i = size() - 1; i >= 0; i--){
+            Span span = get(i);
+            if (clazz.isInstance(span)){
+                return Optional.of(clazz.cast(span));
+            }
+        }
+        return Optional.empty();
+    }
+
+    protected Optional<SpanLeaf> leafFromFrist(SetupLeafStyle info){
+        for (Span span: this){
+            if (span instanceof SpanLeaf){
+                SpanLeaf found = (SpanLeaf) span;
+                if (found.getLeafStyle().equals(info)){
+                    return Optional.of(found);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    protected Optional<SpanLeaf> leafFromLast(SetupLeafStyle info){
+        for(int i = size() - 1; i >= 0; i++){
+            Span span = get(i);
+            if (span instanceof SpanLeaf){
+                SpanLeaf found = (SpanLeaf) span;
+                if (found.getLeafStyle().equals(info)){
+                    return Optional.of(found);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    /// Implements List (ForwardList cannot be the super class
     public abstract List<T> delegate();
 
     @Override
@@ -191,67 +251,4 @@ public abstract class SpanNode<T extends Span> extends Span
         return delegate().toString();
     }
 
-    protected <T extends SpanBranch> Optional<T> spanAtFirst(Class<T> clazz){
-        if (isEmpty()){
-            return Optional.empty();
-        }
-        if (clazz.isInstance(get(0))){
-            return Optional.of(clazz.cast(get(0)));
-        }
-        return Optional.empty();
-    }
-
-    protected <T extends SpanBranch> Optional<T> spanFromFirst(Class<T> clazz){
-        for(Span span: this){
-            if (clazz.isInstance(span)){
-                return Optional.of(clazz.cast(span));
-            }
-        }
-        return Optional.empty();
-    }
-
-    protected <T extends SpanBranch> Optional<T> spanAtLast(Class<T> clazz){
-        if (isEmpty()){
-            return Optional.empty();
-        }
-        if (clazz.isInstance(get(size() - 1))){
-            return Optional.of(clazz.cast(get(size() - 1)));
-        }
-        return Optional.empty();
-    }
-
-    protected <T extends SpanBranch> Optional<T> spanFromLast(Class<T> clazz){
-        for(int i = size() - 1; i >= 0; i--){
-            Span span = get(i);
-            if (clazz.isInstance(span)){
-                return Optional.of(clazz.cast(span));
-            }
-        }
-        return Optional.empty();
-    }
-
-    protected Optional<SpanLeaf> leafFromFrist(SetupLeafStyle info){
-        for (Span span: this){
-            if (span instanceof SpanLeaf){
-                SpanLeaf found = (SpanLeaf) span;
-                if (found.getLeafStyle().equals(info)){
-                    return Optional.of(found);
-                }
-            }
-        }
-        return Optional.empty();
-    }
-
-    protected Optional<SpanLeaf> leafFromLast(SetupLeafStyle info){
-        for(int i = size() - 1; i >= 0; i++){
-            Span span = get(i);
-            if (span instanceof SpanLeaf){
-                SpanLeaf found = (SpanLeaf) span;
-                if (found.getLeafStyle().equals(info)){
-                    return Optional.of(found);
-                }
-            }
-        }
-        return Optional.empty();
-    }
 }

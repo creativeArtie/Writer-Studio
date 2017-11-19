@@ -28,11 +28,6 @@ public enum InfoFieldType implements DetailStyle{
         return dataParser;
     }
 
-    @Override
-    public String getStyleClass(){
-        return DetailStyle.styleFromEnum(STYLE_FIELD, name());
-    }
-
     @Deprecated
     public String getCode(){
         return CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_UNDERSCORE, name());

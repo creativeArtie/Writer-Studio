@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.function.*;
 
 import com.google.common.collect.*;
+import static com.google.common.base.Preconditions.*;
 
 /**
  * A list of {@link Record} and methods to save and edit with today's Record.
@@ -25,12 +26,16 @@ public final class RecordList extends ForwardingList<Record>{
     }
 
     RecordList(String text){
+        checkNotNull(text, "Record text cannot be null.");
+
         recordList = new ArrayList<>();
         fillData(new Scanner(text));
     }
 
     @Deprecated
     RecordList(File file) throws IOException{
+        checkNotNull(file, "Record text cannot be null.");
+
         recordList = new ArrayList<>();
         try (Scanner data = new Scanner(file)){
             fillData(data);
@@ -38,6 +43,8 @@ public final class RecordList extends ForwardingList<Record>{
     }
 
     private void fillData(Scanner data){
+        assert data != null: "Null data";
+
         int written = 0;
         Record current = null;
         while (data.hasNextInt()){
@@ -99,6 +106,8 @@ public final class RecordList extends ForwardingList<Record>{
     }
 
     public Iterator<Record> getMonth(YearMonth month){
+        checkNotNull(month, "Month cannot be null.");
+
         if (getStartMonth().isAfter(month) || getEndMonth().isBefore(month)){
             return new AbstractIterator<Record>(){
                 protected Record computeNext(){
@@ -127,6 +136,7 @@ public final class RecordList extends ForwardingList<Record>{
     }
 
     private int findMonth(YearMonth month){
+        assert month != null: "Null Month";
         int ptr = 0;
         for(Record record: this){
             LocalDate date = record.getRecordDate();

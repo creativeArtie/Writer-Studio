@@ -52,7 +52,7 @@ public class BranchLineTest {
     public static class CiteLineTest extends LineTest<CiteLineTest>{
 
         private InfoFieldType infoType;
-        private Optional<InfoDataSpan<?>> dataSpan;
+        private Optional<InfoDataSpan> dataSpan;
 
         public CiteLineTest(){
             super(CiteLineTest.class);
@@ -68,7 +68,7 @@ public class BranchLineTest {
         public CiteLineTest setDataSpan(DocumentAssert doc, int ... idx){
             SpanBranch span = doc.getChild(idx);
             if (span instanceof InfoDataSpan){
-                dataSpan = Optional.of((InfoDataSpan<?>) span);
+                dataSpan = Optional.of((InfoDataSpan) span);
             } else {
                 throw new IllegalArgumentException(span +
                     " is not of type InfoDataSpan. Gotten: " + span.getClass());

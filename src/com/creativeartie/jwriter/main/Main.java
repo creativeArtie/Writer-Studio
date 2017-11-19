@@ -41,8 +41,7 @@ public class Main extends Application{
             builder.append((char) read);
             read = in.read();
         }
-        setupWindow(stage, ManuscriptFile.withManuscript(
-            new ManuscriptDocument(builder.toString())));
+        setupWindow(stage, ManuscriptFile.newFile());
     }
 
     private void setupWindow(Stage stage, ManuscriptFile file) {
@@ -54,6 +53,7 @@ public class Main extends Application{
         stage.show();
     }
 
+    @Deprecated
     private void testStatsWindow(Stage stage) throws Exception{
         Button button = new Button("Click");
         Scene scene = new Scene(new BorderPane(button), 800, 600);
