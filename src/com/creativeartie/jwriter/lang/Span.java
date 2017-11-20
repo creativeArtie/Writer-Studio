@@ -2,6 +2,7 @@ package com.creativeartie.jwriter.lang;
 
 import java.util.*;
 import com.google.common.collect.*;
+import static com.google.common.base.Preconditions.*;
 /**
  * A subdivision of a {@link Document}
  */
@@ -65,5 +66,10 @@ public abstract class Span{
 
     public int getEnd(){
         return getRange().upperEndpoint();
+    }
+
+    public int toLocalPosition(int index){
+        checkPositionIndex(index, getEnd(), "Index is out of range.");
+        return getStart() - index;
     }
 }

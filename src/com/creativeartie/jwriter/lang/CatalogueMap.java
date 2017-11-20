@@ -15,7 +15,7 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
         idMap = new TreeMap<>();
     }
 
-    public void addId(CatalogueIdentity id, SpanBranch span){
+    void addId(CatalogueIdentity id, SpanBranch span){
         checkNotNull(id, "id object cannot be null");
         checkNotNull(span, "id span cannot be null");
 
@@ -27,7 +27,7 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
         data.addId(span);
     }
 
-    public void addRef(CatalogueIdentity ref, SpanBranch span){
+    void addRef(CatalogueIdentity ref, SpanBranch span){
         checkNotNull(ref, "ref object cannot be null");
         checkNotNull(span, "ref span cannot be null");
 

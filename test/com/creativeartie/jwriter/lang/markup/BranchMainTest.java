@@ -68,7 +68,7 @@ public class BranchMainTest {
         @Override
         public void setup(){
             sources = builder.build();
-            setStyles(AuxiliaryStyle.MAIN_NOTE, getCatalogueStatus());
+            setStyles(AuxiliaryType.MAIN_NOTE, getCatalogueStatus());
         }
 
         @Override
@@ -94,7 +94,7 @@ public class BranchMainTest {
 
         @Override
         public void setup(){
-            setStyles(AuxiliaryStyle.MAIN_SECTION);
+            setStyles(AuxiliaryType.MAIN_SECTION);
         }
 
         @Override

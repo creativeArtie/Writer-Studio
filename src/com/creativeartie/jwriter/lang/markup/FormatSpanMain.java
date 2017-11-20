@@ -49,8 +49,4 @@ public final class FormatSpanMain extends SpanBranch {
             .omitEmptyStrings().splitToList(text).size();
     }
 
-    /* // TODO Speed up preformance by edit only some of the text
-    protected DetailUpdater getUpdater(int index, String newText){ }
-    */
-
 }

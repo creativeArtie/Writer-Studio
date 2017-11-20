@@ -94,6 +94,10 @@ abstract class SceneWriterView extends BorderPane{
         return userLists;
     }
 
+    protected PaneCheatsheetControl getCheatsheet(){
+        return langCheatsheet;
+    }
+
     /// Layout Nodes
     private void layoutLeftPane(){
         setLeft(tableOfContent);

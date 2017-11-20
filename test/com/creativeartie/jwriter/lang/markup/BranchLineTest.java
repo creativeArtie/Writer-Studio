@@ -82,7 +82,7 @@ public class BranchLineTest {
             setLinedType(LinedType.SOURCE);
             setStyles(LinedType.SOURCE, infoType);
             if ( ! dataSpan.isPresent()){
-                addStyles(AuxiliaryStyle.DATA_ERROR);
+                addStyles(AuxiliaryType.DATA_ERROR);
             }
         }
 

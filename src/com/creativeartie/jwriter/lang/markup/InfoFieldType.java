@@ -8,10 +8,6 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import com.creativeartie.jwriter.lang.*;
 
 public enum InfoFieldType implements DetailStyle{
-    /* //TODO add in future version (for automatic InfoFieldType Style)
-    AUTHOR, EDITOR, TRANSLATOR, ARTICLE, TITLE, EDITION, PUBLISH_HOUSE,
-    PUBLISH_YEAR, MEDIA, ACCESS_LOCATION, ACCESS_DATE, */
-    // PAGES(InfoDataParser.NUMBER), // Maybe later version
 
     SOURCE(InfoDataParser.FORMATTED), IN_TEXT(InfoDataParser.TEXT),
     FOOTNOTE(InfoDataParser.TEXT),

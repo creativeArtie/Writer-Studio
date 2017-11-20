@@ -113,9 +113,9 @@ public class BranchFormatTest {
         @Override
         public void setup(){
             if (isCatalogued()){
-                setStyles(AuxiliaryStyle.REF_LINK, getCatalogueStatus());
+                setStyles(AuxiliaryType.REF_LINK, getCatalogueStatus());
             } else {
-                setStyles(AuxiliaryStyle.DIRECT_LINK);
+                setStyles(AuxiliaryType.DIRECT_LINK);
             }
             addStyles(formats);
         }

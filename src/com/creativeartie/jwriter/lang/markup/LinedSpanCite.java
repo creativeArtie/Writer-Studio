@@ -29,7 +29,7 @@ public class LinedSpanCite extends LinedSpan {
         ImmutableList.Builder<DetailStyle> builder = ImmutableList.builder();
         builder.addAll(super.getBranchStyles()).add(getFieldType());
         if (! getData().isPresent()){
-            builder.add(AuxiliaryStyle.DATA_ERROR);
+            builder.add(AuxiliaryType.DATA_ERROR);
         }
         return builder.build();
     }

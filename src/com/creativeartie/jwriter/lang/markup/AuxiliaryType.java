@@ -6,7 +6,7 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 /**
  * All styles that are not really part of any group of styles.
  */
-public enum AuxiliaryStyle implements DetailStyle{
+public enum AuxiliaryType implements DetailStyle{
     ESCAPE,       /// For BasicTextEscape
     NO_ID,        /// For LinedSpanPoint, MainSpanNote
     DATA_ERROR,   /// For LinedSpanCite

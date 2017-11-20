@@ -41,7 +41,7 @@ public class PaneTextControl extends PaneTextView {
         });
 
         checkClass(leaf, LinedSpanAgenda.class, list, "Agenda");
-         checkClass(leaf, LinedSpanPointLink.class, list, "Link");
+        checkClass(leaf, LinedSpanPointLink.class, list, "Link");
 
         leaf.getParent(FormatSpan.class).ifPresent(span ->{
             if(span.isBold()) addProperty(list, "Bold");

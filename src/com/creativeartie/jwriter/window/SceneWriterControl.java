@@ -78,6 +78,7 @@ public class SceneWriterControl extends SceneWriterView {
         getTextArea().returnFocus();
         setTextReady(true);
         updateDoc();
+        getCheatsheet().updateLabels(getDocument(), getTextArea().getPosition());
     }
 
     private void updateDoc(){
@@ -124,6 +125,7 @@ public class SceneWriterControl extends SceneWriterView {
             getAgendaList().updateSelection(getDocument(), moveTo);
             getTableOfContent().setHeading(getDocument(), moveTo);
         }
+        getCheatsheet().updateLabels(getDocument(), moveTo);
     }
 
     protected void listenAgenda(boolean focused){

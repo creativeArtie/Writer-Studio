@@ -23,11 +23,4 @@ public class LinedSpanNote extends LinedSpan{
     public int getNoteTotal(){
         return getFormattedSpan().map(span -> span.getTotalCount()).orElse(0);
     }
-
-    /* // TODO Speed up preformance by edit only some of the text
-    @Override
-    protected DetailUpdater getUpdater(int indexedSpan, String newText){
-        return DetailUpdater.unable();
-    }
-    */
 }
