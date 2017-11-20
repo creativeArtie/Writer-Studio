@@ -18,7 +18,9 @@ class PaneCheatsheetLabel extends Label{
         PARAGRAPH, QUOTE, BREAK, NUMBERED, BULLET, FOOTNOTE, ENDNOTE, NOTE,
         HEADING, OUTLINE, HYPERLINK, AGENDA, SOURCE,
         FORMAT_BOLD, FORMAT_ITALICS,FORMAT_CODED,FORMAT_UNDERLINE,
-        EDITION, ID, FORMAT_ESCAPE,
+        STUB, DRAFT, FINAL, OTHER,
+        FIELD_SOURCE, FIELD_IN_TEXT, FIELD_FOOTNOTE,
+        ID, FORMAT_ESCAPE,
         FORMAT_LINK_DIR, FORMAT_LINK_REF, FORMAT_AGENDA,
         FORMAT_NOTE, FORMAT_FOOTNOTE, FORMAT_ENDNOTE;
     }
@@ -49,9 +51,21 @@ class PaneCheatsheetLabel extends Label{
             return doc.spansAt(point, FormatSpan.class).map(
                     span -> span.isFormat(FormatType.valueOf(toType()))
                 ).orElse(false);
-        } else if (Name.EDITION == nameType){
-            return doc.spansAt(point, EditionSpan.class).isPresent();
-        } else if (Name.ID == nameType){
+        } else if (Name.OTHER.ordinal() >= nameType.ordinal()){
+            return doc.spansAt(point, EditionSpan.class).map(
+                span -> Name.valueOf(span.getEdition().name()) == nameType
+            ).orElse(false);
+        } else if (Name.FIELD_FOOTNOTE.ordinal() >= nameType.ordinal()){
+            return doc.spansAt(point, LinedSpanCite.class).map(
+                span -> {
+                    if(span.getFieldType() == InfoFieldType.ERROR){
+                        return false;
+                    }
+                    return Name.valueOf("FIELD_" + span.getFieldType().name())
+                        == nameType;
+                }
+            ).orElse(false);
+        }if (Name.ID == nameType){
             return doc.spansAt(point, DirectorySpan.class).isPresent();
         } else if (Name.FORMAT_ESCAPE == nameType){
             return doc.spansAt(point, BasicTextEscape.class).isPresent();

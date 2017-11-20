@@ -34,27 +34,6 @@
     <property name="dir.src" location="${loc.src}" />
     <property name="dir.test" location="${loc.test}" />
 
-    <!-- ........................ Output Folder ......................... -->
-    <property name="dir.out" location="out/" />
-    <!-- running java classes and data -->
-    <property name="dir.run"      location="${dir.out}/run/" />
-    <property name="dir.run-data" location="${dir.run}/data" />
-    <!-- testing java classes and data -->
-    <property name="dir.debug"      location="${dir.out}/${loc.test}" />
-    <property name="dir.debug-data" location="${dir.debug}/data" />
-    <!-- Jar and assoicated files -->
-    <property name="dir.jar"      location="${dir.out}/jar" />
-    <property name="dir.jar-tmp"  location="${dir.out}/jar-bin" />
-    <property name="dir.jar-res"  location="${dir.jar-tmp}/data" />
-    <property name="dir.jar-data" location="${dir.jar}/data" />
-    <property name="dir.jar-lib"  location="${dir.jar}/lib" />
-    <property name="dir.jar-main" location="${dir.jar}/${ant.project.name}.jar" />
-    <!-- Javadoc files -->
-    <property name="dir.doc"  location="${dir.out}/doc/" />
-    <!-- Junit report files -->
-    <property name="dir.report" location="${dir.out}/report" />
-    <property name="dir.report-raw"  location="${dir.out}/raw-report" />
-
     <!-- ......................... Data Folder .......................... -->
     <property name="dir.data"      location="${loc.data}" />
     <property name="dir.data-run"  location="${dir.data}/run" />
@@ -67,6 +46,27 @@
     <property name="dir.junit" location="${dir.lib}/junit4" />
     <property name="dir.3rd"  location="${dir.lib}/3rdparty" />
     <property name="dir.off"  location="${dir.lib}/docs" />
+
+    <!-- ........................ Output Folder ......................... -->
+    <property name="dir.out" location="out/" />
+    <!-- running java classes and data -->
+    <property name="dir.run"      location="${dir.out}/run/" />
+    <property name="dir.run-data" location="${dir.run}/data" />
+    <!-- testing java classes and data -->
+    <property name="dir.debug"      location="${dir.out}/${loc.test}" />
+    <property name="dir.debug-data" location="${dir.debug}/data" />
+    <!-- Jar and assoicated files -->
+    <property name="dir.jar"      location="${dir.out}/jar" />
+    <property name="dir.jar-tmp"  location="${dir.out}/jar-bin" />
+    <property name="dir.jar-res"  location="${dir.jar-tmp}/data" />
+    <property name="dir.jar-data" location="${dir.data}/data" />
+    <property name="dir.jar-lib"  location="${dir.3rd}" />
+    <property name="dir.jar-main" location="${dir.jar}/${ant.project.name}.jar" />
+    <!-- Javadoc files -->
+    <property name="dir.doc"  location="${dir.out}/doc/" />
+    <!-- Junit report files -->
+    <property name="dir.report" location="${dir.out}/report" />
+    <property name="dir.report-raw"  location="${dir.out}/raw-report" />
 
     <!-- ............................ Others ............................ -->
     <property name="dir.design" location="${loc.design}" />
@@ -137,16 +137,12 @@
 
     <!-- ......................... Jar Targets .......................... -->
     <target name="compile.jar" depends="compile.run">
-        <!-- copy files -->
+        <!-- copy data files -->
         <copy toDir="${dir.jar-data}" overwrite="true">
             <fileset dir="${dir.data-run}" />
         </copy>
         <copy toDir="${dir.jar}" overwrite="true">
             <fileset dir="${dir.jar-root}" />
-        </copy>
-        <!-- copy 3rd party libraries -->
-        <copy toDir="${dir.jar-lib}" overwrite="true">
-            <fileset dir="${dir.3rd}" />
         </copy>
         <!-- set up temp folder -->
         <copy toDir="${dir.jar-tmp}" overwrite="true">
@@ -166,11 +162,12 @@
         </manifestclasspath>
         <!-- jar classes -->
         <jar destfile="${dir.jar-main}" baseDir="${dir.jar-tmp}">
+
+            <zipgroupfileset dir="${dir.jar-lib}" includes="*.jar"/>
             <!-- setup manifest file -->
             <manifest>
                 <attribute name="Program-Name" value="${ant.project.name}" />
                 <attribute name="Main-Class" value="${usr.main}" />
-                <attribute name="Class-Path" value="${lib.path}" />
             </manifest>
         </jar>
         <!-- set execute flag -->
@@ -252,17 +249,6 @@
         <javadoc sourcepath="${dir.src}" destdir="${dir.doc}"
             access="${usr-access}" classpathref="src-run.path" />
     </target -->
-
-    <!-- archive verisons -->
-    <target name="archive">
-        <mkdir dir="${dir.archive}" />
-        <zip destfile="${dir.store}">
-            <zipfileset dir="${dir.src}" prefix="${loc.src}" />
-            <zipfileset dir="${dir.data}" prefix="${loc.data}" />
-            <zipfileset dir="${dir.test}" prefix="${loc.test}" />
-            <zipfileset dir="${dir.lib}" prefix="${loc.lib}" />
-        </zip>
-    </target>
 
     <!-- clear generated things -->
     <target name="clean">
