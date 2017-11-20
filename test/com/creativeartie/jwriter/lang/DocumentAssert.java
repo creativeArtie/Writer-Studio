@@ -83,12 +83,24 @@ public class DocumentAssert {
             prep[0] instanceof SpanLeaf);
         SpanLeaf test = (SpanLeaf) prep[0];
 
+        testContainsStyle(test);
         assertEquals(getError("leaf text",  test), rawText, test.getRaw());
         assertEquals(getError("leaf style", test), info,    test.getLeafStyle());
         assertSame  (getError("document",   test), doc,     test.getDocument());
         assertSame  (getError("parent",     test), prep[1], test.getParent());
         assertEquals(getError("leaf start", test), start,   test.getStart());
         assertEquals(getError("leaf end",   test), end,     test.getEnd());
+    }
+
+    private void testContainsStyle(SpanLeaf leaf){
+        SpanNode<?> span = leaf.getParent();
+        while(span instanceof SpanBranch){
+            for (DetailStyle style : ((SpanBranch)span).getBranchStyles()){
+                assertTrue("Style not found " +  style + " for " + span, leaf
+                    .containsStyle(style));
+            }
+            span = span.getParent();
+        }
     }
 
     public void assertTextLeaf(int start, int end, String rawText, int ... idx)

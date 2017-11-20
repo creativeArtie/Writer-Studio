@@ -68,6 +68,7 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
     {
         setup();
         SpanBranch span = doc.assertChild(size, rawText, idx);
+
         assertArrayEquals(getError("styles", span), expectStyles, span
             .getBranchStyles().toArray());
 

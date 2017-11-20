@@ -39,7 +39,7 @@
     <property name="dir.data-run"  location="${dir.data}/run" />
     <property name="dir.data-jar"  location="${dir.data}/jar" />
     <property name="dir.data-test" location="${dir.data}/tests" />
-    <property name="dir.jar-root"  location="${dir.data}/jar-root" />
+    <property name="dir.data-root"  location="${dir.data}/jar-root" />
 
     <!-- .......................... Libraries ........................... -->
     <property name="dir.lib"  location="${loc.lib}" />
@@ -56,12 +56,11 @@
     <property name="dir.debug"      location="${dir.out}/${loc.test}" />
     <property name="dir.debug-data" location="${dir.debug}/data" />
     <!-- Jar and assoicated files -->
-    <property name="dir.jar"      location="${dir.out}/jar" />
-    <property name="dir.jar-tmp"  location="${dir.out}/jar-bin" />
-    <property name="dir.jar-res"  location="${dir.jar-tmp}/data" />
-    <property name="dir.jar-data" location="${dir.data}/data" />
-    <property name="dir.jar-lib"  location="${dir.3rd}" />
-    <property name="dir.jar-main" location="${dir.jar}/${ant.project.name}.jar" />
+    <property name="dir.jar-out"      location="${dir.out}/jar" />
+    <property name="dir.jar-out-data" location="${dir.jar-out}/data" />
+    <property name="dir.jar-tmp"      location="${dir.out}/jar-bin" />
+    <property name="dir.jar-tmp-data" location="${dir.jar-tmp}/data" />
+    <property name="dir.jar-main"     location="${dir.jar-out}/${ant.project.name}.jar" />
     <!-- Javadoc files -->
     <property name="dir.doc"  location="${dir.out}/doc/" />
     <!-- Junit report files -->
@@ -137,33 +136,26 @@
 
     <!-- ......................... Jar Targets .......................... -->
     <target name="compile.jar" depends="compile.run">
-        <!-- copy data files -->
-        <copy toDir="${dir.jar-data}" overwrite="true">
+        <!-- copy data files to base -->
+        <copy toDir="${dir.jar-out}" overwrite="true">
+            <fileset dir="${dir.data-root}" />
+        </copy>
+        <copy toDir="${dir.jar-out-data}" overwrite="true">
             <fileset dir="${dir.data-run}" />
         </copy>
-        <copy toDir="${dir.jar}" overwrite="true">
-            <fileset dir="${dir.jar-root}" />
-        </copy>
-        <!-- set up temp folder -->
+        <!-- copy data file to jar folder -->
         <copy toDir="${dir.jar-tmp}" overwrite="true">
             <fileset dir="${dir.run}">
                 <exclude name="${loc.data}" />
             </fileset>
         </copy>
         <!-- copy files into future jar file-->
-        <copy toDir="${dir.jar-res}" overwrite="true">
+        <copy toDir="${dir.jar-tmp-data}" overwrite="true">
             <fileset dir="${dir.data-jar}" />
         </copy>
-        <!-- setup manifest library class paths -->
-        <manifestclasspath property="lib.path" jarfile="${dir.jar-main}">
-            <classpath>
-                <fileset dir="${dir.jar-lib}" />
-            </classpath>
-        </manifestclasspath>
         <!-- jar classes -->
         <jar destfile="${dir.jar-main}" baseDir="${dir.jar-tmp}">
-
-            <zipgroupfileset dir="${dir.jar-lib}" includes="*.jar"/>
+            <zipgroupfileset dir="${dir.3rd}" includes="*.jar"/>
             <!-- setup manifest file -->
             <manifest>
                 <attribute name="Program-Name" value="${ant.project.name}" />

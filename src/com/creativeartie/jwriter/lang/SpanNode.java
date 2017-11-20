@@ -3,6 +3,9 @@ package com.creativeartie.jwriter.lang;
 import java.util.*;
 import java.util.function.*;
 
+import com.google.common.collect.*;
+import static com.google.common.base.Preconditions.*;
+
 /**
  * Common methods for {@link Document} and {@link SpanBranch}.
  * @param <T>
@@ -101,6 +104,33 @@ public abstract class SpanNode<T extends Span> extends Span
             }
         }
         return Optional.empty();
+    }
+
+    public SpanLeaf getLeaf(int pos){
+        Range<Integer> range = getRange();
+        if (! range.contains(pos)){
+            throw new IndexOutOfBoundsException(pos + " is not between :" + range);
+        }
+        if (range.contains(pos)){
+            int low = 0;
+            int high = size() - 1;
+            int mid;
+            Span span;
+            while (low <= high){
+                mid = (low + high) / 2;
+                span = get(mid);
+                Range<Integer> child = span.getRange();
+                if (child.lowerEndpoint() > pos){
+                    high = mid - 1;
+                } else if (child.upperEndpoint() <= pos){
+                    low = mid + 1;
+                } else {
+                    return  span instanceof SpanLeaf? (SpanLeaf) span:
+                        ((SpanNode)span).getLeaf(pos);
+                }
+            }
+        }
+        throw new IndexOutOfBoundsException(pos + " is not between :" + range);
     }
 
     /// Implements List (ForwardList cannot be the super class

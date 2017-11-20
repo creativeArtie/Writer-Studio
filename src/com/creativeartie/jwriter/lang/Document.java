@@ -293,7 +293,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         spanLeaves.invalidateAll();
     }
 
-
+    @Deprecated
     @SuppressWarnings("unchecked")
     private List<SpanBranch> listSpans(int location){
         List<SpanBranch> ans = new ArrayList<>();

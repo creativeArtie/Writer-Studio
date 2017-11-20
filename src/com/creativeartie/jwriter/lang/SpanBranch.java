@@ -86,13 +86,6 @@ public abstract class SpanBranch extends SpanNode<Span> {
         });
     }
 
-    void getStyles(List<DetailStyle> styles){
-        if (spanParent instanceof SpanBranch){
-            ((SpanBranch)spanParent).getStyles(styles);
-        }
-        styles.addAll(getBranchStyles());
-    }
-
     boolean editRaw(String text){
        return editRaw(spanChildren, text);
     }
