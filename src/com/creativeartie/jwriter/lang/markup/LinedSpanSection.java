@@ -31,18 +31,18 @@ public class LinedSpanSection extends LinedSpanLevel implements Catalogued{
 
 
     @Override
-    public int getPublishCount(){
+    public int getPublishTotal(){
         if (getLinedType() == LinedType.HEADING){
-            return getFormattedSpan().map(span -> span.getPublishCount())
+            return getFormattedSpan().map(span -> span.getPublishTotal())
                 .orElse(0);
         }
         return 0;
     }
 
     @Override
-    public int getNoteCount(){
+    public int getNoteTotal(){
         if (getLinedType() == LinedType.HEADING){
-            return getFormattedSpan().map(span -> span.getNoteCount())
+            return getFormattedSpan().map(span -> span.getNoteTotal())
                 .orElse(0);
         } else {
             assert getLinedType() == LinedType.OUTLINE: getLinedType();

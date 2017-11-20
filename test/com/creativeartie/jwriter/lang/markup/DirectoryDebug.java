@@ -20,28 +20,6 @@ import com.creativeartie.jwriter.lang.*;
 @RunWith(JUnit4.class)
 public class DirectoryDebug{
 
-    static void assertBuildId(LinedSpan read, IDBuilder expected,
-        CatalogueIdentity test)
-    {
-        if (expected == null){
-            assertFalse("Identity should not be build.", test != null);
-        } else {
-            assertTrue("Identity should not be build", test != null);
-            assertEquals(getError("create id", read), expected.build(), test);
-        }
-    }
-
-    static void assertId(SpanBranch span, DirectoryType type,
-        IDBuilder produces)
-    {
-        DirectorySpan test = assertClass(span, DirectorySpan.class);
-
-        CatalogueIdentity id = produces.build();
-
-        assertEquals(getError("purpose", test), type, test.getPurpose());
-        assertEquals(getError("id",      test), id,   test.buildId());
-    }
-
     private static final SetupParser[] parsers = new SetupParser[]{
         new DirectoryParser(DirectoryType.NOTE)};
 
@@ -85,7 +63,6 @@ public class DirectoryDebug{
         ContentTest content1 = new ContentTest()
             .setText("cat").setBegin(false)
             .setEnd(false) .setCount(1);
-
         ContentTest content2 = new ContentTest()
             .setText("hi").setBegin(false)
             .setEnd(false).setCount(1);

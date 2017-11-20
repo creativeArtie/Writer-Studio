@@ -2,6 +2,10 @@ package com.creativeartie.jwriter.lang.markup;
 
 import static org.junit.Assert.*;
 import static com.creativeartie.jwriter.lang.DocumentAssert.*;
+import static com.creativeartie.jwriter.lang.markup.BranchTest.*;
+import static com.creativeartie.jwriter.lang.markup.BranchLineTest.*;
+import static com.creativeartie.jwriter.lang.markup.BranchFormatTest.*;
+import static com.creativeartie.jwriter.lang.markup.BranchMainTest.*;
 
 
 import org.junit.*;
@@ -24,35 +28,25 @@ public class MainSectionDebug {
         return new IDBuilder().addCategory("head").setId(id);
     }
 
-    public void assertSection(SpanBranch span, Span head, int publish, int note,
-        EditionType type, CatalogueStatus status, IDBuilder id)
-    {
-        MainSpanSection test = assertClass(span, MainSpanSection.class);
-
-        DetailStyle[] styles = new DetailStyle[]{AuxiliaryStyle.MAIN_SECTION};
-
-        assertSpan("head", head, test.getSelfSection());
-        assertEquals(getError("edition", test), type, test.getEdition());
-        assertSpanIdentity(span, id);
-        MainNoteDebug.assertMain(test, publish, note);
-        assertBranch(test, styles, status);
-    }
-
     @Test
     public void simple(){
         String raw = "abc";
         DocumentAssert doc = assertDoc(1, raw, new MainParser());
-        SpanBranch section = doc.assertChild(1, raw, 0);
-        SpanBranch line    = doc.assertChild(1, raw, 0, 0);
-        SpanBranch format  = doc.assertChild(1, raw, 0, 0, 0);
 
         IDBuilder builder = buildId("0");
         doc.addId(builder, 0);
         doc.assertIds();
 
-        assertSection(section, null, 1, 0, EditionType.NONE, 
-            CatalogueStatus.UNUSED, builder);
-        LinedRestDebug.assertParagraph(line, format, 1, 0);
+        MainSectionTest section = new MainSectionTest()
+            .setPublishTotal(1).setNoteTotal(0)
+            .setEdition(EditionType.NONE)
+            .setCatalogued(CatalogueStatus.UNUSED, builder);
+        ParagraphLineTest line = new ParagraphLineTest()
+            .setPublishTotal(1).setNoteTotal(0)
+            .setFormattedSpan(doc, 0, 0, 0);
+
+        section.test(doc, 1, raw, 0);
+        line.test(   doc, 1, raw, 0, 0);
     }
 
     @Test
@@ -62,56 +56,71 @@ public class MainSectionDebug {
             "!*endnote: text\n", "!!agenda\n", "***\n", "abc\n"};
         String raw = String.join("", texts);
         DocumentAssert doc = assertDoc(1, raw, new MainParser());
-        SpanBranch section = doc.assertChild(texts.length, raw, 0);
-        SpanBranch[] lines = new SpanBranch[texts.length];
-        int i = 0;
-        lines[i] = doc.assertChild(3, texts[i], 0, i++); /// quote
-        lines[i] = doc.assertChild(3, texts[i], 0, i++); /// numbered
-        lines[i] = doc.assertChild(3, texts[i], 0, i++); /// bullet
-        lines[i] = doc.assertChild(5, texts[i], 0, i++); /// hyperlink
-        lines[i] = doc.assertChild(5, texts[i], 0, i++); /// footnote
-        lines[i] = doc.assertChild(5, texts[i], 0, i++); /// endnote
-        lines[i] = doc.assertChild(3, texts[i], 0, i++); /// agenda
-        lines[i] = doc.assertChild(1, texts[i], 0, i++); /// break
-        lines[i] = doc.assertChild(2, texts[i], 0, i++); /// paragraph
-        SpanBranch quote     = doc.assertChild(1, "quote",      0, 0, 1);
-        SpanBranch number    = doc.assertChild(1, "numbered",   0, 1, 1);
-        SpanBranch bullet    = doc.assertChild(1, "bullet",     0, 2, 1);
-        SpanBranch footnote  = doc.assertChild(1, " many text", 0, 4, 3);
-        SpanBranch endnote   = doc.assertChild(1, " text",      0, 5, 3);
-        SpanBranch agenda    = doc.assertChild(1, "agenda",     0, 6, 1);
-        SpanBranch paragraph = doc.assertChild(1, "abc",        0, 8, 0);
 
         IDBuilder builder = buildId("000");
         doc.addId(builder, 3);
 
-        assertSection(section, null, 4, 1, EditionType.NONE, CatalogueStatus.UNUSED, builder);
-        LinedRestDebug.assertQuote(lines[0], quote, 1, 0);
-        LinedLevelRestDebug.assertLevel(lines[1], LinedType.NUMBERED, 1, number, 1, 0);
-        LinedLevelRestDebug.assertLevel(lines[2], LinedType.BULLET, 1, bullet, 1, 0);
+        MainSectionTest section = new MainSectionTest()
+            .setPublishTotal(4).setNoteTotal(1)
+            .setEdition(EditionType.NONE)
+            .setCatalogued(CatalogueStatus.UNUSED, builder);
+        QuoteLineTest line1 = new QuoteLineTest()
+            .setFormattedSpan(doc, 0, 0, 1)
+            .setPublishTotal(1).setNoteTotal(0);
+        BasicLevelLineTest line2 = new BasicLevelLineTest()
+            .setLinedType(LinedType.NUMBERED).setLevel(1)
+            .setFormattedSpan(doc, 0, 1, 1).setPublishTotal(1)
+            .setNoteTotal(0);
+        BasicLevelLineTest line3 = new BasicLevelLineTest()
+            .setLinedType(LinedType.BULLET).setLevel(1)
+            .setFormattedSpan(doc, 0, 2, 1).setPublishTotal(1)
+            .setNoteTotal(0);
 
         builder.reset().addCategory("link").setId("hyperlink");
         doc.addId(builder, 4);
-        LinedPointerDebug.assertLink(lines[3], "http://google.com",
-            CatalogueStatus.UNUSED, builder);
+
+        PointerLinkTest line4 = new PointerLinkTest()
+            .setPath("http://google.com")
+            .setCatalogued(CatalogueStatus.UNUSED, builder);
 
         builder.reset().addCategory("foot").setId("footnote");
         doc.addId(builder, 2);
-        LinedPointerDebug.assertNote(lines[4],
-            LinedType.FOOTNOTE, footnote, CatalogueStatus.UNUSED, builder);
+
+        PointerNoteTest line5 = new PointerNoteTest()
+            .setLinedType(LinedType.FOOTNOTE)
+            .setFormattedSpan(doc, 0, 4, 3)
+            .setCatalogued(CatalogueStatus.UNUSED, builder);
 
         builder.reset().addCategory("end").setId("endnote");
         doc.addId(builder, 1);
-        LinedPointerDebug.assertNote(lines[5],
-            LinedType.ENDNOTE, endnote, CatalogueStatus.UNUSED, builder);
+
+        PointerNoteTest line6 = new PointerNoteTest()
+            .setLinedType(LinedType.ENDNOTE)
+            .setFormattedSpan(doc, 0, 5, 3)
+            .setCatalogued(CatalogueStatus.UNUSED, builder);
 
         builder.reset().addCategory("agenda").setId("093");
         doc.addId(builder, 0);
-        LinedRestDebug.assertAgenda(lines[6], agenda, 1, builder);
 
-        LinedRestDebug.assertBreak(lines[7]);
-        LinedRestDebug.assertParagraph(lines[8], paragraph, 1, 0);
+        AgendaLineTest line7 = new AgendaLineTest()
+            .setAgenda("agenda").setNoteTotal(1)
+            .setCatalogued(CatalogueStatus.UNUSED, builder);
+        BreakLineTest line8 = new BreakLineTest();
+        ParagraphLineTest line9 = new ParagraphLineTest()
+            .setPublishTotal(1).setNoteTotal(0)
+            .setFormattedSpan(doc, 0, 8, 0);
 
+        int i = 0;
+        section.test(doc, 9, raw, 0);
+        line1.test(  doc, 3, texts[i], 0, i++); /// quote
+        line2.test(  doc, 3, texts[i], 0, i++); /// numbered
+        line3.test(  doc, 3, texts[i], 0, i++); /// bullet
+        line4.test(  doc, 5, texts[i], 0, i++); /// hyperlink
+        line5.test(  doc, 5, texts[i], 0, i++); /// footnote
+        line6.test(  doc, 5, texts[i], 0, i++); /// endnote
+        line7.test(  doc, 3, texts[i], 0, i++); /// agenda
+        line8.test(  doc, 1, texts[i], 0, i++); /// break
+        line9.test(  doc, 2, texts[i], 0, i++); /// paragraph
         doc.assertIds();
     }
 
@@ -121,27 +130,27 @@ public class MainSectionDebug {
             "#win\n"};
         String raw = String.join("", texts);
         DocumentAssert doc = assertDoc(1, raw, new MainParser());
-        SpanBranch section = doc.assertChild(texts.length, raw, 0);
-        SpanBranch[] lines = new SpanBranch[texts.length];
-        for (int i = 0; i < texts.length; i++){
-            lines[i] = doc.assertChild(3, texts[i], 0, i);
-        }
-        SpanBranch[] content = new SpanBranch[texts.length];
-        for(int i = 0; i < texts.length; i++){
-            int end = texts[i].length() - 1;
-            content[i] = doc.assertChild(1, texts[i].substring(1, end), 0, i, 1);
-        }
 
         IDBuilder builder = buildId("00");
         doc.addId(builder, 0);
 
-        assertSection(section, null, 4, 0, EditionType.NONE, 
-            CatalogueStatus.UNUSED, builder);
+        MainSectionTest section = new MainSectionTest()
+            .setPublishTotal(4).setNoteTotal(0)
+            .setEdition(EditionType.NONE)
+            .setCatalogued(CatalogueStatus.UNUSED, builder);
+
+        BasicLevelLineTest[] lines = new BasicLevelLineTest[texts.length];
         for (int i = 0; i < texts.length; i++){
-            LinedLevelRestDebug.assertLevel(lines[i],
-                LinedType.NUMBERED, 1, content[i], 1, 0);
+            lines[i] = new BasicLevelLineTest()
+                .setLinedType(LinedType.NUMBERED).setLevel(1)
+                .setFormattedSpan(doc, 0, i, 1).setPublishTotal(1)
+                .setNoteTotal(0);
         }
 
+        section.test(doc, 4, raw, 0);
+        for (int i = 0; i < texts.length; i++){
+            lines[i].test(  doc, 3, texts[i], 0, i);
+        }
         doc.assertIds();
     }
 
@@ -151,26 +160,30 @@ public class MainSectionDebug {
             "explain"};
         String raw = String.join("", texts);
         DocumentAssert doc = assertDoc(1, raw, new MainParser());
-        SpanBranch section = doc.assertChild(2, raw,  0);
-        SpanBranch line1    = doc.assertChild(7, texts[0],  0, 0);
-        SpanBranch heading  = doc.assertChild(1, "next!",   0, 0, 4);
-        SpanBranch edition  = doc.assertChild(1, "#DRAFT",  0, 0, 5);
-        SpanBranch line2    = doc.assertChild(1, texts[1],  0, 1);
-        SpanBranch content  = doc.assertChild(1, "explain", 0, 1, 0);
 
         IDBuilder builder = buildId("00");
         doc.addId(builder, 0);
 
-        assertSection(section, line1, 2, 0, EditionType.DRAFT, 
-            CatalogueStatus.UNUSED, builder);
+        MainSectionTest section = new MainSectionTest()
+            .setPublishTotal(2).setNoteTotal(0)
+            .setEdition(EditionType.DRAFT)
+            .setCatalogued(CatalogueStatus.UNUSED, builder);
 
         builder = LinedLevelHeadDebug.buildId("a");
         doc.addId(builder,  1);
 
-        LinedLevelHeadDebug.assertHeading(line1, heading, LinedType.HEADING, 1,
-            builder, EditionType.DRAFT, 1, 0, CatalogueStatus.UNUSED);
-        LinedRestDebug.assertParagraph(line2, content, 1, 0);
+        HeadLevelLineTest line1 = new HeadLevelLineTest()
+            .setFormattedSpan(doc, 0, 0, 4).setLinedType(LinedType.HEADING)
+            .setLevel(1).setEdition(EditionType.DRAFT)
+            .setPublishTotal(1).setNoteTotal(0)
+            .setCatalogued(CatalogueStatus.UNUSED, builder);
+        ParagraphLineTest line2 = new ParagraphLineTest()
+            .setPublishTotal(1).setNoteTotal(0)
+            .setFormattedSpan(doc, 0, 1, 0);
 
+        section.test(doc, 2, raw, 0);
+        line1.test(  doc, 7, texts[0], 0, 0);
+        line2.test(  doc, 1, texts[1], 0, 1);
         doc.assertIds();
     }
 
@@ -179,30 +192,39 @@ public class MainSectionDebug {
         String[] texts = new String[]{">quote\n", "=next!#STUB\n", "explain\n"};
         String raw = String.join("", texts);
         String sec2 = texts[1] + texts[2];
+
         DocumentAssert doc = assertDoc(2, raw, new MainParser());
-        SpanBranch section1 = doc.assertChild(1, texts[0],  0);
-        SpanBranch line1    = doc.assertChild(3, texts[0],  0, 0);
-        SpanBranch quote    = doc.assertChild(1, "quote",   0, 0, 1);
-        SpanBranch section2 = doc.assertChild(2, sec2,      1);
-        SpanBranch line2    = doc.assertChild(4, texts[1],  1, 0);
-        SpanBranch heading  = doc.assertChild(1, "next!",   1, 0, 1);
-        SpanBranch line3    = doc.assertChild(2, texts[2],  1, 1);
-        SpanBranch content  = doc.assertChild(1, "explain", 1, 1, 0);
 
         IDBuilder builder = new IDBuilder().addCategory("head").setId("00");
         doc.addId(builder, 0);
 
-        assertSection(section1, null, 1, 0, EditionType.NONE,
-            CatalogueStatus.UNUSED, builder);
-        LinedRestDebug.assertQuote(line1, quote, 1, 0);
+        MainSectionTest section1 = new MainSectionTest()
+            .setPublishTotal(1).setNoteTotal(0)
+            .setEdition(EditionType.NONE)
+            .setCatalogued(CatalogueStatus.UNUSED, builder);
+        QuoteLineTest line1 = new QuoteLineTest()
+            .setFormattedSpan(doc, 0, 0, 1)
+            .setPublishTotal(1).setNoteTotal(0);
 
         doc.addId(builder.reset().addCategory("head").setId("07"), 1);
-        assertSection(section2, line2, 2, 0, EditionType.STUB, 
-            CatalogueStatus.UNUSED, builder);
-        LinedLevelHeadDebug.assertHeading(line2, heading, LinedType.HEADING, 1,
-            null, EditionType.STUB, 1, 0, CatalogueStatus.NO_ID);
-        LinedRestDebug.assertParagraph(line3, content, 1, 0);
 
+        MainSectionTest section2 = new MainSectionTest()
+            .setPublishTotal(2).setNoteTotal(0)
+            .setEdition(EditionType.STUB)
+            .setCatalogued(CatalogueStatus.UNUSED, builder);
+        HeadLevelLineTest line2 = new HeadLevelLineTest()
+            .setFormattedSpan(doc, 1, 0, 1).setLinedType(LinedType.HEADING)
+            .setLevel(1).setEdition(EditionType.STUB)
+            .setPublishTotal(1).setNoteTotal(0);
+        ParagraphLineTest line3 = new ParagraphLineTest()
+            .setPublishTotal(1).setNoteTotal(0)
+            .setFormattedSpan(doc, 1, 1, 0);
+
+        section1.test(doc, 1, texts[0], 0);
+        line1.test(   doc, 3, texts[0], 0, 0);
+        section2.test(doc, 2, sec2,     1);
+        line2.test(   doc, 4, texts[1], 1, 0);
+        line3.test(   doc, 2, texts[2], 1, 1);
         doc.assertIds();
 
     }

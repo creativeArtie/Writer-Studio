@@ -15,7 +15,7 @@ import com.creativeartie.jwriter.property.*;
 
 public class SceneStatsControl extends SceneStatsView{
 
-    protected void listenTable(RecordTable table){
+    protected void listenTable(RecordList table){
         Record record = table.getRecord();
         getWordGoal().getValueFactory().setValue(record.getPublishGoal());
         getHourGoal().getValueFactory().setValue((int)record.getTimeGoal()

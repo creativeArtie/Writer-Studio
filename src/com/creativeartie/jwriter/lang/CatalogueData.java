@@ -2,9 +2,10 @@ package com.creativeartie.jwriter.lang;
 
 import java.util.*;
 import com.google.common.collect.*;
-import com.google.common.base.*;
 
 import com.creativeartie.jwriter.main.*;
+
+import static com.google.common.base.Preconditions.*;
 
 public final class CatalogueData{
     private final ArrayList<SpanBranch> idSpans;
@@ -13,18 +14,18 @@ public final class CatalogueData{
     private final CatalogueIdentity catelogueKey;
 
     public CatalogueData(CatalogueMap parent, CatalogueIdentity id){
-        catalogueParent = Preconditions.checkNotNull(parent);
-        catelogueKey = Preconditions.checkNotNull(id);
+        catalogueParent = checkNotNull(parent);
+        catelogueKey = checkNotNull(id);
         idSpans = new ArrayList<>();
         refSpans = new ArrayList<>();
     }
 
     void addId(SpanBranch span){
-        idSpans.add(Preconditions.checkNotNull(span));
+        idSpans.add(checkNotNull(span, "Span can be null."));
     }
 
     void addRef(SpanBranch span){
-        refSpans.add(Preconditions.checkNotNull(span));
+        refSpans.add(checkNotNull(span, "Span can be null."));
     }
 
     public CatalogueMap getParent(){
@@ -52,8 +53,8 @@ public final class CatalogueData{
     }
 
     public SpanBranch getTarget(){
-        Preconditions.checkState(idSpans.size() == 1,
-            "There isn't exactly one target (wrong state: %s).", getState());
+        checkState(idSpans.size() == 1,
+            "Cannot have more then one id span: %s.", getState());
         return idSpans.get(0);
     }
 
@@ -67,7 +68,7 @@ public final class CatalogueData{
 
     @Override
     public String toString(){
-        return catelogueKey.toString() + ": " + 
+        return catelogueKey.toString() + ": " +
             getState().toString() + "\n\tIds{\n\t" +
             idSpans.toString().replace("\n", "\n\t\t") + "\n\t}Refs{" +
             refSpans.toString() + "}\n";

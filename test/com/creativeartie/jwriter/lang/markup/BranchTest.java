@@ -74,7 +74,7 @@ public class BranchTest {
         }
 
         public void setup(){
-            setStyles(AuxiliaryStyle.ESCAPE);
+            setStyles(AuxiliaryType.ESCAPE);
         }
 
         public EscapeTest setEscape(String str){
@@ -166,7 +166,7 @@ public class BranchTest {
 
         @Override
         public void setup(){
-            setStyles(AuxiliaryStyle.AGENDA);
+            setStyles(AuxiliaryType.AGENDA);
         }
 
         @Override
@@ -174,6 +174,31 @@ public class BranchTest {
             FormatSpanAgenda test = assertClass(span, FormatSpanAgenda.class);
 
             assertEquals(getError("agenda", test), text, test.getAgenda());
+        }
+    }
+
+    public static class FieldTest extends SpanBranchAssert<FieldTest>{
+        private InfoFieldType fieldType;
+
+        public FieldTest(){
+            super(FieldTest.class);
+        }
+
+        public FieldTest setType(InfoFieldType type){
+            fieldType = type;
+            return this;
+        }
+
+        @Override
+        public void setup(){
+            setStyles(fieldType);
+        }
+
+        @Override
+        public void test(SpanBranch span){
+            InfoFieldSpan test = assertClass(span, InfoFieldSpan.class);
+
+            assertEquals(getError("type", test), fieldType, test.getFieldType());
         }
     }
 

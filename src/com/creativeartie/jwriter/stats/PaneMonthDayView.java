@@ -59,10 +59,10 @@ abstract class PaneMonthDayView extends AnchorPane{
     private void layoutText(){
         setTopAnchor(imageIcon, 5.0);
         setRightAnchor(imageIcon, 0.0);
-        
+
         setTopAnchor(localDay, 0.0);
         setLeftAnchor(localDay, 0.0);
-        
+
         getChildren().addAll(imageIcon, localDay);
         imageIcon.setTooltip(statsTip);
     }
@@ -103,20 +103,20 @@ abstract class PaneMonthDayView extends AnchorPane{
         readDay.setValue(record.getRecordDate());
         int written = record.getPublishWritten();
         int goal = record.getPublishGoal();
-        Duration dur = record.getWriteDuration();
+        Duration dur = record.getWriteTime();
         Duration timeGoal = record.getTimeGoal();
         boolean time = dur.toMinutes() >= record.getTimeGoal().toMinutes();
         imageIcon.setGraphic(setImage(written >= record.getPublishGoal()?
             (time? EditIcon.GOAL_ALL: EditIcon.GOAL_WORD) :
             (time? EditIcon.GOAL_TIME: EditIcon.GOAL_FAIL)));
-        
-        String tip = String.format("Written: %,d(%,d)\nTime: %s (%s)", 
-            written, goal, Utilities.formatDuration(dur), 
+
+        String tip = String.format("Written: %,d(%,d)\nTime: %s (%s)",
+            written, goal, Utilities.formatDuration(dur),
             Utilities.formatDuration(timeGoal));
         statsTip.setText(tip);
         imageIcon.setTooltip(statsTip);
     }
-    
+
     private ImageView setImage(EditIcon icon){
         ImageView image = icon.getIcon();
         image.setFitHeight(50);

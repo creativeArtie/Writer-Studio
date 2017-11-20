@@ -20,11 +20,14 @@ public class PaneListsData{
         ArrayList<PaneListsData> out = new ArrayList<>();
         for (CatalogueData load: data){
             int size = load.getIds().size();
-            if (size == 0){
+            switch (size){
+            case 0:
                 out.add(new PaneListsData(load, NO_ID, type));
-            } else if (size == 1){
+                break;
+            case 1:
                 out.add(new PaneListsData(load, SINGLE, type));
-            } else {
+                break;
+            default:
                 for(int i = 0; i < size; i++){
                     out.add(new PaneListsData(load, i, type));
                 }
@@ -61,11 +64,15 @@ public class PaneListsData{
     private PaneListsData(CatalogueData data, int target, DirectoryType type){
         CatalogueIdentity id = data.getKey();
         targetId = id;
+
         targetNum = target;
+
+        /// categories is also for refText
         String categories = getCategories(id.getCategories());
+        catalogueCategory = new ReadOnlyStringWrapper(categories);
+
         String name = id.getName();
         String pointer = target >= 0? "(" + target + ")" : "";
-        String refs = buildRefText(type, categories, name);
         Optional<Range<Integer>> location = Optional.empty();
         Optional<SpanBranch> span = Optional.empty();
         switch(target){
@@ -79,12 +86,14 @@ public class PaneListsData{
                 span = Optional.of(data.getIds().get(target));
                 location = Optional.of(span.get().getRange());
         }
-        catalogueCategory = new ReadOnlyStringWrapper(categories);
+        spanLocation = new ReadOnlyObjectWrapper<>(location);
         catalogueIdentity = new ReadOnlyObjectWrapper<>(new IdentityData(name,
             pointer));
-        refText = new ReadOnlyStringWrapper(refs);
-        spanLocation = new ReadOnlyObjectWrapper<>(location);
+
         targetSpan = new ReadOnlyObjectWrapper<>(span);
+
+        refText = new ReadOnlyStringWrapper(buildRefText(type, categories, name));
+
     }
 
     public ReadOnlyStringProperty categoryProperty(){

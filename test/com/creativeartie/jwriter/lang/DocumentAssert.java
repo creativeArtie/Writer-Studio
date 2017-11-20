@@ -8,59 +8,6 @@ import static org.junit.Assert.*;
 
 public class DocumentAssert {
 
-    public static <T> T assertClass(SpanBranch span, Class<T> clazz){
-        assertEquals(getError("class", span), clazz, span.getClass());
-        return clazz.cast(span);
-    }
-
-    public static String getError(String name, Object test){
-        return "Wrong " + name + " for " + test.toString();
-    }
-
-    public static void assertSpan(String name, Span expect,
-        Optional<? extends Span> test)
-    {
-        if (expect == null){
-            assertFalse("Span should not be found for " + name,
-                test.isPresent());
-
-        } else {
-            assertTrue("Span should be found for " + name, test.isPresent());
-            assertSame("Different " + name, expect, test.get());
-        }
-    }
-
-    public static void assertBranch(SpanBranch span){
-        assertBranch(span, new DetailStyle[0], CatalogueStatus.NO_ID);
-    }
-
-    public static void assertBranch(SpanBranch span, DetailStyle[] styles){
-        assertBranch(span, styles, CatalogueStatus.NO_ID);
-    }
-
-    public static void assertBranch(SpanBranch span, DetailStyle[] styles, CatalogueStatus status)
-    {
-        assertEquals(     getError("status", span), status, span.getIdStatus());
-        assertArrayEquals(getError("styles", span), styles, span.getBranchStyles()
-            .toArray());
-    }
-
-    public static void assertSpanIdentity(SpanBranch span, IDBuilder id){
-        assertTrue("Not implmeneted Catalogued: " + span,
-            span instanceof Catalogued);
-
-        Optional<CatalogueIdentity> test = ((Catalogued) span)
-            .getSpanIdentity();
-        if (id == null){
-            assertFalse("ID should be empty", test.isPresent());
-        } else {
-            CatalogueIdentity expected = id.build();
-
-            assertTrue("Id should be found", test.isPresent());
-            assertEquals(getError("id", span), expected, test.get());
-        }
-    }
-
     private final Document doc;
     private final IDTestDocument idTester;
 
@@ -71,6 +18,10 @@ public class DocumentAssert {
 
     public Document getDocument(){
         return doc;
+    }
+
+    public static String getError(String name, Object test){
+        return "Wrong " + name + " for " + test.toString();
     }
 
     public static DocumentAssert assertDoc(int childrenSize, String rawText,
@@ -99,6 +50,13 @@ public class DocumentAssert {
             span = ((SpanNode<?>)span).get(i);
         }
         return new Span[]{span, parent};
+    }
+
+    public SpanBranch getChild(int ... idx){
+        Span child = getFamily(idx)[0];
+        assertTrue("Expects instance of SpanBranch, gotten " + child.getClass(),
+            child instanceof SpanBranch);
+        return (SpanBranch) child;
     }
 
     public SpanBranch assertChild(int size, String rawText, int ... idx){

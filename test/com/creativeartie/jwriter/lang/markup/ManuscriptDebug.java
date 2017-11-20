@@ -49,9 +49,9 @@ public class ManuscriptDebug {
         String text = Joiner.on("").join(spans);
         ManuscriptDocument doc = new ManuscriptDocument(text);
         assertEquals(SpanBranchAssert.getError("publish count", doc), 16,
-            doc.getPublishCount());
+            doc.getPublishTotal());
         assertEquals(SpanBranchAssert.getError("note count", doc), 4,
-            doc.getNoteCount());
+            doc.getNoteTotal());
     }
 
     @Test

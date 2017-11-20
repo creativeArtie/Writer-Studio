@@ -57,21 +57,6 @@ public abstract class SpanBranch extends SpanNode<Span> {
     }
 
     @Override
-    Span removeChild(int index){
-        Span span = spanChildren.remove(index);
-        span.setRemove();
-        setEdit();
-        return span;
-    }
-
-    @Override
-    void addChildren(int index, List<Span> spans){
-        spanChildren.addAll(index, spans);
-        setParents(spans);
-        setEdit();
-    }
-
-    @Override
     public Document getDocument(){
         return get(0).getDocument();
     }
@@ -88,7 +73,7 @@ public abstract class SpanBranch extends SpanNode<Span> {
     public abstract List<DetailStyle> getBranchStyles();
 
     public List<SpanLeaf> getLeaves(){
-        return getDocument().getLeaves(this, () -> {
+        return getDocument().getLeavesCache(this, () -> {
             ImmutableList.Builder<SpanLeaf> builder = ImmutableList.builder();
             for(Span span: this){
                 if (span instanceof SpanLeaf){
@@ -107,12 +92,6 @@ public abstract class SpanBranch extends SpanNode<Span> {
         }
         styles.addAll(getBranchStyles());
     }
-
-    /* // TODO Speed up preformance by edit only some of the text
-    protected DetailUpdater getUpdater(int index, String raw){
-        return DetailUpdater.unable();
-    }
-    */
 
     boolean editRaw(String text){
        return editRaw(spanChildren, text);

@@ -6,63 +6,91 @@ import java.io.*;
 import java.util.zip.*;
 import java.util.*;
 
+import com.google.common.base.MoreObjects;
+import static com.google.common.base.Preconditions.*;
+
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import com.creativeartie.jwriter.main.Checker;
 
-public class ManuscriptFile {
-    private static final int BUFFER_SIZE = 2048;
-    private static final String MAIN = "manuscript";
+/**
+ * Stores the {@link ManuscriptDocument} and {@link RecordList} in a zip file.
+ */
+public final class ManuscriptFile {
+    private static final String TEXT = "manuscript";
     private static final String RECORDS = "records";
-    private static final String POST_FIX = ".txt";
-    private final ManuscriptDocument documentText;
-    private final RecordTable recordsFile;
-    private Optional<File> zipFile;
+    private static final String EXTENSION = ".txt";
+
+    private static String extractText(ZipInputStream input) throws IOException{
+        assert input != null: "Null input.";
+
+        StringBuilder builder = new StringBuilder();
+
+        int read = input.read();
+        while (read != -1){
+            builder.append((char)read);
+            read = input.read();
+        }
+        return builder.toString();
+    }
 
     public static ManuscriptFile open(File file) throws IOException{
+        checkNotNull(file, "Zip file cannot be null.");
+
+        ManuscriptDocument doc = null;
+        RecordList record = null;
+
         try (ZipInputStream input = new ZipInputStream(new
             FileInputStream(file)))
         {
             ZipEntry entry = input.getNextEntry();
-            ManuscriptDocument doc = null;
-            RecordTable record = null;
             while (entry != null){
-                StringBuilder builder = new StringBuilder();
-                byte[] bytesIn = new byte[BUFFER_SIZE];
-                int read = 0;
-                while ((read = input.read(bytesIn)) != -1) {
-                    builder.append(new String(bytesIn));
+                String text = extractText(input);
+                if (entry.getName().equals(TEXT + EXTENSION)){
+                    doc = new ManuscriptDocument(text);
                 }
-                if (entry.getName().equals(MAIN + POST_FIX)){
-                    doc = new ManuscriptDocument(builder.toString());
-                }
-                if (entry.getName().equals(RECORDS + POST_FIX)){
-                    record = new RecordTable(builder.toString());
+                if (entry.getName().equals(RECORDS + EXTENSION)){
+                    record = new RecordList(text);
                 }
                 entry = input.getNextEntry();
             }
-            if (doc != null && record != null){
-                return new ManuscriptFile(file, doc, record);
-            }
-            System.out.println(doc);
-            System.out.println(record);
-            throw new IOException("Corrupted file.");
         }
+        if (doc != null && record != null){
+            return new ManuscriptFile(file, doc, record);
+        }
+
+        throw new IOException("Corrupted file: document -> " + doc +
+            "records -> " + record);
     }
 
     public static ManuscriptFile newFile() {
         return new ManuscriptFile(null, new ManuscriptDocument(),
-            new RecordTable());
+            new RecordList());
     }
 
-    public ManuscriptFile(File file, ManuscriptDocument doc,
-        RecordTable table)
+    @Deprecated
+    public static ManuscriptFile withManuscript(ManuscriptDocument doc){
+        checkNotNull(doc, "Document can not be null.");
+
+        return new ManuscriptFile(null, doc, new RecordList());
+    }
+
+    private final ManuscriptDocument documentText;
+    private final RecordList recordsFile;
+    private Optional<File> zipFile;
+
+    private ManuscriptFile(File file, ManuscriptDocument doc,
+        RecordList table)
     {
+        assert doc != null: "Null doc";
+        assert table != null: "Null table";
         zipFile = Optional.ofNullable(file);
         documentText = doc;
         recordsFile = table;
     }
 
     public void setSave(File file){
+        checkNotNull(file, "Zip file can not be null.");
+
         zipFile = Optional.of(file);
     }
 
@@ -70,7 +98,7 @@ public class ManuscriptFile {
         return documentText;
     }
 
-    public RecordTable getRecords(){
+    public RecordList getRecords(){
         return recordsFile;
     }
 
@@ -78,23 +106,33 @@ public class ManuscriptFile {
         return zipFile.isPresent();
     }
 
+    /// {@see #canSave} to get reference
     public void save() throws IOException{
         if (! zipFile.isPresent()){
             throw new IOException("No file to save.");
         }
+
         try (ZipOutputStream writeTo = new ZipOutputStream(new FileOutputStream
             (zipFile.get())))
         {
-            save(writeTo, MAIN + POST_FIX, documentText.getRaw());
-            save(writeTo, RECORDS + POST_FIX, recordsFile.getSaveText());
+            save(writeTo, TEXT + EXTENSION, documentText.getRaw());
+            save(writeTo, RECORDS + EXTENSION, recordsFile.getSaveText());
         }
     }
 
-    private void save(ZipOutputStream writeTo, String path, String text)
+    private static void save(ZipOutputStream writeTo, String path, String text)
         throws IOException
     {
         writeTo.putNextEntry(new ZipEntry(path));
         writeTo.write(text.getBytes(), 0, text.length());
         writeTo.closeEntry();
+    }
+
+    @Override
+    public String toString(){
+        return MoreObjects.toStringHelper(this)
+            .add("document", documentText)
+            .add("records", recordsFile)
+            .toString();
     }
 }

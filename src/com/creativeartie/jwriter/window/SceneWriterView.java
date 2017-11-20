@@ -17,9 +17,10 @@ abstract class SceneWriterView extends BorderPane{
     private PaneHeadingControl tableOfContent;
     private PaneAgendaControl agendaList;
     private PaneListsControl userLists;
+    private PaneCheatsheetControl langCheatsheet;
     private SimpleObjectProperty<ManuscriptFile> manuscriptFile;
     private ReadOnlyObjectWrapper<ManuscriptDocument> document;
-    private ReadOnlyObjectWrapper<RecordTable> records;
+    private ReadOnlyObjectWrapper<RecordList> records;
     private SimpleBooleanProperty ready;
     private SimpleBooleanProperty isEdited;
 
@@ -28,6 +29,7 @@ abstract class SceneWriterView extends BorderPane{
         tableOfContent = new PaneHeadingControl();
         agendaList = new PaneAgendaControl();
         userLists = new PaneListsControl();
+        langCheatsheet = new PaneCheatsheetControl();
 
         manuscriptFile = new SimpleObjectProperty<>(this, "manuscriptFile");
 
@@ -69,6 +71,7 @@ abstract class SceneWriterView extends BorderPane{
         layoutLeftPane();
         layoutRightPane();
         layoutTopPane(window);
+        layoutBottomPane();
         layoutCenterPane();
 
         controlSetup();
@@ -91,6 +94,10 @@ abstract class SceneWriterView extends BorderPane{
         return userLists;
     }
 
+    protected PaneCheatsheetControl getCheatsheet(){
+        return langCheatsheet;
+    }
+
     /// Layout Nodes
     private void layoutLeftPane(){
         setLeft(tableOfContent);
@@ -104,6 +111,7 @@ abstract class SceneWriterView extends BorderPane{
     private void layoutRightPane(){
         setRight(agendaList);
     }
+
     private void layoutTopPane(Stage window){
         VBox pane = new VBox();
         MainMenuBar bar = new MainMenuBar(window);
@@ -111,6 +119,10 @@ abstract class SceneWriterView extends BorderPane{
 
         pane.getChildren().addAll(bar, userLists);
         setTop(pane);
+    }
+
+    private void layoutBottomPane(){
+        setBottom(langCheatsheet);
     }
 
     /// Node Properties
@@ -133,11 +145,11 @@ abstract class SceneWriterView extends BorderPane{
     public ManuscriptDocument getDocument(){
         return document.getValue();
     }
-    public ReadOnlyObjectProperty<RecordTable> recordsPoperty(){
+    public ReadOnlyObjectProperty<RecordList> recordsPoperty(){
         return records.getReadOnlyProperty();
     }
 
-    public RecordTable getRecords(){
+    public RecordList getRecords(){
         return records.getValue();
     }
 

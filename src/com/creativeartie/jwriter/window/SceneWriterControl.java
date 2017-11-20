@@ -15,29 +15,35 @@ import com.creativeartie.jwriter.lang.markup.*;
 
 public class SceneWriterControl extends SceneWriterView {
 
-    private long timer;
+    private long updateTimer;
+    private long editTimer;
+    private static final long TIMER_START = -2;
     private static final long TIMER_OFF = -1;
+    private static final long EDIT_LENGTH = 30 * 1000000000l;
     private static final long TIMER_LENGHT = 1000;
 
     public SceneWriterControl(javafx.stage.Stage window){
         super(window);
-        timer = TIMER_OFF;
+        updateTimer = TIMER_OFF;
+        editTimer = TIMER_OFF;
     }
 
     protected void controlSetup(){
         new AnimationTimer(){
             @Override
             public void handle(long now) {
-                RecordTable record = getRecords();
+                RecordList record = getRecords();
                 ManuscriptDocument doc = getDocument();
                 if (record != null && doc != null){
-                    if (isEdited()){
-                        setEdited(false);
-                        record.startWriting(doc.getPublishCount(),
-                            doc.getNoteCount());
-                    } else {
-                        record.stopWriting(doc.getPublishCount(),
-                            doc.getNoteCount());
+                    if (editTimer == TIMER_START){
+                       editTimer = now;
+                       record.startWriting(doc.getPublishTotal(),
+                          doc.getNoteTotal());
+                    }
+                    else if (editTimer + EDIT_LENGTH >= now){
+                        editTimer = TIMER_OFF;
+                        record.stopWriting(doc.getPublishTotal(),
+                            doc.getNoteTotal());
                     }
                 }
                 String time = DateTimeFormatter.ofPattern("HH:mm:ss")
@@ -50,10 +56,10 @@ public class SceneWriterControl extends SceneWriterView {
 
     private String getStats(){
         Record record = getRecords().getRecord();
-        int wordCount = record.getPublishCount();
+        int wordCount = record.getPublishTotal();
         double wordPrecent = (wordCount / (double) record.getPublishGoal()) * 100;
 
-        Duration timer = record.getWriteDuration();
+        Duration timer = record.getWriteTime();
         long hours = timer.toHours();
         long minutes = timer.toMinutes() % 60;
         long seconds = timer.getSeconds() % 60;
@@ -64,7 +70,7 @@ public class SceneWriterControl extends SceneWriterView {
     }
 
     @Override
-    protected void listenDoc(){
+    protected synchronized void listenDoc(){
         setTextReady(false);
         getTextArea().loadDoc(getDocument());
         getUserLists().loadDoc(getDocument());
@@ -72,16 +78,17 @@ public class SceneWriterControl extends SceneWriterView {
         getTextArea().returnFocus();
         setTextReady(true);
         updateDoc();
+        getCheatsheet().updateLabels(getDocument(), getTextArea().getPosition());
     }
 
     private void updateDoc(){
-        if (timer == TIMER_OFF && isTextReady()) {
+        if (updateTimer == TIMER_OFF && isTextReady()) {
             new AnimationTimer(){
                 @Override
                 public void handle(long now) {
-                    if (timer == TIMER_OFF){
-                        timer = now;
-                    } else if (timer + TIMER_LENGHT < now){
+                    if (updateTimer == TIMER_OFF){
+                        updateTimer = now;
+                    } else if (updateTimer + TIMER_LENGHT < now){
                         getTableOfContent().loadHeadings(getDocument());
                         getAgendaList().fillAgenda(getDocument());
                         int pos = getTextArea().getPosition();
@@ -90,7 +97,7 @@ public class SceneWriterControl extends SceneWriterView {
                         getTextArea().updateCss(getDocument());
                         getUserLists().refreshPane(getDocument());
                         getTextArea().returnFocus();
-                        timer = TIMER_OFF;
+                        updateTimer = TIMER_OFF;
                         stop();
                     }
                 }
@@ -99,14 +106,16 @@ public class SceneWriterControl extends SceneWriterView {
     }
 
     @Override
-    protected void listenTextChange(PlainTextChange change){
+    protected synchronized void listenTextChange(PlainTextChange change){
         setEdited(true);
+
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         if (isTextReady()){
             int pos = change.getPosition();
             getDocument().delete(pos, change.getRemovalEnd());
             getDocument().insert(pos, change.getInserted());
             updateDoc();
+            editTimer = TIMER_START;
         }
     }
 
@@ -116,6 +125,7 @@ public class SceneWriterControl extends SceneWriterView {
             getAgendaList().updateSelection(getDocument(), moveTo);
             getTableOfContent().setHeading(getDocument(), moveTo);
         }
+        getCheatsheet().updateLabels(getDocument(), moveTo);
     }
 
     protected void listenAgenda(boolean focused){

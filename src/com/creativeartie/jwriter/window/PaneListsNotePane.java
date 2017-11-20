@@ -33,21 +33,30 @@ public class PaneListsNotePane extends BorderPane{
 
     public void setData(Optional<MainSpanNote> note){
         if (note.isPresent()){
-            TextFlow text = new TextFlow();
-            TextFlow source = new TextFlow();
             GridPane cite = new GridPane();
             setupColumnConstraints(20.0, cite);
             setupColumnConstraints(80.0, cite);
-            boolean hasText = false;
-            boolean hasRef = false;
+
+            TextFlow text = new TextFlow();
+            boolean firstLine = true; /// First note is a heading
+
+            TextFlow source = new TextFlow();
+            boolean hasText = false; /// has source?
+            boolean hasRef = false; /// has in-text or footnote?
             for (Span child: note.get()){
                 if(child instanceof LinedSpanNote){
                     LinedSpanNote line = (LinedSpanNote)child;
-                    ParseTextUtilities.setFormat(text, line.getFormattedSpan());
+                    if (firstLine){
+                        ParseTextUtilities.setFormat(text, line
+                            .getFormattedSpan(), "ListView.NoteHeading");
+                    } else {
+                        ParseTextUtilities.setFormat(text, line.getFormattedSpan());
+                    }
                     text.getChildren().add(new Text("\n"));
+                    firstLine = false;
                 } else if (child instanceof LinedSpanCite){
                     LinedSpanCite line = (LinedSpanCite)child;
-                    Optional<InfoDataSpan<?>> data = line.getData();
+                    Optional<InfoDataSpan> data = line.getData();
                     if (line.getFieldType() == InfoFieldType.SOURCE){
                         if (! hasText){
                             cite.add(newLabel("ListView.Source"), 0, 0);
@@ -80,7 +89,7 @@ public class PaneListsNotePane extends BorderPane{
         return ans;
     }
 
-    private void addSources(TextFlow source, Optional<InfoDataSpan<?>> data){
+    private void addSources(TextFlow source, Optional<InfoDataSpan> data){
         data.ifPresent(span -> {
             FormatSpanMain found = ((InfoDataSpanFormatted)span)
                 .getData();
@@ -88,7 +97,7 @@ public class PaneListsNotePane extends BorderPane{
         });
     }
 
-    private boolean addInText(GridPane cite, Optional<InfoDataSpan<?>> data,
+    private boolean addInText(GridPane cite, Optional<InfoDataSpan> data,
         String key)
     {
         if (data.isPresent()){

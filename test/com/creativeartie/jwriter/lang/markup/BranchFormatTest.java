@@ -35,22 +35,29 @@ public class BranchFormatTest {
     public static class FormatNoteTest extends SpanBranchAssert<FormatNoteTest>{
         private DirectoryType directory;
         private FormatType[] formats;
+        private Optional<SpanBranch> target;
 
         public FormatNoteTest(){
             super(FormatNoteTest.class);
             formats = new FormatType[0];
+            target = Optional.empty();
         }
 
         public FormatNoteTest setDirectoryType(DirectoryType type){
             directory = type;
             return this;
         }
-        
+
         public FormatNoteTest setFormats(FormatType ... types){
             formats = types;
             return this;
         }
-        
+
+        public FormatNoteTest setTarget(DocumentAssert doc, int ... idx){
+            target = Optional.of(doc.getChild(idx));
+            return this;
+        }
+
         public FormatType[] getFormats(){
             return formats;
         }
@@ -92,12 +99,12 @@ public class BranchFormatTest {
             text = str;
             return cast();
         }
-        
+
         public FormatLinkTest setFormats(FormatType ... types){
             formats = types;
             return this;
         }
-        
+
         public FormatType[] getFormats(){
             return formats;
         }
@@ -106,9 +113,9 @@ public class BranchFormatTest {
         @Override
         public void setup(){
             if (isCatalogued()){
-                setStyles(AuxiliaryStyle.REF_LINK, getCatalogueStatus());
+                setStyles(AuxiliaryType.REF_LINK, getCatalogueStatus());
             } else {
-                setStyles(AuxiliaryStyle.DIRECT_LINK);
+                setStyles(AuxiliaryType.DIRECT_LINK);
             }
             addStyles(formats);
         }
@@ -127,21 +134,21 @@ public class BranchFormatTest {
             testFormats(test, formats);
         }
     }
-    
+
     public static class FormatContentTest extends BranchTest.ContentBasicTest<FormatContentTest> {
-        
+
         private FormatType[] formats;
 
         public FormatContentTest(){
             super(FormatContentTest.class);
             formats = new FormatType[0];
         }
-        
+
         public FormatContentTest setFormats(FormatType... types){
             formats = types;
             return this;
         }
-        
+
         public FormatType[] getFormats(){
             return formats;
         }
@@ -155,25 +162,25 @@ public class BranchFormatTest {
         public void test(SpanBranch span){
             FormatSpanContent test = assertClass(span, FormatSpanContent.class);
             testFormats(test, formats);
-            
+
         }
     }
-    
+
     public static class FormatMainTest extends SpanBranchAssert<FormatMainTest>
     {
-        private int publishCount;
-        private int noteCount;
+        private int publishTotal;
+        private int noteTotal;
         public FormatMainTest(){
             super(FormatMainTest.class);
         }
-        
-        public FormatMainTest setPublishCount(int count){
-            publishCount = count;
+
+        public FormatMainTest setPublishTotal(int count){
+            publishTotal = count;
             return this;
         }
-        
-        public FormatMainTest setNoteCount(int count){
-            noteCount = count;
+
+        public FormatMainTest setNoteTotal(int count){
+            noteTotal = count;
             return this;
         }
 
@@ -181,11 +188,11 @@ public class BranchFormatTest {
         protected void test(SpanBranch span) {
             FormatSpanMain test = assertClass(span, FormatSpanMain.class);
 
-            assertEquals(getError("publish", test), publishCount, 
-                test.getPublishCount());
-            assertEquals(getError("note", test), noteCount, 
-                test.getNoteCount());
+            assertEquals(getError("publish", test), publishTotal,
+                test.getPublishTotal());
+            assertEquals(getError("note", test), noteTotal,
+                test.getNoteTotal());
         }
-        
+
     }
 }

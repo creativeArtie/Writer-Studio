@@ -21,14 +21,6 @@ public class ContentDebug{
     private static final SetupParser[] parsers = new SetupParser[]{
         new ContentParser()};
 
-    static void assertBasics(BasicText test, String text, boolean isBegin,
-        boolean isEnd)
-    {
-        assertEquals(getError("parsed", test),  text,    test.getParsed());
-        assertEquals(getError("isBegin", test), isBegin, test.isSpaceBegin());
-        assertEquals(getError("isEnd", test),   isEnd,   test.isSpaceEnd());
-    }
-
     @Test
     public void basic(){
         ///           012345

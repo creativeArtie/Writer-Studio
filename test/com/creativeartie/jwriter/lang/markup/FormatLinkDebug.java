@@ -16,39 +16,6 @@ import com.creativeartie.jwriter.lang.*;
 @RunWith(JUnit4.class)
 public class FormatLinkDebug {
 
-    public static void assertRefLink(SpanBranch span, String path, String text,
-        CatalogueStatus status, IDBuilder id, FormatType... formats)
-    {
-        FormatSpanLink test = assertClass(span, FormatSpanLinkRef.class);
-
-        DetailStyle[] styles = FormatSpanDebug.mergeStyle(
-            new DetailStyle[]{AuxiliaryStyle.REF_LINK, status}, formats);
-
-        assertLink(test, path, text, status, styles, formats);
-        assertSpanIdentity(span, id);
-    }
-
-    public static void assertDirLink(SpanBranch span, String path, String text,
-        FormatType ... formats)
-    {
-        FormatSpanLink test = assertClass(span, FormatSpanLinkDirect.class);
-
-        DetailStyle[] styles = FormatSpanDebug.mergeStyle(
-            new DetailStyle[]{AuxiliaryStyle.DIRECT_LINK}, formats);
-
-        assertLink(test, path, text, CatalogueStatus.NO_ID, styles, formats);
-    }
-
-    private static void assertLink(FormatSpanLink test, String path,
-        String text, CatalogueStatus status, DetailStyle[] styles,
-        FormatType ... formats)
-    {
-        assertEquals(getError("link path", test),  path,   test.getPath());
-        assertEquals(getError("link text", test), text,   test.getText());
-        FormatSpanDebug.assertFormats(test, formats);
-        assertBranch(test, styles, status);
-    }
-
     private static final SetupParser[] parsers = FormatParseLink.getParsers(
         new boolean[4]);
 

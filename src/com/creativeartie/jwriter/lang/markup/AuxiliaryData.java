@@ -142,7 +142,7 @@ public final class AuxiliaryData{
      * @return list of format with the correct parse order
      */
     public static final String[] listFormatTextTokens(){
-        // FORMAT_BOLD must before FORMAT_ITALICS
+        /// FORMAT_BOLD must before FORMAT_ITALICS
         return new String[]{
             FORMAT_BOLD, FORMAT_ITALICS, FORMAT_UNDERLINE, FORMAT_CODED
         };

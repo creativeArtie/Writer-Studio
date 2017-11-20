@@ -30,7 +30,7 @@ public class MainSpanSection extends MainSpan {
                 }
                 return Optional.of(ans);
             }).get();
-            return span.spanFromFirst(LinedSpanSection.class).map(line -> 
+            return span.spanFromFirst(LinedSpanSection.class).map(line ->
                 line.getEdition()).orElse(EditionType.NONE);
         } catch (ExecutionException ex){
             throw new RuntimeException(ex);
@@ -40,7 +40,7 @@ public class MainSpanSection extends MainSpan {
 
     @Override
     public List<DetailStyle> getBranchStyles(){
-        return ImmutableList.of(AuxiliaryStyle.MAIN_SECTION);
+        return ImmutableList.of(AuxiliaryType.MAIN_SECTION);
     }
 
     private Optional<MainSpanSection> next(){

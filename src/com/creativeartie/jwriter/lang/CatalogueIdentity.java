@@ -5,51 +5,47 @@ import com.google.common.collect.*;
 
 import com.creativeartie.jwriter.main.*;
 
+import static com.google.common.base.Preconditions.*;
+
 public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
     private final ImmutableList<String> categoryPart;
     private final String namePart;
-    
+
     public CatalogueIdentity(List<String> categories, Span span){
-        Checker.checkNotNull(categories, "categories");
-        Checker.checkNotNull(span, "span");
-        
+        checkNotNull(categories, "Categories list cannot be null.");
+        checkNotNull(span, "Span cannot be null.");
+
         categoryPart = ImmutableList.copyOf(categories);
-        
+
         int ptr = span.getStart();
         int padding = String.valueOf(span.getDocument().getLength())
             .length();
         namePart = String.format("%0" + padding + "d",  ptr);
-        
+
     }
-    
-    public CatalogueIdentity(List<String> category, String id){
-        Checker.checkNotNull(category, "category");
-        Checker.checkNotNull(id, "id");
-        
+
+    public CatalogueIdentity(List<String> category, String name){
+        checkNotNull(category, "Categories list cannot be null.");
+        checkNotNull(name, "Name cannot be null.");
+
         categoryPart = ImmutableList.copyOf(category);
-        namePart = id;
+        namePart = name;
     }
-    
+
     public CatalogueStatus getStatus(CatalogueMap parent){
-        Checker.checkNotNull(parent, "parent");
-        
+        checkNotNull(parent, "Parent map can not be null.");
+
         return parent.get(this).getState();
     }
-    
-    public boolean sameCategory(CatalogueIdentity id){
-        Checker.checkNotNull(id, "id");
-        
-        return categoryPart.equals(id.categoryPart);
-    }
-    
+
     public List<String> getCategories(){
         return categoryPart;
     }
-    
+
     public String getName(){
         return namePart;
     }
-    
+
     public String getFullIdentity(){
         StringBuilder builder = new StringBuilder();
         int i = 0;
@@ -60,12 +56,12 @@ public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
         builder.append(getName());
         return builder.toString();
     }
-    
+
     @Override
     public String toString(){
         return "(" + getFullIdentity() + ")";
     }
-    
+
     @Override
     public int compareTo(CatalogueIdentity that){
         if (that == null){
@@ -76,11 +72,11 @@ public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
             .compare(namePart, that.namePart)
             .result();
     }
-    
-    public static int compareCategory(List<String> self, List<String> that){
-        Checker.checkNotNull(self, "self");
-        Checker.checkNotNull(that, "that");
-        
+
+    private static int compareCategory(List<String> self, List<String> that){
+        checkNotNull(self, "This object's category list (self) cannot be null");
+        checkNotNull(self, "That object's category list (self) cannot be null");
+
         int i = 0;
         for (String cat: self){
             if (i >= that.size()){
@@ -97,7 +93,7 @@ public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
         }
         return 0;
     }
-    
+
     @Override
     public boolean equals(Object compareObj){
         if (compareObj instanceof CatalogueIdentity){ /// compareObject != null
@@ -108,7 +104,7 @@ public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
         }
         return false;
     }
-    
+
     @Override
     public int hashCode(){
         return Objects.hash(categoryPart, namePart);

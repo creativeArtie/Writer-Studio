@@ -21,11 +21,11 @@ public final class FormatSpanMain extends SpanBranch {
         return ImmutableList.of();
     }
 
-    public int getPublishCount(){
+    public int getPublishTotal(){
         return getCount(true, false);
     }
 
-    public int getNoteCount(){
+    public int getNoteTotal(){
         return getCount(false, true);
     }
 
@@ -48,9 +48,5 @@ public final class FormatSpanMain extends SpanBranch {
         return Splitter.on(CharMatcher.whitespace())
             .omitEmptyStrings().splitToList(text).size();
     }
-
-    /* // TODO Speed up preformance by edit only some of the text
-    protected DetailUpdater getUpdater(int index, String newText){ }
-    */
 
 }

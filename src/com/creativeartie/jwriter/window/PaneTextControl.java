@@ -17,8 +17,6 @@ public class PaneTextControl extends PaneTextView {
     public void loadDoc(ManuscriptDocument doc){
         getTextArea().replaceText(0, getTextArea().getLength(),
             doc.getRaw());
-        getButtonPane().setDocument(doc);
-        // getButtonPane().refreshButtons();
     }
 
     @Override
@@ -43,7 +41,7 @@ public class PaneTextControl extends PaneTextView {
         });
 
         checkClass(leaf, LinedSpanAgenda.class, list, "Agenda");
-         checkClass(leaf, LinedSpanPointLink.class, list, "Link");
+        checkClass(leaf, LinedSpanPointLink.class, list, "Link");
 
         leaf.getParent(FormatSpan.class).ifPresent(span ->{
             if(span.isBold()) addProperty(list, "Bold");
@@ -75,7 +73,7 @@ public class PaneTextControl extends PaneTextView {
             break;
         case ID:
             leaf.getParent(Catalogued.class).ifPresent(span -> {
-                switch(span.getBranch().getIdStatus()){
+                switch(((SpanBranch)span).getIdStatus()){
                 case MULTIPLE:
                 case NOT_FOUND:
                     addProperty(list, "Error");

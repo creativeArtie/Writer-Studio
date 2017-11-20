@@ -15,11 +15,11 @@ public class MainSpanNote extends MainSpan {
 
     @Override
     public List<DetailStyle> getBranchStyles(){
-        return ImmutableList.of(AuxiliaryStyle.MAIN_NOTE, getIdStatus());
+        return ImmutableList.of(AuxiliaryType.MAIN_NOTE, getIdStatus());
     }
 
-    public ImmutableListMultimap<InfoFieldType, InfoDataSpan<?>> getSources(){
-        ImmutableListMultimap.Builder<InfoFieldType, InfoDataSpan<?>> data =
+    public ImmutableListMultimap<InfoFieldType, InfoDataSpan> getSources(){
+        ImmutableListMultimap.Builder<InfoFieldType, InfoDataSpan> data =
             ImmutableListMultimap.builder();
         for (Span child: this){
             if (child instanceof LinedSpanCite){

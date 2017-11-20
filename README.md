@@ -22,10 +22,10 @@ to one line.
 
 |Format   |Code          |
 |---------|--------------|
-|Italics  |`\*Text\*`    |
-|Bold     |`\*\*Text\*\*`|
-|Underline|`\_Text\_`    |
-|Code     |`\`Text\``    |
+|Italics  |`*Text*`      |
+|Bold     |`**Text**`    |
+|Underline|`_Text_`      |
+|Code     |`` `Text` ``  |
 
 There are also [footnote (syntax `{^footnote}`), endnote (syntax `{*endnote}`)](#note-styles),
 [links (syntax `<@reference id|link text>` or `<link path|link text>`)](#hyperlink),
@@ -84,10 +84,10 @@ page, while endnote appears at the end of either a section or a document.
 All footnote and endnotes will have an [id](#id) and text before they can appear
 in the printed document.
 
-|Types      |Line Syntax |In Text Syntax|
-|-----------|------------|--------------|
-|Footnote   | `!^id:text`| `{^id}`      |
-|Endnote    | `!*id:text`| `{*id}`      |
+|Types      |Line Syntax  |In Text Syntax|
+|-----------|-------------|--------------|
+|Footnote   | `!^id:text `| `{^id}`      |
+|Endnote    | `!*id:text `| `{*id}`      |
 
 Footnote will count by numbers, while endnot count by letters.
 

@@ -1,6 +1,5 @@
 package com.creativeartie.jwriter.lang;
 
-//TODO: add functions for highlighting, node creation and GUI editor
 import java.util.*;
 
 import com.google.common.collect.*;
@@ -83,19 +82,6 @@ public class SpanLeaf extends Span{
     @Override
     public int getLength(){
         return leafText.length();
-    }
-
-    public String toCss(PropertyManager file){
-        Checker.checkNotNull(file, "file");
-        ArrayList<StyleProperty> list = new ArrayList<>();
-        for(DetailStyle info: getDetailStyle()){
-            String style = info.getStyleClass();
-            list.add(file.getStyleProperty(style));
-        }
-        list.add(file.getStyleProperty(DetailStyle.styleFromEnum(
-            SetupStrings.STYLE_BASIC, SetupStrings.STYLE_ALL
-        )));
-        return StyleProperty.toCss(list);
     }
 
     @Override

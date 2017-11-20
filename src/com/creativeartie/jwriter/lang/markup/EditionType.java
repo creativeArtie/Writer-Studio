@@ -10,11 +10,6 @@ public enum EditionType implements DetailStyle{
     STUB, DRAFT, FINAL, OTHER, NONE;
 
     @Override
-    public String getStyleClass(){
-        return DetailStyle.styleFromEnum(STYLE_EDITION, name());
-    }
-
-    @Override
     public String toString(){
         return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, name());
     }

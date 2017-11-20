@@ -29,7 +29,7 @@ abstract class PaneMonthView extends GridPane{
     private ReadOnlyObjectWrapper<YearMonth> yearMonth;
     private ReadOnlyObjectWrapper<YearMonth> firstMonth;
     private ReadOnlyObjectWrapper<YearMonth> finalMonth;
-    private SimpleObjectProperty<RecordTable> recordTable;
+    private SimpleObjectProperty<RecordList> recordTable;
     protected static String getString(String key){
         return Utilities.getString("Calendar." + key);
     }
@@ -180,15 +180,15 @@ abstract class PaneMonthView extends GridPane{
         yearMonth.setValue(value);
     }
 
-    public ObjectProperty<RecordTable> recordTableProperty(){
+    public ObjectProperty<RecordList> recordTableProperty(){
         return recordTable;
     }
 
-    public RecordTable getRecordTable(){
+    public RecordList getRecordList(){
         return recordTable.getValue();
     }
 
-    public void setRecordTable(RecordTable value){
+    public void setRecordList(RecordList value){
         recordTable.setValue(value);
     }
 
@@ -216,5 +216,5 @@ abstract class PaneMonthView extends GridPane{
     /// Control Methods
     protected abstract void listenMonth(YearMonth value);
 
-    protected abstract void listenRecords(RecordTable value);
+    protected abstract void listenRecords(RecordList value);
 }

@@ -19,23 +19,6 @@ public enum InfoDataParser implements SetupParser{
             return Optional.of(new InfoDataSpanFormatted(children));
         }
         return Optional.empty();
-    }), NUMBER(pointer -> {
-        Checker.checkNotNull(pointer, "pointer");
-        pointer.mark();
-        ArrayList<Span> children = new ArrayList<>();
-        CharMatcher data = CharMatcher.whitespace()
-            .and(CharMatcher.isNot(LINED_END.charAt(0)))
-            .or(CharMatcher.javaDigit());
-        if (pointer.matches(children, data)){
-            if (CharMatcher.javaDigit().countIn(children.get(0).getRaw()) > 0){
-                if (! (new ContentParser().parse(children, pointer))){
-                    pointer.getTo(children, LINED_END);
-                    return Optional.of(new InfoDataSpanNumber(children));
-                }
-            }
-        }
-        pointer.rollBack(children);
-        return Optional.empty();
     }), TEXT(pointer -> {
         Checker.checkNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
@@ -46,13 +29,13 @@ public enum InfoDataParser implements SetupParser{
         }
         return Optional.empty();
     }), ERROR (pointer -> {return Optional.empty();});
-    
+
     private final SetupParser parser;
-    
+
     private InfoDataParser(SetupParser dataParser){
         parser = dataParser;
     }
-    
+
     @Override
     public Optional<SpanBranch> parse(SetupPointer pointer){
         return parser.parse(pointer); /// check inside

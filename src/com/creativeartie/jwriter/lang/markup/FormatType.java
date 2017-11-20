@@ -6,9 +6,5 @@ import com.creativeartie.jwriter.lang.DetailStyle;
 public enum FormatType implements DetailStyle{
     /// Value order mandated by FormatSpan and FormatParser
     BOLD, ITALICS, UNDERLINE, CODED;
-    
-    @Override 
-    public String getStyleClass(){
-        return DetailStyle.styleFromEnum(STYLE_FORMAT, name());
-    }
+
 }

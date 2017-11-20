@@ -16,55 +16,6 @@ import com.creativeartie.jwriter.lang.*;
 @RunWith(JUnit4.class)
 public class FormatSpanDebug {
 
-    public static DetailStyle[] mergeStyle(DetailStyle[] styles,
-        FormatType ... formats)
-    {
-        DetailStyle[] info = new DetailStyle[formats.length + styles.length];
-        System.arraycopy(styles,  0, info, 0,             styles.length);
-        System.arraycopy(formats, 0, info, styles.length, formats.length);
-        return info;
-    }
-
-    public static void assertFormats(FormatSpan test, FormatType ... formats){
-        assertFormat(test, test.isBold(),      FormatType.BOLD, formats);
-        assertFormat(test, test.isItalics(),   FormatType.ITALICS, formats);
-        assertFormat(test, test.isUnderline(), FormatType.UNDERLINE, formats);
-        assertFormat(test, test.isCoded(),     FormatType.CODED, formats);
-    }
-
-    private static void assertFormat(FormatSpan span, boolean format,
-            FormatType type,  FormatType[] formats)
-    {
-        boolean isTrue = false;
-        for (FormatType expected: formats){
-            if (type == expected){
-                isTrue = true;
-            }
-        }
-        assertEquals(getError(type.name().toLowerCase() + " format", span),
-            isTrue, format);
-    }
-
-    public static void assertMain(SpanBranch span, int publish, int note){
-        FormatSpanMain test = assertClass(span, FormatSpanMain.class);
-
-        assertEquals(getError("publish", test), publish, test.getPublishCount());
-        assertEquals(getError("note", test),    note,    test.getNoteCount());
-        assertBranch(span);
-    }
-
-    public static void assertContent(SpanBranch span, String text,
-        boolean isBegin, boolean isEnd, FormatType ... formats)
-    {
-
-        FormatSpanContent test = assertClass(span, FormatSpanContent.class);
-
-        assertEquals("Wrong text for " + span, text, test.getParsed());
-        ContentDebug.assertBasics(test, text, isBegin, isEnd);
-        assertFormats(test, formats);
-        assertBranch(span, formats);
-    }
-
     private static final SetupParser[] parsers = new SetupParser[]{
         new FormatParser()};
 
@@ -73,7 +24,7 @@ public class FormatSpanDebug {
         String raw = "abc";
         DocumentAssert doc = assertDoc(1, raw, parsers);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
         FormatContentTest content = new FormatContentTest()
             .setText(raw) .setBegin(false)
             .setEnd(false);
@@ -91,7 +42,7 @@ public class FormatSpanDebug {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
         FormatContentTest content1 = new FormatContentTest()
             .setBegin(false).setEnd(false)
             .setText("or");
@@ -121,7 +72,7 @@ public class FormatSpanDebug {
         String raw = "g*ee*n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
         FormatContentTest content1 = new FormatContentTest()
             .setBegin(false).setEnd(false)
             .setText("g");
@@ -152,7 +103,7 @@ public class FormatSpanDebug {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
         FormatContentTest content1 = new FormatContentTest()
             .setBegin(false).setEnd(false)
             .setText("g");
@@ -189,7 +140,7 @@ public class FormatSpanDebug {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(2).setNoteCount(0);
+            .setPublishTotal(2).setNoteTotal(0);
         FormatContentTest content = new FormatContentTest()
             .setBegin(false).setEnd(false)
             .setText("abc ab").setFormats(FormatType.UNDERLINE);
@@ -212,7 +163,7 @@ public class FormatSpanDebug {
         doc.addRef(builder, CatalogueStatus.NOT_FOUND, 0);
 
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(1).setNoteCount(0);
+            .setPublishTotal(1).setNoteTotal(0);
         FormatNoteTest cite = new FormatNoteTest()
             .setDirectoryType(DirectoryType.ENDNOTE)
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder)
@@ -250,9 +201,9 @@ public class FormatSpanDebug {
 
         String text = "  abc ddd ";
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(2)    .setNoteCount(2);
+            .setPublishTotal(2)    .setNoteTotal(2);
         FormatAgendaTest todo1 = new FormatAgendaTest()
-            .setCatalogued(builder).setText("todo");
+            .setCatalogued(CatalogueStatus.UNUSED, builder).setText("todo");
         ContentTest todo1Text = new ContentTest()
             .setText("todo").setBegin(false)
             .setEnd(false)  .setCount(1);
@@ -264,7 +215,7 @@ public class FormatSpanDebug {
         doc.addId(builder, 1);
 
         FormatAgendaTest todo2 = new FormatAgendaTest()
-            .setCatalogued(builder).setText("abc");
+            .setCatalogued(CatalogueStatus.UNUSED, builder).setText("abc");
         ContentTest todo2Text = new ContentTest()
             .setText("abc")        .setBegin(false)
             .setEnd(false)         .setCount(1);
@@ -292,7 +243,7 @@ public class FormatSpanDebug {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormatMainTest main = new FormatMainTest()
-            .setPublishCount(6).setNoteCount(1);
+            .setPublishTotal(6).setNoteTotal(1);
 
         FormatContentTest text1 = new FormatContentTest()
             .setText("Begin\\").setBegin(false).setEnd(false);
@@ -357,8 +308,8 @@ public class FormatSpanDebug {
         builder = FormatAgendaDebug.buildId("55");
         doc.addId(builder, 0);
 
-        FormatAgendaTest todo = new FormatAgendaTest().
-            setCatalogued(builder).setText("todo");
+        FormatAgendaTest todo = new FormatAgendaTest()
+            .setCatalogued(CatalogueStatus.UNUSED, builder).setText("todo");
         ContentTest todoText = new ContentTest()
             .setText("todo").setBegin(false)
             .setEnd(false).setCount(1);

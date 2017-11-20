@@ -20,9 +20,8 @@ public class LinedSpanCite extends LinedSpan {
         return InfoFieldType.ERROR;
     }
 
-    public Optional<InfoDataSpan<?>> getData(){
-        return spanFromLast(InfoDataSpan.class)
-            .map(value -> (InfoDataSpan<?>) value);
+    public Optional<InfoDataSpan> getData(){
+        return spanFromLast(InfoDataSpan.class);
     }
 
     @Override
@@ -30,23 +29,23 @@ public class LinedSpanCite extends LinedSpan {
         ImmutableList.Builder<DetailStyle> builder = ImmutableList.builder();
         builder.addAll(super.getBranchStyles()).add(getFieldType());
         if (! getData().isPresent()){
-            builder.add(AuxiliaryStyle.DATA_ERROR);
+            builder.add(AuxiliaryType.DATA_ERROR);
         }
         return builder.build();
     }
 
     @Override
-    public int getNoteCount(){
+    public int getNoteTotal(){
         if (getFieldType() != InfoFieldType.ERROR){
             return getData().map(span -> getCount(span)).orElse(0);
         }
         return 0;
     }
 
-    private int getCount(InfoDataSpan<?> span){
+    private int getCount(InfoDataSpan span){
         if (span instanceof InfoDataSpanFormatted){
             FormatSpanMain data = ((InfoDataSpanFormatted)span).getData();
-            return data.getPublishCount() + data.getNoteCount();
+            return data.getPublishTotal() + data.getNoteTotal();
         } else if (span instanceof InfoDataSpanText){
             return ((InfoDataSpanText)span).getData().wordCount();
         }

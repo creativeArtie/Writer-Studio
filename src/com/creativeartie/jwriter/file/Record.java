@@ -1,23 +1,49 @@
 package com.creativeartie.jwriter.file;
 
+import java.util.*;
 import java.util.Optional;
 import java.time.*;
+
 import com.google.common.base.*;
-import java.util.*;
+import static com.google.common.base.Preconditions.*;
 
 /**
- * A single line of record with date, publish count, and note count.
+ * A single line of record with date, with word counts and goals
  */
 public final class Record{
-    private LocalDate recordDate;
-    private Duration timeGoal;
-    private int publishGoal;
-    private int publishCount;
-    private int noteCount;
-    private Optional<Record> lastRecord;
-    private Duration writeDuration;
-    private Optional<LocalDateTime> markedTime;
 
+    static Record firstRecord(){
+        return new Record().new Builder().build();
+    }
+
+    static Record newRecord(Record last){
+        return new Record().new Builder(last)
+            .setTimeGoal(last.timeGoal)
+            .setPublishGoal(last.publishGoal)
+            .setPublishTotal(last.publishTotal)
+            .setNoteTotal(last.noteTotal)
+            .build();
+    }
+
+    static Builder builder(Record last){
+        return new Record().new Builder(last);
+    }
+
+    private LocalDate recordDate;
+
+    private Duration writeTime;
+    private Duration timeGoal;
+    private Optional<LocalDateTime> timeStarted;
+
+    private int publishGoal;
+    private int publishTotal;
+    private int noteTotal;
+
+    private Optional<Record> lastRecord;
+
+    /**
+     * Builder class for a record.
+     */
     class Builder{
         private Builder(){
             this (null, LocalDate.now());
@@ -28,43 +54,46 @@ public final class Record{
         }
 
         private Builder(Record record, LocalDate date){
+            assert date != null: "Null date.";
+
+            lastRecord = Optional.ofNullable(record);
             recordDate = LocalDate.now();
+
             timeGoal = Duration.ofMinutes(30);
             publishGoal = 50;
-            publishCount = 0;
-            noteCount = 0;
-            lastRecord = Optional.ofNullable(record);
-            writeDuration = Duration.ZERO;
-            markedTime = Optional.empty();
+            publishTotal = 0;
+            noteTotal = 0;
+            writeTime = Duration.ZERO;
+            timeStarted = Optional.empty();
         }
 
         public Builder setRecordDate(LocalDate date){
-            recordDate = date;
+            recordDate = checkNotNull(date, "Date cannot be null.");
             return this;
         }
 
         public Builder setTimeGoal(Duration duration){
-            timeGoal = duration;
+            timeGoal = checkNotNull(duration, "Duration cannot be null.");;
             return this;
         }
 
         public Builder setPublishGoal(int goal){
-            publishGoal = goal;
+            publishGoal = checkNotNull(goal, "Goal cannot be null.");;
             return this;
         }
 
-        public Builder setPublishCount(int count){
-            publishCount = count;
+        public Builder setPublishTotal(int total){
+            publishTotal = checkNotNull(total, "Total cannot be null.");
             return this;
         }
 
-        public Builder setNoteCount(int count){
-            noteCount = count;
+        public Builder setNoteTotal(int total){
+            noteTotal = checkNotNull(total, "Total cannot be null.");;
             return this;
         }
 
         public Builder setWriteDuration(Duration time){
-            writeDuration = time;
+            writeTime = checkNotNull(time, "Time cannot be null.");
             return this;
         }
 
@@ -73,80 +102,39 @@ public final class Record{
         }
     }
 
-    public static Record firstRecord(){
-        return new Record().new Builder().build();
-    }
-
-    public static Record nextRecord(Record last){
-        return new Record().new Builder(last)
-            .setTimeGoal(last.timeGoal)
-            .setPublishGoal(last.publishGoal)
-            .setPublishCount(last.publishCount)
-            .setNoteCount(last.noteCount)
-            .build();
-    }
-
-    public static Builder builder(Record last){
-        return new Record().new Builder(last);
-    }
-
     private Record(){}
 
     public LocalDate getRecordDate(){
         return recordDate;
     }
 
-    public int getPublishCount(){
-        return publishCount;
+    public int getPublishTotal(){
+        return publishTotal;
     }
 
     public int getPublishGoal(){
         return publishGoal;
     }
 
-    public int getNoteCount(){
-        return noteCount;
-    }
-
-    public int getTotalCount(){
-        return publishCount + noteCount;
-    }
-
-    public Duration getWriteDuration(){
-        return writeDuration;
-    }
-
-    public long getWriteMinutes(){
-        return writeDuration.toMinutes();
-    }
-
-    void startWriting(int publish, int note){
-        if (! markedTime.isPresent()){
-            markedTime = Optional.of(LocalDateTime.now());
-        }
-        updateRecord(publish, note);
-    }
-
-    void stopWriting(int publish, int note){
-        markedTime.ifPresent(time ->
-            writeDuration = writeDuration.plus(Duration.between(time,
-                LocalDateTime.now())));
-        markedTime = Optional.empty();
-        updateRecord(publish, note);
-    }
-
-    private void updateRecord(int publish, int note){
-        publishCount = publish;
-        noteCount = note;
+    public void setPublishGoal(int goal){
+        publishGoal = goal;
     }
 
     public int getPublishWritten(){
-        return lastRecord.map(record -> publishCount - record.publishCount)
-            .orElse(publishCount);
+        return lastRecord.map(record -> publishTotal - record.publishTotal)
+            .orElse(publishTotal);
     }
 
-    public void setPublishGoal(int goal){
-        publishGoal = goal;
+    public int getNoteTotal(){
+        return noteTotal;
+    }
+
+    public int getTotalCount(){
+        return publishTotal + noteTotal;
+    }
+
+    public Duration getWriteTime(){
+        return writeTime;
     }
 
     public Duration getTimeGoal(){
@@ -157,15 +145,35 @@ public final class Record{
         timeGoal = goal;
     }
 
+    void startWriting(int publish, int note){
+        if (! timeStarted.isPresent()){
+            timeStarted = Optional.of(LocalDateTime.now());
+        }
+        updateRecord(publish, note);
+    }
+
+    void stopWriting(int publish, int note){
+        timeStarted.ifPresent(time ->
+            writeTime = writeTime.plus(Duration.between(time,
+                LocalDateTime.now())));
+        timeStarted = Optional.empty();
+        updateRecord(publish, note);
+    }
+
+    private void updateRecord(int publish, int note){
+        publishTotal = publish;
+        noteTotal = note;
+    }
+
     @Override
     public String toString(){
         return MoreObjects.toStringHelper(this)
             .addValue(recordDate)
-            .add("publish", publishCount)
-            .add("note", noteCount)
+            .add("publish", publishTotal)
+            .add("note", noteTotal)
             .add("total", getTotalCount())
-            .add("timer start", markedTime)
-            .add("duration", writeDuration)
+            .add("timer start", timeStarted)
+            .add("duration", writeTime)
             .add("duration goal", timeGoal)
             .toString();
     }

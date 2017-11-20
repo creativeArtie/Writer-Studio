@@ -8,6 +8,7 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 public enum LinedType implements DetailStyle{
     /// name() is being used to generate keys in window_text "TextView.*"
+    /// LinedType follows the same order as PaneCheatsheatLabel.Name
 
     HEADING(LinedParseLevel.HEADING), OUTLINE(LinedParseLevel.OUTLINE),
     NUMBERED(LinedParseLevel.NUMBERED), BULLET(LinedParseLevel.BULLET),
@@ -66,11 +67,5 @@ public enum LinedType implements DetailStyle{
         }
         assert false;
         return null;
-    }
-
-
-    @Override
-    public String getStyleClass(){
-        return DetailStyle.styleFromEnum(STYLE_LINED, name());
     }
 }

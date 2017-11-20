@@ -6,21 +6,36 @@ import java.io.*;
 import java.util.function.*;
 
 import com.google.common.collect.*;
+import static com.google.common.base.Preconditions.*;
 
-public class RecordTable extends ForwardingList<Record>{
+/**
+ * A list of {@link Record} and methods to save and edit with today's Record.
+ */
+public final class RecordList extends ForwardingList<Record>{
+
+    @Deprecated
+    public static RecordList build(File file) throws IOException{
+        return new RecordList(file);
+    }
+
     private final ArrayList<Record> recordList;
 
-    public RecordTable(){
+    RecordList(){
         recordList = new ArrayList<>();
         recordList.add(Record.firstRecord());
     }
 
-    public RecordTable(String text){
+    RecordList(String text){
+        checkNotNull(text, "Record text cannot be null.");
+
         recordList = new ArrayList<>();
         fillData(new Scanner(text));
     }
 
-    public RecordTable(File file) throws IOException{
+    @Deprecated
+    RecordList(File file) throws IOException{
+        checkNotNull(file, "Record text cannot be null.");
+
         recordList = new ArrayList<>();
         try (Scanner data = new Scanner(file)){
             fillData(data);
@@ -28,6 +43,8 @@ public class RecordTable extends ForwardingList<Record>{
     }
 
     private void fillData(Scanner data){
+        assert data != null: "Null data";
+
         int written = 0;
         Record current = null;
         while (data.hasNextInt()){
@@ -35,8 +52,8 @@ public class RecordTable extends ForwardingList<Record>{
                 .setRecordDate(LocalDate.ofYearDay(
                     data.nextInt(), data.nextInt())
                 )
-                .setPublishCount(data.nextInt())
-                .setNoteCount(data.nextInt())
+                .setPublishTotal(data.nextInt())
+                .setNoteTotal(data.nextInt())
                 .setWriteDuration(Duration.parse(data.next()))
                 .setPublishGoal(data.nextInt())
                 .setTimeGoal(Duration.parse(data.next()))
@@ -51,9 +68,9 @@ public class RecordTable extends ForwardingList<Record>{
         for (Record out: this){
             ans.append(out.getRecordDate().getYear()).append(" ");
             ans.append(out.getRecordDate().getDayOfYear()).append(" ");
-            ans.append(out.getPublishCount()).append(" ");
-            ans.append(out.getNoteCount()).append(" ");
-            ans.append(out.getWriteDuration()).append(" ");
+            ans.append(out.getPublishTotal()).append(" ");
+            ans.append(out.getNoteTotal()).append(" ");
+            ans.append(out.getWriteTime()).append(" ");
             ans.append(out.getPublishGoal()).append(" ");
             ans.append(out.getTimeGoal()).append("\n");
         }
@@ -84,11 +101,13 @@ public class RecordTable extends ForwardingList<Record>{
     private void updateRecord(){
         Record record = getRecord();
         if (!record.getRecordDate().equals(LocalDate.now())){
-            recordList.add(Record.nextRecord(record));
+            recordList.add(Record.newRecord(record));
         }
     }
 
     public Iterator<Record> getMonth(YearMonth month){
+        checkNotNull(month, "Month cannot be null.");
+
         if (getStartMonth().isAfter(month) || getEndMonth().isBefore(month)){
             return new AbstractIterator<Record>(){
                 protected Record computeNext(){
@@ -117,6 +136,7 @@ public class RecordTable extends ForwardingList<Record>{
     }
 
     private int findMonth(YearMonth month){
+        assert month != null: "Null Month";
         int ptr = 0;
         for(Record record: this){
             LocalDate date = record.getRecordDate();
