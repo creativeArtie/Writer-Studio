@@ -120,7 +120,7 @@ abstract class PaneListsView extends GridPane{
                 } else if (branch instanceof LinedSpanPointNote){
                     Optional<FormatSpanMain> ans = ((LinedSpanPointNote)branch)
                         .getFormattedSpan();
-                    graphic = ParseTextUtilities.setFormat(ans);
+                    graphic = SpanBranchParser.parseDisplay(ans.orElse(null));
                 } else {
                     graphic = null;
                 }

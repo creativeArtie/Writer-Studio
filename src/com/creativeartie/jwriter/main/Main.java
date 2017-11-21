@@ -29,19 +29,15 @@ public class Main extends Application{
         stage.setTitle(TEXTS.getString("MainWindow.Title"));
 
         // testStatsWindow(stage);
-        openMainWindow(stage);
+        testMainWindow(stage);
+        // setupWindow(stage, ManuscriptFile.newFile());
     }
 
-    private void openMainWindow(Stage stage) throws Exception{
-        ClassLoader classLoader = getClass().getClassLoader();
-        InputStream in = getClass().getResourceAsStream("/data/help-text.txt");
-        StringBuilder builder = new StringBuilder();
-        int read = in.read();
-        while (read != -1){
-            builder.append((char) read);
-            read = in.read();
-        }
-        setupWindow(stage, ManuscriptFile.newFile());
+    @Deprecated
+    private void testMainWindow(Stage stage) throws Exception{
+        File file = new File("data/sectionDebug4.txt");
+        ManuscriptDocument doc = new ManuscriptDocument(file);
+        setupWindow(stage, ManuscriptFile.withManuscript(doc));
     }
 
     private void setupWindow(Stage stage, ManuscriptFile file) {

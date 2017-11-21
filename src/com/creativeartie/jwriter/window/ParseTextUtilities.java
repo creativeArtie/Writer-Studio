@@ -8,6 +8,8 @@ import com.google.common.base.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.lang.Span;
 import com.creativeartie.jwriter.main.*;
+
+@Deprecated
 public class ParseTextUtilities {
     static String toCss(String base){
         return Utilities.getCss("Format." +

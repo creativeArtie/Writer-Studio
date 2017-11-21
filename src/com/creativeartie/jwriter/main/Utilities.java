@@ -21,6 +21,7 @@ public class Utilities{
         return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, name);
     }
 
+    @Deprecated
     public static PropertyManager getStyles(){
         if (styles == null){
             try {
@@ -45,10 +46,12 @@ public class Utilities{
         return options;
     }
 
+    @Deprecated
     public static StyleProperty getStyleProperty(String key){
         return getStyles().getStyleProperty(key);
     }
 
+    @Deprecated
     public static String getCss(String key){
         return getStyles().getStyleProperty(key).toCss();
     }
