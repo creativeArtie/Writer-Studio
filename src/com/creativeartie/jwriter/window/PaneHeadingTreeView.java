@@ -11,6 +11,7 @@ import java.util.*;
 import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
+import com.creativeartie.jwriter.property.window.*;
 
 abstract class PaneHeadingTreeView extends TitledPane{
 

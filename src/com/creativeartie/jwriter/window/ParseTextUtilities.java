@@ -8,6 +8,7 @@ import com.google.common.base.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.lang.Span;
 import com.creativeartie.jwriter.main.*;
+import com.creativeartie.jwriter.property.window.*;
 
 @Deprecated
 public class ParseTextUtilities {

@@ -7,6 +7,7 @@ import java.util.function.*;
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.file.*;
 import com.creativeartie.jwriter.property.*;
+import com.creativeartie.jwriter.property.window.*;
 
 public class PaneMonthControl extends PaneMonthView{
 
@@ -17,7 +18,7 @@ public class PaneMonthControl extends PaneMonthView{
     }
 
     protected void listenMonth(YearMonth value){
-        String month = getString(Utilities.enumToKey(value.getMonth().name()));
+        String month = WindowText.getText(value.getMonth());
         getHeadLabel().setText(month + " " + value.getYear());
         LocalDate day = value.atDay(1);
 

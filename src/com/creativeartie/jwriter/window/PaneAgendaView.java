@@ -10,6 +10,7 @@ import java.util.*;
 import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
+import com.creativeartie.jwriter.property.window.*;
 
 abstract class PaneAgendaView extends GridPane{
 
@@ -31,7 +32,7 @@ abstract class PaneAgendaView extends GridPane{
                 }
                 Label graphic = null;
                 if (text.isEmpty()){
-                    graphic = new Label(Utilities.getString("AgendaList.Empty"));
+                    graphic = new Label(WindowText.AGENDA_EMPTY.getText());
                     graphic.setStyle(WindowStyle.NOT_FOUND.toCss());
                 } else {
                     graphic = new Label(text);
@@ -65,8 +66,8 @@ abstract class PaneAgendaView extends GridPane{
 
     /// Layout Node
     private void setupList(){
-        TitledPane title = new TitledPane(Utilities
-            .getString("AgendaList.Name"), list);
+        TitledPane title = new TitledPane(WindowText.AGENDA_TITLE.getText(),
+            list);
         list.setCellFactory(param -> new AgendaCell());
         add(title, 0, 0);
     }

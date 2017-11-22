@@ -11,6 +11,7 @@ import java.util.*;
 import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
+import com.creativeartie.jwriter.property.window.*;
 
 abstract class PaneHeadingView extends VBox{
     private PaneHeadingTreeControl headingNode;
@@ -24,8 +25,8 @@ abstract class PaneHeadingView extends VBox{
         headingNode = new PaneHeadingTreeControl();
         outlineNode = new PaneHeadingTreeControl();
 
-        setupTree(headingNode, Utilities.getString("TreeView.Headings"));
-        setupTree(outlineNode, Utilities.getString("TreeView.Outlines"));
+        setupTree(headingNode, WindowText.HEADING_TITLE.getText());
+        setupTree(outlineNode, WindowText.OUTLINE_TITLE.getText());
 
         headingProp = new ReadOnlyObjectWrapper<>(this, "heaing");
         headingProp.bind(headingNode.selectedSectionProperty());

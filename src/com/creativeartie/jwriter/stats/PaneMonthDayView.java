@@ -13,6 +13,7 @@ import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.window.*;
+import com.creativeartie.jwriter.property.window.*;
 
 import com.creativeartie.jwriter.file.*;
 
@@ -49,10 +50,6 @@ abstract class PaneMonthDayView extends AnchorPane{
 
     protected Tooltip getWordLabel(){
         return statsTip;
-    }
-
-    private static String getString(String key){
-        return Utilities.getString("Calendar." + key);
     }
 
     /// Layout Node
@@ -94,8 +91,8 @@ abstract class PaneMonthDayView extends AnchorPane{
 
     void noRecord(LocalDate day){
         readDay.setValue(day);
-        imageIcon.setGraphic(setImage(EditIcon.GOAL_FAIL));
-        statsTip.setText(getString("NoRecord"));
+        imageIcon.setGraphic(setImage(ButtonIcon.GOAL_FAIL));
+        statsTip.setText(WindowText.CALENDAR_NO_RECORD.getText());
         imageIcon.setTooltip(statsTip);
     }
 
@@ -107,8 +104,8 @@ abstract class PaneMonthDayView extends AnchorPane{
         Duration timeGoal = record.getTimeGoal();
         boolean time = dur.toMinutes() >= record.getTimeGoal().toMinutes();
         imageIcon.setGraphic(setImage(written >= record.getPublishGoal()?
-            (time? EditIcon.GOAL_ALL: EditIcon.GOAL_WORD) :
-            (time? EditIcon.GOAL_TIME: EditIcon.GOAL_FAIL)));
+            (time? ButtonIcon.GOAL_ALL: ButtonIcon.GOAL_WORD) :
+            (time? ButtonIcon.GOAL_TIME: ButtonIcon.GOAL_FAIL)));
 
         String tip = String.format("Written: %,d(%,d)\nTime: %s (%s)",
             written, goal, Utilities.formatDuration(dur),
@@ -117,7 +114,7 @@ abstract class PaneMonthDayView extends AnchorPane{
         imageIcon.setTooltip(statsTip);
     }
 
-    private ImageView setImage(EditIcon icon){
+    private ImageView setImage(ButtonIcon icon){
         ImageView image = icon.getIcon();
         image.setFitHeight(50);
         image.setFitWidth(50);

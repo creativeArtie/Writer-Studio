@@ -1,4 +1,4 @@
-package com.creativeartie.jwriter.window;
+package com.creativeartie.jwriter.property.window;
 
 import java.util.*;
 import java.io.*;
@@ -16,20 +16,20 @@ import com.creativeartie.jwriter.property.*;
 public final class WindowStyleBuilder{
     private List<StyleProperty> properties;
 
-    WindowStyleBuilder(){
+    public WindowStyleBuilder(){
         properties = new ArrayList<StyleProperty>();
     }
 
-    WindowStyleBuilder add(String base, String name){
+    public WindowStyleBuilder add(String base, String name){
         return add(base + "." + UPPER_UNDERSCORE.to(UPPER_CAMEL, name));
     }
 
-    WindowStyleBuilder add(String key){
+    public WindowStyleBuilder add(String key){
         properties.add(WindowStyle.buildStyle(key));
         return this;
     }
 
-    WindowStyleBuilder add(WindowStyle style){
+    public WindowStyleBuilder add(WindowStyle style){
         properties.add(style.getProperty());
         return this;
     }

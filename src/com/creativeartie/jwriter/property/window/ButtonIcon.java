@@ -1,4 +1,4 @@
-package com.creativeartie.jwriter.window;
+package com.creativeartie.jwriter.property.window;
 
 import javafx.scene.image.*;
 import javafx.geometry.*;
@@ -6,7 +6,7 @@ import javafx.geometry.*;
 import com.creativeartie.jwriter.main.*;
 import com.google.common.base.*;
 
-public enum EditIcon{
+public enum ButtonIcon{
     /// Keeping the following code for the WYSIWYG mode
     /*PARAGRAPH_LINE(0, 0), QUOTE_LINE(1, 0),BREAK_LINE(2, 0),NUMBERED_LINE(3, 0),
     BULLET_LINE(4, 0), HEADING_LINE(5, 0), OUTLINE_LINE(6, 0), HYPERLINK_LINE(7, 0),
@@ -27,15 +27,9 @@ public enum EditIcon{
 
     private static Image map;
 
-    public static String getKey(String upper){
-        CaseFormat from = CaseFormat.UPPER_UNDERSCORE;
-        CaseFormat to = CaseFormat.UPPER_CAMEL;
-        return Utilities.getString("TextView." + from.to(to, upper));
-    }
-
     private static Image getImage(){
         if (map == null){
-            map = new Image(EditIcon.class.getClassLoader()
+            map = new Image(ButtonIcon.class.getClassLoader()
                 .getResourceAsStream("data/icons.png"));
         }
         return map;
@@ -54,8 +48,12 @@ public enum EditIcon{
         return icon;
     }
 
-    private EditIcon(int r, int c){
+    private ButtonIcon(int r, int c){
         row = r;
         col = c;
+    }
+
+    public String getText(String upper){
+        return WindowText.getText(this);
     }
 }
