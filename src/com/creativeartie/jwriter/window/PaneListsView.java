@@ -49,7 +49,7 @@ abstract class PaneListsView extends GridPane{
                 Text out;
                 if (item.isEmpty()){
                     out = new Text(Utilities.getString(emptyKey));
-                    out.setStyle(Utilities.getCss("Common.NoneFound"));
+                    out.setStyle(WindowStyle.NOT_FOUND.toCss());
                 } else {
                     out = new Text(item);
                 }
@@ -69,7 +69,7 @@ abstract class PaneListsView extends GridPane{
             } else {
                 Text name = new Text(item.getName());
                 Text target = new Text("\t" + item.getTarget());
-                target.setStyle(Utilities.getCss("ListView.SpanTarget"));
+                target.setStyle(WindowStyle.NUMBERED_ID.toCss());
                 TextFlow graphic = new TextFlow(name, target);
                 setGraphic(graphic);
             }
@@ -92,7 +92,7 @@ abstract class PaneListsView extends GridPane{
                     setGraphic(ans);
                 } else {
                     Text ans = new Text(Utilities.getString("ListView.NoSpan"));
-                    ans.setStyle(Utilities.getCss("Common.NoneFound"));
+                    ans.setStyle(WindowStyle.NOT_FOUND.toCss());
                     setGraphic(ans);
                 }
             }
@@ -116,11 +116,11 @@ abstract class PaneListsView extends GridPane{
                 } else if (branch instanceof LinedSpanSection){
                     Optional<LinedSpanSection> ans = item.map(span ->
                         (LinedSpanSection)span);
-                    graphic = SpanBranchParser.parseDisplay(ans.get());
+                    graphic = WindowSpanParser.parseDisplay(ans.orElse(null));
                 } else if (branch instanceof LinedSpanPointNote){
                     Optional<FormatSpanMain> ans = ((LinedSpanPointNote)branch)
                         .getFormattedSpan();
-                    graphic = SpanBranchParser.parseDisplay(ans.orElse(null));
+                    graphic = WindowSpanParser.parseDisplay(ans.orElse(null));
                 } else {
                     graphic = null;
                 }

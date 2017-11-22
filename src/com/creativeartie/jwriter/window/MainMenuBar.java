@@ -20,10 +20,6 @@ import com.creativeartie.jwriter.property.*;
 
 public class MainMenuBar extends MenuBar{
 
-    private String getString(String key){
-        return Utilities.getString("MainMenu." + key);
-    }
-
     private Stage statWindow;
     private Stage mainWindow;
     private FileChooser chooser;
@@ -42,21 +38,20 @@ public class MainMenuBar extends MenuBar{
                 value -> value.getRecords()
             ).orElse(null), manuscriptFile));
 
-        Menu file = new Menu(getString("File"));
-        MenuItem create = new MenuItem(getString("FileCreate"));
+        Menu file = new Menu(WindowText.MENU_FILE.getText());
+        MenuItem create = new MenuItem(WindowText.MENU_FILE_NEW.getText());
         create.setOnAction(evt -> newFile());
-        MenuItem open = new MenuItem(getString("FileOpen"));
+        MenuItem open = new MenuItem(WindowText.MENU_FILE_OPEN.getText());
         open.setOnAction(evt -> openFile());
-        MenuItem save = new MenuItem(getString("FileSave"));
+        MenuItem save = new MenuItem(WindowText.MENU_FILE_SAVE.getText());
         save.setOnAction(evt -> saveFile());
-        MenuItem exit = new MenuItem(getString("FileExit"));
+        MenuItem exit = new MenuItem(WindowText.MENU_FILE_EXIT.getText());
         exit.setOnAction(evt -> exit());
         file.getItems().addAll(create, open, save, new SeparatorMenuItem(),
             exit);
 
-        Menu stats = new Menu(getString("Stats"));
-
-        MenuItem goals = new MenuItem(getString("StatsGoal"));
+        Menu stats = new Menu(WindowText.MENU_STATS.getText());
+        MenuItem goals = new MenuItem(WindowText.MENU_STATS_GOALS.getText());
         goals.setOnAction(evt -> statWindow.show());
         stats.getItems().addAll(goals);
 

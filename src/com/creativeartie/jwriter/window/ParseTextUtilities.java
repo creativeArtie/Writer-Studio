@@ -82,7 +82,7 @@ public class ParseTextUtilities {
             setFormat(node, line.get().getFormattedSpan());
         } else {
             Text empty = new Text(Utilities.getString("HeadingView.NoFound"));
-            empty.setStyle(Utilities.getCss("Common.NoneFound"));
+            empty.setStyle(WindowStyle.NOT_FOUND.toCss());
             node.getChildren().add(empty);
         }
     }

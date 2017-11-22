@@ -17,10 +17,11 @@ class PaneCheatsheetControl extends PaneCheatsheetView{
 
     public void updateLabels(ManuscriptDocument doc, int position){
         for (PaneCheatsheetLabel label: getLabels()){
-            String css = Utilities.getCss(label.isTurnOn(doc, position)?
-                "CheatSheet.TurnOn": "CheatSheet.TurnOff");
-            css += Utilities.getCss("CheatSheet.Base");
-            label.setStyle(css);
+            WindowStyleBuilder css = new WindowStyleBuilder();
+            css.add(label.isTurnOn(doc, position)? WindowStyle.MARKUP_Set:
+                WindowStyle.MARKUP_UNSET);
+            css.add(WindowStyle.CHEATSHEET_BASE);
+            label.setStyle(css.toString());
         }
     }
 }

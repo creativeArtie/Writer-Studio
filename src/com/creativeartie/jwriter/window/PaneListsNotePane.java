@@ -47,10 +47,11 @@ public class PaneListsNotePane extends BorderPane{
                 if(child instanceof LinedSpanNote){
                     LinedSpanNote line = (LinedSpanNote)child;
                     if (firstLine){
-                        SpanBranchParser.parseDisplay(text, line
-                            .getFormattedSpan().orElse(null), "Other.NoteHeading");
+                        WindowSpanParser.parseDisplay(text, line
+                            .getFormattedSpan().orElse(null),
+                            WindowStyle.NOTE_HEADING);
                     } else {
-                        SpanBranchParser.parseDisplay(text, line
+                        WindowSpanParser.parseDisplay(text, line
                             .getFormattedSpan().orElse(null));
                     }
                     text.getChildren().add(new Text("\n"));
@@ -94,7 +95,7 @@ public class PaneListsNotePane extends BorderPane{
         data.ifPresent(span -> {
             FormatSpanMain found = ((InfoDataSpanFormatted)span)
                 .getData();
-            SpanBranchParser.parseDisplay(source, found);
+            WindowSpanParser.parseDisplay(source, found);
         });
     }
 

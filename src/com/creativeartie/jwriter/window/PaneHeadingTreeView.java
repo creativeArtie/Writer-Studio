@@ -22,7 +22,7 @@ abstract class PaneHeadingTreeView extends TitledPane{
                 setText(null);
                 setGraphic(null);
             } else {
-                TextFlow graphic = SpanBranchParser.parseDisplay(item.get());
+                TextFlow graphic = WindowSpanParser.parseDisplay(item.orElse(null));
                 setText(null);
                 setGraphic(graphic);
             }

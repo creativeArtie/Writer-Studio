@@ -32,7 +32,7 @@ abstract class PaneAgendaView extends GridPane{
                 Label graphic = null;
                 if (text.isEmpty()){
                     graphic = new Label(Utilities.getString("AgendaList.Empty"));
-                    graphic.setStyle(Utilities.getCss("Common.NoneFound"));
+                    graphic.setStyle(WindowStyle.NOT_FOUND.toCss());
                 } else {
                     graphic = new Label(text);
                 }

@@ -13,52 +13,10 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.lang.Span;
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.property.*;
-public final class SpanBranchParser {
-    private static PropertyManager styleManager;
+public final class WindowSpanParser {
 
-    private static PropertyManager getManager(){
-        if (styleManager == null){
-            try {
-                styleManager = new PropertyManager("data/parse-styles",
-                    "data/user-styles");
-            } catch (IOException ex){
-                throw new RuntimeException(ex);
-            }
-        }
-        return styleManager;
-    }
-
-    private static class StyleBuilder{
-        private List<StyleProperty> properties;
-
-        StyleBuilder(){
-            properties = new ArrayList<StyleProperty>();
-        }
-
-        StyleBuilder addKey(String base, String name){
-            return addKey(base + "." + UPPER_UNDERSCORE.to(UPPER_CAMEL, name));
-        }
-
-        StyleBuilder addKey(String key){
-            properties.add(getManager().getStyleProperty(key));
-            return this;
-        }
-
-        @Override
-        public String toString(){
-            return StyleProperty.toCss(properties);
-        }
-    }
-
-    public static StyleProperty getNotFoundProperty(){
-        return getManager().getStyleProperty("Other.NotFound");
-    }
-
-    public static String getNotFoundStyle(){
-        return getNotFoundProperty().toCss();
-    }
-
-    public static TextFlow parseDisplay(FormatSpanMain main, String ... style){
+    public static TextFlow parseDisplay(FormatSpanMain main,
+            WindowStyle ... style){
         TextFlow content = new TextFlow();
         parseDisplay(content, main, style);
         return content;
@@ -66,7 +24,7 @@ public final class SpanBranchParser {
     }
 
     public static void parseDisplay(TextFlow content, FormatSpanMain main,
-            String ... styles){
+            WindowStyle ... styles){
         checkNotNull(content, "Content cannot be null.");
         if (main != null){
             parsingDisplay(content, main, styles);
@@ -74,21 +32,21 @@ public final class SpanBranchParser {
     }
 
     private static void parsingDisplay(TextFlow content, FormatSpanMain main,
-            String ... styles){
+            WindowStyle ... styles){
         for (Span span: main){
-            StyleBuilder css = new StyleBuilder();
+            WindowStyleBuilder css = new WindowStyleBuilder();
             Node input = null;
             if (span instanceof FormatSpanDirectory){
                 input = ((FormatSpanDirectory)span).getSpanIdentity().map(
                         f -> f.getFullIdentity()
                     ).map(id -> new Text(id))
                     .orElse(null);
-                css.addKey("Display.Directory");
+                css.add("Display.Directory");
             } else if (span instanceof FormatSpanContent){
                 input = new Text(((FormatSpanContent)span).getText());
             } else if (span instanceof FormatSpanAgenda){
                 input = new Text(((FormatSpanAgenda)span).getAgenda());
-                css.addKey("Display.Agenda");
+                css.add("Display.Agenda");
             } else if (span instanceof FormatSpanLink){
                 FormatSpanLink format = (FormatSpanLink) span;
                 Hyperlink link = new Hyperlink(format.getText());
@@ -98,12 +56,12 @@ public final class SpanBranchParser {
             if (span instanceof FormatSpan) {
                 FormatSpan add = (FormatSpan) span;
                 for (FormatType type: add.listFormats()){
-                    css.addKey("Display", type.name());
+                    css.add("Display", type.name());
                 }
             }
             if (input != null){
-                for (String key: styles){
-                    css.addKey(key);
+                for (WindowStyle style: styles){
+                    css.add(style);
                 }
                 input.setStyle(css.toString());
                 content.getChildren().add(input);
@@ -112,38 +70,38 @@ public final class SpanBranchParser {
     }
 
     public static TextFlow parseDisplay(LinedSpanSection line,
-            String ... styles){
+            WindowStyle ... styles){
         TextFlow content = new TextFlow();
         parseDisplay(content, line, styles);
         return content;
     }
     public static void parseDisplay(TextFlow content, LinedSpanSection line,
-            String ... styles){
+            WindowStyle ... styles){
         checkNotNull(content, "Content cannot be null.");
         if (line != null){
             parsingDisplay(content, line, styles);
         } else {
-            Text empty = new Text(SpanText.HEADING_PLACEHOLDER.getText());
-            empty.setStyle(getNotFoundStyle());
+            Text empty = new Text(WindowText.HEADING_PLACEHOLDER.getText());
+            empty.setStyle(WindowStyle.NOT_FOUND.toCss());
             content.getChildren().add(empty);
         }
     }
 
     private static void parsingDisplay(TextFlow content, LinedSpanSection line,
-            String ... styles){
-        Text status = new Text(SpanText.getText(line.getEdition()));
-        status.setStyle(getManager().getStyleProperty("Display.HeadingStatus")
+            WindowStyle ... styles){
+        Text status = new Text(WindowText.getText(line.getEdition()));
+        status.setStyle(WindowStyle.getStyle("Display.HeadingStatus")
             .toCss());
         content.getChildren().add(status);
         Optional<FormatSpanMain> title = line.getFormattedSpan();
         if (title.isPresent()){
             parseDisplay(content, line.getFormattedSpan().get(), styles);
         } else {
-            Text empty = new Text(SpanText.HEADING_NO_TEXT.getText());
-            empty.setStyle(getNotFoundStyle());
+            Text empty = new Text(WindowText.HEADING_NO_TEXT.getText());
+            empty.setStyle(WindowStyle.NOT_FOUND.toCss());
             content.getChildren().add(empty);
         }
     }
 
-    private SpanBranchParser(){}
+    private WindowSpanParser(){}
 }

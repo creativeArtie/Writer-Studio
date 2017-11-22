@@ -56,6 +56,7 @@ public class Utilities{
         return getStyles().getStyleProperty(key).toCss();
     }
 
+    @Deprecated
     public static ResourceBundle getWindowText(){
         if (texts == null){
             texts = PropertyResourceBundle.getBundle("data.windowText", Locale.ENGLISH);
@@ -63,6 +64,7 @@ public class Utilities{
         return texts;
     }
 
+    @Deprecated
     public static String getString(String key){
         return getWindowText().getString(key);
     }

@@ -9,18 +9,24 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.lang.Span;
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.property.*;
-public enum SpanText {
+public enum WindowText {
     EDITION_STUB("DisplayHeading"), EDITION_DRAFT("DisplayHeading"),
     EDITION_FINAL("DisplayHeading"), EDITION_OTHER("DisplayHeading"),
-    EDITION_NONE("DisplayHeading"), HEADING_NO_TEXT("DisplayHeading"),
-    HEADING_PLACEHOLDER("DisplayHeading");
+    EDITION_NONE("DisplayHeading"),
+
+    HEADING_NO_TEXT("DisplayHeading"), HEADING_PLACEHOLDER("DisplayHeading"),
+
+    MENU_FILE("MainMenu.File"), MENU_FILE_NEW("MainMenu.FileCreate"),
+    MENU_FILE_SAVE("MainMenu.FileSave"), MENU_FILE_OPEN("MainMenu.FileOpen"),
+    MENU_FILE_EXIT("MainMenu.FileExit"),
+    MENU_STATS("MainMenu.Stats"), MENU_STATS_GOALS("MainMenu.StatsGoal");
 
     public static String getText(EditionType type){
         return valueOf("EDITION_" + type.name()).getText();
     }
 
     private String categoryKey;
-    private SpanText(String cat){
+    private WindowText(String cat){
         categoryKey = cat;
     }
 
