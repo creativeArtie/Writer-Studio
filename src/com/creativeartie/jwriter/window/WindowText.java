@@ -19,7 +19,9 @@ public enum WindowText {
     MENU_FILE("MainMenu.File"), MENU_FILE_NEW("MainMenu.FileCreate"),
     MENU_FILE_SAVE("MainMenu.FileSave"), MENU_FILE_OPEN("MainMenu.FileOpen"),
     MENU_FILE_EXIT("MainMenu.FileExit"),
-    MENU_STATS("MainMenu.Stats"), MENU_STATS_GOALS("MainMenu.StatsGoal");
+    MENU_STATS("MainMenu.Stats"), MENU_STATS_GOALS("MainMenu.StatsGoal")
+
+    AGENDA_EMPTY("AgendaList.NoText"), AGENDA_TITLE("AgendaList.PaneTitle");
 
     public static String getText(EditionType type){
         return valueOf("EDITION_" + type.name()).getText();
