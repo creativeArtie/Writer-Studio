@@ -111,25 +111,38 @@ public final class SpanBranchParser {
         }
     }
 
+    public static TextFlow parseDisplay(LinedSpanSection line,
+            String ... styles){
+        TextFlow content = new TextFlow();
+        parseDisplay(content, line, styles);
+        return content;
+    }
     public static void parseDisplay(TextFlow content, LinedSpanSection line,
             String ... styles){
         checkNotNull(content, "Content cannot be null.");
         if (line != null){
             parsingDisplay(content, line, styles);
         } else {
-            Text empty = new Text(Utilities.getString("HeadingView.NoFound"));
+            Text empty = new Text(SpanText.HEADING_PLACEHOLDER.getText());
             empty.setStyle(getNotFoundStyle());
             content.getChildren().add(empty);
         }
-
     }
+
     private static void parsingDisplay(TextFlow content, LinedSpanSection line,
             String ... styles){
         Text status = new Text(SpanText.getText(line.getEdition()));
         status.setStyle(getManager().getStyleProperty("Display.HeadingStatus")
             .toCss());
         content.getChildren().add(status);
-        parseDisplay(content, line.getFormattedSpan().orElse(null));
+        Optional<FormatSpanMain> title = line.getFormattedSpan();
+        if (title.isPresent()){
+            parseDisplay(content, line.getFormattedSpan().get(), styles);
+        } else {
+            Text empty = new Text(SpanText.HEADING_NO_TEXT.getText());
+            empty.setStyle(getNotFoundStyle());
+            content.getChildren().add(empty);
+        }
     }
 
     private SpanBranchParser(){}

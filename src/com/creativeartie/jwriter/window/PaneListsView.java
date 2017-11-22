@@ -116,7 +116,7 @@ abstract class PaneListsView extends GridPane{
                 } else if (branch instanceof LinedSpanSection){
                     Optional<LinedSpanSection> ans = item.map(span ->
                         (LinedSpanSection)span);
-                    graphic = ParseTextUtilities.setHeading(ans);
+                    graphic = SpanBranchParser.parseDisplay(ans.get());
                 } else if (branch instanceof LinedSpanPointNote){
                     Optional<FormatSpanMain> ans = ((LinedSpanPointNote)branch)
                         .getFormattedSpan();

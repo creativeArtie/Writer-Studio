@@ -22,13 +22,13 @@ abstract class PaneHeadingTreeView extends TitledPane{
                 setText(null);
                 setGraphic(null);
             } else {
-                TextFlow graphic = ParseTextUtilities.setHeading(item);
+                TextFlow graphic = SpanBranchParser.parseDisplay(item.get());
                 setText(null);
                 setGraphic(graphic);
             }
         }
     }
-    
+
     private final TreeView<Optional<LinedSpanSection>> tree;
 
     private ReadOnlyObjectWrapper<Optional<LinedSpanSection>> selectedSection;
@@ -51,10 +51,10 @@ abstract class PaneHeadingTreeView extends TitledPane{
             () -> Optional.ofNullable(prop.getValue()).flatMap(item ->
                 item.getValue()),
             prop));
-        
+
         itemFocused = new ReadOnlyBooleanWrapper(this, "itemFocused");
         itemFocused.bind(tree.focusedProperty());
-        
+
     }
 
     /// Getters
@@ -82,7 +82,7 @@ abstract class PaneHeadingTreeView extends TitledPane{
     {
         return selectedSection.getReadOnlyProperty();
     }
-    
+
     public ReadOnlyBooleanProperty itemFocusedProperty() {
         return itemFocused.getReadOnlyProperty();
     }

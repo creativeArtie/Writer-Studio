@@ -12,7 +12,8 @@ import com.creativeartie.jwriter.property.*;
 public enum SpanText {
     EDITION_STUB("DisplayHeading"), EDITION_DRAFT("DisplayHeading"),
     EDITION_FINAL("DisplayHeading"), EDITION_OTHER("DisplayHeading"),
-    EDITION_NONE("DisplayHeading");
+    EDITION_NONE("DisplayHeading"), HEADING_NO_TEXT("DisplayHeading"),
+    HEADING_PLACEHOLDER("DisplayHeading");
 
     public static String getText(EditionType type){
         return valueOf("EDITION_" + type.name()).getText();
