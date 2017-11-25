@@ -45,7 +45,7 @@ public enum WindowText {
     }
 
     public static String getText(EditionType type){
-        return getText("DisplayHeaing.Edition", type.name());
+        return getText("DisplayHeading.Edition", type.name());
     }
 
     private static String getText(String base, String name){
