@@ -28,16 +28,16 @@ abstract class PaneListsView extends GridPane{
                 setText(null);
                 setGraphic(null);
             } else {
-                setText(Utilities.getString(item));
+                setText(WindowText.getText(item));
             }
         }
     }
 
     private class TextCell extends TableCell<PaneListsData, String> {
-        private String emptyKey;
+        private WindowText emptyText;
 
-        TextCell(String key){
-            emptyKey = key;
+        TextCell(WindowText key){
+            emptyText = key;
         }
 
         @Override
@@ -49,7 +49,7 @@ abstract class PaneListsView extends GridPane{
             } else {
                 Text out;
                 if (item.isEmpty()){
-                    out = new Text(Utilities.getString(emptyKey));
+                    out = new Text(emptyText.getText());
                     out.setStyle(WindowStyle.NOT_FOUND.toCss());
                 } else {
                     out = new Text(item);
@@ -92,7 +92,7 @@ abstract class PaneListsView extends GridPane{
                     ans.setOnAction(event -> toLocation.set(range.upperEndpoint()));
                     setGraphic(ans);
                 } else {
-                    Text ans = new Text(Utilities.getString("ListView.NoSpan"));
+                    Text ans = new Text(WindowText.NO_SPAN_LOC.getText());
                     ans.setStyle(WindowStyle.NOT_FOUND.toCss());
                     setGraphic(ans);
                 }
@@ -150,11 +150,13 @@ abstract class PaneListsView extends GridPane{
         types = new ListView<>(FXCollections.observableArrayList(DirectoryType
             .getMenuList()));
         data = new TableView<>();
-        noteDetail = new PaneListsNotePane();
+        TitledPane headingPane = new TitledPane();
+        noteDetail = new PaneListsNotePane(headingPane);
+        setupTitledPane(headingPane, noteDetail);
 
         layoutTypes();
         layoutTable();
-        layoutNote();
+        layoutNote(headingPane);
 
         types.getSelectionModel().selectedItemProperty().addListener(
             (data, oldValue, newValue) -> listenType(newValue));
@@ -203,34 +205,36 @@ abstract class PaneListsView extends GridPane{
     private void layoutTypes(){
         setupColumnConstraints(15.0);
         types.setCellFactory(list -> new TypeCell());
-        add(setupTitledPane("ListView.Types", types), 0, 0);
+        TitledPane pane = setupTitledPane(types);
+        pane.setText(WindowText.ID_LIST_TITLE.getText());
+        add(pane, 0, 0);
     }
 
     @SuppressWarnings("unchecked")
     private void layoutTable(){
         dataColumn = setupColumnConstraints(DATA_HALF_WIDHT);
-        dataTitle = setupTitledPane("ListView.Note", data);
-        data.setPlaceholder(new Label(Utilities.getString("ListView.NoItems")));
+        dataTitle = setupTitledPane(data);
+        data.setPlaceholder(new Label(WindowText.NO_SPAN_FOUND.getText()));
         data.setFixedCellSize(30);
         data.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        TableColumn<PaneListsData, String> cat = setupColumn("Category",
-            "catalogueCategory");
-        cat.setCellFactory(table -> new TextCell("ListView.NoCategory"));
+        TableColumn<PaneListsData, String> cat = setupColumn(
+            WindowText.COLUMN_CAT, "catalogueCategory");
+        cat.setCellFactory(table -> new TextCell(WindowText.NO_ID_CATEGORY));
 
-        TableColumn<PaneListsData, IdentityData> name = setupColumn("Name",
-            "catalogueIdentity");
+        TableColumn<PaneListsData, IdentityData> name = setupColumn(
+            WindowText.COLUMN_NAME, "catalogueIdentity");
         name.setCellFactory(table -> new NameCell());
 
-        TableColumn<PaneListsData, String> ref = setupColumn("Ref",
-            "refText");
-        ref.setCellFactory(table -> new TextCell("ListView.NoRef"));
+        TableColumn<PaneListsData, String> ref = setupColumn(
+            WindowText.COLUMN_REF, "refText");
+        ref.setCellFactory(table -> new TextCell(WindowText.NO_SPAN_ID));
 
         TableColumn<PaneListsData, Optional<Range<Integer>>> loc =
-            setupColumn("Location", "spanLocation");
+            setupColumn(WindowText.COLUMN_LOC, "spanLocation");
         loc.setCellFactory(table -> new LocCell());
 
-        lineColumn = setupColumn("Span", "targetSpan");
+        lineColumn = setupColumn(WindowText.COLUMN_SPAN, "targetSpan");
         lineColumn.setCellFactory(lineColumn -> new SpanCell());
         lineColumn.minWidthProperty().bind(data.widthProperty().multiply(0.4));
 
@@ -238,8 +242,7 @@ abstract class PaneListsView extends GridPane{
         add(dataTitle, 1, 0);
     }
 
-    private void layoutNote(){
-        TitledPane pane = setupTitledPane("ListView.NoteTitle", noteDetail);
+    private void layoutNote(TitledPane pane){
         noteColumn = setupColumnConstraints(NOTE_FULL_WIDHT);
         add(pane, 2, 0);
     }
@@ -251,18 +254,21 @@ abstract class PaneListsView extends GridPane{
         return column;
     }
 
-    private TitledPane setupTitledPane(String key, Node node){
-        TitledPane title = new TitledPane(Utilities.getString(key), node);
+    private TitledPane setupTitledPane(Node node){
+        return setupTitledPane(new TitledPane(), node);
+    }
+
+    private TitledPane setupTitledPane(TitledPane title, Node node){
+        title.setContent(node);
         title.setPrefHeight(150.0);
         title.setCollapsible(false);
         return title;
     }
 
-    private <T> TableColumn<PaneListsData, T> setupColumn(String key,
+    private <T> TableColumn<PaneListsData, T> setupColumn(WindowText title,
         String property)
     {
-        TableColumn<PaneListsData, T> ans = new TableColumn<>(Utilities
-            .getString("ListView.Col" + key));
+        TableColumn<PaneListsData, T> ans = new TableColumn<>(title.getText());
         ans.setCellValueFactory(
             new PropertyValueFactory<PaneListsData, T>(property)
         );

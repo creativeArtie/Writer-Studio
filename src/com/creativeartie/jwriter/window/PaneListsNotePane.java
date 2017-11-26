@@ -21,15 +21,28 @@ import com.google.common.base.*;
 import com.google.common.collect.*;
 
 public class PaneListsNotePane extends BorderPane{
+    private TitledPane titlePane;
+
+    PaneListsNotePane(TitledPane title){
+        titlePane = title;
+    }
 
     public void clearData(){
-        setBottom(null);
-        setCenter(newLabel("ListView.SelectNone"));
+        clearBasicData();
+        setCenter(newLabel(WindowText.NO_NOTE_SELECTED));
     }
 
     public void setEmptyData(){
+        clearBasicData();
+        setCenter(newLabel(WindowText.NO_NOTE_FOUND));
+    }
+
+    private void clearBasicData(){
+        Text text = new Text(WindowText.NO_NOTE_TITLE.getText());
+        text.setStyle(WindowStyle.EMPTY_TITLE.toCss());
+        titlePane.setGraphic(text);
         setBottom(null);
-        setCenter(newLabel("ListView.SelectEmpty"));
+
     }
 
     public void setData(Optional<MainSpanNote> note){
@@ -48,9 +61,9 @@ public class PaneListsNotePane extends BorderPane{
                 if(child instanceof LinedSpanNote){
                     LinedSpanNote line = (LinedSpanNote)child;
                     if (firstLine){
-                        WindowSpanParser.parseDisplay(text, line
-                            .getFormattedSpan().orElse(null),
-                            WindowStyle.NOTE_HEADING);
+                        titlePane.setGraphic(WindowSpanParser.parseDisplay(
+                            line.getFormattedSpan().orElse(null)
+                        ));
                     } else {
                         WindowSpanParser.parseDisplay(text, line
                             .getFormattedSpan().orElse(null));
@@ -62,7 +75,7 @@ public class PaneListsNotePane extends BorderPane{
                     Optional<InfoDataSpan> data = line.getData();
                     if (line.getFieldType() == InfoFieldType.SOURCE){
                         if (! hasText){
-                            cite.add(newLabel("ListView.Source"), 0, 0);
+                            cite.add(newLabel(WindowText.SOURCE_LABEL), 0, 0);
                             ScrollPane pane = new ScrollPane(source);
                             pane.setFitToWidth(true);
                             cite.add(pane, 1, 0);
@@ -72,9 +85,9 @@ public class PaneListsNotePane extends BorderPane{
                     } else if (line.getFieldType() == InfoFieldType.ERROR){
                     } else if (! hasRef){
                         if (line.getFieldType() == InfoFieldType.FOOTNOTE){
-                            hasRef = addInText(cite, data, "ListView.Footnote");
+                            hasRef = addInText(cite, data, WindowText.FOOTNOTE_LABEL);
                         } else {
-                            hasRef = addInText(cite, data, "ListView.InText");
+                            hasRef = addInText(cite, data, WindowText.IN_TEXT_LABEL);
                         }
                     }
                 }
@@ -82,13 +95,12 @@ public class PaneListsNotePane extends BorderPane{
             setCenter(new ScrollPane(text));
             setBottom(cite);
         } else {
-            setBottom(null);
-            setCenter(new Label(Utilities.getString("ListView.SelectEmpty")));
+            setEmptyData();
         }
     }
 
-    private static Label newLabel(String key){
-        Label ans = new Label(Utilities.getString(key));
+    private static Label newLabel(WindowText text){
+        Label ans = new Label(text.getText());
         return ans;
     }
 
@@ -101,12 +113,12 @@ public class PaneListsNotePane extends BorderPane{
     }
 
     private boolean addInText(GridPane cite, Optional<InfoDataSpan> data,
-        String key)
+        WindowText text)
     {
         if (data.isPresent()){
             ContentSpan found = ((InfoDataSpanText)data.get()).getData();
             cite.add(new TextFlow(new Text(found.getParsed())), 1, 1);
-            cite.add(newLabel(key), 0, 1);
+            cite.add(newLabel(text), 0, 1);
             return true;
         }
         return false;

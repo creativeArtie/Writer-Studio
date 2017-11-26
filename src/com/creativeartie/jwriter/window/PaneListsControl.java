@@ -8,6 +8,7 @@ import javafx.collections.*;
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
+import com.creativeartie.jwriter.property.window.*;
 
 import com.google.common.collect.*;
 
@@ -56,6 +57,7 @@ public class PaneListsControl extends PaneListsView{
             setNoteDetailVisible(false);
             return;
         }
+        getTableTitle().setText(WindowText.getText(type));
         getDataTable().setItems(dataMap.get(type));
         boolean isNote = type == DirectoryType.NOTE;
         getLineColumn().setVisible(! isNote);

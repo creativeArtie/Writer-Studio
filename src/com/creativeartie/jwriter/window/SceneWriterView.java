@@ -11,6 +11,7 @@ import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.file.*;
 import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
+import com.creativeartie.jwriter.property.window.*;
 
 abstract class SceneWriterView extends BorderPane{
     private PaneTextControl textArea;
@@ -104,7 +105,7 @@ abstract class SceneWriterView extends BorderPane{
     }
 
     private void layoutCenterPane(){
-        textArea.getViewModeLabel().setText(Utilities.getString("WriterScene.Mode"));
+        textArea.getViewModeLabel().setText(WindowText.DETAIL_MODE.getText());
         setCenter(textArea);
     }
 

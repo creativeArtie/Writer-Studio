@@ -14,9 +14,10 @@ import com.creativeartie.jwriter.lang.Span;
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.property.*;
 public enum WindowStyle {
-    NOT_FOUND("Other.NotFound"), NOTE_HEADING("ListNote.NoteHeading"),
-    NUMBERED_ID("ListNote.NameCell"), MARKUP_Set("CheatSheet.HasSet"),
-    MARKUP_UNSET("CheatSheet.NotSet"), CHEATSHEET_BASE("CheatSheet.Base");
+    NOT_FOUND("Other.NotFound"), EMPTY_TITLE("Other.EmptyNoteTitle"),
+    NOTE_HEADING("ListNote.NoteHeading"), NUMBERED_ID("ListNote.NameCell"),
+    MARKUP_Set("CheatSheet.HasSet"),MARKUP_UNSET("CheatSheet.NotSet"),
+    CHEATSHEET_BASE("CheatSheet.Base");
 
     private static PropertyManager styleManager;
 

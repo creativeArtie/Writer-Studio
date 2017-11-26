@@ -13,6 +13,7 @@ import java.io.*;
 import com.creativeartie.jwriter.file.*;
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.property.*;
+import com.creativeartie.jwriter.property.window.*;
 
 public abstract class SceneStatsView extends BorderPane{
     protected static int WIDTH = 490;
@@ -21,15 +22,11 @@ public abstract class SceneStatsView extends BorderPane{
     public static Stage createStage(SceneStatsControl pane){
         SceneStatsControl writer = new SceneStatsControl();
         Stage ans = new Stage();
-        ans.setTitle(getString("Title"));
+        ans.setTitle(WindowText.GOALS_TITLE.getText());
         ans.setResizable(false);
         ans.setScene(new Scene(pane, WIDTH, HEIGHT));
         ans.initModality(Modality.APPLICATION_MODAL);
         return ans;
-    }
-
-    private static String getString(String key){
-        return Utilities.getString("Stats." + key);
     }
 
     private SimpleObjectProperty<RecordList> statTable;
@@ -87,17 +84,18 @@ public abstract class SceneStatsView extends BorderPane{
         column2.setPercentWidth(70);
         info.getColumnConstraints().addAll(column1, column2);
 
-        info.add(new Label(getString("WordGoal")), 0, 0);
+        info.add(new Label(WindowText.GOAL_WORD_TEXT.getText()), 0, 0);
         wordGoal.setEditable(true);
         info.add(wordGoal, 1, 0);
         FlowPane pane = new FlowPane();
-        info.add(new Label(getString("TimeGoal")), 0, 1);
+        info.add(new Label(WindowText.GOALS_TIME_TEXT.getText()), 0, 1);
         minuteGoal.setEditable(true);
         minuteGoal.setPrefWidth(100.0);
         hourGoal.setEditable(true);
         hourGoal.setPrefWidth(100.0);
-        pane.getChildren().addAll(hourGoal, new Label(getString("Hours")),
-            minuteGoal, new Label(getString("Minutes")));
+        pane.getChildren().addAll(hourGoal,
+            new Label(WindowText.HOUR_UNIT.getText()),
+            minuteGoal, new Label(WindowText.MINUTE_UNIT.getText()));
         info.add(pane, 1, 1);
         setBottom(info);
     }

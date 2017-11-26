@@ -20,7 +20,7 @@
     <property name="usr.testers" value="Debug" />
     <!-- ........................ Arguments Data ........................ -->
     <property name="args.src-javac" value="-Xlint" />
-    <property name="args.test-src-javac" value="" />
+    <property name="args.test-src-javac" value="-Xlint" />
     <property name="args.test-junit-javac" value="-Xdiags:verbose" />
 <!-- =========================== Program Folders =========================== -->
     <!-- ........................ Major Folders ......................... -->
