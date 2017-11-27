@@ -14,6 +14,7 @@ import com.creativeartie.jwriter.stats.*;
 import com.creativeartie.jwriter.property.window.*;
 import com.creativeartie.jwriter.window.*;
 import com.creativeartie.jwriter.lang.markup.*;
+import com.creativeartie.jwriter.lang.markup.pdf.*;
 
 public class Main extends Application{
     private Stage mainStage;
@@ -35,6 +36,8 @@ public class Main extends Application{
     private void testMainWindow(Stage stage) throws Exception{
         File file = new File("data/sectionDebug4.txt");
         ManuscriptDocument doc = new ManuscriptDocument(file);
+        BuildPDF pdf = new BuildPDF(doc);
+        pdf.export("../test.pdf");
         setupWindow(stage, ManuscriptFile.withManuscript(doc));
     }
 
