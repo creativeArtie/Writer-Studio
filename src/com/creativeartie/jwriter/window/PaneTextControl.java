@@ -23,7 +23,7 @@ public class PaneTextControl extends PaneTextView {
     @Override
     public void updateCss(final ManuscriptDocument doc){
         doc.getLeaves().forEach(leaf -> getTextArea().setStyle(
-            leaf.getStart(), leaf.getEnd(), LeafStyleParser.DISPLAY.toCss(leaf)
+            leaf.getStart(), leaf.getEnd(), LeafStyleParser.SCREEN.toCss(leaf)
         ));
     }
 

@@ -14,7 +14,7 @@ import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.property.*;
 public enum LeafStyleParser {
-    DISPLAY("PrintDisplay."), PRINT("PrintDisplay.");
+    SCREEN("ScreenDisplay."), PRINT("PrintDisplay.");
 
     private String propPrefix;
     private WindowStyleBuilder builder;
