@@ -25,13 +25,13 @@ public class PaneAgendaControl extends PaneAgendaView{
 
     @Override
      public void updateSelection(ManuscriptDocument doc, int index){
-        Optional<FormatSpanAgenda> inline = doc.spansAt(index,
+        Optional<FormatSpanAgenda> inline = doc.locateSpan(index,
             FormatSpanAgenda.class);
         if (inline.isPresent()){
             getList().getSelectionModel().select(inline.get());
             return;
         }
-        Optional<LinedSpanAgenda> line = doc.spansAt(index,
+        Optional<LinedSpanAgenda> line = doc.locateSpan(index,
             LinedSpanAgenda.class);
         if (line.isPresent()){
             getList().getSelectionModel().select(line.get());

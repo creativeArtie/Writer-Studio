@@ -6,5 +6,4 @@ import com.creativeartie.jwriter.main.*;
 
 public interface DetailStyle{
     public String name();
-
 }

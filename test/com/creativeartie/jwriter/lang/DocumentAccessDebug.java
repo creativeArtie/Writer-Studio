@@ -140,39 +140,4 @@ public class DocumentAccessDebug{
         assertSame(span, leaf);
     }
 
-    @Test@Ignore
-    public void spansAt(){
-        try {
-            List<Span> test = doc.spansAt(ptr);
-            if (verbose) {
-                String out = "()";
-                if (ptr < docText.length()){
-                    char ch = docText.charAt(ptr);
-                    out = "(" + (ch == '\n'? "\\n" : ch + "") + ")";
-                }
-                System.out.printf("%-3d %4s:", ptr, out);
-                for(Span span: test){
-                    if (span instanceof SpanLeaf){
-                        System.out.println(" " + span);
-                    } else {
-                        System.out.print(" " + span.getClass().getSimpleName());
-                    }
-                }
-            }
-
-            Span expect = doc;
-            int idx = 0;
-            assertEquals("Wrong size",indexes.length + 1, test.size());
-            for (int index: indexes){
-                assertSame(expect, test.get(idx));
-                idx++;
-                expect = ((SpanNode<?>)expect).get(index);
-            }
-        } catch (Exception ex){
-            if (!(ptr > doc.getLength() || ptr < 0) ){
-                throw ex;
-            }
-        }
-    }
-
 }

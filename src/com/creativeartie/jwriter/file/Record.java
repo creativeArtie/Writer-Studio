@@ -8,7 +8,8 @@ import com.google.common.base.*;
 import static com.google.common.base.Preconditions.*;
 
 /**
- * A single line of record with date, with word counts and goals
+ * A single line of record with date, with word counts and goals. Instances of
+ * this class is created through {@link RecordList}.
  */
 public final class Record{
 
@@ -44,7 +45,7 @@ public final class Record{
     /**
      * Builder class for a record.
      */
-    class Builder{
+    final class Builder{
         private Builder(){
             this (null, LocalDate.now());
         }
@@ -67,27 +68,27 @@ public final class Record{
             timeStarted = Optional.empty();
         }
 
-        public Builder setRecordDate(LocalDate date){
+        Builder setRecordDate(LocalDate date){
             recordDate = checkNotNull(date, "Date cannot be null.");
             return this;
         }
 
-        public Builder setTimeGoal(Duration duration){
+        Builder setTimeGoal(Duration duration){
             timeGoal = checkNotNull(duration, "Duration cannot be null.");;
             return this;
         }
 
-        public Builder setPublishGoal(int goal){
+        Builder setPublishGoal(int goal){
             publishGoal = checkNotNull(goal, "Goal cannot be null.");;
             return this;
         }
 
-        public Builder setPublishTotal(int total){
+        Builder setPublishTotal(int total){
             publishTotal = checkNotNull(total, "Total cannot be null.");
             return this;
         }
 
-        public Builder setNoteTotal(int total){
+        Builder setNoteTotal(int total){
             noteTotal = checkNotNull(total, "Total cannot be null.");;
             return this;
         }
@@ -108,27 +109,33 @@ public final class Record{
         return recordDate;
     }
 
+    /** Returns the total words target for publishing. */
     public int getPublishTotal(){
         return publishTotal;
     }
 
+    /** Returns the daily words target for publishing. */
     public int getPublishGoal(){
         return publishGoal;
     }
 
+    /** Set the daily words target for publishing. */
     public void setPublishGoal(int goal){
         publishGoal = goal;
     }
 
+    /** Get the day tally words written for publishing.*/
     public int getPublishWritten(){
         return lastRecord.map(record -> publishTotal - record.publishTotal)
             .orElse(publishTotal);
     }
 
+    /** Returns the total words target for planning and research. */
     public int getNoteTotal(){
         return noteTotal;
     }
 
+    /** Returns the total word count for everything */
     public int getTotalCount(){
         return publishTotal + noteTotal;
     }

@@ -11,67 +11,121 @@ import java.util.*;
 import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
-import static com.creativeartie.jwriter.window.PaneCheatsheetLabel.Name;
 
 abstract class PaneCheatsheetView extends GridPane{
-    private PaneCheatsheetLabel[] labels;
+
+    private TreeMap<LinedType, PaneCheatsheetLabel> lines;
+    private TreeMap<FormatType, PaneCheatsheetLabel> formats;
+    private TreeMap<EditionType, PaneCheatsheetLabel> editions;
+    private TreeMap<InfoFieldType, PaneCheatsheetLabel> infos;
+    private TreeMap<AuxiliaryType, PaneCheatsheetLabel> others;
+    private TreeMap<DirectoryType, PaneCheatsheetLabel> idTypes;
+    private PaneCheatsheetLabel id;
+    private ArrayList<PaneCheatsheetLabel> labelList;
 
     PaneCheatsheetView(){
-        labels = new PaneCheatsheetLabel[Name.values().length];
-        int i = 0;
-        for (Name type: Name.values()){
-            labels[i++] = new PaneCheatsheetLabel(type);
+        labelList = new ArrayList<>();
+        lines = new TreeMap<>();
+        PaneCheatsheetLabel holder;
+        for(LinedType type: LinedType.values()){
+            holder = PaneCheatsheetLabel.getLabel(type);
+            lines.put(type, holder);
+            labelList.add(holder);
+        }
+
+        formats = new TreeMap<>();
+        for(FormatType type: FormatType.values()){
+            holder = PaneCheatsheetLabel.getLabel(type);
+            formats.put(type, holder);
+            labelList.add(holder);
+        }
+
+        editions = new TreeMap<>();
+        for (EditionType type: EditionType.values()){
+            if (type != EditionType.NONE){
+                holder = PaneCheatsheetLabel.getLabel(type);
+                editions.put(type, holder);
+                labelList.add(holder);
+            }
+        }
+
+        infos = new TreeMap<>();
+        for (InfoFieldType type: InfoFieldType.values()){
+            if (type != InfoFieldType.ERROR){
+                holder = PaneCheatsheetLabel.getLabel(type);
+                infos.put(type, holder);
+                labelList.add(holder);
+            }
+        }
+
+        idTypes = new TreeMap<>();
+        for (DirectoryType type: DirectoryType.values()){
+            if (type != DirectoryType.COMMENT && type != DirectoryType.LINK){
+                holder = PaneCheatsheetLabel.getLabel(type);
+                idTypes.put(type, holder);
+                labelList.add(holder);
+            }
+        }
+
+        id = PaneCheatsheetLabel.getIdentityLabel();
+        labelList.add(id);
+
+        others = new TreeMap<>();
+        for (AuxiliaryType type: AuxiliaryType.getFormatTypes()){
+            holder = PaneCheatsheetLabel.getLabel(type);
+            others.put(type, holder);
+            labelList.add(holder);
         }
         layoutLabels();
     }
 
     private void layoutLabels(){
-        add(labels[Name.PARAGRAPH.ordinal()],        0, 0);
-        add(labels[Name.QUOTE.ordinal()],            0, 1);
-        add(labels[Name.AGENDA.ordinal()],           0, 2);
+        add(lines.get(LinedType.PARAGRAPH), 0, 0);
+        add(lines.get(LinedType.QUOTE),     0, 1);
+        add(lines.get(LinedType.AGENDA),    0, 2);
 
-        add(labels[Name.NUMBERED.ordinal()],         1, 0);
-        add(labels[Name.BULLET.ordinal()],           1, 1);
-        add(labels[Name.BREAK.ordinal()],            1, 2);
+        add(lines.get(LinedType.NUMBERED), 1, 0);
+        add(lines.get(LinedType.BULLET),   1, 1);
+        add(lines.get(LinedType.BREAK),    1, 2);
 
-        add(labels[Name.HEADING.ordinal()],          2, 0, 3, 1);
-        add(labels[Name.OUTLINE.ordinal()],          2, 1, 3, 1);
-        add(labels[Name.STUB.ordinal()],             2, 2);
-        add(labels[Name.DRAFT.ordinal()],            3, 2);
-        add(labels[Name.FINAL.ordinal()],            4, 2);
+        add(lines.get(LinedType.HEADING),    2, 0, 3, 1);
+        add(lines.get(LinedType.OUTLINE),    2, 1, 3, 1);
+        add(editions.get(EditionType.STUB),  2, 2);
+        add(editions.get(EditionType.DRAFT), 3, 2);
+        add(editions.get(EditionType.FINAL), 4, 2);
 
-        add(labels[Name.NOTE.ordinal()],             5, 0);
-        add(labels[Name.SOURCE.ordinal()],           5, 1);
-        add(labels[Name.OTHER.ordinal()],            5, 2);
+        add(lines.get(LinedType.NOTE),    5, 0);
+        add(lines.get(LinedType.SOURCE),  5, 1);
+        add(editions.get(EditionType.OTHER), 5, 2);
 
-        add(labels[Name.FIELD_SOURCE.ordinal()],     6, 0);
-        add(labels[Name.FIELD_IN_TEXT.ordinal()],    6, 1);
-        add(labels[Name.FIELD_FOOTNOTE.ordinal()],   6, 2);
+        add(infos.get(InfoFieldType.SOURCE),   6, 0);
+        add(infos.get(InfoFieldType.IN_TEXT),  6, 1);
+        add(infos.get(InfoFieldType.FOOTNOTE), 6, 2);
 
 
-        add(labels[Name.FOOTNOTE.ordinal()],         7, 0);
-        add(labels[Name.ENDNOTE.ordinal()],          7, 1);
-        add(labels[Name.HYPERLINK.ordinal()],        7, 2);
+        add(lines.get(LinedType.FOOTNOTE),  7, 0);
+        add(lines.get(LinedType.ENDNOTE),   7, 1);
+        add(lines.get(LinedType.HYPERLINK), 7, 2);
 
-        add(labels[Name.FORMAT_LINK_REF.ordinal()],  8, 0);
-        add(labels[Name.FORMAT_LINK_DIR.ordinal()],  8, 1);
-        add(labels[Name.ID.ordinal()],               8, 2);
+        add(others.get(AuxiliaryType.REF_LINK),    8, 0);
+        add(others.get(AuxiliaryType.DIRECT_LINK), 8, 1);
+        add(id,                                    8, 2);
 
-        add(labels[Name.FORMAT_FOOTNOTE.ordinal()],  9, 0);
-        add(labels[Name.FORMAT_ENDNOTE.ordinal()],   9, 1);
-        add(labels[Name.FORMAT_NOTE.ordinal()],      9, 2);
+        add(idTypes.get(DirectoryType.FOOTNOTE), 9, 0);
+        add(idTypes.get(DirectoryType.ENDNOTE),  9, 1);
+        add(idTypes.get(DirectoryType.NOTE),     9, 2);
 
-        add(labels[Name.FORMAT_BOLD.ordinal()],      10, 0);
-        add(labels[Name.FORMAT_CODED.ordinal()],     10, 1);
-        add(labels[Name.FORMAT_AGENDA.ordinal()],    10, 2);
+        add(formats.get(FormatType.BOLD),     10, 0);
+        add(formats.get(FormatType.CODED),    10, 1);
+        add(others.get(AuxiliaryType.AGENDA), 10, 2);
 
-        add(labels[Name.FORMAT_ITALICS.ordinal()],   11, 0);
-        add(labels[Name.FORMAT_UNDERLINE.ordinal()], 11, 1);
-        add(labels[Name.FORMAT_ESCAPE.ordinal()],    11, 2);
+        add(formats.get(FormatType.ITALICS),   11, 0);
+        add(formats.get(FormatType.UNDERLINE), 11, 1);
+        add(others.get(AuxiliaryType.ESCAPE),  11, 2);
     }
 
-    protected PaneCheatsheetLabel[] getLabels(){
-        return labels;
+    protected List<PaneCheatsheetLabel> getLabels(){
+        return labelList;
     }
 
     public abstract void updateLabels(ManuscriptDocument doc, int position);

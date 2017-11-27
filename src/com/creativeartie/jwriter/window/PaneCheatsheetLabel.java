@@ -11,73 +11,95 @@ import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
+import com.creativeartie.jwriter.property.window.*;
 import com.creativeartie.jwriter.main.*;
 
 class PaneCheatsheetLabel extends Label{
-    public enum Name{
-        PARAGRAPH, QUOTE, BREAK, NUMBERED, BULLET, FOOTNOTE, ENDNOTE, NOTE,
-        HEADING, OUTLINE, HYPERLINK, AGENDA, SOURCE,
-        FORMAT_BOLD, FORMAT_ITALICS,FORMAT_CODED,FORMAT_UNDERLINE,
-        STUB, DRAFT, FINAL, OTHER,
-        FIELD_SOURCE, FIELD_IN_TEXT, FIELD_FOOTNOTE,
-        ID, FORMAT_ESCAPE,
-        FORMAT_LINK_DIR, FORMAT_LINK_REF, FORMAT_AGENDA,
-        FORMAT_NOTE, FORMAT_FOOTNOTE, FORMAT_ENDNOTE;
+    static PaneCheatsheetLabel getLabel(LinedType type){
+        return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getText(type),
+            (doc, point) -> doc.locateSpan(point, LinedSpan.class)
+                .map(span -> span.getLinedType() == type)
+                .orElse(false)
+        );
     }
 
-    private Name nameType;
-
-    public PaneCheatsheetLabel(Name type){
-        super(Utilities.getString("CheatSheet." + Utilities.enumToKey(type
-            .name())));
-        nameType = type;
+    static PaneCheatsheetLabel getLabel(FormatType type){
+        return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getText(type),
+            (doc, point) -> doc.locateSpan(point, FormatSpan.class)
+                .map(span -> span.isFormat(type))
+                .orElse(false)
+        );
     }
 
-    private boolean compare(DetailStyle style){
-        return nameType == Name.valueOf(style.name());
+    static PaneCheatsheetLabel getLabel(EditionType type){
+        return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getText(type),
+            (doc, point) -> doc.locateSpan(point, EditionSpan.class)
+                .map(span -> span.getEdition() == type)
+                .orElse(false)
+        );
     }
 
-    private String toType(){
-        return nameType.name().substring("FORMAT_".length());
-    }
-
-    public boolean isTurnOn(ManuscriptDocument doc, int point){
-        if (Name.SOURCE.ordinal() >= nameType.ordinal()){
-            return doc.spansAt(point, LinedSpan.class).map(
-                    span -> compare(span.getLinedType())
-                ).orElse(false);
-        } else if (Name.FORMAT_UNDERLINE.ordinal() >= nameType.ordinal()){
-            ///For format
-            return doc.spansAt(point, FormatSpan.class).map(
-                    span -> span.isFormat(FormatType.valueOf(toType()))
-                ).orElse(false);
-        } else if (Name.OTHER.ordinal() >= nameType.ordinal()){
-            return doc.spansAt(point, EditionSpan.class).map(
-                span -> Name.valueOf(span.getEdition().name()) == nameType
-            ).orElse(false);
-        } else if (Name.FIELD_FOOTNOTE.ordinal() >= nameType.ordinal()){
-            return doc.spansAt(point, LinedSpanCite.class).map(
-                span -> {
-                    if(span.getFieldType() == InfoFieldType.ERROR){
-                        return false;
-                    }
-                    return Name.valueOf("FIELD_" + span.getFieldType().name())
-                        == nameType;
-                }
-            ).orElse(false);
-        }if (Name.ID == nameType){
-            return doc.spansAt(point, DirectorySpan.class).isPresent();
-        } else if (Name.FORMAT_ESCAPE == nameType){
-            return doc.spansAt(point, BasicTextEscape.class).isPresent();
-        } else if (Name.FORMAT_LINK_DIR == nameType){
-            return doc.spansAt(point, FormatSpanLinkDirect.class).isPresent();
-        } else if (Name.FORMAT_LINK_REF == nameType){
-            return doc.spansAt(point, FormatSpanLinkRef.class).isPresent();
-        } else if (Name.FORMAT_AGENDA == nameType){
-            return doc.spansAt(point, FormatSpanAgenda.class).isPresent();
+    static PaneCheatsheetLabel getLabel(DirectoryType type){
+        if (type == DirectoryType.COMMENT || type == DirectoryType.LINK){
+            throw new IllegalArgumentException("Unsupported type: " + type);
         }
-        return doc.spansAt(point, FormatSpanDirectory.class).map(
-                span -> span.getIdType() == DirectoryType.valueOf(toType())
-            ).orElse(false);
+        return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getText(type),
+            (doc, point) -> doc.locateSpan(point, FormatSpanDirectory.class)
+                .map(span -> span.getIdType() == type)
+                .orElse(false)
+            );
+    }
+
+    static PaneCheatsheetLabel getLabel(InfoFieldType type){
+        if (type == InfoFieldType.ERROR){
+            throw new IllegalArgumentException("Unsupported type: " + type);
+        }
+        return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getText(type),
+            (doc, point) -> doc.locateSpan(point, LinedSpanCite.class).map(
+                span -> span.getFieldType() == type
+            ).orElse(false)
+        );
+    }
+
+    static PaneCheatsheetLabel getIdentityLabel(){
+        return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getIdText(),
+            (doc, point) -> doc.locateSpan(point, DirectorySpan.class).isPresent()
+        );
+    }
+
+    static PaneCheatsheetLabel getLabel(AuxiliaryType type){
+        Class<?> setup = null;
+        switch (type){
+            case ESCAPE:
+                setup = BasicTextEscape.class;
+                break;
+            case AGENDA:
+                setup = FormatSpanAgenda.class;
+                break;
+            case DIRECT_LINK:
+                setup = FormatSpanLinkDirect.class;
+                break;
+            case REF_LINK:
+                setup = FormatSpanLinkRef.class;
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported type: " + type);
+        }
+        final Class<?> test = setup;
+        return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getText(type),
+            (doc, point) -> doc.locateSpan(point, test).isPresent()
+        );
+    }
+
+    private final BiPredicate<ManuscriptDocument, Integer> testSetted;
+
+    private PaneCheatsheetLabel(String text,
+            BiPredicate<ManuscriptDocument, Integer> set){
+        super(text);
+        testSetted = set;
+    }
+
+    public boolean isSetted(ManuscriptDocument doc, int point){
+        return testSetted.test(doc, point);
     }
 }

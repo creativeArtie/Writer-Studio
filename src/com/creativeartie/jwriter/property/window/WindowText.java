@@ -12,6 +12,7 @@ import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.property.*;
 
 public enum WindowText {
+    PROGRAM_NAME("MainWindow.Title"),
 
     HEADING_NO_TEXT("DisplayHeading.HeadingNoText"),
     HEADING_PLACEHOLDER("DisplayHeading.HeadingPlaceholder"),

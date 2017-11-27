@@ -108,8 +108,7 @@ abstract class PaneMonthDayView extends AnchorPane{
             (time? ButtonIcon.GOAL_TIME: ButtonIcon.GOAL_FAIL)));
 
         String tip = String.format("Written: %,d(%,d)\nTime: %s (%s)",
-            written, goal, Utilities.formatDuration(dur),
-            Utilities.formatDuration(timeGoal));
+            written, goal, formatDuration(dur), formatDuration(timeGoal));
         statsTip.setText(tip);
         imageIcon.setTooltip(statsTip);
     }
@@ -119,6 +118,13 @@ abstract class PaneMonthDayView extends AnchorPane{
         image.setFitHeight(50);
         image.setFitWidth(50);
         return image;
+    }
+
+    private static String formatDuration(Duration duration){
+        long hours = duration.toHours();
+        long minutes = duration.toMinutes() % 60;
+        long seconds = duration.getSeconds() % 60;
+        return String.format("%d:%02d:%02d", hours, minutes, seconds);
     }
     /// Control Methods
     protected abstract void listenDate(LocalDate value);

@@ -11,14 +11,12 @@ import java.io.*;
 
 import com.creativeartie.jwriter.file.*;
 import com.creativeartie.jwriter.stats.*;
+import com.creativeartie.jwriter.property.window.*;
 import com.creativeartie.jwriter.window.*;
 import com.creativeartie.jwriter.lang.markup.*;
 
 public class Main extends Application{
     private Stage mainStage;
-
-    public final static ResourceBundle TEXTS = PropertyResourceBundle
-        .getBundle("data.windowText", Locale.ENGLISH);
 
     public static void main(String[] args) {
         launch(args);
@@ -26,7 +24,7 @@ public class Main extends Application{
 
     @Override
     public void start(Stage stage) throws Exception{
-        stage.setTitle(TEXTS.getString("MainWindow.Title"));
+        stage.setTitle(WindowText.PROGRAM_NAME.getText());
 
         // testStatsWindow(stage);
         testMainWindow(stage);

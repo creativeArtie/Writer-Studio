@@ -165,7 +165,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         }
     }
 
-    public List<SpanLeaf> getLeaves(){
+    public final List<SpanLeaf> getLeaves(){
         ImmutableList.Builder<SpanLeaf> builder = ImmutableList.builder();
         for(SpanBranch span: this){
             builder.addAll(span.getLeaves());
@@ -173,10 +173,9 @@ public abstract class Document extends SpanNode<SpanBranch>{
         return builder.build();
     }
 
-    public <T> Optional<T> spansAt(int index, Class<T> clazz){
+    public <T> Optional<T> locateSpan(int index, Class<T> clazz){
         checkPositionIndex(index, getLength(), "Index is out of range.");
         checkNotNull(clazz, "Caller function cannot be null.");
-        Checker.checkNotNull(clazz, "class");
         if(getLength() == 0){
             return Optional.empty();
         }
@@ -193,6 +192,15 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     }
 
+    public SpanLeaf getLeaf(int index){
+        checkPositionIndex(index, getLength(), "Index is out of range.");
+        Span found = locateSpan(index, this);
+        while (! (found instanceof SpanLeaf)) {
+            found = locateSpan(index, (SpanNode<?>)found);
+        }
+        return (SpanLeaf) found;
+    }
+
     private Span locateSpan(int index, SpanNode<?> parent){
         assert parent != null: "Null parent";
         for (Span span: parent){
@@ -201,51 +209,6 @@ public abstract class Document extends SpanNode<SpanBranch>{
             }
         }
         return parent.get(parent.size() - 1);
-    }
-
-    public List<Span> spansAt(int index){
-        Preconditions.checkPositionIndex(index, getLength(), "Doc index");
-        if(getLength() == 0){
-            return ImmutableList.of();
-        }
-        ArrayList<Span> ans = new ArrayList<>();
-        listSpans(ans, index);
-        return ImmutableList.copyOf(ans);
-    }
-
-    private int listSpans(ArrayList<Span> spans, int index){
-        spans.add(this);
-        int length = getLength();
-        if (index == length){
-            Span search = this.get(size() - 1);
-            while (search instanceof SpanNode){
-                spans.add(search);
-                SpanNode<? extends Span> parent = (SpanNode<? extends Span>)
-                    search;
-                search = parent.get(parent.size() - 1);
-            }
-            spans.add(search);
-            return search.getLength();
-        }
-
-        int start = 0;
-        Iterator<? extends Span> it = iterator();
-        while (true){
-            if (! it.hasNext()){
-                throw new IllegalArgumentException("Out of range.");
-            }
-            Span found = it.next();
-            if (start + found.getLength() > index){
-                spans.add(found);
-                if (found instanceof SpanBranch){
-                    it = ((SpanBranch)found).iterator();
-                } else {
-                    return index - start;
-                }
-            } else {
-                start += found.getLength();
-            }
-        }
     }
 
     public void insert(int location, String input){
@@ -271,19 +234,20 @@ public abstract class Document extends SpanNode<SpanBranch>{
     private void edit(Function<Span, String> editedText, int location)
     {
         boolean isDone = false;
+        SpanNode<?> span = getLeaf(location).getParent();
         if (location != getLength()){
-            for (SpanBranch span: listSpans(location)){
+            while (span instanceof SpanBranch){
                 String raw = editedText.apply(span);
                 if (! raw.isEmpty()){
-                    isDone = span.editRaw(raw);
+                    if (((SpanBranch)span).editRaw(raw)){
+                        break;
+                    }
                 }
-                if (isDone){
-                    break;
-                }
+                span = span.getParent();
             }
         }
 
-        if (isDone){
+        if (span instanceof Document){
             catalogueMap = new CatalogueMap();
             update(this);
         } else {
@@ -291,25 +255,5 @@ public abstract class Document extends SpanNode<SpanBranch>{
         }
         spanRanges.invalidateAll();
         spanLeaves.invalidateAll();
-    }
-
-    @Deprecated
-    @SuppressWarnings("unchecked")
-    private List<SpanBranch> listSpans(int location){
-        List<SpanBranch> ans = new ArrayList<>();
-        Iterator<Span> it = ((SpanNode) this).iterator();
-        while(it.hasNext()){
-            Span found = it.next();
-            if (found.getRange().contains(location)){
-                if (found instanceof SpanBranch){
-                    ans.add(0, (SpanBranch) found);
-                    it = ((SpanBranch) found).iterator();
-                } else {
-                    return ans;
-                }
-            }
-        }
-        assert false: "Span Leaf not found.";
-        return ans;
     }
 }

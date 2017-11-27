@@ -14,17 +14,29 @@ import com.creativeartie.jwriter.main.Checker;
 
 /**
  * Stores the {@link ManuscriptDocument} and {@link RecordList} in a zip file.
+ * Classes outside of this package must use this class to indirectly create
+ * instances of {@link RecordList} and {@link Record}.
  */
 public final class ManuscriptFile {
+
+    /// file name and extension for {@link #open(File)} and {@link #save()}
     private static final String TEXT = "manuscript";
     private static final String RECORDS = "records";
     private static final String EXTENSION = ".txt";
 
+    /**
+     * Extract text from a zip input stream. Helper method of
+     * {@link #open(file)}.
+     *
+     * @return the entire text in a text file.
+     * @throws IOException from {@linkplain ZipInputStream#read()}
+     */
     private static String extractText(ZipInputStream input) throws IOException{
         assert input != null: "Null input.";
 
         StringBuilder builder = new StringBuilder();
 
+        /// Reads by character by character FUTURE: read by x amount
         int read = input.read();
         while (read != -1){
             builder.append((char)read);
@@ -36,6 +48,7 @@ public final class ManuscriptFile {
     public static ManuscriptFile open(File file) throws IOException{
         checkNotNull(file, "Zip file cannot be null.");
 
+        /// {@link #ManuscriptFile(File,ManuscriptDocument, RecordList} parms:
         ManuscriptDocument doc = null;
         RecordList record = null;
 
@@ -44,16 +57,21 @@ public final class ManuscriptFile {
         {
             ZipEntry entry = input.getNextEntry();
             while (entry != null){
+                /// For each file extracted in the zip file:
                 String text = extractText(input);
+
                 if (entry.getName().equals(TEXT + EXTENSION)){
                     doc = new ManuscriptDocument(text);
                 }
+
                 if (entry.getName().equals(RECORDS + EXTENSION)){
                     record = new RecordList(text);
                 }
+
                 entry = input.getNextEntry();
             }
         }
+
         if (doc != null && record != null){
             return new ManuscriptFile(file, doc, record);
         }
@@ -79,10 +97,11 @@ public final class ManuscriptFile {
     private Optional<File> zipFile;
 
     private ManuscriptFile(File file, ManuscriptDocument doc,
-        RecordList table)
-    {
+            RecordList table) {
         assert doc != null: "Null doc";
         assert table != null: "Null table";
+        /// file can be null
+
         zipFile = Optional.ofNullable(file);
         documentText = doc;
         recordsFile = table;
@@ -106,9 +125,8 @@ public final class ManuscriptFile {
         return zipFile.isPresent();
     }
 
-    /// {@see #canSave} to get reference
     public void save() throws IOException{
-        if (! zipFile.isPresent()){
+        if (! canSave()){
             throw new IOException("No file to save.");
         }
 

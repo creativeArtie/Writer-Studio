@@ -15,11 +15,10 @@ import com.creativeartie.jwriter.property.window.*;
 
 class PaneCheatsheetControl extends PaneCheatsheetView{
 
-
     public void updateLabels(ManuscriptDocument doc, int position){
         for (PaneCheatsheetLabel label: getLabels()){
             WindowStyleBuilder css = new WindowStyleBuilder();
-            css.add(label.isTurnOn(doc, position)? WindowStyle.MARKUP_Set:
+            css.add(label.isSetted(doc, position)? WindowStyle.MARKUP_Set:
                 WindowStyle.MARKUP_UNSET);
             css.add(WindowStyle.CHEATSHEET_BASE);
             label.setStyle(css.toString());
