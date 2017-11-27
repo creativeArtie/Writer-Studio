@@ -15,11 +15,17 @@ import com.creativeartie.jwriter.property.window.*;
 import com.creativeartie.jwriter.main.*;
 
 class PaneCheatsheetLabel extends Label{
+
+    private static boolean findContent(ManuscriptDocument doc, Integer point){
+        return doc.locateSpan(point, FormatSpanContent.class).isPresent();
+    }
+
     static PaneCheatsheetLabel getLabel(LinedType type){
         return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getText(type),
             (doc, point) -> doc.locateSpan(point, LinedSpan.class)
                 .map(span -> span.getLinedType() == type)
-                .orElse(false)
+                .orElse(false),
+            (doc, point) -> true
         );
     }
 
@@ -27,7 +33,8 @@ class PaneCheatsheetLabel extends Label{
         return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getText(type),
             (doc, point) -> doc.locateSpan(point, FormatSpan.class)
                 .map(span -> span.isFormat(type))
-                .orElse(false)
+                .orElse(false),
+            PaneCheatsheetLabel::findContent
         );
     }
 
@@ -35,7 +42,9 @@ class PaneCheatsheetLabel extends Label{
         return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getText(type),
             (doc, point) -> doc.locateSpan(point, EditionSpan.class)
                 .map(span -> span.getEdition() == type)
-                .orElse(false)
+                .orElse(false),
+            (doc, point) -> doc.locateSpan(point, EditionSpan.class)
+                .isPresent()
         );
     }
 
@@ -46,8 +55,9 @@ class PaneCheatsheetLabel extends Label{
         return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getText(type),
             (doc, point) -> doc.locateSpan(point, FormatSpanDirectory.class)
                 .map(span -> span.getIdType() == type)
-                .orElse(false)
-            );
+                .orElse(false),
+            PaneCheatsheetLabel::findContent
+        );
     }
 
     static PaneCheatsheetLabel getLabel(InfoFieldType type){
@@ -57,13 +67,22 @@ class PaneCheatsheetLabel extends Label{
         return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getText(type),
             (doc, point) -> doc.locateSpan(point, LinedSpanCite.class).map(
                 span -> span.getFieldType() == type
-            ).orElse(false)
+            ).orElse(false),
+            (doc, point) -> doc.locateSpan(point, LinedSpanCite.class)
+                .isPresent()
         );
     }
 
     static PaneCheatsheetLabel getIdentityLabel(){
         return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getIdText(),
-            (doc, point) -> doc.locateSpan(point, DirectorySpan.class).isPresent()
+            (doc, point) -> doc.locateSpan(point, DirectorySpan.class)
+                .isPresent(),
+            (doc, point) ->
+                doc.locateSpan(point, FormatSpanLinkRef.class).isPresent() ||
+                doc.locateSpan(point, FormatSpanDirectory.class).isPresent() ||
+                doc.locateSpan(point, LinedSpanSection.class).isPresent() ||
+                doc.locateSpan(point, LinedSpanPoint.class).isPresent() ||
+                doc.locateSpan(point, LinedSpanNote.class).isPresent()
         );
     }
 
@@ -87,19 +106,27 @@ class PaneCheatsheetLabel extends Label{
         }
         final Class<?> test = setup;
         return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getText(type),
-            (doc, point) -> doc.locateSpan(point, test).isPresent()
+            (doc, point) -> doc.locateSpan(point, test).isPresent(),
+            PaneCheatsheetLabel::findContent
         );
     }
 
     private final BiPredicate<ManuscriptDocument, Integer> testSetted;
+    private final BiPredicate<ManuscriptDocument, Integer> testAllow;
 
     private PaneCheatsheetLabel(String text,
-            BiPredicate<ManuscriptDocument, Integer> set){
+            BiPredicate<ManuscriptDocument, Integer> set,
+            BiPredicate<ManuscriptDocument, Integer> allow){
         super(text);
         testSetted = set;
+        testAllow = allow;
     }
 
     public boolean isSetted(ManuscriptDocument doc, int point){
         return testSetted.test(doc, point);
+    }
+
+    public boolean isAllowed(ManuscriptDocument doc, int point){
+        return testAllow.test(doc, point);
     }
 }

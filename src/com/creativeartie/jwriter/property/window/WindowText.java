@@ -45,7 +45,6 @@ public enum WindowText {
     COLUMN_REF("UserLists.ColumnReference"),
     COLUMN_SPAN("UserLists.ColumnSpan"),
 
-
     NO_NOTE_SELECTED("NoteDisplay.NoNoteSelected"),
     NO_NOTE_FOUND("NoteDisplay.NoNoteTarget"),
     FOOTNOTE_LABEL("NoteDisplay.FootnoteLabel"),
