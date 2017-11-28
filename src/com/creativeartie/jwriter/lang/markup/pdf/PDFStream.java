@@ -36,6 +36,7 @@ public final class PDFStream implements AutoCloseable{
         curPage = new PDPage();
         outDoc.addPage(curPage);
         outStream = new PDPageContentStream(outDoc, curPage);
+        outStream.beginText();
         return this;
     }
 
@@ -56,9 +57,9 @@ public final class PDFStream implements AutoCloseable{
             System.out.print(lineWidth + " + " + textWidth + " = ");
             System.out.print(lineWidth + textWidth);
             System.out.println("(" + pageWidth + ")");
-            if (lineWidth + textWidth > pageWidth){
+            /*if (lineWidth + textWidth > pageWidth){
                 return false;
-            }
+            }*/
             output.append(text);
             lineWidth += textWidth;
             return true;
@@ -67,11 +68,9 @@ public final class PDFStream implements AutoCloseable{
         void showLine() throws IOException{
             System.out.println(output);
             lineCount++;
-            outStream.beginText();
             outStream.setFont(textFont, 12);
-            outStream.newLineAtOffset(100, 10 * lineCount);
+            outStream.newLineAtOffset(0, 10);
             outStream.showText(output.toString());
-            outStream.endText();
         }
     }
 
@@ -80,6 +79,7 @@ public final class PDFStream implements AutoCloseable{
     }
 
     public void endPage() throws IOException{
+        outStream.endText();
         outStream.close();
     }
 

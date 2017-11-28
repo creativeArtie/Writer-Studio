@@ -15,7 +15,15 @@ public final class BuildPDF{
         outDoc = doc;
     }
 
-    public void export(String file) throws IOException{
+    public void export(File file) throws IOException{
+        try (PDFOutputStream out = new PDFOutputStream(file)){
+            for (SpanLeaf leaf: outDoc.getLeaves()){
+                 out.print(leaf.getRaw(), PDType1Font.HELVETICA_BOLD);
+            }
+        }
+
+
+        /*
         try (PDFStream out = new PDFStream(file)){
             PDFStream.Line line = out.newLine();
             for (SpanLeaf leaf: outDoc.getLeaves()){
@@ -33,6 +41,6 @@ public final class BuildPDF{
                     }
                 }
             }
-        }
+        }*/
     }
 }
