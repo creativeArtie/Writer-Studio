@@ -16,31 +16,14 @@ public final class BuildPDF{
     }
 
     public void export(File file) throws IOException{
-        try (PDFOutputStream out = new PDFOutputStream(file)){
+        PDFont font = PDType1Font.HELVETICA_BOLD;
+        try (PDFOutputStream out = new PDFOutputStream(file, font)){
             for (SpanLeaf leaf: outDoc.getLeaves()){
-                 out.print(leaf.getRaw(), PDType1Font.HELVETICA_BOLD);
+                if (leaf.getRaw() == "\n"){
+                    out.println(font);
+                }
+                 out.print(leaf.getRaw(), font);
             }
         }
-
-
-        /*
-        try (PDFStream out = new PDFStream(file)){
-            PDFStream.Line line = out.newLine();
-            for (SpanLeaf leaf: outDoc.getLeaves()){
-                if (leaf.getLeafStyle() == SetupLeafStyle.KEYWORD &&
-                        leaf.getRaw().equals("\n")){
-                    line.showLine();
-                    line = out.newLine();
-                } else {
-                    for (String str: Splitter.on(CharMatcher.whitespace())
-                        .trimResults().omitEmptyStrings().split(leaf.getRaw())){
-                        if (! line.addText(str)){
-                            line.showLine();
-                            line = out.newLine();
-                        }
-                    }
-                }
-            }
-        }*/
     }
 }

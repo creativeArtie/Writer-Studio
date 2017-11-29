@@ -16,15 +16,7 @@ import com.creativeartie.jwriter.window.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.lang.markup.pdf.*;
 
-public class Main {
-    public static void main(String[] args) throws Exception {
-        File file = new File("data/help-text.txt");
-        ManuscriptDocument doc = new ManuscriptDocument(file);
-        BuildPDF pdf = new BuildPDF(doc);
-        pdf.export(new File("../test.pdf"));
-    }
-}
-/*
+
 public class Main extends Application{
     private Stage mainStage;
 
@@ -44,6 +36,7 @@ public class Main extends Application{
     @Deprecated
     private void testMainWindow(Stage stage) throws Exception{
         File file = new File("data/sectionDebug4.txt");
+        ManuscriptDocument doc = new ManuscriptDocument(file);
         setupWindow(stage, ManuscriptFile.withManuscript(doc));
     }
 
@@ -68,4 +61,4 @@ public class Main extends Application{
         stage.setScene(scene);
         stage.show();
     }
-}*/
+}
