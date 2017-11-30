@@ -3,8 +3,6 @@ package com.creativeartie.jwriter.lang;
 import java.util.*;
 import com.google.common.collect.*;
 
-import com.creativeartie.jwriter.main.*;
-
 import static com.google.common.base.Preconditions.*;
 
 /**
@@ -16,7 +14,7 @@ public final class CatalogueData{
     private final CatalogueMap catalogueParent;
     private final CatalogueIdentity catelogueKey;
 
-    public CatalogueData(CatalogueMap parent, CatalogueIdentity id){
+    CatalogueData(CatalogueMap parent, CatalogueIdentity id){
         catalogueParent = checkNotNull(parent);
         catelogueKey = checkNotNull(id);
         idSpans = new ArrayList<>();
@@ -24,11 +22,23 @@ public final class CatalogueData{
     }
 
     void addId(SpanBranch span){
-        idSpans.add(checkNotNull(span, "Span can be null."));
+        checkNotNull(span, "Span can be null.");
+        checkArgument(span instanceof Catalogued,
+            "Span is not of type Catalogued.");
+        checkArgument(((Catalogued)span).isId(),
+            "Span is no an id: " + span.getRaw());
+
+        idSpans.add(span);
     }
 
     void addRef(SpanBranch span){
-        refSpans.add(checkNotNull(span, "Span can be null."));
+        checkNotNull(span, "Span can be null.");
+        checkArgument(span instanceof Catalogued,
+            "Span is not of type Catalogued.");
+        checkArgument(((Catalogued)span).isRef(),
+            "Span is no an ref: " + span.getRaw());
+
+        refSpans.add(span);
     }
 
     public CatalogueMap getParent(){
@@ -39,6 +49,7 @@ public final class CatalogueData{
         return catelogueKey;
     }
 
+    /** Get the {@link CatalogueStatus} based on the Span stored. */
     public CatalogueStatus getState(){
         if (idSpans.size() > 1){
             return CatalogueStatus.MULTIPLE;
@@ -46,18 +57,22 @@ public final class CatalogueData{
             assert !refSpans.isEmpty();
             return CatalogueStatus.NOT_FOUND;
         } else if (refSpans.isEmpty()){
+            assert !idSpans.isEmpty();
             return CatalogueStatus.UNUSED;
         }
         return CatalogueStatus.READY;
     }
 
+    /** Check if this is ready (that is: {@code idSpan.size() == 1}). */
     public boolean isReady(){
-        return getState() == CatalogueStatus.READY;
+        CatalogueStatus state = getState();
+        return state == CatalogueStatus.READY ||
+            getState() == CatalogueStatus.UNUSED;
     }
 
     public SpanBranch getTarget(){
-        checkState(idSpans.size() == 1,
-            "Cannot have more then one id span: %s.", getState());
+        checkState(idSpans.size() != 1,
+            "CatalougeData is not ready: %s.", getState());
         return idSpans.get(0);
     }
 

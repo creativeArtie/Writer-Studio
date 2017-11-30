@@ -3,8 +3,6 @@ package com.creativeartie.jwriter.lang;
 import java.util.*;
 import com.google.common.collect.*;
 
-import com.creativeartie.jwriter.main.*;
-
 import static com.google.common.base.Preconditions.*;
 
 public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
