@@ -12,9 +12,9 @@ import com.creativeartie.jwriter.property.window.*;
 public class PaneMonthControl extends PaneMonthView{
 
     protected void listenRecords(RecordList value){
-        List<YearMonth> months = value.getYearMonths();
-        updateStartEnd(value.getStartMonth(), value.getEndMonth());
-        setYearMonth(months.get(months.size() - 1));
+        YearMonth last = value.getEndMonth();
+        updateStartEnd(value.getStartMonth(), last);
+        setYearMonth(last);
     }
 
     protected void listenMonth(YearMonth value){

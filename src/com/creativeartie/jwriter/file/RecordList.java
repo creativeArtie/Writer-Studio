@@ -2,8 +2,6 @@ package com.creativeartie.jwriter.file;
 
 import java.util.*;
 import java.time.*;
-import java.io.*;
-import java.util.function.*;
 
 import com.google.common.collect.*;
 import static com.google.common.base.Preconditions.*;
@@ -14,17 +12,20 @@ import static com.google.common.base.Preconditions.*;
 public final class RecordList extends ForwardingList<Record>{
 
     @Deprecated
-    public static RecordList build(File file) throws IOException{
+    public static RecordList build(java.io.File file)
+            throws java.io.IOException{
         return new RecordList(file);
     }
 
     private final ArrayList<Record> recordList;
 
+    /** Creates a new {@link RecordList}.*/
     RecordList(){
         recordList = new ArrayList<>();
         recordList.add(Record.firstRecord());
     }
 
+    /** Loads the text from a String.*/
     RecordList(String text){
         checkNotNull(text, "Record text cannot be null.");
 
@@ -32,8 +33,9 @@ public final class RecordList extends ForwardingList<Record>{
         fillData(new Scanner(text));
     }
 
+    /** Loads the text from a test file.*/
     @Deprecated
-    RecordList(File file) throws IOException{
+    RecordList(java.io.File file) throws java.io.IOException{
         checkNotNull(file, "Record text cannot be null.");
 
         recordList = new ArrayList<>();
@@ -42,14 +44,18 @@ public final class RecordList extends ForwardingList<Record>{
         }
     }
 
+    /**
+     * Fill record list from a {@linkplain Scanner}. Helper method of
+     * {@link #RecordList(String)} and {@link #RecordList(File)}.
+     */
     private void fillData(Scanner data){
         assert data != null: "Null data";
 
         int written = 0;
         Record current = null;
         while (data.hasNextInt()){
-            current = Record.builder(current)
-                .setRecordDate(LocalDate.ofYearDay(
+            /// For each line:
+            current = Record.builder(current, LocalDate.ofYearDay(
                     data.nextInt(), data.nextInt())
                 )
                 .setPublishTotal(data.nextInt())
@@ -60,54 +66,68 @@ public final class RecordList extends ForwardingList<Record>{
                 .build();
             recordList.add(current);
         }
-        updateRecord();
+
+        // Add today record, if neeeded.
+        updateRecord(current.getPublishTotal(), current.getNoteTotal());
     }
 
-    public String getSaveText(){
+    /** Get the save text to put into a file. */
+    String getSaveText(){
         StringBuilder ans = new StringBuilder();
         for (Record out: this){
-            ans.append(out.getRecordDate().getYear()).append(" ");
+            /// For each record:
+            ans.append(out.getRecordDate().getYear())     .append(" ");
             ans.append(out.getRecordDate().getDayOfYear()).append(" ");
-            ans.append(out.getPublishTotal()).append(" ");
-            ans.append(out.getNoteTotal()).append(" ");
-            ans.append(out.getWriteTime()).append(" ");
-            ans.append(out.getPublishGoal()).append(" ");
-            ans.append(out.getTimeGoal()).append("\n");
+            ans.append(out.getPublishTotal())             .append(" ");
+            ans.append(out.getNoteTotal())                .append(" ");
+            ans.append(out.getWriteTime())                .append(" ");
+            ans.append(out.getPublishGoal())              .append(" ");
+            ans.append(out.getTimeGoal())                 .append("\n");
         }
         return ans.toString();
     }
 
-    public void saveRecords(File file) throws Exception{
-        try (PrintWriter output = new PrintWriter(file)){
-            output.println(getSaveText());
-        }
-    }
-
+    /** Get the current record. */
     public Record getRecord(){
-        assert ! recordList.isEmpty() : "Record list should be empty";
+        assert ! recordList.isEmpty() : "empty recordList";
         return recordList.get(recordList.size() - 1);
     }
 
+    /**
+     * Start the record timer for the record. If the date have change,
+     * create a new record.
+     */
     public void startWriting(int publish, int note){
-        updateRecord();
+        updateRecord(publish, note);
         getRecord().startWriting(publish, note);
     }
 
+    /**
+     * Stop the record timer for the record. If the date have change,
+     * create a new record.
+     */
     public void stopWriting(int publish, int note){
-        updateRecord();
+        updateRecord(publish, note);
         getRecord().stopWriting(publish, note);
     }
 
-    private void updateRecord(){
+    /**
+     * Check if last record is today. If it is not, stop the record's
+     * timer, and creat a new record.
+     */
+    private void updateRecord(int publish, int note){
         Record record = getRecord();
         if (!record.getRecordDate().equals(LocalDate.now())){
+            record.stopWriting(publish, note);
             recordList.add(Record.newRecord(record));
         }
     }
 
+    /** Get all the found records in a {@link YearMonth month}. */
     public Iterator<Record> getMonth(YearMonth month){
         checkNotNull(month, "Month cannot be null.");
 
+        /// Finds no {@link Record records}.
         if (getStartMonth().isAfter(month) || getEndMonth().isBefore(month)){
             return new AbstractIterator<Record>(){
                 protected Record computeNext(){
@@ -120,13 +140,17 @@ public final class RecordList extends ForwardingList<Record>{
             private int ptr = findMonth(month);
 
             protected Record computeNext(){
-                if (ptr == size()){
+                /// This is the last record.
+                if (ptr >= size()){
                     return endOfData();
                 }
+
+                /// Get and check the next record
                 Record record = get(ptr);
                 LocalDate date = record.getRecordDate();
-                if (date.getYear() == month.getYear() &&
-                    date.getMonth() == month.getMonth()){
+                if (date.getYear()  == month.getYear() &&
+                    date.getMonth() == month.getMonth())
+                {
                     ptr++;
                     return record;
                 }
@@ -135,13 +159,19 @@ public final class RecordList extends ForwardingList<Record>{
         };
     }
 
+    /**
+     * Find the index of the first record in a month. Helper Method of
+     * {@link #getMonth(YearMonth)}'s second
+     * {@link AbstractIterator#computeNext}.
+     */
     private int findMonth(YearMonth month){
         assert month != null: "Null Month";
         int ptr = 0;
         for(Record record: this){
             LocalDate date = record.getRecordDate();
-            if (date.getYear() == month.getYear() &&
-                date.getMonth() == month.getMonth()){
+            if (date.getYear()  == month.getYear() &&
+                date.getMonth() == month.getMonth())
+            {
                 return ptr;
             }
             ptr++;
@@ -149,26 +179,16 @@ public final class RecordList extends ForwardingList<Record>{
         return size();
     }
 
+    /* Get the {@link YearMonth} of the first record. */
     public YearMonth getStartMonth(){
         LocalDate start = recordList.get(0).getRecordDate();
         return YearMonth.of(start.getYear(), start.getMonth());
     }
 
+    /* Get the {@link YearMonth} of the last record. */
     public YearMonth getEndMonth(){
         LocalDate end = recordList.get(size() - 1).getRecordDate();
         return YearMonth.of(end.getYear(), end.getMonth());
-    }
-
-    public List<YearMonth> getYearMonths(){
-        ImmutableList.Builder<YearMonth> builder = ImmutableList.builder();
-        YearMonth ptr = getStartMonth();
-        YearMonth last = getEndMonth();
-        builder.add(ptr);
-        while(! ptr.equals(last)){
-            ptr = ptr.plusMonths(1);
-            builder.add(ptr);
-        }
-        return builder.build();
     }
 
     @Override

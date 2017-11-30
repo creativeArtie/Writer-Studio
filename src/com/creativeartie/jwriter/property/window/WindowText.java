@@ -30,7 +30,7 @@ public enum WindowText {
     HEADING_TITLE("TreeList.HeadingTitle"),
     OUTLINE_TITLE("TreeList.OutlineTitle"),
 
-    GOALS_TITLE("StatsScreen.Title"), GOAL_WORD_TEXT("StatsScreen.WordGoal"),
+    GOALS_TITLE("StatsScreen.Title"),   GOAL_WORD_TEXT("StatsScreen.WordGoal"),
     GOALS_TIME_TEXT("StatsScreen.TimeGoal"), HOUR_UNIT("StatsScreen.HourUnit"),
     MINUTE_UNIT("StatsScreen.MinuteUnit"),
 

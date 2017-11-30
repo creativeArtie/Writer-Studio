@@ -7,6 +7,9 @@ import com.creativeartie.jwriter.main.*;
 
 import static com.google.common.base.Preconditions.*;
 
+/**
+ * Store a list of {@link SpanBranch} with the same {@link CatalogueIdentity}.
+ */
 public final class CatalogueData{
     private final ArrayList<SpanBranch> idSpans;
     private final ArrayList<SpanBranch> refSpans;
