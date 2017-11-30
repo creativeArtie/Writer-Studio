@@ -32,22 +32,6 @@ public class SpanLeaf extends Span{
         return leafStyle;
     }
 
-    public boolean containsStyle(DetailStyle style){
-        if (leafStyle != style){
-            if (! leafParent.getBranchStyles().contains(style)){
-                SpanNode<?> parent = leafParent.getParent();
-                while(parent instanceof SpanBranch){
-                    if(((SpanBranch)parent).getBranchStyles().contains(style)){
-                        return true;
-                    }
-                    parent = parent.getParent();
-                }
-            }
-            return false;
-        }
-        return true;
-    }
-
     void setParent(SpanBranch childOf){
         leafParent = childOf;
     }
