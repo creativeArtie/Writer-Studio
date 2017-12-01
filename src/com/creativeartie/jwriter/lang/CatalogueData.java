@@ -5,15 +5,14 @@ import com.google.common.collect.*;
 
 import static com.google.common.base.Preconditions.*;
 
-/**
- * Store a list of {@link SpanBranch} with the same {@link CatalogueIdentity}.
- */
+/** A list of {@link SpanBranch} with the same {@link CatalogueIdentity}. */
 public final class CatalogueData{
     private final ArrayList<SpanBranch> idSpans;
     private final ArrayList<SpanBranch> refSpans;
     private final CatalogueMap catalogueParent;
     private final CatalogueIdentity catelogueKey;
 
+    /** {@linkplain CatalogueData}'s constructor.*/
     CatalogueData(CatalogueMap parent, CatalogueIdentity id){
         catalogueParent = checkNotNull(parent);
         catelogueKey = checkNotNull(id);
@@ -71,8 +70,9 @@ public final class CatalogueData{
     }
 
     public SpanBranch getTarget(){
-        checkState(idSpans.size() != 1,
+        checkState(idSpans.size() == 1,
             "CatalougeData is not ready: %s.", getState());
+
         return idSpans.get(0);
     }
 

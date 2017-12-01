@@ -96,6 +96,7 @@ public final class ManuscriptFile {
     private final RecordList recordsFile;
     private Optional<File> zipFile;
 
+    /** {@linkplain ManuscriptFile}'s constructor.*/
     private ManuscriptFile(File file, ManuscriptDocument doc,
             RecordList table) {
         assert doc != null: "Null doc";

@@ -89,6 +89,7 @@ public abstract class SpanBranch extends SpanNode<Span> {
     boolean editRaw(String text){
        return editRaw(spanChildren, text);
     }
+
     protected boolean editRaw(ArrayList<Span> children, String text){
         return false;
     }

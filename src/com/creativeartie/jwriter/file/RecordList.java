@@ -7,7 +7,7 @@ import com.google.common.collect.*;
 import static com.google.common.base.Preconditions.*;
 
 /**
- * A list of {@link Record} and methods to save and edit with today's Record.
+ * A list of {@link Record} and methods to save and edit today's {@link Record}.
  */
 public final class RecordList extends ForwardingList<Record>{
 
@@ -19,7 +19,7 @@ public final class RecordList extends ForwardingList<Record>{
 
     private final ArrayList<Record> recordList;
 
-    /** Creates a new {@link RecordList}.*/
+    /** {@linkplain RecordList}'s constructor.*/
     RecordList(){
         recordList = new ArrayList<>();
         recordList.add(Record.firstRecord());

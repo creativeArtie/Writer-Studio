@@ -69,7 +69,7 @@ public abstract class Span{
     }
 
     public int toLocalPosition(int index){
-        checkPositionIndex(index, getEnd(), "Index is out of range.");
+        checkPositionIndex(index, getLength(), "Index is out of range.");
         return getStart() - index;
     }
 }

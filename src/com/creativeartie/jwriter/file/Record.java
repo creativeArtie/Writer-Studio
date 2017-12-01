@@ -54,6 +54,7 @@ public final class Record{
      */
     final class Builder{
 
+        /** {@linkplain Record.Builder}'s constructor.*/
         private Builder(Record record){
             // nullable record
 
@@ -97,6 +98,7 @@ public final class Record{
         }
     }
 
+    /** {@linkplain Record}'s constructor.*/
     private Record(LocalDate date){
         assert date != null: "Null date.";
         recordDate = date;

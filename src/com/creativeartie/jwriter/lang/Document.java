@@ -75,10 +75,10 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
         /// Finalize the parse loop
         catalogueMap = new CatalogueMap();
-        update(documentChildren);
+        updateMap(documentChildren);
     }
 
-    private final void update(List<? extends Span> children){
+    private final void updateMap(List<? extends Span> children){
         children.stream().map((child) -> {
             if (child instanceof SpanBranch){
                 SpanBranch branch = (SpanBranch) child;
@@ -94,7 +94,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
                         }
                     });
                 }
-                update(branch);
+                updateMap(branch);
             }
             return child;
         }).forEachOrdered((child) -> {
@@ -212,11 +212,25 @@ public abstract class Document extends SpanNode<SpanBranch>{
     }
 
     public void insert(int location, String input){
-        edit(span -> {
+        if (location == getLength()){
+            SpanNode<?> span = getLeaf(location).getParent();
+            while (span instanceof SpanBranch){
+                if (((SpanBranch)span).editRaw(span.getRaw() + input)){
+                    break;
+                }
+                span = span.getParent();
+            }
+            if (span instanceof Document){
+                parseDocument(getRaw() + input);
+            }
+            updateAll();
+        } else {
+            edit(span -> {
                 StringBuilder text = new StringBuilder(span.getRaw());
                 text.insert(location - span.getStart(), input);
                 return text.toString();
             }, location);
+        }
     }
 
     public void delete(int start, int end){
@@ -231,9 +245,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         }, start);
     }
 
-    private void edit(Function<Span, String> editedText, int location)
-    {
-        boolean isDone = false;
+    private void edit(Function<Span, String> editedText, int location){
         SpanNode<?> span = getLeaf(location).getParent();
         if (location != getLength()){
             while (span instanceof SpanBranch){
@@ -246,14 +258,16 @@ public abstract class Document extends SpanNode<SpanBranch>{
                 span = span.getParent();
             }
         }
-
         if (span instanceof Document){
-            catalogueMap = new CatalogueMap();
-            update(this);
-        } else {
             parseDocument(editedText.apply(this));
         }
+        updateAll();
+    }
+
+    private void updateAll(){
         spanRanges.invalidateAll();
         spanLeaves.invalidateAll();
+        catalogueMap = new CatalogueMap();
+        updateMap(this);
     }
 }

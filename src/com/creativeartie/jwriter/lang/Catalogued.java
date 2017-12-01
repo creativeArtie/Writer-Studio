@@ -2,10 +2,7 @@ package com.creativeartie.jwriter.lang;
 
 import java.util.Optional;
 
-/**
- * Gets {@link CatalogueIdentity} to store in {@link CatalogueMap} and modifies
- * {@link SpanBranch#getIdStatus}.
- */
+/** An {@link Span} that has an {@link CatalogueIdentity}.*/
 public interface Catalogued{
 
     /** Get the {@link CatalogueIdentity} if there is any. */
