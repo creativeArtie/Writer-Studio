@@ -89,4 +89,9 @@ public class ManuscriptDocument extends Document{
         }
         return count;
     }
+
+    @Override
+    protected void docEdited(){
+        // TODO docEdited
+    }
 }

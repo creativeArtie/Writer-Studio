@@ -8,6 +8,7 @@ import com.creativeartie.jwriter.main.Checker;
 
 import com.google.common.base.*;
 import com.google.common.collect.*;
+import static com.google.common.base.Preconditions.*;
 
 /**
  * Created from {@link ContentParser}, super class of
@@ -23,8 +24,8 @@ public class ContentSpan extends SpanBranch implements BasicText{
         SetupLeafStyle style
     ){
         super(spanChildren);
-        reparseEnders = Checker.checkNotNull(enders, "enders");
-        leafStyle = Checker.checkNotNull(style, "style");
+        reparseEnders = checkNotNull(enders, "Enders cannot be null.");
+        leafStyle = checkNotNull(style, "Style cannot be null.");
     }
 
     @Override
@@ -44,5 +45,21 @@ public class ContentSpan extends SpanBranch implements BasicText{
             ans += span.toString() + "-";
         }
         return ans;
+    }
+
+    @Override
+    protected SetupParser getParser(String text){
+        return BasicText.canParse(text, reparseEnders)?
+            new ContentParser(leafStyle, reparseEnders): null;
+    }
+
+    @Override
+    protected void childEdited(){
+        // TODO childEdit
+    }
+
+    @Override
+    protected void docEdited(){
+        // TODO docEdited
     }
 }

@@ -1,7 +1,6 @@
 package com.creativeartie.jwriter.lang;
 
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -35,7 +34,11 @@ public class DocumentAssert {
     public static DocumentAssert assertDoc(int childrenSize, String rawText,
         SetupParser ... parsers
     ){
-        Document test = new Document(rawText, parsers){};
+        Document test = new Document(rawText, parsers){
+
+            @Override
+            protected void docEdited(){}
+    };
         return assertDoc(childrenSize, rawText, test);
     }
 

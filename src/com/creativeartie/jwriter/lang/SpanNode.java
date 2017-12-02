@@ -40,6 +40,7 @@ public abstract class SpanNode<T extends Span> extends Span
         for(Span child: this){
             child.setRemove();
         }
+        super.setRemove();
     }
 
     protected <T extends SpanBranch> Optional<T> spanAtFirst(Class<T> clazz){

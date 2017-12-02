@@ -15,4 +15,20 @@ public class InfoDataSpanText extends InfoDataSpan{
     InfoDataSpanText(List<Span> children){
         super(children, InfoDataType.TEXT);
     }
+
+    @Override
+    protected SetupParser getParser(String text){
+        // TODO editRaw
+        return null;
+    }
+
+    @Override
+    protected void childEdited(){
+        // TODO childEdit
+    }
+
+    @Override
+    protected void docEdited(){
+        // TODO docEdited
+    }
 }

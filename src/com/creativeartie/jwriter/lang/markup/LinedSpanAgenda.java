@@ -35,4 +35,21 @@ public class LinedSpanAgenda extends LinedSpan implements Catalogued{
         return getAgendaSpan().map(span -> span.wordCount())
             .orElse(0);
     }
+
+
+    @Override
+    protected SetupParser getParser(String text){
+        // TODO editRaw
+        return null;
+    }
+
+    @Override
+    protected void childEdited(){
+        // TODO childEdit
+    }
+
+    @Override
+    protected void docEdited(){
+        // TODO docEdited
+    }
 }

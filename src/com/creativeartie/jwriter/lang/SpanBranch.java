@@ -8,23 +8,24 @@ import com.google.common.collect.*;
  */
 public abstract class SpanBranch extends SpanNode<Span> {
 
-    private final ArrayList<Span> spanChildren;
+    private ArrayList<Span> spanChildren;
 
     private SpanNode<?> spanParent;
 
     public SpanBranch(List<Span> spans){
-        spanChildren = new ArrayList<>(spans);
-        setParents(spanChildren);
+        spanChildren = setParents(spans);
     }
 
-    private void setParents(List<Span> spans){
-        spans.forEach((span) -> {
+    private ArrayList<Span> setParents(List<Span> spans){
+        ArrayList<Span> ans = new ArrayList<>(spans);
+        ans.forEach((span) -> {
             if (span instanceof SpanBranch){
                 ((SpanBranch)span).setParent(this);
             } else {
                 ((SpanLeaf)span).setParent(this);
             }
         });
+        return ans;
     }
 
     protected int search(String raw, String escape, List<String> find){
@@ -87,12 +88,22 @@ public abstract class SpanBranch extends SpanNode<Span> {
     }
 
     boolean editRaw(String text){
-       return editRaw(spanChildren, text);
+        SetupParser parser = getParser(text);
+        if (parser != null){
+            for (Span span: this){
+                span.setRemove();
+            }
+            parser.parse(SetupPointer.updatePointer(text, getDocument()))
+                .ifPresent(span -> spanChildren = setParents(span));
+            setEdit();
+            return true;
+       }
+       return false;
     }
 
-    protected boolean editRaw(ArrayList<Span> children, String text){
-        return false;
-    }
+    protected abstract SetupParser getParser(String text);
+
+    protected abstract void childEdited();
 
     public final CatalogueStatus getIdStatus(){
         if (this instanceof Catalogued){

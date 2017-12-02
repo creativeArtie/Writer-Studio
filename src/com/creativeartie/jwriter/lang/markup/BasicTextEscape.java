@@ -1,6 +1,6 @@
 package com.creativeartie.jwriter.lang.markup;
 
-import java.util.List;
+import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 import com.google.common.collect.*;
@@ -11,16 +11,35 @@ import com.google.common.collect.*;
  */
 public class BasicTextEscape extends SpanBranch{
 
+    private Optional<String> escape;
+
     BasicTextEscape(List<Span> children){
         super(children);
+        escape = Optional.empty();
     }
 
     public String getEscape(){
-        return size() == 2? get(1).getRaw(): "";
+        if (! escape.isPresent()){
+            escape = Optional.of(size() == 2? get(1).getRaw(): "");
+        }
+        return escape.get();
     }
 
     @Override
     public List<DetailStyle> getBranchStyles(){
         return ImmutableList.of(AuxiliaryType.ESCAPE);
     }
+
+    @Override
+    protected SetupParser getParser(String text){
+        return null;
+    }
+
+    @Override
+    protected void childEdited(){
+        escape = Optional.empty();
+    }
+
+    @Override
+    protected void docEdited(){}
 }

@@ -49,4 +49,20 @@ public class MainSpanNote extends MainSpan {
         output.append("\n}");
         return output.toString();
     }
+
+    @Override
+    protected SetupParser getParser(String text){
+        // TODO editRaw
+        return null;
+    }
+
+    @Override
+    protected void childEdited(){
+        // TODO childEdit
+    }
+
+    @Override
+    protected void docEdited(){
+        // TODO docEdited
+    }
 }

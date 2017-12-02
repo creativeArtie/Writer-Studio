@@ -84,4 +84,9 @@ public class SpanLeaf extends Span{
     public void setEdit(){
         leafParent.setEdit();
     }
+
+    @Override
+    protected void docEdited(){
+        // TODO docEdited
+    }
 }

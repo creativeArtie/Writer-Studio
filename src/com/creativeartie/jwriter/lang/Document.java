@@ -98,7 +98,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
             }
             return child;
         }).forEachOrdered((child) -> {
-            child.invalidateCache();
+            child.docEdited();
         });
     }
 

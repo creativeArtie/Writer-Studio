@@ -12,7 +12,7 @@ import java.util.Optional;
 public class IDTestDocument {
     private static final String STARTER   = "|";
     private static final String SEPARATOR = STARTER;
-    
+
     private static String checkText(String raw){
         if (CharMatcher.anyOf(STARTER + SEPARATOR + "\n").matchesAnyOf(raw)){
             throw new IllegalArgumentException(
@@ -20,7 +20,7 @@ public class IDTestDocument {
         }
         return raw;
     }
-    
+
     private static String addIdText(CatalogueIdentity id){
         StringBuilder output = new StringBuilder();
         output.append(id.getCategories().size()).append(STARTER);
@@ -33,12 +33,12 @@ public class IDTestDocument {
         output.append(checkText(id.getName())).append("\n");
         return output.toString();
     }
-    
+
     private ArrayList<CatalogueIdentity> ids;
     private ArrayList<CatalogueStatus> status;
     private ArrayList<Integer> order;
     private StringBuilder doc;
-    
+
     public IDTestDocument(){
         ids = new ArrayList<>();
         status = new ArrayList<>();
@@ -55,12 +55,12 @@ public class IDTestDocument {
         doc.append("ref" + STARTER).append(addIdText(id.build()));
         return this;
     }
-    
+
     public IDTestDocument addId(IDBuilder addId, int i) {
         return addId(addId, CatalogueStatus.UNUSED, i);
     }
-    
-    public IDTestDocument addId(IDBuilder addId, CatalogueStatus newStatus, 
+
+    public IDTestDocument addId(IDBuilder addId, CatalogueStatus newStatus,
         int i)
     {
         CatalogueIdentity id = addId.build();
@@ -70,13 +70,13 @@ public class IDTestDocument {
         doc.append("id" + STARTER).append(addIdText(id));
         return this;
     }
-    
+
     public IDTestDocument addRef(IDBuilder addId, int i) {
         return addRef(addId, CatalogueStatus.NOT_FOUND, i);
     }
-    
-    public IDTestDocument addRef(IDBuilder addId, CatalogueStatus newStatus, 
-        int i) 
+
+    public IDTestDocument addRef(IDBuilder addId, CatalogueStatus newStatus,
+        int i)
     {
         CatalogueIdentity id = addId.build();
         ids.add(id);
@@ -85,19 +85,19 @@ public class IDTestDocument {
         doc.append("ref" + STARTER).append(addIdText(id));
         return this;
     }
-    
+
     public void assertIds(){
         assertIds(build(), false);
     }
-    
+
     public void assertIds(boolean showIds){
         assertIds(build(), showIds);
     }
-    
+
     public void assertIds(Document doc){
         assertIds(doc, false);
     }
-    
+
     public void assertIds(Document doc, boolean showIds){
         if (showIds){
             for(int i = 0; i < order.size(); i++){
@@ -106,10 +106,10 @@ public class IDTestDocument {
             }
             System.out.println();
         }
-        
+
         Map<CatalogueIdentity, CatalogueData> map = doc.getCatalogue();
         if (showIds){
-            for(Map.Entry<CatalogueIdentity, CatalogueData> entry: 
+            for(Map.Entry<CatalogueIdentity, CatalogueData> entry:
                 map.entrySet())
             {
                 System.out.print(entry.getKey());
@@ -121,9 +121,9 @@ public class IDTestDocument {
         for (Map.Entry<CatalogueIdentity, CatalogueData> entry: map.entrySet()){
             int idx = order.indexOf(i);
             assert idx != -1: idx;
-            assertEquals("Wrong span order at " + idx, ids.get(idx), 
+            assertEquals("Wrong span order at " + idx, ids.get(idx),
                 entry.getKey());
-            assertEquals("Wrong id status at " + idx, 
+            assertEquals("Wrong id status at " + idx,
                 status.get(idx), entry.getValue().getState());
             i++;
         }
@@ -145,10 +145,11 @@ public class IDTestDocument {
             pointer.startsWith(children, "\n");
             return Optional.of(new IdSpan(children));
         }}){
-            
+            @Override
+            protected void docEdited(){}
         };
     }
-    
+
     private class IdSpan extends SpanBranch implements Catalogued{
 
         public IdSpan(List<Span> spans) {
@@ -159,7 +160,7 @@ public class IDTestDocument {
         public List<DetailStyle> getBranchStyles() {
             return new ArrayList<>();
         }
-        
+
         @Override
         public boolean isId(){
             return spanAtFirst(TypeSpan.class).get().isId();
@@ -180,21 +181,32 @@ public class IDTestDocument {
                     idx++;
                 }
             }
-            
+
             String id = get(size() - 2).getRaw();
             if (id.equals(SEPARATOR)){
                 id = "";
             }
             return Optional.of(new CatalogueIdentity(categories, id));
         }
+
+        @Override
+        protected SetupParser getParser(String text){
+            return null;
+        }
+
+        @Override
+        protected void childEdited(){}
+
+        @Override
+        protected void docEdited(){}
     }
-    
+
     private static class TypeSpan extends SpanBranch {
 
         public TypeSpan(List<Span> spans) {
             super(spans);
         }
-        
+
         public boolean isId(){
             return getRaw().equals("id" + STARTER);
         }
@@ -203,11 +215,22 @@ public class IDTestDocument {
         public List<DetailStyle> getBranchStyles() {
             return new ArrayList<>();
         }
+
+        @Override
+        protected SetupParser getParser(String text){
+            return null;
+        }
+
+        @Override
+        protected void childEdited(){}
+
+        @Override
+        protected void docEdited(){}
     }
-    
+
     private enum TypeParser implements SetupParser{
         PARSER;
-        
+
         @Override
         public Optional<SpanBranch> parse(SetupPointer pointer) {
             ArrayList<Span> children = new ArrayList<>();
@@ -215,6 +238,6 @@ public class IDTestDocument {
             pointer.startsWith(children, STARTER);
             return Optional.of(new TypeSpan(children));
         }
-        
+
     }
 }

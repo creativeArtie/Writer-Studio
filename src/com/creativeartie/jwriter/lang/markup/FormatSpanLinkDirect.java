@@ -34,4 +34,20 @@ public class FormatSpanLinkDirect extends FormatSpanLink {
             .addAll(super.getBranchStyles()).build();
     }
 
+    @Override
+    protected SetupParser getParser(String text){
+        // TODO editRaw
+        return null;
+    }
+
+    @Override
+    protected void childEdited(){
+        // TODO childEdit
+    }
+
+    @Override
+    protected void docEdited(){
+        // TODO docEdited
+    }
+
 }

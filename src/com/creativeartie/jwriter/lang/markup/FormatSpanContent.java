@@ -29,4 +29,20 @@ public class FormatSpanContent extends FormatSpan implements BasicText{
     public String getOutput(){
         return getText();
     }
+
+    @Override
+    protected SetupParser getParser(String text){
+        // TODO editRaw
+        return null;
+    }
+
+    @Override
+    protected void childEdited(){
+        // TODO childEdit
+    }
+
+    @Override
+    protected void docEdited(){
+        // TODO docEdited
+    }
 }

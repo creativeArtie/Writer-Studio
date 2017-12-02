@@ -1,6 +1,7 @@
 package com.creativeartie.jwriter.lang;
 
 import java.util.*;
+import java.util.function.*;
 import com.google.common.collect.*;
 import static com.google.common.base.Preconditions.*;
 /**
@@ -28,7 +29,7 @@ public abstract class Span{
         removeListeners.add(listener);
     }
 
-    public void setRemove(){
+    void setRemove(){
         removeListeners.forEach(remover -> remover.changed(this));
     }
 
@@ -43,7 +44,7 @@ public abstract class Span{
         }
     }
 
-    void invalidateCache(){}
+    protected abstract void docEdited();
 
     public Range<Integer> getRange(){
         return getDocument().getRangeCache(this, () ->{

@@ -23,4 +23,20 @@ public class LinedSpanNote extends LinedSpan{
     public int getNoteTotal(){
         return getFormattedSpan().map(span -> span.getTotalCount()).orElse(0);
     }
+
+    @Override
+    protected SetupParser getParser(String text){
+        // TODO editRaw
+        return null;
+    }
+
+    @Override
+    protected void childEdited(){
+        // TODO childEdit
+    }
+
+    @Override
+    protected void docEdited(){
+        // TODO docEdited
+    }
 }

@@ -170,4 +170,20 @@ public class MainSpanSection extends MainSpan {
         return Optional.ofNullable(getLastPart().isPresent() ? null:
             new CatalogueIdentity(TYPE_SECTION, this));
     }
+
+    @Override
+    protected SetupParser getParser(String text){
+        // TODO editRaw
+        return null;
+    }
+
+    @Override
+    protected void childEdited(){
+        // TODO childEdit
+    }
+
+    @Override
+    protected void docEdited(){
+        // TODO docEdited
+    }
 }
