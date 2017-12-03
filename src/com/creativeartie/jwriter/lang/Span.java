@@ -10,10 +10,12 @@ import static com.google.common.base.Preconditions.*;
 public abstract class Span{
 
     private final HashSet<DetailListener> removeListeners;
+    private final HashSet<DetailListener> changeListeners;
     private final HashSet<DetailListener> editListeners;
 
     Span(){
         removeListeners = new HashSet<>();
+        changeListeners = new HashSet<>();
         editListeners = new HashSet<>();
     }
 
@@ -33,7 +35,15 @@ public abstract class Span{
         removeListeners.forEach(remover -> remover.changed(this));
     }
 
-    public void addEditor(DetailListener listener){
+    public void addChanged(DetailListener listener){
+        changeListeners.add(listener);
+    }
+
+    void setChanged(){
+        changeListeners.forEach(changer -> changer.changed(this));
+    }
+
+    public void addEdited(DetailListener listener){
         editListeners.add(listener);
     }
 

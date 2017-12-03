@@ -160,4 +160,100 @@ public class ContentDebug{
 
         doc.assertIds();
     }
+
+    @Test
+    public void textSimpleAdd(){
+        ///              01234
+        String before = "hall run";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        ///           012345678901
+        String raw = "hallway run";
+        doc.insert(4, "way", 0);
+
+        doc.assertDoc(1, raw, parsers);
+        ContentTest content = new ContentTest()
+            .setText(raw) .setBegin(false)
+            .setEnd(false).setCount(2);
+
+        content.test(    doc,  1, raw, 0);
+        doc.assertTextLeaf(0, 11, raw, 0, 0);
+    }
+
+    @Test
+    public void textEndAdd(){
+        ///              01234567
+        String before = "hallway";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        ///           012345678901
+        String raw = "hallway run";
+        doc.insert(7, " run", 0);
+
+        doc.assertDoc(1, raw, parsers);
+        ContentTest content = new ContentTest()
+            .setText(raw) .setBegin(false)
+            .setEnd(false).setCount(2);
+
+        content.test(    doc,  1, raw, 0);
+        doc.assertTextLeaf(0, 11, raw, 0, 0);
+    }
+
+    @Test
+    public void textDifferentField(){
+        ///              01234567
+        String before = "hallway";
+        DocumentAssert doc = assertDoc(1, before, new ContentParser(
+            SetupLeafStyle.FIELD));
+        ///           012345678901
+        String raw = "hallway run";
+        doc.insert(7, " run", 0);
+
+        doc.assertDoc(1, raw, parsers);
+        ContentTest content = new ContentTest()
+            .setText(raw) .setBegin(false)
+            .setEnd(false).setCount(2);
+
+        content.test(     doc,  1, raw, 0);
+        doc.assertFieldLeaf(0, 11, raw, 0, 0);
+    }
+
+    @Test
+    public void textEscapeAdd(){
+        ///              01234
+        String before = "ab*d";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+
+        String raw = "ab\\*d";
+        doc.insert(2, "\\", 0);
+
+        doc.assertDoc(1, raw, parsers);
+        ContentTest content = new ContentTest()
+            .setText("ab*d").setBegin(false)
+            .setEnd(false)  .setCount(1);
+        EscapeTest escape = new EscapeTest().setEscape("*");
+
+        content.test(    doc, 3, raw,   0);
+        doc.assertTextLeaf(0, 2, "ab",  0, 0);
+        escape.test(     doc, 2, "\\*", 0, 1);
+        doc.assertKeyLeaf (2, 3, "\\",  0, 1, 0);
+        doc.assertTextLeaf(3, 4, "*",   0, 1, 1);
+        doc.assertTextLeaf(4, 5, "d",   0, 2);
+    }
+
+    @Test
+    public void textEscapeRemoved(){
+        ///              01234
+        String before = "ab\\*d";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+
+        String raw = "ab*d";
+        doc.delete(2, 3, 0);
+
+        doc.assertDoc(1, raw, parsers);
+        ContentTest content = new ContentTest()
+            .setText(raw) .setBegin(false)
+            .setEnd(false).setCount(1);
+
+        content.test(    doc, 1, raw, 0);
+        doc.assertTextLeaf(0, 4, raw, 0, 0);
+    }
 }

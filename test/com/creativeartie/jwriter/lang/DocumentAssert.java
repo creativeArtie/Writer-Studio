@@ -9,10 +9,12 @@ public class DocumentAssert {
 
     private final Document doc;
     private final IDTestDocument idTester;
+    private boolean editPass;
 
     private DocumentAssert(Document document){
         doc = document;
         idTester = new IDTestDocument();
+        editPass = true;
     }
 
     public Document getDocument(){
@@ -26,9 +28,7 @@ public class DocumentAssert {
     public static DocumentAssert assertDoc(int childrenSize, String rawText,
         Document test)
     {
-        assertEquals(getError("text", test), rawText,      test.getRaw());
-        assertEquals(getError("size", test), childrenSize, test.size());
-        return new DocumentAssert(test);
+        return new DocumentAssert(test).assertDoc(childrenSize, rawText);
     }
 
     public static DocumentAssert assertDoc(int childrenSize, String rawText,
@@ -40,6 +40,12 @@ public class DocumentAssert {
             protected void docEdited(){}
     };
         return assertDoc(childrenSize, rawText, test);
+    }
+
+    public DocumentAssert assertDoc(int childrenSize, String rawText){
+        assertEquals(getError("text", doc), rawText,      doc.getRaw());
+        assertEquals(getError("size", doc), childrenSize, doc.size());
+        return this;
     }
 
     private Span[] getFamily(int ... idx){
@@ -160,5 +166,38 @@ public class DocumentAssert {
 
     public void assertIds(){
         idTester.assertIds(doc);
+    }
+
+    public void insert(int location, String input, int ... idx){
+        willEdit(getChild(idx));
+        doc.insert(location, input);
+        assertTrue("No span changed.", editPass);
+    }
+
+    public void delete(int start, int end, int ... idx){
+        willEdit(getChild(idx));
+        doc.delete(start, end);
+        assertTrue("No span changed.", editPass);
+    }
+
+    public DocumentAssert willEdit(SpanBranch span){
+        editPass = false;
+        Document doc = span.getDocument();
+        doc.addChanged(out -> fail("Wrong span changed:" + out));
+        willEdit(doc, span);
+        return this;
+    }
+
+    private void willEdit(SpanNode<?> root, SpanBranch target){
+        for(Span span: root){
+            if (span == target){
+                span.addChanged(out -> editPass = true);
+            } else {
+                span.addChanged(out -> fail("Wrong span changed:" + out));
+            }
+            if (span instanceof SpanNode<?>){
+                willEdit((SpanNode<?>)span, target);
+            }
+        }
     }
 }
