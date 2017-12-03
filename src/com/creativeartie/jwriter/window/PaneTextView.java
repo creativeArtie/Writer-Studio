@@ -10,20 +10,22 @@ import org.fxmisc.richtext.model.*;
 
 import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
+import com.creativeartie.jwriter.property.window.*;
 
 abstract class PaneTextView extends BorderPane {
 
     private final InlineCssTextArea textArea;
-    private final Label viewMode;
+    private final Button viewMode;
     private final Label currentStats;
     private final Label currentTime;
     private final ReadOnlyObjectWrapper<PlainTextChange> edited;
+    private ReadOnlyObjectWrapper<WindowText> modeProp;
     private final ReadOnlyIntegerWrapper position;
     private final ReadOnlyBooleanWrapper editorFocus;
 
     PaneTextView(){
         textArea = new InlineCssTextArea();
-        viewMode = new Label();
+        viewMode = new Button();
         currentStats = new Label();
         currentTime = new Label();
 
@@ -39,6 +41,11 @@ abstract class PaneTextView extends BorderPane {
         editorFocus = new ReadOnlyBooleanWrapper(this, "editorFocus");
         editorFocus.bind(textArea.focusedProperty());
 
+        modeProp = new ReadOnlyObjectWrapper<>(this, "mode");
+        viewMode.setOnAction(evt -> modeProp
+            .setValue(setNextMode(modeProp.getValue())));
+        modeProp.setValue(setNextMode(null));
+
     }
 
     /// Getters
@@ -47,7 +54,7 @@ abstract class PaneTextView extends BorderPane {
     }
 
 
-    protected Label getViewModeLabel(){
+    protected Button getViewModeButton(){
         return viewMode;
     }
 
@@ -98,6 +105,14 @@ abstract class PaneTextView extends BorderPane {
         return editorFocus.getValue();
     }
 
+    public ReadOnlyObjectProperty<WindowText> viewModeProperty(){
+        return modeProp.getReadOnlyProperty();
+    }
+
+    public WindowText getViewMode(){
+        return modeProp.getValue();
+    }
+
     /// Control Methods
     public abstract void loadDoc(ManuscriptDocument doc);
 
@@ -106,5 +121,7 @@ abstract class PaneTextView extends BorderPane {
     public abstract void moveTo(int position);
 
     public abstract void moveTo(Span span);
+
+    public abstract WindowText setNextMode(WindowText lastMode);
 
 }

@@ -50,4 +50,24 @@ public class PaneTextControl extends PaneTextView {
         getTextArea().requestFollowCaret();
         getTextArea().requestFocus();
     }
+
+    @Override
+    public WindowText setNextMode(WindowText last){
+        WindowText ans = null;
+        if (last == null){
+            System.out.println();
+            ans = WindowText.NOTE_MODE;
+        } else {
+            switch (last){
+                case NOTE_MODE:
+                    ans = WindowText.DETAIL_MODE;
+                    break;
+                case DETAIL_MODE:
+                    ans = WindowText.NOTE_MODE;
+                    break;
+            }
+        }
+        getViewModeButton().setText(ans.getText());
+        return ans;
+    }
 }

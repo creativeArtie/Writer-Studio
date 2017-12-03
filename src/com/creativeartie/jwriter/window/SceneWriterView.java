@@ -105,7 +105,6 @@ abstract class SceneWriterView extends BorderPane{
     }
 
     private void layoutCenterPane(){
-        textArea.getViewModeLabel().setText(WindowText.DETAIL_MODE.getText());
         setCenter(textArea);
     }
 
