@@ -217,4 +217,42 @@ public class DirectoryDebug{
 
         doc.assertIds();
     }
+
+    @Test
+    public void testCategoryChanged(){
+        ///              0123456789012
+        String before = "no-abcd-name";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+
+        doc.insert(5, "cat", 0, 3);
+
+        ///             0123456789012356
+        String after = "no-abcatcd-name";
+        IDBuilder builder = buildId("name").addCategory("no")
+            .addCategory("abcatcd");
+
+        doc.assertDoc(1, after);
+        DirectoryTest id = new DirectoryTest()
+            .setPurpose(DirectoryType.NOTE)
+            .setIdentity(builder);
+        ContentTest cat1 = new ContentTest()
+            .setText("no").setBegin(false)
+            .setEnd(false).setCount(1);
+        ContentTest cat2 = new ContentTest()
+            .setText("abcatcd").setBegin(false)
+            .setEnd(false).setCount(1);
+        ContentTest name = new ContentTest()
+            .setText("name").setBegin(false)
+            .setEnd(false).setCount(1);
+
+        id.test(         doc,  5, after,     0);
+        cat1.test(       doc,  1, "no",      0, 0);
+        doc.assertIdLeaf(  0,  2, "no",      0, 0, 0);
+        doc.assertKeyLeaf (2,  3, "-",       0, 1);
+        cat2.test(       doc,  1, "abcatcd", 0, 2);
+        doc.assertIdLeaf(  2, 10, "abcatcd", 0, 2, 0);
+        doc.assertKeyLeaf(10, 11, "-",       0, 3);
+        name.test(       doc,  1, "name",    0, 4);
+        doc.assertIdLeaf( 11, 15, "name",    0, 4, 0);
+    }
 }
