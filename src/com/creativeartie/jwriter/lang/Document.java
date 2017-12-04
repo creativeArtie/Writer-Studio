@@ -1,17 +1,12 @@
 package com.creativeartie.jwriter.lang;
 
 import java.util.*;
-import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.function.*;
-import java.util.function.Predicate;
-import java.util.function.Function;
 
-import com.google.common.base.*;
 import com.google.common.collect.*;
 import com.google.common.cache.*;
 
-import com.creativeartie.jwriter.main.*;
 import static com.google.common.base.Preconditions.*;
 
 /**
@@ -45,7 +40,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * and {@link #edit(Function, int}.
      */
     private final void parseDocument(String raw){
-        Checker.checkNotNull(raw, "raw");
+        assert raw != null: "Null raw.";
 
         documentChildren = new ArrayList<>();
         SetupPointer ptr = SetupPointer.newPointer(raw, this);
