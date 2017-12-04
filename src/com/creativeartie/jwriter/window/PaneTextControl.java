@@ -55,15 +55,14 @@ public class PaneTextControl extends PaneTextView {
     public WindowText setNextMode(WindowText last){
         WindowText ans = null;
         if (last == null){
-            System.out.println();
-            ans = WindowText.NOTE_MODE;
+            ans = WindowText.SYNTAX_MODE;
         } else {
             switch (last){
-                case NOTE_MODE:
-                    ans = WindowText.DETAIL_MODE;
+                case SYNTAX_MODE:
+                    ans = WindowText.PARSED_MODE;
                     break;
-                case DETAIL_MODE:
-                    ans = WindowText.NOTE_MODE;
+                case PARSED_MODE:
+                    ans = WindowText.SYNTAX_MODE;
                     break;
             }
         }

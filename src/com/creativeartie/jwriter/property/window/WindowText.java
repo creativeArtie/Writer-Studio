@@ -53,8 +53,8 @@ public enum WindowText {
     NO_NOTE_TITLE("NoteDisplay.EmptyTitle"),
 
     // TODO remove later when there are new mode, therefore new text
-    DETAIL_MODE("WriteScene.DetailMode"),
-    NOTE_MODE("WriteScene.NoteMode");
+    SYNTAX_MODE("WriteScene.SyntaxMode"),
+    PARSED_MODE("WriteScene.ParsedMode");
 
     public static String getText(DirectoryType type){
         return getDisplay(getText("UserLists.", type.name()) + "ListName");

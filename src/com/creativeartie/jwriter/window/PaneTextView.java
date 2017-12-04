@@ -45,6 +45,7 @@ abstract class PaneTextView extends BorderPane {
         viewMode.setOnAction(evt -> modeProp
             .setValue(setNextMode(modeProp.getValue())));
         modeProp.setValue(setNextMode(null));
+        viewMode.setDisable(true);
 
     }
 
