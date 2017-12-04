@@ -8,7 +8,8 @@
     <!-- main(String[]) Location -->
     <property name="usr.main" value="com.creativeartie.jwriter.main.Main" />
     <!-- archive file postfix -->
-    <property name="usr.version" value="0.0.9" />
+    <property name="usr.version" value="0.4" />
+    <property name="usr.test-main" value="com.creativeartie.jwriter.main.MainTest" />
     <!-- ......................... Javadoc Data ......................... -->
     <!-- Document up to public/protect/default/private level-->
     <property name="usr-access" value="public" />
@@ -23,7 +24,7 @@
     <property name="args.test-src-javac" value="-Xlint" />
     <property name="args.test-junit-javac" value="-Xdiags:verbose" />
 <!-- =========================== Program Folders =========================== -->
-    <!-- ........................ Major Folders ......................... -->
+    <!-- ........................ Root Folders .......................... -->
     <property name="loc.src" value="src/" />
     <property name="loc.data" value="data/" />
     <property name="loc.test" value="test/" />
@@ -45,7 +46,6 @@
     <property name="dir.lib"  location="${loc.lib}" />
     <property name="dir.junit" location="${dir.lib}/junit4" />
     <property name="dir.3rd"  location="${dir.lib}/3rdparty" />
-    <property name="dir.off"  location="${dir.lib}/docs" />
 
     <!-- ........................ Output Folder ......................... -->
     <property name="dir.out" location="out/" />
@@ -56,16 +56,21 @@
     <property name="dir.debug"      location="${dir.out}/${loc.test}" />
     <property name="dir.debug-data" location="${dir.debug}/data" />
     <!-- Jar and assoicated files -->
+    <property name="dir.jar-name"     value="${ant.project.name}.${usr.version}" />
     <property name="dir.jar-out"      location="${dir.out}/jar" />
     <property name="dir.jar-out-data" location="${dir.jar-out}/data" />
+    <property name="dir.jar-out-file" location="${dir.jar-out}/${dir.jar-name}.jar" />
     <property name="dir.jar-tmp"      location="${dir.out}/jar-bin" />
     <property name="dir.jar-tmp-data" location="${dir.jar-tmp}/data" />
-    <property name="dir.jar-main"     location="${dir.jar-out}/${ant.project.name}.jar" />
+    <property name="dir.zip"        location="${dir.out}" />
+    <property name="dir.zip-prefix" location="${dir.jar.name}" />
+    <property name="dir.zip-file"   location="${dir.zip}/${dir.jar-name}.zip" />
+    <property name="dir.zip-data"   location="${dir.zip-prefix}/data" />
     <!-- Javadoc files -->
     <property name="dir.doc"  location="${dir.out}/doc/" />
     <!-- Junit report files -->
-    <property name="dir.report" location="${dir.out}/report" />
-    <property name="dir.report-raw"  location="${dir.out}/raw-report" />
+    <property name="dir.report"     location="${dir.out}/report" />
+    <property name="dir.report-raw" location="${dir.out}/raw-report" />
 
     <!-- ............................ Others ............................ -->
     <property name="dir.design" location="${loc.design}" />
@@ -99,7 +104,7 @@
     <target name="compile.run">
         <!-- copy data -->
         <mkdir dir="${dir.run-data}" />
-        <copy toDir="${dir.run-data}" overwrite="true">
+        <copy toDir="${dir.run-data}">
             <fileset dir="${dir.data-run}" />
             <fileset dir="${dir.data-jar}" />
         </copy>
@@ -137,24 +142,24 @@
     <!-- ......................... Jar Targets .......................... -->
     <target name="compile.jar" depends="compile.run">
         <!-- copy data files to base -->
-        <copy toDir="${dir.jar-out}" overwrite="true">
+        <copy toDir="${dir.jar-out}">
             <fileset dir="${dir.data-root}" />
         </copy>
-        <copy toDir="${dir.jar-out-data}" overwrite="true">
+        <copy toDir="${dir.jar-out-data}">
             <fileset dir="${dir.data-run}" />
         </copy>
         <!-- copy data file to jar folder -->
-        <copy toDir="${dir.jar-tmp}" overwrite="true">
+        <copy toDir="${dir.jar-tmp}">
             <fileset dir="${dir.run}">
                 <exclude name="${loc.data}" />
             </fileset>
         </copy>
         <!-- copy files into future jar file-->
-        <copy toDir="${dir.jar-tmp-data}" overwrite="true">
+        <copy toDir="${dir.jar-tmp-data}">
             <fileset dir="${dir.data-jar}" />
         </copy>
         <!-- jar classes -->
-        <jar destfile="${dir.jar-main}" baseDir="${dir.jar-tmp}">
+        <jar destfile="${dir.jar-out-file}" baseDir="${dir.jar-tmp}">
             <zipgroupfileset dir="${dir.3rd}" includes="*.jar"/>
             <!-- setup manifest file -->
             <manifest>
@@ -163,18 +168,22 @@
             </manifest>
         </jar>
         <!-- set execute flag -->
-        <chmod file="${dir.jar-main}" perm="a+x" />
+        <chmod file="${dir.jar-out-file}" perm="a+x" />
+    </target>
+    <target name="jar-zip" depends="compile.jar">
+        <zip destfile="${dir.zip-file}" basedir="${dir.jar-out}">
+        </zip>
     </target>
 
     <target name="jar" depends="compile.jar">
-        <java jar="${dir.jar-main}" fork="true" dir="${dir.jar}"/>
+        <java jar="${dir.jar-out-file}" fork="true" dir="${dir.jar}"/>
     </target>
 
     <!-- ......................... Test Targets ......................... -->
     <target name="compile.debug">
         <!-- copy data -->
         <mkdir dir="${dir.debug-data}" />
-        <copy toDir="${dir.debug-data}" overwrite="true">
+        <copy toDir="${dir.debug-data}">
             <fileset dir="${dir.data-run}" />
             <fileset dir="${dir.data-jar}" />
             <fileset dir="${dir.data-test}" />
@@ -234,6 +243,17 @@
     </target>
 
     <target name="debug" depends="clean, test" />
+
+    <target name="test-run" depends="compile.debug">
+        <java
+            classname="${usr.test-main}"
+            classpathref="debug.path"
+            fork="true"
+            dir="${dir.debug}"
+        >
+             <assertions><enable/></assertions>
+        </java>
+    </target>
 
     <!-- ............................ Others ............................ -->
     <!-- document the project -->
