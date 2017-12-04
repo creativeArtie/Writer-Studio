@@ -134,7 +134,9 @@ public abstract class SpanNode<T extends Span> extends Span
         throw new IndexOutOfBoundsException(pos + " is not between :" + range);
     }
 
-    /// Implements List (ForwardList cannot be the super class
+    public abstract List<SpanLeaf> getLeaves();
+
+    /// Implements List (ForwardList cannot be the super class)
     public abstract List<T> delegate();
 
     @Override

@@ -39,15 +39,12 @@ public abstract class Span{
         changeListeners.add(listener);
     }
 
-    void setChanged(){
-        changeListeners.forEach(changer -> changer.changed(this));
-    }
-
     public void addEdited(DetailListener listener){
         editListeners.add(listener);
     }
 
     void setEdit(){
+        changeListeners.forEach(changer -> changer.changed(this));
         editListeners.forEach(editor -> editor.changed(this));
         if (! (this instanceof Document)){
             getParent().setEdit();

@@ -93,7 +93,6 @@ public abstract class SpanBranch extends SpanNode<Span> {
             for (Span span: this){
                 span.setRemove();
             }
-            setChanged();
             parser.parse(SetupPointer.updatePointer(text, getDocument()))
                 .ifPresent(span -> spanChildren = setParents(span));
             setEdit();
