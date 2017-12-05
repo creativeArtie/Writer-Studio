@@ -169,20 +169,20 @@ public class DocumentAssert {
     }
 
     public void insert(int location, String input, int ... idx){
-        willEdit(getChild(idx));
+        willEdit((SpanNode<?>)getFamily(idx)[0]);
         doc.insert(location, input);
         assertTrue("No span changed.", editPass);
     }
 
     public void delete(int start, int end, int ... idx){
-        willEdit(getChild(idx));
+        willEdit((SpanNode<?>)getFamily(idx)[0]);
         doc.delete(start, end);
         assertTrue("No span changed.", editPass);
     }
 
     private int editedSpans;
     private int totalSpans;
-    private DocumentAssert willEdit(SpanBranch span){
+    private DocumentAssert willEdit(SpanNode<?> span){
         editPass = false;
         editedSpans = 0;
         Document doc = span.getDocument();
@@ -194,7 +194,7 @@ public class DocumentAssert {
         return this;
     }
 
-    private void willEdit(SpanNode<?> root, SpanBranch target, boolean isChild){
+    private void willEdit(SpanNode<?> root, Span target, boolean isChild){
         for(Span span: root){
             if (span == target){
                 span.addEditor(out -> editPass = true);
