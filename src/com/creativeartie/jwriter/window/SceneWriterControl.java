@@ -107,7 +107,7 @@ public class SceneWriterControl extends SceneWriterView {
 
     @Override
     protected synchronized void listenTextChange(PlainTextChange change){
-        setEdited(true);
+        setUpdateded(true);
 
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         if (isTextReady()){

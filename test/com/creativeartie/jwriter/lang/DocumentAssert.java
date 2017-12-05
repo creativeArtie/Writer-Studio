@@ -180,24 +180,42 @@ public class DocumentAssert {
         assertTrue("No span changed.", editPass);
     }
 
-    public DocumentAssert willEdit(SpanBranch span){
+    private int editedSpans;
+    private int totalSpans;
+    private DocumentAssert willEdit(SpanBranch span){
         editPass = false;
+        editedSpans = 0;
         Document doc = span.getDocument();
-        doc.addChanged(out -> fail("Wrong span changed:" + out));
-        willEdit(doc, span);
+        doc.addUpdater(out -> editedSpans++);
+        doc.addRemover(out -> fail("Wrong span removed:" + out));
+        doc.addEditor(out -> fail("Wrong span updated:" + out));
+        totalSpans = 1;
+        willEdit(doc, span, false);
         return this;
     }
 
-    private void willEdit(SpanNode<?> root, SpanBranch target){
+    private void willEdit(SpanNode<?> root, SpanBranch target, boolean isChild){
         for(Span span: root){
             if (span == target){
-                span.addChanged(out -> editPass = true);
+                span.addEditor(out -> editPass = true);
+                doc.addUpdater(out -> editedSpans++);
+                doc.addRemover(out -> fail("Wrong span removed:" + out));
+                isChild = false;
             } else {
-                span.addChanged(out -> fail("Wrong span changed:" + out));
+                span.addEditor(out -> fail("Wrong span changed:" + out));
+                if (isChild){
+                    doc.addUpdater(out -> fail("Wrong span updated:" + out));
+                    doc.addRemover(out -> editedSpans++);
+                } else {
+                    doc.addUpdater(out -> editedSpans++);
+                    doc.addRemover(out -> fail("Wrong span removed:" + out));
+                }
+
             }
             if (span instanceof SpanNode<?>){
-                willEdit((SpanNode<?>)span, target);
+                willEdit((SpanNode<?>)span, target, isChild);
             }
+            totalSpans++;
         }
     }
 }

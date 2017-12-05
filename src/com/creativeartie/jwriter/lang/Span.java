@@ -11,12 +11,12 @@ public abstract class Span{
 
     private final HashSet<DetailListener> removeListeners;
     private final HashSet<DetailListener> changeListeners;
-    private final HashSet<DetailListener> editListeners;
+    private final HashSet<DetailListener> updateListeners;
 
     Span(){
         removeListeners = new HashSet<>();
         changeListeners = new HashSet<>();
-        editListeners = new HashSet<>();
+        updateListeners = new HashSet<>();
     }
 
     public abstract String getRaw();
@@ -35,19 +35,23 @@ public abstract class Span{
         removeListeners.forEach(remover -> remover.changed(this));
     }
 
-    public void addChanged(DetailListener listener){
+    public void addEditor(DetailListener listener){
         changeListeners.add(listener);
     }
 
-    public void addEdited(DetailListener listener){
-        editListeners.add(listener);
+    public void addUpdater(DetailListener listener){
+        updateListeners.add(listener);
     }
 
-    void setEdit(){
+    void setUpdated(){
         changeListeners.forEach(changer -> changer.changed(this));
-        editListeners.forEach(editor -> editor.changed(this));
+        updateParent();
+    }
+
+    private void updateParent(){
+        updateListeners.forEach(editor -> editor.changed(this));
         if (! (this instanceof Document)){
-            getParent().setEdit();
+            ((Span)getParent()).updateParent();
         }
     }
 

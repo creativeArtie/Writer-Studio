@@ -81,8 +81,8 @@ public class SpanLeaf extends Span{
     public void setRemove(){}
 
     @Override
-    public void setEdit(){
-        leafParent.setEdit();
+    public void setUpdated(){
+        leafParent.setUpdated();
     }
 
     @Override

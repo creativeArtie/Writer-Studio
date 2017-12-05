@@ -173,7 +173,7 @@ abstract class SceneWriterView extends BorderPane{
         return isEdited.get();
     }
 
-    public void setEdited(boolean bool){
+    public void setUpdateded(boolean bool){
         isEdited.setValue(bool);
     }
 

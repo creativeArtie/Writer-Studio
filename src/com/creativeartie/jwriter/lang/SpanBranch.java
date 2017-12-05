@@ -95,7 +95,7 @@ public abstract class SpanBranch extends SpanNode<Span> {
             }
             parser.parse(SetupPointer.updatePointer(text, getDocument()))
                 .ifPresent(span -> spanChildren = setParents(span));
-            setEdit();
+            setUpdated();
             return true;
        }
        return false;

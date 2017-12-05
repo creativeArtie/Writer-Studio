@@ -224,7 +224,7 @@ public class DirectoryDebug{
         String before = "no-abcd-name";
         DocumentAssert doc = assertDoc(1, before, parsers);
 
-        doc.insert(5, "cat", 0, 3);
+        doc.insert(5, "cat", 0, 2);
 
         ///             0123456789012356
         String after = "no-abcatcd-name";
@@ -250,7 +250,7 @@ public class DirectoryDebug{
         doc.assertIdLeaf(  0,  2, "no",      0, 0, 0);
         doc.assertKeyLeaf (2,  3, "-",       0, 1);
         cat2.test(       doc,  1, "abcatcd", 0, 2);
-        doc.assertIdLeaf(  2, 10, "abcatcd", 0, 2, 0);
+        doc.assertIdLeaf(  3, 10, "abcatcd", 0, 2, 0);
         doc.assertKeyLeaf(10, 11, "-",       0, 3);
         name.test(       doc,  1, "name",    0, 4);
         doc.assertIdLeaf( 11, 15, "name",    0, 4, 0);

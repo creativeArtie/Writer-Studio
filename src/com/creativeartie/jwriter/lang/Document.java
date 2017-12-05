@@ -244,14 +244,16 @@ public abstract class Document extends SpanNode<SpanBranch>{
             SpanNode<?> span = getLeaf(location).getParent();
             while (span instanceof SpanBranch){
                 if (((SpanBranch)span).editRaw(span.getRaw() + input)){
+                    span = null;
                     break;
                 }
                 span = span.getParent();
             }
             /// Reparse the whole document
-            if (span instanceof Document){
+            if (span != null){
+                assert span instanceof Document: "Wrong class:" + span.getClass();
                 parseDocument(getRaw() + input);
-                setEdit();
+                setUpdated();
             }
             updateEdit();
         } else {
@@ -293,6 +295,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
                 /// edit is within the local text
                 if (((SpanBranch)span).editRaw(raw)){
                     /// edit is completed
+                    span = null;
                     break;
                 }
             }
@@ -300,9 +303,10 @@ public abstract class Document extends SpanNode<SpanBranch>{
         }
 
         /// Must be parse at Document level
-        if (span instanceof Document){
+        if (span != null){
+            assert span instanceof Document: "Wrong class:" + span.getClass();
             parseDocument(editedText.apply(this));
-            setEdit();
+            setUpdated();
         }
         updateEdit();
     }
