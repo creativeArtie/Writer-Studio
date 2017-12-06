@@ -7,9 +7,25 @@ import static org.junit.Assert.*;
 
 public class DocumentAssert {
 
+    public static DocumentAssert assertDoc(int childrenSize, String rawText,
+            Document test){
+        return new DocumentAssert(test).assertDoc(childrenSize, rawText);
+    }
+
+    public static DocumentAssert assertDoc(int childrenSize, String rawText,
+            SetupParser ... parsers){
+        Document test = new Document(rawText, parsers){
+            @Override
+            protected void docEdited(){}
+        };
+        return assertDoc(childrenSize, rawText, test);
+    }
+
     private final Document doc;
     private final IDTestDocument idTester;
     private boolean editPass;
+    private int editedSpans;
+    private int totalSpans;
 
     private DocumentAssert(Document document){
         doc = document;
@@ -23,23 +39,6 @@ public class DocumentAssert {
 
     public static String getError(String name, Object test){
         return "Wrong " + name + " for " + test.toString();
-    }
-
-    public static DocumentAssert assertDoc(int childrenSize, String rawText,
-        Document test)
-    {
-        return new DocumentAssert(test).assertDoc(childrenSize, rawText);
-    }
-
-    public static DocumentAssert assertDoc(int childrenSize, String rawText,
-        SetupParser ... parsers
-    ){
-        Document test = new Document(rawText, parsers){
-
-            @Override
-            protected void docEdited(){}
-    };
-        return assertDoc(childrenSize, rawText, test);
     }
 
     public DocumentAssert assertDoc(int childrenSize, String rawText){
@@ -172,16 +171,18 @@ public class DocumentAssert {
         willEdit((SpanNode<?>)getFamily(idx)[0]);
         doc.insert(location, input);
         assertTrue("No span changed.", editPass);
+        assertEquals("Wrong number of updater & editor called", totalSpans,
+            editedSpans);
     }
 
     public void delete(int start, int end, int ... idx){
         willEdit((SpanNode<?>)getFamily(idx)[0]);
         doc.delete(start, end);
         assertTrue("No span changed.", editPass);
+        assertEquals("Wrong number of updater & editor called", totalSpans,
+            editedSpans);
     }
 
-    private int editedSpans;
-    private int totalSpans;
     private DocumentAssert willEdit(SpanNode<?> span){
         editPass = false;
         editedSpans = 0;
