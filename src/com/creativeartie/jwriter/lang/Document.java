@@ -222,7 +222,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     /**
      * Located the span in a {@link SpanNode}. Helper method of
-     * {@link #locateSapn(int, Class)}, {@link #getLeaf(int)}.
+     * {@link #locateSapn(int, Class)}, and {@link #getLeaf(int)}.
      */
     private final Span locateSpan(int index, SpanNode<?> parent){
         assert parent != null: "Null parent";
