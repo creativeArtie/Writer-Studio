@@ -10,7 +10,7 @@ class MainParser implements SetupParser {
         SetupParser.combine(LinedParseLevel.values(), LinedParsePointer.values()),
         SetupParser.combine(LinedParseCite.values(), LinedParseRest.values())
     );
-    
+
     @Override
     public Optional<SpanBranch> parse(SetupPointer pointer){
         Checker.checkNotNull(pointer, "pointer");
@@ -29,8 +29,8 @@ class MainParser implements SetupParser {
             return parseSection(children, pointer);
         }
     }
-    
-    private Optional<SpanBranch> parseSection(ArrayList<Span> children, 
+
+    private Optional<SpanBranch> parseSection(ArrayList<Span> children,
             SetupPointer pointer){
         while (true){
             pointer.mark();
@@ -46,11 +46,11 @@ class MainParser implements SetupParser {
                 switch(line.getLinedType()){
                     case HEADING:
                     case OUTLINE:
-                        pointer.rollBack(line);
+                        pointer.rollBack();
                         return Optional.of(new MainSpanSection(children));
                     case NOTE:
                     case SOURCE:
-                        pointer.rollBack(line);
+                        pointer.rollBack();
                         return Optional.of(new MainSpanSection(children));
                     default:
                         children.add(line);
@@ -60,26 +60,26 @@ class MainParser implements SetupParser {
             }
         }
     }
-    
-    private Optional<SpanBranch> parseNote(ArrayList<Span> children, 
+
+    private Optional<SpanBranch> parseNote(ArrayList<Span> children,
             SetupPointer pointer){
         while (true){
             pointer.mark();
             if (! LinedParseCite.INSTANCE.parse(children, pointer)){
                 Optional<SpanBranch> span = LinedParseRest.NOTE.parse(pointer);
                 if (! span.isPresent()){
-                    return Optional.of(new MainSpanNote(children)); 
+                    return Optional.of(new MainSpanNote(children));
                 } else {
                     LinedSpanNote found = (LinedSpanNote)span.get();
                     if (found.buildId() != null){
-                        pointer.rollBack(found);
+                        pointer.rollBack();
                         return Optional.of(new MainSpanNote(children));
                     }
                 }
                 children.add(span.get());
             }
-            
+
         }
     }
-    
+
 }
