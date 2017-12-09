@@ -70,7 +70,7 @@ public abstract class FormatSpan extends SpanBranch {
     }
 
     @Override
-    public List<DetailStyle> getBranchStyles(){
+    public List<StyleInfo> getBranchStyles(){
         return ImmutableList.copyOf(listFormats());
     }
 

@@ -35,8 +35,8 @@ public final class FormatSpanDirectory extends FormatSpan implements Catalogued{
     }
 
     @Override
-    public List<DetailStyle> getBranchStyles(){
-        ImmutableList.Builder<DetailStyle> builder = ImmutableList.builder();
+    public List<StyleInfo> getBranchStyles(){
+        ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
         return builder.add(spanType).add(getIdStatus())
             .addAll(super.getBranchStyles()).build();
     }

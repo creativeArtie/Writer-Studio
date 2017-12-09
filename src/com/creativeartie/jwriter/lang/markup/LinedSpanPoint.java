@@ -15,8 +15,8 @@ public abstract class LinedSpanPoint extends LinedSpan implements Catalogued{
     public abstract DirectoryType getDirectoryType();
 
     @Override
-    public List<DetailStyle> getBranchStyles(){
-        ImmutableList.Builder<DetailStyle> builder = ImmutableList.builder();
+    public List<StyleInfo> getBranchStyles(){
+        ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
         return builder.addAll(super.getBranchStyles()).add(getIdStatus()).build();
     }
 

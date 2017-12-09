@@ -157,7 +157,7 @@ public class IDTestDocument {
         }
 
         @Override
-        public List<DetailStyle> getBranchStyles() {
+        public List<StyleInfo> getBranchStyles() {
             return new ArrayList<>();
         }
 
@@ -212,7 +212,7 @@ public class IDTestDocument {
         }
 
         @Override
-        public List<DetailStyle> getBranchStyles() {
+        public List<StyleInfo> getBranchStyles() {
             return new ArrayList<>();
         }
 

@@ -9,7 +9,7 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 /**
  * Used by {@link DirectorySpan} to show main categories.
  */
-public enum DirectoryType implements DetailStyle{
+public enum DirectoryType implements StyleInfo{
     /// Enum value order mandated by LinedParsePointer and in interface
     COMMENT(TYPE_COMMENT, "", ""), NOTE(TYPE_NOTE, CURLY_CITE),
     FOOTNOTE(TYPE_FOOTNOTE, CURLY_FOOTNOTE),

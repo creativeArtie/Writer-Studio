@@ -24,8 +24,8 @@ public class LinedSpanCite extends LinedSpan {
     }
 
     @Override
-    public List<DetailStyle> getBranchStyles(){
-        ImmutableList.Builder<DetailStyle> builder = ImmutableList.builder();
+    public List<StyleInfo> getBranchStyles(){
+        ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
         builder.addAll(super.getBranchStyles()).add(getFieldType());
         if (! getData().isPresent()){
             builder.add(AuxiliaryType.DATA_ERROR);

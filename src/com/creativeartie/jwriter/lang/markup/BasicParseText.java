@@ -16,22 +16,22 @@ abstract class BasicParseText implements SetupParser{
     /// Describes how the Span will end
     private final ImmutableList<String> setupEnders;
     private final ImmutableList<String> reparseEnders;
-    private final SetupLeafStyle leafStyle;
+    private final StyleInfoLeaf leafStyle;
 
     public BasicParseText(List<String> enders){
-        this(SetupLeafStyle.TEXT, enders);
+        this(StyleInfoLeaf.TEXT, enders);
     }
 
-    public BasicParseText(SetupLeafStyle style, List<String> enders){
+    public BasicParseText(StyleInfoLeaf style, List<String> enders){
         this(style, Checker.checkNotNull(enders, "enders")
             .toArray(new String[0]));
     }
 
     public BasicParseText(String ... enders){
-        this(SetupLeafStyle.TEXT, enders);
+        this(StyleInfoLeaf.TEXT, enders);
     }
 
-    public BasicParseText(SetupLeafStyle style, String ... enders){
+    public BasicParseText(StyleInfoLeaf style, String ... enders){
         ImmutableList.Builder<String> builder = ImmutableList.builder();
 
         builder.add(LINED_END);
@@ -71,7 +71,7 @@ abstract class BasicParseText implements SetupParser{
     }
 
     protected abstract SpanBranch buildSpan(List<Span> children,
-        List<String> enders, SetupLeafStyle style);
+        List<String> enders, StyleInfoLeaf style);
 
     /// helper method for parse(SetupPointer)
     private boolean parseEscape(List<Span> parent, SetupPointer pointer){

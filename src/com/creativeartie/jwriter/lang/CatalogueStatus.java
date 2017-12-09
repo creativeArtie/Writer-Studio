@@ -5,7 +5,7 @@ import static com.creativeartie.jwriter.lang.SetupStrings.*;
 /**
  * Types of error with the CatalogueIdentity.
  */
-public enum CatalogueStatus implements DetailStyle {
+public enum CatalogueStatus implements StyleInfo {
     /// This is no id assoicate in a CatalogueHolder
     NO_ID,
     /// There is an id but nothing is refer to it

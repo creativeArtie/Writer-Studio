@@ -88,7 +88,7 @@ public abstract class SpanNode<T extends Span> extends Span
     }
 
     /** Get the fist leaf span if it a has the style of {@code info}. */
-    protected Optional<SpanLeaf> leafFromFrist(SetupLeafStyle info){
+    protected Optional<SpanLeaf> leafFromFrist(StyleInfoLeaf info){
         for (Span span: this){
             if (span instanceof SpanLeaf){
                 SpanLeaf found = (SpanLeaf) span;
@@ -101,7 +101,7 @@ public abstract class SpanNode<T extends Span> extends Span
     }
 
     /** Find the first leaf span that has the style of {@code info}. */
-    protected Optional<SpanLeaf> leafFromLast(SetupLeafStyle info){
+    protected Optional<SpanLeaf> leafFromLast(StyleInfoLeaf info){
         for(int i = size() - 1; i >= 0; i++){
             Span span = get(i);
             if (span instanceof SpanLeaf){

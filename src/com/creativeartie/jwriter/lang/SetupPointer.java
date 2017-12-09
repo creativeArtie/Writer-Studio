@@ -69,21 +69,21 @@ public final class SetupPointer{
     /**
      * Create a {@link SpanLeaf} with spaces and then {@code compare} text. The
      * created {@linkplain SpanLeaf} will have the
-     * {@link SetupLeafStyle#KEYWORD}.
+     * {@link StyleInfoLeaf#KEYWORD}.
      */
     public boolean trimStartsWith(ArrayList<Span> children, String compare){
         checkNotNull(children, "Children list cannot be null.");
         checkNotNull(compare, "Compare string cannot be null.");
 
-        return trimStartsWith(children, SetupLeafStyle.KEYWORD, compare);
+        return trimStartsWith(children, StyleInfoLeaf.KEYWORD, compare);
     }
 
     /// ========================================================================
     /// Part 4: trimStartWith Methods ------------------------------------------
 
     /** Create a {@link SpanLeaf} with spaces and then {@code compare} text. */
-    public boolean trimStartsWith(ArrayList<Span> children,
-            SetupLeafStyle style, String compare){
+    public boolean trimStartsWith(ArrayList<Span> children, StyleInfoLeaf style,
+            String compare){
         checkNotNull(children, "Children list cannot be null.");
         checkNotNull(style, "Leaf style cannot be null.");
         checkNotNull(compare, "Compare string cannot be null.");
@@ -94,7 +94,7 @@ public final class SetupPointer{
      * Check if the pointer starts with space and then {@code compare} text. If
      * so move {@linkplain end} to the length of {@linkplain compare}. Helper
      * method of {@link #trimStartsWith(ArrayList, String)}, and
-     * {@link #trimStartsWith(ArrayList, SetupLeafStyle, String)}.
+     * {@link #trimStartsWith(ArrayList, StyleInfoLeaf, String)}.
      */
     private boolean trimStartsWith(String compare){
         assert compare != null: "Null compare";
@@ -140,17 +140,17 @@ public final class SetupPointer{
 
     /**
      * Create a {@link SpanLeaf} with {@code compare} text. The created
-     * {@linkplain SpanLeaf} will have the {@link SetupLeafStyle#KEYWORD}.
+     * {@linkplain SpanLeaf} will have the {@link StyleInfoLeaf#KEYWORD}.
      */
     public boolean startsWith(ArrayList<Span> children, String compare){
         checkNotNull(children, "Children list cannot be null.");
         checkNotNull(compare, "Compare string cannot be null.");
 
-        return startsWith(children, SetupLeafStyle.KEYWORD, compare);
+        return startsWith(children, StyleInfoLeaf.KEYWORD, compare);
     }
 
     /**  Create a {@link SpanLeaf} with {@code compare} text. */
-    public boolean startsWith(ArrayList<Span> children, SetupLeafStyle style,
+    public boolean startsWith(ArrayList<Span> children, StyleInfoLeaf style,
             String compare){
         checkNotNull(children, "Children list cannot be null.");
         checkNotNull(style, "Leaf style cannot be null.");
@@ -164,7 +164,7 @@ public final class SetupPointer{
      * {@linkplain compare}. If so move {@linkplain end} to the length of
      * {@linkplain compare}. Helper method of
      * {@link #startsWith(ArrayList, String)}, and
-     * {@link #startsWith(ArrayList, SetupLeafStyle, String)}.
+     * {@link #startsWith(ArrayList, StyleInfoLeaf, String)}.
      */
     private boolean startsWith(String compare){
         assert compare != null: "Null compare.";
@@ -183,16 +183,16 @@ public final class SetupPointer{
 
     /**
      * Create a {@link SpanLeaf} that matches {@link CharMatcher}. The created
-     * {@linkplain SpanLeaf} will have the {@link SetupLeafStyle#DATA}.
+     * {@linkplain SpanLeaf} will have the {@link StyleInfoLeaf#DATA}.
      */
     public boolean matches(ArrayList<Span> children, CharMatcher matcher){
         checkNotNull(children, "Children list cannot be null.");
         checkNotNull(matcher, "CharMatcher cannot be null.");
-        return matches(children, SetupLeafStyle.DATA, matcher);
+        return matches(children, StyleInfoLeaf.DATA, matcher);
     }
 
     /** Create a {@link SpanLeaf} that matches {@link CharMatcher}. */
-    public boolean matches(ArrayList<Span> children, SetupLeafStyle style,
+    public boolean matches(ArrayList<Span> children, StyleInfoLeaf style,
             CharMatcher matcher){
         checkNotNull(children, "Children list cannot be null.");
         checkNotNull(style, "Leaf style cannot be null.");
@@ -206,7 +206,7 @@ public final class SetupPointer{
      * {@linkplain CharMatcher}. If so move {@linkplain end} to the length of
      * {@linkplain compare}. Helper method of
      * {@link #matches(ArrayList, String)}, and
-     * {@link #matches(ArrayList, SetupLeafStyle, String)}.
+     * {@link #matches(ArrayList, StyleInfoLeaf, String)}.
      */
     private boolean matches(CharMatcher matches){
         int next = matchMarker;
@@ -236,17 +236,17 @@ public final class SetupPointer{
 
     /**
      * Create a {@link SpanLeaf} that stop before {@code compares}. The created
-     * {@linkplain SpanLeaf} will have the {@link SetupLeafStyle#KEYWORD}.
+     * {@linkplain SpanLeaf} will have the {@link StyleInfoLeaf#KEYWORD}.
      */
     public boolean getTo(ArrayList<Span> children, List<String> compares){
         checkNotNull(children, "Children list cannot be null.");
         checkNotNull(compares, "Compare list cannot be null.");
 
-        return getTo(children, SetupLeafStyle.KEYWORD, compares);
+        return getTo(children, StyleInfoLeaf.KEYWORD, compares);
     }
 
     /** Create a {@link SpanLeaf} that stop before {@code compares}. */
-    public boolean getTo(ArrayList<Span> children, SetupLeafStyle style,
+    public boolean getTo(ArrayList<Span> children, StyleInfoLeaf style,
             List<String> compares){
         checkNotNull(children, "Children list cannot be null.");
         checkNotNull(style, "Leaf style cannot be null.");
@@ -257,17 +257,17 @@ public final class SetupPointer{
 
     /**
      * Create a {@link SpanLeaf} that stop before {@code compares}. The created
-     * {@linkplain SpanLeaf} will have the {@link SetupLeafStyle#KEYWORD}.
+     * {@linkplain SpanLeaf} will have the {@link StyleInfoLeaf#KEYWORD}.
      */
     public boolean getTo(ArrayList<Span> children, String ... compares){
         checkNotNull(children, "Children list cannot be null.");
         checkNotNull(compares, "Compare list cannot be null.");
 
-        return getTo(children, SetupLeafStyle.KEYWORD, compares);
+        return getTo(children, StyleInfoLeaf.KEYWORD, compares);
     }
 
     /** Create a {@link SpanLeaf} that stop before {@code compares}. */
-    public boolean getTo(ArrayList<Span> children, SetupLeafStyle style,
+    public boolean getTo(ArrayList<Span> children, StyleInfoLeaf style,
             String ... compares){
         checkNotNull(children, "Children list cannot be null.");
         checkNotNull(style, "Leaf style cannot be null.");
@@ -280,9 +280,9 @@ public final class SetupPointer{
      * Moves {@linkplain end} pointer to before one of the {@linkplain enders}
      * or the end of the rawText. Helper method for
      * {@link getTo(ArrayList, List)},
-     * {@link getTo(ArrayList, SetupLeafStyle, List)},
+     * {@link getTo(ArrayList, StyleInfoLeaf, List)},
      * {@link getTo(ArrayList, String ...)}, and
-     * {@link getTo(ArrayList, SetupLeafStyle, String ...)}
+     * {@link getTo(ArrayList, StyleInfoLeaf, String ...)}
      */
     private boolean getTo(List<String> enders) {
         assert enders != null: "Null enders.";
@@ -314,14 +314,14 @@ public final class SetupPointer{
 
     /**
      * Create a {@link SpanLeaf} with a size. The created
-     * {@linkplain SpanLeaf} will have the {@link SetupLeafStyle#KEYWORD}.
+     * {@linkplain SpanLeaf} will have the {@link StyleInfoLeaf#KEYWORD}.
      */
     public boolean nextChars(ArrayList<Span> children, int size){
-        return nextChars(children, SetupLeafStyle.KEYWORD, size);
+        return nextChars(children, StyleInfoLeaf.KEYWORD, size);
     }
 
     /** Create a {@link SpanLeaf} with a size. */
-    public boolean nextChars(ArrayList<Span> children, SetupLeafStyle style,
+    public boolean nextChars(ArrayList<Span> children, StyleInfoLeaf style,
             int size){
         return finishing(children, style, nextChars(size));
     }
@@ -330,7 +330,7 @@ public final class SetupPointer{
      * Moves {@linkpalin end} pointer to {@linkplain size}, if possible. If not
      * possible do not move {@linkplain end}. Helper method of
      * {@link #nextChars(ArrayList, int)}, and
-     * {@link #nextChars(ArrayList, SetupLeafStyle, int)}.
+     * {@link #nextChars(ArrayList, StyleInfoLeaf, int)}.
      */
     private boolean nextChars(int size) {
         if (matchMarker + size <= rawText.length()){
@@ -345,7 +345,7 @@ public final class SetupPointer{
     /// Part 9: Span Building --------------------------------------------------
 
     /** Setup for creating a {@link SpanLeaf}. Helper method for Part 4 - 8 */
-    private boolean finishing(ArrayList<Span> children, SetupLeafStyle style,
+    private boolean finishing(ArrayList<Span> children, StyleInfoLeaf style,
             boolean matches){
         if(matches){
             children.add(new SpanLeaf(this, style));

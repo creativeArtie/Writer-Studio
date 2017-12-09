@@ -10,9 +10,9 @@ import static com.google.common.base.Preconditions.*;
  */
 public abstract class Span{
 
-    private final HashSet<DetailListener> removeListeners;
-    private final HashSet<DetailListener> changeListeners;
-    private final HashSet<DetailListener> updateListeners;
+    private final HashSet<Consumer<Span>> removeListeners;
+    private final HashSet<Consumer<Span>> changeListeners;
+    private final HashSet<Consumer<Span>> updateListeners;
 
     Span(){
         removeListeners = new HashSet<>();
@@ -33,28 +33,28 @@ public abstract class Span{
     public abstract SpanNode<?> getParent();
 
     /** Add a listener when this is removed. */
-    public void addRemover(DetailListener listener){
+    public void addRemover(Consumer<Span> listener){
         removeListeners.add(listener);
     }
 
     /** Calls the remove listeners. */
     void setRemove(){
-        removeListeners.forEach(remover -> remover.changed(this));
+        removeListeners.forEach(remover -> remover.accept(this));
     }
 
     /** Add a listener when this span's children has been replaced. */
-    public final void addEditor(DetailListener listener){
+    public final void addEditor(Consumer<Span> listener){
         changeListeners.add(listener);
     }
 
     /** Add a listener when this span's text has changed. */
-    public final void addUpdater(DetailListener listener){
+    public final void addUpdater(Consumer<Span> listener){
         updateListeners.add(listener);
     }
 
     /** Calls the change listeners and all it's parent update listeners. */
     void setUpdated(){
-        changeListeners.forEach(changer -> changer.changed(this));
+        changeListeners.forEach(changer -> changer.accept(this));
         updateParent();
     }
 
@@ -66,7 +66,7 @@ public abstract class Span{
      * {@linkplain setUpdate()}.
      */
     private final void updateParent(){
-        updateListeners.forEach(editor -> editor.changed(this));
+        updateListeners.forEach(editor -> editor.accept(this));
         if (! (this instanceof Document)){
             ((Span)getParent()).updateParent();
         }

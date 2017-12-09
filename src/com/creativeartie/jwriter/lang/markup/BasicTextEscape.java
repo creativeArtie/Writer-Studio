@@ -26,7 +26,7 @@ public class BasicTextEscape extends SpanBranch{
     }
 
     @Override
-    public List<DetailStyle> getBranchStyles(){
+    public List<StyleInfo> getBranchStyles(){
         return ImmutableList.of(AuxiliaryType.ESCAPE);
     }
 

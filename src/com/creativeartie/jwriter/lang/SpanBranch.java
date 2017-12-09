@@ -54,7 +54,7 @@ public abstract class SpanBranch extends SpanNode<Span> {
     }
 
     /** Get style information about this {@linkplain SpanBranch}.*/
-    public abstract List<DetailStyle> getBranchStyles();
+    public abstract List<StyleInfo> getBranchStyles();
 
     @Override
     public final List<SpanLeaf> getLeaves(){

@@ -13,7 +13,7 @@ import com.creativeartie.jwriter.main.*;
 public class SpanLeaf extends Span{
     private final String leafText;
     private SpanBranch leafParent;
-    private final SetupLeafStyle leafStyle;
+    private final StyleInfoLeaf leafStyle;
 
     /// Don't infer by looking up parents, it is needed before the parent is set
     private Document spanDoc;
@@ -24,14 +24,14 @@ public class SpanLeaf extends Span{
             .replace("\n", "\" \\n \"").replace("\t", "\" \\t \"") + "\"";
     }
 
-    SpanLeaf(SetupPointer pointer, SetupLeafStyle style){
+    SpanLeaf(SetupPointer pointer, StyleInfoLeaf style){
         leafText = pointer.getRaw();
         pointer.roll();
         leafStyle = style;
         spanDoc = pointer.getDocument();
     }
 
-    public SetupLeafStyle getLeafStyle(){
+    public StyleInfoLeaf getLeafStyle(){
         return leafStyle;
     }
 

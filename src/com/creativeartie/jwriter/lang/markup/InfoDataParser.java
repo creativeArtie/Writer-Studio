@@ -14,7 +14,7 @@ public enum InfoDataParser implements SetupParser{
     FORMATTED(pointer -> {
         Checker.checkNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
-        if (new FormatParser(SetupLeafStyle.DATA).parse(children, pointer))
+        if (new FormatParser(StyleInfoLeaf.DATA).parse(children, pointer))
         {
             return Optional.of(new InfoDataSpanFormatted(children));
         }
@@ -22,7 +22,7 @@ public enum InfoDataParser implements SetupParser{
     }), TEXT(pointer -> {
         Checker.checkNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
-        if (new ContentParser(SetupLeafStyle.DATA)
+        if (new ContentParser(StyleInfoLeaf.DATA)
             .parse(children, pointer))
         {
             return Optional.of(new InfoDataSpanText(children));

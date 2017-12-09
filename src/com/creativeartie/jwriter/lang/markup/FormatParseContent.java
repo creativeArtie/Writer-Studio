@@ -1,6 +1,6 @@
 package com.creativeartie.jwriter.lang.markup;
 
-import java.util.*; 
+import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
@@ -10,19 +10,19 @@ import com.creativeartie.jwriter.main.*;
  * Creates a text span upto a certain character.
  */
 class FormatParseContent extends BasicParseText{
-    
+
     private boolean[] formatList;
     private boolean willReparse;
-    
-    public FormatParseContent(SetupLeafStyle style, boolean[] formats, 
+
+    public FormatParseContent(StyleInfoLeaf style, boolean[] formats,
         boolean reparse, List<String> enders
     ){
-        this(style, formats, reparse, 
+        this(style, formats, reparse,
             Checker.checkNotNull(enders, "enders")
             .toArray(new String[0]));
     }
-    
-    public FormatParseContent(SetupLeafStyle style, boolean[] formats, 
+
+    public FormatParseContent(StyleInfoLeaf style, boolean[] formats,
         boolean reparse, String[] enders
     ){
         super(style, enders);
@@ -32,11 +32,11 @@ class FormatParseContent extends BasicParseText{
     }
 
     @Override
-    protected FormatSpanContent buildSpan(List<Span> children, 
-        List<String> enders, SetupLeafStyle style
+    protected FormatSpanContent buildSpan(List<Span> children,
+        List<String> enders, StyleInfoLeaf style
     ){
-        return new FormatSpanContent(children, formatList, enders, 
+        return new FormatSpanContent(children, formatList, enders,
             style, willReparse);
     }
-    
+
 }

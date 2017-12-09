@@ -29,7 +29,7 @@ public final class FormatSpanAgenda extends SpanBranch implements Catalogued{
     }
 
     @Override
-    public List<DetailStyle> getBranchStyles(){
+    public List<StyleInfo> getBranchStyles(){
         return ImmutableList.of(AuxiliaryType.AGENDA);
     }
 

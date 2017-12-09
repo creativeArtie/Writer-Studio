@@ -28,8 +28,8 @@ public class FormatSpanLinkDirect extends FormatSpanLink {
     }
 
     @Override
-    public List<DetailStyle> getBranchStyles(){
-        ImmutableList.Builder<DetailStyle> builder = ImmutableList.builder();
+    public List<StyleInfo> getBranchStyles(){
+        ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
         return builder.add(AuxiliaryType.DIRECT_LINK)
             .addAll(super.getBranchStyles()).build();
     }

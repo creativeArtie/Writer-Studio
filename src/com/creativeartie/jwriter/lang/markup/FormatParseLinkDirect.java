@@ -27,7 +27,7 @@ class FormatParseLinkDirect extends FormatParseLink {
         Checker.checkNotNull(pointer, "pointer");
 
         /// Link path
-        new ContentParser(SetupLeafStyle.PATH, LINK_TEXT, LINK_END)
+        new ContentParser(StyleInfoLeaf.PATH, LINK_TEXT, LINK_END)
             .parse(children, pointer);
 
         /// Complete the last steps

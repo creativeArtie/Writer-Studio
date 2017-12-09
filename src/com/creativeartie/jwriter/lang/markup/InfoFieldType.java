@@ -7,7 +7,7 @@ import com.google.common.base.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import com.creativeartie.jwriter.lang.*;
 
-public enum InfoFieldType implements DetailStyle{
+public enum InfoFieldType implements StyleInfo{
 
     SOURCE(InfoDataParser.FORMATTED), IN_TEXT(InfoDataParser.TEXT),
     FOOTNOTE(InfoDataParser.TEXT),

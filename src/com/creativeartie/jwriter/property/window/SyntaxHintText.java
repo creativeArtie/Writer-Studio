@@ -57,7 +57,7 @@ public enum SyntaxHintText {
         return getBundle().getString(keyPrefix + "ID");
     }
 
-    private String getText(String start, DetailStyle style){
+    private String getText(String start, StyleInfo style){
         String value = UPPER_UNDERSCORE.to(UPPER_CAMEL, style.name());
         return getBundle().getString(keyPrefix + start + value);
     }

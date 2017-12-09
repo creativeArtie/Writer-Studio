@@ -3,7 +3,7 @@ package com.creativeartie.jwriter.lang;
 /**
  * Information about {@link SpanLeaf}.
  */
-public enum SetupLeafStyle implements DetailStyle {
+public enum StyleInfoLeaf implements StyleInfo {
     /** Type of text for formating and parsing information.*/
     KEYWORD,
     /** Type of text for pointing to or naming a span of text. */

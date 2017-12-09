@@ -83,7 +83,7 @@ public class DocumentAssert {
     }
 
     private void assertLeaf(int start, int end, String rawText,
-        SetupLeafStyle info, int ... idx
+        StyleInfoLeaf info, int ... idx
     ){
         Span[] prep = getFamily(idx);
         assertTrue("Wrong class for " + prep[0] +
@@ -102,31 +102,31 @@ public class DocumentAssert {
 
     public void assertTextLeaf(int start, int end, String rawText, int ... idx)
     {
-        assertLeaf(start, end, rawText, SetupLeafStyle.TEXT, idx);
+        assertLeaf(start, end, rawText, StyleInfoLeaf.TEXT, idx);
     }
 
     public void assertKeyLeaf(int start, int end, String rawText, int ... idx)
     {
-        assertLeaf(start, end, rawText, SetupLeafStyle.KEYWORD, idx);
+        assertLeaf(start, end, rawText, StyleInfoLeaf.KEYWORD, idx);
     }
 
     public void assertIdLeaf(int start, int end, String rawText, int ... idx)
     {
-        assertLeaf(start, end, rawText, SetupLeafStyle.ID, idx);
+        assertLeaf(start, end, rawText, StyleInfoLeaf.ID, idx);
     }
 
     public void assertDataLeaf(int start, int end, String rawText, int ... idx)
     {
-        assertLeaf(start, end, rawText, SetupLeafStyle.DATA, idx);
+        assertLeaf(start, end, rawText, StyleInfoLeaf.DATA, idx);
     }
 
     public void assertFieldLeaf(int start, int end, String rawText, int ... idx)
     {
-        assertLeaf(start, end, rawText, SetupLeafStyle.FIELD, idx);
+        assertLeaf(start, end, rawText, StyleInfoLeaf.FIELD, idx);
     }
 
     public void assertPathLeaf(int start, int end, String rawText, int ... idx){
-        assertLeaf(start, end, rawText, SetupLeafStyle.PATH, idx);
+        assertLeaf(start, end, rawText, StyleInfoLeaf.PATH, idx);
     }
 
     public IDBuilder addId(IDBuilder id){

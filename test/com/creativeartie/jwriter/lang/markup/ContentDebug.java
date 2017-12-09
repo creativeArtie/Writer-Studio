@@ -202,7 +202,7 @@ public class ContentDebug{
         ///              01234567
         String before = "hallway";
         DocumentAssert doc = assertDoc(1, before, new ContentParser(
-            SetupLeafStyle.FIELD));
+            StyleInfoLeaf.FIELD));
         ///           012345678901
         String raw = "hallway run";
         doc.insert(7, " run", 0);

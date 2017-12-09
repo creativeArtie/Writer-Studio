@@ -8,7 +8,7 @@ import com.creativeartie.jwriter.main.Checker;
 
 enum LinedParsePointer implements SetupParser {
     FOOTNOTE(LINED_FOOTNOTE), ENDNOTE(LINED_ENDNOTE), HYPERLINK(LINED_LINK){
-    
+
         @Override
         public Optional<SpanBranch> parse(SetupPointer pointer){
         Checker.checkNotNull(pointer, "pointer");
@@ -16,7 +16,7 @@ enum LinedParsePointer implements SetupParser {
             if (pointer.startsWith(children, LINED_LINK)){
                 parseCommon(children, pointer);
                 if (pointer.startsWith(children, LINED_DATA)){
-                    new ContentParser(SetupLeafStyle.PATH).parse(children, pointer);
+                    new ContentParser(StyleInfoLeaf.PATH).parse(children, pointer);
                 }
                 pointer.startsWith(children, LINED_END);
                 LinedSpanPointLink ans = new LinedSpanPointLink(children);
@@ -24,15 +24,15 @@ enum LinedParsePointer implements SetupParser {
             }
             return Optional.empty();
         }
-        
+
     };
-    
+
     private final String spanStart;
-    
+
     private LinedParsePointer(String start){
         spanStart = start;
     }
-    
+
     DirectoryParser parseCommon(ArrayList<Span> children, SetupPointer pointer){
         Checker.checkNotNull(pointer, "childPointer");
         Checker.checkNotNull(children, "spanChildren");
@@ -41,20 +41,20 @@ enum LinedParsePointer implements SetupParser {
         output.parse(children, pointer);
         return output;
     }
-    
+
     @Override
     public Optional<SpanBranch> parse(SetupPointer pointer){
         Checker.checkNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
         if (pointer.startsWith(children, spanStart)){
-            
+
             parseCommon(children, pointer);
-            
+
             if (pointer.startsWith(children, LINED_DATA)){
                 new FormatParser(LINED_DATA).parse(children, pointer);
             }
             pointer.startsWith(children, LINED_END);
-            
+
             return Optional.of(new LinedSpanPointNote(children));
         }
         return Optional.empty();

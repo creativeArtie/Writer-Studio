@@ -13,11 +13,11 @@ public class FormatSpanContent extends FormatSpan implements BasicText{
 
     /// Stuff for reparsing
     private final List<String> reparseEnders;
-    private final SetupLeafStyle leafStyle;
+    private final StyleInfoLeaf leafStyle;
     private final boolean willReparse;
 
     FormatSpanContent(List<Span> spanChildren, boolean[] formats,
-        List<String> enders, SetupLeafStyle style, boolean reparse
+        List<String> enders, StyleInfoLeaf style, boolean reparse
     ){
         super(spanChildren, formats);
         reparseEnders = enders;

@@ -49,8 +49,8 @@ public final class FormatSpanLinkRef extends FormatSpanLink
     }
 
     @Override
-    public List<DetailStyle> getBranchStyles(){
-        ImmutableList.Builder<DetailStyle> builder = ImmutableList.builder();
+    public List<StyleInfo> getBranchStyles(){
+        ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
         return builder.add(AuxiliaryType.REF_LINK).add(getIdStatus())
             .addAll(super.getBranchStyles()).build();
 

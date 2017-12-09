@@ -23,7 +23,7 @@ public abstract class InfoDataSpan extends SpanBranch{
     }
 
     @Override
-    public List<DetailStyle> getBranchStyles(){
+    public List<StyleInfo> getBranchStyles(){
         return ImmutableList.of(dataType);
     }
 

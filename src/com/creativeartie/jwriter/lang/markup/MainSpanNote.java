@@ -14,7 +14,7 @@ public class MainSpanNote extends MainSpan {
     }
 
     @Override
-    public List<DetailStyle> getBranchStyles(){
+    public List<StyleInfo> getBranchStyles(){
         return ImmutableList.of(AuxiliaryType.MAIN_NOTE, getIdStatus());
     }
 

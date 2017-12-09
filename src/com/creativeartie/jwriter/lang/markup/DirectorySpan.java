@@ -50,11 +50,11 @@ public class DirectorySpan extends SpanBranch {
     }
 
     @Override
-    public List<DetailStyle> getBranchStyles(){
+    public List<StyleInfo> getBranchStyles(){
         return ImmutableList.of();
     }
 
-    DetailStyle getStatusState(){
+    StyleInfo getStatusState(){
         CatalogueData data = getDocument().getCatalogue().get(buildId());
         if (data == null) {
             return CatalogueStatus.NO_ID;

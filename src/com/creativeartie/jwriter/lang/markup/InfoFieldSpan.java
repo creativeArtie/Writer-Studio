@@ -14,12 +14,12 @@ public class InfoFieldSpan extends SpanBranch{
     }
 
     @Override
-    public List<DetailStyle> getBranchStyles(){
+    public List<StyleInfo> getBranchStyles(){
         return ImmutableList.of(getFieldType());
     }
 
     public InfoFieldType getFieldType(){
-        Optional<SpanLeaf> found = leafFromFrist(SetupLeafStyle.FIELD);
+        Optional<SpanLeaf> found = leafFromFrist(StyleInfoLeaf.FIELD);
         if (found.isPresent()){
             String name = CaseFormat.LOWER_HYPHEN
                 .to(CaseFormat.UPPER_UNDERSCORE,

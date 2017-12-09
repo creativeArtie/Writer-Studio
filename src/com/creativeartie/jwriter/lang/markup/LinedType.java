@@ -6,7 +6,7 @@ import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
-public enum LinedType implements DetailStyle{
+public enum LinedType implements StyleInfo{
     /// name() is being used to generate keys in window_text "TextView.*"
     /// LinedType follows the same order as PaneCheatsheatLabel.Name
 

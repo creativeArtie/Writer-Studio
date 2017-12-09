@@ -7,7 +7,7 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 /**
  * All styles that are not really part of any group of styles.
  */
-public enum AuxiliaryType implements DetailStyle{
+public enum AuxiliaryType implements StyleInfo{
     ESCAPE,       /// For BasicTextEscape
     AGENDA,       /// For FormatSpanAgenda
     DIRECT_LINK,  /// For FormatSpanLinkDirect

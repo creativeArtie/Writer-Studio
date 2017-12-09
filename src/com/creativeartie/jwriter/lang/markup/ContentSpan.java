@@ -18,10 +18,10 @@ public class ContentSpan extends SpanBranch implements BasicText{
 
     /// Stuff for getUpdater(int index, String)
     private final List<String> reparseEnders;
-    private final SetupLeafStyle leafStyle;
+    private final StyleInfoLeaf leafStyle;
 
     ContentSpan (List<Span> spanChildren, List<String> enders,
-        SetupLeafStyle style
+        StyleInfoLeaf style
     ){
         super(spanChildren);
         reparseEnders = checkNotNull(enders, "Enders cannot be null.");
@@ -29,7 +29,7 @@ public class ContentSpan extends SpanBranch implements BasicText{
     }
 
     @Override
-    public List<DetailStyle> getBranchStyles(){
+    public List<StyleInfo> getBranchStyles(){
         return ImmutableList.of();
     }
 
