@@ -133,7 +133,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     @Override
     public final Range<Integer> getRange(){
-        return getRangeCache(this, () -> Range.closedOpen(0, getLength() + 1));
+        return getRangeCache(this, () -> Range.closedOpen(0, getLocalEnd() + 1));
     }
 
     /**
@@ -181,11 +181,11 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     /** Locate a {@link Span} that is a instance of a certain class  */
     public final <T> Optional<T> locateSpan(int index, Class<T> clazz){
-        checkPositionIndex(index, getLength(), "Char index is out of range.");
+        checkPositionIndex(index, getLocalEnd(), "Char index is out of range.");
         checkNotNull(clazz, "Requested class cannot be null.");
 
         /// Empty document
-        if(getLength() == 0){
+        if(getLocalEnd() == 0){
             return Optional.empty();
         }
 
@@ -210,7 +210,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * {@link #locate(int, String)}, and {@link #edit(Function, int)}.
      */
     public final SpanLeaf getLeaf(int index){
-        checkPositionIndex(index, getLength(), "Index is out of range.");
+        checkPositionIndex(index, getLocalEnd(), "Index is out of range.");
 
         Span found = locateSpan(index, this);
         while (! (found instanceof SpanLeaf)) {
@@ -236,10 +236,10 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     /** Insert a {@linkplain String} at a location.*/
     public final void insert(int location, String input){
-        checkPositionIndex(location, getLength() + 1, "Index is out of range.");
+        checkPositionIndex(location, getLocalEnd() + 1, "Index is out of range.");
         checkNotNull(input, "Input string cannot be null.");
 
-        if (location == getLength()){
+        if (location == getLocalEnd()){
             /// Insert at the end
             SpanNode<?> span = getLeaf(location).getParent();
             while (span instanceof SpanBranch){

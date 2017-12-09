@@ -25,7 +25,7 @@ public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
         categoryPart = ImmutableList.copyOf(categories);
 
         int ptr = span.getStart();
-        int padding = String.valueOf(span.getDocument().getLength())
+        int padding = String.valueOf(span.getDocument().getLocalEnd())
             .length();
         namePart = String.format("%0" + padding + "d",  ptr);
 

@@ -287,21 +287,21 @@ public class DocumentEditDebug{
     @Ignore("Test not ready")
     public void changeCiteRef(){
         ManuscriptDocument base = new ManuscriptDocument("=@abc:{@ad}");
-        base.insert(base.getLength() - 2, "k");
+        base.insert(base.getLocalEnd() - 2, "k");
     }
 
     @Test
     @Ignore("Test not ready")
     public void changeCiteCurly(){
         ManuscriptDocument base = new ManuscriptDocument("=@abc:{@ad}");
-        base.insert(base.getLength() - 1, "k");
+        base.insert(base.getLocalEnd() - 1, "k");
     }
 
     @Test
     @Ignore("Test not ready")
     public void editNote(){
         ManuscriptDocument base = new ManuscriptDocument("!%@abc:{@abc}");
-        base.insert(base.getLength(), "k");
+        base.insert(base.getLocalEnd(), "k");
     }
 
     @Test
@@ -338,7 +338,7 @@ public class DocumentEditDebug{
     @Test
     public void changeCiteRef(){
         ManuscriptDocument doc = new ManuscriptDocument("=@abc:{@ad}");
-        doc.insert(doc.getLength() - 2, "k");
+        doc.insert(doc.getLocalEnd() - 2, "k");
         CatalogueMap map = doc.getCatalogue();
         assertEquals("Wrong size.", 2, map.size());
 
@@ -368,7 +368,7 @@ public class DocumentEditDebug{
     @Test
     public void changeCiteCurly(){
         ManuscriptDocument doc = new ManuscriptDocument("=@abc:{@ad}");
-        doc.insert(doc.getLength() - 1, "k");
+        doc.insert(doc.getLocalEnd() - 1, "k");
         CatalogueMap map = doc.getCatalogue();
         assertEquals("Wrong size.", 2, map.size());
 
@@ -398,7 +398,7 @@ public class DocumentEditDebug{
     @Test
     public void editNote(){
         ManuscriptDocument doc = new ManuscriptDocument("!%@abc:{@abc}");
-        doc.insert(doc.getLength(), "k");
+        doc.insert(doc.getLocalEnd(), "k");
         CatalogueMap map = doc.getCatalogue();
         assertEquals("Wrong size.", 1, map.size());
 

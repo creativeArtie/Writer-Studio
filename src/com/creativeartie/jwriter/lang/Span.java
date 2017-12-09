@@ -21,7 +21,7 @@ public abstract class Span{
 
     public abstract String getRaw();
 
-    public abstract int getLength();
+    public abstract int getLocalEnd();
 
     public abstract Document getDocument();
 
@@ -62,12 +62,12 @@ public abstract class Span{
             int ans = getParent().getStart();
             for(Span span: getParent()){
                 if (span == this){
-                    return Range.closedOpen(ans, ans + getLength());
+                    return Range.closedOpen(ans, ans + getLocalEnd());
                 }
-                ans += span.getLength();
+                ans += span.getLocalEnd();
             }
             assert false: getRaw();
-            return Range.closedOpen(ans, ans + getLength());
+            return Range.closedOpen(ans, ans + getLocalEnd());
 
         });
     }
@@ -81,7 +81,7 @@ public abstract class Span{
     }
 
     public int toLocalPosition(int index){
-        checkPositionIndex(index, getLength(), "Index is out of range.");
+        checkPositionIndex(index, getLocalEnd(), "Index is out of range.");
         return getStart() - index;
     }
 }

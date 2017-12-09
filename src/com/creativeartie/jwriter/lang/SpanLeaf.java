@@ -73,7 +73,7 @@ public class SpanLeaf extends Span{
     }
 
     @Override
-    public int getLength(){
+    public int getLocalEnd(){
         return leafText.length();
     }
 

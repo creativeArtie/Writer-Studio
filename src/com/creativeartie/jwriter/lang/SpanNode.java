@@ -27,10 +27,10 @@ public abstract class SpanNode<T extends Span> extends Span
     }
 
     @Override
-    public int getLength(){
+    public int getLocalEnd(){
         int ans = 0;
         for(Span child: this){
-            ans += child.getLength();
+            ans += child.getLocalEnd();
         }
         return ans;
     }
