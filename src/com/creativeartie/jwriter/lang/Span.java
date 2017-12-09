@@ -4,8 +4,9 @@ import java.util.*;
 import java.util.function.*;
 import com.google.common.collect.*;
 import static com.google.common.base.Preconditions.*;
+
 /**
- * A subdivision of a {@link Document}
+ * A subdivision of a {@link Document document text}.
  */
 public abstract class Span{
 
@@ -19,68 +20,93 @@ public abstract class Span{
         updateListeners = new HashSet<>();
     }
 
+    /** Get the raw text. */
     public abstract String getRaw();
 
+    /** Get the length of the local text length. */
     public abstract int getLocalEnd();
 
+    /** Get the {@link Document root span}. */
     public abstract Document getDocument();
 
+    /** Get the {@link SpanNode parent span}. */
     public abstract SpanNode<?> getParent();
 
+    /** Add a listener when this is removed. */
     public void addRemover(DetailListener listener){
         removeListeners.add(listener);
     }
 
+    /** Calls the remove listeners. */
     void setRemove(){
         removeListeners.forEach(remover -> remover.changed(this));
     }
 
-    public void addEditor(DetailListener listener){
+    /** Add a listener when this span's children has been replaced. */
+    public final void addEditor(DetailListener listener){
         changeListeners.add(listener);
     }
 
-    public void addUpdater(DetailListener listener){
+    /** Add a listener when this span's text has changed. */
+    public final void addUpdater(DetailListener listener){
         updateListeners.add(listener);
     }
 
+    /** Calls the change listeners and all it's parent update listeners. */
     void setUpdated(){
         changeListeners.forEach(changer -> changer.changed(this));
         updateParent();
     }
 
-    private void updateParent(){
+    /**
+     * Calls the update listeners, including the parent's. Helper method of
+     * {@link #setUpdated()}.
+     *
+     * This is recursive method and cannot be inlined into
+     * {@linkplain setUpdate()}.
+     */
+    private final void updateParent(){
         updateListeners.forEach(editor -> editor.changed(this));
         if (! (this instanceof Document)){
             ((Span)getParent()).updateParent();
         }
     }
 
+    /** Info the subclass the document has been edited. */
     protected abstract void docEdited();
 
+    /** Get the start and end of this span in relation the the document. */
     public Range<Integer> getRange(){
+        /// Look up in the cache first
         return getDocument().getRangeCache(this, () ->{
+            // get the start of the parent's span.
             int ans = getParent().getStart();
             for(Span span: getParent()){
                 if (span == this){
                     return Range.closedOpen(ans, ans + getLocalEnd());
                 }
+                // For each child of the parent exclude this:
                 ans += span.getLocalEnd();
             }
+            // This Span is not a child of the parent
             assert false: getRaw();
-            return Range.closedOpen(ans, ans + getLocalEnd());
+            return null;
 
         });
     }
 
-    public int getStart(){
+    /** Get the start of this span in relation the the document. */
+    public final int getStart(){
         return getRange().lowerEndpoint();
     }
 
-    public int getEnd(){
+    /** Get the end of this span in relation the the document. */
+    public final int getEnd(){
         return getRange().upperEndpoint();
     }
 
-    public int toLocalPosition(int index){
+    /** Convert a global index to location index. */
+    public final int toLocalPosition(int index){
         checkPositionIndex(index, getLocalEnd(), "Index is out of range.");
         return getStart() - index;
     }

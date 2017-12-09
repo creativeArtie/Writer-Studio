@@ -7,7 +7,7 @@ import com.google.common.collect.*;
 import static com.google.common.base.Preconditions.*;
 
 /**
- * Common methods for {@link Document} and {@link SpanBranch}.
+ * A list of {@link Span spans}. Mainly implements {@linkplain List}.
  * @param <T>
  *      Type of span stored
  */
@@ -18,21 +18,20 @@ public abstract class SpanNode<T extends Span> extends Span
 
     @Override
     public final String getRaw(){
-        StringBuilder builder = new StringBuilder();
+        return getDocument().getTextCache(this, () -> {
+            /// Raw text is adding up raw text of each child.
+            StringBuilder builder = new StringBuilder();
 
-        for (Span span: this){
-            builder.append(span.getRaw());
-        }
-        return builder.toString();
+            for (Span span: this){
+                builder.append(span.getRaw());
+            }
+            return builder.toString();
+        });
     }
 
     @Override
     public int getLocalEnd(){
-        int ans = 0;
-        for(Span child: this){
-            ans += child.getLocalEnd();
-        }
-        return ans;
+        return getRaw().length();
     }
 
     @Override
@@ -43,8 +42,10 @@ public abstract class SpanNode<T extends Span> extends Span
         super.setRemove();
     }
 
+    /** Get the first span if it a subclass of {@code clazz}. */
     protected <T extends SpanBranch> Optional<T> spanAtFirst(Class<T> clazz){
         if (isEmpty()){
+            /// Shouldn't really happen
             return Optional.empty();
         }
         if (clazz.isInstance(get(0))){
@@ -53,6 +54,7 @@ public abstract class SpanNode<T extends Span> extends Span
         return Optional.empty();
     }
 
+    /** Find the first span that subclasses of {@code clazz}. */
     protected <T extends SpanBranch> Optional<T> spanFromFirst(Class<T> clazz){
         for(Span span: this){
             if (clazz.isInstance(span)){
@@ -62,8 +64,10 @@ public abstract class SpanNode<T extends Span> extends Span
         return Optional.empty();
     }
 
+    /** Get the last span if it a subclass of {@code clazz}. */
     protected <T extends SpanBranch> Optional<T> spanAtLast(Class<T> clazz){
         if (isEmpty()){
+            /// Shouldn't really happen
             return Optional.empty();
         }
         if (clazz.isInstance(get(size() - 1))){
@@ -72,6 +76,7 @@ public abstract class SpanNode<T extends Span> extends Span
         return Optional.empty();
     }
 
+    /** Find the first span that subclasses of {@code clazz}. */
     protected <T extends SpanBranch> Optional<T> spanFromLast(Class<T> clazz){
         for(int i = size() - 1; i >= 0; i--){
             Span span = get(i);
@@ -82,6 +87,7 @@ public abstract class SpanNode<T extends Span> extends Span
         return Optional.empty();
     }
 
+    /** Get the fist leaf span if it a has the style of {@code info}. */
     protected Optional<SpanLeaf> leafFromFrist(SetupLeafStyle info){
         for (Span span: this){
             if (span instanceof SpanLeaf){
@@ -94,6 +100,7 @@ public abstract class SpanNode<T extends Span> extends Span
         return Optional.empty();
     }
 
+    /** Find the first leaf span that has the style of {@code info}. */
     protected Optional<SpanLeaf> leafFromLast(SetupLeafStyle info){
         for(int i = size() - 1; i >= 0; i++){
             Span span = get(i);
@@ -107,17 +114,23 @@ public abstract class SpanNode<T extends Span> extends Span
         return Optional.empty();
     }
 
+    /** Get the Span leaf with global position. Uses binary serach.*/
     public SpanLeaf getLeaf(int pos){
+        /// Range check
         Range<Integer> range = getRange();
         if (! range.contains(pos)){
-            throw new IndexOutOfBoundsException(pos + " is not between :" + range);
+            throw new IndexOutOfBoundsException(pos + " is not between :" +
+                range);
         }
+
         if (range.contains(pos)){
+            /// Binary serach setup
             int low = 0;
             int high = size() - 1;
             int mid;
             Span span;
             while (low <= high){
+                // move indexes
                 mid = (low + high) / 2;
                 span = get(mid);
                 Range<Integer> child = span.getRange();
@@ -126,11 +139,14 @@ public abstract class SpanNode<T extends Span> extends Span
                 } else if (child.upperEndpoint() <= pos){
                     low = mid + 1;
                 } else {
+                    /// Find span, but recurives if leaf not found yet.
                     return  span instanceof SpanLeaf? (SpanLeaf) span:
                         ((SpanNode)span).getLeaf(pos);
                 }
             }
         }
+
+        /// exception for not found. Somehow the code can end up here.
         throw new IndexOutOfBoundsException(pos + " is not between :" + range);
     }
 

@@ -4,7 +4,7 @@ import java.util.*;
 import com.google.common.collect.*;
 
 /**
- * A {@link Span} handling {@link SpanLeaf}
+ * A {@link Span} storing {@link SpanLeaf} and {@link SpanBranch}.
  */
 public abstract class SpanBranch extends SpanNode<Span> {
 
@@ -12,11 +12,17 @@ public abstract class SpanBranch extends SpanNode<Span> {
 
     private SpanNode<?> spanParent;
 
+    private Optional<Document> spanDoc;
+
     public SpanBranch(List<Span> spans){
         spanChildren = setParents(spans);
     }
 
-    private ArrayList<Span> setParents(List<Span> spans){
+    /**
+     * Set the children's parent to this. Helper method of
+     * {@link #SpanBranch(List)} and {@link #editRaw(String)}.
+     */
+    private final ArrayList<Span> setParents(List<Span> spans){
         ArrayList<Span> ans = new ArrayList<>(spans);
         ans.forEach((span) -> {
             if (span instanceof SpanBranch){
@@ -28,53 +34,32 @@ public abstract class SpanBranch extends SpanNode<Span> {
         return ans;
     }
 
-    protected int search(String raw, String escape, List<String> find){
-        return search(raw, escape, find.toArray(new String[0]));
-    }
-
-    protected int search(String raw, String escape, String ... find){
-        boolean isEscape = false;
-        for(int i = 0; i < raw.length(); i++){
-            if (isEscape){
-                isEscape = false;
-            } else {
-                if (raw.startsWith(escape, i)){
-                    isEscape = true;
-                } else {
-                    for(String str: find){
-                        if (raw.startsWith(str, i)){
-                            return i;
-                        }
-                    }
-                }
-            }
-        }
-        return -1;
-    }
-
     @Override
     public final List<Span> delegate(){
         return ImmutableList.copyOf(spanChildren);
     }
 
     @Override
-    public Document getDocument(){
-        return get(0).getDocument();
+    public final Document getDocument(){
+        return get(0).getDocument(); /// will eventually get to a SpanLeaf
     }
 
     @Override
-    public SpanNode<?> getParent(){
+    public final SpanNode<?> getParent(){
         return spanParent;
     }
 
-    void setParent(SpanNode<?> parent){
+    final void setParent(SpanNode<?> parent){
         spanParent = parent;
     }
 
+    /** Get style information about this {@linkplain SpanBranch}.*/
     public abstract List<DetailStyle> getBranchStyles();
 
-    public List<SpanLeaf> getLeaves(){
+    @Override
+    public final List<SpanLeaf> getLeaves(){
         return getDocument().getLeavesCache(this, () -> {
+            /// Create the builder
             ImmutableList.Builder<SpanLeaf> builder = ImmutableList.builder();
             for(Span span: this){
                 if (span instanceof SpanLeaf){
@@ -87,7 +72,8 @@ public abstract class SpanBranch extends SpanNode<Span> {
         });
     }
 
-    boolean editRaw(String text){
+    /** Edit the */
+    final boolean editRaw(String text){
         SetupParser parser = getParser(text);
         if (parser != null){
             for (Span span: this){

@@ -17,6 +17,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     /// Caches to reduce the need to recalculate data for each span.
     private final Cache<Span, Range<Integer>> spanRanges;
     private final Cache<Span, List<SpanLeaf>> spanLeaves;
+    private final Cache<Span, String> spanTexts;
 
     private ArrayList<SpanBranch> documentChildren;
     private CatalogueMap catalogueMap;
@@ -28,6 +29,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
         spanRanges = CacheBuilder.newBuilder().weakKeys().build();
         spanLeaves = CacheBuilder.newBuilder().weakKeys().build();
+        spanTexts = CacheBuilder.newBuilder().weakKeys().build();
         documentParsers = parsers;
 
         /// Setup for building the doc and a pointer to use
@@ -151,6 +153,20 @@ public abstract class Document extends SpanNode<SpanBranch>{
             throw new RuntimeException(ex);
         }
     }
+    /**
+     * Get a text in cache and wraps {@linkplain ExecutionException} with
+     * {@link RuntimeException}.
+     */
+    final String getTextCache(Span child, Callable<String> caller) {
+        checkNotNull(child, "Child span cannot be null.");
+        checkNotNull(caller, "Caller function cannot be null.");
+
+        try {
+            return spanTexts.get(child, caller);
+        } catch (ExecutionException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
     /**
      * Get a leave list in cache and wraps {@linkplain ExecutionException} with
@@ -173,6 +189,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         return getLeavesCache(this, () ->{
             ImmutableList.Builder<SpanLeaf> builder = ImmutableList.builder();
             for(SpanBranch span: this){
+                /// span.getLeaves() might be cached, reduces the need to search
                 builder.addAll(span.getLeaves());
             }
             return builder.build();
@@ -317,6 +334,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     private final void updateEdit(){
         spanRanges.invalidateAll();
         spanLeaves.invalidateAll();
+        spanTexts.invalidateAll();
         catalogueMap = new CatalogueMap();
         updateSpan(this);
     }
