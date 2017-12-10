@@ -1,1 +1,4 @@
 theme: jekyll-theme-cayman
+show_downloads: true
+title: JWriter
+description: A simple note taking word processor 
