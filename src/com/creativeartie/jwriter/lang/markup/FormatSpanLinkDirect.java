@@ -18,13 +18,13 @@ public class FormatSpanLinkDirect extends FormatSpanLink {
     @Override
     public String getPath(){
         Optional<ContentSpan> path = spanFromFirst(ContentSpan.class);
-        return path.isPresent()? path.get().getParsed(): "";
+        return path.isPresent()? path.get().getTrimmed(): "";
     }
 
     @Override
     public String getText(){
         Optional<ContentSpan> text = spanFromLast(ContentSpan.class);
-        return text.isPresent()? text.get().getParsed(): "";
+        return text.isPresent()? text.get().getTrimmed(): "";
     }
 
     @Override

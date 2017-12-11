@@ -23,7 +23,7 @@ public final class FormatSpanAgenda extends SpanBranch implements Catalogued{
     public String getAgenda(){
         Optional<ContentSpan> text = getAgendaSpan();
         if (text.isPresent()){
-            return text.get().getParsed();
+            return text.get().getTrimmed();
         }
         return "";
     }

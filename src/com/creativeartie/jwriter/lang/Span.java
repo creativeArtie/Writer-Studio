@@ -67,7 +67,7 @@ public abstract class Span{
      */
     private final void updateParent(){
         updateListeners.forEach(editor -> editor.accept(this));
-        ((SpanBranch)this).childEdited();
+        ((SpanNode<?>)this).childEdited();
         if (! (this instanceof Document)){
             ((Span)getParent()).updateParent();
         }

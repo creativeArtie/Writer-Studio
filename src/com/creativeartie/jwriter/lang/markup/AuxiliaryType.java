@@ -2,7 +2,6 @@ package com.creativeartie.jwriter.lang.markup;
 
 import java.util.*;
 import com.creativeartie.jwriter.lang.*;
-import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
  * All styles that are not really part of any group of styles.

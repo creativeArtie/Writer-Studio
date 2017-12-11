@@ -94,4 +94,9 @@ public class ManuscriptDocument extends Document{
     protected void docEdited(){
         // TODO docEdited
     }
+
+    @Override
+    protected void childEdited(){
+        // TODO docEdited
+    }
 }

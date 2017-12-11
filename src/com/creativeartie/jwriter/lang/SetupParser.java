@@ -2,7 +2,7 @@ package com.creativeartie.jwriter.lang;
 
 import java.util.*;
 
-import static com.google.common.base.Preconditions.*;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * Creator for the {@link Span}.
@@ -11,8 +11,8 @@ public interface SetupParser{
 
     /** Put two {@linkplain String} list together. */
     public static String[] combine(String[] list1, String[] list2){
-        checkNotNull(list1, "List 1 cannot be null.");
-        checkNotNull(list2, "List 2 cannot be null.");
+        checkNotNull(list1, "list1");
+        checkNotNull(list2, "list2");
 
         String[] res = new String[list1.length + list2.length];
         System.arraycopy(list1, 0, res, 0, list1.length);
@@ -23,8 +23,8 @@ public interface SetupParser{
     /** Put two {@link SetupParser} list together. */
     public static  SetupParser[] combine(SetupParser[] list1,
             SetupParser[] list2) {
-        checkNotNull(list1, "List 1 cannot be null.");
-        checkNotNull(list2, "List 2 cannot be null.");
+        checkNotNull(list1, "list1");
+        checkNotNull(list2, "list2");
         SetupParser[] res = new SetupParser[list1.length + list2.length];
         System.arraycopy(list1, 0, res, 0, list1.length);
         System.arraycopy(list2, 0, res, list1.length, list2.length);
@@ -36,8 +36,8 @@ public interface SetupParser{
      * to the children list if found.
      */
     public default boolean parse(List<Span> children, SetupPointer pointer){
-        checkNotNull(children, "Children list cannot be null.");
-        checkNotNull(pointer, "Pointer cannot be null.");
+        checkNotNull(children, "children");
+        checkNotNull(pointer, "pointer");
 
         Optional<SpanBranch> child = parse(pointer);
         child.ifPresent(c -> children.add(c));

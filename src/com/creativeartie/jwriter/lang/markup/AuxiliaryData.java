@@ -1,9 +1,8 @@
 package com.creativeartie.jwriter.lang.markup;
 
-import java.util.List;
-import java.util.Arrays;
+import java.util.*;
 
-import com.creativeartie.jwriter.main.Checker;
+import static com.google.common.base.Preconditions.*;
 
 /**
  * All strings used in this package. Each field (private and public) has its own
@@ -38,27 +37,32 @@ public final class AuxiliaryData{
      *      the starter token created
      */
     public static String getLevelToken(LinedParseLevel parser, int level){
-        Checker.checkNotNull(parser, "useParser");
-        Checker.checkInt(level, "forLevel", 0, false, LEVEL_MAX + 1, true);
+        checkNotNull(parser, "Reference parser cannot be null");
+        checkArgument(level > 0, "Level cannot be lower than 1");
+        checkArgument(level <= LEVEL_MAX, "Level cannot be higher than " +
+            LEVEL_MAX);
         switch (parser){
-            case HEADING:
-                /// ==
-                return repeat(LEVEL_HEADING, level);
-            case OUTLINE:
-                /// !##
-                return LINED_BEGIN + repeat(LEVEL_OUTLINE, level);
-            case NUMBERED:
-                /// \t#
-                return repeat(LEVEL_BEGIN, level - 1) + LEVEL_NUMBERED;
-            case BULLET:
-                /// \t-
-                return repeat(LEVEL_BEGIN, level - 1) + LEVEL_BULLET;
-            default:
-                throw Checker.typeNotUse(parser, "useParser");
+        case HEADING:
+            /// ==
+            return repeat(LEVEL_HEADING, level);
+        case OUTLINE:
+            /// !##
+            return LINED_BEGIN + repeat(LEVEL_OUTLINE, level);
+        case NUMBERED:
+            /// \t#
+            return repeat(LEVEL_BEGIN, level - 1) + LEVEL_NUMBERED;
+        case BULLET:
+            /// \t-
+            return repeat(LEVEL_BEGIN, level - 1) + LEVEL_BULLET;
+        default:
+            throw new IllegalArgumentException("LinedParseLavel not use: " +
+                parser);
         }
     }
     /// getLevelToken helper
     private static String repeat(String repeat, int level){
+        assert repeat != null: "Null repeat";
+        assert level > 0 && level < LEVEL_MAX: "Off range level";
         StringBuilder builder = new StringBuilder();
         for(int i = 0; i < level; i++){
             builder.append(repeat);
@@ -164,7 +168,8 @@ public final class AuxiliaryData{
         return new String[]{
             CURLY_AGENDA, CURLY_FOOTNOTE, CURLY_ENDNOTE, CURLY_CITE,
             LINK_BEGIN, LINK_REF,
-            /* FORMAT_BOLD, */ FORMAT_ITALICS, FORMAT_UNDERLINE, FORMAT_CODED};
+            /* FORMAT_BOLD, */ FORMAT_ITALICS, FORMAT_UNDERLINE, FORMAT_CODED
+        };
     }
 
     /// ========================================================================
@@ -189,21 +194,6 @@ public final class AuxiliaryData{
         TYPE_AGENDA);
     public static final List<String> TYPE_AGENDA_LINED = Arrays.asList(
         TYPE_AGENDA);
-
-
-    /// @Part-2-2: Possible style catagory name. -------------------------------
-    /// For AuxilliaryType, DirectoryType, EditionType, FormatType,
-    ///     InfoFieldType, InfoDataType, LinedType
-
-    public static final String STYLE_OTHER    = "OTHER"  ; /// AuxilliaryType
-    public static final String STYLE_EDITION  = "EDITION"; /// EditionType
-    public static final String STYLE_FORMAT   = "FORMAT" ; /// FormatType
-    public static final String STYLE_FIELD    = "FIELD"  ; /// InfoFieldType
-    public static final String STYLE_INLINE   = "INLINE" ; /// AuxilliaryType
-    public static final String STYLE_CATEGORY = "INLINE" ; /// DirectoryType
-    public static final String STYLE_LINED    = "LINED"  ; /// LinedType
-    public static final String STYLE_MAIN     = "MAIN"   ; /// AuxilliaryType
-    public static final String STYLE_DATA     = "DATA"   ; /// InfoDataType
 
     /// ========================================================================
     /// @Part-3: Private Constructor -------------------------------------------

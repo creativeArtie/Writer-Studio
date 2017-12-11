@@ -6,7 +6,13 @@ import com.google.common.base.*;
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
+/**
+ * Text with {@link AuxiliaryData#CHAR_ESCAPE escape character}.
+ * Parent class of {@link ContentSpan} and {@link FormatSpanContent}.
+ */
 interface BasicText{
+
+    @Deprecated
     static boolean canParse(String text, List<String> enders){
         boolean isEscaped = false;
         for(int i = 0; i < text.length(); i++){
@@ -27,6 +33,7 @@ interface BasicText{
 
     public List<Span> delegate();
 
+    /** Get the text with space collapsed, and escape character removed.*/
     public default String getText(){
         StringBuilder builder = new StringBuilder();
         delegate().forEach((child) -> {
@@ -42,10 +49,12 @@ interface BasicText{
         return CharMatcher.whitespace().collapseFrom(builder, ' ');
     }
 
-    public default String getParsed(){
+    /** Get text from {@link #getText}, but trimmed. */
+    public default String getTrimmed(){
         return CharMatcher.whitespace().trimFrom(getText());
     }
 
+    /** Check if the text starts with a whitespace. */
     public default boolean isSpaceBegin(){
         String output = getText();
         if (output.isEmpty()){
@@ -54,6 +63,7 @@ interface BasicText{
         return CharMatcher.whitespace().matches(output.charAt(0));
     }
 
+    /** Check if the text ends with a whitespace. */
     public default boolean isSpaceEnd(){
         String output = getText();
         if (output.isEmpty()){

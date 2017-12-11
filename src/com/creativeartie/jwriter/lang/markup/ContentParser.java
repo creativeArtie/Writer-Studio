@@ -6,7 +6,7 @@ import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.main.*;
 
 /**
- * Creates a text span upto a certain character.
+ * Creates a text span up to a certain character.
  */
 class ContentParser extends BasicParseText{
 

@@ -101,9 +101,6 @@ public abstract class SpanBranch extends SpanNode<Span> {
     /** Gets the parser only if it can reparsed the whole text. */
     protected abstract SetupParser getParser(String text);
 
-    /** Listens that one of its child is edited. */
-    protected abstract void childEdited();
-
     public final CatalogueStatus getIdStatus(){
         if (this instanceof Catalogued){
             Catalogued catalogued = (Catalogued) this;

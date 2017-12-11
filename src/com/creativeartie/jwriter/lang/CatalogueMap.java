@@ -2,7 +2,7 @@ package com.creativeartie.jwriter.lang;
 
 import java.util.*;
 import com.google.common.collect.*;
-import static com.google.common.base.Preconditions.*;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * A map of {@link CatalogueData} that is serachable by
@@ -18,8 +18,8 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
     }
 
     void addId(CatalogueIdentity id, SpanBranch span){
-        checkNotNull(id, "id object cannot be null");
-        checkNotNull(span, "id span cannot be null");
+        checkNotNull(id, "id");
+        checkNotNull(span, "id span (span)");
 
         CatalogueData data = idMap.get(id);
         if (data == null){
@@ -30,8 +30,8 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
     }
 
     void addRef(CatalogueIdentity ref, SpanBranch span){
-        checkNotNull(ref, "ref object cannot be null");
-        checkNotNull(span, "ref span cannot be null");
+        checkNotNull(ref, "ref object");
+        checkNotNull(span, "ref span (span)");
 
         CatalogueData data = idMap.get(ref);
         if (data == null){
@@ -47,8 +47,9 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
     }
 
     public SortedMap<CatalogueIdentity, CatalogueData> getCategory(
-        String ... category)
-    {
+            String ... category){
+        checkNotEmpty(category, "category");
+
         SortedMap<CatalogueIdentity, CatalogueData> map = delegate();
         CatalogueIdentity first = new CatalogueIdentity(
             ImmutableList.copyOf(category), "");

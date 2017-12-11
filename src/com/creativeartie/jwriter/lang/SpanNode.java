@@ -115,7 +115,7 @@ public abstract class SpanNode<T extends Span> extends Span
     }
 
     /** Get the Span leaf with global position. Uses binary serach.*/
-    public SpanLeaf getLeaf(int pos){
+    public final SpanLeaf getLeaf(int pos){
         /// Range check
         Range<Integer> range = getRange();
         if (! range.contains(pos)){
@@ -150,7 +150,11 @@ public abstract class SpanNode<T extends Span> extends Span
         throw new IndexOutOfBoundsException(pos + " is not between :" + range);
     }
 
+    /** Gets all the {@link SpanLeaf} found in its descendants.*/
     public abstract List<SpanLeaf> getLeaves();
+
+    /** Listens that one of its child is edited. */
+    protected abstract void childEdited();
 
     /// Implements List (ForwardList cannot be the super class)
     public abstract List<T> delegate();

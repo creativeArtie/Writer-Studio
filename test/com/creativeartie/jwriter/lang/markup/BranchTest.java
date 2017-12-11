@@ -40,7 +40,7 @@ public class BranchTest {
         @Override
         public void test(SpanBranch span){
             BasicText test = (BasicText) span;
-            assertEquals(getError("parsed", test),  text,  test.getParsed());
+            assertEquals(getError("parsed", test),  text,  test.getTrimmed());
             assertEquals(getError("begin", test), isBegin, test.isSpaceBegin());
             assertEquals(getError("end", test),   isEnd,   test.isSpaceEnd());
         }

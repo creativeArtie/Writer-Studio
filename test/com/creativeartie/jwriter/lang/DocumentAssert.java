@@ -15,8 +15,8 @@ public class DocumentAssert {
     public static DocumentAssert assertDoc(int childrenSize, String rawText,
             SetupParser ... parsers){
         Document test = new Document(rawText, parsers){
-            @Override
-            protected void docEdited(){}
+            @Override protected void docEdited(){}
+            @Override protected void childEdited(){}
         };
         return assertDoc(childrenSize, rawText, test);
     }

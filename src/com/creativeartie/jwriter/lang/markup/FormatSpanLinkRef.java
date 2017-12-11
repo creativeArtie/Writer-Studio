@@ -32,7 +32,7 @@ public final class FormatSpanLinkRef extends FormatSpanLink
     public String getText(){
         Optional<ContentSpan> text = spanFromFirst(ContentSpan.class);
         if (text.isPresent()){
-            return text.get().getParsed();
+            return text.get().getTrimmed();
         }
         return getPath();
     }

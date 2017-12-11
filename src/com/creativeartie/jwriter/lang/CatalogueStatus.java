@@ -1,7 +1,5 @@
 package com.creativeartie.jwriter.lang;
 
-import static com.creativeartie.jwriter.lang.SetupStrings.*;
-
 /**
  * Types of error with the CatalogueIdentity.
  */

@@ -29,7 +29,7 @@ public class DirectorySpan extends SpanBranch {
                 builder.add(idTmp.orElse(""));
                 idTmp = Optional.empty();
             } else {
-                idTmp = Optional.of(((ContentSpan)child).getParsed()
+                idTmp = Optional.of(((ContentSpan)child).getTrimmed()
                     .toLowerCase());
             }
         }

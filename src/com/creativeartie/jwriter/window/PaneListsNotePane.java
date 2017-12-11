@@ -117,7 +117,7 @@ public class PaneListsNotePane extends BorderPane{
     {
         if (data.isPresent()){
             ContentSpan found = ((InfoDataSpanText)data.get()).getData();
-            cite.add(new TextFlow(new Text(found.getParsed())), 1, 1);
+            cite.add(new TextFlow(new Text(found.getTrimmed())), 1, 1);
             cite.add(newLabel(text), 0, 1);
             return true;
         }

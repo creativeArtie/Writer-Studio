@@ -7,7 +7,7 @@ import java.util.function.*;
 import com.google.common.collect.*;
 import com.google.common.cache.*;
 
-import static com.google.common.base.Preconditions.*;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * Representation of a text file that is parsed by {@link SetupParser}.
@@ -24,8 +24,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
     private SetupParser[] documentParsers;
 
     protected Document(String raw, SetupParser ... parsers){
-        checkNotNull(raw, "Raw text can not be empty");
-        checkNotNull(parsers, "Parser can not be empty");
+        checkNotNull(raw, "raw");
+        checkNotEmpty(parsers, "parser");
 
         spanRanges = CacheBuilder.newBuilder().weakKeys().build();
         spanLeaves = CacheBuilder.newBuilder().weakKeys().build();
@@ -84,6 +84,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * {@link #parseDocument(String)} and {@link #updateEdit()}.
      */
     private final void updateSpan(List<? extends Span> children){
+        assert children.size() > 0: "Empty children";
         for (Span child: children){
             /// Fill or refill {@link #catalogueMap}
             if (child instanceof SpanBranch){
@@ -147,8 +148,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
      */
     final Range<Integer> getRangeCache(Span child,
             Callable<Range<Integer>> caller) {
-        checkNotNull(child, "Child span cannot be null.");
-        checkNotNull(caller, "Caller function cannot be null.");
+        checkNotNull(child, "child");
+        checkNotNull(caller, "caller function (caller)");
 
         try {
             return spanRanges.get(child, caller);
@@ -161,8 +162,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * {@link RuntimeException}.
      */
     final String getTextCache(Span child, Callable<String> caller) {
-        checkNotNull(child, "Child span cannot be null.");
-        checkNotNull(caller, "Caller function cannot be null.");
+        checkNotNull(child, "child");
+        checkNotNull(caller, "caller function (caller)");
 
         try {
             return spanTexts.get(child, caller);
@@ -177,8 +178,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
      */
     final List<SpanLeaf> getLeavesCache(Span child,
             Callable<List<SpanLeaf>> caller){
-        checkNotNull(child, "Child span cannot be null.");
-        checkNotNull(caller, "Caller function cannot be null.");
+        checkNotNull(child, "child");
+        checkNotNull(caller, "caller function (caller)");
 
         try {
             return spanLeaves.get(child, caller);
@@ -201,8 +202,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     /** Locate a {@link Span} that is a instance of a certain class  */
     public final <T> Optional<T> locateSpan(int index, Class<T> clazz){
-        checkPositionIndex(index, getLocalEnd(), "Char index is out of range.");
-        checkNotNull(clazz, "Requested class cannot be null.");
+        checkIndex(index, "index", getLocalEnd());
+        checkNotNull(clazz, "requested class (clazz).");
 
         /// Empty document
         if(getLocalEnd() == 0){
@@ -226,21 +227,6 @@ public abstract class Document extends SpanNode<SpanBranch>{
     }
 
     /**
-     * Locate a {@link SpanLeaf} at a char position. Helper method of
-     * {@link #locate(int, String)}, and {@link #edit(Function, int)}.
-     */
-    public final SpanLeaf getLeaf(int index){
-        checkPositionIndex(index, getLocalEnd(), "Index is out of range.");
-
-        Span found = locateSpan(index, this);
-        while (! (found instanceof SpanLeaf)) {
-            found = locateSpan(index, (SpanNode<?>)found);
-        }
-        assert found instanceof SpanLeaf: "Wrong class: " + found.getClass();
-        return (SpanLeaf) found;
-    }
-
-    /**
      * Located the span in a {@link SpanNode}. Helper method of
      * {@link #locateSapn(int, Class)}, and {@link #getLeaf(int)}.
      */
@@ -256,8 +242,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     /** Insert a {@linkplain String} at a location.*/
     public final void insert(int location, String input){
-        checkPositionIndex(location, getLocalEnd() + 1, "Index is out of range.");
-        checkNotNull(input, "Input string cannot be null.");
+        checkIndex(location, "index", getLocalEnd());
+        checkNotNull(input, "input");
 
         if (location == getLocalEnd()){
             /// Insert at the end
@@ -288,7 +274,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     /** Insert a {@linkplain String} at a location.*/
     public final void delete(int start, int end){
-        checkPositionIndexes(start, end, getEnd());
+        checkIndexes(start, "start", end, "end", getEnd());
 
         edit(span -> {
             if (span.getEnd() > end){
@@ -306,6 +292,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * {@link #insert(int, String)}, and {@link #delete(int, int)}.
      */
     private final void edit(Function<Span, String> editedText, int location){
+        assert editedText != null: "Null editText";
+        assert location > 0 && location < getEnd(): "Null editText";
         SpanNode<?> span = getLeaf(location).getParent();
 
         /// Attempt to parse at a SpanBranch level

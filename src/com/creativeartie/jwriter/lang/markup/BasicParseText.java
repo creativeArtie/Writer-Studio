@@ -7,6 +7,7 @@ import com.google.common.collect.*;
 import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.main.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
+import static com.google.common.base.Preconditions.*;
 
 /**
  * Parser for {@link BasicText} with {@link BasicTextEscape}.
@@ -23,7 +24,7 @@ abstract class BasicParseText implements SetupParser{
     }
 
     public BasicParseText(StyleInfoLeaf style, List<String> enders){
-        this(style, Checker.checkNotNull(enders, "enders")
+        this(style, checkNotNull(enders, "Ending string list should not be null.")
             .toArray(new String[0]));
     }
 
@@ -32,6 +33,10 @@ abstract class BasicParseText implements SetupParser{
     }
 
     public BasicParseText(StyleInfoLeaf style, String ... enders){
+        checkArgument(enders.length > 0,
+            "Ending string list should not be empty");
+        checkNotNull(style, "Basic style info should not empty");
+
         /// This builder is use to create two separate list, one for parsing,
         /// another for check if text can be parsed entirely.
         ImmutableList.Builder<String> builder = ImmutableList.builder();
@@ -55,6 +60,8 @@ abstract class BasicParseText implements SetupParser{
 
     /** Check if a text can be parse entirely. */
     boolean canParse(String text){
+        checkNotNull(text, "Text cannot be null.");
+
         boolean isEscaped = false;
         for(int i = 0; i < text.length(); i++){
             if (! isEscaped){

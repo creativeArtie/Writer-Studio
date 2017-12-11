@@ -4,7 +4,7 @@ import java.util.*;
 import java.time.*;
 
 import com.google.common.collect.*;
-import static com.google.common.base.Preconditions.*;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * A list of {@link Record} and methods to save and edit today's {@link Record}.
@@ -14,6 +14,7 @@ public final class RecordList extends ForwardingList<Record>{
     @Deprecated
     public static RecordList build(java.io.File file)
             throws java.io.IOException{
+        checkNotNull(file, "file");
         return new RecordList(file);
     }
 
@@ -27,7 +28,7 @@ public final class RecordList extends ForwardingList<Record>{
 
     /** Loads the text from a String.*/
     RecordList(String text){
-        checkNotNull(text, "Record text cannot be null.");
+        checkNotNull(text, "text");
 
         recordList = new ArrayList<>();
         fillData(new Scanner(text));
@@ -35,8 +36,8 @@ public final class RecordList extends ForwardingList<Record>{
 
     /** Loads the text from a test file.*/
     @Deprecated
-    RecordList(java.io.File file) throws java.io.IOException{
-        checkNotNull(file, "Record text cannot be null.");
+    private RecordList(java.io.File file) throws java.io.IOException{
+        assert file != null: "Null file.";
 
         recordList = new ArrayList<>();
         try (Scanner data = new Scanner(file)){
@@ -98,6 +99,8 @@ public final class RecordList extends ForwardingList<Record>{
      * create a new record.
      */
     public void startWriting(int publish, int note){
+        checkGreater(publish, "publish", 0, true);
+        checkGreater(note, "note", 0, true);
         updateRecord(publish, note);
         getRecord().startWriting(publish, note);
     }
@@ -116,6 +119,8 @@ public final class RecordList extends ForwardingList<Record>{
      * timer, and creat a new record.
      */
     private void updateRecord(int publish, int note){
+        checkGreater(publish, "publish", 0, true);
+        checkGreater(note, "note", 0, true);
         Record record = getRecord();
         if (!record.getRecordDate().equals(LocalDate.now())){
             record.stopWriting(publish, note);
@@ -125,7 +130,7 @@ public final class RecordList extends ForwardingList<Record>{
 
     /** Get all the found records in a {@link YearMonth month}. */
     public Iterator<Record> getMonth(YearMonth month){
-        checkNotNull(month, "Month cannot be null.");
+        checkNotNull(month, "month");
 
         /// Finds no {@link Record records}.
         if (getStartMonth().isAfter(month) || getEndMonth().isBefore(month)){
@@ -149,8 +154,7 @@ public final class RecordList extends ForwardingList<Record>{
                 Record record = get(ptr);
                 LocalDate date = record.getRecordDate();
                 if (date.getYear()  == month.getYear() &&
-                    date.getMonth() == month.getMonth())
-                {
+                    date.getMonth() == month.getMonth()){
                     ptr++;
                     return record;
                 }

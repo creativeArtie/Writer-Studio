@@ -17,7 +17,7 @@ public class LinedSpanAgenda extends LinedSpan implements Catalogued{
 
     public String getAgenda(){
         Optional<ContentSpan> ans = getAgendaSpan();
-        return ans.isPresent()? ans.get().getParsed() : "";
+        return ans.isPresent()? ans.get().getTrimmed() : "";
     }
 
     @Override

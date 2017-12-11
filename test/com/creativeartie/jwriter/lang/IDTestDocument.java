@@ -145,8 +145,8 @@ public class IDTestDocument {
             pointer.startsWith(children, "\n");
             return Optional.of(new IdSpan(children));
         }}){
-            @Override
-            protected void docEdited(){}
+            @Override protected void docEdited(){}
+            @Override protected void childEdited(){}
         };
     }
 

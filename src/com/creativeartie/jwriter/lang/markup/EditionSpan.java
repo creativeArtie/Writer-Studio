@@ -31,7 +31,7 @@ public class EditionSpan extends SpanBranch{
 
     public String getDetail(){
         Optional<ContentSpan> span = spanAtLast(ContentSpan.class);
-        return span.isPresent()? span.get().getParsed(): "";
+        return span.isPresent()? span.get().getTrimmed(): "";
     }
 
     public Optional<ContentSpan> getDetailSpan(){

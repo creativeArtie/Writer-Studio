@@ -3,7 +3,7 @@ package com.creativeartie.jwriter.lang;
 import java.util.*;
 import com.google.common.collect.*;
 
-import static com.google.common.base.Preconditions.*;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /** A list of {@link SpanBranch} with the same {@link CatalogueIdentity}. */
 public final class CatalogueData{
@@ -14,28 +14,26 @@ public final class CatalogueData{
 
     /** {@linkplain CatalogueData}'s constructor.*/
     CatalogueData(CatalogueMap parent, CatalogueIdentity id){
-        catalogueParent = checkNotNull(parent);
-        catelogueKey = checkNotNull(id);
+        catalogueParent = checkNotNull(parent, "parent");
+        catelogueKey = checkNotNull(id, "id");
         idSpans = new ArrayList<>();
         refSpans = new ArrayList<>();
     }
 
     void addId(SpanBranch span){
-        checkNotNull(span, "Span can be null.");
+        checkNotNull(span, "Span");
         checkArgument(span instanceof Catalogued,
-            "Span is not of type Catalogued.");
+            "Parameter \"span\" is not of type Catalogued.");
         checkArgument(((Catalogued)span).isId(),
-            "Span is no an id: " + span.getRaw());
+            "Parameter \"span\" is no an id. ");
 
         idSpans.add(span);
     }
 
     void addRef(SpanBranch span){
-        checkNotNull(span, "Span can be null.");
-        checkArgument(span instanceof Catalogued,
-            "Span is not of type Catalogued.");
+        checkNotNull(span, "Span");
         checkArgument(((Catalogued)span).isRef(),
-            "Span is no an ref: " + span.getRaw());
+            "Parameter \"span\" is no an id. ");
 
         refSpans.add(span);
     }
@@ -71,7 +69,7 @@ public final class CatalogueData{
 
     public SpanBranch getTarget(){
         checkState(idSpans.size() == 1,
-            "CatalougeData is not ready: %s.", getState());
+            "Id (" + catelogueKey + ") is in the wrong state.");
 
         return idSpans.get(0);
     }

@@ -21,7 +21,7 @@ public class LinedSpanPointLink extends LinedSpanPoint {
 
     public String getPath(){
         Optional<ContentSpan> span = getPathSpan();
-        return span.isPresent()? span.get().getParsed() : "";
+        return span.isPresent()? span.get().getTrimmed() : "";
     }
 
     @Override

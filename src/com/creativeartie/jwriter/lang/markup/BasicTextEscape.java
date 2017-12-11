@@ -7,7 +7,7 @@ import com.google.common.collect.*;
 
 
 /**
- * Created from {@link ContentParser}. Used only in {@link ContentSpan}
+ * Escaped character with the {@link AuxiliaryData
  */
 public class BasicTextEscape extends SpanBranch{
 

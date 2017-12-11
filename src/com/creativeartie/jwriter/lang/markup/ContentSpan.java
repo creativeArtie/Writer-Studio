@@ -35,7 +35,7 @@ public class ContentSpan extends SpanBranch implements BasicText{
 
     public int wordCount(){
         return Splitter.on(CharMatcher.whitespace()).omitEmptyStrings()
-            .splitToList(getParsed()).size();
+            .splitToList(getTrimmed()).size();
     }
 
     @Override

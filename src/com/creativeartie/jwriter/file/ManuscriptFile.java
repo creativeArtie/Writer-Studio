@@ -7,7 +7,7 @@ import java.util.zip.*;
 import java.util.*;
 
 import com.google.common.base.MoreObjects;
-import static com.google.common.base.Preconditions.*;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * Stores the {@link ManuscriptDocument} and {@link RecordList} in a zip file.
@@ -41,7 +41,7 @@ public final class ManuscriptFile {
 
     /** Open a zip file. */
     public static ManuscriptFile open(File file) throws IOException{
-        checkNotNull(file, "Zip file cannot be null.");
+        checkNotNull(file, "zipe file (file)");
 
         /// {@link #ManuscriptFile(File,ManuscriptDocument, RecordList} params:
         ManuscriptDocument doc = null;
@@ -87,7 +87,7 @@ public final class ManuscriptFile {
      */
     @Deprecated
     public static ManuscriptFile withManuscript(ManuscriptDocument doc){
-        checkNotNull(doc, "Document can not be null.");
+        checkNotNull(doc, "doc");
 
         return new ManuscriptFile(null, doc, new RecordList());
     }
@@ -109,7 +109,7 @@ public final class ManuscriptFile {
     }
 
     public void setSave(File file){
-        checkNotNull(file, "Zip file can not be null.");
+        checkNotNull(file, "file");
 
         zipFile = Optional.of(file);
     }
@@ -128,9 +128,7 @@ public final class ManuscriptFile {
 
     /** Save the object into a zip file with two text files.*/
     public void save() throws IOException{
-        if (! canSave()){
-            throw new IOException("No file to save.");
-        }
+        checkIO(canSave(), "No file to save.");
 
         try (ZipOutputStream writeTo = new ZipOutputStream(new FileOutputStream
                 (zipFile.get()))){

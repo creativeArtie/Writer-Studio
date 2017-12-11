@@ -3,7 +3,7 @@ package com.creativeartie.jwriter.lang;
 import java.util.*;
 import com.google.common.collect.*;
 
-import static com.google.common.base.Preconditions.*;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * Marker for a {@link SpanBranch} that can be grouped with the same
@@ -19,8 +19,8 @@ public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
      * category supplied.
      */
     public CatalogueIdentity(List<String> categories, Span span){
-        checkNotNull(categories, "Categories list cannot be null.");
-        checkNotNull(span, "Span cannot be null.");
+        checkNotNull(categories, "categories");
+        checkNotNull(span, "span");
 
         categoryPart = ImmutableList.copyOf(categories);
 
@@ -36,8 +36,8 @@ public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
      * name.
      */
     public CatalogueIdentity(List<String> category, String name){
-        checkNotNull(category, "Categories list cannot be null.");
-        checkNotNull(name, "Name cannot be null.");
+        checkNotNull(category, "categories");
+        checkNotNull(name, "name");
 
         categoryPart = ImmutableList.copyOf(category);
         namePart = name;
@@ -45,7 +45,7 @@ public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
 
     /** Find the status base on a {@link CatalogueMap}. */
     CatalogueStatus getStatus(CatalogueMap parent){
-        checkNotNull(parent, "Parent map can not be null.");
+        checkNotNull(parent, "parent");
 
         return parent.get(this).getState();
     }
@@ -92,8 +92,8 @@ public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
      * {@link compareTo(CatalogueIdentity}.
      */
     private static int compareCategory(List<String> self, List<String> that){
-        checkNotNull(self, "This object's category list (self) cannot be null");
-        checkNotNull(self, "That object's category list (self) cannot be null");
+        checkNotNull(self, "category list (self)");
+        checkNotNull(that, "category list (that)");
 
         int i = 0;
         for (String cat: self){
