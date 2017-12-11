@@ -67,12 +67,13 @@ public abstract class Span{
      */
     private final void updateParent(){
         updateListeners.forEach(editor -> editor.accept(this));
+        ((SpanBranch)this).childEdited();
         if (! (this instanceof Document)){
             ((Span)getParent()).updateParent();
         }
     }
 
-    /** Info the subclass the document has been edited. */
+    /** Listened that the document has been edited. */
     protected abstract void docEdited();
 
     /** Get the start and end of this span in relation the the document. */

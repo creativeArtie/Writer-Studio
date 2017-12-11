@@ -79,7 +79,10 @@ public abstract class Document extends SpanNode<SpanBranch>{
         updateSpan(documentChildren);
     }
 
-    /** Recursively update all child {@link Span spans}. */
+    /**
+     * Recursively update all child {@link Span spans}. Helper method of
+     * {@link #parseDocument(String)} and {@link #updateEdit()}.
+     */
     private final void updateSpan(List<? extends Span> children){
         for (Span child: children){
             /// Fill or refill {@link #catalogueMap}

@@ -9,7 +9,7 @@ import com.creativeartie.jwriter.main.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
- * Creates a text span upto a certain character.
+ * Parser for {@link BasicText} with {@link BasicTextEscape}.
  */
 abstract class BasicParseText implements SetupParser{
 
@@ -32,6 +32,8 @@ abstract class BasicParseText implements SetupParser{
     }
 
     public BasicParseText(StyleInfoLeaf style, String ... enders){
+        /// This builder is use to create two separate list, one for parsing,
+        /// another for check if text can be parsed entirely.
         ImmutableList.Builder<String> builder = ImmutableList.builder();
 
         builder.add(LINED_END);
@@ -42,11 +44,32 @@ abstract class BasicParseText implements SetupParser{
                 builder.add(ender);
             }
         }
+
         reparseEnders = builder.build();
 
+        // For setup parser.
         builder.add(CHAR_ESCAPE);
         setupEnders = builder.build();
         leafStyle = Checker.checkNotNull(style, "style");
+    }
+
+    /** Check if a text can be parse entirely. */
+    boolean canParse(String text){
+        boolean isEscaped = false;
+        for(int i = 0; i < text.length(); i++){
+            if (! isEscaped){
+                if (text.startsWith(CHAR_ESCAPE, i)){
+                    isEscaped = true;
+                } else {
+                    for (String ender: reparseEnders){
+                        if (text.startsWith(ender, i)){
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     @Override
@@ -70,10 +93,11 @@ abstract class BasicParseText implements SetupParser{
         return Optional.empty();
     }
 
+    /** Creates the Span after the parsing complete*/
     protected abstract SpanBranch buildSpan(List<Span> children,
         List<String> enders, StyleInfoLeaf style);
 
-    /// helper method for parse(SetupPointer)
+    /** Parse {@link BasicTextEscape}. Helper method for parse(SetupPointer)*/
     private boolean parseEscape(List<Span> parent, SetupPointer pointer){
         /// Setup
         ArrayList<Span> children = new ArrayList<>();

@@ -72,23 +72,36 @@ public abstract class SpanBranch extends SpanNode<Span> {
         });
     }
 
-    /** Edit the */
+    /** Edit the children if this can hold the entire text. */
     final boolean editRaw(String text){
         SetupParser parser = getParser(text);
         if (parser != null){
+            /// It can be fully parsed.
+
+            /// Removes the children
             for (Span span: this){
                 span.setRemove();
             }
-            parser.parse(SetupPointer.updatePointer(text, getDocument()))
-                .ifPresent(span -> spanChildren = setParents(span));
+            /// Reparse text
+            SetupPointer pointer = SetupPointer.updatePointer(text,
+                getDocument());
+            parser.parse(pointer).ifPresent(span ->
+                spanChildren = setParents(span)
+            );
+            /// There are text left over.
+            if (pointer.hasNext()){
+                throw new IllegalStateException("Has left over characters.");
+            }
             setUpdated();
             return true;
        }
        return false;
     }
 
+    /** Gets the parser only if it can reparsed the whole text. */
     protected abstract SetupParser getParser(String text);
 
+    /** Listens that one of its child is edited. */
     protected abstract void childEdited();
 
     public final CatalogueStatus getIdStatus(){
