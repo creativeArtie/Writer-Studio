@@ -56,6 +56,11 @@ abstract class BasicParseText implements SetupParser{
 
     /** Check if a text can be parse entirely. */
     boolean canParse(String text){
+        return canParse(checkNotNull(text, "text"), reparseEnders);
+
+    }
+
+    boolean canParse(String text, List<String> parseList){
         checkNotNull(text, "text");
 
         boolean isEscaped = false;
