@@ -162,7 +162,7 @@ public class ContentDebug{
     }
 
     @Test
-    public void textSimpleAdd(){
+    public void editAddTextSimple(){
         ///              01234
         String before = "hall run";
         DocumentAssert doc = assertDoc(1, before, parsers);
@@ -180,7 +180,7 @@ public class ContentDebug{
     }
 
     @Test
-    public void textEndAdd(){
+    public void editAddEnd(){
         ///              01234567
         String before = "hallway";
         DocumentAssert doc = assertDoc(1, before, parsers);
@@ -198,7 +198,7 @@ public class ContentDebug{
     }
 
     @Test
-    public void textDifferentField(){
+    public void editWithDiffStyle(){
         ///              01234567
         String before = "hallway";
         DocumentAssert doc = assertDoc(1, before, new ContentParser(
@@ -217,7 +217,7 @@ public class ContentDebug{
     }
 
     @Test
-    public void textEscapeAdd(){
+    public void editAddEscape(){
         ///              01234
         String before = "ab*d";
         DocumentAssert doc = assertDoc(1, before, parsers);
@@ -240,7 +240,7 @@ public class ContentDebug{
     }
 
     @Test
-    public void textEscapeRemoved(){
+    public void editRemoveEscape(){
         ///              01234
         String before = "ab\\*d";
         DocumentAssert doc = assertDoc(1, before, parsers);

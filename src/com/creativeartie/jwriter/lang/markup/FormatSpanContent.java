@@ -12,16 +12,13 @@ import com.creativeartie.jwriter.main.Checker;
 public class FormatSpanContent extends FormatSpan implements BasicText{
 
     /// Stuff for reparsing
-    private final List<String> reparseEnders;
-    private final StyleInfoLeaf leafStyle;
+    private final FormatParseContent spanReparser;
     private final boolean willReparse;
 
     FormatSpanContent(List<Span> spanChildren, boolean[] formats,
-        List<String> enders, StyleInfoLeaf style, boolean reparse
-    ){
+            FormatParseContent reparser, boolean reparse){
         super(spanChildren, formats);
-        reparseEnders = enders;
-        leafStyle = style;
+        spanReparser = reparser;
         willReparse = reparse;
     }
 

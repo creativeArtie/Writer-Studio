@@ -17,15 +17,11 @@ import static com.google.common.base.Preconditions.*;
 public class ContentSpan extends SpanBranch implements BasicText{
 
     /// Stuff for getUpdater(int index, String)
-    private final List<String> reparseEnders;
-    private final StyleInfoLeaf leafStyle;
+    private final ContentParser spanReparser;
 
-    ContentSpan (List<Span> spanChildren, List<String> enders,
-        StyleInfoLeaf style
-    ){
+    ContentSpan (List<Span> spanChildren, ContentParser parser){
         super(spanChildren);
-        reparseEnders = checkNotNull(enders, "Enders cannot be null.");
-        leafStyle = checkNotNull(style, "Style cannot be null.");
+        spanReparser = checkNotNull(parser, "parser");
     }
 
     @Override
@@ -49,8 +45,7 @@ public class ContentSpan extends SpanBranch implements BasicText{
 
     @Override
     protected SetupParser getParser(String text){
-        return BasicText.canParse(text, reparseEnders)?
-            new ContentParser(leafStyle, reparseEnders): null;
+        return spanReparser.canParse(text)? spanReparser: null;
     }
 
     @Override

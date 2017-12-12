@@ -2,7 +2,7 @@ package com.creativeartie.jwriter.lang.markup;
 
 import java.util.*;
 
-import static com.google.common.base.Preconditions.*;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * All strings used in this package. Each field (private and public) has its own
@@ -37,10 +37,8 @@ public final class AuxiliaryData{
      *      the starter token created
      */
     public static String getLevelToken(LinedParseLevel parser, int level){
-        checkNotNull(parser, "Reference parser cannot be null");
-        checkArgument(level > 0, "Level cannot be lower than 1");
-        checkArgument(level <= LEVEL_MAX + 1, "Level cannot be higher than " +
-            LEVEL_MAX + ": "  + level);
+        checkNotNull(parser, "parser");
+        checkRange(level, "level", 0, true, LEVEL_MAX + 1, true);
         switch (parser){
         case HEADING:
             /// ==

@@ -7,7 +7,6 @@ import com.google.common.collect.*;
 
 import static com.creativeartie.jwriter.main.Checker.*;
 
-
 /**
  * A list of {@link Span spans}. Mainly implements {@linkplain List}.
  * @param <T>

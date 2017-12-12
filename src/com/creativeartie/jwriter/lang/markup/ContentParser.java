@@ -3,7 +3,7 @@ package com.creativeartie.jwriter.lang.markup;
 import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
-import com.creativeartie.jwriter.main.*;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * Creates a text span up to a certain character.
@@ -27,13 +27,9 @@ class ContentParser extends BasicParseText{
     }
 
     @Override
-    protected ContentSpan buildSpan(List<Span> children,
-        List<String> enders, StyleInfoLeaf style
-    ){
-        Checker.checkNotNull(children, "children");
-        Checker.checkNotNull(enders, "enders");
-        Checker.checkNotNull(style, "style");
-        return new ContentSpan(children, enders, style);
+    protected ContentSpan buildSpan(List<Span> children){
+        checkNotNull(children, "children");
+        return new ContentSpan(children, this);
     }
 
 }

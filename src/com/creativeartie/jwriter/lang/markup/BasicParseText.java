@@ -5,9 +5,8 @@ import java.util.*;
 import com.google.common.collect.*;
 
 import com.creativeartie.jwriter.lang.*;
-import com.creativeartie.jwriter.main.*;
+import static com.creativeartie.jwriter.main.Checker.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
-import static com.google.common.base.Preconditions.*;
 
 /**
  * Parser for {@link BasicText} with {@link BasicTextEscape}.
@@ -24,8 +23,7 @@ abstract class BasicParseText implements SetupParser{
     }
 
     public BasicParseText(StyleInfoLeaf style, List<String> enders){
-        this(style, checkNotNull(enders, "Ending string list should not be null.")
-            .toArray(new String[0]));
+        this(style, checkNotNull(enders, "enders").toArray(new String[0]));
     }
 
     public BasicParseText(String ... enders){
@@ -33,7 +31,7 @@ abstract class BasicParseText implements SetupParser{
     }
 
     public BasicParseText(StyleInfoLeaf style, String ... enders){
-        checkNotNull(style, "Basic style info should not empty");
+        checkNotNull(style, "style");
 
         /// This builder is use to create two separate list, one for parsing,
         /// another for check if text can be parsed entirely.
@@ -53,12 +51,12 @@ abstract class BasicParseText implements SetupParser{
         // For setup parser.
         builder.add(CHAR_ESCAPE);
         setupEnders = builder.build();
-        leafStyle = Checker.checkNotNull(style, "style");
+        leafStyle = style;
     }
 
     /** Check if a text can be parse entirely. */
     boolean canParse(String text){
-        checkNotNull(text, "Text cannot be null.");
+        checkNotNull(text, "text");
 
         boolean isEscaped = false;
         for(int i = 0; i < text.length(); i++){
@@ -79,7 +77,7 @@ abstract class BasicParseText implements SetupParser{
 
     @Override
     public Optional<SpanBranch> parse(SetupPointer pointer){
-        Checker.checkNotNull(pointer, "pointer");
+        checkNotNull(pointer, "pointer");
         /// Setup
         ArrayList<Span> children = new ArrayList<>();
         boolean more;
@@ -93,17 +91,19 @@ abstract class BasicParseText implements SetupParser{
 
         /// Create span if there are Span extracted
         if (! children.isEmpty()) {
-            return Optional.of(buildSpan(children, reparseEnders, leafStyle));
+            return Optional.of(buildSpan(children));
         }
         return Optional.empty();
     }
 
     /** Creates the Span after the parsing complete*/
-    protected abstract SpanBranch buildSpan(List<Span> children,
-        List<String> enders, StyleInfoLeaf style);
+    protected abstract SpanBranch buildSpan(List<Span> children);
 
     /** Parse {@link BasicTextEscape}. Helper method for parse(SetupPointer)*/
     private boolean parseEscape(List<Span> parent, SetupPointer pointer){
+        checkNotNull(parent, "parent");
+        checkNotNull(pointer, "pointer");
+
         /// Setup
         ArrayList<Span> children = new ArrayList<>();
 

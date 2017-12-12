@@ -32,11 +32,8 @@ class FormatParseContent extends BasicParseText{
     }
 
     @Override
-    protected FormatSpanContent buildSpan(List<Span> children,
-        List<String> enders, StyleInfoLeaf style
-    ){
-        return new FormatSpanContent(children, formatList, enders,
-            style, willReparse);
+    protected FormatSpanContent buildSpan(List<Span> children){
+        return new FormatSpanContent(children, formatList, this, willReparse);
     }
 
 }

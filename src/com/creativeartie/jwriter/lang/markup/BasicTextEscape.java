@@ -5,9 +5,8 @@ import java.util.*;
 import com.creativeartie.jwriter.lang.*;
 import com.google.common.collect.*;
 
-
 /**
- * Escaped character with the {@link AuxiliaryData
+ * Escaped character with the {@link AuxiliaryData#CHAR_ESCAPE}.
  */
 public class BasicTextEscape extends SpanBranch{
 
