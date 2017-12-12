@@ -12,25 +12,6 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
  */
 interface BasicText{
 
-    @Deprecated
-    static boolean canParse(String text, List<String> enders){
-        boolean isEscaped = false;
-        for(int i = 0; i < text.length(); i++){
-            if (! isEscaped){
-                if (text.startsWith(CHAR_ESCAPE, i)){
-                    isEscaped = true;
-                } else {
-                    for (String ender: enders){
-                        if (text.startsWith(ender, i)){
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
     public List<Span> delegate();
 
     /** Get the text with space collapsed, and escape character removed.*/

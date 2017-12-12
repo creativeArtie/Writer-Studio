@@ -10,23 +10,24 @@ import com.google.common.collect.*;
  */
 public class BasicTextEscape extends SpanBranch{
 
-    private Optional<String> escape;
+    private Optional<String> cacheEscape;
+    private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(
+        AuxiliaryType.ESCAPE);
 
     BasicTextEscape(List<Span> children){
         super(children);
-        escape = Optional.empty();
+        cacheEscape = Optional.empty();
     }
 
     public String getEscape(){
-        if (! escape.isPresent()){
-            escape = Optional.of(size() == 2? get(1).getRaw(): "");
-        }
-        return escape.get();
+        cacheEscape = getCache(cacheEscape,
+            () -> size() == 2? get(1).getRaw(): "");
+        return cacheEscape.get();
     }
 
     @Override
     public List<StyleInfo> getBranchStyles(){
-        return ImmutableList.of(AuxiliaryType.ESCAPE);
+        return BRANCH_STYLE;
     }
 
     @Override
@@ -36,7 +37,7 @@ public class BasicTextEscape extends SpanBranch{
 
     @Override
     protected void childEdited(){
-        escape = Optional.empty();
+        cacheEscape = Optional.empty();
     }
 
     @Override

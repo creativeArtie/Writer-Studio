@@ -1,6 +1,7 @@
 package com.creativeartie.jwriter.lang;
 
 import java.util.*;
+import java.util.function.*;
 import com.google.common.collect.*;
 
 import static com.creativeartie.jwriter.main.Checker.*;
@@ -115,5 +116,15 @@ public abstract class SpanBranch extends SpanNode<Span> {
         }
         return CatalogueStatus.NO_ID;
 
+    }
+
+    /** A simple cache method that make use of {@link Optional}.*/
+    protected <T> Optional<T> getCache(Optional<T> found, Supplier<T> maker){
+        checkNotNull(found, "found");
+        checkNotNull(maker, "maker");
+        if (found.isPresent()){
+            return found;
+        }
+        return Optional.of(maker.get());
     }
 }
