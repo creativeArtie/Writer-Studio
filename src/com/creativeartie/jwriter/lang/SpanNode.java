@@ -4,7 +4,9 @@ import java.util.*;
 import java.util.function.*;
 
 import com.google.common.collect.*;
-import static com.google.common.base.Preconditions.*;
+
+import static com.creativeartie.jwriter.main.Checker.*;
+
 
 /**
  * A list of {@link Span spans}. Mainly implements {@linkplain List}.
@@ -44,8 +46,8 @@ public abstract class SpanNode<T extends Span> extends Span
 
     /** Get the first span if it a subclass of {@code clazz}. */
     protected <T extends SpanBranch> Optional<T> spanAtFirst(Class<T> clazz){
+        checkNotNull(clazz, "clazz");
         if (isEmpty()){
-            /// Shouldn't really happen
             return Optional.empty();
         }
         if (clazz.isInstance(get(0))){
@@ -56,18 +58,21 @@ public abstract class SpanNode<T extends Span> extends Span
 
     /** Find the first span that subclasses of {@code clazz}. */
     protected <T extends SpanBranch> Optional<T> spanFromFirst(Class<T> clazz){
+        checkNotNull(clazz, "clazz");
+
         for(Span span: this){
             if (clazz.isInstance(span)){
                 return Optional.of(clazz.cast(span));
             }
         }
+        //Not found or no children
         return Optional.empty();
     }
 
     /** Get the last span if it a subclass of {@code clazz}. */
     protected <T extends SpanBranch> Optional<T> spanAtLast(Class<T> clazz){
+        checkNotNull(clazz, "clazz");
         if (isEmpty()){
-            /// Shouldn't really happen
             return Optional.empty();
         }
         if (clazz.isInstance(get(size() - 1))){
@@ -78,17 +83,20 @@ public abstract class SpanNode<T extends Span> extends Span
 
     /** Find the first span that subclasses of {@code clazz}. */
     protected <T extends SpanBranch> Optional<T> spanFromLast(Class<T> clazz){
+        checkNotNull(clazz, "clazz");
         for(int i = size() - 1; i >= 0; i--){
             Span span = get(i);
             if (clazz.isInstance(span)){
                 return Optional.of(clazz.cast(span));
             }
         }
+        //Not found or no children
         return Optional.empty();
     }
 
     /** Get the fist leaf span if it a has the style of {@code info}. */
     protected Optional<SpanLeaf> leafFromFrist(StyleInfoLeaf info){
+        checkNotNull(info, "info");
         for (Span span: this){
             if (span instanceof SpanLeaf){
                 SpanLeaf found = (SpanLeaf) span;
@@ -97,11 +105,13 @@ public abstract class SpanNode<T extends Span> extends Span
                 }
             }
         }
+        //Not found or no children
         return Optional.empty();
     }
 
     /** Find the first leaf span that has the style of {@code info}. */
     protected Optional<SpanLeaf> leafFromLast(StyleInfoLeaf info){
+        checkNotNull(info, "info");
         for(int i = size() - 1; i >= 0; i++){
             Span span = get(i);
             if (span instanceof SpanLeaf){
@@ -111,17 +121,15 @@ public abstract class SpanNode<T extends Span> extends Span
                 }
             }
         }
+        //Not found or no children
         return Optional.empty();
     }
 
     /** Get the Span leaf with global position. Uses binary serach.*/
     public final SpanLeaf getLeaf(int pos){
-        /// Range check
+        checkIndex(pos, "pos", getEnd());
+
         Range<Integer> range = getRange();
-        if (! range.contains(pos)){
-            throw new IndexOutOfBoundsException(pos + " is not between :" +
-                range);
-        }
 
         if (range.contains(pos)){
             /// Binary serach setup

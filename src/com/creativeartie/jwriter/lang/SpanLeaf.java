@@ -7,6 +7,8 @@ import com.google.common.collect.*;
 import com.creativeartie.jwriter.property.*;
 import com.creativeartie.jwriter.main.*;
 
+import static com.creativeartie.jwriter.main.Checker.*;
+
 /**
  * A {@link Span} storing the raw text.
  */
@@ -20,11 +22,14 @@ public class SpanLeaf extends Span{
 
     /** create raw text for {@linkplain Object#toString()}. */
     public static String escapeText(String input){
+        checkNotNull(input, "input");
         return "\"" + input.replace("\"", "\" \\\" \"")
             .replace("\n", "\" \\n \"").replace("\t", "\" \\t \"") + "\"";
     }
 
     SpanLeaf(SetupPointer pointer, StyleInfoLeaf style){
+        checkNotNull(pointer, "pointer");
+        checkNotNull(style, "style");
         leafText = pointer.getRaw();
         pointer.roll();
         leafStyle = style;
@@ -36,11 +41,13 @@ public class SpanLeaf extends Span{
     }
 
     void setParent(SpanBranch childOf){
+        checkNotNull(childOf, "childOf");
         leafParent = childOf;
     }
 
     /** Gets the parent that the subclasses {@link Class}*/
     public <T> Optional<T> getParent(Class<T> clazz){
+        checkNotNull(clazz, "clazz");
         ImmutableList.Builder<SpanBranch> builder = ImmutableList.builder();
         SpanNode<?> parent = getParent();
         while(parent instanceof SpanBranch){
