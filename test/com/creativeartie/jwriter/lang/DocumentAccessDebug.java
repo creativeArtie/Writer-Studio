@@ -98,8 +98,7 @@ public class DocumentAccessDebug{
         docRaw.append(leafSpan(data, "text for the foot note", 3, 3, 3, 0, 0));
         docRaw.append(leafSpan(data, "\n",                     3, 3, 4));
 
-        // data.add(new Object[]{data.size() - 1, new int[0]});
-        data.add(new Object[]{data.size() - 1, new int[] {3, 3, 4}});
+        data.add(new Object[]{data.size() - 1, new int[0]});
 
         data.add(new Object[]{data.size() - 1, new int[0]});
 

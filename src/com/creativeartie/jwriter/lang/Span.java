@@ -3,7 +3,8 @@ package com.creativeartie.jwriter.lang;
 import java.util.*;
 import java.util.function.*;
 import com.google.common.collect.*;
-import static com.google.common.base.Preconditions.*;
+
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * A subdivision of a {@link Document document text}.
@@ -44,11 +45,13 @@ public abstract class Span{
 
     /** Add a listener when this span's children has been replaced. */
     public final void addEditor(Consumer<Span> listener){
+        checkNotNull(listener, "listener");
         changeListeners.add(listener);
     }
 
     /** Add a listener when this span's text has changed. */
     public final void addUpdater(Consumer<Span> listener){
+        checkNotNull(listener, "listener");
         updateListeners.add(listener);
     }
 
@@ -108,7 +111,7 @@ public abstract class Span{
 
     /** Convert a global index to location index. */
     public final int toLocalPosition(int index){
-        checkPositionIndex(index, getLocalEnd(), "Index is out of range.");
+        checkIndex(index, "index", getLocalEnd(), true);
         return getStart() - index;
     }
 }

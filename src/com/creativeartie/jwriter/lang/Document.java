@@ -84,7 +84,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * {@link #parseDocument(String)} and {@link #updateEdit()}.
      */
     private final void updateSpan(List<? extends Span> children){
-        assert children.size() > 0: "Empty children";
+        assert children != null: "Null children";
         for (Span child: children){
             /// Fill or refill {@link #catalogueMap}
             if (child instanceof SpanBranch){
@@ -139,7 +139,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     @Override
     public final Range<Integer> getRange(){
-        return getRangeCache(this, () -> Range.closedOpen(0, getLocalEnd() + 1));
+        return getRangeCache(this, () -> Range.closedOpen(0, getLocalEnd()));
     }
 
     /**
@@ -163,7 +163,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
      */
     final String getTextCache(Span child, Callable<String> caller) {
         checkNotNull(child, "child");
-        checkNotNull(caller, "caller function (caller)");
+        checkNotNull(caller, "caller");
 
         try {
             return spanTexts.get(child, caller);
@@ -179,7 +179,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     final List<SpanLeaf> getLeavesCache(Span child,
             Callable<List<SpanLeaf>> caller){
         checkNotNull(child, "child");
-        checkNotNull(caller, "caller function (caller)");
+        checkNotNull(caller, "caller");
 
         try {
             return spanLeaves.get(child, caller);
@@ -242,12 +242,18 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     /** Insert a {@linkplain String} at a location.*/
     public final void insert(int location, String input){
-        checkIndex(location, "index", getLocalEnd());
+        checkIndex(location, "index", getEnd(), true);
         checkNotNull(input, "input");
 
         if (location == getLocalEnd()){
             /// Insert at the end
-            SpanNode<?> span = getLeaf(location).getParent();
+            Span span = get(size() - 1);
+            while (span instanceof SpanBranch){
+                SpanBranch child = (SpanBranch) span;
+                span = child.get(child.size() - 1);
+            }
+            assert span instanceof SpanLeaf: "Wrong class.";
+            span = span.getParent();
             while (span instanceof SpanBranch){
                 if (((SpanBranch)span).editRaw(span.getRaw() + input)){
                     span = null;
@@ -257,7 +263,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
             }
             /// Reparse the whole document
             if (span != null){
-                assert span instanceof Document: "Wrong class:" + span.getClass();
+                assert span instanceof Document: "Wrong class.";
                 parseDocument(getRaw() + input);
                 setUpdated();
             }
@@ -274,10 +280,10 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     /** Insert a {@linkplain String} at a location.*/
     public final void delete(int start, int end){
-        checkIndexes(start, "start", end, "end", getEnd());
+        checkIndexes(start, "start", end, "end", getEnd(), true);
 
         edit(span -> {
-            if (span.getEnd() > end){
+            if (span.getEnd() >= end){
                 String text = span.getRaw();
                 text = text.substring(0,start - span.getStart()) +
                     text.substring(end - span.getStart(), text.length());
@@ -293,7 +299,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
      */
     private final void edit(Function<Span, String> editedText, int location){
         assert editedText != null: "Null editText";
-        assert location > 0 && location < getEnd(): "Null editText";
+        assert location >= 0 && location <= getEnd(): "Wrong location";
         SpanNode<?> span = getLeaf(location).getParent();
 
         /// Attempt to parse at a SpanBranch level

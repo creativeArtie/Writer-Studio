@@ -20,7 +20,7 @@ public final class Record{
     /** Creates the next {@link Record} of a {@link RecordList}. */
     static Record newRecord(Record last){
         return new Record(LocalDate.now())
-            .new Builder(checkNotNull(last, "last"))
+            .new Builder(last)
             .setTimeGoal(last.timeGoal)
             .setPublishGoal(last.publishGoal)
             .setPublishTotal(last.publishTotal)
@@ -31,7 +31,7 @@ public final class Record{
     /** Creates a {@link Builder} to load {@link Record} from file. */
     static Builder builder(Record last, LocalDate date){
         return new Record(checkNotNull(date, "date"))
-            .new Builder(checkNotNull(last, "last"));
+            .new Builder(last);
     }
 
     private final LocalDate recordDate;

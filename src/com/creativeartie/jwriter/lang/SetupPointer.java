@@ -16,7 +16,6 @@ public final class SetupPointer{
 
     /** Create a {@link SetupPointer} with the purpose to parse full text. */
     static SetupPointer newPointer(String raw, Document doc){
-        checkNotEmpty(raw, "raw");
         checkNotNull(doc, "doc");
 
         return new SetupPointer(raw, doc);
@@ -24,7 +23,7 @@ public final class SetupPointer{
 
     /** Create a {@link SetupPointer} with the purpose to reparse text. */
     static SetupPointer updatePointer(String raw, Document doc){
-        checkNotNull(Strings.emptyToNull(raw), "raw");
+        checkNotEmpty(raw, "raw");
         checkNotNull(doc, "doc");
 
         return new SetupPointer(raw, doc);
@@ -44,7 +43,7 @@ public final class SetupPointer{
     private int nextMarker;
 
     private SetupPointer(String raw, Document doc){
-        assert raw != null && ! raw.isEmpty(): "Empty or Null raw";
+        assert raw != null: "Null raw";
         assert doc != null: "Null doc";
         rawText = raw;
         document = doc;

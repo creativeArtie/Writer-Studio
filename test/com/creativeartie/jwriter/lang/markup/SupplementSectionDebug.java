@@ -52,7 +52,8 @@ public class SupplementSectionDebug {
                 });
             }
         }
-        return data;
+        // return data;
+        return new ArrayList<>();
     }
 
     private static ManuscriptDocument[] docs;

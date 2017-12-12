@@ -41,7 +41,7 @@ public final class ManuscriptFile {
 
     /** Open a zip file. */
     public static ManuscriptFile open(File file) throws IOException{
-        checkNotNull(file, "zipe file (file)");
+        checkNotNull(file, "file");
 
         /// {@link #ManuscriptFile(File,ManuscriptDocument, RecordList} params:
         ManuscriptDocument doc = null;

@@ -19,7 +19,7 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
 
     void addId(CatalogueIdentity id, SpanBranch span){
         checkNotNull(id, "id");
-        checkNotNull(span, "id span (span)");
+        checkNotNull(span, "span");
 
         CatalogueData data = idMap.get(id);
         if (data == null){
@@ -30,8 +30,8 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
     }
 
     void addRef(CatalogueIdentity ref, SpanBranch span){
-        checkNotNull(ref, "ref object");
-        checkNotNull(span, "ref span (span)");
+        checkNotNull(ref, "ref");
+        checkNotNull(span, "span");
 
         CatalogueData data = idMap.get(ref);
         if (data == null){

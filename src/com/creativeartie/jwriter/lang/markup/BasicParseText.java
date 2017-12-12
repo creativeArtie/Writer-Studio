@@ -33,8 +33,6 @@ abstract class BasicParseText implements SetupParser{
     }
 
     public BasicParseText(StyleInfoLeaf style, String ... enders){
-        checkArgument(enders.length > 0,
-            "Ending string list should not be empty");
         checkNotNull(style, "Basic style info should not empty");
 
         /// This builder is use to create two separate list, one for parsing,

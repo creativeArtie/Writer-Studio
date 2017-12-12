@@ -3,6 +3,8 @@ package com.creativeartie.jwriter.lang;
 import java.util.*;
 import com.google.common.collect.*;
 
+import static com.creativeartie.jwriter.main.Checker.*;
+
 /**
  * A {@link Span} storing {@link SpanLeaf} and {@link SpanBranch}.
  */
@@ -23,6 +25,7 @@ public abstract class SpanBranch extends SpanNode<Span> {
      * {@link #SpanBranch(List)} and {@link #editRaw(String)}.
      */
     private final ArrayList<Span> setParents(List<Span> spans){
+        checkNotEmpty(spans, "spans");
         ArrayList<Span> ans = new ArrayList<>(spans);
         ans.forEach((span) -> {
             if (span instanceof SpanBranch){
@@ -74,6 +77,7 @@ public abstract class SpanBranch extends SpanNode<Span> {
 
     /** Edit the children if this can hold the entire text. */
     final boolean editRaw(String text){
+        checkNotEmpty(text, "text");
         SetupParser parser = getParser(text);
         if (parser != null){
             /// It can be fully parsed.

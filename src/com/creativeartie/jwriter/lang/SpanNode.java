@@ -145,7 +145,6 @@ public abstract class SpanNode<T extends Span> extends Span
                 }
             }
         }
-
         /// exception for not found. Somehow the code can end up here.
         throw new IndexOutOfBoundsException(pos + " is not between :" + range);
     }

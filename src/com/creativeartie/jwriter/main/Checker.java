@@ -30,7 +30,7 @@ public final class Checker {
      * @return the error String for null exceptions.
      */
     public static <T> T checkNotNull(T test, String field){
-        if (test != null)return test;
+        if (test != null) return test;
         throw new IllegalArgumentException(addBegin(field) + " cannot be null.");
     }
 
@@ -75,10 +75,10 @@ public final class Checker {
         if (isInclude) {
             if (now.isEqual(date)) return date;
             else throw new IllegalArgumentException(addBegin(field) +
-                " is not before or on " + date + "(today)");
+                " is not before or on " + now + "(today): " + date);
         }
         throw new IllegalArgumentException(addBegin(field) + " is not before" +
-            date + "(today)");
+            now + "(today): " + date);
     }
 
     public static int checkRange(int test, String field, int lower,
@@ -88,33 +88,38 @@ public final class Checker {
         return test;
     }
 
-    public static int checkGreater(int test, String field, int upper,
+    public static int checkGreater(int test, String field, int limit,
             boolean isInclude){
-        if (upper > test) return test;
+        if (limit < test) return test;
         if (isInclude) {
-            if (upper == test) return test;
+            if (limit == test) return test;
             throw new IllegalArgumentException(addBegin(field) +
-                " is not greater than or equals to " + upper);
+                " is not greater than or equals to " + limit + ": " + test);
         }
         throw new IllegalArgumentException(addBegin(field) +
-            " is not greater than " + upper);
+            " is not greater than " + limit + ": " + test);
     }
 
-    public static int checkLessThan(int test, String field, int lower,
+    public static int checkLessThan(int test, String field, int limit,
             boolean isInclude){
-        if (lower < test) return test;
+        if (limit > test) return test;
         if (isInclude) {
-            if (lower == test) return test;
+            if (limit == test) return test;
             throw new IllegalArgumentException(addBegin(field) +
-                " is not less than or equals to " + lower);
+                " is not less than or equals to " + limit + ": " + test);
         }
         throw new IllegalArgumentException(addBegin(field) +
-            " is not less than " + lower);
+            " is not less than " + limit + ": " + test);
     }
 
     public static int[] checkIndexes(int lower, String field1, int upper,
             String field2 , int size){
-        checkIndex(upper, field1, size);
+        return checkIndexes(lower, field1, upper, field2, size, false);
+    }
+
+    public static int[] checkIndexes(int lower, String field1, int upper,
+            String field2 , int size, boolean isInclude){
+        checkIndex(upper, field1, size, isInclude);
         checkIndex(lower, field2, upper);
         return new int[]{lower, upper};
     }
@@ -125,14 +130,15 @@ public final class Checker {
 
     public static int checkIndex(int test, String field, int size,
             boolean isInclude){
-        if (test > 0 && test < size) return test;
+        if (test >= 0 && test < size) return test;
         if (isInclude){
             if (test == size) return test;
             throw new ArrayIndexOutOfBoundsException(addBegin(field) +
-                " cannot be below 0 or above " + size);
+                " cannot be below 0, above " + size + ", or equals " + size +
+                    ": " + test);
         }
         throw new ArrayIndexOutOfBoundsException(addBegin(field) +
-                " cannot be below 0 or above " + (size + 1));
+                " cannot be below 0 or above " + size  + ": " + test );
     }
 
     public static int checkInt(int test, String field, int lower,

@@ -39,8 +39,8 @@ public final class AuxiliaryData{
     public static String getLevelToken(LinedParseLevel parser, int level){
         checkNotNull(parser, "Reference parser cannot be null");
         checkArgument(level > 0, "Level cannot be lower than 1");
-        checkArgument(level <= LEVEL_MAX, "Level cannot be higher than " +
-            LEVEL_MAX);
+        checkArgument(level <= LEVEL_MAX + 1, "Level cannot be higher than " +
+            LEVEL_MAX + ": "  + level);
         switch (parser){
         case HEADING:
             /// ==
@@ -62,7 +62,6 @@ public final class AuxiliaryData{
     /// getLevelToken helper
     private static String repeat(String repeat, int level){
         assert repeat != null: "Null repeat";
-        assert level > 0 && level < LEVEL_MAX: "Off range level";
         StringBuilder builder = new StringBuilder();
         for(int i = 0; i < level; i++){
             builder.append(repeat);

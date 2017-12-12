@@ -92,8 +92,8 @@ public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
      * {@link compareTo(CatalogueIdentity}.
      */
     private static int compareCategory(List<String> self, List<String> that){
-        checkNotNull(self, "category list (self)");
-        checkNotNull(that, "category list (that)");
+        checkNotNull(self, "self");
+        checkNotNull(that, "that");
 
         int i = 0;
         for (String cat: self){
