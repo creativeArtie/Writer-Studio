@@ -30,12 +30,16 @@ public class DirectorySpan extends SpanBranch {
         cacheId = getCache(cacheId, () -> {
             ArrayList<String> builder = new ArrayList<>();
             builder.add(idPurpose.getCategory());
+
+            // idTmp is tmp because the text maybe a category
             Optional<String> idTmp = Optional.empty();
             for(Span child: this){
                 if (child instanceof SpanLeaf){
+                    /// child == DIRECTORY_CATEGORY:
                     builder.add(idTmp.orElse(""));
                     idTmp = Optional.empty();
                 } else {
+                    /// child is a text
                     idTmp = Optional.of(((ContentSpan)child).getTrimmed()
                         .toLowerCase());
                 }
@@ -65,14 +69,6 @@ public class DirectorySpan extends SpanBranch {
         return ImmutableList.of();
     }
 
-    StyleInfo getStatusState(){
-        CatalogueData data = getDocument().getCatalogue().get(buildId());
-        if (data == null) {
-            return CatalogueStatus.NO_ID;
-        }
-        return data.getState();
-    }
-
     @Override
     public String toString(){
         return "ID" + buildId().toString();
@@ -80,8 +76,7 @@ public class DirectorySpan extends SpanBranch {
 
     @Override
     protected SetupParser getParser(String text){
-        // TODO editRaw
-        return null;
+        return spanReparser.canParse(text)? spanReparser: null;
     }
 
     @Override

@@ -12,6 +12,7 @@ import static com.creativeartie.jwriter.main.Checker.*;
 final class DirectoryParser implements SetupParser{
     /// Shows how to end a text
     private final ContentParser idContent;
+    private final String[] reparseEnders;
 
     /// Adds a root category to differentiate footnote, links, etc
     private final DirectoryType idType;
@@ -26,8 +27,14 @@ final class DirectoryParser implements SetupParser{
         String[] init = new String[enders.length + 1];
         System.arraycopy(enders, 0, init, 0, enders.length);
         init[enders.length] = DIRECTORY_CATEGORY;
+        reparseEnders = enders;
 
         idContent = new ContentParser(StyleInfoLeaf.ID, init);
+    }
+
+    /** Check if the text can be parse at Directory level. */
+    boolean canParse(String text){
+        return BasicParseText.canParse(text, Arrays.asList(reparseEnders));
     }
 
     @Override

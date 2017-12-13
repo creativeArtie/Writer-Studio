@@ -219,7 +219,7 @@ public class DirectoryDebug{
     }
 
     @Test
-    public void testCategoryChanged(){
+    public void editCategoryChanged(){
         ///              0123456789012
         String before = "no-abcd-name";
         DocumentAssert doc = assertDoc(1, before, parsers);
@@ -254,5 +254,48 @@ public class DirectoryDebug{
         doc.assertKeyLeaf(10, 11, "-",       0, 3);
         name.test(       doc,  1, "name",    0, 4);
         doc.assertIdLeaf( 11, 15, "name",    0, 4, 0);
+
+        doc.assertIds();
     }
+
+    @Test
+    public void editCategoryAdded(){
+        ///              0123456789012
+        String before = "no-abcdname";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+
+        doc.insert(7, "-", 0);
+
+        ///             0123456789012
+        String after = "no-abcd-name";
+        IDBuilder builder = buildId("name").addCategory("no")
+            .addCategory("abcd");
+
+        doc.assertDoc(1, after);
+        DirectoryTest id = new DirectoryTest()
+            .setPurpose(DirectoryType.NOTE)
+            .setIdentity(builder);
+        ContentTest cat1 = new ContentTest()
+            .setText("no").setBegin(false)
+            .setEnd(false).setCount(1);
+        ContentTest cat2 = new ContentTest()
+            .setText("abcd").setBegin(false)
+            .setEnd(false).setCount(1);
+        ContentTest name = new ContentTest()
+            .setText("name").setBegin(false)
+            .setEnd(false).setCount(1);
+
+        id.test(         doc,  5, after,  0);
+        cat1.test(       doc,  1, "no",   0, 0);
+        doc.assertIdLeaf(  0,  2, "no",   0, 0, 0);
+        doc.assertKeyLeaf (2,  3, "-",    0, 1);
+        cat2.test(       doc,  1, "abcd", 0, 2);
+        doc.assertIdLeaf(  3,  7, "abcd", 0, 2, 0);
+        doc.assertKeyLeaf( 7,  8, "-",    0, 3);
+        name.test(       doc,  1, "name", 0, 4);
+        doc.assertIdLeaf(  8, 12, "name", 0, 4, 0);
+
+        doc.assertIds();
+    }
+
 }

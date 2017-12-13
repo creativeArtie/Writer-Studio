@@ -17,8 +17,11 @@ public abstract class SpanBranch extends SpanNode<Span> {
 
     private Optional<Document> spanDoc;
 
+    private Optional<CatalogueStatus> spanStatus;
+
     public SpanBranch(List<Span> spans){
         spanChildren = setParents(spans);
+        spanStatus = Optional.empty();
     }
 
     /**
@@ -98,6 +101,7 @@ public abstract class SpanBranch extends SpanNode<Span> {
                 throw new IllegalStateException("Has left over characters.");
             }
             setUpdated();
+            spanStatus = Optional.empty();
             return true;
        }
        return false;
@@ -107,15 +111,17 @@ public abstract class SpanBranch extends SpanNode<Span> {
     protected abstract SetupParser getParser(String text);
 
     public final CatalogueStatus getIdStatus(){
-        if (this instanceof Catalogued){
-            Catalogued catalogued = (Catalogued) this;
-            Optional<CatalogueIdentity> id = catalogued.getSpanIdentity();
-            if (id.isPresent()){
-                return id.get().getStatus(getDocument().getCatalogue());
+        spanStatus = getCache(spanStatus, () -> {
+            if (this instanceof Catalogued){
+                Catalogued catalogued = (Catalogued) this;
+                Optional<CatalogueIdentity> id = catalogued.getSpanIdentity();
+                if (id.isPresent()){
+                    return id.get().getStatus(getDocument().getCatalogue());
+                }
             }
-        }
-        return CatalogueStatus.NO_ID;
-
+            return CatalogueStatus.NO_ID;
+        });
+        return spanStatus.get();
     }
 
     /** A simple cache method that make use of {@link Optional}.*/

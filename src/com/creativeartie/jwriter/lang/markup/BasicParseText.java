@@ -60,7 +60,7 @@ abstract class BasicParseText implements SetupParser{
 
     }
 
-    boolean canParse(String text, List<String> parseList){
+    static boolean canParse(String text, List<String> parseList){
         checkNotNull(text, "text");
 
         boolean isEscaped = false;
@@ -69,7 +69,7 @@ abstract class BasicParseText implements SetupParser{
                 if (text.startsWith(CHAR_ESCAPE, i)){
                     isEscaped = true;
                 } else {
-                    for (String ender: reparseEnders){
+                    for (String ender: parseList){
                         if (text.startsWith(ender, i)){
                             return false;
                         }
