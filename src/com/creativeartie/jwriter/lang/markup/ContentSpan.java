@@ -4,16 +4,13 @@ import java.util.*;
 import java.util.Optional;
 
 import com.creativeartie.jwriter.lang.*;
-import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
-import com.creativeartie.jwriter.main.Checker;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 import com.google.common.collect.*;
 import com.google.common.base.*;
-import static com.google.common.base.Preconditions.*;
 
 /**
- * Created from {@link ContentParser}, super class of
- * {@link ContentSpanContent}. Used for whenever text is needed.
+ * Text implementing {@link BasicText} for non-formatted text.
  */
 public class ContentSpan extends SpanBranch implements BasicText{
 
@@ -84,6 +81,7 @@ public class ContentSpan extends SpanBranch implements BasicText{
 
     @Override
     protected SetupParser getParser(String text){
+        checkNotNull(text, "text");
         return spanReparser.canParse(text)? spanReparser: null;
     }
 

@@ -7,7 +7,7 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
- * Create a Span for {@link CatalogueIdentity}.
+ * Parser for {@link DirectorySpan}.
  */
 final class DirectoryParser implements SetupParser{
     /// Shows how to end a text
@@ -34,6 +34,7 @@ final class DirectoryParser implements SetupParser{
 
     /** Check if the text can be parse at Directory level. */
     boolean canParse(String text){
+        checkNotNull(text, "text");
         return BasicParseText.canParse(text, Arrays.asList(reparseEnders));
     }
 
@@ -53,7 +54,7 @@ final class DirectoryParser implements SetupParser{
             more = pointer.startsWith(children, DIRECTORY_CATEGORY);
         } while (more);
 
-        /// Create span if there are Span extracted
+        /// Create span if there are Span(s) extracted
         if (children.size() > 0) {
             DirectorySpan ans = new DirectorySpan(children, idType, this);
             return Optional.of(ans);

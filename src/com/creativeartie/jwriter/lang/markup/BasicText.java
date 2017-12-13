@@ -4,7 +4,6 @@ import java.util.*;
 import com.google.common.base.*;
 
 import com.creativeartie.jwriter.lang.*;
-import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
  * Text with {@link AuxiliaryData#CHAR_ESCAPE escape character}.

@@ -8,7 +8,7 @@ import com.google.common.collect.*;
 /**
  * Escaped character with the {@link AuxiliaryData#CHAR_ESCAPE}.
  */
-public class BasicTextEscape extends SpanBranch{
+public final class BasicTextEscape extends SpanBranch{
 
     private Optional<String> cacheEscape;
     private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(

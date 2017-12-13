@@ -49,6 +49,7 @@ public class DirectorySpan extends SpanBranch {
         return cacheId.get();
     }
 
+    /** Get the display for {@link FormatSpanDirectory#getOutput()}*/
     public String getIdRaw(){
         cacheRaw = getCache(cacheRaw, () -> {
             StringBuilder builder = new StringBuilder();
@@ -85,9 +86,7 @@ public class DirectorySpan extends SpanBranch {
     }
 
     @Override
-    protected void docEdited(){
-        // TODO docEdited
-    }
+    protected void docEdited(){}
 
 
     /**
