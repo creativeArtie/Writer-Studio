@@ -44,7 +44,7 @@ enum LinedParseLevel implements SetupParser {
 
         new FormatParser(EDITION_BEGIN).parse(children, pointer);
 
-        EditionParser.parseAll(children, pointer);
+        EditionParser.INSTANCE.parse(children, pointer);
 
         pointer.startsWith(children, LINED_END);
 

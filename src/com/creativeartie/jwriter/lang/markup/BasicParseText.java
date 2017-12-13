@@ -61,6 +61,10 @@ abstract class BasicParseText implements SetupParser{
     }
 
     static boolean canParse(String text, List<String> parseList){
+        return canParse(text, parseList.toArray(new String[0]));
+    }
+
+    static boolean canParse(String text, String ... parseList){
         checkNotNull(text, "text");
 
         boolean isEscaped = false;

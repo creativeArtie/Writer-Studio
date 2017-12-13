@@ -100,7 +100,6 @@ public class ContentSpan extends SpanBranch implements BasicText{
     private void clearCache(){
         cacheText = Optional.empty();
         cacheTrimmed = Optional.empty();
-        cacheTrimmed = Optional.empty();
         cacheSpaceBegin = Optional.empty();
         cacheSpaceEnd = Optional.empty();
         wordCount = Optional.empty();
