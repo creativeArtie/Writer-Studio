@@ -19,7 +19,6 @@ public class EditionSpan extends SpanBranch{
 
     EditionSpan(List<Span> children){
         super(children);
-        clearCache();
     }
 
     /**
@@ -67,19 +66,11 @@ public class EditionSpan extends SpanBranch{
 
     @Override
     protected void childEdited(){
-        clearCache();
-    }
-
-    @Override
-    protected void docEdited(){}
-
-    /**
-     * Set all cache to empty. Helper method of
-     * {@link #EditionSpan(List)} and {@link #childEdited()}.
-     */
-    private void clearCache(){
         cacheEdition = Optional.empty();
         cacheDetail = Optional.empty();
         cacheBranchStyles = Optional.empty();
     }
+
+    @Override
+    protected void docEdited(){}
 }

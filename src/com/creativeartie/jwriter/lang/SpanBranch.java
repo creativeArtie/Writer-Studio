@@ -22,6 +22,8 @@ public abstract class SpanBranch extends SpanNode<Span> {
     public SpanBranch(List<Span> spans){
         spanChildren = setParents(spans);
         spanStatus = Optional.empty();
+        childEdited();
+        docEdited();
     }
 
     /**

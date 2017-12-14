@@ -22,7 +22,6 @@ public class DirectorySpan extends SpanBranch {
         super(spanChildren);
         idPurpose = checkNotNull(purpose, "purpose");
         spanReparser = checkNotNull(reparser, "reparser");
-        clearCache();
     }
 
     /** Creates the id for a {@link Catalogued}*/
@@ -83,19 +82,10 @@ public class DirectorySpan extends SpanBranch {
 
     @Override
     protected void childEdited(){
-        clearCache();
+        cacheId = Optional.empty();
+        cacheRaw = Optional.empty();
     }
 
     @Override
     protected void docEdited(){}
-
-
-    /**
-     * Set all cache to empty. Helper method of
-     * {@link #ContentSpan(List, ContentParser)} and {@link #childEdited()}.
-     */
-    private void clearCache(){
-        cacheId = Optional.empty();
-        cacheRaw = Optional.empty();
-    }
 }

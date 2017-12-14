@@ -25,7 +25,6 @@ public class ContentSpan extends SpanBranch implements BasicText{
     ContentSpan (List<Span> spanChildren, ContentParser parser){
         super(spanChildren);
         spanReparser = checkNotNull(parser, "parser");
-        clearCache();
     }
 
     @Override
@@ -87,21 +86,13 @@ public class ContentSpan extends SpanBranch implements BasicText{
 
     @Override
     protected void childEdited(){
-        clearCache();
-    }
-
-    @Override
-    protected void docEdited(){}
-
-    /**
-     * Set all cache to empty. Helper method of
-     * {@link #ContentSpan(List, ContentParser)} and {@link #childEdited()}.
-     */
-    private void clearCache(){
         cacheText = Optional.empty();
         cacheTrimmed = Optional.empty();
         cacheSpaceBegin = Optional.empty();
         cacheSpaceEnd = Optional.empty();
         wordCount = Optional.empty();
     }
+
+    @Override
+    protected void docEdited(){}
 }

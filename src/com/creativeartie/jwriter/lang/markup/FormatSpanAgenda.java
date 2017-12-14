@@ -18,7 +18,6 @@ public final class FormatSpanAgenda extends SpanBranch implements Catalogued{
     FormatSpanAgenda(List<Span> children){
         super(children);
         cacheId = Optional.empty();
-        clearCache();
     }
 
     public Optional<ContentSpan> getAgendaSpan(){
@@ -60,18 +59,11 @@ public final class FormatSpanAgenda extends SpanBranch implements Catalogued{
 
     @Override
     protected void childEdited(){
-        clearCache();
+        cacheAgenda = Optional.empty();
     }
 
     @Override
     protected void docEdited(){
         cacheId = Optional.empty();
-    }
-    /**
-     * Set all cache to empty. Helper method of
-     * {@link #EditionSpan(List, ContentParser)} and {@link #childEdited()}.
-     */
-    private void clearCache(){
-        cacheAgenda = Optional.empty();
     }
 }
