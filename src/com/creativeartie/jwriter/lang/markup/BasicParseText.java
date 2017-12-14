@@ -18,18 +18,6 @@ abstract class BasicParseText implements SetupParser{
     private final ImmutableList<String> reparseEnders;
     private final StyleInfoLeaf leafStyle;
 
-    public BasicParseText(List<String> enders){
-        this(StyleInfoLeaf.TEXT, enders);
-    }
-
-    public BasicParseText(StyleInfoLeaf style, List<String> enders){
-        this(style, checkNotNull(enders, "enders").toArray(new String[0]));
-    }
-
-    public BasicParseText(String ... enders){
-        this(StyleInfoLeaf.TEXT, enders);
-    }
-
     public BasicParseText(StyleInfoLeaf style, String ... enders){
         checkNotNull(style, "style");
 

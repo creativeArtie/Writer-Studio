@@ -23,8 +23,7 @@ class FormatParseContent extends BasicParseText{
     }
 
     public FormatParseContent(StyleInfoLeaf style, boolean[] formats,
-        boolean reparse, String[] enders
-    ){
+            boolean reparse, String ... enders){
         super(style, enders);
         Checker.checkArraySize(formats, "formats", FORMAT_TYPES);
         formatList = Arrays.copyOf(formats, formats.length);

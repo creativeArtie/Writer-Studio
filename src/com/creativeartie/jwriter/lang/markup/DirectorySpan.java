@@ -61,6 +61,7 @@ public class DirectorySpan extends SpanBranch {
         return cacheRaw.get();
     }
 
+    /** Get the purpose of this span. */
     public DirectoryType getPurpose(){
         return idPurpose;
     }
