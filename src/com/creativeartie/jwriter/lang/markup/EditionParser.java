@@ -7,7 +7,7 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
- * Creates a Span to show the edition of an manuscript section.
+ * Parser for {@link EditionSpan}.
  */
 enum EditionParser implements SetupParser{
     INSTANCE;

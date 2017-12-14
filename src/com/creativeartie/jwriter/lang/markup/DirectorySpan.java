@@ -8,7 +8,7 @@ import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
- * Created from {@link DirectorySpan}. Used to store {@link CatalogueIdentity}
+ * Grouping of text {@link Span} that creates a {@link CatalogueIdentity}.
  */
 public class DirectorySpan extends SpanBranch {
     /// helps with categorizing and describes purpose

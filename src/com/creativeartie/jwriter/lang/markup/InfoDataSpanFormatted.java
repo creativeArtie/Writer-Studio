@@ -4,6 +4,9 @@ import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 
+/**
+ * Data that stores a {@link FormatSpanMain}.
+ */
 public class InfoDataSpanFormatted extends InfoDataSpan{
 
     @Override

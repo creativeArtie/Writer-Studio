@@ -4,6 +4,9 @@ import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 
+/**
+ * Line that stores text of a footnote or a endnote.
+ */
 public class LinedSpanPointNote extends LinedSpanPoint {
 
     LinedSpanPointNote(List<Span> children){

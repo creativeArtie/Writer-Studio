@@ -6,7 +6,7 @@ import java.util.*;
 import com.creativeartie.jwriter.lang.*;
 
 /**
- * A {@link FormatSpanLink} with path located somewhere in the document.
+ * {@link FormatSpanLink} with path located somewhere in the document.
  */
 public final class FormatSpanLinkRef extends FormatSpanLink
     implements Catalogued{

@@ -6,6 +6,9 @@ import com.google.common.collect.*;
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
+/**
+ * Major division of a document, sometimes with a heading.
+ */
 public class SectionHeading extends Section {
     private Optional<SectionHeading> parentSection;
     private Optional<LinedSpanSection> sectionHeading;

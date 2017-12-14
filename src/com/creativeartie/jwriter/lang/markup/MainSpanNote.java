@@ -7,6 +7,9 @@ import com.google.common.collect.*;
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
+/**
+ * Research note with headings, ids, and citation.
+ */
 public class MainSpanNote extends MainSpan {
 
     MainSpanNote(List<Span> children){

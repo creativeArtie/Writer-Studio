@@ -4,6 +4,9 @@ import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 
+/**
+ * Line that points to a list. This is the base for {@link LinedSpanSection}.
+ */
 public class LinedSpanLevel extends LinedSpan {
 
     LinedSpanLevel(List<Span> children){

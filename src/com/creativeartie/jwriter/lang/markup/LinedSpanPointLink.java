@@ -4,6 +4,9 @@ import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 
+/**
+ * Line that stores a hyperlink to be use later.
+ */
 public class LinedSpanPointLink extends LinedSpanPoint {
 
     LinedSpanPointLink(List<Span> children){

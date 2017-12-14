@@ -6,6 +6,9 @@ import com.google.common.base.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 import com.creativeartie.jwriter.lang.StyleInfo;
+/**
+ * Styles showing the current status of section in the document.
+ */
 public enum EditionType implements StyleInfo{
     /// Enum order mandated by WindowText
 

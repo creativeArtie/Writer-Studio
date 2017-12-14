@@ -7,6 +7,9 @@ import com.google.common.base.*;
 
 import com.creativeartie.jwriter.lang.*;
 
+/**
+ * Name for fields that store {@link InfoDataSpan data}.
+ */
 public class InfoFieldSpan extends SpanBranch{
 
     InfoFieldSpan(List<Span> children){

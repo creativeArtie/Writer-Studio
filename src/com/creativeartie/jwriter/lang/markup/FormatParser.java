@@ -7,8 +7,7 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import com.creativeartie.jwriter.main.Checker;
 
 /**
- * A {@link Span} for text that has been formatted. This makes all {@link Span}
- * starting with {@code Format}.
+ * Parser for {@link FormatSpanMain}
  */
 class FormatParser implements SetupParser {
 

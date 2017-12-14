@@ -12,6 +12,9 @@ import com.google.common.io.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import com.creativeartie.jwriter.main.Checker;
 
+/**
+ * Main document that put all the {@link Span spans} together.
+ */
 public class ManuscriptDocument extends Document{
 
     public ManuscriptDocument(File file) throws IOException{

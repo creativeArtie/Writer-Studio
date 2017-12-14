@@ -10,7 +10,10 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import com.creativeartie.jwriter.main.Checker;
 import com.creativeartie.jwriter.lang.*;
 
-public enum InfoDataParser implements SetupParser{
+/**
+ * Parsers for {@link InfoDataSpan} which includes all {@link InfoData*} classes.
+ */
+enum InfoDataParser implements SetupParser{
     FORMATTED(pointer -> {
         Checker.checkNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();

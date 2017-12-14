@@ -4,6 +4,9 @@ import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 
+/**
+ * Line that store note heading or details.
+ */
 public class LinedSpanNote extends LinedSpan{
 
     public LinedSpanNote(List<Span> children){

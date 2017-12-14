@@ -8,7 +8,7 @@ import com.google.common.collect.*;
 import com.creativeartie.jwriter.lang.*;
 
 /**
- * A {@link span} for formatted text.
+ * {@link Span} to store all other {@link FormatSpan*} classes.
  */
 public final class FormatSpanMain extends SpanBranch {
 

@@ -5,6 +5,9 @@ import com.google.common.collect.*;
 
 import com.creativeartie.jwriter.lang.*;
 
+/**
+ * Line that store research sources and how to do in-text citation.
+ */
 public class LinedSpanCite extends LinedSpan {
 
     public LinedSpanCite(List<Span> children){

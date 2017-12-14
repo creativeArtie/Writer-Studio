@@ -4,6 +4,10 @@ import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 
+/**
+ * Line that create a section break, or a scene break in the document or a
+ * novel.
+ */
 public class LinedSpanBreak extends LinedSpan {
 
     LinedSpanBreak(List<Span> children){

@@ -5,6 +5,9 @@ import java.util.*;
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
+/**
+ * Line that store information that needed to be done before published.
+ */
 public class LinedSpanAgenda extends LinedSpan implements Catalogued{
 
     LinedSpanAgenda(List<Span> children){

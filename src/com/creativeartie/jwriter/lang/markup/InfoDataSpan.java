@@ -7,6 +7,9 @@ import com.google.common.collect.*;
 import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.main.Checker;
 
+/**
+ * Base class for all {@link InfoDataSpan*} classes.
+ */
 public abstract class InfoDataSpan extends SpanBranch{
 
     public abstract SpanBranch getData();

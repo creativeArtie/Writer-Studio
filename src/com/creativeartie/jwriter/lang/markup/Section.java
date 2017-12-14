@@ -4,6 +4,9 @@ import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 
+/**
+ * Division of a document.
+ */
 public abstract class Section {
     Section(){}
 

@@ -5,6 +5,9 @@ import com.creativeartie.jwriter.lang.*;
 import java.util.*;
 import com.google.common.collect.*;
 
+/**
+ * Minor division of a document, sometimes with an outline point.
+ */
 public class SectionOutline extends Section{
 
     private SectionHeading parentSection;

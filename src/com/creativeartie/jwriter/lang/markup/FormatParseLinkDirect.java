@@ -10,8 +10,7 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import com.creativeartie.jwriter.main.Checker;
 
 /**
- * SetupParser for {@link FormatSpanLink} that uses angler bracket. It therefore is a
- * SetupParser for {@link FormatSpanLinkDirect} and {@link FormatRefSpan}.
+ * SetupParser for {{@link FormatSpanLinkDirect}.
  */
 class FormatParseLinkDirect extends FormatParseLink {
 

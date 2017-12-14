@@ -6,6 +6,10 @@ import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import com.creativeartie.jwriter.main.Checker;
 
+/**
+ * Parser for {@link LinedSpanPoint}. {@code LinedSpanPoint} is the base class
+ * of {@link LinedSpanPointLink} and {@link LinedSpanPointNote}
+ */
 enum LinedParsePointer implements SetupParser {
     FOOTNOTE(LINED_FOOTNOTE), ENDNOTE(LINED_ENDNOTE), HYPERLINK(LINED_LINK){
 

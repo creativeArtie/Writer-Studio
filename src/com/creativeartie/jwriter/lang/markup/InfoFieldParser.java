@@ -8,7 +8,10 @@ import com.google.common.base.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import com.creativeartie.jwriter.lang.*;
 
-public class InfoFieldParser implements SetupParser{
+/**
+ * Parser for {@link InfoFieldSpan}.
+ */
+class InfoFieldParser implements SetupParser{
 
     private final InfoFieldType fieldType;
 

@@ -7,7 +7,7 @@ import java.util.Optional;
 import com.creativeartie.jwriter.lang.*;
 
 /**
- * A {@link FormatSpanLink} with path indicated right in the text.
+ * {@link FormatSpanLink} with path indicated right in the text.
  */
 public class FormatSpanLinkDirect extends FormatSpanLink {
 

@@ -7,8 +7,7 @@ import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
- * A {@linkplain FormatSpanCurly} for to do text. It will warn user when
- * exporting while there are these {@link Span spans} still exists.
+ * {@link FormatSpan} for to do text.
  */
 public final class FormatSpanAgenda extends SpanBranch implements Catalogued{
 

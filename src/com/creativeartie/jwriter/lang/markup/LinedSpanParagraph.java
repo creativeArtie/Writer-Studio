@@ -4,6 +4,9 @@ import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 
+/**
+ * Line representing a basic paragraph.
+ */
 public class LinedSpanParagraph extends LinedSpan {
 
     LinedSpanParagraph(List<Span> children){

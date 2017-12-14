@@ -5,6 +5,9 @@ import java.util.*;
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
+/**
+ * Parser for {@link LinedSpanCite}.
+ */
 enum LinedParseCite implements SetupParser {
     INSTANCE;
 

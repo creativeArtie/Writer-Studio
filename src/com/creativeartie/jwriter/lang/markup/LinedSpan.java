@@ -7,6 +7,9 @@ import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import com.creativeartie.jwriter.main.Checker;
 
+/**
+ * Base class for all {@link LinedSpan}.
+ */
 public abstract class LinedSpan extends SpanBranch {
 
     LinedSpan(List<Span> children){

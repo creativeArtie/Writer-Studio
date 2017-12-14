@@ -4,6 +4,9 @@ import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 
+/**
+ * Line that stores a block quote.
+ */
 public class LinedSpanQuote extends LinedSpan {
 
     LinedSpanQuote(List<Span> children){

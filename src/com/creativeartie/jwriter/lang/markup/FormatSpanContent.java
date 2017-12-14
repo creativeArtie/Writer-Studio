@@ -7,7 +7,7 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import com.creativeartie.jwriter.main.Checker;
 
 /**
- * A {@link ContentSpan} with format for {@link FormatSpanMain}.
+ * {@link BasicText} with {@link FormatSpan format} for {@link FormatSpanMain}.
  */
 public class FormatSpanContent extends FormatSpan implements BasicText{
 

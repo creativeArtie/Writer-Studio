@@ -7,6 +7,9 @@ import com.google.common.base.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import com.creativeartie.jwriter.lang.*;
 
+/**
+ * Styles describe the type of data.
+ */
 public enum InfoFieldType implements StyleInfo{
 
     SOURCE(InfoDataParser.FORMATTED), IN_TEXT(InfoDataParser.TEXT),

@@ -5,6 +5,9 @@ import com.creativeartie.jwriter.property.*;
 
 import com.creativeartie.jwriter.lang.*;
 
+/**
+ * Data that stores a {@link ContentSpan}.
+ */
 public class InfoDataSpanText extends InfoDataSpan{
 
     @Override

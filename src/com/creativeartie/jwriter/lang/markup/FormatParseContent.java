@@ -7,7 +7,7 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import com.creativeartie.jwriter.main.*;
 
 /**
- * Creates a text span upto a certain character.
+ * Parser for {@link FormatSpanContent}.
  */
 class FormatParseContent extends BasicParseText{
 

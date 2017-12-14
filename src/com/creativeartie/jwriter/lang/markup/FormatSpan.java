@@ -9,7 +9,7 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import com.creativeartie.jwriter.main.Checker;
 
 /**
- * A {@link span} for formatted text.
+ * {@link Span} for several formatted {@code FormatSpan*} classes.
  */
 public abstract class FormatSpan extends SpanBranch {
     private final boolean[] spanFormats;

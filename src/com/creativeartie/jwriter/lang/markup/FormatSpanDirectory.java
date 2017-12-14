@@ -6,8 +6,7 @@ import java.util.*;
 import com.creativeartie.jwriter.lang.*;
 
 /**
- * A {@linkplain FormatSpanCurly} for id reference. This has a span where it is
- * reference to
+ * A {@linkplain FormatSpan} for footnote, endnote, and research notes.
  */
 public final class FormatSpanDirectory extends FormatSpan implements Catalogued{
     private final DirectoryType spanType;

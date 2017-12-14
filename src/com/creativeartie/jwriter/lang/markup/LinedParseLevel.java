@@ -6,6 +6,9 @@ import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import com.creativeartie.jwriter.main.Checker;
 
+/**
+ * Parser for {@link LinedSpanLevel} and it's subclasse {@link LinedSpanSection}.
+ */
 enum LinedParseLevel implements SetupParser {
     HEADING, OUTLINE,
     /// Split into 2 to separate between praseSec(...) and parseBasic(...)

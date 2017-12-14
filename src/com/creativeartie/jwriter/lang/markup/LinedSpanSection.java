@@ -4,6 +4,9 @@ import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 
+/**
+ * Line that stores a section heading.
+ */
 public class LinedSpanSection extends LinedSpanLevel implements Catalogued{
 
     LinedSpanSection(List<Span> children){

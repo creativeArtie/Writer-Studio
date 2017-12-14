@@ -8,6 +8,9 @@ import java.util.concurrent.*;
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
+/**
+ * Doucment section that are set for publish.
+ */
 public class MainSpanSection extends MainSpan {
 
     private final Cache<String, Optional<LinedSpanSection>> lineCache;

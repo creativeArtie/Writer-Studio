@@ -5,6 +5,9 @@ import java.util.*;
 import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.main.Checker;
 
+/**
+ * Parser for {@code MainSpan*} classes.
+ */
 class MainParser implements SetupParser {
     private static final SetupParser[] PARSERS = SetupParser.combine(
         SetupParser.combine(LinedParseLevel.values(), LinedParsePointer.values()),

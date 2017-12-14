@@ -6,6 +6,9 @@ import com.google.common.collect.*;
 
 import com.creativeartie.jwriter.lang.*;
 
+/**
+ * Base class of {@code LinedSpanPoint*} classes.
+ */
 public abstract class LinedSpanPoint extends LinedSpan implements Catalogued{
 
     LinedSpanPoint(List<Span> children){
