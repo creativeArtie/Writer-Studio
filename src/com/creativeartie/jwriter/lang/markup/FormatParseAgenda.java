@@ -4,7 +4,7 @@ import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
-import com.creativeartie.jwriter.main.*;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * Parser for {@link FormatSpanCurlyAgenda}.
@@ -14,7 +14,7 @@ enum FormatParseAgenda implements SetupParser {
 
     @Override
     public Optional<SpanBranch> parse(SetupPointer pointer){
-        Checker.checkNotNull(pointer, "pointer");
+        checkNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
         if(pointer.startsWith(children, CURLY_AGENDA)){
             new ContentParser(CURLY_END).parse(children, pointer);

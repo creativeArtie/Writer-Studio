@@ -75,7 +75,7 @@ public class EditionSpan extends SpanBranch{
 
     /**
      * Set all cache to empty. Helper method of
-     * {@link #EditionSpan(List, ContentParser)} and {@link #childEdited()}.
+     * {@link #EditionSpan(List)} and {@link #childEdited()}.
      */
     private void clearCache(){
         cacheEdition = Optional.empty();
