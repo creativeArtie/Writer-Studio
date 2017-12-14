@@ -12,7 +12,6 @@ import com.creativeartie.jwriter.main.*;
 class FormatParseContent extends BasicParseText{
 
     private boolean[] formatList;
-    private boolean willReparse;
 
     public FormatParseContent(StyleInfoLeaf style, boolean[] formats,
         boolean reparse, List<String> enders
@@ -24,15 +23,14 @@ class FormatParseContent extends BasicParseText{
 
     public FormatParseContent(StyleInfoLeaf style, boolean[] formats,
             boolean reparse, String ... enders){
-        super(style, enders);
+        super(reparse, style, enders);
         Checker.checkArraySize(formats, "formats", FORMAT_TYPES);
         formatList = Arrays.copyOf(formats, formats.length);
-        willReparse = reparse; /// no limitations
     }
 
     @Override
     protected FormatSpanContent buildSpan(List<Span> children){
-        return new FormatSpanContent(children, formatList, this, willReparse);
+        return new FormatSpanContent(children, formatList, this);
     }
 
 }

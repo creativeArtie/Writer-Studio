@@ -150,4 +150,29 @@ public class EditionDebug {
         doc.assertIds();
     }
 
+    @Test
+    public void editToFinal(){
+        String before = "#\\FINAL version 8";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+
+        doc.delete(1, 2, 0);
+
+        ///            01234567890123456
+        String after = "#FINAL version 8";
+        doc.assertDoc(1,  after);
+        EditionTest edition = new EditionTest()
+            .setEdition(EditionType.FINAL)
+            .setText("version 8");
+        ContentTest content = new ContentTest()
+            .setText("version 8").setBegin(true)
+            .setEnd(false)       .setCount(2);
+
+        edition.test(     doc, 2,  after,       0);
+        doc.assertKeyLeaf(  0, 6, "#FINAL",     0, 0);
+        content.test(     doc, 1, " version 8", 0, 1);
+        doc.assertTextLeaf(6, 16, " version 8", 0, 1, 0);
+
+        doc.assertIds();
+    }
+
 }

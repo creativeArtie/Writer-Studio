@@ -13,13 +13,11 @@ public class FormatSpanContent extends FormatSpan implements BasicText{
 
     /// Stuff for reparsing
     private final FormatParseContent spanReparser;
-    private final boolean willReparse;
 
     FormatSpanContent(List<Span> spanChildren, boolean[] formats,
-            FormatParseContent reparser, boolean reparse){
+            FormatParseContent reparser){
         super(spanChildren, formats);
         spanReparser = reparser;
-        willReparse = reparse;
     }
 
     @Override

@@ -44,8 +44,7 @@ class ContentParser extends BasicParseText{
 
     public ContentParser(boolean reparse, StyleInfoLeaf style,
             String ... enders){
-        super(StyleInfoLeaf.TEXT, enders);
-        willReparse = reparse;
+        super(reparse, StyleInfoLeaf.TEXT, enders);
     }
 
     @Override

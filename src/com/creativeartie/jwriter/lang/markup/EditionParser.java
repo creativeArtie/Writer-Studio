@@ -11,7 +11,7 @@ import static com.creativeartie.jwriter.main.Checker.*;
  */
 enum EditionParser implements SetupParser{
     INSTANCE;
-    private static final ContentParser DETAIL_PARSER = new ContentParser();
+    private static final ContentParser DETAIL_PARSER = new ContentParser(false);
 
     @Override
     public Optional<SpanBranch> parse(SetupPointer pointer){
