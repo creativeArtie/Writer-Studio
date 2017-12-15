@@ -3,6 +3,7 @@ package com.creativeartie.jwriter.lang.markup;
 import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
+import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
  * Line that create a section break, or a scene break in the document or a
@@ -16,7 +17,8 @@ public class LinedSpanBreak extends LinedSpan {
 
     @Override
     protected SetupParser getParser(String text){
-        return null;
+        return isLast() && (text.equals(LINED_BREAK) || text.equals(
+            LINED_BREAK + LINED_END))? LinedParseRest.BREAK: null;
     }
 
     @Override

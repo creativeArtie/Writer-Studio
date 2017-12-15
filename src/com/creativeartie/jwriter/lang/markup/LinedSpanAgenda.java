@@ -56,7 +56,7 @@ public class LinedSpanAgenda extends LinedSpan implements Catalogued{
     @Override
     protected SetupParser getParser(String text){
         return text.startsWith(LINED_AGENDA) &&
-            BasicParseText.willEndWith(text, LINED_END)?
+            BasicParseText.checkLineEnd(isLast(), text)?
             LinedParseRest.AGENDA: null;
     }
 

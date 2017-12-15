@@ -113,4 +113,28 @@ public class BasicCanParseDebug {
         String test = "aded\n";
         assertFalse(BasicParseText.willEndWith(test, ender, endList));
     }
+
+    @Test
+    public void lineEndedPass(){
+        String text = "abc\n";
+        assertTrue(BasicParseText.checkLineEnd(true, text));
+    }
+
+    @Test
+    public void noLineEndPass(){
+        String text = "abc";
+        assertTrue(BasicParseText.checkLineEnd(true, text));
+    }
+
+    @Test
+    public void midDocPass(){
+        String text = "abc\n";
+        assertTrue(BasicParseText.checkLineEnd(false, text));
+    }
+
+    @Test
+    public void midDocFail(){
+        String text = "abc\nabc";
+        assertFalse(BasicParseText.checkLineEnd(false, text));
+    }
 }

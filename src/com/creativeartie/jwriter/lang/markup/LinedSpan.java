@@ -45,4 +45,22 @@ public abstract class LinedSpan extends SpanBranch {
     public int getNoteTotal(){
         return 0;
     }
+
+    public boolean isLast(){
+        Span child = this;
+        SpanNode<?> parent = child.getParent();
+        while (parent.get(size() - 1) == child){
+            if (parent instanceof Document) {
+                /// it is the last of the doucment
+                return true;
+            } else {
+                /// still have parents
+                child = parent;
+                parent = child.getParent();
+            }
+        }
+
+        /// it is in the middle of the children list
+        return false;
+    }
 }

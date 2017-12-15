@@ -55,6 +55,13 @@ abstract class BasicParseText implements SetupParser{
 
     }
 
+    static boolean checkLineEnd(boolean optional, String text){
+        checkNotNull(text, "text");
+        return optional?
+            canParse(text.substring(0, text.length() - LINED_END.length()),
+                LINED_END):
+            willEndWith(text, LINED_END);
+    }
     static boolean willEndWith(String text, String ender, List<String> endings){
         checkNotNull(text, "text");
         checkNotNull(ender, "ender");
