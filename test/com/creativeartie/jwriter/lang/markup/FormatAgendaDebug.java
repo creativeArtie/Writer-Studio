@@ -26,7 +26,7 @@ public class FormatAgendaDebug{
 
     @Test
     public void complete(){
-        ///               0123456789
+        ///           0123456789
         String raw = "{!Agenda}";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
@@ -50,7 +50,7 @@ public class FormatAgendaDebug{
 
     @Test
     public void noEnd(){
-        ///               012345
+        ///           012345
         String raw = "{!abc";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
@@ -71,7 +71,7 @@ public class FormatAgendaDebug{
 
     @Test
     public void onlyStart(){
-        ///               012
+        ///           012
         String raw = "{!";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
@@ -89,7 +89,7 @@ public class FormatAgendaDebug{
 
     @Test
     public void noText(){
-        ///               0123
+        ///           0123
         String raw = "{!}";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
@@ -103,6 +103,68 @@ public class FormatAgendaDebug{
 
         doc.assertIds();
 
+    }
+
+    @Test
+    public void editAgendaContent(){
+        ///              012345
+        String before = "{!ac}";
+
+        DocumentAssert doc = assertDoc(1, before, parsers);
+
+        doc.insert(3, "b", 0, 1);
+        ///             0123456
+        String after = "{!abc}";
+        doc.assertDoc(1, after);
+
+        IDBuilder id = buildId("0");
+        doc.addId(id,  0);
+
+
+        FormatAgendaTest agenda = new FormatAgendaTest()
+            .setCatalogued(CatalogueStatus.UNUSED, id).setText("abc");
+        ContentTest content = new ContentTest()
+            .setText("abc").setBegin(false)
+            .setEnd(false) .setCount(1);
+
+        agenda.test(     doc, 3, after,  0);
+        doc.assertKeyLeaf( 0, 2, "{!",   0, 0);
+        content.test(    doc, 1, "abc",  0, 1);
+        doc.assertTextLeaf(2, 5, "abc",  0, 1, 0);
+        doc.assertKeyLeaf( 5, 6, "}",    0, 2);
+
+        doc.assertIds();
+    }
+    @Test
+    public void editNewAContent(){
+        ///              0123
+        String before = "{!}";
+
+        DocumentAssert doc = assertDoc(1, before, parsers);
+
+        doc.insert(2, "abc", 0);
+
+        ///             01234
+        String after = "{!abc}";
+        doc.assertDoc(1, after);
+
+        IDBuilder id = buildId("0");
+        doc.addId(id,  0);
+
+
+        FormatAgendaTest agenda = new FormatAgendaTest()
+            .setCatalogued(CatalogueStatus.UNUSED, id).setText("abc");
+        ContentTest content = new ContentTest()
+            .setText("abc").setBegin(false)
+            .setEnd(false) .setCount(1);
+
+        agenda.test(     doc, 3, after,  0);
+        doc.assertKeyLeaf( 0, 2, "{!",   0, 0);
+        content.test(    doc, 1, "abc",  0, 1);
+        doc.assertTextLeaf(2, 5, "abc",  0, 1, 0);
+        doc.assertKeyLeaf( 5, 6, "}",    0, 2);
+
+        doc.assertIds();
     }
 
 }
