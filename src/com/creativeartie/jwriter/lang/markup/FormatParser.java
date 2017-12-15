@@ -4,42 +4,46 @@ import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
-import com.creativeartie.jwriter.main.Checker;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * Parser for {@link FormatSpanMain}
  */
-class FormatParser implements SetupParser {
+final class FormatParser implements SetupParser {
 
     private final String[] spanEnders;
 
     private final StyleInfoLeaf leafStyle;
     private final boolean willReparse;
-    public FormatParser(boolean parse, String ... enders){
-        this (StyleInfoLeaf.TEXT, parse, enders);
-    }
 
     public FormatParser(String ... enders){
-        this (StyleInfoLeaf.TEXT, true, enders);
+        this(true, StyleInfoLeaf.TEXT, enders);
+    }
+
+    public FormatParser(boolean reparse, String ... enders){
+        this(reparse, StyleInfoLeaf.TEXT, enders);
     }
 
     public FormatParser(StyleInfoLeaf style, String ... enders){
-        this (style, true, enders);
+        this(true, style, enders);
     }
 
-    public FormatParser(StyleInfoLeaf style, boolean reparse,
-        String ... enders
-    ){
+    public FormatParser(boolean reparse, StyleInfoLeaf style,
+            String ... enders){
         /// Combine the list of span enders and formatting enders
-        Checker.checkNotNull(enders, "enders");
+        checkNotNull(enders, "enders");
         spanEnders = SetupParser.combine(listFormatEnderTokens(), enders);
-        leafStyle = Checker.checkNotNull(style, "style");
+        leafStyle = checkNotNull(style, "style");
         willReparse = reparse;
+    }
+
+    String[] getSpanEnders(){
+        return spanEnders;
     }
 
     @Override
     public Optional<SpanBranch> parse(SetupPointer pointer){
-        Checker.checkNotNull(pointer, "pointer");
+        checkNotNull(pointer, "pointer");
 
         /// Setup format style: bold, italics, underline, coded
         boolean[] formats = new boolean[]{false, false, false, false};
@@ -91,7 +95,7 @@ class FormatParser implements SetupParser {
 
         /// Add the FormatParser with its children spans if there are children.
         if (children.size() > 0){
-            return Optional.of(new FormatSpanMain(children));
+            return Optional.of(new FormatSpanMain(children, this));
         }
         return Optional.empty();
     }

@@ -8,7 +8,7 @@ import static com.creativeartie.jwriter.main.Checker.*;
 /**
  * Parser for {@link ContentSpan}.
  */
-class ContentParser extends BasicParseText{
+final class ContentParser extends BasicParseText{
 
     private boolean willReparse;
 

@@ -9,7 +9,7 @@ import com.creativeartie.jwriter.main.Checker;
 /**
  * {@link BasicText} with {@link FormatSpan format} for {@link FormatSpanMain}.
  */
-public class FormatSpanContent extends FormatSpan implements BasicText{
+public final class FormatSpanContent extends FormatSpan implements BasicText{
 
     /// Stuff for reparsing
     private final FormatParseContent spanReparser;
@@ -59,7 +59,6 @@ public class FormatSpanContent extends FormatSpan implements BasicText{
 
     @Override
     protected SetupParser getParser(String text){
-        // TODO editRaw
         return spanReparser.canParse(text)? spanReparser: null;
     }
 
@@ -73,7 +72,5 @@ public class FormatSpanContent extends FormatSpan implements BasicText{
     }
 
     @Override
-    protected void docEdited(){
-        // TODO docEdited
-    }
+    protected void docEdited(){}
 }

@@ -5,7 +5,7 @@ import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
-import com.creativeartie.jwriter.main.*;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * Parser for {@link FormatSpanLink} and parent class of
@@ -13,7 +13,11 @@ import com.creativeartie.jwriter.main.*;
  */
 abstract class FormatParseLink implements SetupParser {
 
+    private static final ContentParser TEXT_PARSER = new ContentParser(
+        LINK_END);
+
     public static FormatParseLink[] getParsers(boolean[] formats){
+
         boolean[] setup = Arrays.copyOf(formats, formats.length);
         return new FormatParseLink[]{
             new FormatParseLinkRef(setup),
@@ -25,17 +29,19 @@ abstract class FormatParseLink implements SetupParser {
     private final boolean[] formatList;
 
     FormatParseLink(String start, boolean[] formats){
-        spanStart = Checker.checkNotNull(start, "starts");
-        formatList = Checker.checkArraySize(formats, "formats", FORMAT_TYPES);
+        spanStart = checkNotNull(start, "starts");
+        checkNotNull(formats, "formats");
+        checkEqual(formats.length, "formats.length", FORMAT_TYPES);
+        formatList = formats;
     }
 
-    protected boolean[] getFormats(){
+    protected final boolean[] getFormats(){
         return formatList;
     }
 
     @Override
-    public Optional<SpanBranch> parse(SetupPointer pointer){
-        Checker.checkNotNull(pointer, "pointer");
+    public final Optional<SpanBranch> parse(SetupPointer pointer){
+        checkNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
         if(pointer.startsWith(children, spanStart)){
             return parseFinish(children, pointer);
@@ -43,16 +49,17 @@ abstract class FormatParseLink implements SetupParser {
         return Optional.empty();
     }
 
-    protected abstract Optional<SpanBranch> parseFinish(
-        ArrayList<Span> spanChildren, SetupPointer childPointer);
+    abstract Optional<SpanBranch> parseFinish(ArrayList<Span> spanChildren,
+        SetupPointer childPointer);
 
-    protected void parseRest(ArrayList<Span> children,
+    protected final void parseRest(ArrayList<Span> children,
             SetupPointer pointer){
-
+        checkNotNull(children, "children");
+        checkNotNull(pointer, "pointer");
         /// Create display text if any
         if (pointer.startsWith(children, LINK_TEXT)){
             /// Add the text itself
-            new ContentParser(LINK_END).parse(children, pointer);
+            TEXT_PARSER.parse(children, pointer);
         }
 
         /// Add the ">"

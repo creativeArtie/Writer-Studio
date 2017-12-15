@@ -12,7 +12,7 @@ import com.google.common.base.*;
 /**
  * Text implementing {@link BasicText} for non-formatted text.
  */
-public class ContentSpan extends SpanBranch implements BasicText{
+public final class ContentSpan extends SpanBranch implements BasicText{
 
     /// Stuff for getUpdater(int index, String)
     private final ContentParser spanReparser;

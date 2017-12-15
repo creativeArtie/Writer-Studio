@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import com.google.common.base.CharMatcher;
 
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
-import com.creativeartie.jwriter.main.Checker;
+import static com.creativeartie.jwriter.main.Checker.*;
 import com.creativeartie.jwriter.lang.*;
 
 /**
@@ -15,23 +15,23 @@ import com.creativeartie.jwriter.lang.*;
  */
 enum InfoDataParser implements SetupParser{
     FORMATTED(pointer -> {
-        Checker.checkNotNull(pointer, "pointer");
+        assert pointer != null: "Null pointer";
         ArrayList<Span> children = new ArrayList<>();
-        if (new FormatParser(StyleInfoLeaf.DATA).parse(children, pointer))
+        if (new FormatParser(false, StyleInfoLeaf.DATA).parse(children, pointer))
         {
             return Optional.of(new InfoDataSpanFormatted(children));
         }
         return Optional.empty();
     }), TEXT(pointer -> {
-        Checker.checkNotNull(pointer, "pointer");
+        assert pointer != null: "Null pointer";
         ArrayList<Span> children = new ArrayList<>();
-        if (new ContentParser(StyleInfoLeaf.DATA)
+        if (new ContentParser(false, StyleInfoLeaf.DATA)
             .parse(children, pointer))
         {
             return Optional.of(new InfoDataSpanText(children));
         }
         return Optional.empty();
-    }), ERROR (pointer -> {return Optional.empty();});
+    }), ERROR (pointer -> Optional.empty());
 
     private final SetupParser parser;
 
@@ -41,6 +41,7 @@ enum InfoDataParser implements SetupParser{
 
     @Override
     public Optional<SpanBranch> parse(SetupPointer pointer){
+        checkNotNull(pointer, "pointer");
         return parser.parse(pointer); /// check inside
     }
 }

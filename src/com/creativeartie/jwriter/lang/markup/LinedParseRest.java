@@ -4,14 +4,14 @@ import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
-import com.creativeartie.jwriter.main.Checker;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * Parser for all other {@link LinedSpan}.
  */
 enum LinedParseRest implements SetupParser {
     NOTE(pointer -> {
-        Checker.checkNotNull(pointer, "pointer");
+        assert pointer != null: "Null pointer.";
         ArrayList<Span> children = new ArrayList<>();
         if (pointer.startsWith(children, LINED_NOTE)){
             Optional<DirectorySpan> id = Optional.empty();
@@ -28,7 +28,7 @@ enum LinedParseRest implements SetupParser {
         return Optional.empty();
     }),
     AGENDA(pointer ->{
-        Checker.checkNotNull(pointer, "pointer");
+        assert pointer != null: "Null pointer.";
         ArrayList<Span> children = new ArrayList<>();
         if (pointer.startsWith(children, LINED_AGENDA)){
             new ContentParser().parse(children, pointer);
@@ -38,7 +38,7 @@ enum LinedParseRest implements SetupParser {
         return Optional.empty();
     }),
     QUOTE(pointer ->{
-        Checker.checkNotNull(pointer, "pointer");
+        assert pointer != null: "Null pointer.";
         ArrayList<Span> children = new ArrayList<>();
         if (pointer.startsWith(children, LINED_QUOTE)){
             new FormatParser(false).parse(children, pointer);
@@ -48,7 +48,7 @@ enum LinedParseRest implements SetupParser {
         return Optional.empty();
     }),
     BREAK(pointer ->{
-        Checker.checkNotNull(pointer, "pointer");
+        assert pointer != null: "Null pointer.";
         ArrayList<Span> children = new ArrayList<>();
         if (pointer.startsWith(children, LINED_BREAK)){
             return Optional.of(new LinedSpanBreak(children));
@@ -56,7 +56,7 @@ enum LinedParseRest implements SetupParser {
         return Optional.empty();
     }),
     PARAGRAPH(pointer ->{
-        Checker.checkNotNull(pointer, "pointer");
+        assert pointer != null: "Null pointer.";
         if (pointer.hasNext()){
             ArrayList<Span> children = new ArrayList<>();
             new FormatParser(false).parse(children, pointer);
@@ -82,6 +82,7 @@ enum LinedParseRest implements SetupParser {
 
     @Override
     public Optional<SpanBranch> parse(SetupPointer pointer){
+        checkNotNull(pointer, "pointer");
         return parser.parse(pointer);
     }
 }

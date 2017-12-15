@@ -11,7 +11,7 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
  * A {@link Span} for stating the current status of a section with a heading or
  * an outline.
  */
-public class EditionSpan extends SpanBranch{
+public final class EditionSpan extends SpanBranch{
 
     private Optional<EditionType> cacheEdition;
     private Optional<String> cacheDetail;

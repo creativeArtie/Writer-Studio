@@ -8,7 +8,7 @@ import com.creativeartie.jwriter.lang.*;
 /**
  * Data that stores a {@link ContentSpan}.
  */
-public class InfoDataSpanText extends InfoDataSpan{
+public final class InfoDataSpanText extends InfoDataSpan{
 
     @Override
     public ContentSpan getData(){
@@ -21,17 +21,12 @@ public class InfoDataSpanText extends InfoDataSpan{
 
     @Override
     protected SetupParser getParser(String text){
-        // TODO editRaw
         return null;
     }
 
     @Override
-    protected void childEdited(){
-        // TODO childEdit
-    }
+    protected void childEdited(){}
 
     @Override
-    protected void docEdited(){
-        // TODO docEdited
-    }
+    protected void docEdited(){}
 }

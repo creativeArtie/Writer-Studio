@@ -26,9 +26,4 @@ public enum InfoFieldType implements StyleInfo{
     Optional<SetupParser> getDataParser(){
         return dataParser;
     }
-
-    @Deprecated
-    public String getCode(){
-        return CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_UNDERSCORE, name());
-    }
 }

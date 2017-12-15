@@ -5,7 +5,7 @@ import java.util.*;
 import com.google.common.collect.*;
 
 import com.creativeartie.jwriter.lang.*;
-import com.creativeartie.jwriter.main.Checker;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * Base class for all {@link InfoDataSpan*} classes.
@@ -18,15 +18,15 @@ public abstract class InfoDataSpan extends SpanBranch{
 
     protected InfoDataSpan(List<Span> children, InfoDataType type){
         super(children);
-        dataType = Checker.checkNotNull(type, "type");
+        dataType = checkNotNull(type, "type");
     }
 
-    public InfoDataType getDataType(){
+    public final InfoDataType getDataType(){
         return dataType;
     }
 
     @Override
-    public List<StyleInfo> getBranchStyles(){
+    public final List<StyleInfo> getBranchStyles(){
         return ImmutableList.of(dataType);
     }
 

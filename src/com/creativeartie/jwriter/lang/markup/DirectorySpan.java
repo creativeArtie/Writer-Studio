@@ -10,7 +10,7 @@ import static com.creativeartie.jwriter.main.Checker.*;
 /**
  * Grouping of text {@link Span} that creates a {@link CatalogueIdentity}.
  */
-public class DirectorySpan extends SpanBranch {
+public final class DirectorySpan extends SpanBranch {
     /// helps with categorizing and describes purpose
     private final DirectoryType idPurpose;
     private Optional<CatalogueIdentity> cacheId;

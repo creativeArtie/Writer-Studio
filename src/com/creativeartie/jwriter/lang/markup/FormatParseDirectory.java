@@ -6,17 +6,18 @@ import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.jwriter.main.Checker.*;
 
-
 /**
  * Parser for {@link FormatSpanDirectory}.
  */
-class FormatParseDirectory implements SetupParser {
+final class FormatParseDirectory implements SetupParser {
 
     private final String spanStart;
     private final DirectoryType spanType;
     private final boolean[] formatList;
+    private final DirectoryParser idParser;
 
     public static FormatParseDirectory[] getParsers(boolean[] formats){
+        checkNotNull(formats, "formats");
         checkEqual(formats.length, "formats.length", FORMAT_TYPES);
         boolean[] setup = Arrays.copyOf(formats, formats.length);
         return new FormatParseDirectory[]{
@@ -46,6 +47,7 @@ class FormatParseDirectory implements SetupParser {
                 spanStart = null;
         }
         formatList = formats;
+        idParser = new DirectoryParser(type, CURLY_END);
     }
 
     DirectoryType getDirectoryType(){
@@ -62,8 +64,7 @@ class FormatParseDirectory implements SetupParser {
         ArrayList<Span> children = new ArrayList<>();
         if(pointer.startsWith(children, spanStart)){
             /// CatalogueIdentity for the other Parsers
-            DirectoryParser id = new DirectoryParser(spanType, CURLY_END);
-            id.parse(children, pointer);
+            idParser.parse(children, pointer);
 
             /// Complete the last steps
             pointer.startsWith(children, CURLY_END);
@@ -76,7 +77,8 @@ class FormatParseDirectory implements SetupParser {
     }
 
     boolean canParse(String text){
-        return text.startsWith(spanStart) && BasicParseText.canParse(text,
+        checkNotNull(text, "text");
+        return text.startsWith(spanStart) && BasicParseText.willEndWith(text,
             CURLY_END);
     }
 }

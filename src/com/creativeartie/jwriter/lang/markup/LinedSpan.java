@@ -5,15 +5,18 @@ import com.google.common.collect.*;
 
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
-import com.creativeartie.jwriter.main.Checker;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * Base class for all {@link LinedSpan}.
  */
 public abstract class LinedSpan extends SpanBranch {
 
+    private List<StyleInfo> cacheStyles;
+
     LinedSpan(List<Span> children){
         super(children);
+        cacheStyles = ImmutableList.of(getLinedType());
     }
 
     private LinedType linedType;
@@ -42,22 +45,4 @@ public abstract class LinedSpan extends SpanBranch {
     public int getNoteTotal(){
         return 0;
     }
-
-
-    /* // TODO Speed up preformance by edit only some of the text
-    @Override
-    protected DetailUpdater getUpdater(int indexed, String text){
-        Checker.checkNotNull(text, "text");
-        if (getLinedType() == LinedType.findType(text)){
-            SetupParser parser = getLinedType().getParser();
-            int found = search(text, CHAR_ESCAPE, LINED_END);
-            if (found == -1){
-                return DetailUpdater.mergeNext(parser);
-            } else if (found == text.length()){
-                return DetailUpdater.replace(parser);
-            }
-        }
-        return DetailUpdater.unable();
-    }
-    */
 }

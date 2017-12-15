@@ -10,7 +10,7 @@ import com.creativeartie.jwriter.lang.*;
 /**
  * Name for fields that store {@link InfoDataSpan data}.
  */
-public class InfoFieldSpan extends SpanBranch{
+public final class InfoFieldSpan extends SpanBranch{
 
     InfoFieldSpan(List<Span> children){
         super(children);
@@ -38,17 +38,12 @@ public class InfoFieldSpan extends SpanBranch{
 
     @Override
     protected SetupParser getParser(String text){
-        // TODO editRaw
         return null;
     }
 
     @Override
-    protected void childEdited(){
-        // TODO childEdit
-    }
+    protected void childEdited(){}
 
     @Override
-    protected void docEdited(){
-        // TODO docEdited
-    }
+    protected void docEdited(){}
 }

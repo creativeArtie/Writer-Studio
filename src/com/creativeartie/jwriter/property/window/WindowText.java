@@ -52,7 +52,6 @@ public enum WindowText {
     SOURCE_LABEL("NoteDisplay.SourceLabel"),
     NO_NOTE_TITLE("NoteDisplay.EmptyTitle"),
 
-    // TODO remove later when there are new mode, therefore new text
     SYNTAX_MODE("WriteScene.SyntaxMode"),
     PARSED_MODE("WriteScene.ParsedMode");
 

@@ -24,7 +24,7 @@ public abstract class FormatSpanLink extends FormatSpan {
     public abstract String getText();
 
     @Override
-    public String getOutput(){
+    public final String getOutput(){
         return getText();
     }
 }

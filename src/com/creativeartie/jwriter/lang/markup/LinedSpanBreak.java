@@ -16,17 +16,12 @@ public class LinedSpanBreak extends LinedSpan {
 
     @Override
     protected SetupParser getParser(String text){
-        // TODO editRaw
         return null;
     }
 
     @Override
-    protected void childEdited(){
-        // TODO childEdit
-    }
+    protected void childEdited(){}
 
     @Override
-    protected void docEdited(){
-        // TODO docEdited
-    }
+    protected void docEdited(){}
 }

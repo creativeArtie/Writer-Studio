@@ -11,7 +11,7 @@ import com.creativeartie.jwriter.lang.*;
 /**
  * Parser for {@link InfoFieldSpan}.
  */
-class InfoFieldParser implements SetupParser{
+final class InfoFieldParser implements SetupParser{
 
     private final InfoFieldType fieldType;
 

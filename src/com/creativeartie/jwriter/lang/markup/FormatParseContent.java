@@ -9,7 +9,7 @@ import static com.creativeartie.jwriter.main.Checker.*;
 /**
  * Parser for {@link FormatSpanContent}.
  */
-class FormatParseContent extends BasicParseText{
+final class FormatParseContent extends BasicParseText{
 
     private boolean[] formatList;
 
@@ -22,6 +22,7 @@ class FormatParseContent extends BasicParseText{
     public FormatParseContent(StyleInfoLeaf style, boolean[] formats,
             boolean reparse, String ... enders){
         super(reparse, style, enders);
+        checkNotNull(formats, "formats");
         checkEqual(formats.length, "formats.length", FORMAT_TYPES);
         formatList = Arrays.copyOf(formats, formats.length);
     }

@@ -10,6 +10,10 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
  */
 public class LinedSpanAgenda extends LinedSpan implements Catalogued{
 
+    Optional<String> cacheAgenda;
+    Optional<Integer> cacheNote;
+    Optional<Optional<CatalogueIdentity>> cacheId;
+
     LinedSpanAgenda(List<Span> children){
         super(children);
     }
@@ -19,13 +23,19 @@ public class LinedSpanAgenda extends LinedSpan implements Catalogued{
     }
 
     public String getAgenda(){
-        Optional<ContentSpan> ans = getAgendaSpan();
-        return ans.isPresent()? ans.get().getTrimmed() : "";
+        cacheAgenda = getCache(cacheAgenda, () -> {
+            Optional<ContentSpan> ans = getAgendaSpan();
+            return ans.isPresent()? ans.get().getTrimmed() : "";
+        });
+        return cacheAgenda.get();
     }
 
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
-        return Optional.of(new CatalogueIdentity(TYPE_AGENDA_LINED, this));
+        cacheId = getCache(cacheId, () -> {
+            return Optional.of(new CatalogueIdentity(TYPE_AGENDA_LINED, this));
+        });
+        return cacheId.get();
     }
 
     @Override
@@ -35,24 +45,29 @@ public class LinedSpanAgenda extends LinedSpan implements Catalogued{
 
     @Override
     public int getNoteTotal(){
-        return getAgendaSpan().map(span -> span.wordCount())
-            .orElse(0);
+        cacheNote = getCache(cacheNote, () -> {
+            return getAgendaSpan().map(span -> span.wordCount())
+                .orElse(0);
+        });
+        return cacheNote.get();
     }
 
 
     @Override
     protected SetupParser getParser(String text){
-        // TODO editRaw
-        return null;
+        return text.startsWith(LINED_AGENDA) &&
+            BasicParseText.willEndWith(text, LINED_END)?
+            LinedParseRest.AGENDA: null;
     }
 
     @Override
     protected void childEdited(){
-        // TODO childEdit
+        cacheAgenda = Optional.empty();
+        cacheNote = Optional.empty();
     }
 
     @Override
     protected void docEdited(){
-        // TODO docEdited
+        cacheId = Optional.empty();
     }
 }

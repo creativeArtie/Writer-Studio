@@ -14,7 +14,7 @@ import com.creativeartie.jwriter.lang.*;
 /// @see SupplementSectionDebug
 @RunWith(JUnit4.class)
 public class BasicCanParseDebug {
-    private static final List<String> endList = Arrays.asList("}", "+!", "-");
+    private static final List<String> endList = Arrays.asList("+!", "-");
     private static final String ender = "}";
 
     @Test
@@ -76,6 +76,18 @@ public class BasicCanParseDebug {
     public void endWithEnderPass(){
         String test = "aded}";
         assertTrue(BasicParseText.willEndWith(test, ender, endList));
+    }
+
+    @Test
+    public void endWithEscapedPass(){
+        String test = "aded\\}\\-abc}";
+        assertTrue(BasicParseText.willEndWith(test, ender, endList));
+    }
+
+    @Test
+    public void withEnderEarlyFail(){
+        String test = "aded}Hloo";
+        assertFalse(BasicParseText.willEndWith(test, ender, endList));
     }
 
     @Test

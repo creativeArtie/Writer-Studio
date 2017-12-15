@@ -24,27 +24,27 @@ public abstract class FormatSpan extends SpanBranch {
         this(new ArrayList<>(), new boolean[FORMAT_TYPES]);
     }
 
-    boolean[] getFormats(){
+    final boolean[] getFormats(){
         return spanFormats;
     }
 
-    public boolean isFormat(FormatType type){
+    public final boolean isFormat(FormatType type){
         return spanFormats[type.ordinal()];
     }
 
-    public boolean isBold(){
+    public final boolean isBold(){
         return spanFormats[FormatType.BOLD.ordinal()];
     }
 
-    public boolean isItalics(){
+    public final boolean isItalics(){
         return spanFormats[FormatType.ITALICS.ordinal()];
     }
 
-    public boolean isUnderline(){
+    public final boolean isUnderline(){
         return spanFormats[FormatType.UNDERLINE.ordinal()];
     }
 
-    public boolean isCoded(){
+    public final boolean isCoded(){
         return spanFormats[FormatType.CODED.ordinal()];
     }
 

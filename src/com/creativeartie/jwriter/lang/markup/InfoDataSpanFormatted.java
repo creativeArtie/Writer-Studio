@@ -7,11 +7,11 @@ import com.creativeartie.jwriter.lang.*;
 /**
  * Data that stores a {@link FormatSpanMain}.
  */
-public class InfoDataSpanFormatted extends InfoDataSpan{
+public final class InfoDataSpanFormatted extends InfoDataSpan{
 
     @Override
     public FormatSpanMain getData(){
-        return spanAtFirst(FormatSpanMain.class).get();
+        return (FormatSpanMain)get(0);
     }
 
     protected InfoDataSpanFormatted(List<Span> children){
@@ -20,17 +20,12 @@ public class InfoDataSpanFormatted extends InfoDataSpan{
 
     @Override
     protected SetupParser getParser(String text){
-        // TODO editRaw
         return null;
     }
 
     @Override
-    protected void childEdited(){
-        // TODO childEdit
-    }
+    protected void childEdited(){}
 
     @Override
-    protected void docEdited(){
-        // TODO docEdited
-    }
+    protected void docEdited(){}
 }

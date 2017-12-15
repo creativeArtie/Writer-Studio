@@ -4,7 +4,7 @@ import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
-import com.creativeartie.jwriter.main.Checker;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * Parser for {@link LinedSpanPoint}. {@code LinedSpanPoint} is the base class
@@ -15,7 +15,7 @@ enum LinedParsePointer implements SetupParser {
 
         @Override
         public Optional<SpanBranch> parse(SetupPointer pointer){
-        Checker.checkNotNull(pointer, "pointer");
+            checkNotNull(pointer, "pointer");
             ArrayList<Span> children = new ArrayList<>();
             if (pointer.startsWith(children, LINED_LINK)){
                 parseCommon(children, pointer);
@@ -38,8 +38,8 @@ enum LinedParsePointer implements SetupParser {
     }
 
     DirectoryParser parseCommon(ArrayList<Span> children, SetupPointer pointer){
-        Checker.checkNotNull(pointer, "childPointer");
-        Checker.checkNotNull(children, "spanChildren");
+        checkNotNull(pointer, "childPointer");
+        checkNotNull(children, "spanChildren");
         DirectoryType idType = DirectoryType.values()[ordinal() + 2];
         DirectoryParser output = new DirectoryParser(idType, LINED_DATA);
         output.parse(children, pointer);
@@ -48,7 +48,7 @@ enum LinedParsePointer implements SetupParser {
 
     @Override
     public Optional<SpanBranch> parse(SetupPointer pointer){
-        Checker.checkNotNull(pointer, "pointer");
+        checkNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
         if (pointer.startsWith(children, spanStart)){
 

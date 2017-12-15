@@ -4,7 +4,7 @@ import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
-import com.creativeartie.jwriter.main.Checker;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * Parser for {@link LinedSpanLevel} and it's subclasse {@link LinedSpanSection}.
@@ -20,7 +20,7 @@ enum LinedParseLevel implements SetupParser {
 
     @Override
     public Optional<SpanBranch> parse(SetupPointer pointer){
-        Checker.checkNotNull(pointer, "pointer");
+        checkNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
         boolean isFirst = true;
         for(int i = LEVEL_MAX; i >= 1; i--){
@@ -34,10 +34,9 @@ enum LinedParseLevel implements SetupParser {
     }
 
     private Optional<SpanBranch> parseSec(ArrayList<Span> children,
-        SetupPointer pointer
-    ){
-        Checker.checkNotNull(pointer, "pointer");
-        Checker.checkNotNull(children, "children");
+            SetupPointer pointer){
+        assert children != null: "Null children.";
+        assert pointer != null: "Null pointer.";
         DirectoryParser id = new DirectoryParser(DirectoryType.LINK,
             DIRECTORY_END, EDITION_BEGIN);
         if (pointer.trimStartsWith(children, DIRECTORY_BEGIN)){
@@ -55,11 +54,10 @@ enum LinedParseLevel implements SetupParser {
         return Optional.of(ans);
     }
 
-    private Optional<SpanBranch> parseBasic(
-        ArrayList<Span> children, SetupPointer pointer
-    ){
-        Checker.checkNotNull(pointer, "pointer");
-        Checker.checkNotNull(children, "children");
+    private Optional<SpanBranch> parseBasic(ArrayList<Span> children,
+            SetupPointer pointer){
+        assert children != null: "Null children.";
+        assert pointer != null: "Null pointer.";;
         new FormatParser().parse(children, pointer);
 
         pointer.startsWith(children, LINED_END);

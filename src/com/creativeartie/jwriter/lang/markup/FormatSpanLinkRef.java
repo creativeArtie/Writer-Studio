@@ -4,43 +4,60 @@ import com.google.common.collect.*;
 
 import java.util.*;
 import com.creativeartie.jwriter.lang.*;
+import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
  * {@link FormatSpanLink} with path located somewhere in the document.
  */
 public final class FormatSpanLinkRef extends FormatSpanLink
-    implements Catalogued{
+        implements Catalogued{
 
-    FormatSpanLinkRef(List<Span> children, boolean[] formats){
-        super(children, formats);
+    private final FormatParseLinkRef spanReparser;
+    private Optional<String> cachePath;
+    private Optional<String> cacheText;
+    private Optional<List<StyleInfo>> cacheStyles;
+    private Optional<Optional<CatalogueIdentity>> cacheId;
+
+    FormatSpanLinkRef(List<Span> children, FormatParseLinkRef reparser){
+        super(children, reparser.getFormats());
+        spanReparser = reparser;
     }
 
     @Override
     public String getPath(){
-        Optional<CatalogueIdentity> id = getSpanIdentity();
-        if (id.isPresent()){
-            CatalogueData data = getDocument().getCatalogue().get(id.get());
-            if (data.isReady()){
-                Span span = data.getTarget();
-                return ((LinedSpanPointLink)span).getPath();
+        cachePath = getCache(cachePath, () ->{
+            Optional<CatalogueIdentity> id = getSpanIdentity();
+            if (id.isPresent()){
+                CatalogueData data = getDocument().getCatalogue().get(id.get());
+                if (data.isReady()){
+                    Span span = data.getTarget();
+                    return ((LinedSpanPointLink)span).getPath();
+                }
             }
-        }
-        return "";
+            return "";
+        });
+        return cachePath.get();
     }
 
     @Override
     public String getText(){
-        Optional<ContentSpan> text = spanFromFirst(ContentSpan.class);
-        if (text.isPresent()){
-            return text.get().getTrimmed();
-        }
-        return getPath();
+        cacheText = getCache(cacheText, () ->{
+            Optional<ContentSpan> text = spanFromFirst(ContentSpan.class);
+            if (text.isPresent()){
+                return text.get().getTrimmed();
+            }
+            return getPath();
+        });
+        return cacheText.get();
     }
 
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
-        return spanFromFirst(DirectorySpan.class).map(
-            span -> span.buildId());
+        cacheId = getCache(cacheId, () ->{
+            return spanFromFirst(DirectorySpan.class).map(
+                span -> span.buildId());
+        });
+        return cacheId.get();
     }
 
     @Override
@@ -50,26 +67,29 @@ public final class FormatSpanLinkRef extends FormatSpanLink
 
     @Override
     public List<StyleInfo> getBranchStyles(){
-        ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
-        return builder.add(AuxiliaryType.REF_LINK).add(getIdStatus())
-            .addAll(super.getBranchStyles()).build();
-
+        cacheStyles = getCache(cacheStyles, () ->{
+            ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
+            return builder.add(AuxiliaryType.REF_LINK).add(getIdStatus())
+                .addAll(super.getBranchStyles()).build();
+        });
+        return cacheStyles.get();
     }
 
     @Override
     protected SetupParser getParser(String text){
-        // TODO editRaw
-        return null;
+        return text.startsWith(LINK_REF) &&
+            BasicParseText.willEndWith(text, LINK_END)? spanReparser: null;
     }
 
     @Override
     protected void childEdited(){
-        // TODO childEdit
         super.childEdited();
+        cachePath = Optional.empty();
+        cacheText = Optional.empty();
+        cacheStyles = Optional.empty();
+        cacheId = Optional.empty();
     }
 
     @Override
-    protected void docEdited(){
-        // TODO docEdited
-    }
+    protected void docEdited(){}
 }
