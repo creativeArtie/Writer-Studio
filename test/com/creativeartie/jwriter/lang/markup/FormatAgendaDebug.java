@@ -135,6 +135,44 @@ public class FormatAgendaDebug{
 
         doc.assertIds();
     }
+
+    @Test
+    public void editWithEscape(){
+        ///              0123
+        String before = "{!a}";
+
+        DocumentAssert doc = assertDoc(1, before, parsers);
+
+        doc.insert(3, "\\}", 0);
+
+        ///             012 3456
+        String after = "{!a\\}}";
+        doc.assertDoc(1, after);
+
+        IDBuilder id = buildId("0");
+        doc.addId(id,  0);
+
+
+        FormatAgendaTest agenda = new FormatAgendaTest()
+            .setCatalogued(CatalogueStatus.UNUSED, id).setText("a}");
+        ContentTest content = new ContentTest()
+            .setText("a}").setBegin(false)
+            .setEnd(false).setCount(1);
+        EscapeTest escape = new EscapeTest()
+            .setEscape("}");
+
+        agenda.test(     doc, 3, after,  0);
+        doc.assertKeyLeaf( 0, 2, "{!",   0, 0);
+        content.test(    doc, 2, "a\\}", 0, 1);
+        doc.assertTextLeaf(2, 3, "a",    0, 1, 0);
+        escape.test(     doc, 2, "\\}",  0, 1, 1);
+        doc.assertKeyLeaf( 3, 4, "\\",   0, 1, 1, 0);
+        doc.assertTextLeaf(4, 5, "}",    0, 1, 1, 1);
+        doc.assertKeyLeaf( 5, 6, "}",    0, 2);
+
+        doc.assertIds();
+    }
+
     @Test
     public void editNewAContent(){
         ///              0123

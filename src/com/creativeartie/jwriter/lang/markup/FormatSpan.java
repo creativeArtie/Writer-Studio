@@ -28,23 +28,6 @@ public abstract class FormatSpan extends SpanBranch {
         return spanFormats;
     }
 
-    /** List the formats applied.*/
-    public List<FormatType> listFormats(){
-        cacheFormats = getCache(cacheFormats, () -> {
-            ImmutableList.Builder<FormatType> list = ImmutableList.builder();
-            int i = 0;
-            FormatType[] values = FormatType.values();
-            for (boolean format: spanFormats){
-                if (format){
-                    list.add(values[i]);
-                }
-                i++;
-            }
-            return list.build();
-        });
-        return cacheFormats.get();
-    }
-
     public boolean isFormat(FormatType type){
         return spanFormats[type.ordinal()];
     }
@@ -77,7 +60,19 @@ public abstract class FormatSpan extends SpanBranch {
 
     @Override
     public List<StyleInfo> getBranchStyles(){
-        return listFormats();
+        cacheStyles = getCache(cacheStyles, () -> {
+            ImmutableList.Builder<StyleInfo> list = ImmutableList.builder();
+            int i = 0;
+            FormatType[] values = FormatType.values();
+            for (boolean format: spanFormats){
+                if (format){
+                    list.add(values[i]);
+                }
+                i++;
+            }
+            return list.build();
+        });
+        return cacheStyles.get();
     }
 
     @Override

@@ -10,7 +10,7 @@ import static com.creativeartie.jwriter.main.Checker.*;
 public interface SetupParser{
 
     /** Put two {@linkplain String} list together. */
-    public static String[] combine(String[] list1, String[] list2){
+    public static String[] combine(String[] list1, String ... list2){
         checkNotNull(list1, "list1");
         checkNotNull(list2, "list2");
 

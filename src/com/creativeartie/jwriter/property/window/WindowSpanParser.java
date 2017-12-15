@@ -10,7 +10,7 @@ import static com.google.common.base.CaseFormat.*;
 import static com.google.common.base.Preconditions.*;
 
 import com.creativeartie.jwriter.lang.markup.*;
-import com.creativeartie.jwriter.lang.Span;
+import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.property.*;
 public final class WindowSpanParser {
@@ -55,7 +55,7 @@ public final class WindowSpanParser {
             }
             if (span instanceof FormatSpan) {
                 FormatSpan add = (FormatSpan) span;
-                for (FormatType type: add.listFormats()){
+                for (StyleInfo type: add.getBranchStyles()){
                     css.add("Display", type.name());
                 }
             }

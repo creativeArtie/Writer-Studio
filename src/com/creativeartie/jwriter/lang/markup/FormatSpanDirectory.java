@@ -9,23 +9,30 @@ import com.creativeartie.jwriter.lang.*;
  * A {@linkplain FormatSpan} for footnote, endnote, and research notes.
  */
 public final class FormatSpanDirectory extends FormatSpan implements Catalogued{
+    private final FormatParseDirectory spanReparser;
     private final DirectoryType spanType;
+    private Optional<Optional<CatalogueIdentity>> cacheId;
+    private Optional<List<StyleInfo>> cacheStyles;
+    private Optional<String> cacheOutput;
 
-    FormatSpanDirectory(List<Span> children, boolean[] formats,
-        DirectoryType type
-    ){
-        super(children, formats);
-        spanType = type;
+    FormatSpanDirectory(List<Span> children, FormatParseDirectory reparser){
+        super(children, reparser.getFormats());
+        spanType = reparser.getDirectoryType();
+        spanReparser = reparser;
     }
 
+    /** Gets the type of note it is pointing to. */
     public DirectoryType getIdType(){
         return spanType;
     }
 
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
-        Optional<DirectorySpan> found = spanFromFirst(DirectorySpan.class);
-        return found.map(span -> span.buildId());
+        cacheId = getCache(cacheId, () -> {
+            Optional<DirectorySpan> found = spanFromFirst(DirectorySpan.class);
+            return found.map(span -> span.buildId());
+        });
+        return cacheId.get();
     }
 
     @Override
@@ -35,34 +42,39 @@ public final class FormatSpanDirectory extends FormatSpan implements Catalogued{
 
     @Override
     public List<StyleInfo> getBranchStyles(){
-        ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
-        return builder.add(spanType).add(getIdStatus())
-            .addAll(super.getBranchStyles()).build();
+        cacheStyles = getCache(cacheStyles, () -> {
+            ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
+            return builder.add(spanType).add(getIdStatus())
+                .addAll(super.getBranchStyles()).build();
+        });
+        return cacheStyles.get();
     }
 
     @Override
     public String getOutput(){
-        Optional<DirectorySpan> id = spanFromFirst(DirectorySpan.class);
-        if (id.isPresent()){
-            return id.get().getIdRaw();
-        }
-        return "";
+        cacheOutput = getCache(cacheOutput, () -> {
+            Optional<DirectorySpan> id = spanFromFirst(DirectorySpan.class);
+            if (id.isPresent()){
+                return id.get().getIdRaw();
+            }
+            return "";
+        });
+        return cacheOutput.get();
     }
 
     @Override
     protected SetupParser getParser(String text){
-        // TODO editRaw
-        return null;
+        return spanReparser.canParse(text)? spanReparser: null;
     }
 
     @Override
     protected void childEdited(){
-        // TODO childEdit
         super.childEdited();
+        cacheId = Optional.empty();
+        cacheStyles = Optional.empty();
+        cacheOutput = Optional.empty();
     }
 
     @Override
-    protected void docEdited(){
-        // TODO docEdited
-    }
+    protected void docEdited(){}
 }

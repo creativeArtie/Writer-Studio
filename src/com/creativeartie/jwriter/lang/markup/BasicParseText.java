@@ -49,16 +49,33 @@ abstract class BasicParseText implements SetupParser{
 
     /** Check if a text can be parse entirely. */
     boolean canParse(String text){
-        return willReparse && canParse(checkNotNull(text, "text"),
+        return willReparse && checkParse(checkNotNull(text, "text"),
             reparseEnders);
 
     }
 
+    static boolean willEndWith(String text, String ending,
+            List<String> parseList){
+        return willEndWith(text, ending, parseList.toArray(new String[0]));
+    }
+
+    static boolean willEndWith(String text, String ending,
+            String ... parseList){
+        return text.endsWith(ending)?
+            canParse(text.substring(0, text.length() - ending.length()),
+                SetupParser.combine(parseList, ending)): false;
+    }
+
     static boolean canParse(String text, List<String> parseList){
-        return canParse(text, parseList.toArray(new String[0]));
+        return canParse(text, parseList.toArray(new String[parseList.size()]));
     }
 
     static boolean canParse(String text, String ... parseList){
+        return checkParse(text, Arrays.asList(SetupParser.combine(parseList,
+            LINED_END)));
+    }
+
+    private static boolean checkParse(String text, List<String> parseList){
         checkNotNull(text, "text");
 
         boolean isEscaped = false;
@@ -73,9 +90,11 @@ abstract class BasicParseText implements SetupParser{
                         }
                     }
                 }
+            } else {
+                isEscaped = false;
             }
         }
-        return true;
+        return ! isEscaped;
     }
 
     @Override
