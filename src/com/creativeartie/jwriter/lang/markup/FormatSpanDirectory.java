@@ -58,6 +58,7 @@ public final class FormatSpanDirectory extends FormatSpan implements Catalogued{
     @Override
     protected void childEdited(){
         // TODO childEdit
+        super.childEdited();
     }
 
     @Override

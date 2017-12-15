@@ -6,16 +6,17 @@ import com.google.common.collect.*;
 
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
-import com.creativeartie.jwriter.main.Checker;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * {@link Span} for several formatted {@code FormatSpan*} classes.
  */
 public abstract class FormatSpan extends SpanBranch {
     private final boolean[] spanFormats;
+    private Optional<List<StyleInfo>> cacheStyles;
     FormatSpan(List<Span> spanChildren, boolean[] formats){
         super(spanChildren);
-        Checker.checkArraySize(formats, "formats", FORMAT_TYPES);
+        checkEqual(formats.length, "formats.length", FORMAT_TYPES);
         spanFormats = Arrays.copyOf(formats, formats.length);
     }
 
@@ -27,16 +28,21 @@ public abstract class FormatSpan extends SpanBranch {
         return spanFormats;
     }
 
+    /** List the formats applied.*/
     public List<FormatType> listFormats(){
-        ImmutableList.Builder<FormatType> list = ImmutableList.builder();
-        int i = 0;
-        for (boolean format: spanFormats){
-            if (format){
-                list.add(FormatType.values()[i]);
+        cacheFormats = getCache(cacheFormats, () -> {
+            ImmutableList.Builder<FormatType> list = ImmutableList.builder();
+            int i = 0;
+            FormatType[] values = FormatType.values();
+            for (boolean format: spanFormats){
+                if (format){
+                    list.add(values[i]);
+                }
+                i++;
             }
-            i++;
-        }
-        return list.build();
+            return list.build();
+        });
+        return cacheFormats.get();
     }
 
     public boolean isFormat(FormatType type){
@@ -44,19 +50,19 @@ public abstract class FormatSpan extends SpanBranch {
     }
 
     public boolean isBold(){
-        return spanFormats[0];
+        return spanFormats[FormatType.BOLD.ordinal()];
     }
 
     public boolean isItalics(){
-        return spanFormats[1];
+        return spanFormats[FormatType.ITALICS.ordinal()];
     }
 
     public boolean isUnderline(){
-        return spanFormats[2];
+        return spanFormats[FormatType.UNDERLINE.ordinal()];
     }
 
     public boolean isCoded(){
-        return spanFormats[3];
+        return spanFormats[FormatType.CODED.ordinal()];
     }
 
     @Override
@@ -71,8 +77,14 @@ public abstract class FormatSpan extends SpanBranch {
 
     @Override
     public List<StyleInfo> getBranchStyles(){
-        return ImmutableList.copyOf(listFormats());
+        return listFormats();
     }
 
+    @Override
+    protected void childEdited(){
+        cacheStyles = Optional.empty();
+    }
+
+    /** Gets the parsed text for display. */
     public abstract String getOutput();
 }

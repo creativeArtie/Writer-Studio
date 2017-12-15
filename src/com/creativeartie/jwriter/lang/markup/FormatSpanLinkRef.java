@@ -65,6 +65,7 @@ public final class FormatSpanLinkRef extends FormatSpanLink
     @Override
     protected void childEdited(){
         // TODO childEdit
+        super.childEdited();
     }
 
     @Override

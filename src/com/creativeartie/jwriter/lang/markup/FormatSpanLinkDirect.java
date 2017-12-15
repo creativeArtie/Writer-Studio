@@ -43,6 +43,7 @@ public class FormatSpanLinkDirect extends FormatSpanLink {
     @Override
     protected void childEdited(){
         // TODO childEdit
+        super.childEdited();
     }
 
     @Override

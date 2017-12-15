@@ -112,6 +112,12 @@ public final class Checker {
             " is not less than " + limit + ": " + test);
     }
 
+    public static int checkEqual(int test, String field, int size){
+        if (size == test) return test;
+            throw new IllegalArgumentException(addBegin(field) +
+                " is not equals to " + size + ": " + test);
+    }
+
     public static int[] checkIndexes(int lower, String field1, int upper,
             String field2 , int size){
         return checkIndexes(lower, field1, upper, field2, size, false);

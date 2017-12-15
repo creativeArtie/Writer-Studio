@@ -14,6 +14,11 @@ public class FormatSpanContent extends FormatSpan implements BasicText{
     /// Stuff for reparsing
     private final FormatParseContent spanReparser;
 
+    private Optional<String> cacheText;
+    private Optional<String> cacheTrimmed;
+    private Optional<Boolean> cacheSpaceBegin;
+    private Optional<Boolean> cacheSpaceEnd;
+
     FormatSpanContent(List<Span> spanChildren, boolean[] formats,
             FormatParseContent reparser){
         super(spanChildren, formats);
@@ -26,14 +31,45 @@ public class FormatSpanContent extends FormatSpan implements BasicText{
     }
 
     @Override
+    public String getText(){
+        cacheText = getCache(cacheText, () -> BasicText.super.getText());
+        return cacheText.get();
+    }
+
+    @Override
+    public String getTrimmed(){
+        cacheTrimmed = getCache(cacheTrimmed, () -> BasicText.super
+            .getTrimmed());
+        return cacheTrimmed.get();
+    }
+
+    @Override
+    public boolean isSpaceBegin(){
+        cacheSpaceBegin = getCache(cacheSpaceBegin,
+            () -> BasicText.super.isSpaceBegin());
+        return cacheSpaceBegin.get();
+    }
+
+    @Override
+    public boolean isSpaceEnd(){
+        cacheSpaceEnd = getCache(cacheSpaceEnd,
+            () -> BasicText.super.isSpaceEnd());
+        return cacheSpaceEnd.get();
+    }
+
+    @Override
     protected SetupParser getParser(String text){
         // TODO editRaw
-        return null;
+        return spanReparser.canParse(text)? spanReparser: null;
     }
 
     @Override
     protected void childEdited(){
-        // TODO childEdit
+        super.childEdited();
+        cacheText = Optional.empty();
+        cacheTrimmed = Optional.empty();
+        cacheSpaceBegin = Optional.empty();
+        cacheSpaceEnd = Optional.empty();
     }
 
     @Override
