@@ -3,11 +3,14 @@ package com.creativeartie.jwriter.lang.markup;
 import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
+import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
  * Line representing a basic paragraph.
  */
 public class LinedSpanParagraph extends LinedSpan {
+
+    private Optional<Optional<FormatSpanMain>> cacheFormatted;
 
     LinedSpanParagraph(List<Span> children){
         super(children);
@@ -29,8 +32,13 @@ public class LinedSpanParagraph extends LinedSpan {
 
     @Override
     protected SetupParser getParser(String text){
-        // TODO editRaw
-        return null;
+        for (String token: getLinedTokens()){
+            if (text.startsWith(token)){
+                return null;
+            }
+        }
+        return BasicParseText.checkLineEnd(isLast(), text)?
+            LinedParseRest.PARAGRAPH: null;
     }
 
     @Override

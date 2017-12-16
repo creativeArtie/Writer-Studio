@@ -12,11 +12,8 @@ import static com.creativeartie.jwriter.main.Checker.*;
  */
 public abstract class LinedSpan extends SpanBranch {
 
-    private List<StyleInfo> cacheStyles;
-
     LinedSpan(List<Span> children){
         super(children);
-        cacheStyles = ImmutableList.of(getLinedType());
     }
 
     private LinedType linedType;
@@ -49,7 +46,7 @@ public abstract class LinedSpan extends SpanBranch {
     public boolean isLast(){
         Span child = this;
         SpanNode<?> parent = child.getParent();
-        while (parent.get(size() - 1) == child){
+        while (parent.get(parent.size() - 1) == child){
             if (parent instanceof Document) {
                 /// it is the last of the doucment
                 return true;

@@ -3,14 +3,15 @@ package com.creativeartie.jwriter.lang.markup;
 import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
+import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
  * Line that stores a section heading.
  */
 public class LinedSpanSection extends LinedSpanLevel implements Catalogued{
 
-    LinedSpanSection(List<Span> children){
-        super(children);
+    LinedSpanSection(List<Span> children, LinedParseLevel reparser){
+        super(children, reparser);
     }
 
     public Optional<EditionSpan> getEditionSpan(){

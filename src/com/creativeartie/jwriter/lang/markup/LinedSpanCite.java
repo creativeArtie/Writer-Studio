@@ -4,44 +4,60 @@ import java.util.*;
 import com.google.common.collect.*;
 
 import com.creativeartie.jwriter.lang.*;
+import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
  * Line that store research sources and how to do in-text citation.
  */
 public class LinedSpanCite extends LinedSpan {
 
+    private Optional<InfoFieldType> cacheFieldType;
+    private Optional<Optional<InfoDataSpan>> cacheData;
+    private Optional<List<StyleInfo>> cacheStyles;
+    private Optional<Integer> cacheNote;
+
     public LinedSpanCite(List<Span> children){
         super(children);
     }
 
     public InfoFieldType getFieldType(){
-        Optional<InfoFieldSpan> field = spanFromFirst(InfoFieldSpan.class);
-        if (field.isPresent()){
-            return field.get().getFieldType();
-        }
-        return InfoFieldType.ERROR;
+        cacheFieldType = getCache(cacheFieldType, () -> {
+            Optional<InfoFieldSpan> field = spanFromFirst(InfoFieldSpan.class);
+            if (field.isPresent()){
+                return field.get().getFieldType();
+            }
+            return InfoFieldType.ERROR;
+        });
+        return cacheFieldType.get();
     }
 
     public Optional<InfoDataSpan> getData(){
-        return spanFromLast(InfoDataSpan.class);
+        cacheData = getCache(cacheData, () -> spanFromLast(InfoDataSpan.class));
+        return cacheData.get();
     }
 
     @Override
     public List<StyleInfo> getBranchStyles(){
-        ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
-        builder.addAll(super.getBranchStyles()).add(getFieldType());
-        if (! getData().isPresent()){
-            builder.add(AuxiliaryType.DATA_ERROR);
-        }
-        return builder.build();
+        cacheStyles = getCache(cacheStyles, () -> {
+            ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
+            builder.addAll(super.getBranchStyles()).add(getFieldType());
+            if (! getData().isPresent()){
+                builder.add(AuxiliaryType.DATA_ERROR);
+            }
+            return builder.build();
+        });
+        return cacheStyles.get();
     }
 
     @Override
     public int getNoteTotal(){
-        if (getFieldType() != InfoFieldType.ERROR){
-            return getData().map(span -> getCount(span)).orElse(0);
-        }
-        return 0;
+        cacheNote = getCache(cacheNote, () -> {
+            if (getFieldType() != InfoFieldType.ERROR){
+                return getData().map(span -> getCount(span)).orElse(0);
+            }
+            return 0;
+        });
+        return cacheNote.get();
     }
 
     private int getCount(InfoDataSpan span){
@@ -56,17 +72,19 @@ public class LinedSpanCite extends LinedSpan {
 
     @Override
     protected SetupParser getParser(String text){
-        // TODO editRaw
-        return null;
+        return text.startsWith(LINED_CITE) &&
+            BasicParseText.checkLineEnd(isLast(), text)?
+            LinedParseCite.INSTANCE: null;
     }
 
     @Override
     protected void childEdited(){
-        // TODO childEdit
+        cacheFieldType = Optional.empty();
+        cacheData = Optional.empty();
+        cacheStyles = Optional.empty();
+        cacheNote = Optional.empty();
     }
 
     @Override
-    protected void docEdited(){
-        // TODO docEdited
-    }
+    protected void docEdited(){}
 }

@@ -14,6 +14,9 @@ enum LinedParseLevel implements SetupParser {
     /// Split into 2 to separate between praseSec(...) and parseBasic(...)
     NUMBERED, BULLET;
 
+    private FormatParser SECTION_PARSR = new FormatParser(EDITION_BEGIN);
+    private FormatParser TEXT_PARSER = new FormatParser();
+
     static SetupParser[] getSubList(){
         return new SetupParser[]{NUMBERED, BULLET};
     }
@@ -44,13 +47,13 @@ enum LinedParseLevel implements SetupParser {
             pointer.startsWith(children, DIRECTORY_END);
         }
 
-        new FormatParser(EDITION_BEGIN).parse(children, pointer);
+        SECTION_PARSR.parse(children, pointer);
 
         EditionParser.INSTANCE.parse(children, pointer);
 
         pointer.startsWith(children, LINED_END);
 
-        LinedSpanSection ans = new LinedSpanSection(children);
+        LinedSpanSection ans = new LinedSpanSection(children, this);
         return Optional.of(ans);
     }
 
@@ -58,10 +61,10 @@ enum LinedParseLevel implements SetupParser {
             SetupPointer pointer){
         assert children != null: "Null children.";
         assert pointer != null: "Null pointer.";;
-        new FormatParser().parse(children, pointer);
+        TEXT_PARSER.parse(children, pointer);
 
         pointer.startsWith(children, LINED_END);
-        return Optional.of(new LinedSpanLevel(children));
+        return Optional.of(new LinedSpanLevel(children, this));
 
     }
 }

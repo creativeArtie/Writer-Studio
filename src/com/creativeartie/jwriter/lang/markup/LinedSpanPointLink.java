@@ -3,6 +3,7 @@ package com.creativeartie.jwriter.lang.markup;
 import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
+import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
  * Line that stores a hyperlink to be use later.
@@ -29,8 +30,9 @@ public class LinedSpanPointLink extends LinedSpanPoint {
 
     @Override
     protected SetupParser getParser(String text){
-        // TODO editRaw
-        return null;
+        return text.startsWith(LINED_LINK) &&
+            BasicParseText.checkLineEnd(isLast(), text)?
+            LinedParsePointer.HYPERLINK: null;
     }
 
     @Override

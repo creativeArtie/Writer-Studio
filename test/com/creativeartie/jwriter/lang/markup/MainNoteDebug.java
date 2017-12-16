@@ -87,7 +87,7 @@ public class MainNoteDebug {
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         NoteLineTest line1 = new NoteLineTest()
             .setFormattedSpan(doc, 0, 0, 4).setNoteTotal(2)
-            .setBuildId(builder);
+            .setBuildId(builder).setIsLast(false);
         CiteLineTest line2 = new CiteLineTest()
             .setInfoType(InfoFieldType.IN_TEXT)
             .setDataSpan(doc, 0, 1, 3).setNoteTotal(2);
@@ -112,7 +112,8 @@ public class MainNoteDebug {
             .setCatalogued(CatalogueStatus.UNUSED, builder)
             .setNoteTotal(2);
         NoteLineTest line1 = new NoteLineTest()
-            .setFormattedSpan(doc, 0, 0, 1).setNoteTotal(2);
+            .setFormattedSpan(doc, 0, 0, 1).setNoteTotal(2)
+            .setIsLast(false);
 
         IDBuilder id = buildId(false, "ed");
         doc.addId(id, 1);
@@ -148,10 +149,11 @@ public class MainNoteDebug {
 
         CiteLineTest line1 = new CiteLineTest()
             .setInfoType(InfoFieldType.ERROR)
-            .setNoteTotal(0);
+            .setNoteTotal(0).setIsLast(false);
         CiteLineTest line2 = new CiteLineTest()
             .setInfoType(InfoFieldType.IN_TEXT)
-            .setDataSpan(doc, 0, 1, 3).setNoteTotal(2);
+            .setDataSpan(doc, 0, 1, 3).setNoteTotal(2)
+            .setIsLast(false);
         CiteLineTest line3 = new CiteLineTest()
             .setInfoType(InfoFieldType.IN_TEXT)
             .setDataSpan(doc, 0, 2, 3).setNoteTotal(2);

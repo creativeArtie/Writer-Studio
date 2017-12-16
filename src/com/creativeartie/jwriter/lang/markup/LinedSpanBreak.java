@@ -17,8 +17,7 @@ public class LinedSpanBreak extends LinedSpan {
 
     @Override
     protected SetupParser getParser(String text){
-        return isLast() && (text.equals(LINED_BREAK) || text.equals(
-            LINED_BREAK + LINED_END))? LinedParseRest.BREAK: null;
+        return null;
     }
 
     @Override

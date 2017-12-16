@@ -38,7 +38,7 @@ public class MainSpanNote extends MainSpan {
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
         Optional<LinedSpanNote> id = spanFromFirst(LinedSpanNote.class);
-        return Optional.of(id.map(line -> line.buildId())
+        return Optional.of(id.flatMap(line -> line.buildId())
             .orElseGet(() -> new CatalogueIdentity(Arrays.asList(TYPE_COMMENT),
             this)));
     }

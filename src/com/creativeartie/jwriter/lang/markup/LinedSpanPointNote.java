@@ -3,6 +3,7 @@ package com.creativeartie.jwriter.lang.markup;
 import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
+import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
  * Line that stores text of a footnote or a endnote.

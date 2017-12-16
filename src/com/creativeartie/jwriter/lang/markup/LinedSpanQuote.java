@@ -3,6 +3,7 @@ package com.creativeartie.jwriter.lang.markup;
 import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
+import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
  * Line that stores a block quote.
@@ -29,8 +30,9 @@ public class LinedSpanQuote extends LinedSpan {
 
     @Override
     protected SetupParser getParser(String text){
-        // TODO editRaw
-        return null;
+        return text.startsWith(LINED_QUOTE) &&
+            BasicParseText.checkLineEnd(isLast(), text)?
+            LinedParseRest.QUOTE: null;
     }
 
     @Override

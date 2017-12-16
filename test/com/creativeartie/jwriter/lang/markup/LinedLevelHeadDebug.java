@@ -125,16 +125,18 @@ public class LinedLevelHeadDebug {
         DocumentAssert doc = DocumentAssert.assertDoc(3, raw, parsers);
 
         HeadLevelLineTest heading1 = new HeadLevelLineTest()
-           .setFormattedSpan(doc, 0, 1).setLinedType(LinedType.HEADING)
+            .setFormattedSpan(doc, 0, 1).setLinedType(LinedType.HEADING)
             .setLevel(1).setEdition(EditionType.NONE)
-            .setPublishTotal(1).setNoteTotal(0);
+            .setPublishTotal(1).setNoteTotal(0)
+            .setIsLast(false);
         FormatMainTest content1 = new FormatMainTest()
             .setPublishTotal(1).setNoteTotal(0);
 
         HeadLevelLineTest heading2 = new HeadLevelLineTest()
            .setFormattedSpan(doc, 1, 1).setLinedType(LinedType.HEADING)
             .setLevel(1).setEdition(EditionType.NONE)
-            .setPublishTotal(2).setNoteTotal(0);
+            .setPublishTotal(2).setNoteTotal(0)
+            .setIsLast(false);
         FormatMainTest content2 = new FormatMainTest()
             .setPublishTotal(2).setNoteTotal(0);
 

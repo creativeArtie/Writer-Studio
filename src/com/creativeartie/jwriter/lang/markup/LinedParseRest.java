@@ -41,7 +41,7 @@ enum LinedParseRest implements SetupParser {
         assert pointer != null: "Null pointer.";
         ArrayList<Span> children = new ArrayList<>();
         if (pointer.startsWith(children, LINED_QUOTE)){
-            new FormatParser(false).parse(children, pointer);
+            new FormatParser().parse(children, pointer);
             pointer.startsWith(children, LINED_END);
             return Optional.of(new LinedSpanQuote(children));
         }

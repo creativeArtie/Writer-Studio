@@ -16,9 +16,11 @@ public class BranchLineTest {
         private int publishTotal;
         private int noteTotal;
         private LinedType linedType;
+        private boolean isLast;
 
         public LineTest(Class<T> clazz){
             super(clazz);
+            isLast = true;
         }
 
         public T setPublishTotal(int count){
@@ -28,6 +30,11 @@ public class BranchLineTest {
 
         public T setNoteTotal(int count){
             noteTotal = count;
+            return cast();
+        }
+
+        public T setIsLast(boolean last){
+            isLast = last;
             return cast();
         }
 
@@ -44,6 +51,7 @@ public class BranchLineTest {
         public void test(SpanBranch span){
             LinedSpan test = (LinedSpan) span;
             assertEquals(getError("type", span), linedType, test.getLinedType());
+            assertEquals(getError("last", span), isLast, test.isLast());
             assertEquals(getError("publish", span), publishTotal, test.getPublishTotal());
             assertEquals(getError("note", span), noteTotal, test.getNoteTotal());
         }
@@ -307,8 +315,7 @@ public class BranchLineTest {
         public void test(SpanBranch span){
             LinedSpanNote test = assertClass(span, LinedSpanNote.class);
             assertSpan("data", span, lineText, test.getFormattedSpan());
-            assertEquals(getError("id", span), buildId.orElse(null),
-                test.buildId());
+            assertEquals(getError("id", span), buildId, test.buildId());
             super.test(span);
         }
     }

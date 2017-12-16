@@ -66,6 +66,23 @@ public final class AuxiliaryData{
         }
         return builder.toString();
     }
+    public static List<String> getLinedTokens(){
+        ArrayList<String> list = new ArrayList<>();
+        for (LinedParseLevel parser: LinedParseLevel.values()){
+            for(int i = LEVEL_MAX; i >= 1; i--){
+                list.add(getLevelToken(parser, i));
+            }
+        }
+        list.add(LINED_AGENDA);
+        list.add(LINED_NOTE);
+        list.add(LINED_CITE);
+        list.add(LINED_LINK);
+        list.add(LINED_FOOTNOTE);
+        list.add(LINED_ENDNOTE);
+        list.add(LINED_QUOTE);
+        list.add(LINED_BREAK);
+        return list;
+    }
 
     /// @Part-1-2: Other Lined Details -----------------------------------------
     /// For BasicTextParse, LinedParseCite, LinedParseLevel, LinedParsePointer,
