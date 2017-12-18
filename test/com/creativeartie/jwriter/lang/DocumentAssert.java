@@ -189,7 +189,8 @@ public class DocumentAssert {
         Document doc = span.getDocument();
         doc.addUpdater(out -> editedSpans++);
         doc.addRemover(out -> fail("Wrong span removed:" + out));
-        doc.addEditor(out -> fail("Wrong span updated:" + out));
+        doc.addEditor(span == doc? out -> editPass = true:
+            out -> fail("Wrong span updated:" + out));
         totalSpans = 1;
         willEdit(doc, span, false);
         return this;

@@ -174,6 +174,49 @@ public class FormatAgendaDebug{
     }
 
     @Test
+    public void editNewAgenda(){
+        ///              012345678901
+        String before = "{!abc{!ddd}";
+
+        DocumentAssert doc = assertDoc(1, before, parsers);
+
+        doc.insert(5, "}");
+
+        ///             0123456789012
+        String after = "{!abc}{!ddd}";
+        doc.assertDoc(2, after);
+
+        IDBuilder id1 = buildId("00");
+        doc.addId(id1,  0);
+        FormatAgendaTest agenda1 = new FormatAgendaTest()
+            .setCatalogued(CatalogueStatus.UNUSED, id1).setText("abc");
+        ContentTest content1 = new ContentTest()
+            .setText("abc").setBegin(false)
+            .setEnd(false) .setCount(1);
+
+        IDBuilder id2 = buildId("06");
+        doc.addId(id2,  1);
+        FormatAgendaTest agenda2 = new FormatAgendaTest()
+            .setCatalogued(CatalogueStatus.UNUSED, id2).setText("ddd");
+        ContentTest content2 = new ContentTest()
+            .setText("ddd").setBegin(false)
+            .setEnd(false) .setCount(1);
+
+        agenda1.test(    doc,  3, "{!abc}", 0);
+        doc.assertKeyLeaf( 0,  2, "{!",     0, 0);
+        content1.test(   doc,  1, "abc",    0, 1);
+        doc.assertTextLeaf(2,  5, "abc",    0, 1, 0);
+        doc.assertKeyLeaf( 5,  6, "}",      0, 2);
+        agenda2.test(    doc,  3, "{!ddd}", 1);
+        doc.assertKeyLeaf( 6,  8, "{!",     1, 0);
+        content2.test(   doc,  1, "ddd",    1, 1);
+        doc.assertTextLeaf(8, 11, "ddd",    1, 1, 0);
+        doc.assertKeyLeaf(11, 12, "}",      1, 2);
+
+        doc.assertIds();
+    }
+
+    @Test
     public void editNewAContent(){
         ///              0123
         String before = "{!}";
@@ -189,18 +232,17 @@ public class FormatAgendaDebug{
         IDBuilder id = buildId("0");
         doc.addId(id,  0);
 
-
         FormatAgendaTest agenda = new FormatAgendaTest()
             .setCatalogued(CatalogueStatus.UNUSED, id).setText("abc");
         ContentTest content = new ContentTest()
             .setText("abc").setBegin(false)
             .setEnd(false) .setCount(1);
 
-        agenda.test(     doc, 3, after,  0);
-        doc.assertKeyLeaf( 0, 2, "{!",   0, 0);
-        content.test(    doc, 1, "abc",  0, 1);
-        doc.assertTextLeaf(2, 5, "abc",  0, 1, 0);
-        doc.assertKeyLeaf( 5, 6, "}",    0, 2);
+        agenda.test(     doc, 3, after, 0);
+        doc.assertKeyLeaf( 0, 2, "{!",  0, 0);
+        content.test(    doc, 1, "abc", 0, 1);
+        doc.assertTextLeaf(2, 5, "abc", 0, 1, 0);
+        doc.assertKeyLeaf( 5, 6, "}",   0, 2);
 
         doc.assertIds();
     }

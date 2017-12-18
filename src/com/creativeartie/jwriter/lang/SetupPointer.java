@@ -391,8 +391,8 @@ public final class SetupPointer{
      * {@link #toString()}.
      */
     private String pointerHelper(int ptr){
-        assert ptr > 0: "Too low ptr";
-        assert ptr <= rawText.length(): "Too high ptr";
+        assert ptr >= 0: "Too low ptr: " + ptr;
+        assert ptr <= rawText.length(): "Too high ptr: " + ptr;
         if (ptr < rawText.length()){
             return ptr + "(" + rawText.charAt(ptr) + ")";
         }

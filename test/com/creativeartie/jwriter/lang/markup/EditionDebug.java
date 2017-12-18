@@ -131,23 +131,22 @@ public class EditionDebug {
 
     @Test
     public void finalDetailed(){
-        ///              01234567890123456
+        ///           01234567890123456
         String raw = "#FINAL version 8";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        EditionTest edition = new EditionTest()
-            .setEdition(EditionType.FINAL)
-            .setText("version 8");
-        ContentTest content = new ContentTest()
-            .setText("version 8").setBegin(true)
-            .setEnd(false)       .setCount(2);
+        commonEdited(doc);
+    }
 
-        edition.test(     doc, 2,  raw,         0);
-        doc.assertKeyLeaf(  0, 6, "#FINAL",     0, 0);
-        content.test(     doc, 1, " version 8", 0, 1);
-        doc.assertTextLeaf(6, 16, " version 8", 0, 1, 0);
+    @Test
+    public void editText(){
+        ///              01234567890123456
+        String before = "#FINAL version8";
+        DocumentAssert doc = assertDoc(1, before, parsers);
 
-        doc.assertIds();
+        doc.insert(14, " ", 0);
+
+        commonEdited(doc);
     }
 
     @Test
@@ -156,6 +155,11 @@ public class EditionDebug {
         DocumentAssert doc = assertDoc(1, before, parsers);
 
         doc.delete(1, 2, 0);
+
+        commonEdited(doc);
+    }
+
+    public void commonEdited(DocumentAssert doc){
 
         ///            01234567890123456
         String after = "#FINAL version 8";
