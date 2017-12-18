@@ -187,4 +187,82 @@ public class FormatCurlyDebug {
 
         doc.assertIds();
     }
+
+    @Test
+    public void editCategoryChanged(){
+        ///              012345678
+        String before = "{*ac-dd}";
+
+        DocumentAssert doc = assertDoc(1, before, parsers);
+
+        doc.insert(3, "b", 0, 1, 0);
+        commonEdited(doc);
+    }
+
+    @Test
+    public void editNameChanged(){
+        ///              01234567
+        String before = "{*abc-d}";
+
+        DocumentAssert doc = assertDoc(1, before, parsers);
+
+        doc.insert(6, "d", 0, 1, 2);
+        commonEdited(doc);
+    }
+
+    @Test
+    public void editAddCat(){
+        ///              01234567
+        String before = "{*abcdd}";
+
+        DocumentAssert doc = assertDoc(1, before, parsers);
+
+        doc.insert(5, "-", 0, 1);
+        commonEdited(doc);
+    }
+
+    @Test
+    public void editAddId(){
+        ///              01234567
+        String before = "{*}";
+
+        DocumentAssert doc = assertDoc(1, before, parsers);
+
+        doc.insert(2, "abc-dd", 0);
+        commonEdited(doc);
+    }
+
+    private void commonEdited(DocumentAssert doc){
+        ///              012345678
+        String after = "{*abc-dd}";
+        doc.assertDoc(1, after);
+
+        IDBuilder builder = buildEndnoteId("dd").addCategory("abc");
+        doc.addRef(builder, CatalogueStatus.NOT_FOUND, 0);
+
+        FormatNoteTest note = new FormatNoteTest()
+            .setDirectoryType(DirectoryType.ENDNOTE)
+            .setCatalogued(CatalogueStatus.NOT_FOUND, builder);
+        DirectoryTest ptr = new DirectoryTest()
+            .setPurpose(DirectoryType.ENDNOTE)
+            .setIdentity(builder);
+        ContentTest cat = new ContentTest()
+            .setText("abc").setBegin(false)
+            .setEnd(false) .setCount(1);
+        ContentTest id = new ContentTest()
+            .setText("dd").setBegin(false)
+            .setEnd(false) .setCount(1);
+
+        note.test(      doc, 3, after,    0);
+        doc.assertKeyLeaf(0, 2, "{*",     0, 0);
+        ptr.test(       doc, 3, "abc-dd", 0, 1);
+        cat.test(       doc, 1, "abc",    0, 1, 0);
+        doc.assertIdLeaf( 2, 5, "abc",    0, 1, 0, 0);
+        doc.assertKeyLeaf(5, 6, "-",      0, 1, 1);
+        id.test(        doc, 1, "dd",     0, 1, 2);
+        doc.assertIdLeaf( 6, 8, "dd",     0, 1, 2, 0);
+        doc.assertKeyLeaf(8, 9, "}",      0, 2);
+
+        doc.assertIds();
+    }
 }
