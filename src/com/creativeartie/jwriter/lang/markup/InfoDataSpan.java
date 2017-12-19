@@ -12,6 +12,8 @@ import static com.creativeartie.jwriter.main.Checker.*;
  */
 public abstract class InfoDataSpan extends SpanBranch{
 
+    private Optional<List<StyleInfo>> cacheList;
+
     public abstract SpanBranch getData();
 
     private final InfoDataType dataType;
@@ -27,11 +29,17 @@ public abstract class InfoDataSpan extends SpanBranch{
 
     @Override
     public final List<StyleInfo> getBranchStyles(){
-        return ImmutableList.of(dataType);
+        cacheList = getCache(cacheList, () -> ImmutableList.of(dataType));
+        return cacheList.get();
     }
 
     @Override
     public String toString(){
         return "{" + getData() + "}";
+    }
+
+    @Override
+    protected void childEdited(){
+        cacheList = Optional.empty();
     }
 }

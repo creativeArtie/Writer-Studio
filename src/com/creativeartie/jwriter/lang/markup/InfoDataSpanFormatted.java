@@ -9,9 +9,12 @@ import com.creativeartie.jwriter.lang.*;
  */
 public final class InfoDataSpanFormatted extends InfoDataSpan{
 
+    private Optional<FormatSpanMain> cacheData;
+
     @Override
     public FormatSpanMain getData(){
-        return (FormatSpanMain)get(0);
+        cacheData = getCache(cacheData, () -> (FormatSpanMain)get(0));
+        return cacheData.get();
     }
 
     protected InfoDataSpanFormatted(List<Span> children){
@@ -24,7 +27,10 @@ public final class InfoDataSpanFormatted extends InfoDataSpan{
     }
 
     @Override
-    protected void childEdited(){}
+    protected void childEdited(){
+        super.childEdited();
+        cacheData = Optional.empty();
+    }
 
     @Override
     protected void docEdited(){}

@@ -12,6 +12,7 @@ import static com.creativeartie.jwriter.main.Checker.*;
 final class FormatParser implements SetupParser {
 
     private final String[] spanEnders;
+    private final String[] reparseEnders;
 
     private final StyleInfoLeaf leafStyle;
     private final boolean willReparse;
@@ -35,10 +36,11 @@ final class FormatParser implements SetupParser {
         spanEnders = SetupParser.combine(listFormatEnderTokens(), enders);
         leafStyle = checkNotNull(style, "style");
         willReparse = reparse;
+        reparseEnders = SetupParser.combine(enders, LINED_END);
     }
 
-    String[] getSpanEnders(){
-        return spanEnders;
+    String[] getReparseEnders(){
+        return reparseEnders;
     }
 
     @Override

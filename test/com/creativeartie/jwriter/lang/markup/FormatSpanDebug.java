@@ -376,4 +376,34 @@ public class FormatSpanDebug {
         ///0           1         2         3         4         5         6
         doc.assertIds();
     }
+
+    @Test
+    public void editToBold(){
+        ///              0123456789012
+        String before = "before *bold";
+
+        DocumentAssert doc = assertDoc(1, before, parsers);
+
+        ///             01234567890123
+        String after = "before **bold";
+        doc.insert(7, "*", 0);
+        doc.assertDoc(1, after);
+
+        FormatMainTest main = new FormatMainTest()
+            .setPublishTotal(2).setNoteTotal(0);
+        FormatContentTest content1 = new FormatContentTest()
+            .setBegin(false).setEnd(true)
+            .setText("before");
+        FormatContentTest content2 = new FormatContentTest()
+            .setBegin(false).setEnd(false)
+            .setText("bold").setFormats(FormatType.BOLD);
+
+        main.test(       doc,   3, after,     0);
+        content1.test(   doc,   1, "before ", 0, 0);
+        doc.assertTextLeaf(0,   7, "before ", 0, 0, 0);
+        doc.assertKeyLeaf( 7,   9, "**",      0, 1);
+        content2.test(   doc,   1, "bold",    0, 2);
+        doc.assertTextLeaf(9,  13, "bold",    0, 2, 0);
+        doc.assertIds();
+    }
 }
