@@ -12,28 +12,37 @@ import com.creativeartie.jwriter.lang.*;
  */
 public final class InfoFieldSpan extends SpanBranch{
 
+
+    private Optional<List<StyleInfo>> cacheStyles;
+    private Optional<InfoFieldType> cacheField;
+
     InfoFieldSpan(List<Span> children){
         super(children);
     }
 
     @Override
     public List<StyleInfo> getBranchStyles(){
-        return ImmutableList.of(getFieldType());
+        cacheStyles = getCache(cacheStyles, () -> ImmutableList
+            .of(getFieldType()));
+        return cacheStyles.get();
     }
 
     public InfoFieldType getFieldType(){
-        Optional<SpanLeaf> found = leafFromFrist(StyleInfoLeaf.FIELD);
-        if (found.isPresent()){
-            String name = CaseFormat.LOWER_HYPHEN
-                .to(CaseFormat.UPPER_UNDERSCORE,
-                found.get().getRaw().trim());
-            try {
-                return InfoFieldType.valueOf(name);
-            } catch (IllegalArgumentException ex){
-                /// return InfoFieldType.ERROR;
+        cacheField = getCache(cacheField, () -> {
+            Optional<SpanLeaf> found = leafFromFrist(StyleInfoLeaf.FIELD);
+            if (found.isPresent()){
+                String name = CaseFormat.LOWER_HYPHEN
+                    .to(CaseFormat.UPPER_UNDERSCORE,
+                    found.get().getRaw().trim());
+                try {
+                    return InfoFieldType.valueOf(name);
+                } catch (IllegalArgumentException ex){
+                    /// return InfoFieldType.ERROR;
+                }
             }
-        }
-        return InfoFieldType.ERROR;
+            return InfoFieldType.ERROR;
+        });
+        return cacheField.get();
     }
 
     @Override
@@ -42,7 +51,10 @@ public final class InfoFieldSpan extends SpanBranch{
     }
 
     @Override
-    protected void childEdited(){}
+    protected void childEdited(){
+        cacheStyles = Optional.empty();
+        cacheField = Optional.empty();
+    }
 
     @Override
     protected void docEdited(){}
