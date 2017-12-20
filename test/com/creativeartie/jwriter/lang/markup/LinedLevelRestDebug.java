@@ -26,7 +26,7 @@ public class LinedLevelRestDebug {
         String raw = "\t\t\t\t#@id:Text abc\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        BasicLevelLineTest numbered = new BasicLevelLineTest()
+        ListLevelLineTest numbered = new ListLevelLineTest()
             .setLinedType(LinedType.NUMBERED).setLevel(5)
             .setFormattedSpan(doc, 0, 1).setPublishTotal(2)
             .setNoteTotal(0);
@@ -48,7 +48,7 @@ public class LinedLevelRestDebug {
         String raw = "\t\t\t\t-\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        BasicLevelLineTest bullet = new BasicLevelLineTest()
+        ListLevelLineTest bullet = new ListLevelLineTest()
             .setLinedType(LinedType.BULLET).setLevel(5)
             .setPublishTotal(0).setNoteTotal(0);
 
@@ -66,7 +66,7 @@ public class LinedLevelRestDebug {
 
         SpanBranch content = doc.assertChild(1, "@id:Text abc", 0, 1);
 
-        BasicLevelLineTest bullet = new BasicLevelLineTest()
+        ListLevelLineTest bullet = new ListLevelLineTest()
             .setLinedType(LinedType.BULLET).setLevel(5)
             .setFormattedSpan(doc, 0, 1).setPublishTotal(2)
             .setNoteTotal(0);
@@ -93,7 +93,7 @@ public class LinedLevelRestDebug {
         doc.addRef(id, CatalogueStatus.NOT_FOUND, 1);
         doc.addId(FormatAgendaDebug.buildId("09"), 0);
 
-        BasicLevelLineTest bullet = new BasicLevelLineTest()
+        ListLevelLineTest bullet = new ListLevelLineTest()
             .setLinedType(LinedType.BULLET).setLevel(1)
             .setFormattedSpan(doc, 0, 1).setPublishTotal(0)
             .setNoteTotal(1);
@@ -124,7 +124,7 @@ public class LinedLevelRestDebug {
         String raw = "\t\t\t\t\t-aaa\\\nddd";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        BasicLevelLineTest bullet = new BasicLevelLineTest()
+        ListLevelLineTest bullet = new ListLevelLineTest()
             .setLinedType(LinedType.BULLET).setLevel(6)
             .setFormattedSpan(doc, 0, 1).setPublishTotal(2)
             .setNoteTotal(0);

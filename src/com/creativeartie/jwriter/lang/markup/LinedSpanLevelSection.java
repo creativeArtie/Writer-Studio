@@ -8,10 +8,13 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 /**
  * Line that stores a section heading.
  */
-public class LinedSpanSection extends LinedSpanLevel implements Catalogued{
+public class LinedSpanLevelSection extends LinedSpanLevel implements Catalogued{
 
-    LinedSpanSection(List<Span> children, LinedParseLevel reparser){
-        super(children, reparser);
+    private Optional<Integer> cachePublish;
+    private Optional<Integer> cacheNote;
+
+    LinedSpanLevelSection(List<Span> children, LinedParseLevel reparser){
+        super(children);
     }
 
     public Optional<EditionSpan> getEditionSpan(){
@@ -54,4 +57,20 @@ public class LinedSpanSection extends LinedSpanLevel implements Catalogued{
                 .orElse(0);
         }
     }
+
+    @Override
+    protected SetupParser getParser(String text){
+        //TODO getParser(text)
+        return null;
+    }
+
+    @Override
+    protected void childEdited(){
+        super.childEdited();
+        cachePublish = Optional.empty();
+        cacheNote = Optional.empty();
+    }
+
+    @Override
+    protected void docEdited(){}
 }

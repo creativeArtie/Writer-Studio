@@ -27,7 +27,7 @@ public enum LeafStyleParser {
 
         checkClass(leaf, MainSpanNote.class, "Note");
 
-        leaf.getParent(LinedSpanSection.class).ifPresent(span -> {
+        leaf.getParent(LinedSpanLevelSection.class).ifPresent(span -> {
             switch (span.getLinedType()){
             case HEADING:
                 addKey("Heading");

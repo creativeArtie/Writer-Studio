@@ -16,8 +16,8 @@ import com.creativeartie.jwriter.property.window.*;
 abstract class PaneHeadingView extends VBox{
     private PaneHeadingTreeControl headingNode;
     private PaneHeadingTreeControl outlineNode;
-    private ReadOnlyObjectWrapper<Optional<LinedSpanSection>> headingProp;
-    private ReadOnlyObjectWrapper<Optional<LinedSpanSection>> outlineProp;
+    private ReadOnlyObjectWrapper<Optional<LinedSpanLevelSection>> headingProp;
+    private ReadOnlyObjectWrapper<Optional<LinedSpanLevelSection>> outlineProp;
     private ReadOnlyBooleanWrapper headingFocused;
     private ReadOnlyBooleanWrapper outlineFocused;
 
@@ -58,19 +58,19 @@ abstract class PaneHeadingView extends VBox{
     }
 
     /// Node Properties
-    ReadOnlyObjectProperty<Optional<LinedSpanSection>> headingProperty(){
+    ReadOnlyObjectProperty<Optional<LinedSpanLevelSection>> headingProperty(){
         return headingProp.getReadOnlyProperty();
     }
 
-    Optional<LinedSpanSection> getHeading(){
+    Optional<LinedSpanLevelSection> getHeading(){
         return headingProp.getValue();
     }
 
-    ReadOnlyObjectProperty<Optional<LinedSpanSection>> outlineProperty(){
+    ReadOnlyObjectProperty<Optional<LinedSpanLevelSection>> outlineProperty(){
         return outlineProp.getReadOnlyProperty();
     }
 
-    Optional<LinedSpanSection> getOutline(){
+    Optional<LinedSpanLevelSection> getOutline(){
         return outlineProp.getValue();
     }
 

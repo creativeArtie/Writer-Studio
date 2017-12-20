@@ -15,9 +15,9 @@ import com.creativeartie.jwriter.property.window.*;
 
 abstract class PaneHeadingTreeView extends TitledPane{
 
-    private class HeadingCell extends TreeCell<Optional<LinedSpanSection>> {
+    private class HeadingCell extends TreeCell<Optional<LinedSpanLevelSection>> {
         @Override
-        public void updateItem(Optional<LinedSpanSection> item, boolean empty){
+        public void updateItem(Optional<LinedSpanLevelSection> item, boolean empty){
             super.updateItem(item, empty);
             if (empty || item == null) {
                 setText(null);
@@ -30,13 +30,13 @@ abstract class PaneHeadingTreeView extends TitledPane{
         }
     }
 
-    private final TreeView<Optional<LinedSpanSection>> tree;
+    private final TreeView<Optional<LinedSpanLevelSection>> tree;
 
-    private ReadOnlyObjectWrapper<Optional<LinedSpanSection>> selectedSection;
+    private ReadOnlyObjectWrapper<Optional<LinedSpanLevelSection>> selectedSection;
     private ReadOnlyBooleanWrapper itemFocused;
 
-    private HashMap<Optional<LinedSpanSection>,
-        TreeItem<Optional<LinedSpanSection>>> mapper;
+    private HashMap<Optional<LinedSpanLevelSection>,
+        TreeItem<Optional<LinedSpanLevelSection>>> mapper;
 
     public PaneHeadingTreeView(){
         tree = new TreeView<>();
@@ -45,10 +45,10 @@ abstract class PaneHeadingTreeView extends TitledPane{
         setupTree();
 
         selectedSection = new ReadOnlyObjectWrapper<>(this, "selectedSection");
-        ReadOnlyObjectProperty<TreeItem<Optional<LinedSpanSection>>> prop =
+        ReadOnlyObjectProperty<TreeItem<Optional<LinedSpanLevelSection>>> prop =
             tree.getSelectionModel().selectedItemProperty();
         selectedSection.bind(Bindings.createObjectBinding(
-            /// Optional.of(TreeItem).flatMap(TreeItem -> LinedSpanSection)
+            /// Optional.of(TreeItem).flatMap(TreeItem -> LinedSpanLevelSection)
             () -> Optional.ofNullable(prop.getValue()).flatMap(item ->
                 item.getValue()),
             prop));
@@ -60,12 +60,12 @@ abstract class PaneHeadingTreeView extends TitledPane{
 
     /// Getters
 
-    protected TreeView<Optional<LinedSpanSection>> getTree(){
+    protected TreeView<Optional<LinedSpanLevelSection>> getTree(){
         return tree;
     }
 
-    protected HashMap<Optional<LinedSpanSection>,
-        TreeItem<Optional<LinedSpanSection>>>getMapper()
+    protected HashMap<Optional<LinedSpanLevelSection>,
+        TreeItem<Optional<LinedSpanLevelSection>>>getMapper()
     {
         return mapper;
     }
@@ -78,7 +78,7 @@ abstract class PaneHeadingTreeView extends TitledPane{
     }
 
     /// Node Properties
-    public ReadOnlyObjectProperty<Optional<LinedSpanSection>>
+    public ReadOnlyObjectProperty<Optional<LinedSpanLevelSection>>
         selectedSectionProperty()
     {
         return selectedSection.getReadOnlyProperty();
@@ -95,5 +95,5 @@ abstract class PaneHeadingTreeView extends TitledPane{
     /// Control Methods
     public abstract void loadHeadings(List<? extends Section> children);
 
-    public abstract void selectHeading(Optional<LinedSpanSection> section);
+    public abstract void selectHeading(Optional<LinedSpanLevelSection> section);
 }

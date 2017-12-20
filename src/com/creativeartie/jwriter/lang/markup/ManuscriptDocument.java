@@ -57,7 +57,7 @@ public class ManuscriptDocument extends Document{
         {
 
             MainSpanSection section = (MainSpanSection) data.getTarget();
-            Optional<LinedSpanSection> found = section.getSelfSection();
+            Optional<LinedSpanLevelSection> found = section.getSelfSection();
             if (found.isPresent()){
                 if (found.get().getLinedType() == LinedType.HEADING){
                     heading = heading.appendHeading(found.get());

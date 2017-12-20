@@ -7,7 +7,7 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
- * Parser for {@link LinedSpanLevel} and it's subclasse {@link LinedSpanSection}.
+ * Parser for {@link LinedSpanLevel} and it's subclasse {@link LinedSpanLevelSection}.
  */
 enum LinedParseLevel implements SetupParser {
     HEADING, OUTLINE,
@@ -53,7 +53,7 @@ enum LinedParseLevel implements SetupParser {
 
         pointer.startsWith(children, LINED_END);
 
-        LinedSpanSection ans = new LinedSpanSection(children, this);
+        LinedSpanLevelSection ans = new LinedSpanLevelSection(children, this);
         return Optional.of(ans);
     }
 
@@ -64,7 +64,7 @@ enum LinedParseLevel implements SetupParser {
         TEXT_PARSER.parse(children, pointer);
 
         pointer.startsWith(children, LINED_END);
-        return Optional.of(new LinedSpanLevel(children, this));
+        return Optional.of(new LinedSpanLevelList(children, this));
 
     }
 }

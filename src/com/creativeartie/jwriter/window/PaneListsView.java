@@ -114,9 +114,9 @@ abstract class PaneListsView extends GridPane{
                 if (branch instanceof LinedSpanPointLink){
                     String path = ((LinedSpanPointLink)branch).getPath();
                     graphic = new TextFlow(new Hyperlink(path));
-                } else if (branch instanceof LinedSpanSection){
-                    Optional<LinedSpanSection> ans = item.map(span ->
-                        (LinedSpanSection)span);
+                } else if (branch instanceof LinedSpanLevelSection){
+                    Optional<LinedSpanLevelSection> ans = item.map(span ->
+                        (LinedSpanLevelSection)span);
                     graphic = WindowSpanParser.parseDisplay(ans.orElse(null));
                 } else if (branch instanceof LinedSpanPointNote){
                     Optional<FormatSpanMain> ans = ((LinedSpanPointNote)branch)

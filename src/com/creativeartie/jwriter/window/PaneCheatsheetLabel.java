@@ -80,7 +80,7 @@ class PaneCheatsheetLabel extends Label{
             (doc, point) ->
                 doc.locateSpan(point, FormatSpanLinkRef.class).isPresent() ||
                 doc.locateSpan(point, FormatSpanDirectory.class).isPresent() ||
-                doc.locateSpan(point, LinedSpanSection.class).isPresent() ||
+                doc.locateSpan(point, LinedSpanLevelSection.class).isPresent() ||
                 doc.locateSpan(point, LinedSpanPoint.class).isPresent() ||
                 doc.locateSpan(point, LinedSpanNote.class).isPresent()
         );

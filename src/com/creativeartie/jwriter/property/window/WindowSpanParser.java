@@ -69,13 +69,13 @@ public final class WindowSpanParser {
         }
     }
 
-    public static TextFlow parseDisplay(LinedSpanSection line,
+    public static TextFlow parseDisplay(LinedSpanLevelSection line,
             WindowStyle ... styles){
         TextFlow content = new TextFlow();
         parseDisplay(content, line, styles);
         return content;
     }
-    public static void parseDisplay(TextFlow content, LinedSpanSection line,
+    public static void parseDisplay(TextFlow content, LinedSpanLevelSection line,
             WindowStyle ... styles){
         checkNotNull(content, "Content cannot be null.");
         if (line != null){
@@ -87,7 +87,7 @@ public final class WindowSpanParser {
         }
     }
 
-    private static void parsingDisplay(TextFlow content, LinedSpanSection line,
+    private static void parsingDisplay(TextFlow content, LinedSpanLevelSection line,
             WindowStyle ... styles){
         Text status = new Text(WindowText.getText(line.getEdition()));
         status.setStyle(WindowStyle.getStyle("Display.HeadingStatus")

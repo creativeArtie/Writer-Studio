@@ -25,7 +25,7 @@ public class PaneHeadingControl extends PaneHeadingView{
     public void setHeading(ManuscriptDocument doc, int position){
         Checker.checkNotNull(root, "root");
         doc.locateSpan(position, MainSpanSection.class).ifPresent(span ->{
-            Optional<LinedSpanSection> heading = span.getHeading();
+            Optional<LinedSpanLevelSection> heading = span.getHeading();
             getHeadings().selectHeading(heading);
             root.findChild(heading).ifPresent(found -> getOutlines()
                 .loadHeadings(found.getOutlines()));

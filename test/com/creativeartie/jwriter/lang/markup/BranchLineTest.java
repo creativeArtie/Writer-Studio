@@ -178,21 +178,21 @@ public class BranchLineTest {
         }
 
         protected LinedSpanLevel testSubclass(SpanBranch span){
-            LinedSpanSection test = assertClass(span, LinedSpanSection.class);
+            LinedSpanLevelSection test = assertClass(span, LinedSpanLevelSection.class);
             assertEquals(getError("edition", span), edition, test.getEdition());
             return test;
         }
     }
 
-    public static class BasicLevelLineTest extends
-                LevelLineTest<BasicLevelLineTest>{
+    public static class ListLevelLineTest extends
+                LevelLineTest<ListLevelLineTest>{
 
-        public BasicLevelLineTest(){
-            super(BasicLevelLineTest.class);
+        public ListLevelLineTest(){
+            super(ListLevelLineTest.class);
         }
 
         protected LinedSpanLevel testSubclass(SpanBranch span){
-            return assertClass(span, LinedSpanLevel.class);
+            return assertClass(span, LinedSpanLevelList.class);
         }
     }
 

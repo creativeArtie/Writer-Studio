@@ -7,23 +7,21 @@ import static com.creativeartie.jwriter.main.Checker.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
- * Line that points to a list. This is the base for {@link LinedSpanSection}.
+ * Line that points to a list. This is the base for {@link LinedSpanLevelSection}.
  */
-public class LinedSpanLevel extends LinedSpan {
-    private LinedParseLevel spanReparser;
+public abstract class LinedSpanLevel extends LinedSpan {
     private Optional<Optional<FormatSpanMain>> cacheFormatted;
     private Optional<Integer> cacheLevel;
     private Optional<Integer> cachePublish;
     private Optional<Integer> cacheNote;
 
-    LinedSpanLevel(List<Span> children, LinedParseLevel reparser){
+    LinedSpanLevel(List<Span> children){
         super(children);
-        spanReparser = checkNotNull(reparser, "reparser");
     }
 
     public Optional<FormatSpanMain> getFormattedSpan(){
-        cacheFormatted = getCache(cacheFormatted, () -> spanFromLast(FormatSpanMain
-            .class));
+        cacheFormatted = getCache(cacheFormatted, () -> spanFromLast(
+            FormatSpanMain.class));
         return cacheFormatted.get();
     }
 
@@ -35,38 +33,10 @@ public class LinedSpanLevel extends LinedSpan {
         return cacheLevel.get();
     }
 
-    @Override
-    public int getPublishTotal(){
-        cachePublish = getCache(cachePublish, () -> getFormattedSpan()
-            .map(span -> span.getPublishTotal()).orElse(0));
-        return cachePublish.get();
-    }
-
-    @Override
-    public int getNoteTotal(){
-        cacheNote = getCache(cacheNote, () -> getFormattedSpan()
-            .map(span -> span.getNoteTotal()).orElse(0)
-        );
-        return cacheNote.get();
-    }
-
-
-    @Override
-    protected SetupParser getParser(String text){
-        return text.startsWith(getLevelToken(spanReparser, getLevel())) &&
-            BasicParseText.checkLineEnd(isLast(), text)?
-            spanReparser: null;
-
-    }
 
     @Override
     protected void childEdited(){
         cacheFormatted = Optional.empty();
         cacheLevel = Optional.empty();
-        cachePublish = Optional.empty();
-        cacheNote = Optional.empty();
     }
-
-    @Override
-    protected void docEdited(){}
 }

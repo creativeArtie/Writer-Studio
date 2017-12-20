@@ -11,6 +11,8 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 public class LinedSpanParagraph extends LinedSpan {
 
     private Optional<Optional<FormatSpanMain>> cacheFormatted;
+    private Optional<Integer> cachePublish;
+    private Optional<Integer> cacheNote;
 
     LinedSpanParagraph(List<Span> children){
         super(children);
@@ -22,12 +24,16 @@ public class LinedSpanParagraph extends LinedSpan {
 
     @Override
     public int getPublishTotal(){
-        return getFormattedSpan().map(span -> span.getPublishTotal()).orElse(0);
+        cachePublish = getCache(cachePublish, () ->
+            getFormattedSpan().map(span -> span.getPublishTotal()).orElse(0));
+        return cachePublish.get();
     }
 
     @Override
     public int getNoteTotal(){
-        return getFormattedSpan().map(span -> span.getNoteTotal()).orElse(0);
+        cacheNote = getCache(cacheNote, () ->
+            getFormattedSpan().map(span -> span.getNoteTotal()).orElse(0));
+        return cacheNote.get();
     }
 
     @Override
@@ -43,11 +49,11 @@ public class LinedSpanParagraph extends LinedSpan {
 
     @Override
     protected void childEdited(){
-        // TODO childEdit
+        cacheFormatted = Optional.empty();
+        cachePublish = Optional.empty();
+        cacheNote = Optional.empty();
     }
 
     @Override
-    protected void docEdited(){
-        // TODO docEdited
-    }
+    protected void docEdited(){}
 }

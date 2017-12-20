@@ -68,11 +68,11 @@ public class MainSectionDebug {
             .setFormattedSpan(doc, 0, 0, 1)
             .setPublishTotal(1).setNoteTotal(0)
             .setIsLast(false);
-        BasicLevelLineTest line2 = new BasicLevelLineTest()
+        ListLevelLineTest line2 = new ListLevelLineTest()
             .setLinedType(LinedType.NUMBERED).setLevel(1)
             .setFormattedSpan(doc, 0, 1, 1).setPublishTotal(1)
             .setNoteTotal(0).setIsLast(false);
-        BasicLevelLineTest line3 = new BasicLevelLineTest()
+        ListLevelLineTest line3 = new ListLevelLineTest()
             .setLinedType(LinedType.BULLET).setLevel(1)
             .setFormattedSpan(doc, 0, 2, 1).setPublishTotal(1)
             .setNoteTotal(0).setIsLast(false);
@@ -141,9 +141,9 @@ public class MainSectionDebug {
             .setEdition(EditionType.NONE)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
 
-        BasicLevelLineTest[] lines = new BasicLevelLineTest[texts.length];
+        ListLevelLineTest[] lines = new ListLevelLineTest[texts.length];
         for (int i = 0; i < texts.length; i++){
-            lines[i] = new BasicLevelLineTest()
+            lines[i] = new ListLevelLineTest()
                 .setLinedType(LinedType.NUMBERED).setLevel(1)
                 .setFormattedSpan(doc, 0, i, 1).setPublishTotal(1)
                 .setNoteTotal(0);

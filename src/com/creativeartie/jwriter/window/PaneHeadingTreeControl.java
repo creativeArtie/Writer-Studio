@@ -15,7 +15,7 @@ public class PaneHeadingTreeControl extends PaneHeadingTreeView{
 
     public void loadHeadings(List<? extends Section> children){
         getMapper().clear();
-        TreeItem<Optional<LinedSpanSection>> root = new TreeItem<>();
+        TreeItem<Optional<LinedSpanLevelSection>> root = new TreeItem<>();
         if (children == null || children.isEmpty()){
             root.getChildren().add(new TreeItem<>(Optional.empty()));
         } else {
@@ -24,11 +24,11 @@ public class PaneHeadingTreeControl extends PaneHeadingTreeView{
         getTree().setRoot(root);
     }
 
-    private void loadHeadings(TreeItem<Optional<LinedSpanSection>> parent,
+    private void loadHeadings(TreeItem<Optional<LinedSpanLevelSection>> parent,
         List<? extends Section> children)
     {
         for(Section found: children){
-            TreeItem<Optional<LinedSpanSection>> child =
+            TreeItem<Optional<LinedSpanLevelSection>> child =
                 new TreeItem<>(found.getLine());
             parent.getChildren().add(child);
             if (found.getLine().isPresent()){
@@ -38,7 +38,7 @@ public class PaneHeadingTreeControl extends PaneHeadingTreeView{
         }
     }
 
-    public void selectHeading(Optional<LinedSpanSection> section){
+    public void selectHeading(Optional<LinedSpanLevelSection> section){
         if (section.isPresent()){
             getTree().getSelectionModel().select(getMapper().get(section));
         } else {
