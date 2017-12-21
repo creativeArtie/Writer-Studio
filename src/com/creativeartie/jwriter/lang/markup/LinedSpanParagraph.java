@@ -19,7 +19,9 @@ public class LinedSpanParagraph extends LinedSpan {
     }
 
     public Optional<FormatSpanMain> getFormattedSpan(){
-        return spanAtFirst(FormatSpanMain.class);
+        cacheFormatted = getCache(cacheFormatted, () -> spanAtFirst(
+            FormatSpanMain.class));
+        return cacheFormatted.get();
     }
 
     @Override

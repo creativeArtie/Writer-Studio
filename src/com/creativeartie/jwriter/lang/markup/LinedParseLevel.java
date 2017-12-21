@@ -26,8 +26,8 @@ enum LinedParseLevel implements SetupParser {
         checkNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
         boolean isFirst = true;
-        for(int i = LEVEL_MAX; i >= 1; i--){
-            if (pointer.startsWith(children, getLevelToken(this, i))){
+        for(String token: getLevelToken(this)){
+            if (pointer.startsWith(children, token)){
                 return ordinal() <= OUTLINE.ordinal()?
                     parseSec(children, pointer):
                     parseBasic(children, pointer);
@@ -53,7 +53,7 @@ enum LinedParseLevel implements SetupParser {
 
         pointer.startsWith(children, LINED_END);
 
-        LinedSpanLevelSection ans = new LinedSpanLevelSection(children, this);
+        LinedSpanLevelSection ans = new LinedSpanLevelSection(children);
         return Optional.of(ans);
     }
 
@@ -64,7 +64,7 @@ enum LinedParseLevel implements SetupParser {
         TEXT_PARSER.parse(children, pointer);
 
         pointer.startsWith(children, LINED_END);
-        return Optional.of(new LinedSpanLevelList(children, this));
+        return Optional.of(new LinedSpanLevelList(children));
 
     }
 }

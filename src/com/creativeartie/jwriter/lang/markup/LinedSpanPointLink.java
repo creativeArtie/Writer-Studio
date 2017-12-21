@@ -10,6 +10,8 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
  */
 public class LinedSpanPointLink extends LinedSpanPoint {
 
+    private Optional<String> cachePath;
+
     LinedSpanPointLink(List<Span> children){
         super(children);
     }
@@ -24,8 +26,11 @@ public class LinedSpanPointLink extends LinedSpanPoint {
     }
 
     public String getPath(){
-        Optional<ContentSpan> span = getPathSpan();
-        return span.isPresent()? span.get().getTrimmed() : "";
+        cachePath = getCache(cachePath, () -> {
+            Optional<ContentSpan> span = getPathSpan();
+            return span.isPresent()? span.get().getTrimmed() : "";
+        });
+        return cachePath.get();
     }
 
     @Override
@@ -37,11 +42,10 @@ public class LinedSpanPointLink extends LinedSpanPoint {
 
     @Override
     protected void childEdited(){
-        // TODO childEdit
+        super.childEdited();
+        cachePath = Optional.empty();
     }
 
     @Override
-    protected void docEdited(){
-        // TODO docEdited
-    }
+    protected void docEdited(){}
 }

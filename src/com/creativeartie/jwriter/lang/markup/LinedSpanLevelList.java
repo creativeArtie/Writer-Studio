@@ -14,9 +14,8 @@ public class LinedSpanLevelList extends LinedSpanLevel {
     private Optional<Integer> cachePublish;
     private Optional<Integer> cacheNote;
 
-    LinedSpanLevelList(List<Span> children, LinedParseLevel reparser){
+    LinedSpanLevelList(List<Span> children){
         super(children);
-        spanReparser = checkNotNull(reparser, "reparser");
     }
 
     @Override
@@ -34,13 +33,10 @@ public class LinedSpanLevelList extends LinedSpanLevel {
         return cacheNote.get();
     }
 
-
     @Override
     protected SetupParser getParser(String text){
-        return text.startsWith(getLevelToken(spanReparser, getLevel())) &&
-            BasicParseText.checkLineEnd(isLast(), text)?
-            spanReparser: null;
-
+        // TODO editRaw
+        return null;
     }
 
     @Override

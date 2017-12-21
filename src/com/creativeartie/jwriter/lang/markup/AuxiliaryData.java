@@ -28,6 +28,13 @@ public final class AuxiliaryData{
     private static final String LEVEL_NUMBERED = "#";
     private static final String LEVEL_OUTLINE  = "#";
     private static final String LEVEL_BULLET   = "-";
+    public static String[] getLevelToken(LinedParseLevel parser){
+        String[] levels = new String[LEVEL_MAX];
+        for (int i = LEVEL_MAX; i >= 1; i++){
+            levels[i] = getLevelToken(parser, i);
+        }
+        return levels;
+    }
     /** Creates a Leveled Line begin token.
      * @param parser
      *      use to specific which token. This should be all of them.
@@ -69,8 +76,8 @@ public final class AuxiliaryData{
     public static List<String> getLinedTokens(){
         ArrayList<String> list = new ArrayList<>();
         for (LinedParseLevel parser: LinedParseLevel.values()){
-            for(int i = LEVEL_MAX; i >= 1; i--){
-                list.add(getLevelToken(parser, i));
+            for (String token: getLevelToken(parser)){
+                list.add(token);
             }
         }
         list.add(LINED_AGENDA);

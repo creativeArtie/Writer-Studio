@@ -12,8 +12,6 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 public abstract class LinedSpanLevel extends LinedSpan {
     private Optional<Optional<FormatSpanMain>> cacheFormatted;
     private Optional<Integer> cacheLevel;
-    private Optional<Integer> cachePublish;
-    private Optional<Integer> cacheNote;
 
     LinedSpanLevel(List<Span> children){
         super(children);
@@ -31,6 +29,18 @@ public abstract class LinedSpanLevel extends LinedSpan {
             return get(0).getRaw().length() - extras;
         });
         return cacheLevel.get();
+    }
+
+    protected final SetupParser checkLine(LinedParseLevel reparser,
+            String text){
+        for (String token: getLevelToken(reparser)){
+            if (text.startsWith(token) && BasicParseText
+                .checkLineEnd(isLast(), text))
+            {
+                return reparser;
+            }
+        }
+        return null;
     }
 
 

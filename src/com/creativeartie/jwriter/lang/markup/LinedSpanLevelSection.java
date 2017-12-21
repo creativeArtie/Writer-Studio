@@ -10,10 +10,13 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
  */
 public class LinedSpanLevelSection extends LinedSpanLevel implements Catalogued{
 
+    private Optional<Optional<EditionSpan>> cacheEditionSpan;
+    private Optional<Optional<CatalogueIdentity>> cacheId;
+    private Optional<EditionType> cacheEdition;
     private Optional<Integer> cachePublish;
     private Optional<Integer> cacheNote;
 
-    LinedSpanLevelSection(List<Span> children, LinedParseLevel reparser){
+    LinedSpanLevelSection(List<Span> children){
         super(children);
     }
 
@@ -23,7 +26,9 @@ public class LinedSpanLevelSection extends LinedSpanLevel implements Catalogued{
 
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
-        return spanFromFirst(DirectorySpan.class).map(span -> span.buildId());
+        cacheId = getCache(cacheId, () ->
+            spanFromFirst(DirectorySpan.class).map(span -> span.buildId()));
+        return cacheId.get();
     }
 
     @Override
@@ -32,41 +37,53 @@ public class LinedSpanLevelSection extends LinedSpanLevel implements Catalogued{
     }
 
     public EditionType getEdition(){
-        Optional<EditionSpan> status = getEditionSpan();
-        return status.isPresent()? status.get().getEdition(): EditionType.NONE;
+        cacheEdition = getCache(cacheEdition, () -> {
+            Optional<EditionSpan> status = getEditionSpan();
+            return status.isPresent()? status.get().getEdition():
+                EditionType.NONE;
+        });
+        return cacheEdition.get();
     }
 
 
     @Override
     public int getPublishTotal(){
-        if (getLinedType() == LinedType.HEADING){
-            return getFormattedSpan().map(span -> span.getPublishTotal())
-                .orElse(0);
-        }
-        return 0;
+        cachePublish = getCache(cachePublish, () -> {
+            if (getLinedType() == LinedType.HEADING){
+                return getFormattedSpan().map(span -> span.getPublishTotal())
+                    .orElse(0);
+            }
+            return 0;
+        });
+        return cachePublish.get();
     }
 
     @Override
     public int getNoteTotal(){
-        if (getLinedType() == LinedType.HEADING){
-            return getFormattedSpan().map(span -> span.getNoteTotal())
-                .orElse(0);
-        } else {
-            assert getLinedType() == LinedType.OUTLINE: getLinedType();
-            return getFormattedSpan().map(span -> span.getTotalCount())
-                .orElse(0);
-        }
+        cacheNote = getCache(cacheNote, () -> {
+            if (getLinedType() == LinedType.HEADING){
+                return getFormattedSpan().map(span -> span.getNoteTotal())
+                    .orElse(0);
+            } else {
+                assert getLinedType() == LinedType.OUTLINE: getLinedType();
+                return getFormattedSpan().map(span -> span.getTotalCount())
+                    .orElse(0);
+            }
+        });
+        return cacheNote.get();
     }
 
     @Override
     protected SetupParser getParser(String text){
-        //TODO getParser(text)
+        // TODO editRaw
         return null;
     }
-
     @Override
     protected void childEdited(){
         super.childEdited();
+        cacheEditionSpan = Optional.empty();
+        cacheId = Optional.empty();
+        cacheEdition = Optional.empty();
         cachePublish = Optional.empty();
         cacheNote = Optional.empty();
     }

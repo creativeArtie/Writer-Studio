@@ -12,6 +12,9 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
  */
 public abstract class LinedSpanPoint extends LinedSpan implements Catalogued{
 
+    private Optional<List<StyleInfo>> cacheStyles;
+    private Optional<Optional<CatalogueIdentity>> cacheId;
+
     LinedSpanPoint(List<Span> children){
         super(children);
     }
@@ -20,17 +23,30 @@ public abstract class LinedSpanPoint extends LinedSpan implements Catalogued{
 
     @Override
     public List<StyleInfo> getBranchStyles(){
-        ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
-        return builder.addAll(super.getBranchStyles()).add(getIdStatus()).build();
+         cacheStyles = getCache(cacheStyles, () -> {
+            ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
+            return builder.addAll(super.getBranchStyles()).add(getIdStatus())
+                .build();
+        });
+        return cacheStyles.get();
     }
 
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
-        return spanFromFirst(DirectorySpan.class).map(span -> span.buildId());
+        cacheId = getCache(cacheId, () ->
+            spanFromFirst(DirectorySpan.class).map(span -> span.buildId())
+        );
+        return cacheId.get();
     }
 
     @Override
     public boolean isId(){
         return true;
+    }
+
+    @Override
+    protected void childEdited(){
+        cacheStyles = Optional.empty();
+        cacheId = Optional.empty();
     }
 }
