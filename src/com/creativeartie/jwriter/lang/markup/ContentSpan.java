@@ -80,7 +80,6 @@ public final class ContentSpan extends SpanBranch implements BasicText{
 
     @Override
     protected SetupParser getParser(String text){
-        checkNotNull(text, "text");
         return null;
     }
 

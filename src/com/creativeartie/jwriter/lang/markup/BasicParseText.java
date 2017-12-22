@@ -17,12 +17,10 @@ abstract class BasicParseText implements SetupParser{
     private final ImmutableList<String> setupEnders;
 
     /// willReparse = true if beginning change
-    private final boolean willReparse;
     private final ImmutableList<String> reparseEnders;
     private final StyleInfoLeaf leafStyle;
 
-    public BasicParseText(boolean reparse, StyleInfoLeaf style,
-            String ... enders){
+    public BasicParseText(StyleInfoLeaf style, String ... enders){
         checkNotNull(style, "style");
 
         /// This builder is use to create two separate list, one for parsing,
@@ -38,7 +36,6 @@ abstract class BasicParseText implements SetupParser{
             }
         }
 
-        willReparse = reparse;
 
         reparseEnders = builder.build();
 
@@ -46,14 +43,6 @@ abstract class BasicParseText implements SetupParser{
         builder.add(CHAR_ESCAPE);
         setupEnders = builder.build();
         leafStyle = style;
-    }
-
-    /** Check if a text can be parse entirely. */
-    final boolean canParse(String text){
-        checkNotNull(text, "text");
-        return willReparse && checkParse(checkNotNull(text, "text"),
-            reparseEnders);
-
     }
 
     static boolean checkLineEnd(boolean optional, String text){

@@ -59,7 +59,7 @@ public final class FormatSpanContent extends FormatSpan implements BasicText{
 
     @Override
     protected SetupParser getParser(String text){
-        return spanReparser.canParse(text)? spanReparser: null;
+        return null;
     }
 
     @Override

@@ -17,7 +17,7 @@ enum InfoDataParser implements SetupParser{
     FORMATTED(pointer -> {
         assert pointer != null: "Null pointer";
         ArrayList<Span> children = new ArrayList<>();
-        if (new FormatParser(false, StyleInfoLeaf.DATA).parse(children, pointer))
+        if (new FormatParser(StyleInfoLeaf.DATA).parse(children, pointer))
         {
             return Optional.of(new InfoDataSpanFormatted(children));
         }
@@ -25,7 +25,7 @@ enum InfoDataParser implements SetupParser{
     }), TEXT(pointer -> {
         assert pointer != null: "Null pointer";
         ArrayList<Span> children = new ArrayList<>();
-        if (new ContentParser(false, StyleInfoLeaf.DATA)
+        if (new ContentParser(StyleInfoLeaf.DATA)
             .parse(children, pointer))
         {
             return Optional.of(new InfoDataSpanText(children));

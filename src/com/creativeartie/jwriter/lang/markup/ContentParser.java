@@ -13,38 +13,20 @@ final class ContentParser extends BasicParseText{
     private boolean willReparse;
 
     public ContentParser(List<String> enders){
-        this(true, StyleInfoLeaf.TEXT, enders);
-    }
-
-    public ContentParser(boolean reparse, List<String> enders){
-        this(reparse, StyleInfoLeaf.TEXT, enders);
+        this(StyleInfoLeaf.TEXT, enders);
     }
 
     public ContentParser(StyleInfoLeaf style, List<String> enders){
-        this(true, style, enders);
-    }
-
-    public ContentParser(boolean reparse, StyleInfoLeaf style,
-            List<String> enders){
-        this(reparse, style, checkNotNull(enders, "enders")
+        this(style, checkNotNull(enders, "enders")
             .toArray(new String[0]));
     }
 
     public ContentParser(String ... enders){
-        this(true, enders);
-    }
-
-    public ContentParser(boolean reparse, String ... enders){
-        this (reparse, StyleInfoLeaf.TEXT, enders);
+        this(StyleInfoLeaf.TEXT, enders);
     }
 
     public ContentParser(StyleInfoLeaf style, String ... enders){
-        this (true, style, enders);
-    }
-
-    public ContentParser(boolean reparse, StyleInfoLeaf style,
-            String ... enders){
-        super(reparse, style, enders);
+        super(style, enders);
     }
 
     @Override

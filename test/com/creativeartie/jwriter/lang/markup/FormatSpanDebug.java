@@ -385,17 +385,6 @@ public class FormatSpanDebug {
         DocumentAssert doc = assertDoc(1, before, parsers);
 
         ///             01234567890123
-        doc.insert(7, "*", 0);
-        editCommon(doc);
-    }
-
-    @Test
-    public void editSetDisabled(){
-        ///              0123456789012
-        String before = "before *bold";
-
-        DocumentAssert doc = assertDoc(1, before, new FormatParser(false));
-
         doc.insert(7, "*");
         editCommon(doc);
     }

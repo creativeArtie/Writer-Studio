@@ -67,7 +67,7 @@ public final class FormatSpanMain extends SpanBranch {
 
     @Override
     protected SetupParser getParser(String text){
-        return spanReparser.canParse(text)? spanReparser: null;
+        return null;
     }
 
     @Override

@@ -12,32 +12,18 @@ import static com.creativeartie.jwriter.main.Checker.*;
 final class FormatParser implements SetupParser {
 
     private final String[] spanEnders;
-    private final String[] reparseEnders;
 
     private final StyleInfoLeaf leafStyle;
-    /** {@see BasicParseText#willReparse}*/
-    private final boolean willReparse;
 
     public FormatParser(String ... enders){
-        this(true, StyleInfoLeaf.TEXT, enders);
-    }
-
-    public FormatParser(boolean reparse, String ... enders){
-        this(reparse, StyleInfoLeaf.TEXT, enders);
+        this(StyleInfoLeaf.TEXT, enders);
     }
 
     public FormatParser(StyleInfoLeaf style, String ... enders){
-        this(true, style, enders);
-    }
-
-    public FormatParser(boolean reparse, StyleInfoLeaf style,
-            String ... enders){
         /// Combine the list of span enders and formatting enders
         checkNotNull(enders, "enders");
         spanEnders = SetupParser.combine(listFormatEnderTokens(), enders);
         leafStyle = checkNotNull(style, "style");
-        willReparse = reparse;
-        reparseEnders = SetupParser.combine(enders, LINED_END);
     }
 
     @Override
@@ -57,7 +43,7 @@ final class FormatParser implements SetupParser {
             more = false; /// Assume FormatSpanMain has ended
 
             /// try to find text first
-            if (new FormatParseContent(leafStyle, formats, willReparse, spanEnders)
+            if (new FormatParseContent(leafStyle, formats, spanEnders)
                 .parse(children, pointer)
             ){
                 more = true;
@@ -97,9 +83,5 @@ final class FormatParser implements SetupParser {
             return Optional.of(new FormatSpanMain(children, this));
         }
         return Optional.empty();
-    }
-
-    protected boolean canParse(String text){
-        return willReparse && BasicParseText.canParse(text, reparseEnders);
     }
 }
