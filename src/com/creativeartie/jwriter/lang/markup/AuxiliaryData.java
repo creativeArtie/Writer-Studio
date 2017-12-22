@@ -30,8 +30,8 @@ public final class AuxiliaryData{
     private static final String LEVEL_BULLET   = "-";
     public static String[] getLevelToken(LinedParseLevel parser){
         String[] levels = new String[LEVEL_MAX];
-        for (int i = LEVEL_MAX; i >= 1; i++){
-            levels[i] = getLevelToken(parser, i);
+        for (int i = 0; i < LEVEL_MAX; i++){
+            levels[i] = getLevelToken(parser, LEVEL_MAX - i);
         }
         return levels;
     }
@@ -45,19 +45,19 @@ public final class AuxiliaryData{
      */
     public static String getLevelToken(LinedParseLevel parser, int level){
         checkNotNull(parser, "parser");
-        checkRange(level, "level", 0, true, LEVEL_MAX + 1, true);
+        checkRange(level, "level", 0, false, LEVEL_MAX, true);
         switch (parser){
         case HEADING:
-            /// ==
+            /// =, ==, ===, ...
             return repeat(LEVEL_HEADING, level);
         case OUTLINE:
-            /// !##
+            /// !#, !##, !###, ...
             return LINED_BEGIN + repeat(LEVEL_OUTLINE, level);
         case NUMBERED:
-            /// \t#
+            /// #, \t#, \t\t#, ...
             return repeat(LEVEL_BEGIN, level - 1) + LEVEL_NUMBERED;
         case BULLET:
-            /// \t-
+            /// -, \t-, \t\t-
             return repeat(LEVEL_BEGIN, level - 1) + LEVEL_BULLET;
         default:
             throw new IllegalArgumentException("LinedParseLavel not use: " +

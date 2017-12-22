@@ -75,8 +75,10 @@ public class LinedSpanLevelSection extends LinedSpanLevel implements Catalogued{
 
     @Override
     protected SetupParser getParser(String text){
-        // TODO editRaw
-        return null;
+        return text.startsWith(getLevelToken(LinedParseLevel.HEADING, 1))?
+            LinedParseLevel.HEADING :
+            (text.startsWith(getLevelToken(LinedParseLevel.OUTLINE, 1))?
+                LinedParseLevel.OUTLINE: null);
     }
     @Override
     protected void childEdited(){

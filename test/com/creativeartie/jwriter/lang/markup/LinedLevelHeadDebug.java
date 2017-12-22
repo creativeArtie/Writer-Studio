@@ -402,4 +402,74 @@ public class LinedLevelHeadDebug {
 
         doc.assertIds();
     }
+
+    @Test
+    public void editHeadingLevel(){
+        String before = "===abc#DRAFT text\n";
+        DocumentAssert doc = DocumentAssert.assertDoc(1, before, parsers);
+
+        doc.delete(0, 1, 0);
+        editCommon(doc, LinedType.HEADING);
+    }
+
+    @Test
+    public void editOutlineLevel(){
+        String before = "!##abc#DRAFT text\n";
+        DocumentAssert doc = DocumentAssert.assertDoc(1, before, parsers);
+
+        doc.delete(1, 2, 0);
+        editCommon(doc, LinedType.OUTLINE);
+    }
+
+    @Test
+    public void editEdition(){
+        ///              01234567890123
+        String before = "==abc#DRAFT t\n";
+        DocumentAssert doc = DocumentAssert.assertDoc(1, before, parsers);
+
+        doc.insert(12, "tex", 0, 2);
+        editCommon(doc, LinedType.HEADING);
+    }
+
+    private void editCommon(DocumentAssert doc, LinedType type){
+        String starter;
+        int level, publish, note;
+        if (type == LinedType.HEADING){
+            starter = "==";
+            level = 2;
+            publish = 1;
+            note = 0;
+        } else {
+            starter = "!#";
+            level = 1;
+            publish = 0;
+            note = 1;
+        }
+        ///             01        23456789012345 6
+        String after = starter + "abc#DRAFT text\n";
+        doc.assertDoc(1, after);
+
+        HeadLevelLineTest heading = new HeadLevelLineTest()
+           .setFormattedSpan(doc, 0, 1).setLinedType(type)
+            .setLevel(level).setEdition(EditionType.DRAFT)
+            .setPublishTotal(publish).setNoteTotal(note);
+        FormatMainTest main = new FormatMainTest()
+            .setPublishTotal(1).setNoteTotal(0);
+        EditionTest edition = new EditionTest()
+            .setEdition(EditionType.DRAFT)
+            .setText("text");
+
+        heading.test(    doc,   4, after,          0);
+        doc.assertKeyLeaf( 0,   2, starter,        0, 0);
+        main.test(       doc,   1, "abc",          0, 1);
+        doc.assertChild(        1, "abc",          0, 1, 0);
+        doc.assertTextLeaf(2,   5, "abc",          0, 1, 0, 0);
+        edition.test(    doc,   2, "#DRAFT text",  0, 2);
+        doc.assertKeyLeaf( 5,  11, "#DRAFT",       0, 2, 0);
+        doc.assertChild(        1, " text",        0, 2, 1);
+        doc.assertTextLeaf(11, 16, " text",        0, 2, 1, 0);
+        doc.assertKeyLeaf( 16, 17, "\n",           0, 3);
+
+        doc.assertIds();
+    }
 }

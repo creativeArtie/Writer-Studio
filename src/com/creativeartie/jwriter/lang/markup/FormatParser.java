@@ -15,6 +15,7 @@ final class FormatParser implements SetupParser {
     private final String[] reparseEnders;
 
     private final StyleInfoLeaf leafStyle;
+    /** {@see BasicParseText#willReparse}*/
     private final boolean willReparse;
 
     public FormatParser(String ... enders){
@@ -37,10 +38,6 @@ final class FormatParser implements SetupParser {
         leafStyle = checkNotNull(style, "style");
         willReparse = reparse;
         reparseEnders = SetupParser.combine(enders, LINED_END);
-    }
-
-    String[] getReparseEnders(){
-        return reparseEnders;
     }
 
     @Override
@@ -100,5 +97,9 @@ final class FormatParser implements SetupParser {
             return Optional.of(new FormatSpanMain(children, this));
         }
         return Optional.empty();
+    }
+
+    protected boolean canParse(String text){
+        return willReparse && BasicParseText.canParse(text, reparseEnders);
     }
 }

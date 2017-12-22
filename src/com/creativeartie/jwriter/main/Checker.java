@@ -83,8 +83,8 @@ public final class Checker {
 
     public static int checkRange(int test, String field, int lower,
             boolean atLower, int upper, boolean atUpper){
-        checkLessThan(test, field, upper, atLower);
-        checkGreater(test, field, lower, atUpper);
+        checkLessThan(test, field, upper, atUpper);
+        checkGreater(test, field, lower, atLower);
         return test;
     }
 

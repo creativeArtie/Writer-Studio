@@ -16,6 +16,7 @@ abstract class BasicParseText implements SetupParser{
     /// Describes how the Span will end
     private final ImmutableList<String> setupEnders;
 
+    /// willReparse = true if beginning change
     private final boolean willReparse;
     private final ImmutableList<String> reparseEnders;
     private final StyleInfoLeaf leafStyle;

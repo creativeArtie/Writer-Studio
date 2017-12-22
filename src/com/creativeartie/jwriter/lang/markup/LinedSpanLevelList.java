@@ -35,7 +35,20 @@ public class LinedSpanLevelList extends LinedSpanLevel {
 
     @Override
     protected SetupParser getParser(String text){
-        // TODO editRaw
+        return getParser(text, LinedParseLevel.BULLET) == null?
+            getParser(text, LinedParseLevel.NUMBERED): LinedParseLevel.BULLET;
+    }
+
+    /**
+     * Check if text is parseable by a parser. Helper method of
+     * {@link #getParser(String)}
+     */
+    private SetupParser getParser(String text, LinedParseLevel parser){
+        for (String token: getLevelToken(parser)){
+            if (text.startsWith(token)){
+                return parser;
+            }
+        }
         return null;
     }
 
