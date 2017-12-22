@@ -280,4 +280,50 @@ public class LinedCiteDebug {
 
         doc.assertIds();
     }
+
+    @Test
+    public void editAddField(){
+        String before = "!>:abc";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+
+        doc.insert(2, "in-text", 0);
+
+        editCommon(doc);
+    }
+
+    @Test
+    public void editContent(){
+        ///              0123456789012
+        String before = "!>in-text:abec";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+
+        doc.delete(12, 13, 0);
+
+        editCommon(doc);
+    }
+
+    private void editCommon(DocumentAssert doc){
+
+        String after = "!>in-text:abc";
+        doc.assertDoc(1, after);
+
+        CiteLineTest cite = new CiteLineTest()
+            .setInfoType(InfoFieldType.IN_TEXT)
+            .setDataSpan(doc, 0, 3).setNoteTotal(1);
+        FieldTest field = new FieldTest()
+            .setType(InfoFieldType.IN_TEXT);
+        ContentDataTest data = new ContentDataTest()
+            .setData(doc, 0, 3, 0);
+
+        cite.test(        doc,  4, after,     0);
+        doc.assertKeyLeaf(  0,  2, "!>",      0, 0);
+        field.test(       doc,  1, "in-text", 0, 1);
+        doc.assertFieldLeaf(2,  9, "in-text", 0, 1, 0);
+        doc.assertKeyLeaf(  9, 10, ":",       0, 2);
+        data.test(        doc,  1, "abc",     0, 3);
+        doc.assertChild(    1,     "abc",     0, 3, 0);
+        doc.assertDataLeaf(10, 13, "abc",     0, 3, 0, 0);
+
+        doc.assertIds();
+    }
 }
