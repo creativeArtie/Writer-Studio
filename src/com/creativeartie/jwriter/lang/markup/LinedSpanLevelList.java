@@ -35,21 +35,27 @@ public class LinedSpanLevelList extends LinedSpanLevel {
 
     @Override
     protected SetupParser getParser(String text){
-        return getParser(text, LinedParseLevel.BULLET) == null?
-            getParser(text, LinedParseLevel.NUMBERED): LinedParseLevel.BULLET;
+        if (BasicParseText.checkLineEnd(isLast(), text)){
+            if (getParser(text, LinedParseLevel.BULLET)){
+                return LinedParseLevel.BULLET;
+            } else if (getParser(text, LinedParseLevel.NUMBERED)){
+                return LinedParseLevel.NUMBERED;
+            }
+        }
+        return null;
     }
 
     /**
      * Check if text is parseable by a parser. Helper method of
      * {@link #getParser(String)}
      */
-    private SetupParser getParser(String text, LinedParseLevel parser){
+    private boolean getParser(String text, LinedParseLevel parser){
         for (String token: getLevelToken(parser)){
             if (text.startsWith(token)){
-                return parser;
+                return true;
             }
         }
-        return null;
+        return false;
     }
 
     @Override

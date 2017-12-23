@@ -195,7 +195,7 @@ public class FormatCurlyDebug {
 
         DocumentAssert doc = assertDoc(1, before, parsers);
 
-        doc.insert(3, "b", 0, 1, 0);
+        doc.insert(3, "b", 0, 1);
         commonEdited(doc);
     }
 
@@ -206,7 +206,7 @@ public class FormatCurlyDebug {
 
         DocumentAssert doc = assertDoc(1, before, parsers);
 
-        doc.insert(6, "d", 0, 1, 2);
+        doc.insert(6, "d", 0, 1);
         commonEdited(doc);
     }
 

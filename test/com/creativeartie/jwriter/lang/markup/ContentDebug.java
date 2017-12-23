@@ -168,7 +168,7 @@ public class ContentDebug{
         DocumentAssert doc = assertDoc(1, before, parsers);
         ///           012345678901
         String raw = "hallway run";
-        doc.insert(4, "way", 0);
+        doc.insert(4, "way");
 
         doc.assertDoc(1, raw, parsers);
         ContentTest content = new ContentTest()
@@ -186,7 +186,7 @@ public class ContentDebug{
         DocumentAssert doc = assertDoc(1, before, parsers);
         ///           012345678901
         String raw = "hallway run";
-        doc.insert(7, " run", 0);
+        doc.insert(7, " run");
 
         doc.assertDoc(1, raw, parsers);
         ContentTest content = new ContentTest()
@@ -205,7 +205,7 @@ public class ContentDebug{
             StyleInfoLeaf.FIELD));
         ///           012345678901
         String raw = "hallway run";
-        doc.insert(7, " run", 0);
+        doc.insert(7, " run");
 
         doc.assertDoc(1, raw, parsers);
         ContentTest content = new ContentTest()
@@ -223,7 +223,7 @@ public class ContentDebug{
         DocumentAssert doc = assertDoc(1, before, parsers);
 
         String raw = "ab\\*d";
-        doc.insert(2, "\\", 0);
+        doc.insert(2, "\\");
 
         doc.assertDoc(1, raw, parsers);
         ContentTest content = new ContentTest()
@@ -246,7 +246,7 @@ public class ContentDebug{
         DocumentAssert doc = assertDoc(1, before, parsers);
 
         String raw = "ab*d";
-        doc.delete(2, 3, 0);
+        doc.delete(2, 3);
 
         doc.assertDoc(1, raw, parsers);
         ContentTest content = new ContentTest()

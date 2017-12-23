@@ -376,7 +376,7 @@ public class BranchLineTest {
         @Override
         public void test(SpanBranch span){
             LinedSpanQuote test = assertClass(span, LinedSpanQuote.class);
-            assertSpan("data", span, lineText, test.getFormattedSpan());
+            assertSpan("formatted", span, lineText, test.getFormattedSpan());
             super.test(span);
         }
     }

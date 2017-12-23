@@ -18,7 +18,7 @@ public class LinedSpanQuote extends LinedSpan {
     }
 
     public Optional<FormatSpanMain> getFormattedSpan(){
-        cacheFormatted = getCache(cacheFormatted, () -> spanAtFirst(
+        cacheFormatted = getCache(cacheFormatted, () -> spanFromLast(
             FormatSpanMain.class));
         return cacheFormatted.get();
     }

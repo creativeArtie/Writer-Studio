@@ -171,7 +171,7 @@ public class FormatLinkDebug {
         String raw = "<@caat-id|text>";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
 
-        doc.delete(3, 4, 0, 1, 0);
+        doc.delete(3, 4, 0, 1);
         refEditCommon(doc);
     }
 

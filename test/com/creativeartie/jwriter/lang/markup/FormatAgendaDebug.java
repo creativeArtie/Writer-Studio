@@ -112,7 +112,7 @@ public class FormatAgendaDebug{
 
         DocumentAssert doc = assertDoc(1, before, parsers);
 
-        doc.insert(3, "b", 0, 1);
+        doc.insert(3, "b", 0);
         ///             0123456
         String after = "{!abc}";
         doc.assertDoc(1, after);

@@ -193,7 +193,7 @@ public class LinedLevelRestDebug {
         String before = "\t\t#ac";
         DocumentAssert doc = assertDoc(1, before, parsers);
 
-        doc.insert(4, "b", 0, 1, 0);
+        doc.insert(4, "b", 0);
         editCommon(doc, LinedType.NUMBERED);
     }
 
