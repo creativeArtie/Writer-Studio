@@ -22,7 +22,7 @@ public interface SetupParser{
 
     /** Put two {@link SetupParser} list together. */
     public static  SetupParser[] combine(SetupParser[] list1,
-            SetupParser[] list2) {
+            SetupParser ... list2) {
         checkNotNull(list1, "list1");
         checkNotNull(list2, "list2");
         SetupParser[] res = new SetupParser[list1.length + list2.length];

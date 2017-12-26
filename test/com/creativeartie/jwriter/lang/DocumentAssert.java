@@ -7,6 +7,30 @@ import static org.junit.Assert.*;
 
 public class DocumentAssert {
 
+    public static class LastBranch extends SpanBranch{
+
+        private LastBranch(List<Span> children){
+            super(children);
+        }
+
+        @Override public List<StyleInfo> getBranchStyles(){
+            return new ArrayList<>();
+        }
+        @Override protected SetupParser getParser(String text){
+            return null;
+        }
+        @Override protected void childEdited(){}
+        @Override protected void docEdited(){}
+    }
+
+    private static final SetupParser END_PARSER = new SetupParser(){
+        @Override public Optional<SpanBranch> parse(SetupPointer pointer){
+            ArrayList<Span> children = new ArrayList<>();
+            pointer.getTo(children, ((char)0) + "");
+            return Optional.of(new LastBranch(children));
+        }
+    };
+
     public static DocumentAssert assertDoc(int childrenSize, String rawText,
             Document test){
         return new DocumentAssert(test).assertDoc(childrenSize, rawText);
@@ -14,6 +38,7 @@ public class DocumentAssert {
 
     public static DocumentAssert assertDoc(int childrenSize, String rawText,
             SetupParser ... parsers){
+        SetupParser[] input = SetupParser.combine(parsers, END_PARSER);
         Document test = new Document(rawText, parsers){
             @Override protected void docEdited(){}
             @Override protected void childEdited(){}
