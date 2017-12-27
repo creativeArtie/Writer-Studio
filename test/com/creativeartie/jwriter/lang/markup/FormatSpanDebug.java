@@ -23,20 +23,22 @@ public class FormatSpanDebug {
     public void basic(){
         String raw = "abc";
         DocumentAssert doc = assertDoc(1, raw, parsers);
+
         FormatMainTest main = new FormatMainTest()
             .setPublishTotal(1).setNoteTotal(0);
         FormatContentTest content = new FormatContentTest()
-            .setText(raw) .setBegin(false)
-            .setEnd(false);
+            .setBegin(false).setEnd(false)
+            .setText(raw);
 
         main.test(       doc, 1, raw, 0);
         content.test(    doc, 1, raw, 0, 0);
         doc.assertTextLeaf(0, 3, raw, 0, 0, 0);
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void bold(){
+    public void basicBold(){
         ///           01234567890
         String raw = "or**an**ge";
         DocumentAssert doc = assertDoc(1, raw, parsers);
@@ -48,7 +50,7 @@ public class FormatSpanDebug {
             .setText("or");
         FormatContentTest content2 = new FormatContentTest()
             .setBegin(false).setEnd(false)
-            .setText("an").setFormats(FormatType.BOLD);
+            .setText("an")  .setFormats(FormatType.BOLD);
         FormatContentTest content3 = new FormatContentTest()
             .setBegin(false).setEnd(false)
             .setText("an");
@@ -62,12 +64,12 @@ public class FormatSpanDebug {
         doc.assertKeyLeaf( 6,  8, "**", 0, 3);
         content3.test(   doc,  1, "ge", 0, 4);
         doc.assertTextLeaf(8, 10, "ge", 0, 4, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void italics(){
+    public void basicItalics(){
         ///           0123456
         String raw = "g*ee*n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
@@ -78,7 +80,7 @@ public class FormatSpanDebug {
             .setText("g");
         FormatContentTest content2 = new FormatContentTest()
             .setBegin(false).setEnd(false)
-            .setText("ee").setFormats(FormatType.ITALICS);
+            .setText("ee")  .setFormats(FormatType.ITALICS);
         FormatContentTest content3 = new FormatContentTest()
             .setBegin(false).setEnd(false)
             .setText("n");
@@ -92,12 +94,12 @@ public class FormatSpanDebug {
         doc.assertKeyLeaf( 4, 5, "*",  0, 3);
         content3.test(   doc, 1, "n",  0, 4);
         doc.assertTextLeaf(5, 6, "n",  0, 4, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void underlineCoded(){
+    public void basicUnderlineCoded(){
         ///           012 34567890
         String raw = "g_e\\_e`dd_";
         DocumentAssert doc = assertDoc(1, raw, parsers);
@@ -109,11 +111,11 @@ public class FormatSpanDebug {
             .setText("g");
         FormatContentTest content2 = new FormatContentTest()
             .setBegin(false).setEnd(false)
-            .setText("e_e").setFormats(FormatType.UNDERLINE);
+            .setText("e_e") .setFormats(FormatType.UNDERLINE);
         EscapeTest escape = new BranchTest.EscapeTest().setEscape("_");
         FormatContentTest content3 = new FormatContentTest()
             .setBegin(false).setEnd(false)
-            .setText("dd").setFormats(FormatType.UNDERLINE, FormatType.CODED);
+            .setText("dd")  .setFormats(FormatType.UNDERLINE, FormatType.CODED);
 
         main.test(       doc,  6, raw,     0);
         content1.test(   doc,  1, "g",     0, 0);
@@ -129,7 +131,7 @@ public class FormatSpanDebug {
         content3.test(   doc,  1, "dd",    0, 4);
         doc.assertTextLeaf(7,  9, "dd",    0, 4, 0);
         doc.assertKeyLeaf( 9, 10, "_",     0, 5);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -142,14 +144,14 @@ public class FormatSpanDebug {
         FormatMainTest main = new FormatMainTest()
             .setPublishTotal(2).setNoteTotal(0);
         FormatContentTest content = new FormatContentTest()
-            .setBegin(false).setEnd(false)
+            .setBegin(false)  .setEnd(false)
             .setText("abc ab").setFormats(FormatType.UNDERLINE);
 
         main.test(       doc, 2, raw,       0);
         doc.assertKeyLeaf( 0, 1, "_",       0, 0);
         content.test(    doc, 1, "abc  ab", 0, 1);
         doc.assertTextLeaf(1, 8, "abc  ab", 0, 1, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -159,9 +161,9 @@ public class FormatSpanDebug {
         String raw = "_{*abc}pee";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        IDBuilder builder = FormatCurlyDebug.buildEndnoteId("abc");
-        doc.addRef(builder, CatalogueStatus.NOT_FOUND, 0);
-
+        IDBuilder builder = doc.addRef(
+            FormatCurlyDebug.buildEndnoteId("abc"),
+            CatalogueStatus.NOT_FOUND, 0);
         FormatMainTest main = new FormatMainTest()
             .setPublishTotal(1).setNoteTotal(0);
         FormatNoteTest cite = new FormatNoteTest()
@@ -172,11 +174,11 @@ public class FormatSpanDebug {
             .setPurpose(DirectoryType.ENDNOTE)
             .setIdentity(builder);
         ContentTest idText = new ContentTest()
-            .setText("abc") .setBegin(false)
-            .setEnd(false).setCount(1);
+            .setBegin(false).setText("abc")
+            .setEnd(false)  .setCount(1);
         FormatContentTest content = new FormatContentTest()
             .setBegin(false).setEnd(false)
-            .setText("pee").setFormats(FormatType.UNDERLINE);
+            .setText("pee") .setFormats(FormatType.UNDERLINE);
 
         main.test(       doc,  3, raw,      0);
         doc.assertKeyLeaf( 0,  1, "_",      0, 0);
@@ -188,37 +190,38 @@ public class FormatSpanDebug {
         doc.assertKeyLeaf( 6,  7, "}",      0, 1, 2);
         content.test(    doc,  1, "pee",    0, 2);
         doc.assertTextLeaf(7, 10, "pee",    0, 2, 0);
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
     public void betweenTodos(){
-        String raw = "{!todo}  abc ddd {!abc}";
+        String text = "  abc ddd ";
+        String raw = "{!todo}" + text + "{!abc}";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        IDBuilder builder = FormatAgendaDebug.buildId("00");
-        doc.addId(builder, 0);
-
-        String text = "  abc ddd ";
         FormatMainTest main = new FormatMainTest()
-            .setPublishTotal(2)    .setNoteTotal(2);
+            .setPublishTotal(2).setNoteTotal(2);
+        /// "{!todo}"
+        IDBuilder builder = doc.addId(FormatAgendaDebug.buildId("00"), 0);
         FormatAgendaTest todo1 = new FormatAgendaTest()
-            .setCatalogued(CatalogueStatus.UNUSED, builder).setText("todo");
+            .setCatalogued(CatalogueStatus.UNUSED, builder)
+            .setText("todo");
         ContentTest todo1Text = new ContentTest()
-            .setText("todo").setBegin(false)
+            .setBegin(false).setText("todo")
             .setEnd(false)  .setCount(1);
+        /// "  abc ddd"
         FormatContentTest content = new FormatContentTest()
             .setText(text)  .setBegin(false)
             .setEnd(false);
-
-        builder = FormatAgendaDebug.buildId("17");
-        doc.addId(builder, 1);
-
+        builder = doc.addId(FormatAgendaDebug.buildId("17"), 1);
+        /// "{!abc}"
         FormatAgendaTest todo2 = new FormatAgendaTest()
-            .setCatalogued(CatalogueStatus.UNUSED, builder).setText("abc");
+            .setCatalogued(CatalogueStatus.UNUSED, builder)
+            .setText("abc");
         ContentTest todo2Text = new ContentTest()
-            .setText("abc")        .setBegin(false)
-            .setEnd(false)         .setCount(1);
+            .setBegin(false).setText("abc")
+            .setEnd(false)  .setCount(1);
 
         main.test(        doc, 3, raw,       0);
         todo1.test(       doc, 3, "{!todo}", 0, 0);
@@ -244,30 +247,32 @@ public class FormatSpanDebug {
 
         FormatMainTest main = new FormatMainTest()
             .setPublishTotal(6).setNoteTotal(1);
-
+        /// "Begin\\\\"
         FormatContentTest text1 = new FormatContentTest()
-            .setText("Begin\\").setBegin(false).setEnd(false);
+            .setBegin(false).setEnd(false)
+            .setText("Begin\\");
         EscapeTest escape = new EscapeTest()
             .setEscape("\\");
-
+        /// " Say"
         FormatContentTest text2 = new FormatContentTest()
-            .setText("Say").setBegin(true).setEnd(false)
-            .setFormats(FormatType.ITALICS);
+            .setBegin(true).setEnd(false)
+            .setText("Say").setFormats(FormatType.ITALICS);
+        /// "'s"
         FormatContentTest text3 = new FormatContentTest()
-            .setText("'s").setBegin(false).setEnd(false)
-            .setFormats(FormatType.BOLD, FormatType.ITALICS);
+            .setBegin(false).setEnd(false)
+            .setText("'s").setFormats(FormatType.BOLD, FormatType.ITALICS);
+        /// " Hi "
         FormatContentTest text4 = new FormatContentTest()
-            .setText("Hi").setBegin(true).setEnd(true)
-            .setFormats(FormatType.BOLD, FormatType.ITALICS,
-                       FormatType.UNDERLINE);
+            .setBegin(true).setEnd(true)
+            .setText("Hi") .setFormats(FormatType.BOLD, FormatType.ITALICS,
+                                       FormatType.UNDERLINE);
+        /// "Joy"
         FormatContentTest text5 = new FormatContentTest()
-            .setText("Joy").setBegin(false).setEnd(false)
-            .setFormats(FormatType.BOLD, FormatType.ITALICS,
-                       FormatType.UNDERLINE, FormatType.CODED);
-
-        IDBuilder builder = FormatCurlyDebug.buildNoteId("note");
-        doc.addRef(builder, 2);
-
+            .setBegin(false).setEnd(false)
+            .setText("Joy") .setFormats(FormatType.BOLD, FormatType.ITALICS,
+                                        FormatType.UNDERLINE, FormatType.CODED);
+        /// "{@note}"
+        IDBuilder builder = doc.addRef(FormatCurlyDebug.buildNoteId("note"), 2);
         FormatNoteTest cite = new FormatNoteTest()
             .setDirectoryType(DirectoryType.NOTE)
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder)
@@ -275,14 +280,12 @@ public class FormatSpanDebug {
         DirectoryTest citeId = new DirectoryTest()
             .setPurpose(DirectoryType.NOTE)
             .setIdentity(builder);
-
+        /// " "
         FormatContentTest text6 = new FormatContentTest()
-            .setText("").setBegin(true).setEnd(true)
-            .setFormats(FormatType.ITALICS);
-
-        builder = FormatLinkDebug.buildLinkId("link");
-        doc.addRef(builder, 1);
-
+            .setBegin(true).setEnd(true)
+            .setText("")   .setFormats(FormatType.ITALICS);
+        /// "<@link>"
+        builder = doc.addRef(FormatLinkDebug.buildLinkId("link"), 1);
         FormatLinkTest ref = new FormatLinkTest()
             .setPath("").setText("")
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder)
@@ -290,33 +293,29 @@ public class FormatSpanDebug {
         DirectoryTest refId = new DirectoryTest()
             .setPurpose(DirectoryType.LINK).setIdentity(builder);
         ContentTest refIdText = new BranchTest.ContentTest()
-            .setText("link").setBegin(false)
-            .setEnd(false) .setCount(1);
-
-
+            .setBegin(false).setText("link")
+            .setEnd(false)  .setCount(1);
+        /// "<a.ca| web>"
         FormatLinkTest link = new FormatLinkTest()
             .setPath("a.ca").setText("web")
             .setFormats(FormatType.ITALICS);
         ContentTest linkPath = new BranchTest.ContentTest()
-            .setText("a.ca").setBegin(false)
+            .setBegin(false).setText("a.ca")
             .setEnd(false)  .setCount(1);
         ContentTest linkText = new BranchTest.ContentTest()
-            .setText("web").setBegin(true)
+            .setBegin(true).setText("web")
             .setEnd(false) .setCount(1);
-
-
-        builder = FormatAgendaDebug.buildId("55");
-        doc.addId(builder, 0);
-
+        /// "{!todo}"
+        builder = doc.addId(FormatAgendaDebug.buildId("55"), 0);
         FormatAgendaTest todo = new FormatAgendaTest()
             .setCatalogued(CatalogueStatus.UNUSED, builder).setText("todo");
         ContentTest todoText = new ContentTest()
-            .setText("todo").setBegin(false)
-            .setEnd(false).setCount(1);
-
+            .setBegin(false).setText("todo")
+            .setEnd(false)  .setCount(1);
+        /// " see"
         FormatContentTest text7 = new FormatContentTest()
-            .setText("see").setBegin(true).setEnd(false)
-            .setFormats(FormatType.ITALICS);
+            .setBegin(true).setEnd(false)
+            .setText("see").setFormats(FormatType.ITALICS);
 
 
         ///0           1         2         3         4         5         6
@@ -374,6 +373,7 @@ public class FormatSpanDebug {
         ///Begin\\\\* Say**'s_ Hi `Joy`**_{@note} <@link><a.ca| web>{!todo} see
         ///01234 5 6789012345678901234567890123456789012345678901234567890123456
         ///0           1         2         3         4         5         6
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -381,10 +381,7 @@ public class FormatSpanDebug {
     public void editSetEnabled(){
         ///              0123456789012
         String before = "before *bold";
-
         DocumentAssert doc = assertDoc(1, before, parsers);
-
-        ///             01234567890123
         doc.insert(7, "*");
         editCommon(doc);
     }

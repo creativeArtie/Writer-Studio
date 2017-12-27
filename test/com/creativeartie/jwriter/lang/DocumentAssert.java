@@ -46,6 +46,10 @@ public class DocumentAssert {
         return assertDoc(childrenSize, rawText, test);
     }
 
+    public static String getError(String name, Object test){
+        return "Wrong " + name + " for " + test.toString();
+    }
+
     private final Document doc;
     private final IDTestDocument idTester;
     private boolean editPass;
@@ -60,10 +64,6 @@ public class DocumentAssert {
 
     public Document getDocument(){
         return doc;
-    }
-
-    public static String getError(String name, Object test){
-        return "Wrong " + name + " for " + test.toString();
     }
 
     public DocumentAssert assertDoc(int childrenSize, String rawText){
@@ -108,8 +108,7 @@ public class DocumentAssert {
     }
 
     private void assertLeaf(int start, int end, String rawText,
-        StyleInfoLeaf info, int ... idx
-    ){
+            StyleInfoLeaf info, int ... idx){
         Span[] prep = getFamily(idx);
         assertTrue("Wrong class for " + prep[0] +
             "Expects instance of SpanLeaf, gotten " + prep[0].getClass(),
@@ -125,28 +124,24 @@ public class DocumentAssert {
     }
 
 
-    public void assertTextLeaf(int start, int end, String rawText, int ... idx)
-    {
+    public void assertTextLeaf(int start, int end, String rawText, int ... idx){
         assertLeaf(start, end, rawText, StyleInfoLeaf.TEXT, idx);
     }
 
-    public void assertKeyLeaf(int start, int end, String rawText, int ... idx)
-    {
+    public void assertKeyLeaf(int start, int end, String rawText, int ... idx){
         assertLeaf(start, end, rawText, StyleInfoLeaf.KEYWORD, idx);
     }
 
-    public void assertIdLeaf(int start, int end, String rawText, int ... idx)
-    {
+    public void assertIdLeaf(int start, int end, String rawText, int ... idx){
         assertLeaf(start, end, rawText, StyleInfoLeaf.ID, idx);
     }
 
-    public void assertDataLeaf(int start, int end, String rawText, int ... idx)
-    {
+    public void assertDataLeaf(int start, int end, String rawText, int ... idx){
         assertLeaf(start, end, rawText, StyleInfoLeaf.DATA, idx);
     }
 
-    public void assertFieldLeaf(int start, int end, String rawText, int ... idx)
-    {
+    public void assertFieldLeaf(int start, int end, String rawText,
+            int ... idx){
         assertLeaf(start, end, rawText, StyleInfoLeaf.FIELD, idx);
     }
 
@@ -159,10 +154,10 @@ public class DocumentAssert {
             LastBranch);
     }
 
-    public void assertLast(int start, int end, String rawText){
+    public void assertLast(String rawText){
         SpanBranch last = doc.get(doc.size() - 1);
         assertTrue("No more text found.", last instanceof LastBranch);
-        assertKeyLeaf(start, end, rawText, doc.size() - 1, 0);
+        assertEquals("Wrong unparsed text", rawText, last.getRaw());
     }
 
     public IDBuilder addId(IDBuilder id){
