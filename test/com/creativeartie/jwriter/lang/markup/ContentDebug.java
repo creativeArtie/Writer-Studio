@@ -19,7 +19,7 @@ import static com.creativeartie.jwriter.lang.markup.BranchTest.*;
 public class ContentDebug{
 
     private static final SetupParser[] parsers = new SetupParser[]{
-        new ContentParser()};
+        new ContentParser(";")};
 
     @Test
     public void basic(){
@@ -33,7 +33,7 @@ public class ContentDebug{
 
         content.test(    doc, 1,            raw, 0);
         doc.assertTextLeaf(0, raw.length(), raw, 0, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -49,7 +49,7 @@ public class ContentDebug{
 
         content.test(    doc, 1,            raw, 0);
         doc.assertTextLeaf(0, raw.length(), raw, 0, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -65,7 +65,7 @@ public class ContentDebug{
 
         content.test(    doc, 1,            raw, 0);
         doc.assertTextLeaf(0, raw.length(), raw, 0, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -83,7 +83,7 @@ public class ContentDebug{
         escape.test(     doc, 2, raw,  0, 0);
         doc.assertKeyLeaf( 0, 1, "\\", 0, 0, 0);
         doc.assertTextLeaf(1, 2, "b",  0, 0, 1);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -103,7 +103,7 @@ public class ContentDebug{
         doc.assertKeyLeaf (1, 2, "\\",  0, 1, 0);
         doc.assertTextLeaf(2, 3, "b",   0, 1, 1);
         doc.assertTextLeaf(3, 5, "c\t", 0, 2);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -121,7 +121,7 @@ public class ContentDebug{
         escape.test(     doc, 2, raw,  0, 0);
         doc.assertKeyLeaf( 0, 1, "\\", 0, 0, 0);
         doc.assertTextLeaf(1, 2, "\\", 0, 0, 1);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -139,7 +139,7 @@ public class ContentDebug{
         escape.test(     doc, 2, raw,  0, 0);
         doc.assertKeyLeaf( 0, 1, "\\", 0, 0, 0);
         doc.assertTextLeaf(1, 2, " ",  0, 0, 1);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -157,7 +157,23 @@ public class ContentDebug{
         doc.assertTextLeaf(0, 5, "  abc", 0, 0);
         escape.test(     doc, 1, "\\",    0, 1);
         doc.assertKeyLeaf( 5, 6, "\\",    0, 1, 0);
+        doc.assertLast();
+        doc.assertIds();
+    }
 
+    @Test
+    public void newLineEnded(){
+        ///           012 34
+        String raw = "abc\n";
+        DocumentAssert doc = assertDoc(2, raw, parsers);
+        ContentTest content = new ContentTest()
+            .setText("abc").setBegin(false)
+            .setEnd(false) .setCount(1);
+        EscapeTest escape = new EscapeTest().setEscape("");
+
+        content.test(    doc, 1, "abc", 0);
+        doc.assertTextLeaf(0, 3, "abc", 0, 0);
+        doc.assertLast(    3, 4, "\n");
         doc.assertIds();
     }
 

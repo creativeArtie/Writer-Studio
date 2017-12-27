@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 public class DocumentAssert {
 
-    public static class LastBranch extends SpanBranch{
+    private static class LastBranch extends SpanBranch{
 
         private LastBranch(List<Span> children){
             super(children);
@@ -39,7 +39,7 @@ public class DocumentAssert {
     public static DocumentAssert assertDoc(int childrenSize, String rawText,
             SetupParser ... parsers){
         SetupParser[] input = SetupParser.combine(parsers, END_PARSER);
-        Document test = new Document(rawText, parsers){
+        Document test = new Document(rawText, input){
             @Override protected void docEdited(){}
             @Override protected void childEdited(){}
         };
@@ -152,6 +152,17 @@ public class DocumentAssert {
 
     public void assertPathLeaf(int start, int end, String rawText, int ... idx){
         assertLeaf(start, end, rawText, StyleInfoLeaf.PATH, idx);
+    }
+
+    public void assertLast(){
+        assertFalse("Find more texts.", doc.get(doc.size() - 1) instanceof
+            LastBranch);
+    }
+
+    public void assertLast(int start, int end, String rawText){
+        SpanBranch last = doc.get(doc.size() - 1);
+        assertTrue("No more text found.", last instanceof LastBranch);
+        assertKeyLeaf(start, end, rawText, doc.size() - 1, 0);
     }
 
     public IDBuilder addId(IDBuilder id){
