@@ -15,13 +15,24 @@ final class FormatParseContent extends BasicParseText{
 
     public FormatParseContent(StyleInfoLeaf style, boolean[] formats,
             List<String> enders){
-        this(style, formats, checkNotNull(enders, "enders")
+        this(true, style, formats, checkNotNull(enders, "enders")
             .toArray(new String[0]));
     }
 
     public FormatParseContent(StyleInfoLeaf style, boolean[] formats,
             String ... enders){
-        super(style, enders);
+        this(true, style, formats, enders);
+    }
+
+    public FormatParseContent(boolean reparse, StyleInfoLeaf style,
+            boolean[] formats, List<String> enders){
+        this(style, formats, checkNotNull(enders, "enders")
+            .toArray(new String[0]));
+    }
+
+    public FormatParseContent(boolean reparse, StyleInfoLeaf style,
+            boolean[] formats, String ... enders){
+        super(reparse, style, new ArrayList<>(), Arrays.asList(enders));
         checkNotNull(formats, "formats");
         checkEqual(formats.length, "formats.length", FORMAT_TYPES);
         formatList = Arrays.copyOf(formats, formats.length);

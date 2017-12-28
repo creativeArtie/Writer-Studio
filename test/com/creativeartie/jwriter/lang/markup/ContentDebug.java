@@ -19,7 +19,7 @@ import static com.creativeartie.jwriter.lang.markup.BranchTest.*;
 public class ContentDebug{
 
     private static final SetupParser[] parsers = new SetupParser[]{
-        new ContentParser(";")};
+        AuxiliaryData.CONTENT_AGENDA};
 
     @Test
     public void textCount1(){
@@ -189,19 +189,19 @@ public class ContentDebug{
 
     public void escapeEnder(){
         ///           012 345678
-        String raw = "abc\\;abd";
+        String raw = "abc\\}abd";
         DocumentAssert doc = assertDoc(1, raw, parsers);
         ContentTest content = new ContentTest()
-            .setBegin(false).setText("abc;abd")
+            .setBegin(false).setText("abc}abd")
             .setEnd(false)  .setCount(1);
         EscapeTest escape = new EscapeTest()
-            .setEscape(";");
+            .setEscape("}");
 
         content.test(    doc, 3, raw,   0);
         doc.assertTextLeaf(0, 3, "abc", 0, 0);
-        escape.test(    doc,  1, "\\;", 0, 1);
+        escape.test(    doc,  1, "\\}", 0, 1);
         doc.assertKeyLeaf( 3, 4, "\\",  0, 1, 0);
-        doc.assertTextLeaf(4, 5, ";",   0, 1, 1);
+        doc.assertTextLeaf(4, 5, "}",   0, 1, 1);
         doc.assertTextLeaf(5, 8, "abd", 0, 2);
         doc.assertLast();
         doc.assertIds();
@@ -210,10 +210,10 @@ public class ContentDebug{
     @Test
     public void enderNoText(){
         ///           0123456
-        String raw = ";abcab";
+        String raw = "}abcab";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        doc.assertLast(";abcab");
+        doc.assertLast("}abcab");
         doc.assertIds();
     }
 
@@ -228,9 +228,9 @@ public class ContentDebug{
     @Test
     public void enderUser(){
         ///           0123456
-        String raw = "abc;ab";
+        String raw = "abc}ab";
         DocumentAssert doc = assertDoc(2, raw, parsers);
-        commonUnparsed(doc, ";");
+        commonUnparsed(doc, "}");
     }
 
     private void commonUnparsed(DocumentAssert doc, String last){
@@ -281,25 +281,6 @@ public class ContentDebug{
 
         content.test(    doc,  1, after, 0);
         doc.assertTextLeaf(0, 11, after, 0, 0);
-    }
-
-    @Test
-    public void editWithDiffStyle(){
-        ///              01234567
-        String before = "hallway";
-        DocumentAssert doc = assertDoc(1, before, new ContentParser(
-            StyleInfoLeaf.FIELD));
-        ///           012345678901
-        String after = "hallway run";
-        doc.insert(7, " run");
-        doc.assertDoc(1, after, parsers);
-
-        ContentTest content = new ContentTest()
-            .setText(after) .setBegin(false)
-            .setEnd(false).setCount(2);
-
-        content.test(     doc,  1, after, 0);
-        doc.assertFieldLeaf(0, 11, after, 0, 0);
     }
 
     @Test
@@ -359,11 +340,11 @@ public class ContentDebug{
         ///              012345
         String before = "abcab";
         DocumentAssert doc = assertDoc(1, before, parsers);
-        doc.insert(3, ";");
+        doc.insert(3, "}");
 
         ///             0123456
-        String after = "abc;ab";
+        String after = "abc}ab";
         doc.assertDoc(2, after, parsers);
-        commonUnparsed(doc, ";");
+        commonUnparsed(doc, "}");
     }
 }

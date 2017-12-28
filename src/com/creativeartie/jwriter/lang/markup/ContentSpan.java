@@ -10,7 +10,8 @@ import com.google.common.collect.*;
 import com.google.common.base.*;
 
 /**
- * Text implementing {@link BasicText} for non-formatted text.
+ * Text implementing {@link BasicText} for non-formatted text. Represented in
+ * ebnf.txt as {@code Basic}.
  */
 public final class ContentSpan extends SpanBranch implements BasicText{
 

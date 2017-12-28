@@ -40,10 +40,8 @@ enum LinedParseLevel implements SetupParser {
             SetupPointer pointer){
         assert children != null: "Null children.";
         assert pointer != null: "Null pointer.";
-        DirectoryParser id = new DirectoryParser(DirectoryType.LINK,
-            DIRECTORY_END, EDITION_BEGIN);
         if (pointer.trimStartsWith(children, DIRECTORY_BEGIN)){
-            id.parse(children, pointer);
+            DirectoryParser.ID_BOOKMARK.parse(children, pointer);
             pointer.startsWith(children, DIRECTORY_END);
         }
 

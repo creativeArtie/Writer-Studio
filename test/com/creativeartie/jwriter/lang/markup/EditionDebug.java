@@ -193,7 +193,7 @@ public class EditionDebug {
             .setText("k");
         ContentTest content = new ContentTest()
             .setBegin(true).setText("k")
-            .setEnd(false) .setCount(2);
+            .setEnd(false) .setCount(1);
 
         edition.test(     doc, 2, "#FINAL k", 0);
         doc.assertKeyLeaf(  0, 6, "#FINAL",   0, 0);

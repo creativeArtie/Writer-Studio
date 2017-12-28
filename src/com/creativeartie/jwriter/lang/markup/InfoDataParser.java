@@ -25,9 +25,7 @@ enum InfoDataParser implements SetupParser{
     }), TEXT(pointer -> {
         assert pointer != null: "Null pointer";
         ArrayList<Span> children = new ArrayList<>();
-        if (new ContentParser(StyleInfoLeaf.DATA)
-            .parse(children, pointer))
-        {
+        if (CONTENT_DATA.parse(children, pointer)){
             return Optional.of(new InfoDataSpanText(children));
         }
         return Optional.empty();

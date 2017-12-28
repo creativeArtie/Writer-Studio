@@ -21,7 +21,7 @@ import com.creativeartie.jwriter.lang.*;
 public class DirectoryDebug{
 
     private static final SetupParser[] parsers = new SetupParser[]{
-        new DirectoryParser(DirectoryType.NOTE, ";")};
+        DirectoryParser.REF_NOTE};
 
     private static IDBuilder buildId(String id){
         return new IDBuilder().addCategory("note").setId(id);
@@ -221,9 +221,9 @@ public class DirectoryDebug{
     @Test
     public void enderUser(){
         ///           01234567
-        String raw = "abc;abc";
+        String raw = "abc}abc";
         DocumentAssert doc = assertDoc(2, raw, parsers);
-        commonUnparsed(doc, ";");
+        commonUnparsed(doc, "}");
     }
 
     private void commonUnparsed(DocumentAssert doc, String last){
@@ -273,11 +273,11 @@ public class DirectoryDebug{
         ///             01234567
         String before = "abcabc";
         DocumentAssert doc = assertDoc(1, before, parsers);
-        doc.insert(3, ";");
+        doc.insert(3, "}");
 
-        String after = "abc;abc";
+        String after = "abc}abc";
         doc.assertDoc(2, after);
-        commonUnparsed(doc, ";");
+        commonUnparsed(doc, "}");
     }
 
     @Test

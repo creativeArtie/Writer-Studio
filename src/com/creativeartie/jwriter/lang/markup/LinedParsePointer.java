@@ -20,7 +20,7 @@ enum LinedParsePointer implements SetupParser {
             if (pointer.startsWith(children, LINED_LINK)){
                 parseCommon(children, pointer);
                 if (pointer.startsWith(children, LINED_DATA)){
-                    new ContentParser(StyleInfoLeaf.PATH).parse(children, pointer);
+                    CONTENT_DIR_LINK.parse(children, pointer);
                 }
                 pointer.startsWith(children, LINED_END);
                 LinedSpanPointLink ans = new LinedSpanPointLink(children);
@@ -37,13 +37,11 @@ enum LinedParsePointer implements SetupParser {
         spanStart = start;
     }
 
-    DirectoryParser parseCommon(ArrayList<Span> children, SetupPointer pointer){
+    void parseCommon(ArrayList<Span> children, SetupPointer pointer){
         checkNotNull(pointer, "childPointer");
         checkNotNull(children, "spanChildren");
         DirectoryType idType = DirectoryType.values()[ordinal() + 2];
-        DirectoryParser output = new DirectoryParser(idType, LINED_DATA);
-        output.parse(children, pointer);
-        return output;
+        DirectoryParser.getIDParser(idType).parse(children, pointer);
     }
 
     @Override

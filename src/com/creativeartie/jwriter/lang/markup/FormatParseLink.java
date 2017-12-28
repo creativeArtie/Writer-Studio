@@ -13,9 +13,6 @@ import static com.creativeartie.jwriter.main.Checker.*;
  */
 abstract class FormatParseLink implements SetupParser {
 
-    private static final ContentParser TEXT_PARSER = new ContentParser(
-        LINK_END);
-
     public static FormatParseLink[] getParsers(boolean[] formats){
 
         boolean[] setup = Arrays.copyOf(formats, formats.length);
@@ -59,7 +56,7 @@ abstract class FormatParseLink implements SetupParser {
         /// Create display text if any
         if (pointer.startsWith(children, LINK_TEXT)){
             /// Add the text itself
-            TEXT_PARSER.parse(children, pointer);
+            CONTENT_LINK.parse(children, pointer);
         }
 
         /// Add the ">"

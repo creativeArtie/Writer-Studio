@@ -242,7 +242,7 @@
         <delete dir="${dir.report-raw}" />
     </target>
 
-    <target name="debug" depends="clean, test" />
+    <target name="debug" depends="clean-debug, test" />
 
     <target name="test-run" depends="compile.debug">
         <java
@@ -262,10 +262,14 @@
             access="${usr-access}" classpathref="src-run.path" />
     </target -->
 
+    <!-- clear debug classes -->
+    <target name="clean-debug">
+        <delete dir="${dir.debug}" />
+    </target>
+
     <!-- clear generated things -->
     <target name="clean">
         <delete dir="${dir.out}" />
-        <delete file="${dir.backup}" />
     </target>
 
     <!-- clear test folder only -->

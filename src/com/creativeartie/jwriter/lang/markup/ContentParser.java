@@ -10,23 +10,9 @@ import static com.creativeartie.jwriter.main.Checker.*;
  */
 final class ContentParser extends BasicParseText{
 
-    private boolean willReparse;
-
-    public ContentParser(List<String> enders){
-        this(StyleInfoLeaf.TEXT, enders);
-    }
-
-    public ContentParser(StyleInfoLeaf style, List<String> enders){
-        this(style, checkNotNull(enders, "enders")
-            .toArray(new String[0]));
-    }
-
-    public ContentParser(String ... enders){
-        this(StyleInfoLeaf.TEXT, enders);
-    }
-
-    public ContentParser(StyleInfoLeaf style, String ... enders){
-        super(style, enders);
+    public ContentParser(boolean reparse, StyleInfoLeaf style,
+            List<String> starters, List<String> enders){
+        super(reparse, style, starters, enders);
     }
 
     @Override

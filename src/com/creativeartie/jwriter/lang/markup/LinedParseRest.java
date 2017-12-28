@@ -16,8 +16,7 @@ enum LinedParseRest implements SetupParser {
         if (pointer.startsWith(children, LINED_NOTE)){
             Optional<DirectorySpan> id = Optional.empty();
             if (pointer.trimStartsWith(children, DIRECTORY_BEGIN)){
-                new DirectoryParser(DirectoryType.NOTE, DIRECTORY_END)
-                    .parse(children, pointer);
+                DirectoryParser.ID_NOTE.parse(children, pointer);
                 pointer.startsWith(children, DIRECTORY_END);
             }
             new FormatParser().parse(children, pointer);
@@ -31,7 +30,7 @@ enum LinedParseRest implements SetupParser {
         assert pointer != null: "Null pointer.";
         ArrayList<Span> children = new ArrayList<>();
         if (pointer.startsWith(children, LINED_AGENDA)){
-            new ContentParser().parse(children, pointer);
+            CONTENT_BASIC.parse(children, pointer);
             pointer.startsWith(children, LINED_END);
             return Optional.of(new LinedSpanAgenda(children));
         }

@@ -9,7 +9,33 @@ import static com.creativeartie.jwriter.main.Checker.*;
 /**
  * Parser for {@link DirectorySpan}.
  */
-final class DirectoryParser implements SetupParser{
+enum DirectoryParser implements SetupParser{
+    REF_NOTE(DirectoryType.NOTE, CURLY_END),
+    REF_FOOTNOTE(DirectoryType.FOOTNOTE, CURLY_END),
+    REF_ENDNOTE(DirectoryType.ENDNOTE, CURLY_END),
+    REF_LINK(DirectoryType.LINK, LINK_TEXT, LINK_END),
+    ID_NOTE(DirectoryType.NOTE, DIRECTORY_END),
+    ID_FOOTNOTE(DirectoryType.FOOTNOTE, DIRECTORY_END),
+    ID_ENDNOTE(DirectoryType.ENDNOTE, LINED_DATA),
+    ID_LINK(DirectoryType.LINK, LINED_DATA),
+    ID_BOOKMARK(DirectoryType.LINK, DIRECTORY_END, EDITION_BEGIN);
+
+    private static final int ID_SHIFT = 3;
+
+    public static DirectoryParser getRefParser(DirectoryType type){
+        if (type == DirectoryType.COMMENT){
+            throw new IllegalArgumentException("No parser for Comments.");
+        }
+        return values()[type.ordinal() - 1];
+    }
+
+    public static DirectoryParser getIDParser(DirectoryType type){
+        if (type == DirectoryType.COMMENT){
+            throw new IllegalArgumentException("No parser for Comments.");
+        }
+        return values()[type.ordinal() + ID_SHIFT];
+    }
+
     /// Shows how to end a text
     private final ContentParser idContent;
     private final String[] reparseEnders;
@@ -17,7 +43,7 @@ final class DirectoryParser implements SetupParser{
     /// Adds a root category to differentiate footnote, links, etc
     private final DirectoryType idType;
 
-    DirectoryParser(DirectoryType type, String ... enders){
+    private DirectoryParser(DirectoryType type, String ... enders){
         checkNotNull(enders, "enders");
         checkNotNull(type, "type");
 
@@ -29,7 +55,8 @@ final class DirectoryParser implements SetupParser{
         init[enders.length] = DIRECTORY_CATEGORY;
         reparseEnders = enders;
 
-        idContent = new ContentParser(StyleInfoLeaf.ID, init);
+        idContent = new ContentParser(true, StyleInfoLeaf.ID, new ArrayList<>(),
+            Arrays.asList(init));
     }
 
     /** Check if the text can be parse at Directory level. */

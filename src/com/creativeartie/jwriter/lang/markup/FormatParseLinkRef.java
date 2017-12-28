@@ -23,9 +23,7 @@ final class FormatParseLinkRef extends FormatParseLink {
         checkNotNull(children, "children");
         checkNotNull(pointer, "pointer");
 
-        DirectoryParser id = new DirectoryParser(DirectoryType.LINK,
-            LINK_TEXT, LINK_END);
-        id.parse(children, pointer);
+        DirectoryParser.REF_LINK.parse(children, pointer);
 
         /// Complete the last steps
         parseRest(children, pointer);

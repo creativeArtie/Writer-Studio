@@ -11,7 +11,6 @@ import static com.creativeartie.jwriter.main.Checker.*;
  */
 enum EditionParser implements SetupParser{
     INSTANCE;
-    private static final ContentParser TEXT_PARSER = new ContentParser();
 
     @Override
     public Optional<SpanBranch> parse(SetupPointer pointer){
@@ -41,7 +40,7 @@ enum EditionParser implements SetupParser{
         assert children != null: "Null children.";
         assert pointer != null: "Null pointer.";
         /// Add the meta text, if any found
-        TEXT_PARSER.parse(children, pointer);
+        CONTENT_BASIC.parse(children, pointer);
 
         return Optional.of(new EditionSpan(children));
 

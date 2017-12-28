@@ -134,6 +134,11 @@ public class DocumentAccessDebug{
         SpanLeaf leaf = doc.getLeaf(ptr);
         Span span = doc;
         for(int index: indexes){
+            assertTrue("Span is not a SpanNode: " + span, span instanceof
+                SpanNode);
+            SpanNode parent = (SpanNode) span;
+            assertTrue("Index (" + index + ") is not in range(" + parent.size()
+                +")", index < parent.size());
             span = ((SpanNode)span).get(index);
         }
         assertSame(span, leaf);

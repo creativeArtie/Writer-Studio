@@ -43,7 +43,7 @@ public class FormatLinkDebug {
 
         FormatLinkTest ref = new FormatLinkTest()
             .setPath("").setText("")
-            .setCatalogued(CatalogueStatus.NO_ID, builder);
+            .setCatalogued(CatalogueStatus.NO_ID);
 
         ref.test(       doc,  1, "<@",     0);
         doc.assertKeyLeaf(0,  2, "<@",     0, 0);

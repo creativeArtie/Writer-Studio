@@ -10,18 +10,22 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
  * Parser for {@link BasicText} with {@link BasicTextEscape}.
+ *
  */
 abstract class BasicParseText implements SetupParser{
 
     /// Describes how the Span will end
     private final ImmutableList<String> setupEnders;
 
-    /// willReparse = true if beginning change
+    private final Optional<ImmutableList<String>> reparseStarters;
     private final ImmutableList<String> reparseEnders;
     private final StyleInfoLeaf leafStyle;
 
-    public BasicParseText(StyleInfoLeaf style, String ... enders){
+    public BasicParseText(boolean reparse, StyleInfoLeaf style,
+            List<String> starters, List<String> enders){
         checkNotNull(style, "style");
+        if (reparse) checkNotNull(starters, "starters");
+        checkNotNull(enders, "enders");
 
         /// This builder is use to create two separate list, one for parsing,
         /// another for check if text can be parsed entirely.
@@ -29,13 +33,15 @@ abstract class BasicParseText implements SetupParser{
 
         builder.add(LINED_END);
 
+        reparseStarters = Optional.ofNullable(reparse?
+            ImmutableList.copyOf(starters) : null);
+
         for (String ender: enders){
             if (! ender.equals(LINED_END) && ! ender.equals(CHAR_ESCAPE)){
                 /// Ignores argument LINED_END and CHAR_ESCAPE
                 builder.add(ender);
             }
         }
-
 
         reparseEnders = builder.build();
 

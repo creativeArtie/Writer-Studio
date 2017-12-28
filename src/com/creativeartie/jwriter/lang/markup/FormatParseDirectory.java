@@ -47,7 +47,7 @@ final class FormatParseDirectory implements SetupParser {
                 spanStart = null;
         }
         formatList = formats;
-        idParser = new DirectoryParser(type, CURLY_END);
+        idParser = DirectoryParser.getRefParser(type);
     }
 
     DirectoryType getDirectoryType(){

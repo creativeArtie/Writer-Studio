@@ -182,7 +182,7 @@ public class FormatCurlyDebug {
 
         note.test(      doc, 1, "{^",  0);
         doc.assertKeyLeaf(0, 2, "{^", 0, 0);
-        doc.assertLast();
+        doc.assertLast("\nabc");
         doc.assertIds();
     }
 

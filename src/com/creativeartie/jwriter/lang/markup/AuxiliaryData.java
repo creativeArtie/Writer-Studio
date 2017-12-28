@@ -3,6 +3,7 @@ package com.creativeartie.jwriter.lang.markup;
 import java.util.*;
 
 import static com.creativeartie.jwriter.main.Checker.*;
+import com.creativeartie.jwriter.lang.*;
 
 /**
  * All strings used in this package. Each field (private and public) has its own
@@ -217,6 +218,23 @@ public final class AuxiliaryData{
         TYPE_AGENDA);
 
     /// ========================================================================
-    /// @Part-3: Private Constructor -------------------------------------------
+    /// @Part-3: Setup Parsers -------------------------------------------------
+
+    /// Part-3-1: Content Span Parsers -----------------------------------------
+    static final SetupParser CONTENT_BASIC = new ContentParser(false,
+        StyleInfoLeaf.TEXT, new ArrayList<>(), new ArrayList<>());
+    static final SetupParser CONTENT_AGENDA = new ContentParser(true,
+        StyleInfoLeaf.TEXT, new ArrayList<>(), Arrays.asList(CURLY_END));
+    static final SetupParser CONTENT_LINK = new ContentParser(true,
+        StyleInfoLeaf.TEXT, new ArrayList<>(), Arrays.asList(LINK_END));
+    static final SetupParser CONTENT_DATA = new ContentParser(true,
+        StyleInfoLeaf.DATA, new ArrayList<>(), new ArrayList<>());
+    static final SetupParser CONTENT_DIR_LINK  = new ContentParser(true,
+        StyleInfoLeaf.PATH, new ArrayList<>(), new ArrayList<>());
+    static final SetupParser CONTENT_LINE_LINK = new ContentParser(true,
+        StyleInfoLeaf.PATH, Arrays.asList(), Arrays.asList(LINK_TEXT, LINK_END));
+
+    /// ========================================================================
+    /// @Part-4: Private Constructor -------------------------------------------
     private AuxiliaryData(){}
 }
