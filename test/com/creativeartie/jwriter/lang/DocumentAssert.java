@@ -51,7 +51,7 @@ public class DocumentAssert {
     }
 
     private final Document doc;
-    private final IDTestDocument idTester;
+    private IDTestDocument idTester;
     private boolean editPass;
     private int editedSpans;
     private int totalSpans;
@@ -69,6 +69,7 @@ public class DocumentAssert {
     public DocumentAssert assertDoc(int childrenSize, String rawText){
         assertEquals(getError("text", doc), rawText,      doc.getRaw());
         assertEquals(getError("size", doc), childrenSize, doc.size());
+        idTester = new IDTestDocument();
         return this;
     }
 
