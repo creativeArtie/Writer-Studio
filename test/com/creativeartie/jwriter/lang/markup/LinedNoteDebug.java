@@ -60,7 +60,7 @@ public class LinedNoteDebug {
         doc.assertTextLeaf(21, 22, "*",       0, 4, 1, 1, 1);
         doc.assertKeyLeaf( 22, 23, "_",       0, 4, 2);
         doc.assertKeyLeaf( 23, 24, "\n",      0, 5);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -90,7 +90,7 @@ public class LinedNoteDebug {
         main.test(        doc, 1, "Text", 0, 4);
         doc.assertChild(       1, "Text", 0, 4, 0);
         doc.assertTextLeaf(6, 10, "Text", 0, 4, 0, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -115,7 +115,7 @@ public class LinedNoteDebug {
         doc.assertChild(      1, "id", 0, 2, 0);
         doc.assertIdLeaf(  3, 5, "id", 0, 2, 0, 0);
         doc.assertKeyLeaf( 5, 6, ":",  0, 3);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -138,12 +138,12 @@ public class LinedNoteDebug {
         id.test(         doc, 1, "id", 0, 2);
         doc.assertChild(      1, "id", 0, 2, 0);
         doc.assertIdLeaf(  3, 5, "id", 0, 2, 0, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void blankID(){
+    public void noId(){
         String raw = "!%@:Text";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
@@ -159,7 +159,7 @@ public class LinedNoteDebug {
         main.test(       doc, 1, "Text", 0, 3);
         doc.assertChild(      1, "Text", 0, 3, 0);
         doc.assertTextLeaf(4, 8, "Text", 0, 3, 0, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -178,12 +178,12 @@ public class LinedNoteDebug {
         main.test(       doc, 1, "Text", 0, 1);
         doc.assertChild(      1, "Text", 0, 1, 0);
         doc.assertTextLeaf(2, 6, "Text", 0, 1, 0, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void startOnly(){
+    public void noIDText(){
         String raw = "!%";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
@@ -192,12 +192,12 @@ public class LinedNoteDebug {
 
         line.test(       doc, 1, raw,  0);
         doc.assertKeyLeaf( 0, 2, "!%", 0, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void startID(){
+    public void noIDColon(){
         String raw = "!%@";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
@@ -207,7 +207,7 @@ public class LinedNoteDebug {
         line.test(        doc, 2, raw, 0);
         doc.assertKeyLeaf( 0, 2, "!%", 0, 0);
         doc.assertKeyLeaf( 2, 3, "@",  0, 1);
-
+        doc.assertLast();
         doc.assertIds();
     }
 }
