@@ -38,7 +38,7 @@ final class FormatParser implements SetupParser {
             more = false; /// Assume FormatSpanMain has ended
 
             /// try to find text first
-            if (new FormatParseContent(leafStyle, formats)
+            if (new FormatParseContent(leafStyle, formats, spanEnders)
                 .parse(children, pointer)
             ){
                 more = true;
