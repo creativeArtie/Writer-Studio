@@ -190,6 +190,9 @@ public class FormatLinkDebug {
         String raw = "<@caat-id|text>";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
         doc.delete(3, 4, 0, 1);
+        ///             012345678901234
+        String after = "<@cat-id|text>";
+        doc.assertDoc(1, after);
         editRefCommon(doc);
     }
 
@@ -199,6 +202,9 @@ public class FormatLinkDebug {
         String raw = "<@cat-id>";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
         doc.insert(8, "|text", 0);
+        ///             012345678901234
+        String after = "<@cat-id|text>";
+        doc.assertDoc(1, after, parsers);
         editRefCommon(doc);
     }
 
@@ -256,6 +262,9 @@ public class FormatLinkDebug {
         String raw = "<";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
         doc.insert(1, "path|text>", 0);
+        ///             012345678901
+        String after = "<path|text>";
+        doc.assertDoc(1, after, parsers);
         editLinkCommon(doc);
     }
 
@@ -265,6 +274,9 @@ public class FormatLinkDebug {
         String raw = "<pth|text>";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
         doc.insert(2, "a", 0);
+        ///             012345678901
+        String after = "<path|text>";
+        doc.assertDoc(1, after, parsers);
         editLinkCommon(doc);
     }
 

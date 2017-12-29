@@ -123,6 +123,7 @@ public class MainSectionDebug {
         line7.test(  doc, 3, texts[i], 0, i++); /// agenda
         line8.test(  doc, 1, texts[i], 0, i++); /// break
         line9.test(  doc, 2, texts[i], 0, i++); /// paragraph
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -156,6 +157,7 @@ public class MainSectionDebug {
         for (int i = 0; i < texts.length; i++){
             lines[i].test(  doc, 3, texts[i], 0, i);
         }
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -190,6 +192,7 @@ public class MainSectionDebug {
         section.test(doc, 2, raw, 0);
         line1.test(  doc, 7, texts[0], 0, 0);
         line2.test(  doc, 1, texts[1], 0, 1);
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -233,6 +236,7 @@ public class MainSectionDebug {
         section2.test(doc, 2, sec2,     1);
         line2.test(   doc, 4, texts[1], 1, 0);
         line3.test(   doc, 2, texts[2], 1, 1);
+        doc.assertLast();
         doc.assertIds();
 
     }

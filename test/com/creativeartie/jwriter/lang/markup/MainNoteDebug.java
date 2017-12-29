@@ -128,6 +128,7 @@ public class MainNoteDebug {
         line1.test(doc, 3, raw1, 0, 0);
         note2.test(doc, 1, raw2, 1);
         line2.test(doc, 6, raw2, 1, 0);
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -162,6 +163,7 @@ public class MainNoteDebug {
         line1.test(doc, 3, raw1, 0, 0);
         line2.test(doc, 5, raw2, 0, 1);
         line3.test(doc, 4, raw3, 0, 2);
+        doc.assertLast();
         doc.assertIds();
 
     }

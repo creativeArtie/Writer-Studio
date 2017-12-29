@@ -28,8 +28,7 @@ public class LinedLevelHeadDebug {
     public void basicHeading(){
         String raw = "===@sub-id:W_Under_#abc";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
-        IDBuilder builder = buildId("id").addCategory("sub");
-        doc.addId(builder, 0);
+        IDBuilder builder = doc.addId(buildId("id").addCategory("sub"), 0);
 
         HeadLevelLineTest heading = new HeadLevelLineTest()
             .setFormattedSpan(doc, 0, 4).setLinedType(LinedType.HEADING)
@@ -74,8 +73,7 @@ public class LinedLevelHeadDebug {
         String raw = "!#@id:b {!todo   } #DRAFT #1";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
 
-        IDBuilder builder = buildId("id");
-        doc.addId(builder, 1);
+        IDBuilder builder = doc.addId(buildId("id"), 1);
 
         HeadLevelLineTest heading = new HeadLevelLineTest()
            .setFormattedSpan(doc, 0, 4).setLinedType(LinedType.OUTLINE)
@@ -174,8 +172,7 @@ public class LinedLevelHeadDebug {
 
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
 
-        IDBuilder builder = buildId("id");
-        doc.addId(builder, 0);
+        IDBuilder builder = doc.addId(buildId("id"), 0);
 
         HeadLevelLineTest heading = new HeadLevelLineTest()
            .setFormattedSpan(doc, 0, 4).setLinedType(LinedType.HEADING)
@@ -215,8 +212,7 @@ public class LinedLevelHeadDebug {
 
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
 
-        IDBuilder builder = buildId("id");
-        doc.addId(builder, 0);
+        IDBuilder builder = doc.addId(buildId("id"), 0);
 
         HeadLevelLineTest heading = new HeadLevelLineTest()
            .setFormattedSpan(doc, 0, 4).setLinedType(LinedType.HEADING)
@@ -250,8 +246,7 @@ public class LinedLevelHeadDebug {
 
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
 
-        IDBuilder builder = buildId("id");
-        doc.addId(builder, 0);
+        IDBuilder builder = doc.addId(buildId("id"), 0);
 
         HeadLevelLineTest heading = new HeadLevelLineTest()
            .setLinedType(LinedType.HEADING)
@@ -284,8 +279,7 @@ public class LinedLevelHeadDebug {
 
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
 
-        IDBuilder builder = buildId("id");
-        doc.addId(builder, 0);
+        IDBuilder builder = doc.addId(buildId("id"), 0);
 
         HeadLevelLineTest heading = new HeadLevelLineTest()
            .setLinedType(LinedType.HEADING)

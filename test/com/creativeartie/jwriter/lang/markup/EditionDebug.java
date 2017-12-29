@@ -143,7 +143,9 @@ public class EditionDebug {
         DocumentAssert doc = assertDoc(1, before, parsers);
 
         doc.insert(14, " ", 0);
-
+        ///            01234567890123456
+        String after = "#FINAL version 8";
+        doc.assertDoc(1, after);
         commonEdited(doc);
     }
 
@@ -182,12 +184,11 @@ public class EditionDebug {
         ///              01234567890123
         String before = "#FINAL ksplit";
         DocumentAssert doc = assertDoc(1, before, parsers);
-
         doc.insert(8, "\n");
-
         ///             012345678 90123456
         String after = "#FINAL k\nsplit";
         doc.assertDoc(2,  after);
+
         EditionTest edition = new EditionTest()
             .setEdition(EditionType.FINAL)
             .setText("k");

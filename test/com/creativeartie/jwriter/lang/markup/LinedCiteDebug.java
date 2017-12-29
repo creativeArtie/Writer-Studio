@@ -129,16 +129,17 @@ public class LinedCiteDebug {
     public void errorWithUnparsed(){
         ///           01 23456
         String raw = "!>\nabc";
-        DocumentAssert doc = assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(2, raw, parsers);
 
         CiteLineTest cite = new CiteLineTest()
-            .setInfoType(InfoFieldType.ERROR);
+            .setInfoType(InfoFieldType.ERROR)
+            .setIsLast(false);
         FieldTest field = new FieldTest()
             .setType(InfoFieldType.ERROR);
 
-        cite.test(        doc,  2, raw,    0);
+        cite.test(      doc,  2, "!>\n", 0);
         doc.assertKeyLeaf(0,  2, "!>",   0, 0);
-        doc.assertKeyLeaf(2,  3, "\n", 0, 1, 0);
+        doc.assertKeyLeaf(2,  3, "\n",   0, 1);
         doc.assertLast("abc");
         doc.assertIds();
 
@@ -314,6 +315,9 @@ public class LinedCiteDebug {
         String before = "!>in-text:abec";
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.delete(12, 13, 0);
+        ///             01234567890123
+        String after = "!>in-text:abc";
+        doc.assertDoc(1, after, parsers);
         editCommon(doc);
     }
 
@@ -322,14 +326,17 @@ public class LinedCiteDebug {
         ///              0123456789012
         String before = "!>in-text:abec";
         DocumentAssert doc = assertDoc(1, before, parsers);
-        doc.delete(0, 1, 0);
+        doc.delete(0, 1);
+        ///             01234567890123
+        String after = ">in-text:abec";
+        doc.assertDoc(1, after, parsers);
 
-        doc.assertLast(">in-text:abec");
+        doc.assertLast(after);
         doc.assertIds();
     }
 
     private void editCommon(DocumentAssert doc){
-
+        ///             01234567890123
         String after = "!>in-text:abc";
         doc.assertDoc(1, after);
 

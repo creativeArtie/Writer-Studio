@@ -31,7 +31,6 @@ public class LinedNoteDebug {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         IDBuilder createId = buildId("id").addCategory("sub");
-
         NoteLineTest line = new NoteLineTest()
             .setFormattedSpan(doc, 0, 4).setNoteTotal(1)
             .setBuildId(createId);
@@ -68,9 +67,62 @@ public class LinedNoteDebug {
     public void noteWithoutNewLine(){
         String raw = "!%@id:Text";
         DocumentAssert doc = assertDoc(1, raw, parsers);
+        commonComplete(doc);
+    }
+
+    @Test
+    public void editChangeText(){
+        ///              01234567
+        String before = "!%@id:Tt";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.insert(7, "ex", 0);
+        ///             01234567890
+        String after = "!%@id:Text";
+        doc.assertDoc(1, after, parsers);
+        commonComplete(doc);
+    }
+
+    @Test
+    public void editChangeId(){
+        ///              0123456789
+        String before = "!%@d:Text";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.insert(3, "i", 0, 2);
+        ///             01234567890
+        String after = "!%@id:Text";
+        doc.assertDoc(1, after, parsers);
+        commonComplete(doc);
+    }
+
+    @Test
+    public void editAddColon(){
+        ///              0123456789
+        String before = "!%@idText";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.insert(5, ":", 0);
+        ///             01234567890
+        String after = "!%@id:Text";
+        doc.assertDoc(1, after, parsers);
+        commonComplete(doc);
+    }
+
+    @Test
+    public void editAddID(){
+        ///              0123456
+        String before = "!%Text";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.insert(2, "@id:", 0);
+        ///             01234567890
+        String after = "!%@id:Text";
+        doc.assertDoc(1, after, parsers);
+        commonComplete(doc);
+    }
+
+    private void commonComplete(DocumentAssert doc){
+        ///           01234567890
+        String raw = "!%@id:Text";
 
         IDBuilder createId = buildId("id");
-
         NoteLineTest line = new NoteLineTest()
             .setFormattedSpan(doc, 0, 4).setNoteTotal(1)
             .setBuildId(createId);
@@ -101,7 +153,6 @@ public class LinedNoteDebug {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         IDBuilder createId = buildId("id");
-
         NoteLineTest line = new NoteLineTest()
             .setNoteTotal(0).setBuildId(createId);
         DirectoryTest id = new DirectoryTest()
@@ -125,7 +176,6 @@ public class LinedNoteDebug {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         IDBuilder createId = buildId("id");
-
         NoteLineTest line = new NoteLineTest()
             .setNoteTotal(0).setBuildId(createId);
         DirectoryTest id = new DirectoryTest()
@@ -168,6 +218,7 @@ public class LinedNoteDebug {
     public void noID(){
         String raw = "!%Text";
         DocumentAssert doc = assertDoc(1, raw, parsers);
+
         NoteLineTest line = new NoteLineTest()
             .setFormattedSpan(doc, 0, 1).setNoteTotal(1);
         FormatMainTest main = new FormatMainTest()

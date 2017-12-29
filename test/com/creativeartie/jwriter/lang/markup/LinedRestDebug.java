@@ -21,25 +21,107 @@ public class LinedRestDebug {
     private static final SetupParser[] parsers = LinedParseRest.values();
 
     @Test
-    public void testBreak(){
+    public void breakBasic(){
         String raw = "***\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
+        breakEditCommon(doc);
+    }
 
+    @Test
+    public void breakEditCreate(){
+        String before = "**\n";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.insert(1, "*");
+        doc.assertDoc(1, "***\n", parsers);
+        breakEditCommon(doc);
+    }
+
+    private void breakEditCommon(DocumentAssert doc){
+        String raw = "***\n";
         BreakLineTest line = new BreakLineTest();
 
-        line.test(      doc, 1, raw,      0);
-        doc.assertKeyLeaf(0, 4, "***\n",  0, 0);
-
+        line.test(      doc, 1, raw, 0);
+        doc.assertKeyLeaf(0, 4, raw, 0, 0);
+        doc.assertLast();
         doc.assertIds();
     }
 
+    @Test
+    public void breakEditRemoveByInsert(){
+        String before = "***\n";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.insert(1, "*");
+        String after = "****\n";
+        doc.assertDoc(1, after, parsers);
+
+        ParagraphLineTest paragraph = new ParagraphLineTest()
+            .setPublishTotal(0).setNoteTotal(0)
+            .setFormattedSpan(doc, 0, 0);
+        FormatMainTest main = new FormatMainTest()
+            .setPublishTotal(0).setNoteTotal(0);
+
+        paragraph.test( doc, 2, after,  0);
+        main.test(      doc, 2, "****", 0, 0);
+        doc.assertKeyLeaf(0, 2, "**",   0, 0, 0);
+        doc.assertKeyLeaf(2, 4, "**",   0, 0, 1);
+        doc.assertKeyLeaf(4, 5, "\n",   0, 1);
+        doc.assertLast();
+        doc.assertIds();
+    }
 
     @Test
-    public void basicAgenda(){
+    public void breakEditRemoveByDelete(){
+        String before = "***\n";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.delete(0, 1);
+        String after = "**\n";
+        doc.assertDoc(1, after, parsers);
+
+        ParagraphLineTest paragraph = new ParagraphLineTest()
+            .setPublishTotal(0).setNoteTotal(0)
+            .setFormattedSpan(doc, 0, 0);
+        FormatMainTest main = new FormatMainTest()
+            .setPublishTotal(0).setNoteTotal(0);
+
+        paragraph.test( doc, 2, after, 0);
+        main.test(      doc, 1, "**",  0, 0);
+        doc.assertKeyLeaf(0, 2, "**",  0, 0, 0);
+        doc.assertKeyLeaf(2, 3, "\n",  0, 1);
+        doc.assertLast();
+        doc.assertIds();
+    }
+
+    @Test
+    public void agendaBasic(){
+        String raw = "!!abc**ab";
+        DocumentAssert doc = assertDoc(1, raw, parsers);
+        doc.assertDoc(1, "!!abc**ab", parsers);
+        agendaEditCommon(doc);
+    }
+
+    @Test
+    public void agendaEditText(){
+        ///           0123456
+        String before = "!!abcb";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.insert(5, "**a", 0);
+        doc.assertDoc(1, "!!abc**ab");
+        agendaEditCommon(doc);
+    }
+
+    @Test
+    public void agendaEditCreated(){
+        ///           012345678
+        String before = "!abc**ab";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.insert(1, "!");
+        doc.assertDoc(1, "!!abc**ab");
+        agendaEditCommon(doc);
+    }
+
+    private void agendaEditCommon(DocumentAssert doc){
         String text = "abc**ab";
         String raw = "!!" + text;
-        DocumentAssert doc = assertDoc(1, raw, parsers);
-
         IDBuilder id = new IDBuilder().addCategory("agenda")
             .setId("0");
         doc.addId(id, 0);
@@ -55,12 +137,23 @@ public class LinedRestDebug {
         doc.assertKeyLeaf( 0, 2, "!!",   0, 0);
         content.test(    doc, 1, text, 0, 1);
         doc.assertTextLeaf(2, 9, text, 0, 1, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void emptyAgenda(){
+    public void agendaEditRemoved(){
+        ///              0123456
+        String before = "!!abc";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.delete(0, 2);
+        doc.assertDoc(1, "abc");
+        paragraphEditCommon(doc);
+    }
+
+
+    @Test
+    public void agendaEmpty(){
         String raw = "!!";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
@@ -74,12 +167,12 @@ public class LinedRestDebug {
 
         agenda.test(    doc,  1, raw,  0);
         doc.assertKeyLeaf( 0, 2, "!!", 0, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void spaceAgenda(){
+    public void agendaSpaced(){
         String raw = "!!  \n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
@@ -99,12 +192,12 @@ public class LinedRestDebug {
         content.test(    doc, 1, "  ", 0, 1);
         doc.assertTextLeaf(2, 4, "  ", 0, 1, 0);
         doc.assertKeyLeaf( 4, 5, "\n", 0, 2);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void fullAgenda(){
+    public void agendaFull(){
         String raw = "!!ab\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
@@ -124,12 +217,12 @@ public class LinedRestDebug {
         content.test(    doc, 1, "ab", 0, 1);
         doc.assertTextLeaf(2, 4, "ab", 0, 1, 0);
         doc.assertKeyLeaf( 4, 5, "\n", 0, 2);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void escapeAgenda(){
+    public void agendaEscaped(){
         String text = "Hi\\\\";
         String raw = "!!" + text + "\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
@@ -153,16 +246,40 @@ public class LinedRestDebug {
         doc.assertKeyLeaf( 4, 5, "\\",   0, 1, 1, 0);
         doc.assertTextLeaf(5, 6, "\\",   0, 1, 1, 1);
         doc.assertKeyLeaf( 6, 7, "\n",   0, 2);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void quote(){
+    public void quoteBasic(){
+        String raw = ">>@id:Text abc\n";
+        DocumentAssert doc = assertDoc(1, raw, parsers);
+        quoteEditCommon(doc);
+    }
+
+    @Test
+    public void quoteEditText(){
+        ///              0123456789 01
+        String before = ">>@idt abc\n";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.insert(5, ":Tex", 0);
+        doc.assertDoc(1, ">>@id:Text abc\n");
+        quoteEditCommon(doc);
+    }
+
+    @Test
+    public void quoteEditCreate(){
+        ///              0123456789 01
+        String before = "@id:Text abc\n";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.insert(0, ">>");
+        doc.assertDoc(1, ">>@id:Text abc\n");
+        quoteEditCommon(doc);
+    }
+
+    private void quoteEditCommon(DocumentAssert doc){
         String text = ">@id:Text abc";
         String raw = ">" + text + "\n";
-        DocumentAssert doc = assertDoc(1, raw, parsers);
-
         QuoteLineTest quote = new QuoteLineTest()
             .setFormattedSpan(doc, 0, 1)
             .setPublishTotal(2).setNoteTotal(0);
@@ -175,12 +292,22 @@ public class LinedRestDebug {
         doc.assertChild(       1, text, 0, 1, 0);
         doc.assertTextLeaf(1, 14, text, 0, 1, 0, 0);
         doc.assertKeyLeaf(14, 15, "\n", 0, 2);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void fullParagraph(){
+    public void quoteEditRemove(){
+        ///              01234
+        String before = ">abc";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.delete(0, 1);
+        doc.assertDoc(1, "abc");
+        paragraphEditCommon(doc);
+    }
+
+    @Test
+    public void paragraphFull(){
         String text = "ddHi\\\\";
         String raw = text + "\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
@@ -199,14 +326,28 @@ public class LinedRestDebug {
         doc.assertKeyLeaf( 4, 5, "\\",   0, 0, 0, 1, 0);
         doc.assertTextLeaf(5, 6, "\\",   0, 0, 0, 1, 1);
         doc.assertKeyLeaf( 6, 7, "\n",   0, 1);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void simpleParagraph(){
+    public void paragraphBasic(){
         String raw = "abc";
         DocumentAssert doc = assertDoc(1, raw, parsers);
+        paragraphEditCommon(doc);
+    }
+
+    @Test
+    public void paragraphEditText(){
+        String raw = "ac";
+        DocumentAssert doc = assertDoc(1, raw, parsers);
+        doc.insert(1, "b", 0);
+        doc.assertDoc(1, "abc");
+        paragraphEditCommon(doc);
+    }
+
+    private void paragraphEditCommon(DocumentAssert doc){
+        String raw = "abc";
 
         ParagraphLineTest paragraph = new ParagraphLineTest()
             .setPublishTotal(1).setNoteTotal(0)
@@ -218,7 +359,7 @@ public class LinedRestDebug {
         main.test(       doc, 1, "abc", 0, 0);
         doc.assertChild(      1, "abc", 0, 0, 0);
         doc.assertTextLeaf(0, 3, "abc", 0, 0, 0, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 

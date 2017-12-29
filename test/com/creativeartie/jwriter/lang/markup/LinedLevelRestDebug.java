@@ -89,8 +89,8 @@ public class LinedLevelRestDebug {
         String raw = "-" + text + "\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        IDBuilder id = FormatCurlyDebug.buildNoteId("hello");
-        doc.addRef(id, CatalogueStatus.NOT_FOUND, 1);
+        IDBuilder id = doc.addRef(FormatCurlyDebug.buildNoteId("hello"),
+            CatalogueStatus.NOT_FOUND, 1);
         doc.addId(FormatAgendaDebug.buildId("09"), 0);
 
         ListLevelLineTest bullet = new ListLevelLineTest()
