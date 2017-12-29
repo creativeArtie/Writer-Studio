@@ -22,7 +22,7 @@ public class LinedLevelRestDebug {
     };
 
     @Test
-    public void numbered(){
+    public void basicNumbered(){
         String raw = "\t\t\t\t#@id:Text abc\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
@@ -44,7 +44,7 @@ public class LinedLevelRestDebug {
     }
 
     @Test
-    public void emptyBullet(){
+    public void basicEmptyBullet(){
         String raw = "\t\t\t\t-\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
@@ -60,7 +60,7 @@ public class LinedLevelRestDebug {
     }
 
     @Test
-    public void fullBullet(){
+    public void basicBullet(){
         String raw = "\t\t\t\t-@id:Text abc\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
@@ -79,7 +79,7 @@ public class LinedLevelRestDebug {
         doc.assertChild(       1, "@id:Text abc", 0, 1, 0);
         doc.assertTextLeaf(5, 17, "@id:Text abc", 0, 1, 0, 0);
         doc.assertKeyLeaf(17, 18, "\n",           0, 2);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -115,7 +115,7 @@ public class LinedLevelRestDebug {
         doc.assertTextLeaf(11, 16, "HELP!",    0, 1, 1, 1, 0);
         doc.assertKeyLeaf( 16, 17, "}",        0, 1, 1, 2);
         doc.assertKeyLeaf( 17, 18, "\n",       0, 2);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -140,12 +140,12 @@ public class LinedLevelRestDebug {
         doc.assertKeyLeaf(  9, 10, "\\",          0, 1, 0, 1, 0);
         doc.assertTextLeaf(10, 11, "\n",          0, 1, 0, 1, 1);
         doc.assertTextLeaf(11, 14, "ddd",         0, 1, 0, 2);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void outOfRangeBullet(){
+    public void basicNonNumbered(){
         String start = "\t\t\t\t\t\t\t#";
         String formatted = start + "**abc**";
         String raw = formatted + "\n";
@@ -165,7 +165,7 @@ public class LinedLevelRestDebug {
         doc.assertTextLeaf(10, 13, "abc",     0, 0, 2, 0);
         doc.assertKeyLeaf( 13, 15, "**",      0, 0, 3);
         doc.assertKeyLeaf( 15, 16, "\n",      0, 1);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -173,7 +173,6 @@ public class LinedLevelRestDebug {
     public void editBulletLevel(){
         String before = "\t-abc";
         DocumentAssert doc = assertDoc(1, before, parsers);
-
         doc.insert(1, "\t", 0);
         editCommon(doc, LinedType.BULLET);
     }
@@ -182,7 +181,6 @@ public class LinedLevelRestDebug {
     public void editNumberedLevel(){
         String before = "\t#abc";
         DocumentAssert doc = assertDoc(1, before, parsers);
-
         doc.insert(1, "\t", 0);
         editCommon(doc, LinedType.NUMBERED);
     }
@@ -192,7 +190,6 @@ public class LinedLevelRestDebug {
         ///               0 12345
         String before = "\t\t#ac";
         DocumentAssert doc = assertDoc(1, before, parsers);
-
         doc.insert(4, "b", 0);
         editCommon(doc, LinedType.NUMBERED);
     }
@@ -217,7 +214,7 @@ public class LinedLevelRestDebug {
         main.test(        doc, 1, "abc", 0, 1);
         doc.assertChild(       1, "abc", 0, 1, 0);
         doc.assertTextLeaf( 3, 6, "abc", 0, 1, 0, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 }
