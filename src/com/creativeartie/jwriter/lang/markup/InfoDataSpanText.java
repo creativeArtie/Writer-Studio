@@ -6,7 +6,8 @@ import com.creativeartie.jwriter.property.*;
 import com.creativeartie.jwriter.lang.*;
 
 /**
- * Data that stores a {@link ContentSpan}.
+ * Data that stores a {@link ContentSpan}. Represented in design/ebnf.txt as
+ * {@code InfoDataText}.
  */
 public final class InfoDataSpanText extends InfoDataSpan{
 

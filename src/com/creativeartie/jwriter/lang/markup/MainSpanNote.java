@@ -8,7 +8,8 @@ import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
- * Research note with headings, ids, and citation.
+ * Research note with headings, ids, and citation. Represented in
+ * design/ebnf.txt as {@code Note}
  */
 public class MainSpanNote extends MainSpan {
 

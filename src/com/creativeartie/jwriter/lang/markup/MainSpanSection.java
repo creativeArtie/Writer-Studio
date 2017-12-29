@@ -9,7 +9,8 @@ import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
- * Doucment section that are set for publish.
+ * Doucment section that are set for publish. Represented in design/ebnf.txt as
+ * {@code Section}
  */
 public class MainSpanSection extends MainSpan {
 

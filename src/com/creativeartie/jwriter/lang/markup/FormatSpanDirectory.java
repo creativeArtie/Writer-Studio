@@ -7,6 +7,8 @@ import com.creativeartie.jwriter.lang.*;
 
 /**
  * A {@linkplain FormatSpan} for footnote, endnote, and research notes.
+ * Represented in design/ebnf.txt as {@code FormatNote}, {@code FormatEndnote}
+ * and {@code FormatFootnote}.
  */
 public final class FormatSpanDirectory extends FormatSpan implements Catalogued{
     private final FormatParseDirectory spanReparser;

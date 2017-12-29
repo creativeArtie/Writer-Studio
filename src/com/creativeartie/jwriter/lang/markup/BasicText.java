@@ -8,6 +8,7 @@ import com.creativeartie.jwriter.lang.*;
 /**
  * Text with {@link AuxiliaryData#CHAR_ESCAPE escape character}.
  * Parent class of {@link ContentSpan} and {@link FormatSpanContent}.
+ * Represented in ebnf.txt as {@code Raw}.
  */
 interface BasicText{
 

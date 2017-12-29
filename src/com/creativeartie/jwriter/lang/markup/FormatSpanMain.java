@@ -10,7 +10,8 @@ import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
- * {@link Span} to store all other {@link FormatSpan*} classes.
+ * {@link Span} to store all other {@link FormatSpan*} classes. Represented in
+ * design/ebnf.txt as {@code Format}.
  */
 public final class FormatSpanMain extends SpanBranch {
 

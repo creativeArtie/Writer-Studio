@@ -8,7 +8,8 @@ import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
- * {@link FormatSpanLink} with path indicated right in the text.
+ * {@link FormatSpanLink} with path indicated right in the text. Represented in
+ * design/ebnf.txt as {@code FormatDirectLink}.
  */
 public final class FormatSpanLinkDirect extends FormatSpanLink {
 

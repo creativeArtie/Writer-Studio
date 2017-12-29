@@ -6,7 +6,8 @@ import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
- * Line that stores a block quote.
+ * Line that stores a block quote. Represented in design/ebnf.txt as
+ * {@code LinedQuote}.
  */
 public class LinedSpanQuote extends LinedSpan {
     private Optional<Optional<FormatSpanMain>> cacheFormatted;

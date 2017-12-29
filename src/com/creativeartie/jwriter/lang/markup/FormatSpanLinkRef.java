@@ -8,6 +8,7 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
  * {@link FormatSpanLink} with path located somewhere in the document.
+ * Represented in design/ebnf.txt as {@code FormatRefLink}.
  */
 public final class FormatSpanLinkRef extends FormatSpanLink
         implements Catalogued{

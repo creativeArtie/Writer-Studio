@@ -11,7 +11,7 @@ import com.google.common.base.*;
 
 /**
  * Text implementing {@link BasicText} for non-formatted text. Represented in
- * ebnf.txt as {@code Basic}.
+ * design/ebnf.txt as {@code Content}.
  */
 public final class ContentSpan extends SpanBranch implements BasicText{
 

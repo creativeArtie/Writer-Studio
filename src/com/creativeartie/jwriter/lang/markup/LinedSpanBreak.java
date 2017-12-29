@@ -7,7 +7,7 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
  * Line that create a section break, or a scene break in the document or a
- * novel.
+ * novel. Represented in design/ebnf.txt as {@code LinedBreak}.
  */
 public class LinedSpanBreak extends LinedSpan {
 

@@ -6,7 +6,8 @@ import com.creativeartie.jwriter.lang.*;
 import com.google.common.collect.*;
 
 /**
- * Escaped character with the {@link AuxiliaryData#CHAR_ESCAPE}.
+ * Escaped character with the {@link AuxiliaryData#CHAR_ESCAPE}. Represented in
+ * design/ebnf.txt as {@code Escape}.
  */
 public final class BasicTextEscape extends SpanBranch{
 

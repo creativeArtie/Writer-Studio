@@ -6,7 +6,8 @@ import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
- * Line that stores a hyperlink to be use later.
+ * Line that stores a hyperlink to be use later. Represented in design/ebnf.txt
+ * as {@code LinedLink}.
  */
 public class LinedSpanPointLink extends LinedSpanPoint {
 

@@ -8,7 +8,9 @@ import com.google.common.base.*;
 import com.creativeartie.jwriter.lang.*;
 
 /**
- * Name for fields that store {@link InfoDataSpan data}.
+ * Name for fields that store {@link InfoDataSpan data}. Represented in
+ * design/ebnf.txt as {@code InfoFieldSource}, {@code InfoFieldFootnote},
+ * {@code InfoFieldInText}, {@code InfoFieldError}.
  */
 public final class InfoFieldSpan extends SpanBranch{
 

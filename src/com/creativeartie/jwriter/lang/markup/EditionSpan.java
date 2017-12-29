@@ -9,7 +9,7 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
  * A {@link Span} for stating the current status of a section with a heading or
- * an outline.
+ * an outline. Represented in design/ebnf.txt as {@code Edition}.
  */
 public final class EditionSpan extends SpanBranch{
 

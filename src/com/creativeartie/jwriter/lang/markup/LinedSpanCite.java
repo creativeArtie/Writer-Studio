@@ -7,7 +7,8 @@ import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
- * Line that store research sources and how to do in-text citation.
+ * Line that store research sources and how to do in-text citation. Represented
+ * in design/ebnf.txt as {@code LinedCite}.
  */
 public class LinedSpanCite extends LinedSpan {
 

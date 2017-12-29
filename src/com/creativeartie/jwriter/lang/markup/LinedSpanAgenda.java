@@ -7,6 +7,7 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
  * Line that store information that needed to be done before published.
+ * Represented in design/ebnf.txt as {@code LinedAgenda}.
  */
 public class LinedSpanAgenda extends LinedSpan implements Catalogued{
 

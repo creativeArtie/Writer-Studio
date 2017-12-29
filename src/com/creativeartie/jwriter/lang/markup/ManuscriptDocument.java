@@ -13,7 +13,8 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import com.creativeartie.jwriter.main.Checker;
 
 /**
- * Main document that put all the {@link Span spans} together.
+ * Main document that put all the {@link Span spans} together. Represented in
+ * design/ebnf.txt as {@code Manuscript}
  */
 public class ManuscriptDocument extends Document{
 

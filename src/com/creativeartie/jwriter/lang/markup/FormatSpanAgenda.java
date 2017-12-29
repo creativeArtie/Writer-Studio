@@ -7,7 +7,8 @@ import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
- * {@link FormatSpan} for to do text.
+ * {@link FormatSpan} for to do text. Represented in design/ebnf.txt as
+ * {@code FormatAgenda}.
  */
 public final class FormatSpanAgenda extends SpanBranch implements Catalogued{
     private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(

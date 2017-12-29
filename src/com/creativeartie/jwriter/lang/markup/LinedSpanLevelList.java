@@ -7,7 +7,8 @@ import static com.creativeartie.jwriter.main.Checker.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
- * Line that points to a list. This is the base for {@link LinedSpanLevelSection}.
+ * Line that points to a list. Represented in design/ebnf.txt as
+ * {@code LinedNumbered}, and {@link LinedBullet}.
  */
 public class LinedSpanLevelList extends LinedSpanLevel {
     private LinedParseLevel spanReparser;

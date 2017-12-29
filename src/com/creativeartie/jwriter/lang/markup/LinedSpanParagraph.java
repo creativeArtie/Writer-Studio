@@ -6,7 +6,8 @@ import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
- * Line representing a basic paragraph.
+ * Line representing a basic paragraph. Represented in design/ebnf.txt as
+ * {@code LinedParagraph}
  */
 public class LinedSpanParagraph extends LinedSpan {
 

@@ -232,7 +232,16 @@ public final class AuxiliaryData{
     static final SetupParser CONTENT_DIR_LINK  = new ContentParser(true,
         StyleInfoLeaf.PATH, new ArrayList<>(), new ArrayList<>());
     static final SetupParser CONTENT_LINE_LINK = new ContentParser(true,
-        StyleInfoLeaf.PATH, Arrays.asList(), Arrays.asList(LINK_TEXT, LINK_END));
+        StyleInfoLeaf.PATH, Arrays.asList(),
+        Arrays.asList(LINK_TEXT, LINK_END));
+
+    /// Part-3-2: Formatted Span Parsers ---------------------------------------
+    static final SetupParser FORMATTED_BASIC = new FormatParser(true,
+        StyleInfoLeaf.TEXT);
+    static final SetupParser FORMATTED_DATA = new FormatParser(false,
+        StyleInfoLeaf.DATA);
+    static final SetupParser FORMATTED_HEAD = new FormatParser(false,
+        StyleInfoLeaf.TEXT, EDITION_BEGIN);
 
     /// ========================================================================
     /// @Part-4: Private Constructor -------------------------------------------

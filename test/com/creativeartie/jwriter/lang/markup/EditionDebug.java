@@ -185,7 +185,7 @@ public class EditionDebug {
 
         doc.insert(8, "\n");
 
-        ///            012345678 90123456
+        ///             012345678 90123456
         String after = "#FINAL k\nsplit";
         doc.assertDoc(2,  after);
         EditionTest edition = new EditionTest()
@@ -198,7 +198,7 @@ public class EditionDebug {
         edition.test(     doc, 2, "#FINAL k", 0);
         doc.assertKeyLeaf(  0, 6, "#FINAL",   0, 0);
         content.test(     doc, 1, " k",       0, 1);
-        doc.assertTextLeaf(6, 9,  " k",       0, 1, 0);
+        doc.assertTextLeaf( 6, 8,  " k",       0, 1, 0);
         doc.assertLast("\nsplit");
         doc.assertIds();
     }

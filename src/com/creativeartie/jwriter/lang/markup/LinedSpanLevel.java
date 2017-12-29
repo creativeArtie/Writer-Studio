@@ -7,7 +7,8 @@ import static com.creativeartie.jwriter.main.Checker.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
- * Line that points to a list. This is the base for {@link LinedSpanLevelSection}.
+ * Line that have level. This is the base for {@link LinedSpanLevelSection}, and
+ * {@link LinedSpanLevelList}.
  */
 public abstract class LinedSpanLevel extends LinedSpan {
     private Optional<Optional<FormatSpanMain>> cacheFormatted;

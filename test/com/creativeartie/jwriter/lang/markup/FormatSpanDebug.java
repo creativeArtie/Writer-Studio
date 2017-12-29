@@ -17,7 +17,7 @@ import com.creativeartie.jwriter.lang.*;
 public class FormatSpanDebug {
 
     private static final SetupParser[] parsers = new SetupParser[]{
-        new FormatParser()};
+        AuxiliaryData.FORMATTED_BASIC};
 
     @Test
     public void basic(){

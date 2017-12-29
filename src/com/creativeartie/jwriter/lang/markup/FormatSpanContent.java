@@ -8,6 +8,7 @@ import com.creativeartie.jwriter.main.Checker;
 
 /**
  * {@link BasicText} with {@link FormatSpan format} for {@link FormatSpanMain}.
+ * Represented in design/ebnf.txt as {@code FormatContent}.
  */
 public final class FormatSpanContent extends FormatSpan implements BasicText{
 

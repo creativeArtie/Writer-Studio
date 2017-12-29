@@ -5,7 +5,8 @@ import java.util.*;
 import com.creativeartie.jwriter.lang.*;
 
 /**
- * Data that stores a {@link FormatSpanMain}.
+ * Data that stores a {@link FormatSpanMain}. Represented in design/ebnf.txt as
+ * {@code InfoDataFormatted}.
  */
 public final class InfoDataSpanFormatted extends InfoDataSpan{
 

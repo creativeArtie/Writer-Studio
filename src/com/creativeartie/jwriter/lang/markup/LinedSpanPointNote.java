@@ -6,7 +6,8 @@ import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
- * Line that stores text of a footnote or a endnote.
+ * Line that stores text of a footnote or a endnote. Represented in
+ * design/ebnf.txt as {@code LinedFootnote}, {@code LinedEndnote}.
  */
 public class LinedSpanPointNote extends LinedSpanPoint {
     private Optional<DirectoryType> cacheType;

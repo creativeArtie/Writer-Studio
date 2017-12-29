@@ -9,6 +9,7 @@ import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * Grouping of text {@link Span} that creates a {@link CatalogueIdentity}.
+ * Represented in design/ebnf.txt as {@code Directory}.
  */
 public final class DirectorySpan extends SpanBranch {
     /// helps with categorizing and describes purpose

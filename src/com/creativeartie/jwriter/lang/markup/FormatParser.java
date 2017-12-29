@@ -13,15 +13,14 @@ final class FormatParser implements SetupParser {
 
     private final String[] spanEnders;
 
+    private final boolean willReparse;
     private final StyleInfoLeaf leafStyle;
 
-    public FormatParser(String ... enders){
-        this(StyleInfoLeaf.TEXT, enders);
-    }
-
-    public FormatParser(StyleInfoLeaf style, String ... enders){
+    public FormatParser(boolean reparse, StyleInfoLeaf style,
+            String ... enders){
         /// Combine the list of span enders and formatting enders
         checkNotNull(enders, "enders");
+        willReparse = reparse;
         spanEnders = SetupParser.combine(listFormatEnderTokens(), enders);
         leafStyle = checkNotNull(style, "style");
     }
@@ -43,7 +42,7 @@ final class FormatParser implements SetupParser {
             more = false; /// Assume FormatSpanMain has ended
 
             /// try to find text first
-            if (new FormatParseContent(leafStyle, formats, spanEnders)
+            if (new FormatParseContent(willReparse, leafStyle, formats, spanEnders)
                 .parse(children, pointer)
             ){
                 more = true;

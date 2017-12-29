@@ -6,7 +6,8 @@ import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 /**
- * Line that store note heading or details.
+ * Line that store note heading or details. Represented in design/ebnf.txt as
+ * {@code LinedNoteHead}, and {@code LinedNoteLine}.
  */
 public class LinedSpanNote extends LinedSpan{
 
