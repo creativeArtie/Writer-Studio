@@ -10,15 +10,14 @@ import static com.creativeartie.jwriter.main.Checker.*;
  */
 final class ContentParser extends BasicParseText{
 
-    public ContentParser(boolean reparse, StyleInfoLeaf style,
-            List<String> starters, List<String> enders){
-        super(reparse, style, starters, enders);
+    public ContentParser(StyleInfoLeaf style, String ... enders){
+        super(style, enders);
     }
 
     @Override
     protected ContentSpan buildSpan(List<Span> children){
         checkNotNull(children, "children");
-        return new ContentSpan(children, this);
+        return new ContentSpan(children);
     }
 
 }

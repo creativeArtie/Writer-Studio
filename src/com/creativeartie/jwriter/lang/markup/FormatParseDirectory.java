@@ -78,7 +78,7 @@ final class FormatParseDirectory implements SetupParser {
 
     boolean canParse(String text){
         checkNotNull(text, "text");
-        return text.startsWith(spanStart) && BasicParseText.willEndWith(text,
+        return text.startsWith(spanStart) && AuxiliaryChecker.willEndWith(text,
             CURLY_END);
     }
 }

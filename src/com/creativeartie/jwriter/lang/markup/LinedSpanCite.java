@@ -74,7 +74,7 @@ public class LinedSpanCite extends LinedSpan {
     @Override
     protected SetupParser getParser(String text){
         return text.startsWith(LINED_CITE) &&
-            BasicParseText.checkLineEnd(isLast(), text)?
+            AuxiliaryChecker.checkLineEnd(isLast(), text)?
             LinedParseCite.INSTANCE: null;
     }
 

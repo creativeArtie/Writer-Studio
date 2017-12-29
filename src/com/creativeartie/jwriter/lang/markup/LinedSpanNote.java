@@ -44,7 +44,7 @@ public class LinedSpanNote extends LinedSpan{
     @Override
     protected SetupParser getParser(String text){
         return text.startsWith(LINED_NOTE) &&
-            BasicParseText.checkLineEnd(isLast(), text)?
+            AuxiliaryChecker.checkLineEnd(isLast(), text)?
             LinedParseRest.NOTE: null;
     }
 

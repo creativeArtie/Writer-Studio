@@ -15,17 +15,14 @@ import com.google.common.base.*;
  */
 public final class ContentSpan extends SpanBranch implements BasicText{
 
-    /// Stuff for getUpdater(int index, String)
-    private final ContentParser spanReparser;
     private Optional<String> cacheText;
     private Optional<String> cacheTrimmed;
     private Optional<Boolean> cacheSpaceBegin;
     private Optional<Boolean> cacheSpaceEnd;
     private Optional<Integer> wordCount;
 
-    ContentSpan (List<Span> spanChildren, ContentParser parser){
+    ContentSpan (List<Span> spanChildren){
         super(spanChildren);
-        spanReparser = checkNotNull(parser, "parser");
     }
 
     @Override

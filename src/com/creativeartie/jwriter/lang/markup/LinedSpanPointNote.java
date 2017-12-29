@@ -32,7 +32,7 @@ public class LinedSpanPointNote extends LinedSpanPoint {
 
     @Override
     protected SetupParser getParser(String text){
-        if (BasicParseText.checkLineEnd(isLast(), text)){
+        if (AuxiliaryChecker.checkLineEnd(isLast(), text)){
             if( text.startsWith(LINED_ENDNOTE)){
                 return LinedParsePointer.ENDNOTE;
             } else if( text.startsWith(LINED_FOOTNOTE)){

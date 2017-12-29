@@ -55,14 +55,13 @@ enum DirectoryParser implements SetupParser{
         init[enders.length] = DIRECTORY_CATEGORY;
         reparseEnders = enders;
 
-        idContent = new ContentParser(true, StyleInfoLeaf.ID, new ArrayList<>(),
-            Arrays.asList(init));
+        idContent = new ContentParser(StyleInfoLeaf.ID, init);
     }
 
     /** Check if the text can be parse at Directory level. */
     boolean canParse(String text){
         checkNotNull(text, "text");
-        return BasicParseText.canParse(text, Arrays.asList(reparseEnders));
+        return AuxiliaryChecker.canParse(text, Arrays.asList(reparseEnders));
     }
 
     @Override

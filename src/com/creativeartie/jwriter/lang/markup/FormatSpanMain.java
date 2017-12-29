@@ -12,17 +12,18 @@ import static com.creativeartie.jwriter.main.Checker.*;
 /**
  * {@link Span} to store all other {@link FormatSpan*} classes. Represented in
  * design/ebnf.txt as {@code Format}.
+ *
+ * Dec 29,2017: it was decided that this class will <b>not</b> do any local
+ * reparsing, because it is deem to be too much work.
  */
 public final class FormatSpanMain extends SpanBranch {
 
-    private FormatParser spanReparser;
     private Optional<Integer> cachePublish;
     private Optional<Integer> cacheNote;
     private Optional<Integer> cacheTotal;
 
-    FormatSpanMain(List<Span> spanChildren, FormatParser reparser){
+    FormatSpanMain(List<Span> spanChildren){
         super(spanChildren);
-        spanReparser = checkNotNull(reparser, "reparser");
     }
 
     @Override

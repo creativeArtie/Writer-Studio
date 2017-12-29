@@ -79,7 +79,7 @@ public final class FormatSpanLinkRef extends FormatSpanLink
     @Override
     protected SetupParser getParser(String text){
         return text.startsWith(LINK_REF) &&
-            BasicParseText.willEndWith(text, LINK_END)? spanReparser: null;
+            AuxiliaryChecker.willEndWith(text, LINK_END)? spanReparser: null;
     }
 
     @Override

@@ -221,26 +221,25 @@ public final class AuxiliaryData{
     /// @Part-3: Setup Parsers -------------------------------------------------
 
     /// Part-3-1: Content Span Parsers -----------------------------------------
-    static final SetupParser CONTENT_BASIC = new ContentParser(false,
-        StyleInfoLeaf.TEXT, new ArrayList<>(), new ArrayList<>());
-    static final SetupParser CONTENT_AGENDA = new ContentParser(true,
-        StyleInfoLeaf.TEXT, new ArrayList<>(), Arrays.asList(CURLY_END));
-    static final SetupParser CONTENT_LINK = new ContentParser(true,
-        StyleInfoLeaf.TEXT, new ArrayList<>(), Arrays.asList(LINK_END));
-    static final SetupParser CONTENT_DATA = new ContentParser(true,
-        StyleInfoLeaf.DATA, new ArrayList<>(), new ArrayList<>());
-    static final SetupParser CONTENT_DIR_LINK  = new ContentParser(true,
-        StyleInfoLeaf.PATH, new ArrayList<>(), new ArrayList<>());
-    static final SetupParser CONTENT_LINE_LINK = new ContentParser(true,
-        StyleInfoLeaf.PATH, Arrays.asList(),
-        Arrays.asList(LINK_TEXT, LINK_END));
+    static final SetupParser CONTENT_BASIC = new ContentParser(
+        StyleInfoLeaf.TEXT);
+    static final SetupParser CONTENT_AGENDA = new ContentParser(
+        StyleInfoLeaf.TEXT, CURLY_END);
+    static final SetupParser CONTENT_LINK = new ContentParser(
+        StyleInfoLeaf.TEXT, LINK_END);
+    static final SetupParser CONTENT_DATA = new ContentParser(
+        StyleInfoLeaf.DATA);
+    static final SetupParser CONTENT_DIR_LINK  = new ContentParser(
+        StyleInfoLeaf.PATH);
+    static final SetupParser CONTENT_LINE_LINK = new ContentParser(
+        StyleInfoLeaf.PATH, LINK_TEXT, LINK_END);
 
     /// Part-3-2: Formatted Span Parsers ---------------------------------------
-    static final SetupParser FORMATTED_BASIC = new FormatParser(true,
+    static final SetupParser FORMATTED_BASIC = new FormatParser(
         StyleInfoLeaf.TEXT);
-    static final SetupParser FORMATTED_DATA = new FormatParser(false,
+    static final SetupParser FORMATTED_DATA = new FormatParser(
         StyleInfoLeaf.DATA);
-    static final SetupParser FORMATTED_HEAD = new FormatParser(false,
+    static final SetupParser FORMATTED_HEAD = new FormatParser(
         StyleInfoLeaf.TEXT, EDITION_BEGIN);
 
     /// ========================================================================

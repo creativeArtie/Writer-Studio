@@ -37,7 +37,7 @@ public class LinedSpanPointLink extends LinedSpanPoint {
     @Override
     protected SetupParser getParser(String text){
         return text.startsWith(LINED_LINK) &&
-            BasicParseText.checkLineEnd(isLast(), text)?
+            AuxiliaryChecker.checkLineEnd(isLast(), text)?
             LinedParsePointer.HYPERLINK: null;
     }
 

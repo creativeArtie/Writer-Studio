@@ -13,9 +13,9 @@ final class FormatParseContent extends BasicParseText{
 
     private boolean[] formatList;
 
-    public FormatParseContent(boolean reparse, StyleInfoLeaf style,
-            boolean[] formats, String ... enders){
-        super(reparse, style, new ArrayList<>(), Arrays.asList(enders));
+    public FormatParseContent(StyleInfoLeaf style, boolean[] formats,
+            String ... enders){
+        super(style, enders);
         checkNotNull(formats, "formats");
         checkEqual(formats.length, "formats.length", FORMAT_TYPES);
         formatList = Arrays.copyOf(formats, formats.length);

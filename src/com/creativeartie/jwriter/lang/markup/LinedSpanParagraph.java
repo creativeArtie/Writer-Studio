@@ -46,7 +46,7 @@ public class LinedSpanParagraph extends LinedSpan {
                 return null;
             }
         }
-        return BasicParseText.checkLineEnd(isLast(), text)?
+        return AuxiliaryChecker.checkLineEnd(isLast(), text)?
             LinedParseRest.PARAGRAPH: null;
     }
 

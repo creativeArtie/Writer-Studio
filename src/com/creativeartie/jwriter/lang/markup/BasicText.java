@@ -9,6 +9,9 @@ import com.creativeartie.jwriter.lang.*;
  * Text with {@link AuxiliaryData#CHAR_ESCAPE escape character}.
  * Parent class of {@link ContentSpan} and {@link FormatSpanContent}.
  * Represented in ebnf.txt as {@code Raw}.
+ *
+ * Dec 27,2017: it was decided that subclassing of this class will <b>not</b>
+ * do any local reparsing, because it is deem to be too much work.
  */
 interface BasicText{
 

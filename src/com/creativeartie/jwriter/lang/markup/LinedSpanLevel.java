@@ -35,7 +35,7 @@ public abstract class LinedSpanLevel extends LinedSpan {
     protected final SetupParser checkLine(LinedParseLevel reparser,
             String text){
         for (String token: getLevelToken(reparser)){
-            if (text.startsWith(token) && BasicParseText
+            if (text.startsWith(token) && AuxiliaryChecker
                 .checkLineEnd(isLast(), text))
             {
                 return reparser;
