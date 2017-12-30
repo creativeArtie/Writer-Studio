@@ -4,6 +4,7 @@ import java.util.*;
 
 import static com.creativeartie.jwriter.main.Checker.*;
 import com.creativeartie.jwriter.lang.*;
+import com.google.common.collect.*;
 
 /**
  * All strings used in this package. Each field (private and public) has its own
@@ -242,6 +243,16 @@ public final class AuxiliaryData{
     static final SetupParser FORMATTED_HEAD = new FormatParser(
         StyleInfoLeaf.TEXT, EDITION_BEGIN);
 
+    /// Part-3-3: Main Section Line Parsers
+    public static final List<SetupParser> SECTION_PARSERS = getSectionParsers();
+
+    private static List<SetupParser> getSectionParsers(){
+        ImmutableList.Builder<SetupParser> builder = ImmutableList.builder();
+        builder.add(LinedParseLevel.BULLET, LinedParseLevel.NUMBERED);
+        builder.add(LinedParsePointer.values());
+        builder.add(LinedParseRest.getSectionList());
+        return builder.build();
+    }
     /// ========================================================================
     /// @Part-4: Private Constructor -------------------------------------------
     private AuxiliaryData(){}

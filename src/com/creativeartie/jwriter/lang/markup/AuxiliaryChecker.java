@@ -69,6 +69,5 @@ public final class AuxiliaryChecker{
         }
         return ! isEscaped;
     }
-
     private AuxiliaryChecker(){}
 }

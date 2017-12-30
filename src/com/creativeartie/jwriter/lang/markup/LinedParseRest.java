@@ -66,7 +66,7 @@ enum LinedParseRest implements SetupParser {
     });
 
     static SetupParser[] getSectionList(){
-        return new LinedParseRest[]{AGENDA, BREAK, PARAGRAPH};
+        return Arrays.copyOfRange(values(), 1, values().length);
     }
 
     static SetupParser[] getNoteList(){
