@@ -83,33 +83,63 @@ public final class Checker {
 
     public static int checkRange(int test, String field, int lower,
             boolean atLower, int upper, boolean atUpper){
-        checkLessThan(test, field, upper, atUpper);
-        checkGreater(test, field, lower, atLower);
+        return checkRange(test, field, lower, atLower, upper, atUpper, true);
+    }
+
+    public static int checkRange(int test, String field, int lower,
+            boolean atLower, int upper, boolean atUpper, boolean indexError){
+        checkLessThan(test, field, upper, atUpper, indexError);
+        checkGreater(test, field, lower, atLower, indexError);
         return test;
     }
 
     public static int checkGreater(int test, String field, int limit,
             boolean isInclude){
+        return checkGreater(test, field, limit, isInclude, true);
+    }
+    public static int checkGreater(int test, String field, int limit,
+            boolean isInclude, boolean indexError){
         if (limit < test) return test;
         if (isInclude) {
             if (limit == test) return test;
-            throw new IllegalArgumentException(addBegin(field) +
-                " is not greater than or equals to " + limit + ": " + test);
+            String message = addBegin(field) +
+                " is not greater than or equals to " + limit + ": " + test;
+            if (indexError){
+                throw new ArrayIndexOutOfBoundsException(message);
+            }
+            throw new IllegalArgumentException(message);
         }
-        throw new IllegalArgumentException(addBegin(field) +
-            " is not greater than " + limit + ": " + test);
+        String message = addBegin(field) + " is not greater than " + limit +
+            ": " +  test;
+        if (indexError){
+            throw new ArrayIndexOutOfBoundsException(message);
+        }
+        throw new IllegalArgumentException(message);
     }
 
     public static int checkLessThan(int test, String field, int limit,
             boolean isInclude){
+        return checkLessThan(test, field, limit, isInclude, true);
+    }
+
+    public static int checkLessThan(int test, String field, int limit,
+            boolean isInclude, boolean indexError){
         if (limit > test) return test;
         if (isInclude) {
             if (limit == test) return test;
-            throw new IllegalArgumentException(addBegin(field) +
-                " is not less than or equals to " + limit + ": " + test);
+            String message = addBegin(field) +
+                " is not less than or equals to " + limit + ": " + test;
+            if (indexError){
+                throw new ArrayIndexOutOfBoundsException(message);
+            }
+            throw new IllegalArgumentException(message);
         }
-        throw new IllegalArgumentException(addBegin(field) +
-            " is not less than " + limit + ": " + test);
+        String message = addBegin(field) + " is not less than " + limit + ": " +
+            test;
+        if (indexError){
+            throw new ArrayIndexOutOfBoundsException(message);
+        }
+        throw new IllegalArgumentException(message);
     }
 
     public static int checkEqual(int test, String field, int size){

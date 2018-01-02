@@ -1,6 +1,7 @@
 package com.creativeartie.jwriter.lang;
 
 import java.util.*;
+import java.util.Optional;
 import java.util.function.*;
 
 import com.google.common.collect.*;
@@ -125,8 +126,19 @@ public abstract class SpanNode<T extends Span> extends Span
     }
 
     /** Get the Span leaf with global position. Uses binary serach.*/
-    public final SpanLeaf getLeaf(int pos){
-        checkIndex(pos, "pos", getEnd());
+    public final Optional<SpanLeaf> getLeaf(int pos){
+        checkRange(pos, "pos", 0, true, getEnd(), true);
+        if (pos == getEnd()){
+            Span span = this;
+            while (span instanceof SpanNode){
+                SpanNode<?> parent = (SpanNode<?>)span;
+                if (parent.isEmpty()){
+                    return Optional.empty();
+                }
+                span = parent.get(parent.size() - 1);
+            }
+            return Optional.of((SpanLeaf) span);
+        }
 
         Range<Integer> range = getRange();
 
@@ -147,8 +159,9 @@ public abstract class SpanNode<T extends Span> extends Span
                     low = mid + 1;
                 } else {
                     /// Find span, but recurives if leaf not found yet.
-                    return  span instanceof SpanLeaf? (SpanLeaf) span:
-                        ((SpanNode)span).getLeaf(pos);
+                    return  span instanceof SpanLeaf?
+                        Optional.of((SpanLeaf) span):
+                        ((SpanNode<?>)span).getLeaf(pos);
                 }
             }
         }

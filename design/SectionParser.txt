@@ -1,5 +1,6 @@
 Each "═" box show a method in the class
-Each "▶" is a result from parseHead
+Each "─▶" is a result from parseHead
+Each "─>" is going to the second column without calling parseContent
 Each (a) show where the result go to or go from (To        parse)
 Each (b) show where the result go to or go from (To either parse or parseSec)
 Frist  column of each method calls parseContent before parseHead

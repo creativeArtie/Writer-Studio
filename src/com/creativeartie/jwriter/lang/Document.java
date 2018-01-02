@@ -280,7 +280,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     /** Insert a {@linkplain String} at a location.*/
     public final void delete(int start, int end){
-        checkIndexes(start, "start", end, "end", getEnd(), true);
+        checkRange(end, "end", 0, true, getEnd(), true);
+        checkRange(start, "start", 0, true, end, true);
 
         edit(span -> {
             if (span.getEnd() >= end){
@@ -300,7 +301,16 @@ public abstract class Document extends SpanNode<SpanBranch>{
     private final void edit(Function<Span, String> editedText, int location){
         assert editedText != null: "Null editText";
         assert location >= 0 && location <= getEnd(): "Wrong location";
-        SpanNode<?> span = getLeaf(location).getParent();
+        Optional<SpanLeaf> found = getLeaf(location);
+
+        if (! found.isPresent()){
+            parseDocument(editedText.apply(this));
+            setUpdated();
+            updateEdit();
+            return;
+        }
+
+        SpanNode<?> span = found.get().getParent();
 
         /// Attempt to parse at a SpanBranch level
         while (span instanceof SpanBranch){

@@ -24,7 +24,7 @@ public class DocumentAccessDebug{
         int ... indexes
     ){
         for(int i = 0; i < span.length(); i++){
-            data.add(new Object[]{data.size() - 1, indexes});
+            data.add(new Object[]{data.size() - 1, false, indexes});
         }
 
         return span;
@@ -35,7 +35,7 @@ public class DocumentAccessDebug{
         ArrayList<Object[]> data = new ArrayList<>();
         StringBuilder docRaw = new StringBuilder();
 
-        data.add(new Object[]{-1, new int[0]});
+        data.add(new Object[]{-1, false, new int[0]});
 
         docRaw.append(leafSpan(data, "=",                0, 0, 0));
         docRaw.append(leafSpan(data, "@",                0, 0, 1));
@@ -98,41 +98,55 @@ public class DocumentAccessDebug{
         docRaw.append(leafSpan(data, "text for the foot note", 3, 3, 3, 0, 0));
         docRaw.append(leafSpan(data, "\n",                     3, 3, 4));
 
-        data.add(new Object[]{data.size() - 1, new int[0]});
+        data.add(new Object[]{data.size() - 1, false, new int[]{3, 3, 4}});
 
-        data.add(new Object[]{data.size() - 1, new int[0]});
+        data.add(new Object[]{data.size() - 1, false, new int[0]});
+
+        data.add(new Object[]{data.size() - 1, true, new int[0]});
 
         docText = docRaw.toString();
         return data;
     }
 
     private static String docText;
-    private static ManuscriptDocument doc;
+    private static ManuscriptDocument filledDoc;
+    private static ManuscriptDocument emptyDoc;
 
     @Parameter
     public int ptr;
 
     @Parameter(value = 1)
+    public boolean useEmpty;
+
+    @Parameter(value = 2)
     public int[] indexes;
+
 
     @BeforeClass
     public static void beforeClass(){
-        doc = new ManuscriptDocument(docText);
+        filledDoc = new ManuscriptDocument(docText);
+        emptyDoc = new ManuscriptDocument();
     }
 
     @Test
     public void getLeaf(){
+
+        if (useEmpty){
+            assertFalse(emptyDoc.getLeaf(0).isPresent());
+        }
+
         if (indexes.length == 0){
             try {
-                doc.getLeaf(ptr);
+                filledDoc.getLeaf(ptr);
             } catch (IndexOutOfBoundsException ex){
                 return;
             }
             fail("No IndexOutOfBoundsException thrown.");
         }
-
-        SpanLeaf leaf = doc.getLeaf(ptr);
-        Span span = doc;
+        Optional<SpanLeaf> found = filledDoc.getLeaf(ptr);
+        assertTrue("Leaf not found.", found.isPresent());
+        SpanLeaf leaf = found.get();
+        Span span = filledDoc;
         for(int index: indexes){
             assertTrue("Span is not a SpanNode: " + span, span instanceof
                 SpanNode);

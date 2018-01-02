@@ -55,6 +55,7 @@
     <!-- testing java classes and data -->
     <property name="dir.debug"      location="${dir.out}/${loc.test}" />
     <property name="dir.debug-data" location="${dir.debug}/data" />
+    <property name="dir.debug-file" location="${dir.out}/trial.jar" />
     <!-- Jar and assoicated files -->
     <property name="dir.jar-name"     value="${ant.project.name}.${usr.version}" />
     <property name="dir.jar-out"      location="${dir.out}/jar" />
@@ -128,17 +129,6 @@
         />
     </target>
 
-    <target name="trial" depends="compile.debug">
-        <java
-            classname="${usr.main}"
-            classpathref="debug.path"
-            fork="true"
-            dir="${dir.debug}"
-        >
-             <assertions><enable/></assertions>
-        </java>
-    </target>
-
     <!-- ......................... Jar Targets .......................... -->
     <target name="compile.jar" depends="compile.run">
         <!-- copy data files to base -->
@@ -176,8 +166,9 @@
     </target>
 
     <target name="jar" depends="compile.jar">
-        <java jar="${dir.jar-out-file}" fork="true" dir="${dir.jar}"/>
+        <java jar="${dir.jar-out-file}" fork="true" dir="${dir.jar-out}"/>
     </target>
+
 
     <!-- ......................... Test Targets ......................... -->
     <target name="compile.debug">
@@ -251,6 +242,21 @@
             fork="true"
             dir="${dir.debug}"
         >
+             <assertions><enable/></assertions>
+        </java>
+    </target>
+
+    <target name="trial" depends="compile.debug">
+        <!-- jar classes -->
+        <jar destfile="${dir.debug-file}" baseDir="${dir.debug}">
+            <zipgroupfileset dir="${dir.3rd}" includes="*.jar"/>
+            <!-- setup manifest file -->
+            <manifest>
+                <attribute name="Program-Name" value="${ant.project.name}" />
+                <attribute name="Main-Class" value="${usr.main}" />
+            </manifest>
+        </jar>
+        <java jar="${dir.debug-file}" fork="true" dir="${dir.jar-out}">
              <assertions><enable/></assertions>
         </java>
     </target>
