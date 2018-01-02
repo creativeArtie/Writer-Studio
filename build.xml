@@ -55,7 +55,10 @@
     <!-- testing java classes and data -->
     <property name="dir.debug"      location="${dir.out}/${loc.test}" />
     <property name="dir.debug-data" location="${dir.debug}/data" />
-    <property name="dir.debug-file" location="${dir.out}/trial.jar" />
+    <!-- trial jar data -->
+    <property name="dir.trial" location="${dir.out}/trial" />
+    <property name="dir.trial-file" location="${dir.trial}/trial.jar" />
+    <property name="dir.trial-data" location="${dir.trial}/data" />
     <!-- Jar and assoicated files -->
     <property name="dir.jar-name"     value="${ant.project.name}.${usr.version}" />
     <property name="dir.jar-out"      location="${dir.out}/jar" />
@@ -247,8 +250,14 @@
     </target>
 
     <target name="trial" depends="compile.debug">
+        <mkdir dir="${dir.trial-data}" />
+        <copy toDir="${dir.trial-data}">
+            <fileset dir="${dir.data-run}" />
+            <fileset dir="${dir.data-test}" />
+        </copy>
+
         <!-- jar classes -->
-        <jar destfile="${dir.debug-file}" baseDir="${dir.debug}">
+        <jar destfile="${dir.trial-file}" baseDir="${dir.debug}">
             <zipgroupfileset dir="${dir.3rd}" includes="*.jar"/>
             <!-- setup manifest file -->
             <manifest>
@@ -256,7 +265,7 @@
                 <attribute name="Main-Class" value="${usr.main}" />
             </manifest>
         </jar>
-        <java jar="${dir.debug-file}" fork="true" dir="${dir.jar-out}">
+        <java jar="${dir.trial-file}" fork="true" dir="${dir.trial}">
              <assertions><enable/></assertions>
         </java>
     </target>
