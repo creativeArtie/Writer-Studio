@@ -8,7 +8,7 @@ import static com.creativeartie.jwriter.main.Checker.*;
 /**
  * Parser for {@code MainSpan*} classes.
  */
-enum MainParseNote implements SetupParser {
+enum NoteCardParser implements SetupParser {
     PARSER;
 
     @Override

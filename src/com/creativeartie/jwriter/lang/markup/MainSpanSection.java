@@ -14,111 +14,165 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
  */
 public class MainSpanSection extends MainSpan {
 
+    private final Cache<String, Optional<LinedSpanLevelSection>> lineCache;
+    private final Cache<String, Optional<MainSpanSection>> sectionCache;
+
     MainSpanSection (List<Span> spanChildren){
         super(spanChildren);
+        lineCache = CacheBuilder.newBuilder().build();
+        sectionCache = CacheBuilder.newBuilder().build();
     }
 
-    public Optional<LinedSpanLevelSection> getHeading(){
-        return findHeading(this);
-    }
-    private static Optional<LinedSpanLevelSection> findHeading(
-            MainSpanSection from){
-        Optional<LinedSpanLevelSection> found = spanAtFirst(
-            LinedSpanLevelSection.class);
-        if (! found.isPresent()){
-            /// No section heading == top with no heading
-            return Optional.empty();
-        }
-        found = found.filter(span -> span.getLinedType() == LinedType.HEADING);
-        if (found.isPresent()){
-            /// Found the heading, doesn't matter if it's top or not
-            return found;
-        }
-        /// So this is an outline search last,
-        /// unless the is no last, meaning top with outline
-        return from.getLastSection().flatMap(MainSpanSection::findHeading);
-    }
-
-    public Optional<LinedSpanLevelSection> getOutline(){
-        /// Either is heading (which result to none), outline or no heading
-        return spanAtFirst(LinedSpanLevelSection.class)
-            .filter(span -> span.getLinedType() == LinedType.OUTLINE);
-    }
-
-    public Optional<MainSpanSection> getMainSection(){
-        return findMainSection(this);
-    }
-
-    private static Optional<MainSpanSection> findMainSection(
-            MainSpanSection from){
-        Optional<LinedSpanLevelSection> found = from.spanAtFirst(
-            LinedSpanLevelSection.class);
-        if (! found.isPresent()){
-            /// No LinedSpanLevelSection == top
-            return Optional.empty();
-        }
-        if (found.filter(span -> span.getLinedType() == LinedType.HEADING)
-                .isPresent()){
-            /// Find a heading == answer
-            return Optional.of(from);
-        }
-        assert found.get().getLinedType() == LinedType.OUTLINE: "Wrong type";
-        /// Is an outline type, so search last
-        /// If there is no last then the top must be a Outline section
-        return from.getLastSection().flatMap(MainSpanSection::findMainSection);
-    }
-
-    public Optional<MainSpanSection> getParentOutline(){
-        if (isOutline()){
-
+    public EditionType getEdition(){
+        try {
+            MainSpanSection span = sectionCache.get("Edition", () ->{
+                MainSpanSection ans = this;
+                Optional<MainSpanSection> ptr = getLastPart();
+                while (ptr.isPresent()){
+                    ans = ptr.get();
+                    ptr = ans.getLastPart();
+                }
+                return Optional.of(ans);
+            }).get();
+            return span.spanFromFirst(LinedSpanLevelSection.class).map(line ->
+                line.getEdition()).orElse(EditionType.NONE);
+        } catch (ExecutionException ex){
+            throw new RuntimeException(ex);
         }
     }
 
-    public Optional<MainSpanSection> getParentHeading(){
-
-    }
 
     @Override
     public List<StyleInfo> getBranchStyles(){
         return ImmutableList.of(AuxiliaryType.MAIN_SECTION);
     }
 
-    public int getLevel(){
-        return spanAtFirst(LinedSpanLevelSection.class)
-            .map(span -> span.getLevel())
-            .orElse(0);
-    }
-
-    public boolean isOutline(){
-        return spanAtFirst(LinedSpanLevelSection.class)
-            .map(span -> span.getLinedType() == LinedType.OUTLINE)
-            .orElse(false);
-    }
-
-    public boolean isHeading(){
-        return spanAtFirst(LinedSpanLevelSection.class)
-            .map(span -> span.getLinedType() == LinedType.HEADING)
-            .orElse(false);
-    }
-
-    public boolean isEmpty(){
-        return ! spanAtFirst(LinedSpanLevelSection.class).isPresent();
-    }
-
-    public Optional<MainSpanSection> getLastSection(){
-        SpanNode<?> parent = getParent();
-        int index = parent.indexOf(this);
-        assert index != -1;
-        if (index == 0) {
-            return Optional.empty();
+    private Optional<MainSpanSection> next(){
+        try {
+            return sectionCache.get("next", () -> serach(false));
+         } catch (ExecutionException ex){
+            throw new RuntimeException(ex);
         }
-        return Optional.of((MainSpanSection)parent.get(index - 1));
     }
 
+    private Optional<MainSpanSection> last(){
+        try {
+            return sectionCache.get("last", () -> serach(true));
+         } catch (ExecutionException ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private Optional<MainSpanSection> serach(boolean toLast){
+        Document doc = getDocument();
+        int idx = doc.indexOf(this);
+        SpanBranch siblings;
+        do{
+            idx += toLast? -1: 1;
+            if (idx < 0 || idx >= doc.size()){
+                return Optional.empty();
+            }
+            siblings = doc.get(idx);
+        } while(! (siblings instanceof MainSpanSection));
+        return Optional.of((MainSpanSection) siblings);
+    }
+
+    public Optional<LinedSpanLevelSection> getSelfSection(){
+        try {
+            return lineCache.get("selfSection", () -> {
+                return spanAtFirst(LinedSpanLevelSection.class);
+            });
+        } catch (ExecutionException ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public Optional<MainSpanSection> getLastPart(){
+        try {
+            return sectionCache.get("lastPart", () -> {
+                if (get(0) instanceof LinedSpanLevelSection){
+                    return Optional.empty();
+                }
+                return last();
+            });
+        } catch (ExecutionException ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public Optional<MainSpanSection> getNextPart(){
+        try {
+            return sectionCache.get("nextPart", () -> {
+                Optional<MainSpanSection> last = next();
+                if (! last.isPresent()){
+                    return Optional.empty();
+                }
+                MainSpanSection span = last.get();
+                if (span.get(0) instanceof LinedSpanLevelSection){
+                    return Optional.empty();
+                }
+                return last;
+            });
+        } catch (ExecutionException ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public Optional<LinedSpanLevelSection> getHeading(){
+        try {
+            return lineCache.get("heading", () -> {
+                Optional<LinedSpanLevelSection> first = spanAtFirst(LinedSpanLevelSection.class);
+                if(first.isPresent() && first.get().getLinedType() == LinedType.HEADING){
+                    return first;
+                }
+                Optional<MainSpanSection> last = last();
+                if (last.isPresent()){
+                    return last.get().getHeading();
+                }
+                return Optional.empty();
+            });
+        } catch (ExecutionException ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public Optional<LinedSpanLevelSection> getOutline(){
+        try {
+            return lineCache.get("outline", () -> {
+                Optional<LinedSpanLevelSection> first = spanAtFirst(LinedSpanLevelSection.class);
+                if(first.isPresent()){
+                    LinedSpanLevelSection level = first.get();
+                    if (level.getLinedType() == LinedType.HEADING){
+                        return Optional.empty();
+                    }
+                    assert LinedType.OUTLINE == level.getLinedType();
+                    return first;
+                }
+                Optional<MainSpanSection> last = last();
+                if (last.isPresent()){
+                    return last.get().getOutline();
+                }
+                return Optional.empty();
+            });
+        } catch (ExecutionException ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder output = new StringBuilder("SECTION:{");
+        for(Span s: this){
+            output.append("\n\t").append(s);
+        }
+        output.append("\n}");
+        return output.toString();
+    }
 
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
-        return Optional.of(new CatalogueIdentity(TYPE_SECTION, this));
+        return Optional.ofNullable(getLastPart().isPresent() ? null:
+            new CatalogueIdentity(TYPE_SECTION, this));
     }
 
     @Override

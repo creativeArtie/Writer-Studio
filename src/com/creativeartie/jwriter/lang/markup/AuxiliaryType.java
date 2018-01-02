@@ -27,6 +27,10 @@ public enum AuxiliaryType implements StyleInfo{
     DATA_ERROR,
     /** {@linkplain StyleInfo} for {@link MainSpanSection}. */
     MAIN_SECTION,
+    /** {@linkplain StyleInfo} for {@link SectionSpanOutline}. */
+    SECTION_HEAD,
+    /** {@linkplain StyleInfo} for {@link SectionSpanHead}. */
+    SECTION_OUTLINE,
     /** {@linkplain StyleInfo} for {@link MainSpanNote}. */
     MAIN_NOTE;
 

@@ -202,7 +202,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     /** Locate a {@link Span} that is a instance of a certain class  */
     public final <T> Optional<T> locateSpan(int index, Class<T> clazz){
-        checkIndex(index, "index", getLocalEnd());
+        checkRange(index, "index", 0, true, getEnd(), true);
         checkNotNull(clazz, "requested class (clazz).");
 
         /// Empty document
@@ -242,7 +242,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     /** Insert a {@linkplain String} at a location.*/
     public final void insert(int location, String input){
-        checkIndex(location, "index", getEnd(), true);
+        checkRange(location, "location", 0, true, getEnd(), true);
         checkNotNull(input, "input");
 
         if (location == getLocalEnd()){
