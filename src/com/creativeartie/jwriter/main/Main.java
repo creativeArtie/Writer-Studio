@@ -29,8 +29,8 @@ public class Main extends Application{
         stage.setTitle(WindowText.PROGRAM_NAME.getText());
 
         // testStatsWindow(stage);
-        testMainWindow(stage);
-        // setupWindow(stage, ManuscriptFile.newFile());
+        // testMainWindow(stage);
+        setupWindow(stage, ManuscriptFile.newFile());
     }
 
     @Deprecated

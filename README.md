@@ -144,4 +144,5 @@ in the alphabethical order and are not case sensitive. The syntax of an id is
 
 ## Screen shots
 ![Main Window](design/main.png)
-![Stats Window](design/stats.png)
+![Stats For Current Month](design/today.png)
+![Stats For Past Month](design/month.png)
