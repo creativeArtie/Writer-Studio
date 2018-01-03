@@ -14,16 +14,16 @@ import javafx.geometry.*;
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
-import com.creativeartie.jwriter.window.PaneListsData.IdentityData;
+import com.creativeartie.jwriter.window.NotesData.IdentityData;
 import com.creativeartie.jwriter.property.window.*;
 
 import com.google.common.base.*;
 import com.google.common.collect.*;
 
-public class PaneListsNotePane extends BorderPane{
+class NotesDetailPane extends BorderPane{
     private TitledPane titlePane;
 
-    PaneListsNotePane(TitledPane title){
+    NotesDetailPane(TitledPane title){
         titlePane = title;
     }
 

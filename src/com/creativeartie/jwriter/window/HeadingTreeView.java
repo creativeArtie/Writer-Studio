@@ -13,7 +13,7 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.property.window.*;
 
-abstract class PaneHeadingTreeView extends TitledPane{
+abstract class HeadingTreeView extends TitledPane{
 
     private class HeadingCell extends TreeCell<Optional<LinedSpanLevelSection>> {
         @Override
@@ -38,7 +38,7 @@ abstract class PaneHeadingTreeView extends TitledPane{
     private HashMap<Optional<LinedSpanLevelSection>,
         TreeItem<Optional<LinedSpanLevelSection>>> mapper;
 
-    public PaneHeadingTreeView(){
+    public HeadingTreeView(){
         tree = new TreeView<>();
         mapper = new HashMap<>();
 

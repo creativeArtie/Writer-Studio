@@ -11,7 +11,7 @@ import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 
-public class PaneHeadingTreeControl extends PaneHeadingTreeView{
+class HeadingTreeControl extends HeadingTreeView{
 
     public void loadHeadings(List<? extends Section> children){
         getMapper().clear();

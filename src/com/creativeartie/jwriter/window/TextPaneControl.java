@@ -12,7 +12,7 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.property.*;
 import com.creativeartie.jwriter.property.window.*;
 
-public class PaneTextControl extends PaneTextView {
+class TextPaneControl extends TextPaneView {
 
     @Override
     public void loadDoc(ManuscriptDocument doc){

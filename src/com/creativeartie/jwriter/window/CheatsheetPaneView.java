@@ -12,30 +12,30 @@ import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 
-abstract class PaneCheatsheetView extends GridPane{
+abstract class CheatsheetPaneView extends GridPane{
 
-    private TreeMap<LinedType, PaneCheatsheetLabel> lines;
-    private TreeMap<FormatType, PaneCheatsheetLabel> formats;
-    private TreeMap<EditionType, PaneCheatsheetLabel> editions;
-    private TreeMap<InfoFieldType, PaneCheatsheetLabel> infos;
-    private TreeMap<AuxiliaryType, PaneCheatsheetLabel> others;
-    private TreeMap<DirectoryType, PaneCheatsheetLabel> idTypes;
-    private PaneCheatsheetLabel id;
-    private ArrayList<PaneCheatsheetLabel> labelList;
+    private TreeMap<LinedType, CheatsheetLabel> lines;
+    private TreeMap<FormatType, CheatsheetLabel> formats;
+    private TreeMap<EditionType, CheatsheetLabel> editions;
+    private TreeMap<InfoFieldType, CheatsheetLabel> infos;
+    private TreeMap<AuxiliaryType, CheatsheetLabel> others;
+    private TreeMap<DirectoryType, CheatsheetLabel> idTypes;
+    private CheatsheetLabel id;
+    private ArrayList<CheatsheetLabel> labelList;
 
-    PaneCheatsheetView(){
+    CheatsheetPaneView(){
         labelList = new ArrayList<>();
         lines = new TreeMap<>();
-        PaneCheatsheetLabel holder;
+        CheatsheetLabel holder;
         for(LinedType type: LinedType.values()){
-            holder = PaneCheatsheetLabel.getLabel(type);
+            holder = CheatsheetLabel.getLabel(type);
             lines.put(type, holder);
             labelList.add(holder);
         }
 
         formats = new TreeMap<>();
         for(FormatType type: FormatType.values()){
-            holder = PaneCheatsheetLabel.getLabel(type);
+            holder = CheatsheetLabel.getLabel(type);
             formats.put(type, holder);
             labelList.add(holder);
         }
@@ -43,7 +43,7 @@ abstract class PaneCheatsheetView extends GridPane{
         editions = new TreeMap<>();
         for (EditionType type: EditionType.values()){
             if (type != EditionType.NONE){
-                holder = PaneCheatsheetLabel.getLabel(type);
+                holder = CheatsheetLabel.getLabel(type);
                 editions.put(type, holder);
                 labelList.add(holder);
             }
@@ -52,7 +52,7 @@ abstract class PaneCheatsheetView extends GridPane{
         infos = new TreeMap<>();
         for (InfoFieldType type: InfoFieldType.values()){
             if (type != InfoFieldType.ERROR){
-                holder = PaneCheatsheetLabel.getLabel(type);
+                holder = CheatsheetLabel.getLabel(type);
                 infos.put(type, holder);
                 labelList.add(holder);
             }
@@ -61,18 +61,18 @@ abstract class PaneCheatsheetView extends GridPane{
         idTypes = new TreeMap<>();
         for (DirectoryType type: DirectoryType.values()){
             if (type != DirectoryType.COMMENT && type != DirectoryType.LINK){
-                holder = PaneCheatsheetLabel.getLabel(type);
+                holder = CheatsheetLabel.getLabel(type);
                 idTypes.put(type, holder);
                 labelList.add(holder);
             }
         }
 
-        id = PaneCheatsheetLabel.getIdentityLabel();
+        id = CheatsheetLabel.getIdentityLabel();
         labelList.add(id);
 
         others = new TreeMap<>();
         for (AuxiliaryType type: AuxiliaryType.getFormatTypes()){
-            holder = PaneCheatsheetLabel.getLabel(type);
+            holder = CheatsheetLabel.getLabel(type);
             others.put(type, holder);
             labelList.add(holder);
         }
@@ -124,7 +124,7 @@ abstract class PaneCheatsheetView extends GridPane{
         add(others.get(AuxiliaryType.ESCAPE),  11, 2);
     }
 
-    protected List<PaneCheatsheetLabel> getLabels(){
+    protected List<CheatsheetLabel> getLabels(){
         return labelList;
     }
 

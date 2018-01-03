@@ -13,10 +13,10 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.property.window.*;
 
-class PaneCheatsheetControl extends PaneCheatsheetView{
+class CheatsheetPaneControl extends CheatsheetPaneView{
 
     public void updateLabels(ManuscriptDocument doc, int position){
-        for (PaneCheatsheetLabel label: getLabels()){
+        for (CheatsheetLabel label: getLabels()){
             WindowStyleBuilder css = new WindowStyleBuilder();
             css.add(label.isSetted(doc, position)? WindowStyle.MARKUP_Set:
                 WindowStyle.MARKUP_UNSET);

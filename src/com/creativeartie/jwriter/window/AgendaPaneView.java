@@ -12,8 +12,7 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.property.window.*;
 
-abstract class PaneAgendaView extends GridPane{
-
+abstract class AgendaPaneView extends GridPane{
 
     private static class AgendaCell extends ListCell<SpanBranch> {
 
@@ -47,7 +46,7 @@ abstract class PaneAgendaView extends GridPane{
     private SimpleObjectProperty<SpanBranch> agenda;
     private ReadOnlyBooleanWrapper agendaFocused;
 
-    public PaneAgendaView(){
+    public AgendaPaneView(){
         list = new ListView<>();
 
         setupList();

@@ -12,12 +12,12 @@ import com.creativeartie.jwriter.property.window.*;
 
 import com.google.common.collect.*;
 
-public class PaneListsControl extends PaneListsView{
+class NotesPaneControl extends NotesPaneView{
     private Optional<Range<Integer>> selectedRange;
     private Optional<DirectoryType> selectedType;
-    private HashMap<DirectoryType, ObservableList<PaneListsData>> dataMap;
+    private HashMap<DirectoryType, ObservableList<NotesData>> dataMap;
 
-    public PaneListsControl(){
+    public NotesPaneControl(){
         selectedRange = Optional.empty();
         selectedType = Optional.empty();
         dataMap = new HashMap<>();
@@ -27,16 +27,16 @@ public class PaneListsControl extends PaneListsView{
         dataMap.clear();
         for (DirectoryType type: getTypes().getItems()){
             if (type == DirectoryType.NOTE){
-                ObservableList<PaneListsData> data = PaneListsData.extractData(
+                ObservableList<NotesData> data = NotesData.extractData(
                     doc.getCatalogue().getCategory(
                         DirectoryType.COMMENT.getCategory()
                     ).values(), DirectoryType.COMMENT);
-                data.addAll(PaneListsData.extractData(
+                data.addAll(NotesData.extractData(
                     doc.getCatalogue().getCategory(type.getCategory()).values(),
                     DirectoryType.NOTE));
                 dataMap.put(type, data);
             } else {
-                dataMap.put(type, PaneListsData.extractData(
+                dataMap.put(type, NotesData.extractData(
                     doc.getCatalogue().getCategory(type.getCategory()).values(),
                     type));
             }
@@ -66,7 +66,7 @@ public class PaneListsControl extends PaneListsView{
     }
 
     @Override
-    protected void listenSelected(PaneListsData data){
+    protected void listenSelected(NotesData data){
         if (data != null){
             getNoteDetail().setData(data.getTargetSpan()
                 .filter(span -> span instanceof MainSpanNote)
@@ -79,14 +79,14 @@ public class PaneListsControl extends PaneListsView{
 
     @Override
     public void refreshPane(ManuscriptDocument doc){
-        PaneListsData back = getDataTable().getSelectionModel()
+        NotesData back = getDataTable().getSelectionModel()
             .getSelectedItem();
         loadDoc(doc);
         updateType(getTypes().getSelectionModel().getSelectedItem());
         if (back != null){
             CatalogueIdentity id = back.getIdentity();
             int target = back.getTarget();
-            for(PaneListsData data: getDataTable().getItems()){
+            for(NotesData data: getDataTable().getItems()){
                 if (data.getIdentity().equals(id) && data.getTarget() ==
                     target)
                 {

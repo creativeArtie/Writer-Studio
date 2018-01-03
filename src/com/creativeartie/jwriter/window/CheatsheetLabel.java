@@ -14,14 +14,14 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.property.window.*;
 import com.creativeartie.jwriter.main.*;
 
-class PaneCheatsheetLabel extends Label{
+class CheatsheetLabel extends Label{
 
     private static boolean findContent(ManuscriptDocument doc, Integer point){
         return doc.locateSpan(point, FormatSpanContent.class).isPresent();
     }
 
-    static PaneCheatsheetLabel getLabel(LinedType type){
-        return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getText(type),
+    static CheatsheetLabel getLabel(LinedType type){
+        return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
             (doc, point) -> doc.locateSpan(point, LinedSpan.class)
                 .map(span -> span.getLinedType() == type)
                 .orElse(false),
@@ -29,17 +29,17 @@ class PaneCheatsheetLabel extends Label{
         );
     }
 
-    static PaneCheatsheetLabel getLabel(FormatType type){
-        return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getText(type),
+    static CheatsheetLabel getLabel(FormatType type){
+        return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
             (doc, point) -> doc.locateSpan(point, FormatSpan.class)
                 .map(span -> span.isFormat(type))
                 .orElse(false),
-            PaneCheatsheetLabel::findContent
+            CheatsheetLabel::findContent
         );
     }
 
-    static PaneCheatsheetLabel getLabel(EditionType type){
-        return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getText(type),
+    static CheatsheetLabel getLabel(EditionType type){
+        return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
             (doc, point) -> doc.locateSpan(point, EditionSpan.class)
                 .map(span -> span.getEdition() == type)
                 .orElse(false),
@@ -48,23 +48,23 @@ class PaneCheatsheetLabel extends Label{
         );
     }
 
-    static PaneCheatsheetLabel getLabel(DirectoryType type){
+    static CheatsheetLabel getLabel(DirectoryType type){
         if (type == DirectoryType.COMMENT || type == DirectoryType.LINK){
             throw new IllegalArgumentException("Unsupported type: " + type);
         }
-        return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getText(type),
+        return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
             (doc, point) -> doc.locateSpan(point, FormatSpanDirectory.class)
                 .map(span -> span.getIdType() == type)
                 .orElse(false),
-            PaneCheatsheetLabel::findContent
+            CheatsheetLabel::findContent
         );
     }
 
-    static PaneCheatsheetLabel getLabel(InfoFieldType type){
+    static CheatsheetLabel getLabel(InfoFieldType type){
         if (type == InfoFieldType.ERROR){
             throw new IllegalArgumentException("Unsupported type: " + type);
         }
-        return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getText(type),
+        return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
             (doc, point) -> doc.locateSpan(point, LinedSpanCite.class).map(
                 span -> span.getFieldType() == type
             ).orElse(false),
@@ -73,8 +73,8 @@ class PaneCheatsheetLabel extends Label{
         );
     }
 
-    static PaneCheatsheetLabel getIdentityLabel(){
-        return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getIdText(),
+    static CheatsheetLabel getIdentityLabel(){
+        return new CheatsheetLabel(SyntaxHintText.LABEL.getIdText(),
             (doc, point) -> doc.locateSpan(point, DirectorySpan.class)
                 .isPresent(),
             (doc, point) ->
@@ -86,7 +86,7 @@ class PaneCheatsheetLabel extends Label{
         );
     }
 
-    static PaneCheatsheetLabel getLabel(AuxiliaryType type){
+    static CheatsheetLabel getLabel(AuxiliaryType type){
         Class<?> setup = null;
         switch (type){
             case ESCAPE:
@@ -105,16 +105,16 @@ class PaneCheatsheetLabel extends Label{
                 throw new IllegalArgumentException("Unsupported type: " + type);
         }
         final Class<?> test = setup;
-        return new PaneCheatsheetLabel(SyntaxHintText.LABEL.getText(type),
+        return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
             (doc, point) -> doc.locateSpan(point, test).isPresent(),
-            PaneCheatsheetLabel::findContent
+            CheatsheetLabel::findContent
         );
     }
 
     private final BiPredicate<ManuscriptDocument, Integer> testSetted;
     private final BiPredicate<ManuscriptDocument, Integer> testAllow;
 
-    private PaneCheatsheetLabel(String text,
+    private CheatsheetLabel(String text,
             BiPredicate<ManuscriptDocument, Integer> set,
             BiPredicate<ManuscriptDocument, Integer> allow){
         super(text);

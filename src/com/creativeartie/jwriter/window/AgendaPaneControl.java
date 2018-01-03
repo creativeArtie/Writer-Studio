@@ -11,7 +11,7 @@ import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 
-public class PaneAgendaControl extends PaneAgendaView{
+class AgendaPaneControl extends AgendaPaneView{
     @Override
     protected void selectItem(int index){
          for (SpanBranch branch: getList().getItems()){

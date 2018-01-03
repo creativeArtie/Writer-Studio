@@ -10,7 +10,7 @@ import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 
-public class PaneHeadingControl extends PaneHeadingView{
+class HeadingPaneControl extends HeadingPaneView{
 
     private SectionHeading root;
 

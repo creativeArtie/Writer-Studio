@@ -10,26 +10,26 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
 import com.google.common.collect.*;
 
-public class PaneListsData{
+public class NotesData{
     public static final int NO_ID  = -2;
     public static final int SINGLE = -1;
 
-    public static ObservableList<PaneListsData> extractData(
+    public static ObservableList<NotesData> extractData(
         Collection<CatalogueData> data, DirectoryType type)
     {
-        ArrayList<PaneListsData> out = new ArrayList<>();
+        ArrayList<NotesData> out = new ArrayList<>();
         for (CatalogueData load: data){
             int size = load.getIds().size();
             switch (size){
             case 0:
-                out.add(new PaneListsData(load, NO_ID, type));
+                out.add(new NotesData(load, NO_ID, type));
                 break;
             case 1:
-                out.add(new PaneListsData(load, SINGLE, type));
+                out.add(new NotesData(load, SINGLE, type));
                 break;
             default:
                 for(int i = 0; i < size; i++){
-                    out.add(new PaneListsData(load, i, type));
+                    out.add(new NotesData(load, i, type));
                 }
             }
         }
@@ -61,7 +61,7 @@ public class PaneListsData{
     private final CatalogueIdentity targetId;
     private final int targetNum;
 
-    private PaneListsData(CatalogueData data, int target, DirectoryType type){
+    private NotesData(CatalogueData data, int target, DirectoryType type){
         CatalogueIdentity id = data.getKey();
         targetId = id;
 

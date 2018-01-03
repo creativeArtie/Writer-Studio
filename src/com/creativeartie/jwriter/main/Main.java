@@ -41,7 +41,7 @@ public class Main extends Application{
     }
 
     private void setupWindow(Stage stage, ManuscriptFile file) {
-        SceneWriterControl writer = new SceneWriterControl(stage);
+        WriterSceneControl writer = new WriterSceneControl(stage);
         Scene scene = new Scene(writer, 800, 600);
         writer.setManuscriptFile(file);
         stage.setScene(scene);

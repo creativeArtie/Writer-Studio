@@ -19,14 +19,14 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.property.*;
 import com.creativeartie.jwriter.property.window.*;
 
-public class MainMenuBar extends MenuBar{
+class WriterMenuBar extends MenuBar{
 
     private Stage statWindow;
     private Stage mainWindow;
     private FileChooser chooser;
     private SimpleObjectProperty<ManuscriptFile> manuscriptFile;
 
-    public MainMenuBar(Stage window){
+    public WriterMenuBar(Stage window){
         SceneStatsControl statTable = new SceneStatsControl();
         statWindow = SceneStatsView.createStage(statTable);
 
@@ -78,7 +78,7 @@ public class MainMenuBar extends MenuBar{
             try {
                 manuscriptFile.setValue(ManuscriptFile.open(file));
             } catch (Exception ex){
-                System.err.println("unhandled exception (MainMenuBar#openFile):");
+                System.err.println("unhandled exception (WriterMenuBar#openFile):");
                 ex.printStackTrace();
                 System.exit(-1);
             }
@@ -103,11 +103,12 @@ public class MainMenuBar extends MenuBar{
                 data.save();
             }
         } catch (Exception ex){
-            System.err.println("unhandled exception (MainMenuBar#saveFile):");
+            System.err.println("unhandled exception (WriterMenuBar#saveFile):");
             ex.printStackTrace();
             System.exit(-1);
         }
     }
+
     private void exit(){
         try {
             if (getManuscriptFile().canSave()){
@@ -115,7 +116,7 @@ public class MainMenuBar extends MenuBar{
             }
             Platform.exit();
         } catch (Exception ex){
-            System.err.println("unhandled exception (MainMenuBar#exite):");
+            System.err.println("unhandled exception (WriterMenuBar#exit):");
             ex.printStackTrace();
             System.exit(-1);
         }

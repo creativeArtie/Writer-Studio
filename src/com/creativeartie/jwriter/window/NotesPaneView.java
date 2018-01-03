@@ -13,13 +13,13 @@ import javafx.scene.control.cell.*;
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
-import com.creativeartie.jwriter.window.PaneListsData.IdentityData;
+import com.creativeartie.jwriter.window.NotesData.IdentityData;
 import com.creativeartie.jwriter.property.window.*;
 
 import com.google.common.base.*;
 import com.google.common.collect.*;
 
-abstract class PaneListsView extends GridPane{
+abstract class NotesPaneView extends GridPane{
     private class TypeCell extends ListCell<DirectoryType>{
         @Override
         protected void updateItem(DirectoryType item, boolean empty) {
@@ -33,7 +33,7 @@ abstract class PaneListsView extends GridPane{
         }
     }
 
-    private class TextCell extends TableCell<PaneListsData, String> {
+    private class TextCell extends TableCell<NotesData, String> {
         private WindowText emptyText;
 
         TextCell(WindowText key){
@@ -59,7 +59,7 @@ abstract class PaneListsView extends GridPane{
         }
     }
 
-    private class NameCell extends TableCell<PaneListsData, IdentityData> {
+    private class NameCell extends TableCell<NotesData, IdentityData> {
 
         @Override
         protected void updateItem(IdentityData item, boolean empty) {
@@ -77,7 +77,7 @@ abstract class PaneListsView extends GridPane{
         }
     }
 
-    private class LocCell extends TableCell<PaneListsData,
+    private class LocCell extends TableCell<NotesData,
             Optional<Range<Integer>>>{
         @Override
         protected void updateItem(Optional<Range<Integer>> item, boolean empty) {
@@ -100,7 +100,7 @@ abstract class PaneListsView extends GridPane{
         }
     }
 
-    private class SpanCell extends TableCell<PaneListsData,
+    private class SpanCell extends TableCell<NotesData,
             Optional<SpanBranch>>{
         @Override
         protected void updateItem(Optional<SpanBranch> item, boolean empty) {
@@ -131,12 +131,12 @@ abstract class PaneListsView extends GridPane{
     }
 
     private ListView<DirectoryType> types;
-    private TableView<PaneListsData> data;
+    private TableView<NotesData> data;
     private TitledPane dataTitle;
     private ColumnConstraints dataColumn;
     private ColumnConstraints noteColumn;
-    private TableColumn<PaneListsData, Optional<SpanBranch>> lineColumn;
-    private PaneListsNotePane noteDetail;
+    private TableColumn<NotesData, Optional<SpanBranch>> lineColumn;
+    private NotesDetailPane noteDetail;
 
     private ReadOnlyIntegerWrapper toLocation;
     private ReadOnlyBooleanWrapper childFocused;
@@ -146,12 +146,12 @@ abstract class PaneListsView extends GridPane{
     private static double NOTE_FULL_WIDHT = 40.0;
     private static double NOTE_HALF_WIDHT = 0.0;
 
-    public PaneListsView(){
+    public NotesPaneView(){
         types = new ListView<>(FXCollections.observableArrayList(DirectoryType
             .getMenuList()));
         data = new TableView<>();
         TitledPane headingPane = new TitledPane();
-        noteDetail = new PaneListsNotePane(headingPane);
+        noteDetail = new NotesDetailPane(headingPane);
         setupTitledPane(headingPane, noteDetail);
 
         layoutTypes();
@@ -175,7 +175,7 @@ abstract class PaneListsView extends GridPane{
         return types;
     }
 
-    protected TableView<PaneListsData> getDataTable(){
+    protected TableView<NotesData> getDataTable(){
         return data;
     }
 
@@ -183,11 +183,11 @@ abstract class PaneListsView extends GridPane{
         return dataTitle;
     }
 
-    protected TableColumn<PaneListsData, Optional<SpanBranch>> getLineColumn(){
+    protected TableColumn<NotesData, Optional<SpanBranch>> getLineColumn(){
         return lineColumn;
     }
 
-    protected PaneListsNotePane getNoteDetail(){
+    protected NotesDetailPane getNoteDetail(){
         return noteDetail;
     }
 
@@ -218,19 +218,19 @@ abstract class PaneListsView extends GridPane{
         data.setFixedCellSize(30);
         data.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        TableColumn<PaneListsData, String> cat = setupColumn(
+        TableColumn<NotesData, String> cat = setupColumn(
             WindowText.COLUMN_CAT, "catalogueCategory");
         cat.setCellFactory(table -> new TextCell(WindowText.NO_ID_CATEGORY));
 
-        TableColumn<PaneListsData, IdentityData> name = setupColumn(
+        TableColumn<NotesData, IdentityData> name = setupColumn(
             WindowText.COLUMN_NAME, "catalogueIdentity");
         name.setCellFactory(table -> new NameCell());
 
-        TableColumn<PaneListsData, String> ref = setupColumn(
+        TableColumn<NotesData, String> ref = setupColumn(
             WindowText.COLUMN_REF, "refText");
         ref.setCellFactory(table -> new TextCell(WindowText.NO_SPAN_ID));
 
-        TableColumn<PaneListsData, Optional<Range<Integer>>> loc =
+        TableColumn<NotesData, Optional<Range<Integer>>> loc =
             setupColumn(WindowText.COLUMN_LOC, "spanLocation");
         loc.setCellFactory(table -> new LocCell());
 
@@ -265,12 +265,12 @@ abstract class PaneListsView extends GridPane{
         return title;
     }
 
-    private <T> TableColumn<PaneListsData, T> setupColumn(WindowText title,
+    private <T> TableColumn<NotesData, T> setupColumn(WindowText title,
         String property)
     {
-        TableColumn<PaneListsData, T> ans = new TableColumn<>(title.getText());
+        TableColumn<NotesData, T> ans = new TableColumn<>(title.getText());
         ans.setCellValueFactory(
-            new PropertyValueFactory<PaneListsData, T>(property)
+            new PropertyValueFactory<NotesData, T>(property)
         );
         return ans;
     }
@@ -299,7 +299,7 @@ abstract class PaneListsView extends GridPane{
 
     protected abstract void listenType(DirectoryType type);
 
-    protected abstract void listenSelected(PaneListsData data);
+    protected abstract void listenSelected(NotesData data);
 
     public abstract void refreshPane(ManuscriptDocument doc);
 }

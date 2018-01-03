@@ -12,7 +12,7 @@ import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.property.window.*;
 
-abstract class PaneTextView extends BorderPane {
+abstract class TextPaneView extends BorderPane {
 
     private final InlineCssTextArea textArea;
     private final Button viewMode;
@@ -23,7 +23,7 @@ abstract class PaneTextView extends BorderPane {
     private final ReadOnlyIntegerWrapper position;
     private final ReadOnlyBooleanWrapper editorFocus;
 
-    PaneTextView(){
+    TextPaneView(){
         textArea = new InlineCssTextArea();
         viewMode = new Button();
         currentStats = new Label();

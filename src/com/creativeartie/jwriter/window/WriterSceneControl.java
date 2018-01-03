@@ -13,7 +13,7 @@ import com.creativeartie.jwriter.file.*;
 import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
 
-public class SceneWriterControl extends SceneWriterView {
+public class WriterSceneControl extends WriterSceneView {
 
     private long updateTimer;
     private long editTimer;
@@ -22,7 +22,7 @@ public class SceneWriterControl extends SceneWriterView {
     private static final long EDIT_LENGTH = 30 * 1000000000l;
     private static final long TIMER_LENGHT = 1000;
 
-    public SceneWriterControl(javafx.stage.Stage window){
+    public WriterSceneControl(javafx.stage.Stage window){
         super(window);
         updateTimer = TIMER_OFF;
         editTimer = TIMER_OFF;

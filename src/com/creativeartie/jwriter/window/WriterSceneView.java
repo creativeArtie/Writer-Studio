@@ -13,24 +13,24 @@ import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.property.window.*;
 
-abstract class SceneWriterView extends BorderPane{
-    private PaneTextControl textArea;
-    private PaneHeadingControl tableOfContent;
-    private PaneAgendaControl agendaList;
-    private PaneListsControl userLists;
-    private PaneCheatsheetControl langCheatsheet;
+abstract class WriterSceneView extends BorderPane{
+    private TextPaneControl textArea;
+    private HeadingPaneControl tableOfContent;
+    private AgendaPaneControl agendaList;
+    private NotesPaneControl userLists;
+    private CheatsheetPaneControl langCheatsheet;
     private SimpleObjectProperty<ManuscriptFile> manuscriptFile;
     private ReadOnlyObjectWrapper<ManuscriptDocument> document;
     private ReadOnlyObjectWrapper<RecordList> records;
     private SimpleBooleanProperty ready;
     private SimpleBooleanProperty isEdited;
 
-    SceneWriterView(Stage window){
-        textArea = new PaneTextControl();
-        tableOfContent = new PaneHeadingControl();
-        agendaList = new PaneAgendaControl();
-        userLists = new PaneListsControl();
-        langCheatsheet = new PaneCheatsheetControl();
+    WriterSceneView(Stage window){
+        textArea = new TextPaneControl();
+        tableOfContent = new HeadingPaneControl();
+        agendaList = new AgendaPaneControl();
+        userLists = new NotesPaneControl();
+        langCheatsheet = new CheatsheetPaneControl();
 
         manuscriptFile = new SimpleObjectProperty<>(this, "manuscriptFile");
 
@@ -79,23 +79,23 @@ abstract class SceneWriterView extends BorderPane{
     }
 
     /// Getters
-    protected PaneTextControl getTextArea(){
+    protected TextPaneControl getTextArea(){
         return textArea;
     }
 
-    protected PaneHeadingControl getTableOfContent(){
+    protected HeadingPaneControl getTableOfContent(){
         return tableOfContent;
     }
 
-    protected PaneAgendaControl getAgendaList(){
+    protected AgendaPaneControl getAgendaList(){
         return agendaList;
     }
 
-    protected PaneListsControl getUserLists(){
+    protected NotesPaneControl getUserLists(){
         return userLists;
     }
 
-    protected PaneCheatsheetControl getCheatsheet(){
+    protected CheatsheetPaneControl getCheatsheet(){
         return langCheatsheet;
     }
 
@@ -114,7 +114,7 @@ abstract class SceneWriterView extends BorderPane{
 
     private void layoutTopPane(Stage window){
         VBox pane = new VBox();
-        MainMenuBar bar = new MainMenuBar(window);
+        WriterMenuBar bar = new WriterMenuBar(window);
         bar.manuscriptFileProperty().bindBidirectional(manuscriptFile);
 
         pane.getChildren().addAll(bar, userLists);

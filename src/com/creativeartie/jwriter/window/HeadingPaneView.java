@@ -13,17 +13,17 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.property.window.*;
 
-abstract class PaneHeadingView extends VBox{
-    private PaneHeadingTreeControl headingNode;
-    private PaneHeadingTreeControl outlineNode;
+abstract class HeadingPaneView extends VBox{
+    private HeadingTreeControl headingNode;
+    private HeadingTreeControl outlineNode;
     private ReadOnlyObjectWrapper<Optional<LinedSpanLevelSection>> headingProp;
     private ReadOnlyObjectWrapper<Optional<LinedSpanLevelSection>> outlineProp;
     private ReadOnlyBooleanWrapper headingFocused;
     private ReadOnlyBooleanWrapper outlineFocused;
 
-    public PaneHeadingView(){
-        headingNode = new PaneHeadingTreeControl();
-        outlineNode = new PaneHeadingTreeControl();
+    public HeadingPaneView(){
+        headingNode = new HeadingTreeControl();
+        outlineNode = new HeadingTreeControl();
 
         setupTree(headingNode, WindowText.HEADING_TITLE.getText());
         setupTree(outlineNode, WindowText.OUTLINE_TITLE.getText());
@@ -43,16 +43,16 @@ abstract class PaneHeadingView extends VBox{
     }
 
     /// Getters
-    protected PaneHeadingTreeControl getHeadings(){
+    protected HeadingTreeControl getHeadings(){
         return headingNode;
     }
 
-    protected PaneHeadingTreeControl getOutlines(){
+    protected HeadingTreeControl getOutlines(){
         return outlineNode;
     }
 
     /// Layout Node
-    private void setupTree(PaneHeadingTreeControl tree, String title){
+    private void setupTree(HeadingTreeControl tree, String title){
         tree.setText(title);
         getChildren().add(tree);
     }
