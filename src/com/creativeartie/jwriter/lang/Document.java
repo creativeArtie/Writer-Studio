@@ -244,6 +244,12 @@ public abstract class Document extends SpanNode<SpanBranch>{
     public final void insert(int location, String input){
         checkRange(location, "location", 0, true, getEnd(), true);
         checkNotNull(input, "input");
+        if (isEmpty()){
+            parseDocument(input);
+            setUpdated();
+            updateEdit();
+            return;
+        }
 
         if (location == getLocalEnd()){
             /// Insert at the end
