@@ -5,9 +5,12 @@ import java.util.*;
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
+/**
+ * Parser for {@link LinedSpanCite}.
+ */
 enum LinedParseCite implements SetupParser {
     INSTANCE;
-    
+
     @Override
     public Optional<SpanBranch> parse(SetupPointer pointer){
         ArrayList<Span> children = new ArrayList<>();
@@ -20,13 +23,13 @@ enum LinedParseCite implements SetupParser {
                 }
             }
             pointer.trimStartsWith(children, LINED_DATA);
-            
-            if (! (used.isPresent() && used.get().parse(children, 
+
+            if (! (used.isPresent() && used.get().parse(children,
                 pointer)))
             {
-                pointer.getTo(children, SetupLeafStyle.TEXT, LINED_END);
+                pointer.getTo(children, StyleInfoLeaf.TEXT, LINED_END);
             }
-            
+
             pointer.startsWith(children, LINED_END);
             return Optional.of(new LinedSpanCite(children));
         }

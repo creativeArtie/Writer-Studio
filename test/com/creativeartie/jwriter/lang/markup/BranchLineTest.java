@@ -16,9 +16,11 @@ public class BranchLineTest {
         private int publishTotal;
         private int noteTotal;
         private LinedType linedType;
+        private boolean isLast;
 
         public LineTest(Class<T> clazz){
             super(clazz);
+            isLast = true;
         }
 
         public T setPublishTotal(int count){
@@ -28,6 +30,11 @@ public class BranchLineTest {
 
         public T setNoteTotal(int count){
             noteTotal = count;
+            return cast();
+        }
+
+        public T setIsLast(boolean last){
+            isLast = last;
             return cast();
         }
 
@@ -44,6 +51,7 @@ public class BranchLineTest {
         public void test(SpanBranch span){
             LinedSpan test = (LinedSpan) span;
             assertEquals(getError("type", span), linedType, test.getLinedType());
+            assertEquals(getError("last", span), isLast, test.isLast());
             assertEquals(getError("publish", span), publishTotal, test.getPublishTotal());
             assertEquals(getError("note", span), noteTotal, test.getNoteTotal());
         }
@@ -170,21 +178,21 @@ public class BranchLineTest {
         }
 
         protected LinedSpanLevel testSubclass(SpanBranch span){
-            LinedSpanSection test = assertClass(span, LinedSpanSection.class);
+            LinedSpanLevelSection test = assertClass(span, LinedSpanLevelSection.class);
             assertEquals(getError("edition", span), edition, test.getEdition());
             return test;
         }
     }
 
-    public static class BasicLevelLineTest extends
-                LevelLineTest<BasicLevelLineTest>{
+    public static class ListLevelLineTest extends
+                LevelLineTest<ListLevelLineTest>{
 
-        public BasicLevelLineTest(){
-            super(BasicLevelLineTest.class);
+        public ListLevelLineTest(){
+            super(ListLevelLineTest.class);
         }
 
         protected LinedSpanLevel testSubclass(SpanBranch span){
-            return assertClass(span, LinedSpanLevel.class);
+            return assertClass(span, LinedSpanLevelList.class);
         }
     }
 
@@ -307,8 +315,7 @@ public class BranchLineTest {
         public void test(SpanBranch span){
             LinedSpanNote test = assertClass(span, LinedSpanNote.class);
             assertSpan("data", span, lineText, test.getFormattedSpan());
-            assertEquals(getError("id", span), buildId.orElse(null),
-                test.buildId());
+            assertEquals(getError("id", span), buildId, test.buildId());
             super.test(span);
         }
     }
@@ -369,7 +376,7 @@ public class BranchLineTest {
         @Override
         public void test(SpanBranch span){
             LinedSpanQuote test = assertClass(span, LinedSpanQuote.class);
-            assertSpan("data", span, lineText, test.getFormattedSpan());
+            assertSpan("formatted", span, lineText, test.getFormattedSpan());
             super.test(span);
         }
     }

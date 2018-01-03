@@ -4,6 +4,9 @@ import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 
+/**
+ * Base class for {@code MainSpan*} classes.
+ */
 public abstract class MainSpan extends SpanBranch implements Catalogued{
     MainSpan(List<Span> spanChildren){
         super(spanChildren);

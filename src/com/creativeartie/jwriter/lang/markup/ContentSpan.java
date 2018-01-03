@@ -1,40 +1,70 @@
 package com.creativeartie.jwriter.lang.markup;
 
-import java.util.*; /// For initialization (children)
+import java.util.*;
+import java.util.Optional;
 
 import com.creativeartie.jwriter.lang.*;
-import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
-import com.creativeartie.jwriter.main.Checker;
+import static com.creativeartie.jwriter.main.Checker.*;
 
-import com.google.common.base.*;
 import com.google.common.collect.*;
+import com.google.common.base.*;
 
 /**
- * Created from {@link ContentParser}, super class of
- * {@link ContentSpanContent}. Used for whenever text is needed.
+ * Text implementing {@link BasicText} for non-formatted text. Represented in
+ * design/ebnf.txt as {@code Content}.
  */
-public class ContentSpan extends SpanBranch implements BasicText{
+public final class ContentSpan extends SpanBranch implements BasicText{
 
-    /// Stuff for getUpdater(int index, String)
-    private final List<String> reparseEnders;
-    private final SetupLeafStyle leafStyle;
+    private Optional<String> cacheText;
+    private Optional<String> cacheTrimmed;
+    private Optional<Boolean> cacheSpaceBegin;
+    private Optional<Boolean> cacheSpaceEnd;
+    private Optional<Integer> wordCount;
 
-    ContentSpan (List<Span> spanChildren, List<String> enders,
-        SetupLeafStyle style
-    ){
+    ContentSpan (List<Span> spanChildren){
         super(spanChildren);
-        reparseEnders = Checker.checkNotNull(enders, "enders");
-        leafStyle = Checker.checkNotNull(style, "style");
     }
 
     @Override
-    public List<DetailStyle> getBranchStyles(){
+    public String getText(){
+        cacheText = getCache(cacheText, () -> BasicText.super.getText());
+        return cacheText.get();
+    }
+
+    @Override
+    public String getTrimmed(){
+        cacheTrimmed = getCache(cacheTrimmed, () -> BasicText.super
+            .getTrimmed());
+        return cacheTrimmed.get();
+    }
+
+    @Override
+    public boolean isSpaceBegin(){
+        cacheSpaceBegin = getCache(cacheSpaceBegin,
+            () -> BasicText.super.isSpaceBegin());
+        return cacheSpaceBegin.get();
+    }
+
+    @Override
+    public boolean isSpaceEnd(){
+        cacheSpaceEnd = getCache(cacheSpaceEnd,
+            () -> BasicText.super.isSpaceEnd());
+        return cacheSpaceEnd.get();
+    }
+
+    @Override
+    public List<StyleInfo> getBranchStyles(){
         return ImmutableList.of();
     }
 
+    /** Counts the number of words by spliting word count*/
     public int wordCount(){
-        return Splitter.on(CharMatcher.whitespace()).omitEmptyStrings()
-            .splitToList(getParsed()).size();
+        wordCount = getCache(wordCount,
+            () -> Splitter.on(CharMatcher.whitespace())
+                .omitEmptyStrings()
+                .splitToList(getTrimmed())
+                .size());
+        return wordCount.get();
     }
 
     @Override
@@ -45,4 +75,21 @@ public class ContentSpan extends SpanBranch implements BasicText{
         }
         return ans;
     }
+
+    @Override
+    protected SetupParser getParser(String text){
+        return null;
+    }
+
+    @Override
+    protected void childEdited(){
+        cacheText = Optional.empty();
+        cacheTrimmed = Optional.empty();
+        cacheSpaceBegin = Optional.empty();
+        cacheSpaceEnd = Optional.empty();
+        wordCount = Optional.empty();
+    }
+
+    @Override
+    protected void docEdited(){}
 }

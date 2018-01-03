@@ -5,15 +5,18 @@ import com.creativeartie.jwriter.lang.*;
 import java.util.*;
 import com.google.common.collect.*;
 
+/**
+ * Minor division of a document, sometimes with an outline point.
+ */
 public class SectionOutline extends Section{
 
     private SectionHeading parentSection;
-    private Optional<LinedSpanSection> outlineHeading;
+    private Optional<LinedSpanLevelSection> outlineHeading;
     private Optional<SectionOutline> parentOutline;
     private ArrayList<SectionOutline> childrenOutline;
     private int outlineLevel;
 
-    SectionOutline(int level, LinedSpanSection heading, SectionOutline parent,
+    SectionOutline(int level, LinedSpanLevelSection heading, SectionOutline parent,
         SectionHeading section)
     {
         parentSection = section;
@@ -23,7 +26,7 @@ public class SectionOutline extends Section{
         childrenOutline = new ArrayList<>();
     }
 
-    Optional<SectionOutline> append(LinedSpanSection section){
+    Optional<SectionOutline> append(LinedSpanLevelSection section){
         int level = section.getLevel();
         if (level <= outlineLevel){
             if (parentOutline.isPresent()){
@@ -50,7 +53,7 @@ public class SectionOutline extends Section{
     }
 
     @Override
-    public Optional<LinedSpanSection> getLine(){
+    public Optional<LinedSpanLevelSection> getLine(){
         return outlineHeading;
     }
 

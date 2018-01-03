@@ -25,11 +25,10 @@ public class LinedLevelHeadDebug {
     private LinedParseLevel[] parsers = LinedParseLevel.values();
 
     @Test
-    public void heading(){
+    public void basicHeading(){
         String raw = "===@sub-id:W_Under_#abc";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
-        IDBuilder builder = buildId("id").addCategory("sub");
-        doc.addId(builder, 0);
+        IDBuilder builder = doc.addId(buildId("id").addCategory("sub"), 0);
 
         HeadLevelLineTest heading = new HeadLevelLineTest()
             .setFormattedSpan(doc, 0, 4).setLinedType(LinedType.HEADING)
@@ -70,12 +69,11 @@ public class LinedLevelHeadDebug {
     }
 
     @Test
-    public void outline(){
+    public void basicOutline(){
         String raw = "!#@id:b {!todo   } #DRAFT #1";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
 
-        IDBuilder builder = buildId("id");
-        doc.addId(builder, 1);
+        IDBuilder builder = doc.addId(buildId("id"), 1);
 
         HeadLevelLineTest heading = new HeadLevelLineTest()
            .setFormattedSpan(doc, 0, 4).setLinedType(LinedType.OUTLINE)
@@ -120,21 +118,23 @@ public class LinedLevelHeadDebug {
     }
 
     @Test
-    public void tripleHeading(){
+    public void basicTripleHeading(){
         String raw = "=abc\n=Chapter 2\n=Chapter 3";
         DocumentAssert doc = DocumentAssert.assertDoc(3, raw, parsers);
 
         HeadLevelLineTest heading1 = new HeadLevelLineTest()
-           .setFormattedSpan(doc, 0, 1).setLinedType(LinedType.HEADING)
+            .setFormattedSpan(doc, 0, 1).setLinedType(LinedType.HEADING)
             .setLevel(1).setEdition(EditionType.NONE)
-            .setPublishTotal(1).setNoteTotal(0);
+            .setPublishTotal(1).setNoteTotal(0)
+            .setIsLast(false);
         FormatMainTest content1 = new FormatMainTest()
             .setPublishTotal(1).setNoteTotal(0);
 
         HeadLevelLineTest heading2 = new HeadLevelLineTest()
            .setFormattedSpan(doc, 1, 1).setLinedType(LinedType.HEADING)
             .setLevel(1).setEdition(EditionType.NONE)
-            .setPublishTotal(2).setNoteTotal(0);
+            .setPublishTotal(2).setNoteTotal(0)
+            .setIsLast(false);
         FormatMainTest content2 = new FormatMainTest()
             .setPublishTotal(2).setNoteTotal(0);
 
@@ -162,18 +162,17 @@ public class LinedLevelHeadDebug {
         content3.test(    doc, 1, "Chapter 3",    2, 1);
         doc.assertChild(        1, "Chapter 3",   2, 1, 0);
         doc.assertTextLeaf(17, 26, "Chapter 3",   2, 1, 0, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void spacedDirectoryFullHeading(){
+    public void basicSpacedHeading(){
         String raw = "===   @id:Title #abc";
 
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
 
-        IDBuilder builder = buildId("id");
-        doc.addId(builder, 0);
+        IDBuilder builder = doc.addId(buildId("id"), 0);
 
         HeadLevelLineTest heading = new HeadLevelLineTest()
            .setFormattedSpan(doc, 0, 4).setLinedType(LinedType.HEADING)
@@ -203,18 +202,17 @@ public class LinedLevelHeadDebug {
         doc.assertKeyLeaf( 16, 17, "#",      0, 5, 0);
         doc.assertChild(        1, "abc",    0, 5, 1);
         doc.assertTextLeaf(17, 20, "abc",    0, 5, 1, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void noStatusHeading(){
+    public void missingStatus(){
         String raw = "===@id:Title";
 
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
 
-        IDBuilder builder = buildId("id");
-        doc.addId(builder, 0);
+        IDBuilder builder = doc.addId(buildId("id"), 0);
 
         HeadLevelLineTest heading = new HeadLevelLineTest()
            .setFormattedSpan(doc, 0, 4).setLinedType(LinedType.HEADING)
@@ -238,18 +236,17 @@ public class LinedLevelHeadDebug {
         main.test(        doc, 1, "Title", 0, 4);
         doc.assertChild(       1, "Title", 0, 4, 0);
         doc.assertTextLeaf(7, 12, "Title", 0, 4, 0, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void nonSpacedDirectoryTitlelessHeading(){
+    public void missingTitle(){
         String raw = "===@id:#abc";
 
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
 
-        IDBuilder builder = buildId("id");
-        doc.addId(builder, 0);
+        IDBuilder builder = doc.addId(buildId("id"), 0);
 
         HeadLevelLineTest heading = new HeadLevelLineTest()
            .setLinedType(LinedType.HEADING)
@@ -273,17 +270,16 @@ public class LinedLevelHeadDebug {
         edition.test(     doc, 2, "#abc", 0, 4);
         doc.assertKeyLeaf( 7,  8, "#",    0, 4, 0);
         doc.assertTextLeaf(8, 11, "abc",  0, 4, 1, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
     @Test
-    public void partlyDirectoryHeading(){
+    public void missingIdColon(){
         String raw = "===@id";
 
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
 
-        IDBuilder builder = buildId("id");
-        doc.addId(builder, 0);
+        IDBuilder builder = doc.addId(buildId("id"), 0);
 
         HeadLevelLineTest heading = new HeadLevelLineTest()
            .setLinedType(LinedType.HEADING)
@@ -301,12 +297,12 @@ public class LinedLevelHeadDebug {
         id.test(         doc, 1, "id",  0, 2);
         doc.assertChild(      1, "id",  0, 2, 0);
         doc.assertIdLeaf( 4,  6, "id",  0, 2, 0, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void idLessHeading(){
+    public void misingId(){
         String raw = "===Title#abc";
 
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
@@ -330,12 +326,12 @@ public class LinedLevelHeadDebug {
         doc.assertKeyLeaf( 8,  9, "#",     0, 2, 0);
         doc.assertChild(       1, "abc",   0, 2, 1);
         doc.assertTextLeaf(9, 12, "abc",   0, 2, 1, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void statusOnlyHeading(){
+    public void missingIdTitle(){
         String raw = "===#abc";
 
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
@@ -353,12 +349,12 @@ public class LinedLevelHeadDebug {
         edition.test(     doc, 2, "#abc", 0, 1);
         doc.assertKeyLeaf( 3, 4, "#",     0, 1, 0);
         doc.assertTextLeaf(4, 7, "abc",   0, 1, 1, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void heading6(){
+    public void levelHeading6(){
         String raw = "======abc\n";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
 
@@ -375,12 +371,12 @@ public class LinedLevelHeadDebug {
         doc.assertChild(       1, "abc",    0, 1, 0);
         doc.assertTextLeaf(6,  9, "abc",    0, 1, 0, 0);
         doc.assertKeyLeaf( 9, 10, "\n",     0, 2);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void heading1(){
+    public void levelHeading1(){
         String raw = "=abc\n";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
 
@@ -397,7 +393,92 @@ public class LinedLevelHeadDebug {
         doc.assertChild(      1, "abc", 0, 1, 0);
         doc.assertTextLeaf(1, 4, "abc", 0, 1, 0, 0);
         doc.assertKeyLeaf( 4, 5, "\n",  0, 2);
+        doc.assertLast();
+        doc.assertIds();
+    }
 
+    @Test
+    public void editHeadingLevel(){
+        String before = "===abc#DRAFT text\n";
+        DocumentAssert doc = DocumentAssert.assertDoc(1, before, parsers);
+        doc.delete(0, 1, 0);
+        editCommon(doc, LinedType.HEADING);
+    }
+
+    @Test
+    public void editContent(){
+        ///              012345678901234567
+        String before = "==ac#DRAFT text\n";
+        DocumentAssert doc = DocumentAssert.assertDoc(1, before, parsers);
+        doc.insert(3, "b", 0);
+        editCommon(doc, LinedType.HEADING);
+    }
+
+    @Test
+    public void editLevelByContent(){
+        ///              012345678901234567
+        String before = "=abc#DRAFT text\n";
+        DocumentAssert doc = DocumentAssert.assertDoc(1, before, parsers);
+        doc.insert(1, "=", 0);
+        editCommon(doc, LinedType.HEADING);
+    }
+
+    @Test
+    public void editOutlineLevel(){
+        String before = "!##abc#DRAFT text\n";
+        DocumentAssert doc = DocumentAssert.assertDoc(1, before, parsers);
+        doc.delete(1, 2, 0);
+        editCommon(doc, LinedType.OUTLINE);
+    }
+
+    @Test
+    public void editEdition(){
+        ///              01234567890123
+        String before = "==abc#DRAFT t\n";
+        DocumentAssert doc = DocumentAssert.assertDoc(1, before, parsers);
+        doc.insert(12, "tex", 0, 2);
+        editCommon(doc, LinedType.HEADING);
+    }
+
+    private void editCommon(DocumentAssert doc, LinedType type){
+        String starter;
+        int level, publish, note;
+        if (type == LinedType.HEADING){
+            starter = "==";
+            level = 2;
+            publish = 1;
+            note = 0;
+        } else {
+            starter = "!#";
+            level = 1;
+            publish = 0;
+            note = 1;
+        }
+        ///             01        23456789012345 6
+        String after = starter + "abc#DRAFT text\n";
+        doc.assertDoc(1, after);
+
+        HeadLevelLineTest heading = new HeadLevelLineTest()
+           .setFormattedSpan(doc, 0, 1).setLinedType(type)
+            .setLevel(level).setEdition(EditionType.DRAFT)
+            .setPublishTotal(publish).setNoteTotal(note);
+        FormatMainTest main = new FormatMainTest()
+            .setPublishTotal(1).setNoteTotal(0);
+        EditionTest edition = new EditionTest()
+            .setEdition(EditionType.DRAFT)
+            .setText("text");
+
+        heading.test(    doc,   4, after,          0);
+        doc.assertKeyLeaf( 0,   2, starter,        0, 0);
+        main.test(       doc,   1, "abc",          0, 1);
+        doc.assertChild(        1, "abc",          0, 1, 0);
+        doc.assertTextLeaf(2,   5, "abc",          0, 1, 0, 0);
+        edition.test(    doc,   2, "#DRAFT text",  0, 2);
+        doc.assertKeyLeaf( 5,  11, "#DRAFT",       0, 2, 0);
+        doc.assertChild(        1, " text",        0, 2, 1);
+        doc.assertTextLeaf(11, 16, " text",        0, 2, 1, 0);
+        doc.assertKeyLeaf( 16, 17, "\n",           0, 3);
+        doc.assertLast();
         doc.assertIds();
     }
 }

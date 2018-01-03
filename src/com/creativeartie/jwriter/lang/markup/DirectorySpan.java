@@ -5,65 +5,88 @@ import java.util.*;
 import com.google.common.collect.*;
 
 import com.creativeartie.jwriter.lang.*;
-import com.creativeartie.jwriter.main.*;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
- * Created from {@link DirectorySpan}. Used to store {@link CatalogueIdentity}
+ * Grouping of text {@link Span} that creates a {@link CatalogueIdentity}.
+ * Represented in design/ebnf.txt as {@code Directory}.
  */
-public class DirectorySpan extends SpanBranch {
+public final class DirectorySpan extends SpanBranch {
     /// helps with categorizing and describes purpose
-    private final Optional<DirectoryType> purpose;
-    
-    DirectorySpan(List<Span> spanChildren, Optional<DirectoryType> idPurpose){
+    private final DirectoryType idPurpose;
+    private Optional<CatalogueIdentity> cacheId;
+    private Optional<String> cacheRaw;
+    private final DirectoryParser spanReparser;
+
+    DirectorySpan(List<Span> spanChildren, DirectoryType purpose,
+            DirectoryParser reparser){
         super(spanChildren);
-        Checker.checkNotNull(idPurpose, "idPurpose");
-        purpose = idPurpose;
+        idPurpose = checkNotNull(purpose, "purpose");
+        spanReparser = checkNotNull(reparser, "reparser");
     }
-    
+
+    /** Creates the id for a {@link Catalogued}*/
     CatalogueIdentity buildId(){
-        ArrayList<String> builder = new ArrayList<>();
-        purpose.ifPresent(found -> builder.add(found.getCategory()));
-        Optional<String> idTmp = Optional.empty();
-        for(Span child: this){
-            if (child instanceof SpanLeaf){
-                builder.add(idTmp.orElse(""));
-                idTmp = Optional.empty();
-            } else {
-                idTmp = Optional.of(((ContentSpan)child).getParsed()
-                    .toLowerCase());
+        cacheId = getCache(cacheId, () -> {
+            ArrayList<String> builder = new ArrayList<>();
+            builder.add(idPurpose.getCategory());
+
+            // idTmp is tmp because the text maybe a category
+            Optional<String> idTmp = Optional.empty();
+            for(Span child: this){
+                if (child instanceof SpanLeaf){
+                    /// child == DIRECTORY_CATEGORY:
+                    builder.add(idTmp.orElse(""));
+                    idTmp = Optional.empty();
+                } else {
+                    /// child is a text
+                    idTmp = Optional.of(((ContentSpan)child).getTrimmed()
+                        .toLowerCase());
+                }
             }
-        }
-        return new CatalogueIdentity(builder, idTmp.orElse(""));
-    }
-    
-    public String getIdRaw(){
-        StringBuilder builder = new StringBuilder();
-        this.forEach((span) -> {
-            builder.append(span.getRaw());
+            return new CatalogueIdentity(builder, idTmp.orElse(""));
         });
-        return builder.toString();
+        return cacheId.get();
     }
-    
+
+    /** Get the display for {@link FormatSpanDirectory#getOutput()}*/
+    public String getIdRaw(){
+        cacheRaw = getCache(cacheRaw, () -> {
+            StringBuilder builder = new StringBuilder();
+            this.forEach((span) -> {
+                builder.append(span.getRaw());
+            });
+            return builder.toString();
+        });
+        return cacheRaw.get();
+    }
+
+    /** Get the purpose of this span. */
     public DirectoryType getPurpose(){
-        //TODO
-        return purpose.isPresent()? purpose.get(): null;
+        return idPurpose;
     }
-    
+
     @Override
-    public List<DetailStyle> getBranchStyles(){
+    public List<StyleInfo> getBranchStyles(){
         return ImmutableList.of();
     }
-    
-    DetailStyle getStatusState(){
-        CatalogueData data = getDocument().getCatalogue().get(buildId());
-        if (data == null) {
-            return CatalogueStatus.NO_ID;
-        }
-        return data.getState();
-    }
-        
+
     @Override
     public String toString(){
         return "ID" + buildId().toString();
     }
+
+    @Override
+    protected SetupParser getParser(String text){
+        return spanReparser.canParse(text)? spanReparser: null;
+    }
+
+    @Override
+    protected void childEdited(){
+        cacheId = Optional.empty();
+        cacheRaw = Optional.empty();
+    }
+
+    @Override
+    protected void docEdited(){}
 }

@@ -7,7 +7,10 @@ import com.google.common.base.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import com.creativeartie.jwriter.lang.*;
 
-public enum InfoFieldType implements DetailStyle{
+/**
+ * Styles describe the type of data.
+ */
+public enum InfoFieldType implements StyleInfo{
 
     SOURCE(InfoDataParser.FORMATTED), IN_TEXT(InfoDataParser.TEXT),
     FOOTNOTE(InfoDataParser.TEXT),
@@ -22,10 +25,5 @@ public enum InfoFieldType implements DetailStyle{
 
     Optional<SetupParser> getDataParser(){
         return dataParser;
-    }
-
-    @Deprecated
-    public String getCode(){
-        return CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_UNDERSCORE, name());
     }
 }

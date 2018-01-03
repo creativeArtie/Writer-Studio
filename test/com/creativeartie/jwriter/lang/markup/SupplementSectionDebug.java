@@ -52,7 +52,8 @@ public class SupplementSectionDebug {
                 });
             }
         }
-        return data;
+        // return data;
+        return new ArrayList<>();
     }
 
     private static ManuscriptDocument[] docs;
@@ -135,8 +136,8 @@ public class SupplementSectionDebug {
         return loc == -1? null: (MainSpanSection)doc.get(loc);
     }
 
-    private LinedSpanSection getTopLine(int loc){
-        return loc == -1? null: (LinedSpanSection)doc.get(loc).get(0);
+    private LinedSpanLevelSection getTopLine(int loc){
+        return loc == -1? null: (LinedSpanLevelSection)doc.get(loc).get(0);
     }
 
 

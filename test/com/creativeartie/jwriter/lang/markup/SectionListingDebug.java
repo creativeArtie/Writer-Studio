@@ -121,7 +121,7 @@ public class SectionListingDebug{
             ((SpanBranch)(docs[doc - 1]).get(ptrSpan)).get(0):
             null;
 
-        Optional<LinedSpanSection> test = search.getLine();
+        Optional<LinedSpanLevelSection> test = search.getLine();
         System.out.println(expect);
         if (expect == null){
             assertFalse(test.toString(), test.isPresent());

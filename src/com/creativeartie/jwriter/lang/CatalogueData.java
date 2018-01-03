@@ -3,29 +3,39 @@ package com.creativeartie.jwriter.lang;
 import java.util.*;
 import com.google.common.collect.*;
 
-import com.creativeartie.jwriter.main.*;
+import static com.creativeartie.jwriter.main.Checker.*;
 
-import static com.google.common.base.Preconditions.*;
-
+/** A list of {@link SpanBranch} with the same {@link CatalogueIdentity}. */
 public final class CatalogueData{
     private final ArrayList<SpanBranch> idSpans;
     private final ArrayList<SpanBranch> refSpans;
     private final CatalogueMap catalogueParent;
     private final CatalogueIdentity catelogueKey;
 
-    public CatalogueData(CatalogueMap parent, CatalogueIdentity id){
-        catalogueParent = checkNotNull(parent);
-        catelogueKey = checkNotNull(id);
+    /** {@linkplain CatalogueData}'s constructor.*/
+    CatalogueData(CatalogueMap parent, CatalogueIdentity id){
+        catalogueParent = checkNotNull(parent, "parent");
+        catelogueKey = checkNotNull(id, "id");
         idSpans = new ArrayList<>();
         refSpans = new ArrayList<>();
     }
 
     void addId(SpanBranch span){
-        idSpans.add(checkNotNull(span, "Span can be null."));
+        checkNotNull(span, "Span");
+        checkArgument(span instanceof Catalogued,
+            "Parameter \"span\" is not of type Catalogued.");
+        checkArgument(((Catalogued)span).isId(),
+            "Parameter \"span\" is no an id. ");
+
+        idSpans.add(span);
     }
 
     void addRef(SpanBranch span){
-        refSpans.add(checkNotNull(span, "Span can be null."));
+        checkNotNull(span, "Span");
+        checkArgument(((Catalogued)span).isRef(),
+            "Parameter \"span\" is no an id. ");
+
+        refSpans.add(span);
     }
 
     public CatalogueMap getParent(){
@@ -36,6 +46,7 @@ public final class CatalogueData{
         return catelogueKey;
     }
 
+    /** Get the {@link CatalogueStatus} based on the Span stored. */
     public CatalogueStatus getState(){
         if (idSpans.size() > 1){
             return CatalogueStatus.MULTIPLE;
@@ -43,18 +54,23 @@ public final class CatalogueData{
             assert !refSpans.isEmpty();
             return CatalogueStatus.NOT_FOUND;
         } else if (refSpans.isEmpty()){
+            assert !idSpans.isEmpty();
             return CatalogueStatus.UNUSED;
         }
         return CatalogueStatus.READY;
     }
 
+    /** Check if this is ready (that is: {@code idSpan.size() == 1}). */
     public boolean isReady(){
-        return getState() == CatalogueStatus.READY;
+        CatalogueStatus state = getState();
+        return state == CatalogueStatus.READY ||
+            getState() == CatalogueStatus.UNUSED;
     }
 
     public SpanBranch getTarget(){
         checkState(idSpans.size() == 1,
-            "Cannot have more then one id span: %s.", getState());
+            "Id (" + catelogueKey + ") is in the wrong state.");
+
         return idSpans.get(0);
     }
 

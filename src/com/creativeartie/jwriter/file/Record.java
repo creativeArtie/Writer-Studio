@@ -1,23 +1,26 @@
 package com.creativeartie.jwriter.file;
 
 import java.util.*;
-import java.util.Optional;
 import java.time.*;
 
-import com.google.common.base.*;
-import static com.google.common.base.Preconditions.*;
+import com.google.common.base.MoreObjects;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
- * A single line of record with date, with word counts and goals
+ * A single line of record with date, with word counts and goals. Instances of
+ * this class is created through {@link RecordList}.
  */
 public final class Record{
 
+    /** Creates the first {@link Record} of a {@link RecordList}. */
     static Record firstRecord(){
-        return new Record().new Builder().build();
+        return new Record(LocalDate.now()).new Builder(null).build();
     }
 
+    /** Creates the next {@link Record} of a {@link RecordList}. */
     static Record newRecord(Record last){
-        return new Record().new Builder(last)
+        return new Record(LocalDate.now())
+            .new Builder(last)
             .setTimeGoal(last.timeGoal)
             .setPublishGoal(last.publishGoal)
             .setPublishTotal(last.publishTotal)
@@ -25,39 +28,37 @@ public final class Record{
             .build();
     }
 
-    static Builder builder(Record last){
-        return new Record().new Builder(last);
+    /** Creates a {@link Builder} to load {@link Record} from file. */
+    static Builder builder(Record last, LocalDate date){
+        return new Record(checkNotNull(date, "date"))
+            .new Builder(last);
     }
 
-    private LocalDate recordDate;
+    private final LocalDate recordDate;
 
+    /// Goal and counting writing time
     private Duration writeTime;
     private Duration timeGoal;
     private Optional<LocalDateTime> timeStarted;
 
+    /// Goal and counting words
     private int publishGoal;
     private int publishTotal;
     private int noteTotal;
 
+    /// Used to calulate the day's count.
     private Optional<Record> lastRecord;
 
     /**
-     * Builder class for a record.
+     * Builder class to create a {@link Record}.
      */
-    class Builder{
-        private Builder(){
-            this (null, LocalDate.now());
-        }
+    final class Builder{
 
+        /** {@linkplain Record.Builder}'s constructor.*/
         private Builder(Record record){
-            this (record, LocalDate.now());
-        }
-
-        private Builder(Record record, LocalDate date){
-            assert date != null: "Null date.";
+            // nullable record
 
             lastRecord = Optional.ofNullable(record);
-            recordDate = LocalDate.now();
 
             timeGoal = Duration.ofMinutes(30);
             publishGoal = 50;
@@ -67,33 +68,28 @@ public final class Record{
             timeStarted = Optional.empty();
         }
 
-        public Builder setRecordDate(LocalDate date){
-            recordDate = checkNotNull(date, "Date cannot be null.");
+        Builder setTimeGoal(Duration duration){
+            timeGoal = checkNotNull(duration, "duration");;
             return this;
         }
 
-        public Builder setTimeGoal(Duration duration){
-            timeGoal = checkNotNull(duration, "Duration cannot be null.");;
+        Builder setPublishGoal(int goal){
+            publishGoal = checkGreater(goal, "goal", 0, true);;
             return this;
         }
 
-        public Builder setPublishGoal(int goal){
-            publishGoal = checkNotNull(goal, "Goal cannot be null.");;
+        Builder setPublishTotal(int total){
+            publishTotal = checkGreater(total, "total", 0, true);
             return this;
         }
 
-        public Builder setPublishTotal(int total){
-            publishTotal = checkNotNull(total, "Total cannot be null.");
-            return this;
-        }
-
-        public Builder setNoteTotal(int total){
-            noteTotal = checkNotNull(total, "Total cannot be null.");;
+        Builder setNoteTotal(int total){
+            noteTotal = checkGreater(total, "total", 0, true);
             return this;
         }
 
         public Builder setWriteDuration(Duration time){
-            writeTime = checkNotNull(time, "Time cannot be null.");
+            writeTime = checkNotNull(time, "time");
             return this;
         }
 
@@ -102,33 +98,43 @@ public final class Record{
         }
     }
 
-    private Record(){}
+    /** {@linkplain Record}'s constructor.*/
+    private Record(LocalDate date){
+        assert date != null: "Null date.";
+        recordDate = date;
+    }
 
     public LocalDate getRecordDate(){
         return recordDate;
     }
 
+    /** Returns the total words target for publishing. */
     public int getPublishTotal(){
         return publishTotal;
     }
 
+    /** Returns the daily words target for publishing. */
     public int getPublishGoal(){
         return publishGoal;
     }
 
+    /** Set the daily words target for publishing. */
     public void setPublishGoal(int goal){
-        publishGoal = goal;
+        publishGoal = checkGreater(goal, "goal", 0, true);
     }
 
+    /** Get the day tally words written for publishing.*/
     public int getPublishWritten(){
         return lastRecord.map(record -> publishTotal - record.publishTotal)
             .orElse(publishTotal);
     }
 
+    /** Returns the total words target for planning and research. */
     public int getNoteTotal(){
         return noteTotal;
     }
 
+    /** Returns the total word count for everything */
     public int getTotalCount(){
         return publishTotal + noteTotal;
     }
@@ -142,25 +148,44 @@ public final class Record{
     }
 
     public void setTimeGoal(Duration goal){
+        checkNotNull(goal, "goal");
         timeGoal = goal;
     }
 
+    /**
+     * Start the record timer for the record. If the time has already started,
+     * only update the publish and note word count.
+     */
     void startWriting(int publish, int note){
+        checkGreater(publish, "publish", 0, true);
+        checkGreater(note, "note", 0, true);
         if (! timeStarted.isPresent()){
             timeStarted = Optional.of(LocalDateTime.now());
         }
         updateRecord(publish, note);
     }
 
+    /**
+     * Stop the record timer for the record. If the time has already stop,
+     * only update the publish and note word count.
+     */
     void stopWriting(int publish, int note){
+        checkGreater(publish, "publish", 0, true);
+        checkGreater(note, "note", 0, true);
         timeStarted.ifPresent(time ->
-            writeTime = writeTime.plus(Duration.between(time,
-                LocalDateTime.now())));
+            writeTime = writeTime.plus(
+                Duration.between(time, LocalDateTime.now())
+            )
+        );
         timeStarted = Optional.empty();
         updateRecord(publish, note);
     }
 
+    /// Helper method of {@link startWriting(int, int)} and
+    /// {@link stopWriting(int, int)}
     private void updateRecord(int publish, int note){
+        assert publish >= 0: "Off range publish";
+        assert note >= 0: "Off range note";
         publishTotal = publish;
         noteTotal = note;
     }

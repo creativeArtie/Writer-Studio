@@ -12,6 +12,10 @@ import com.google.common.io.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import com.creativeartie.jwriter.main.Checker;
 
+/**
+ * Main document that put all the {@link Span spans} together. Represented in
+ * design/ebnf.txt as {@code Manuscript}
+ */
 public class ManuscriptDocument extends Document{
 
     public ManuscriptDocument(File file) throws IOException{
@@ -54,7 +58,7 @@ public class ManuscriptDocument extends Document{
         {
 
             MainSpanSection section = (MainSpanSection) data.getTarget();
-            Optional<LinedSpanSection> found = section.getSelfSection();
+            Optional<LinedSpanLevelSection> found = section.getSelfSection();
             if (found.isPresent()){
                 if (found.get().getLinedType() == LinedType.HEADING){
                     heading = heading.appendHeading(found.get());
@@ -88,5 +92,15 @@ public class ManuscriptDocument extends Document{
             count += ((MainSpan)span).getNoteTotal();
         }
         return count;
+    }
+
+    @Override
+    protected void docEdited(){
+        // TODO docEdited
+    }
+
+    @Override
+    protected void childEdited(){
+        // TODO docEdited
     }
 }

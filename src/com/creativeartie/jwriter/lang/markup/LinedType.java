@@ -6,7 +6,10 @@ import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
-public enum LinedType implements DetailStyle{
+/**
+ * Sytles that describe heading sections.
+ */
+public enum LinedType implements StyleInfo{
     /// name() is being used to generate keys in window_text "TextView.*"
     /// LinedType follows the same order as PaneCheatsheatLabel.Name
 
@@ -54,7 +57,7 @@ public enum LinedType implements DetailStyle{
             }
             if (type.setupParser instanceof LinedParseLevel){
                 LinedParseLevel level = (LinedParseLevel)type.setupParser;
-                for (int i = LEVEL_MAX + 1; i > 0; i--){
+                for (int i = LEVEL_MAX; i > 0; i--){
                     if(raw.startsWith(getLevelToken(level, i))){
                         if (i == LEVEL_MAX + 1){
                             return LinedType.PARAGRAPH;

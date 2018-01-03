@@ -10,7 +10,7 @@ import static com.creativeartie.jwriter.lang.DocumentAssert.*;
 public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
     private Optional<CatalogueIdentity> expectId;
     private CatalogueStatus expectStatus;
-    private DetailStyle[] expectStyles;
+    private StyleInfo[] expectStyles;
     private boolean isCatalogued;
     private Class<T> cast;
 
@@ -20,7 +20,7 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         expectStatus = CatalogueStatus.NO_ID;
         isCatalogued = false;
         expectId = Optional.empty();
-        expectStyles = new DetailStyle[0];
+        expectStyles = new StyleInfo[0];
     }
 
     public T cast(){
@@ -50,12 +50,12 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         return expectStatus;
     }
 
-    public void setStyles(DetailStyle ... styles){
+    public void setStyles(StyleInfo ... styles){
         expectStyles = styles;
     }
 
-    public void addStyles(DetailStyle ... styles){
-        DetailStyle[] tmp = new DetailStyle[expectStyles.length + styles.length];
+    public void addStyles(StyleInfo ... styles){
+        StyleInfo[] tmp = new StyleInfo[expectStyles.length + styles.length];
         System.arraycopy(expectStyles, 0, tmp, 0, expectStyles.length);
         System.arraycopy(styles, 0, tmp, expectStyles.length, styles.length);
         expectStyles = tmp;
@@ -68,6 +68,7 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
     {
         setup();
         SpanBranch span = doc.assertChild(size, rawText, idx);
+
         assertArrayEquals(getError("styles", span), expectStyles, span
             .getBranchStyles().toArray());
 

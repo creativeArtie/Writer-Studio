@@ -15,6 +15,7 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 
 import com.creativeartie.jwriter.property.*;
+import com.creativeartie.jwriter.property.window.*;
 
 import com.creativeartie.jwriter.window.*;
 import com.creativeartie.jwriter.file.*;
@@ -30,9 +31,6 @@ abstract class PaneMonthView extends GridPane{
     private ReadOnlyObjectWrapper<YearMonth> firstMonth;
     private ReadOnlyObjectWrapper<YearMonth> finalMonth;
     private SimpleObjectProperty<RecordList> recordTable;
-    protected static String getString(String key){
-        return Utilities.getString("Calendar." + key);
-    }
 
     public PaneMonthView(){
         days = new PaneMonthDayControl[7 * 6];
@@ -125,8 +123,8 @@ abstract class PaneMonthView extends GridPane{
 
     private void layoutHeader(){
         FlowPane pane = new FlowPane(startMonth, pastMonth);
-        startMonth.setGraphic(EditIcon.START_MONTH.getIcon());
-        pastMonth.setGraphic(EditIcon.PAST_MONTH.getIcon());
+        startMonth.setGraphic(ButtonIcon.START_MONTH.getIcon());
+        pastMonth.setGraphic(ButtonIcon.PAST_MONTH.getIcon());
         pastMonth.setOnAction(event -> setYearMonth(getYearMonth()
             .minusMonths(1)));
         pane.setAlignment(Pos.BOTTOM_LEFT);
@@ -137,8 +135,8 @@ abstract class PaneMonthView extends GridPane{
         add(month, 2, 0, 3, 1);
 
         pane = new FlowPane(nextMonth, endMonth);
-        nextMonth.setGraphic(EditIcon.NEXT_MONTH.getIcon());
-        endMonth.setGraphic(EditIcon.END_MONTH.getIcon());
+        nextMonth.setGraphic(ButtonIcon.NEXT_MONTH.getIcon());
+        endMonth.setGraphic(ButtonIcon.END_MONTH.getIcon());
         nextMonth.setOnAction(event -> setYearMonth(getYearMonth()
             .plusMonths(1)));
         pane.setAlignment(Pos.BOTTOM_RIGHT);
@@ -148,8 +146,7 @@ abstract class PaneMonthView extends GridPane{
     private void layoutWeekdays(){
         int col = 0;
         for(DayOfWeek day: DayOfWeek.values()){
-            String key = Utilities.enumToKey(day.name());
-            Label header = new Label(getString(key));
+            Label header = new Label(WindowText.getText(day));
             header.getStyleClass().add("weekday");
             StackPane box = new StackPane(header);
             box.getStyleClass().add("weekday-box");

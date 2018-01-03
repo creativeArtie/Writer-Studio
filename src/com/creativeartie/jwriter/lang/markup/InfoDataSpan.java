@@ -5,9 +5,14 @@ import java.util.*;
 import com.google.common.collect.*;
 
 import com.creativeartie.jwriter.lang.*;
-import com.creativeartie.jwriter.main.Checker;
+import static com.creativeartie.jwriter.main.Checker.*;
 
+/**
+ * Base class for all {@link InfoDataSpan*} classes.
+ */
 public abstract class InfoDataSpan extends SpanBranch{
+
+    private Optional<List<StyleInfo>> cacheList;
 
     public abstract SpanBranch getData();
 
@@ -15,20 +20,26 @@ public abstract class InfoDataSpan extends SpanBranch{
 
     protected InfoDataSpan(List<Span> children, InfoDataType type){
         super(children);
-        dataType = Checker.checkNotNull(type, "type");
+        dataType = checkNotNull(type, "type");
     }
 
-    public InfoDataType getDataType(){
+    public final InfoDataType getDataType(){
         return dataType;
     }
 
     @Override
-    public List<DetailStyle> getBranchStyles(){
-        return ImmutableList.of(dataType);
+    public final List<StyleInfo> getBranchStyles(){
+        cacheList = getCache(cacheList, () -> ImmutableList.of(dataType));
+        return cacheList.get();
     }
 
     @Override
     public String toString(){
         return "{" + getData() + "}";
+    }
+
+    @Override
+    protected void childEdited(){
+        cacheList = Optional.empty();
     }
 }

@@ -1,9 +1,10 @@
 package com.creativeartie.jwriter.lang.markup;
 
-import java.util.List;
-import java.util.Arrays;
+import java.util.*;
 
-import com.creativeartie.jwriter.main.Checker;
+import static com.creativeartie.jwriter.main.Checker.*;
+import com.creativeartie.jwriter.lang.*;
+import com.google.common.collect.*;
 
 /**
  * All strings used in this package. Each field (private and public) has its own
@@ -29,6 +30,13 @@ public final class AuxiliaryData{
     private static final String LEVEL_NUMBERED = "#";
     private static final String LEVEL_OUTLINE  = "#";
     private static final String LEVEL_BULLET   = "-";
+    public static String[] getLevelToken(LinedParseLevel parser){
+        String[] levels = new String[LEVEL_MAX];
+        for (int i = 0; i < LEVEL_MAX; i++){
+            levels[i] = getLevelToken(parser, LEVEL_MAX - i);
+        }
+        return levels;
+    }
     /** Creates a Leveled Line begin token.
      * @param parser
      *      use to specific which token. This should be all of them.
@@ -38,32 +46,51 @@ public final class AuxiliaryData{
      *      the starter token created
      */
     public static String getLevelToken(LinedParseLevel parser, int level){
-        Checker.checkNotNull(parser, "useParser");
-        Checker.checkInt(level, "forLevel", 0, false, LEVEL_MAX + 1, true);
+        checkNotNull(parser, "parser");
+        checkRange(level, "level", 0, false, LEVEL_MAX, true);
         switch (parser){
-            case HEADING:
-                /// ==
-                return repeat(LEVEL_HEADING, level);
-            case OUTLINE:
-                /// !##
-                return LINED_BEGIN + repeat(LEVEL_OUTLINE, level);
-            case NUMBERED:
-                /// \t#
-                return repeat(LEVEL_BEGIN, level - 1) + LEVEL_NUMBERED;
-            case BULLET:
-                /// \t-
-                return repeat(LEVEL_BEGIN, level - 1) + LEVEL_BULLET;
-            default:
-                throw Checker.typeNotUse(parser, "useParser");
+        case HEADING:
+            /// =, ==, ===, ...
+            return repeat(LEVEL_HEADING, level);
+        case OUTLINE:
+            /// !#, !##, !###, ...
+            return LINED_BEGIN + repeat(LEVEL_OUTLINE, level);
+        case NUMBERED:
+            /// #, \t#, \t\t#, ...
+            return repeat(LEVEL_BEGIN, level - 1) + LEVEL_NUMBERED;
+        case BULLET:
+            /// -, \t-, \t\t-
+            return repeat(LEVEL_BEGIN, level - 1) + LEVEL_BULLET;
+        default:
+            throw new IllegalArgumentException("LinedParseLavel not use: " +
+                parser);
         }
     }
     /// getLevelToken helper
     private static String repeat(String repeat, int level){
+        assert repeat != null: "Null repeat";
         StringBuilder builder = new StringBuilder();
         for(int i = 0; i < level; i++){
             builder.append(repeat);
         }
         return builder.toString();
+    }
+    public static List<String> getLinedTokens(){
+        ArrayList<String> list = new ArrayList<>();
+        for (LinedParseLevel parser: LinedParseLevel.values()){
+            for (String token: getLevelToken(parser)){
+                list.add(token);
+            }
+        }
+        list.add(LINED_AGENDA);
+        list.add(LINED_NOTE);
+        list.add(LINED_CITE);
+        list.add(LINED_LINK);
+        list.add(LINED_FOOTNOTE);
+        list.add(LINED_ENDNOTE);
+        list.add(LINED_QUOTE);
+        list.add(LINED_BREAK);
+        return list;
     }
 
     /// @Part-1-2: Other Lined Details -----------------------------------------
@@ -164,7 +191,8 @@ public final class AuxiliaryData{
         return new String[]{
             CURLY_AGENDA, CURLY_FOOTNOTE, CURLY_ENDNOTE, CURLY_CITE,
             LINK_BEGIN, LINK_REF,
-            /* FORMAT_BOLD, */ FORMAT_ITALICS, FORMAT_UNDERLINE, FORMAT_CODED};
+            /* FORMAT_BOLD, */ FORMAT_ITALICS, FORMAT_UNDERLINE, FORMAT_CODED
+        };
     }
 
     /// ========================================================================
@@ -190,22 +218,42 @@ public final class AuxiliaryData{
     public static final List<String> TYPE_AGENDA_LINED = Arrays.asList(
         TYPE_AGENDA);
 
-
-    /// @Part-2-2: Possible style catagory name. -------------------------------
-    /// For AuxilliaryType, DirectoryType, EditionType, FormatType,
-    ///     InfoFieldType, InfoDataType, LinedType
-
-    public static final String STYLE_OTHER    = "OTHER"  ; /// AuxilliaryType
-    public static final String STYLE_EDITION  = "EDITION"; /// EditionType
-    public static final String STYLE_FORMAT   = "FORMAT" ; /// FormatType
-    public static final String STYLE_FIELD    = "FIELD"  ; /// InfoFieldType
-    public static final String STYLE_INLINE   = "INLINE" ; /// AuxilliaryType
-    public static final String STYLE_CATEGORY = "INLINE" ; /// DirectoryType
-    public static final String STYLE_LINED    = "LINED"  ; /// LinedType
-    public static final String STYLE_MAIN     = "MAIN"   ; /// AuxilliaryType
-    public static final String STYLE_DATA     = "DATA"   ; /// InfoDataType
-
     /// ========================================================================
-    /// @Part-3: Private Constructor -------------------------------------------
+    /// @Part-3: Setup Parsers -------------------------------------------------
+
+    /// Part-3-1: Content Span Parsers -----------------------------------------
+    static final SetupParser CONTENT_BASIC = new ContentParser(
+        StyleInfoLeaf.TEXT);
+    static final SetupParser CONTENT_AGENDA = new ContentParser(
+        StyleInfoLeaf.TEXT, CURLY_END);
+    static final SetupParser CONTENT_LINK = new ContentParser(
+        StyleInfoLeaf.TEXT, LINK_END);
+    static final SetupParser CONTENT_DATA = new ContentParser(
+        StyleInfoLeaf.DATA);
+    static final SetupParser CONTENT_DIR_LINK  = new ContentParser(
+        StyleInfoLeaf.PATH);
+    static final SetupParser CONTENT_LINE_LINK = new ContentParser(
+        StyleInfoLeaf.PATH, LINK_TEXT, LINK_END);
+
+    /// Part-3-2: Formatted Span Parsers ---------------------------------------
+    static final SetupParser FORMATTED_BASIC = new FormatParser(
+        StyleInfoLeaf.TEXT);
+    static final SetupParser FORMATTED_DATA = new FormatParser(
+        StyleInfoLeaf.DATA);
+    static final SetupParser FORMATTED_HEAD = new FormatParser(
+        StyleInfoLeaf.TEXT, EDITION_BEGIN);
+
+    /// Part-3-3: Main Section Line Parsers
+    public static final List<SetupParser> SECTION_PARSERS = getSectionParsers();
+
+    private static List<SetupParser> getSectionParsers(){
+        ImmutableList.Builder<SetupParser> builder = ImmutableList.builder();
+        builder.add(LinedParseLevel.BULLET, LinedParseLevel.NUMBERED);
+        builder.add(LinedParsePointer.values());
+        builder.add(LinedParseRest.getSectionList());
+        return builder.build();
+    }
+    /// ========================================================================
+    /// @Part-4: Private Constructor -------------------------------------------
     private AuxiliaryData(){}
 }

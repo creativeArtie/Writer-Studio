@@ -1,54 +1,46 @@
 package com.creativeartie.jwriter.lang;
 
 import java.util.*;
+import java.util.function.*;
 import com.google.common.collect.*;
 
+import static com.creativeartie.jwriter.main.Checker.*;
+
 /**
- * A {@link Span} handling {@link SpanLeaf}
+ * A {@link Span} storing {@link SpanLeaf} and {@link SpanBranch}.
  */
 public abstract class SpanBranch extends SpanNode<Span> {
 
-    private final ArrayList<Span> spanChildren;
+    private ArrayList<Span> spanChildren;
 
     private SpanNode<?> spanParent;
 
+    private Optional<Document> spanDoc;
+
+    private Optional<CatalogueStatus> spanStatus;
+
     public SpanBranch(List<Span> spans){
-        spanChildren = new ArrayList<>(spans);
-        setParents(spanChildren);
+        spanChildren = setParents(spans);
+        spanStatus = Optional.empty();
+        childEdited();
+        docEdited();
     }
 
-    private void setParents(List<Span> spans){
-        spans.forEach((span) -> {
+    /**
+     * Set the children's parent to this. Helper method of
+     * {@link #SpanBranch(List)} and {@link #editRaw(String)}.
+     */
+    private final ArrayList<Span> setParents(List<Span> spans){
+        checkNotEmpty(spans, "spans");
+        ArrayList<Span> ans = new ArrayList<>(spans);
+        ans.forEach((span) -> {
             if (span instanceof SpanBranch){
                 ((SpanBranch)span).setParent(this);
             } else {
                 ((SpanLeaf)span).setParent(this);
             }
         });
-    }
-
-    protected int search(String raw, String escape, List<String> find){
-        return search(raw, escape, find.toArray(new String[0]));
-    }
-
-    protected int search(String raw, String escape, String ... find){
-        boolean isEscape = false;
-        for(int i = 0; i < raw.length(); i++){
-            if (isEscape){
-                isEscape = false;
-            } else {
-                if (raw.startsWith(escape, i)){
-                    isEscape = true;
-                } else {
-                    for(String str: find){
-                        if (raw.startsWith(str, i)){
-                            return i;
-                        }
-                    }
-                }
-            }
-        }
-        return -1;
+        return ans;
     }
 
     @Override
@@ -57,23 +49,26 @@ public abstract class SpanBranch extends SpanNode<Span> {
     }
 
     @Override
-    public Document getDocument(){
-        return get(0).getDocument();
+    public final Document getDocument(){
+        return get(0).getDocument(); /// will eventually get to a SpanLeaf
     }
 
     @Override
-    public SpanNode<?> getParent(){
+    public final SpanNode<?> getParent(){
         return spanParent;
     }
 
-    void setParent(SpanNode<?> parent){
+    final void setParent(SpanNode<?> parent){
         spanParent = parent;
     }
 
-    public abstract List<DetailStyle> getBranchStyles();
+    /** Get style information about this {@linkplain SpanBranch}.*/
+    public abstract List<StyleInfo> getBranchStyles();
 
-    public List<SpanLeaf> getLeaves(){
+    @Override
+    public final List<SpanLeaf> getLeaves(){
         return getDocument().getLeavesCache(this, () -> {
+            /// Create the builder
             ImmutableList.Builder<SpanLeaf> builder = ImmutableList.builder();
             for(Span span: this){
                 if (span instanceof SpanLeaf){
@@ -86,29 +81,58 @@ public abstract class SpanBranch extends SpanNode<Span> {
         });
     }
 
-    void getStyles(List<DetailStyle> styles){
-        if (spanParent instanceof SpanBranch){
-            ((SpanBranch)spanParent).getStyles(styles);
-        }
-        styles.addAll(getBranchStyles());
+    /** Edit the children if this can hold the entire text. */
+    final boolean editRaw(String text){
+        checkNotEmpty(text, "text");
+        SetupParser parser = getParser(text);
+        if (parser != null){
+            /// It can be fully parsed.
+
+            /// Removes the children
+            for (Span span: this){
+                span.setRemove();
+            }
+            /// Reparse text
+            SetupPointer pointer = SetupPointer.updatePointer(text,
+                getDocument());
+            parser.parse(pointer).ifPresent(span ->
+                spanChildren = setParents(span)
+            );
+            /// There are text left over.
+            if (pointer.hasNext()){
+                throw new IllegalStateException("Has left over characters.");
+            }
+            setUpdated();
+            spanStatus = Optional.empty();
+            return true;
+       }
+       return false;
     }
 
-    boolean editRaw(String text){
-       return editRaw(spanChildren, text);
-    }
-    protected boolean editRaw(ArrayList<Span> children, String text){
-        return false;
-    }
+    /** Gets the parser only if it can reparsed the whole text. */
+    protected abstract SetupParser getParser(String text);
 
     public final CatalogueStatus getIdStatus(){
-        if (this instanceof Catalogued){
-            Catalogued catalogued = (Catalogued) this;
-            Optional<CatalogueIdentity> id = catalogued.getSpanIdentity();
-            if (id.isPresent()){
-                return id.get().getStatus(getDocument().getCatalogue());
+        spanStatus = getCache(spanStatus, () -> {
+            if (this instanceof Catalogued){
+                Catalogued catalogued = (Catalogued) this;
+                Optional<CatalogueIdentity> id = catalogued.getSpanIdentity();
+                if (id.isPresent()){
+                    return id.get().getStatus(getDocument().getCatalogue());
+                }
             }
-        }
-        return CatalogueStatus.NO_ID;
+            return CatalogueStatus.NO_ID;
+        });
+        return spanStatus.get();
+    }
 
+    /** A simple cache method that make use of {@link Optional}.*/
+    protected <T> Optional<T> getCache(Optional<T> found, Supplier<T> maker){
+        checkNotNull(found, "found");
+        checkNotNull(maker, "maker");
+        if (found.isPresent()){
+            return found;
+        }
+        return Optional.of(maker.get());
     }
 }

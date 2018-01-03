@@ -1,42 +1,30 @@
 package com.creativeartie.jwriter.lang.markup;
 
-import java.util.*; 
+import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
-import com.creativeartie.jwriter.main.*;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
- * Creates a text span upto a certain character.
+ * Parser for {@link FormatSpanContent}.
  */
-class FormatParseContent extends BasicParseText{
-    
+final class FormatParseContent extends BasicParseText{
+
     private boolean[] formatList;
-    private boolean willReparse;
-    
-    public FormatParseContent(SetupLeafStyle style, boolean[] formats, 
-        boolean reparse, List<String> enders
-    ){
-        this(style, formats, reparse, 
-            Checker.checkNotNull(enders, "enders")
-            .toArray(new String[0]));
-    }
-    
-    public FormatParseContent(SetupLeafStyle style, boolean[] formats, 
-        boolean reparse, String[] enders
-    ){
+
+    public FormatParseContent(StyleInfoLeaf style, boolean[] formats,
+            String ... enders){
         super(style, enders);
-        Checker.checkArraySize(formats, "formats", FORMAT_TYPES);
+        checkNotNull(formats, "formats");
+        checkEqual(formats.length, "formats.length", FORMAT_TYPES);
         formatList = Arrays.copyOf(formats, formats.length);
-        willReparse = reparse; /// no limitations
     }
 
     @Override
-    protected FormatSpanContent buildSpan(List<Span> children, 
-        List<String> enders, SetupLeafStyle style
-    ){
-        return new FormatSpanContent(children, formatList, enders, 
-            style, willReparse);
+    protected FormatSpanContent buildSpan(List<Span> children){
+        checkNotNull(children, "children");
+        return new FormatSpanContent(children, formatList, this);
     }
-    
+
 }

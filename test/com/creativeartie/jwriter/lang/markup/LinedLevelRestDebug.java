@@ -22,11 +22,11 @@ public class LinedLevelRestDebug {
     };
 
     @Test
-    public void numbered(){
+    public void basicNumbered(){
         String raw = "\t\t\t\t#@id:Text abc\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        BasicLevelLineTest numbered = new BasicLevelLineTest()
+        ListLevelLineTest numbered = new ListLevelLineTest()
             .setLinedType(LinedType.NUMBERED).setLevel(5)
             .setFormattedSpan(doc, 0, 1).setPublishTotal(2)
             .setNoteTotal(0);
@@ -44,11 +44,11 @@ public class LinedLevelRestDebug {
     }
 
     @Test
-    public void emptyBullet(){
+    public void basicEmptyBullet(){
         String raw = "\t\t\t\t-\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        BasicLevelLineTest bullet = new BasicLevelLineTest()
+        ListLevelLineTest bullet = new ListLevelLineTest()
             .setLinedType(LinedType.BULLET).setLevel(5)
             .setPublishTotal(0).setNoteTotal(0);
 
@@ -60,13 +60,13 @@ public class LinedLevelRestDebug {
     }
 
     @Test
-    public void fullBullet(){
+    public void basicBullet(){
         String raw = "\t\t\t\t-@id:Text abc\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         SpanBranch content = doc.assertChild(1, "@id:Text abc", 0, 1);
 
-        BasicLevelLineTest bullet = new BasicLevelLineTest()
+        ListLevelLineTest bullet = new ListLevelLineTest()
             .setLinedType(LinedType.BULLET).setLevel(5)
             .setFormattedSpan(doc, 0, 1).setPublishTotal(2)
             .setNoteTotal(0);
@@ -79,7 +79,7 @@ public class LinedLevelRestDebug {
         doc.assertChild(       1, "@id:Text abc", 0, 1, 0);
         doc.assertTextLeaf(5, 17, "@id:Text abc", 0, 1, 0, 0);
         doc.assertKeyLeaf(17, 18, "\n",           0, 2);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -89,11 +89,11 @@ public class LinedLevelRestDebug {
         String raw = "-" + text + "\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        IDBuilder id = FormatCurlyDebug.buildNoteId("hello");
-        doc.addRef(id, CatalogueStatus.NOT_FOUND, 1);
+        IDBuilder id = doc.addRef(FormatCurlyDebug.buildNoteId("hello"),
+            CatalogueStatus.NOT_FOUND, 1);
         doc.addId(FormatAgendaDebug.buildId("09"), 0);
 
-        BasicLevelLineTest bullet = new BasicLevelLineTest()
+        ListLevelLineTest bullet = new ListLevelLineTest()
             .setLinedType(LinedType.BULLET).setLevel(1)
             .setFormattedSpan(doc, 0, 1).setPublishTotal(0)
             .setNoteTotal(1);
@@ -115,7 +115,7 @@ public class LinedLevelRestDebug {
         doc.assertTextLeaf(11, 16, "HELP!",    0, 1, 1, 1, 0);
         doc.assertKeyLeaf( 16, 17, "}",        0, 1, 1, 2);
         doc.assertKeyLeaf( 17, 18, "\n",       0, 2);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -124,7 +124,7 @@ public class LinedLevelRestDebug {
         String raw = "\t\t\t\t\t-aaa\\\nddd";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        BasicLevelLineTest bullet = new BasicLevelLineTest()
+        ListLevelLineTest bullet = new ListLevelLineTest()
             .setLinedType(LinedType.BULLET).setLevel(6)
             .setFormattedSpan(doc, 0, 1).setPublishTotal(2)
             .setNoteTotal(0);
@@ -140,12 +140,12 @@ public class LinedLevelRestDebug {
         doc.assertKeyLeaf(  9, 10, "\\",          0, 1, 0, 1, 0);
         doc.assertTextLeaf(10, 11, "\n",          0, 1, 0, 1, 1);
         doc.assertTextLeaf(11, 14, "ddd",         0, 1, 0, 2);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void outOfRangeBullet(){
+    public void basicNonNumbered(){
         String start = "\t\t\t\t\t\t\t#";
         String formatted = start + "**abc**";
         String raw = formatted + "\n";
@@ -165,7 +165,56 @@ public class LinedLevelRestDebug {
         doc.assertTextLeaf(10, 13, "abc",     0, 0, 2, 0);
         doc.assertKeyLeaf( 13, 15, "**",      0, 0, 3);
         doc.assertKeyLeaf( 15, 16, "\n",      0, 1);
+        doc.assertLast();
+        doc.assertIds();
+    }
 
+    @Test
+    public void editBulletLevel(){
+        String before = "\t-abc";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.insert(1, "\t", 0);
+        editCommon(doc, LinedType.BULLET);
+    }
+
+    @Test
+    public void editNumberedLevel(){
+        String before = "\t#abc";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.insert(1, "\t", 0);
+        editCommon(doc, LinedType.NUMBERED);
+    }
+
+    @Test
+    public void editText(){
+        ///               0 12345
+        String before = "\t\t#ac";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.insert(4, "b", 0);
+        editCommon(doc, LinedType.NUMBERED);
+    }
+
+    private void editCommon(DocumentAssert doc, LinedType type){
+        ///              0 12                               23   23
+        String start = "\t\t" + (type == LinedType.BULLET? "-": "#");
+        ///                     3456
+        String after = start + "abc";
+
+        doc.assertDoc(1, after);
+
+        ListLevelLineTest bullet = new ListLevelLineTest()
+            .setLinedType(type).setLevel(3)
+            .setFormattedSpan(doc, 0, 1).setPublishTotal(1)
+            .setNoteTotal(0);
+        FormatMainTest main = new FormatMainTest()
+            .setPublishTotal(1).setNoteTotal(0);
+
+        bullet.test(      doc, 2, after, 0);
+        doc.assertKeyLeaf(  0, 3, start, 0, 0);
+        main.test(        doc, 1, "abc", 0, 1);
+        doc.assertChild(       1, "abc", 0, 1, 0);
+        doc.assertTextLeaf( 3, 6, "abc", 0, 1, 0, 0);
+        doc.assertLast();
         doc.assertIds();
     }
 }

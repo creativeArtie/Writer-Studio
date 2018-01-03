@@ -63,17 +63,10 @@ public class RecordDebug {
 
     @Test
     public void testReload() throws Exception{
-        File tmp = File.createTempFile("recordTmp", ".txt");
-        records.saveRecords(tmp);
+        String saved = records.getSaveText();
 
-        try {
-            RecordList reload = new RecordList(tmp);
-            testCommon(reload.get(index));
-        } catch(Exception ex){
-            System.out.println(tmp);
-            throw ex;
-        }
-        tmp.delete();
+        RecordList reload = new RecordList(saved);
+        testCommon(reload.get(index));
     }
 
     private void testCommon(Record test){

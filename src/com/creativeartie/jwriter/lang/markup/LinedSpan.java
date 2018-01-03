@@ -5,8 +5,11 @@ import com.google.common.collect.*;
 
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
-import com.creativeartie.jwriter.main.Checker;
+import static com.creativeartie.jwriter.main.Checker.*;
 
+/**
+ * Base class for all {@link LinedSpan}.
+ */
 public abstract class LinedSpan extends SpanBranch {
 
     LinedSpan(List<Span> children){
@@ -28,7 +31,7 @@ public abstract class LinedSpan extends SpanBranch {
     }
 
     @Override
-    public List<DetailStyle> getBranchStyles(){
+    public List<StyleInfo> getBranchStyles(){
         return ImmutableList.of(getLinedType());
     }
 
@@ -40,21 +43,21 @@ public abstract class LinedSpan extends SpanBranch {
         return 0;
     }
 
-
-    /* // TODO Speed up preformance by edit only some of the text
-    @Override
-    protected DetailUpdater getUpdater(int indexed, String text){
-        Checker.checkNotNull(text, "text");
-        if (getLinedType() == LinedType.findType(text)){
-            SetupParser parser = getLinedType().getParser();
-            int found = search(text, CHAR_ESCAPE, LINED_END);
-            if (found == -1){
-                return DetailUpdater.mergeNext(parser);
-            } else if (found == text.length()){
-                return DetailUpdater.replace(parser);
+    public boolean isLast(){
+        Span child = this;
+        SpanNode<?> parent = child.getParent();
+        while (parent.get(parent.size() - 1) == child){
+            if (parent instanceof Document) {
+                /// it is the last of the doucment
+                return true;
+            } else {
+                /// still have parents
+                child = parent;
+                parent = child.getParent();
             }
         }
-        return DetailUpdater.unable();
+
+        /// it is in the middle of the children list
+        return false;
     }
-    */
 }

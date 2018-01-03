@@ -7,6 +7,10 @@ import com.google.common.collect.*;
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
+/**
+ * Research note with headings, ids, and citation. Represented in
+ * design/ebnf.txt as {@code Note}
+ */
 public class MainSpanNote extends MainSpan {
 
     MainSpanNote(List<Span> children){
@@ -14,7 +18,7 @@ public class MainSpanNote extends MainSpan {
     }
 
     @Override
-    public List<DetailStyle> getBranchStyles(){
+    public List<StyleInfo> getBranchStyles(){
         return ImmutableList.of(AuxiliaryType.MAIN_NOTE, getIdStatus());
     }
 
@@ -35,7 +39,7 @@ public class MainSpanNote extends MainSpan {
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
         Optional<LinedSpanNote> id = spanFromFirst(LinedSpanNote.class);
-        return Optional.of(id.map(line -> line.buildId())
+        return Optional.of(id.flatMap(line -> line.buildId())
             .orElseGet(() -> new CatalogueIdentity(Arrays.asList(TYPE_COMMENT),
             this)));
     }
@@ -48,5 +52,21 @@ public class MainSpanNote extends MainSpan {
         }
         output.append("\n}");
         return output.toString();
+    }
+
+    @Override
+    protected SetupParser getParser(String text){
+        // TODO editRaw
+        return null;
+    }
+
+    @Override
+    protected void childEdited(){
+        // TODO childEdit
+    }
+
+    @Override
+    protected void docEdited(){
+        // TODO docEdited
     }
 }

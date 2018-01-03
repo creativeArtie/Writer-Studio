@@ -8,9 +8,13 @@ import java.util.concurrent.*;
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
+/**
+ * Doucment section that are set for publish. Represented in design/ebnf.txt as
+ * {@code Section}
+ */
 public class MainSpanSection extends MainSpan {
 
-    private final Cache<String, Optional<LinedSpanSection>> lineCache;
+    private final Cache<String, Optional<LinedSpanLevelSection>> lineCache;
     private final Cache<String, Optional<MainSpanSection>> sectionCache;
 
     MainSpanSection (List<Span> spanChildren){
@@ -30,7 +34,7 @@ public class MainSpanSection extends MainSpan {
                 }
                 return Optional.of(ans);
             }).get();
-            return span.spanFromFirst(LinedSpanSection.class).map(line ->
+            return span.spanFromFirst(LinedSpanLevelSection.class).map(line ->
                 line.getEdition()).orElse(EditionType.NONE);
         } catch (ExecutionException ex){
             throw new RuntimeException(ex);
@@ -39,7 +43,7 @@ public class MainSpanSection extends MainSpan {
 
 
     @Override
-    public List<DetailStyle> getBranchStyles(){
+    public List<StyleInfo> getBranchStyles(){
         return ImmutableList.of(AuxiliaryType.MAIN_SECTION);
     }
 
@@ -73,10 +77,10 @@ public class MainSpanSection extends MainSpan {
         return Optional.of((MainSpanSection) siblings);
     }
 
-    public Optional<LinedSpanSection> getSelfSection(){
+    public Optional<LinedSpanLevelSection> getSelfSection(){
         try {
             return lineCache.get("selfSection", () -> {
-                return spanAtFirst(LinedSpanSection.class);
+                return spanAtFirst(LinedSpanLevelSection.class);
             });
         } catch (ExecutionException ex){
             throw new RuntimeException(ex);
@@ -86,7 +90,7 @@ public class MainSpanSection extends MainSpan {
     public Optional<MainSpanSection> getLastPart(){
         try {
             return sectionCache.get("lastPart", () -> {
-                if (get(0) instanceof LinedSpanSection){
+                if (get(0) instanceof LinedSpanLevelSection){
                     return Optional.empty();
                 }
                 return last();
@@ -104,7 +108,7 @@ public class MainSpanSection extends MainSpan {
                     return Optional.empty();
                 }
                 MainSpanSection span = last.get();
-                if (span.get(0) instanceof LinedSpanSection){
+                if (span.get(0) instanceof LinedSpanLevelSection){
                     return Optional.empty();
                 }
                 return last;
@@ -114,10 +118,10 @@ public class MainSpanSection extends MainSpan {
         }
     }
 
-    public Optional<LinedSpanSection> getHeading(){
+    public Optional<LinedSpanLevelSection> getHeading(){
         try {
             return lineCache.get("heading", () -> {
-                Optional<LinedSpanSection> first = spanAtFirst(LinedSpanSection.class);
+                Optional<LinedSpanLevelSection> first = spanAtFirst(LinedSpanLevelSection.class);
                 if(first.isPresent() && first.get().getLinedType() == LinedType.HEADING){
                     return first;
                 }
@@ -132,12 +136,12 @@ public class MainSpanSection extends MainSpan {
         }
     }
 
-    public Optional<LinedSpanSection> getOutline(){
+    public Optional<LinedSpanLevelSection> getOutline(){
         try {
             return lineCache.get("outline", () -> {
-                Optional<LinedSpanSection> first = spanAtFirst(LinedSpanSection.class);
+                Optional<LinedSpanLevelSection> first = spanAtFirst(LinedSpanLevelSection.class);
                 if(first.isPresent()){
-                    LinedSpanSection level = first.get();
+                    LinedSpanLevelSection level = first.get();
                     if (level.getLinedType() == LinedType.HEADING){
                         return Optional.empty();
                     }
@@ -169,5 +173,21 @@ public class MainSpanSection extends MainSpan {
     public Optional<CatalogueIdentity> getSpanIdentity(){
         return Optional.ofNullable(getLastPart().isPresent() ? null:
             new CatalogueIdentity(TYPE_SECTION, this));
+    }
+
+    @Override
+    protected SetupParser getParser(String text){
+        // TODO editRaw
+        return null;
+    }
+
+    @Override
+    protected void childEdited(){
+        // TODO childEdit
+    }
+
+    @Override
+    protected void docEdited(){
+        // TODO docEdited
     }
 }

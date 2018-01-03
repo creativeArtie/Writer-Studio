@@ -22,7 +22,7 @@ public class LinedCiteDebug {
             LinedParseCite.INSTANCE};
 
     @Test
-    public void inTextComplete(){
+    public void basicInText(){
         String raw = "!>in-text:a";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
@@ -42,7 +42,7 @@ public class LinedCiteDebug {
         data.test(        doc,  1, "a",       0, 3);
         doc.assertChild(    1,     "a",       0, 3, 0);
         doc.assertDataLeaf(10, 11, "a",       0, 3, 0, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -62,7 +62,7 @@ public class LinedCiteDebug {
         doc.assertFieldLeaf(2,  9, "in-text", 0, 1, 0);
         doc.assertKeyLeaf(  9, 10, ":",       0, 2);
         doc.assertKeyLeaf(10, 11, "\n",       0, 3);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -80,7 +80,7 @@ public class LinedCiteDebug {
         doc.assertKeyLeaf(  0,  2, "!>",      0, 0);
         field.test(       doc,  1, "in-text", 0, 1);
         doc.assertFieldLeaf(2,  9, "in-text", 0, 1, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -97,7 +97,7 @@ public class LinedCiteDebug {
         doc.assertKeyLeaf( 2, 3, ":",  0, 1);
         doc.assertTextLeaf(3, 4, "a",  0, 2);
         doc.assertKeyLeaf( 4, 5, "\n", 0, 3);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -121,8 +121,28 @@ public class LinedCiteDebug {
         data.test(        doc,  1, "a",       0, 2);
         doc.assertChild(    1,     "a",       0, 2, 0);
         doc.assertDataLeaf( 9, 10, "a",       0, 2, 0, 0);
-
+        doc.assertLast();
         doc.assertIds();
+    }
+
+    @Test
+    public void errorWithUnparsed(){
+        ///           01 23456
+        String raw = "!>\nabc";
+        DocumentAssert doc = assertDoc(2, raw, parsers);
+
+        CiteLineTest cite = new CiteLineTest()
+            .setInfoType(InfoFieldType.ERROR)
+            .setIsLast(false);
+        FieldTest field = new FieldTest()
+            .setType(InfoFieldType.ERROR);
+
+        cite.test(      doc,  2, "!>\n", 0);
+        doc.assertKeyLeaf(0,  2, "!>",   0, 0);
+        doc.assertKeyLeaf(2,  3, "\n",   0, 1);
+        doc.assertLast("abc");
+        doc.assertIds();
+
     }
 
     @Test
@@ -139,7 +159,7 @@ public class LinedCiteDebug {
         doc.assertKeyLeaf(  0,  2, "!>",   0, 0);
         field.test(        doc, 1, "sdaf", 0, 1);
         doc.assertFieldLeaf(2,  6, "sdaf", 0, 1, 0);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -157,7 +177,7 @@ public class LinedCiteDebug {
         field.test(       doc, 1, "sdaf", 0, 1);
         doc.assertFieldLeaf(2, 6, "sdaf", 0, 1, 0);
         doc.assertKeyLeaf(  6, 7, "\n",   0, 2);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -176,7 +196,7 @@ public class LinedCiteDebug {
         doc.assertFieldLeaf(2,  6, "sdaf", 0, 1, 0);
         doc.assertKeyLeaf(  6,  7, ":",    0, 2);
         doc.assertKeyLeaf(  7,  8, "\n",   0, 3);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -196,7 +216,7 @@ public class LinedCiteDebug {
         doc.assertKeyLeaf(  6, 7, ":",    0, 2);
         doc.assertTextLeaf( 7, 9, "  ",   0, 3);
         doc.assertKeyLeaf(  9, 10, "\n",  0, 4);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
@@ -217,12 +237,12 @@ public class LinedCiteDebug {
         doc.assertKeyLeaf(  7,  8, ":",     0, 2);
         doc.assertTextLeaf( 8, 12, "text",  0, 3);
         doc.assertKeyLeaf( 12, 13, "\n",    0, 4);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void footnote(){
+    public void basicFootnote(){
         String raw = "!>footnote:abc\\\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
@@ -245,12 +265,12 @@ public class LinedCiteDebug {
         doc.assertChild(        2, "\\\n",     0, 3, 0, 1);
         doc.assertKeyLeaf( 14, 15, "\\",       0, 3, 0, 1, 0);
         doc.assertDataLeaf(15, 16, "\n",       0, 3, 0, 1, 1);
-
+        doc.assertLast();
         doc.assertIds();
     }
 
     @Test
-    public void sources(){
+    public void basicSource(){
         String find = "Henry** Reads**";
         String raw = "!>source:" + find + "\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
@@ -277,7 +297,66 @@ public class LinedCiteDebug {
         doc.assertDataLeaf(16, 22, " Reads", 0, 3, 0, 2, 0);
         doc.assertKeyLeaf( 22, 24, "**",     0, 3, 0, 3);
         doc.assertKeyLeaf( 24, 25, "\n",     0, 4);
+        doc.assertLast();
+        doc.assertIds();
+    }
 
+    @Test
+    public void editAddField(){
+        String before = "!>:abc";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.insert(2, "in-text", 0);
+        editCommon(doc);
+    }
+
+    @Test
+    public void editContent(){
+        ///              0123456789012
+        String before = "!>in-text:abec";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.delete(12, 13, 0);
+        ///             01234567890123
+        String after = "!>in-text:abc";
+        doc.assertDoc(1, after, parsers);
+        editCommon(doc);
+    }
+
+    @Test
+    public void editRemoveCite(){
+        ///              0123456789012
+        String before = "!>in-text:abec";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.delete(0, 1);
+        ///             01234567890123
+        String after = ">in-text:abec";
+        doc.assertDoc(1, after, parsers);
+
+        doc.assertLast(after);
+        doc.assertIds();
+    }
+
+    private void editCommon(DocumentAssert doc){
+        ///             01234567890123
+        String after = "!>in-text:abc";
+        doc.assertDoc(1, after);
+
+        CiteLineTest cite = new CiteLineTest()
+            .setInfoType(InfoFieldType.IN_TEXT)
+            .setDataSpan(doc, 0, 3).setNoteTotal(1);
+        FieldTest field = new FieldTest()
+            .setType(InfoFieldType.IN_TEXT);
+        ContentDataTest data = new ContentDataTest()
+            .setData(doc, 0, 3, 0);
+
+        cite.test(        doc,  4, after,     0);
+        doc.assertKeyLeaf(  0,  2, "!>",      0, 0);
+        field.test(       doc,  1, "in-text", 0, 1);
+        doc.assertFieldLeaf(2,  9, "in-text", 0, 1, 0);
+        doc.assertKeyLeaf(  9, 10, ":",       0, 2);
+        data.test(        doc,  1, "abc",     0, 3);
+        doc.assertChild(    1,     "abc",     0, 3, 0);
+        doc.assertDataLeaf(10, 13, "abc",     0, 3, 0, 0);
+        doc.assertLast();
         doc.assertIds();
     }
 }

@@ -1,26 +1,46 @@
 package com.creativeartie.jwriter.lang.markup;
 
-import java.util.List;
+import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 import com.google.common.collect.*;
 
-
 /**
- * Created from {@link ContentParser}. Used only in {@link ContentSpan}
+ * Escaped character with the {@link AuxiliaryData#CHAR_ESCAPE}. Represented in
+ * design/ebnf.txt as {@code Escape}.
  */
-public class BasicTextEscape extends SpanBranch{
+public final class BasicTextEscape extends SpanBranch{
+
+    private Optional<String> cacheEscape;
+    private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(
+        AuxiliaryType.ESCAPE);
 
     BasicTextEscape(List<Span> children){
         super(children);
+        cacheEscape = Optional.empty();
     }
 
     public String getEscape(){
-        return size() == 2? get(1).getRaw(): "";
+        cacheEscape = getCache(cacheEscape,
+            () -> size() == 2? get(1).getRaw(): "");
+        return cacheEscape.get();
     }
 
     @Override
-    public List<DetailStyle> getBranchStyles(){
-        return ImmutableList.of(AuxiliaryType.ESCAPE);
+    public List<StyleInfo> getBranchStyles(){
+        return BRANCH_STYLE;
     }
+
+    @Override
+    protected SetupParser getParser(String text){
+        return null;
+    }
+
+    @Override
+    protected void childEdited(){
+        cacheEscape = Optional.empty();
+    }
+
+    @Override
+    protected void docEdited(){}
 }

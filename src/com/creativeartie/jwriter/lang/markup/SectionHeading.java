@@ -6,9 +6,12 @@ import com.google.common.collect.*;
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 
+/**
+ * Major division of a document, sometimes with a heading.
+ */
 public class SectionHeading extends Section {
     private Optional<SectionHeading> parentSection;
-    private Optional<LinedSpanSection> sectionHeading;
+    private Optional<LinedSpanLevelSection> sectionHeading;
     private ArrayList<SectionOutline> sectionOutlines;
     private ArrayList<SectionHeading> sectionChildren;
     private int sectionLevel;
@@ -17,7 +20,7 @@ public class SectionHeading extends Section {
         this (0, null, null);
     }
 
-    private SectionHeading(int level, LinedSpanSection heading,
+    private SectionHeading(int level, LinedSpanLevelSection heading,
         SectionHeading parent)
     {
         sectionLevel = level;
@@ -27,7 +30,7 @@ public class SectionHeading extends Section {
         sectionChildren = new ArrayList<>();
     }
 
-    SectionHeading appendHeading(LinedSpanSection line){
+    SectionHeading appendHeading(LinedSpanLevelSection line){
         int add = line.getLevel();
         if (add <= sectionLevel){
             return parentSection.get().appendHeading(line);
@@ -43,7 +46,7 @@ public class SectionHeading extends Section {
         return ans.appendHeading(line);
     }
 
-    SectionOutline appendOutline(LinedSpanSection line){
+    SectionOutline appendOutline(LinedSpanLevelSection line){
         int depth = line.getLevel();
         if (depth == 1){
             SectionOutline ans = new SectionOutline(depth, line, null, this);
@@ -64,12 +67,12 @@ public class SectionHeading extends Section {
         return sectionLevel;
     }
 
-    public Optional<LinedSpanSection> getHeading(){
+    public Optional<LinedSpanLevelSection> getHeading(){
         return sectionHeading;
     }
 
     @Override
-    public Optional<LinedSpanSection> getLine(){
+    public Optional<LinedSpanLevelSection> getLine(){
         return sectionHeading;
     }
 
@@ -98,7 +101,7 @@ public class SectionHeading extends Section {
         return sectionChildren.get(sectionChildren.size() - 1).getEnd();
     }
 
-    public Optional<SectionHeading> findChild(Optional<LinedSpanSection> search)
+    public Optional<SectionHeading> findChild(Optional<LinedSpanLevelSection> search)
     {
         if (! search.isPresent()){
             if (parentSection.isPresent()){

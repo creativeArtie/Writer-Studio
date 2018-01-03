@@ -1,10 +1,15 @@
 package com.creativeartie.jwriter.lang;
 
 import java.util.*;
+import java.util.Optional;
 import java.util.function.*;
 
+import com.google.common.collect.*;
+
+import static com.creativeartie.jwriter.main.Checker.*;
+
 /**
- * Common methods for {@link Document} and {@link SpanBranch}.
+ * A list of {@link Span spans}. Mainly implements {@linkplain List}.
  * @param <T>
  *      Type of span stored
  */
@@ -15,21 +20,20 @@ public abstract class SpanNode<T extends Span> extends Span
 
     @Override
     public final String getRaw(){
-        StringBuilder builder = new StringBuilder();
+        return getDocument().getTextCache(this, () -> {
+            /// Raw text is adding up raw text of each child.
+            StringBuilder builder = new StringBuilder();
 
-        for (Span span: this){
-            builder.append(span.getRaw());
-        }
-        return builder.toString();
+            for (Span span: this){
+                builder.append(span.getRaw());
+            }
+            return builder.toString();
+        });
     }
 
     @Override
-    public int getLength(){
-        int ans = 0;
-        for(Span child: this){
-            ans += child.getLength();
-        }
-        return ans;
+    public int getLocalEnd(){
+        return getRaw().length();
     }
 
     @Override
@@ -37,9 +41,12 @@ public abstract class SpanNode<T extends Span> extends Span
         for(Span child: this){
             child.setRemove();
         }
+        super.setRemove();
     }
 
+    /** Get the first span if it a subclass of {@code clazz}. */
     protected <T extends SpanBranch> Optional<T> spanAtFirst(Class<T> clazz){
+        checkNotNull(clazz, "clazz");
         if (isEmpty()){
             return Optional.empty();
         }
@@ -49,16 +56,22 @@ public abstract class SpanNode<T extends Span> extends Span
         return Optional.empty();
     }
 
+    /** Find the first span that subclasses of {@code clazz}. */
     protected <T extends SpanBranch> Optional<T> spanFromFirst(Class<T> clazz){
+        checkNotNull(clazz, "clazz");
+
         for(Span span: this){
             if (clazz.isInstance(span)){
                 return Optional.of(clazz.cast(span));
             }
         }
+        //Not found or no children
         return Optional.empty();
     }
 
+    /** Get the last span if it a subclass of {@code clazz}. */
     protected <T extends SpanBranch> Optional<T> spanAtLast(Class<T> clazz){
+        checkNotNull(clazz, "clazz");
         if (isEmpty()){
             return Optional.empty();
         }
@@ -68,17 +81,22 @@ public abstract class SpanNode<T extends Span> extends Span
         return Optional.empty();
     }
 
+    /** Find the first span that subclasses of {@code clazz}. */
     protected <T extends SpanBranch> Optional<T> spanFromLast(Class<T> clazz){
+        checkNotNull(clazz, "clazz");
         for(int i = size() - 1; i >= 0; i--){
             Span span = get(i);
             if (clazz.isInstance(span)){
                 return Optional.of(clazz.cast(span));
             }
         }
+        //Not found or no children
         return Optional.empty();
     }
 
-    protected Optional<SpanLeaf> leafFromFrist(SetupLeafStyle info){
+    /** Get the fist leaf span if it a has the style of {@code info}. */
+    protected Optional<SpanLeaf> leafFromFrist(StyleInfoLeaf info){
+        checkNotNull(info, "info");
         for (Span span: this){
             if (span instanceof SpanLeaf){
                 SpanLeaf found = (SpanLeaf) span;
@@ -87,10 +105,13 @@ public abstract class SpanNode<T extends Span> extends Span
                 }
             }
         }
+        //Not found or no children
         return Optional.empty();
     }
 
-    protected Optional<SpanLeaf> leafFromLast(SetupLeafStyle info){
+    /** Find the first leaf span that has the style of {@code info}. */
+    protected Optional<SpanLeaf> leafFromLast(StyleInfoLeaf info){
+        checkNotNull(info, "info");
         for(int i = size() - 1; i >= 0; i++){
             Span span = get(i);
             if (span instanceof SpanLeaf){
@@ -100,10 +121,61 @@ public abstract class SpanNode<T extends Span> extends Span
                 }
             }
         }
+        //Not found or no children
         return Optional.empty();
     }
 
-    /// Implements List (ForwardList cannot be the super class
+    /** Get the Span leaf with global position. Uses binary serach.*/
+    public final Optional<SpanLeaf> getLeaf(int pos){
+        checkRange(pos, "pos", 0, true, getEnd(), true);
+        if (pos == getEnd()){
+            Span span = this;
+            while (span instanceof SpanNode){
+                SpanNode<?> parent = (SpanNode<?>)span;
+                if (parent.isEmpty()){
+                    return Optional.empty();
+                }
+                span = parent.get(parent.size() - 1);
+            }
+            return Optional.of((SpanLeaf) span);
+        }
+
+        Range<Integer> range = getRange();
+
+        if (range.contains(pos)){
+            /// Binary serach setup
+            int low = 0;
+            int high = size() - 1;
+            int mid;
+            Span span;
+            while (low <= high){
+                // move indexes
+                mid = (low + high) / 2;
+                span = get(mid);
+                Range<Integer> child = span.getRange();
+                if (child.lowerEndpoint() > pos){
+                    high = mid - 1;
+                } else if (child.upperEndpoint() <= pos){
+                    low = mid + 1;
+                } else {
+                    /// Find span, but recurives if leaf not found yet.
+                    return  span instanceof SpanLeaf?
+                        Optional.of((SpanLeaf) span):
+                        ((SpanNode<?>)span).getLeaf(pos);
+                }
+            }
+        }
+        /// exception for not found. Somehow the code can end up here.
+        throw new IndexOutOfBoundsException(pos + " is not between :" + range);
+    }
+
+    /** Gets all the {@link SpanLeaf} found in its descendants.*/
+    public abstract List<SpanLeaf> getLeaves();
+
+    /** Listens that one of its child is edited. */
+    protected abstract void childEdited();
+
+    /// Implements List (ForwardList cannot be the super class)
     public abstract List<T> delegate();
 
     @Override

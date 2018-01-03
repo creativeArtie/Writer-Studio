@@ -17,6 +17,8 @@ import com.creativeartie.jwriter.lang.*;
 @RunWith(JUnit4.class)
 public class InfoDebug {
 
+    /// TODO Test data edited
+
     @Test
     public void dataFormatted(){
         ///           01234 5678901

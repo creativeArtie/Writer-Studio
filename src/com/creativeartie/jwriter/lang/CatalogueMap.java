@@ -2,22 +2,24 @@ package com.creativeartie.jwriter.lang;
 
 import java.util.*;
 import com.google.common.collect.*;
-import static com.google.common.base.Preconditions.*;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
- * A System of {@link DirectorySpan} references with their status
+ * A map of {@link CatalogueData} that is serachable by
+ * {@link CatalogueIdentity}.
  */
 public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
         CatalogueData>{
     private final TreeMap<CatalogueIdentity, CatalogueData> idMap;
 
-    public CatalogueMap(){
+    /** {@linkplain CatalogueMap}'s constructor.*/
+    CatalogueMap(){
         idMap = new TreeMap<>();
     }
 
     void addId(CatalogueIdentity id, SpanBranch span){
-        checkNotNull(id, "id object cannot be null");
-        checkNotNull(span, "id span cannot be null");
+        checkNotNull(id, "id");
+        checkNotNull(span, "span");
 
         CatalogueData data = idMap.get(id);
         if (data == null){
@@ -28,8 +30,8 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
     }
 
     void addRef(CatalogueIdentity ref, SpanBranch span){
-        checkNotNull(ref, "ref object cannot be null");
-        checkNotNull(span, "ref span cannot be null");
+        checkNotNull(ref, "ref");
+        checkNotNull(span, "span");
 
         CatalogueData data = idMap.get(ref);
         if (data == null){
@@ -45,13 +47,14 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
     }
 
     public SortedMap<CatalogueIdentity, CatalogueData> getCategory(
-        String ... category)
-    {
+            String ... category){
+        checkNotEmpty(category, "category");
+
         SortedMap<CatalogueIdentity, CatalogueData> map = delegate();
         CatalogueIdentity first = new CatalogueIdentity(
             ImmutableList.copyOf(category), "");
-        category[category.length - 1] = category[category.length - 1] + (char)0;
 
+        category[category.length - 1] = category[category.length - 1] + (char)0;
         CatalogueIdentity last = new CatalogueIdentity(
             ImmutableList.copyOf(category), "");
         return map.subMap(first, last);

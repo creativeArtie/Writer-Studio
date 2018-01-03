@@ -5,10 +5,19 @@ import com.google.common.base.*;
 
 import com.creativeartie.jwriter.lang.*;
 
+/**
+ * Text with {@link AuxiliaryData#CHAR_ESCAPE escape character}.
+ * Parent class of {@link ContentSpan} and {@link FormatSpanContent}.
+ * Represented in ebnf.txt as {@code Raw}.
+ *
+ * Dec 27,2017: it was decided that subclassing of this class will <b>not</b>
+ * do any local reparsing, because it is deem to be too much work.
+ */
 interface BasicText{
-    
+
     public List<Span> delegate();
-    
+
+    /** Get the text with space collapsed, and escape character removed.*/
     public default String getText(){
         StringBuilder builder = new StringBuilder();
         delegate().forEach((child) -> {
@@ -23,11 +32,13 @@ interface BasicText{
         });
         return CharMatcher.whitespace().collapseFrom(builder, ' ');
     }
-    
-    public default String getParsed(){
+
+    /** Get text from {@link #getText}, but trimmed. */
+    public default String getTrimmed(){
         return CharMatcher.whitespace().trimFrom(getText());
     }
-    
+
+    /** Check if the text starts with a whitespace. */
     public default boolean isSpaceBegin(){
         String output = getText();
         if (output.isEmpty()){
@@ -35,7 +46,8 @@ interface BasicText{
         }
         return CharMatcher.whitespace().matches(output.charAt(0));
     }
-    
+
+    /** Check if the text ends with a whitespace. */
     public default boolean isSpaceEnd(){
         String output = getText();
         if (output.isEmpty()){
@@ -44,4 +56,5 @@ interface BasicText{
         return CharMatcher.whitespace()
             .matches(output.charAt(output.length() - 1));
     }
+
 }
