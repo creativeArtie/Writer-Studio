@@ -130,7 +130,7 @@ public class WriterSceneControl extends WriterSceneView {
 
     protected void listenAgenda(boolean focused){
         if (focused){
-            getTextArea().moveTo(getAgendaList().getAgenda());
+            getTextArea().moveTo(getAgendaList().getSelectedAgenda());
             getTextArea().returnFocus();
         }
     }

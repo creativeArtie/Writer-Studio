@@ -12,16 +12,6 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 
 class AgendaPaneControl extends AgendaPaneView{
-    @Override
-    protected void selectItem(int index){
-         for (SpanBranch branch: getList().getItems()){
-             if (branch.getStart() <= index && index < branch.getEnd()){
-                getList().getSelectionModel().select(branch);
-                return;
-             }
-         }
-         getList().getSelectionModel().clearSelection();
-     }
 
     @Override
      public void updateSelection(ManuscriptDocument doc, int index){

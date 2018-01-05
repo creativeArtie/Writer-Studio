@@ -42,46 +42,46 @@ abstract class AgendaPaneView extends GridPane{
         }
     }
 
-    private ListView<SpanBranch> list;
-    private SimpleObjectProperty<SpanBranch> agenda;
+    private ListView<SpanBranch> agendaList;
+    private SimpleObjectProperty<SpanBranch> selectedAgenda;
     private ReadOnlyBooleanWrapper agendaFocused;
 
     public AgendaPaneView(){
-        list = new ListView<>();
+        agendaList = new ListView<>();
 
         setupList();
 
-        agenda = new SimpleObjectProperty<>(this, "agenda");
-        agenda.bind(list.getSelectionModel().selectedItemProperty());
+        selectedAgenda = new SimpleObjectProperty<>(this, "selectedAgenda");
+        selectedAgenda.bind(agendaList.getSelectionModel().selectedItemProperty());
 
         agendaFocused = new ReadOnlyBooleanWrapper(this, "agendaFocused");
-        agendaFocused.bind(list.focusedProperty());
+        agendaFocused.bind(agendaList.focusedProperty());
     }
 
     /// Getters
     protected ListView<SpanBranch> getList(){
-        return list;
+        return agendaList;
     }
 
     /// Layout Node
     private void setupList(){
         TitledPane title = new TitledPane(WindowText.AGENDA_TITLE.getText(),
-            list);
-        list.setCellFactory(param -> new AgendaCell());
+            agendaList);
+        agendaList.setCellFactory(param -> new AgendaCell());
         add(title, 0, 0);
     }
 
     /// Node Properties
-    ObjectProperty<SpanBranch> agendaProperty(){
-         return agenda;
+    ObjectProperty<SpanBranch> selectedAgendaProperty(){
+         return selectedAgenda;
     }
 
-    SpanBranch getAgenda(){
-        return agenda.getValue();
+    SpanBranch getSelectedAgenda(){
+        return selectedAgenda.getValue();
     }
 
-    void setAgenda(SpanBranch value){
-         list.getSelectionModel().select(value);
+    void setSelectedAgenda(SpanBranch value){
+         agendaList.getSelectionModel().select(value);
     }
 
     ReadOnlyBooleanProperty agendaFocusedProperty(){
@@ -93,8 +93,6 @@ abstract class AgendaPaneView extends GridPane{
     }
 
     /// Control Methods
-    protected abstract void selectItem(int index);
-
     public abstract void updateSelection(ManuscriptDocument doc, int index);
 
     public abstract void fillAgenda(ManuscriptDocument doc);
