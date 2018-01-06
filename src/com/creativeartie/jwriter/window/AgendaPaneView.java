@@ -47,9 +47,7 @@ abstract class AgendaPaneView extends GridPane{
     private ReadOnlyBooleanWrapper agendaFocused;
 
     public AgendaPaneView(){
-        agendaList = new ListView<>();
-
-        setupList();
+        agendaList = setupAgendaList();
 
         selectedAgenda = new SimpleObjectProperty<>(this, "selectedAgenda");
         selectedAgenda.bind(agendaList.getSelectionModel().selectedItemProperty());
@@ -59,16 +57,16 @@ abstract class AgendaPaneView extends GridPane{
     }
 
     /// Getters
-    protected ListView<SpanBranch> getList(){
+    protected ListView<SpanBranch> getAgendaList(){
         return agendaList;
     }
 
     /// Layout Node
-    private void setupList(){
-        TitledPane title = new TitledPane(WindowText.AGENDA_TITLE.getText(),
-            agendaList);
-        agendaList.setCellFactory(param -> new AgendaCell());
-        add(title, 0, 0);
+    private ListView setupAgendaList(){
+        ListView<SpanBranch> ans = new ListView();
+        ans.setCellFactory(param -> new AgendaCell());
+        add(new TitledPane(WindowText.AGENDA_TITLE.getText(), ans), 0, 0);
+        return ans;
     }
 
     /// Node Properties
@@ -81,7 +79,8 @@ abstract class AgendaPaneView extends GridPane{
     }
 
     void setSelectedAgenda(SpanBranch value){
-         agendaList.getSelectionModel().select(value);
+        /// selectedAgenda is bind to agendaList.getSectectionModel
+        agendaList.getSelectionModel().select(value);
     }
 
     ReadOnlyBooleanProperty agendaFocusedProperty(){

@@ -11,6 +11,9 @@ import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 
+/**
+ * Controller for Agenda Pane
+ */
 class AgendaPaneControl extends AgendaPaneView{
 
     @Override
@@ -18,15 +21,20 @@ class AgendaPaneControl extends AgendaPaneView{
         Optional<FormatSpanAgenda> inline = doc.locateSpan(index,
             FormatSpanAgenda.class);
         if (inline.isPresent()){
+            /// Finds a FormatSpanAgenda to select:
             getList().getSelectionModel().select(inline.get());
             return;
         }
+
         Optional<LinedSpanAgenda> line = doc.locateSpan(index,
             LinedSpanAgenda.class);
         if (line.isPresent()){
+            /// Finds a LinedSpanAgenda to select:
             getList().getSelectionModel().select(line.get());
             return;
         }
+
+        /// Nothing is found:
         getList().getSelectionModel().clearSelection();
      }
 
@@ -34,8 +42,7 @@ class AgendaPaneControl extends AgendaPaneView{
     public void fillAgenda(ManuscriptDocument doc){
         ArrayList<SpanBranch> input = new ArrayList<>();
         for(CatalogueData data : doc.getCatalogue().getCategory(
-                AuxiliaryData.TYPE_AGENDA).values())
-        {
+                AuxiliaryData.TYPE_AGENDA).values()){
             input.add(data.getTarget());
         }
         getList().setItems(FXCollections.observableList(input));
