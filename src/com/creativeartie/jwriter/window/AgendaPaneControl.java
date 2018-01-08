@@ -12,7 +12,9 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 
 /**
- * Controller for Agenda Pane. See AgendaPaneView for details.
+ * Controller for Agenda Pane.
+ *
+ * @see AgendaPaneView
  */
 class AgendaPaneControl extends AgendaPaneView{
 

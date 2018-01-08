@@ -13,123 +13,112 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 
 /**
- *
+ * A cheatsheet showing various of hints. The {@link CheatsheetLabel labels}
+ * can also change style class base on position of the cursor.
  */
 abstract class CheatsheetPaneView extends GridPane{
 
-    private TreeMap<LinedType, CheatsheetLabel> lineLabels;
-    private TreeMap<FormatType, CheatsheetLabel> formatLabels;
-    private TreeMap<EditionType, CheatsheetLabel> editionLabels;
-    private TreeMap<InfoFieldType, CheatsheetLabel> infoLabels;
-    private TreeMap<AuxiliaryType, CheatsheetLabel> otherLabels;
-    private TreeMap<DirectoryType, CheatsheetLabel> refLabels;
-    private CheatsheetLabel idLabels;
-    private ArrayList<CheatsheetLabel> labelList;
+    private final ArrayList<CheatsheetLabel> labelList;
 
     CheatsheetPaneView(){
-        labelList = new ArrayList<>();
-        lineLabels = new TreeMap<>();
-        CheatsheetLabel holder;
-        for(LinedType type: LinedType.values()){
-            holder = CheatsheetLabel.getLabel(type);
-            lineLabels.put(type, holder);
-            labelList.add(holder);
-        }
-
-        formatLabels = new TreeMap<>();
-        for(FormatType type: FormatType.values()){
-            holder = CheatsheetLabel.getLabel(type);
-            formatLabels.put(type, holder);
-            labelList.add(holder);
-        }
-
-        editionLabels = new TreeMap<>();
-        for (EditionType type: EditionType.values()){
-            if (type != EditionType.NONE){
-                holder = CheatsheetLabel.getLabel(type);
-                editionLabels.put(type, holder);
-                labelList.add(holder);
-            }
-        }
-
-        infoLabels = new TreeMap<>();
-        for (InfoFieldType type: InfoFieldType.values()){
-            if (type != InfoFieldType.ERROR){
-                holder = CheatsheetLabel.getLabel(type);
-                infoLabels.put(type, holder);
-                labelList.add(holder);
-            }
-        }
-
-        refLabels = new TreeMap<>();
-        for (DirectoryType type: DirectoryType.values()){
-            if (type != DirectoryType.COMMENT && type != DirectoryType.LINK){
-                holder = CheatsheetLabel.getLabel(type);
-                refLabels.put(type, holder);
-                labelList.add(holder);
-            }
-        }
-
-        idLabels = CheatsheetLabel.getIdentityLabel();
-        labelList.add(idLabels);
-
-        otherLabels = new TreeMap<>();
-        for (AuxiliaryType type: AuxiliaryType.getFormatTypes()){
-            holder = CheatsheetLabel.getLabel(type);
-            otherLabels.put(type, holder);
-            labelList.add(holder);
-        }
-        layoutLabels();
+        labelList = setupHintsLabels();
     }
 
-    private void layoutLabels(){
-        add(lineLabels.get(LinedType.PARAGRAPH), 0, 0);
-        add(lineLabels.get(LinedType.QUOTE),     0, 1);
-        add(lineLabels.get(LinedType.AGENDA),    0, 2);
+    /// Layout Node
+    private ArrayList<CheatsheetLabel> setupHintsLabels(){
+        ArrayList<CheatsheetLabel> ans = new ArrayList<>();
 
-        add(lineLabels.get(LinedType.NUMBERED), 1, 0);
-        add(lineLabels.get(LinedType.BULLET),   1, 1);
-        add(lineLabels.get(LinedType.BREAK),    1, 2);
+        addLabel(ans, CheatsheetLabel.getLabel(LinedType.HEADING), 0, 0, 2, 1);
+        addLabel(ans, CheatsheetLabel.getLabel(LinedType.OUTLINE), 0, 1, 2, 1);
+        addLabel(ans, CheatsheetLabel.getLabel(EditionType.STUB),  0, 2);
+        addLabel(ans, CheatsheetLabel.getLabel(EditionType.DRAFT), 0, 3);
+        setPrecentWidth(10);
+        addLabel(ans, CheatsheetLabel.getLabel(EditionType.OTHER), 1, 2);
+        addLabel(ans, CheatsheetLabel.getLabel(EditionType.FINAL), 1, 3);
+        setPrecentWidth(10); // 20
 
-        add(lineLabels.get(LinedType.HEADING),    2, 0, 3, 1);
-        add(lineLabels.get(LinedType.OUTLINE),    2, 1, 3, 1);
-        add(editionLabels.get(EditionType.STUB),  2, 2);
-        add(editionLabels.get(EditionType.DRAFT), 3, 2);
-        add(editionLabels.get(EditionType.FINAL), 4, 2);
+        addLabel(ans, CheatsheetLabel.getLabel(LinedType.PARAGRAPH), 2, 0);
+        addLabel(ans, CheatsheetLabel.getLabel(LinedType.NUMBERED),  2, 1);
+        addLabel(ans, CheatsheetLabel.getLabel(LinedType.BULLET),    2, 2);
+        addLabel(ans, CheatsheetLabel.getLabel(LinedType.BREAK),     2, 3);
+        setPrecentWidth(11); // 31
 
-        add(lineLabels.get(LinedType.NOTE),    5, 0);
-        add(lineLabels.get(LinedType.SOURCE),  5, 1);
-        add(editionLabels.get(EditionType.OTHER), 5, 2);
+        /// Future:
+        ///     column 3     = quote, agenda, graphs (pie, line, etc.), picture
+        ///     column 4 - 5 = table, source, InfoFieldTypes
+        addLabel(ans, CheatsheetLabel.getLabel(LinedType.QUOTE),      3, 0);
+        addLabel(ans, CheatsheetLabel.getLabel(LinedType.SOURCE),     3, 1, 2, 1);
+        addLabel(ans, CheatsheetLabel.getLabel(InfoFieldType.SOURCE), 3, 2);
+        setPrecentWidth(6); // 37
+        addLabel(ans, CheatsheetLabel.getLabel(LinedType.AGENDA),       4, 0);
+        addLabel(ans, CheatsheetLabel.getLabel(InfoFieldType.IN_TEXT),  4, 3);
+        addLabel(ans, CheatsheetLabel.getLabel(InfoFieldType.FOOTNOTE), 4, 4);
+        setPrecentWidth(6); // 43
 
-        add(infoLabels.get(InfoFieldType.SOURCE),   6, 0);
-        add(infoLabels.get(InfoFieldType.IN_TEXT),  6, 1);
-        add(infoLabels.get(InfoFieldType.FOOTNOTE), 6, 2);
+        addLabel(ans, CheatsheetLabel.getLabel(LinedType.NOTE),      5, 0);
+        addLabel(ans, CheatsheetLabel.getLabel(LinedType.FOOTNOTE),  5, 1);
+        addLabel(ans, CheatsheetLabel.getLabel(LinedType.ENDNOTE),   5, 2);
+        addLabel(ans, CheatsheetLabel.getLabel(LinedType.HYPERLINK), 5, 3);
+        setPrecentWidth(12); // 55
 
+        addLabel(ans, CheatsheetLabel.getLabel(DirectoryType.NOTE),     6, 0);
+        addLabel(ans, CheatsheetLabel.getLabel(DirectoryType.FOOTNOTE), 6, 1);
+        addLabel(ans, CheatsheetLabel.getLabel(DirectoryType.ENDNOTE),  6, 2);
+        addLabel(ans, CheatsheetLabel.getLabel(AuxiliaryType.REF_LINK), 6, 3);
+        setPrecentWidth(17); // 72
 
-        add(lineLabels.get(LinedType.FOOTNOTE),  7, 0);
-        add(lineLabels.get(LinedType.ENDNOTE),   7, 1);
-        add(lineLabels.get(LinedType.HYPERLINK), 7, 2);
+        addLabel(ans, CheatsheetLabel.getLabel(AuxiliaryType.AGENDA),      7, 0);
+        addLabel(ans, CheatsheetLabel.getLabel(AuxiliaryType.ESCAPE),      7, 1);
+        addLabel(ans, CheatsheetLabel.getLabel(AuxiliaryType.DIRECT_LINK), 7, 2);
+        addLabel(ans, CheatsheetLabel.getIdentityLabel(),                  7, 3);
+        setPrecentWidth(17); // 89
 
-        add(otherLabels.get(AuxiliaryType.REF_LINK),    8, 0);
-        add(otherLabels.get(AuxiliaryType.DIRECT_LINK), 8, 1);
-        add(idLabels,                                   8, 2);
-
-        add(refLabels.get(DirectoryType.FOOTNOTE), 9, 0);
-        add(refLabels.get(DirectoryType.ENDNOTE),  9, 1);
-        add(refLabels.get(DirectoryType.NOTE),     9, 2);
-
-        add(formatLabels.get(FormatType.BOLD),     10, 0);
-        add(formatLabels.get(FormatType.CODED),    10, 1);
-        add(otherLabels.get(AuxiliaryType.AGENDA), 10, 2);
-
-        add(formatLabels.get(FormatType.ITALICS),   11, 0);
-        add(formatLabels.get(FormatType.UNDERLINE), 11, 1);
-        add(otherLabels.get(AuxiliaryType.ESCAPE),  11, 2);
+        addLabel(ans, CheatsheetLabel.getLabel(FormatType.BOLD),      8, 0);
+        addLabel(ans, CheatsheetLabel.getLabel(FormatType.CODED),     8, 1);
+        addLabel(ans, CheatsheetLabel.getLabel(FormatType.ITALICS),   8, 2);
+        addLabel(ans, CheatsheetLabel.getLabel(FormatType.UNDERLINE), 9, 3);
+        setPrecentWidth(11); // 100
+        return ans;
     }
 
+    /**
+     * Adds a {@link CheatsheetLabe} to the grid and to a
+     * {@linkplain ArrayList}. Helper method of {@link #setupHintsLabels()}.
+     */
+    private void addLabel(ArrayList<CheatsheetLabel> labels,
+            CheatsheetLabel label, int column, int row){
+        labels.add(label);
+        add(label, column, row);
+    }
+
+    /**
+     * Adds a {@link CheatsheetLabe} to the grid and to a
+     * {@linkplain ArrayList}. Helper method of {@link #setupHintsLabels()}.
+     */
+    private void addLabel(ArrayList<CheatsheetLabel> labels,
+            CheatsheetLabel label, int column, int row, int columnSpan,
+            int rowSpan){
+        labels.add(label);
+        add(label, column, row, columnSpan, rowSpan);
+    }
+
+    /**
+     * Set the next column by percent width. Helper method of
+     * {@link #setupHintsLabels()}.
+     */
+    private void setPrecentWidth(double value){
+        ColumnConstraints column = new ColumnConstraints();
+        column.setPercentWidth(value);
+        getColumnConstraints().add(column);
+    }
+
+    /// Getters
     protected List<CheatsheetLabel> getLabels(){
         return labelList;
     }
 
+    /// Node Properties
+
+    /// Control Methods
     public abstract void updateLabels(ManuscriptDocument doc, int position);
 }

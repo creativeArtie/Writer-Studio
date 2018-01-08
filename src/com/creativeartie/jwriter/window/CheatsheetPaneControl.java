@@ -13,6 +13,11 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.property.window.*;
 
+/**
+ * Controller for the Cheatsheet Pane
+ *
+ * @see CheatsheetPaneView
+ */
 class CheatsheetPaneControl extends CheatsheetPaneView{
 
     public void updateLabels(ManuscriptDocument doc, int position){

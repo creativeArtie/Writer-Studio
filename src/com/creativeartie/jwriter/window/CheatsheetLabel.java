@@ -157,7 +157,10 @@ class CheatsheetLabel extends Label{
     }
 
 
-
+    /**
+     * Update Label status with the information gather from document and the
+     * current position.
+     */
     void updateLabelStatus(ManuscriptDocument doc, int point){
         WindowStyleBuilder css = new WindowStyleBuilder();
 
