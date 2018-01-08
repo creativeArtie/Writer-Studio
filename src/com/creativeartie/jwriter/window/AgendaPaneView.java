@@ -12,8 +12,15 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.property.window.*;
 
+/**
+ * The agenda pane stores a list of to do item from either complete lines or in
+ * line.
+ */
 abstract class AgendaPaneView extends GridPane{
 
+    /**
+     * ListCell for agendaList.
+     */
     private static class AgendaCell extends ListCell<SpanBranch> {
 
         @Override
@@ -62,8 +69,8 @@ abstract class AgendaPaneView extends GridPane{
     }
 
     /// Layout Node
-    private ListView setupAgendaList(){
-        ListView<SpanBranch> ans = new ListView();
+    private ListView<SpanBranch> setupAgendaList(){
+        ListView<SpanBranch> ans = new ListView<>();
         ans.setCellFactory(param -> new AgendaCell());
         add(new TitledPane(WindowText.AGENDA_TITLE.getText(), ans), 0, 0);
         return ans;
@@ -92,7 +99,14 @@ abstract class AgendaPaneView extends GridPane{
     }
 
     /// Control Methods
+
+    /**
+     * Change the selection the ListView {@linkplain #getAgendaList()}.
+     */
     public abstract void updateSelection(ManuscriptDocument doc, int index);
 
+    /**
+     * Fills the ListView {@linkplain #getAgendaList()} with agendas.
+     */
     public abstract void fillAgenda(ManuscriptDocument doc);
 }

@@ -14,12 +14,28 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.property.window.*;
 import com.creativeartie.jwriter.main.*;
 
+/**
+ * A label that show hints and can change style base on the position of the
+ * cursor. The two things that can change the styles are:
+ * <ul>
+ * <li>if the span type is the same as the hint</li>
+ * <li>if the span can be add here</li>
+ * </ul>
+ */
 class CheatsheetLabel extends Label{
 
+    /**
+     * Check if FormatSpanContent class is found. Helper method of
+     * getLabel(FormatType), getLabel(DirectoryType) and
+     * getLabel(AuxiliaryType).
+     */
     private static boolean findContent(ManuscriptDocument doc, Integer point){
         return doc.locateSpan(point, FormatSpanContent.class).isPresent();
     }
 
+    /**
+     * Get lines hints labels.
+     */
     static CheatsheetLabel getLabel(LinedType type){
         return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
             (doc, point) -> doc.locateSpan(point, LinedSpan.class)
@@ -29,6 +45,9 @@ class CheatsheetLabel extends Label{
         );
     }
 
+    /**
+     * Get format hints labels.
+     */
     static CheatsheetLabel getLabel(FormatType type){
         return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
             (doc, point) -> doc.locateSpan(point, FormatSpan.class)
@@ -38,6 +57,9 @@ class CheatsheetLabel extends Label{
         );
     }
 
+    /**
+     * Get edition hints labels.
+     */
     static CheatsheetLabel getLabel(EditionType type){
         return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
             (doc, point) -> doc.locateSpan(point, EditionSpan.class)
@@ -48,6 +70,9 @@ class CheatsheetLabel extends Label{
         );
     }
 
+    /**
+     * Get in line reference spans (footnote, endnote, and note) hints labels.
+     */
     static CheatsheetLabel getLabel(DirectoryType type){
         if (type == DirectoryType.COMMENT || type == DirectoryType.LINK){
             throw new IllegalArgumentException("Unsupported type: " + type);
@@ -60,6 +85,9 @@ class CheatsheetLabel extends Label{
         );
     }
 
+    /**
+     * Get citition field names labels
+     */
     static CheatsheetLabel getLabel(InfoFieldType type){
         if (type == InfoFieldType.ERROR){
             throw new IllegalArgumentException("Unsupported type: " + type);
@@ -73,6 +101,9 @@ class CheatsheetLabel extends Label{
         );
     }
 
+    /**
+     * Get identity syntax hint label
+     */
     static CheatsheetLabel getIdentityLabel(){
         return new CheatsheetLabel(SyntaxHintText.LABEL.getIdText(),
             (doc, point) -> doc.locateSpan(point, DirectorySpan.class)
@@ -86,6 +117,9 @@ class CheatsheetLabel extends Label{
         );
     }
 
+    /**
+     * Get the other syntax hints labels.
+     */
     static CheatsheetLabel getLabel(AuxiliaryType type){
         Class<?> setup = null;
         switch (type){
@@ -122,11 +156,20 @@ class CheatsheetLabel extends Label{
         testAllow = allow;
     }
 
-    public boolean isSetted(ManuscriptDocument doc, int point){
-        return testSetted.test(doc, point);
-    }
 
-    public boolean isAllowed(ManuscriptDocument doc, int point){
-        return testAllow.test(doc, point);
+
+    void updateLabelStatus(ManuscriptDocument doc, int point){
+        WindowStyleBuilder css = new WindowStyleBuilder();
+
+        /// Add style based on cursor is on the syntax hint or not
+        css.add(testSetted.test(doc, point)? WindowStyle.MARKUP_Set:
+            WindowStyle.MARKUP_UNSET);
+
+        /// Add style based on span can be add at the cursor or not
+        css.add(testAllow.test(doc, point)? WindowStyle.SYNTAX_ALLOW:
+            WindowStyle.SYNTAX_FORBID);
+
+        css.add(WindowStyle.CHEATSHEET_BASE);
+        setStyle(css.toString());
     }
 }

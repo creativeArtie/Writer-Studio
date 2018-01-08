@@ -12,7 +12,7 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 
 /**
- * Controller for Agenda Pane
+ * Controller for Agenda Pane. See AgendaPaneView for details.
  */
 class AgendaPaneControl extends AgendaPaneView{
 
@@ -22,7 +22,7 @@ class AgendaPaneControl extends AgendaPaneView{
             FormatSpanAgenda.class);
         if (inline.isPresent()){
             /// Finds a FormatSpanAgenda to select:
-            getList().getSelectionModel().select(inline.get());
+            getAgendaList().getSelectionModel().select(inline.get());
             return;
         }
 
@@ -30,21 +30,19 @@ class AgendaPaneControl extends AgendaPaneView{
             LinedSpanAgenda.class);
         if (line.isPresent()){
             /// Finds a LinedSpanAgenda to select:
-            getList().getSelectionModel().select(line.get());
+            getAgendaList().getSelectionModel().select(line.get());
             return;
         }
 
         /// Nothing is found:
-        getList().getSelectionModel().clearSelection();
+        getAgendaList().getSelectionModel().clearSelection();
      }
 
     @Override
     public void fillAgenda(ManuscriptDocument doc){
         ArrayList<SpanBranch> input = new ArrayList<>();
-        for(CatalogueData data : doc.getCatalogue().getCategory(
-                AuxiliaryData.TYPE_AGENDA).values()){
-            input.add(data.getTarget());
-        }
-        getList().setItems(FXCollections.observableList(input));
+        doc.getCatalogue().getCategory(AuxiliaryData.TYPE_AGENDA).values()
+            .forEach(data -> input.add(data.getTarget()));
+        getAgendaList().setItems(FXCollections.observableList(input));
     }
 }
