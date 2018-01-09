@@ -73,13 +73,12 @@ public class LinedSpanCite extends LinedSpan {
 
     @Override
     protected SetupParser getParser(String text){
-        return canParse(isLast(), text)?
+        return canParse(text) && AuxiliaryChecker.checkLineEnd(isLast(), text)?
             LinedParseCite.INSTANCE: null;
     }
 
-    static boolean canParse(String text, boolean isLast){
-        return text.startsWith(LINED_CITE) &&
-            AuxiliaryChecker.checkLineEnd(isLast, text)?
+    static boolean canParse(String text){
+        return text.startsWith(LINED_CITE);
     }
 
     @Override

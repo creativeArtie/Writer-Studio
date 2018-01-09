@@ -82,7 +82,7 @@ enum SectionParser implements SetupParser {
             } else {
                 /// `Out`:
                 assert line.getLinedType() == LinedType.OUTLINE;
-                head = parseOutline(children, pointer, line, 1);
+                head = parseScene(children, pointer, line, 1);
             }
         }
         /// `Head 1`, `empty`:
@@ -126,7 +126,7 @@ enum SectionParser implements SetupParser {
             } else {
                 /// `Out`
                 assert line.getLinedType() == LinedType.OUTLINE;
-                head = parseOutline(children, pointer, line, 1);
+                head = parseScene(children, pointer, line, 1);
             }
         }
         /// `empty`:
@@ -134,7 +134,7 @@ enum SectionParser implements SetupParser {
         return parseHead(pointer);
     }
 
-    private Optional<LinedSpanLevelSection> parseOutline(List<Span> parent,
+    private Optional<LinedSpanLevelSection> parseScene(List<Span> parent,
             SetupPointer pointer, LinedSpanLevelSection line, int level){
         assert pointer != null: "Null pointer";
         assert line != null: "Null line";
@@ -147,13 +147,13 @@ enum SectionParser implements SetupParser {
         ArrayList<Span> children = new ArrayList<>();
         if (line.getLevel() > level){
             /// `Out > Level`:
-            head = parseOutline(children, pointer, line, level + 1);
+            head = parseScene(children, pointer, line, level + 1);
         } else if (line.getLevel() == level){
             /// `Out = Level`:
             head = parseContent(children, pointer);
         }
 
-        /// `Out > Level` +  parseOutline, `Head = Level` + parseContent:
+        /// `Out > Level` +  parseScene, `Head = Level` + parseContent:
         while(head.isPresent()){
             line = head.get();
             if (line.getLinedType() == LinedType.HEADING){
@@ -164,7 +164,7 @@ enum SectionParser implements SetupParser {
                 assert line.getLinedType() == LinedType.OUTLINE;
                 if (line.getLevel() > level){
                     /// `Out > Level`:
-                    head = parseOutline(children, pointer, line, level + 1);
+                    head = parseScene(children, pointer, line, level + 1);
                 } else {
                     /// `Out = Level`, `Out < Level`:
                     assert line.getLevel() == level || line.getLevel() < level;
@@ -174,7 +174,7 @@ enum SectionParser implements SetupParser {
             }
         }
         /// `empty`:
-        parent.add(new SectionSpanOutline(children));
+        parent.add(new SectionSpanScene(children));
         return parseHead(pointer);
     }
 }

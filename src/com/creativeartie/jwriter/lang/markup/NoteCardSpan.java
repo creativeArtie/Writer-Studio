@@ -1,8 +1,10 @@
 package com.creativeartie.jwriter.lang.markup;
 
 import java.util.*;
+import java.util.Optional;
 
 import com.google.common.collect.*;
+import com.google.common.base.*;
 
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
@@ -13,43 +15,62 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
  */
 public class NoteCardSpan extends MainSpan {
 
+    private Optional<List<StyleInfo>> cacheStyles;
+    private Optional<Optional<CatalogueIdentity>> cacheId;
+    private Optional<Integer> cacheNote;
+    private Optional<ImmutableListMultimap<InfoFieldType, InfoDataSpan>>
+        cacheSources;
+
     NoteCardSpan(List<Span> children){
         super(children);
     }
 
     @Override
     public List<StyleInfo> getBranchStyles(){
-        return ImmutableList.of(AuxiliaryType.MAIN_NOTE, getIdStatus());
+        cacheStyles = getCache(cacheStyles, () ->
+            ImmutableList.of(AuxiliaryType.MAIN_NOTE, getIdStatus()));
+        return cacheStyles.get();
     }
 
     public ImmutableListMultimap<InfoFieldType, InfoDataSpan> getSources(){
-        ImmutableListMultimap.Builder<InfoFieldType, InfoDataSpan> data =
-            ImmutableListMultimap.builder();
-        for (Span child: this){
-            if (child instanceof LinedSpanCite){
-                LinedSpanCite cite = (LinedSpanCite) child;
-                if (cite.getData().isPresent()){
-                    data.put(cite.getFieldType(), cite.getData().get());
+        cacheSources = getCache(cacheSources, () -> {
+            ImmutableListMultimap.Builder<InfoFieldType, InfoDataSpan> data =
+                ImmutableListMultimap.builder();
+            for (Span child: this){
+                if (child instanceof LinedSpanCite){
+                    LinedSpanCite cite = (LinedSpanCite) child;
+                    if (cite.getData().isPresent()){
+                        data.put(cite.getFieldType(), cite.getData().get());
+                    }
                 }
             }
-        }
-        return data.build();
+            return data.build();
+        });
+        return cacheSources.get();
     }
 
     public int getNoteTotal(){
-        int notes = 0;
-        for (Span child: this){
-            notes += ((LinedSpan)child).getNoteTotal();
-        }
-        return notes;
+        cacheNote = getCache(cacheNote, () -> {
+            int notes = 0;
+            for (Span child: this){
+                notes += ((LinedSpan)child).getNoteTotal();
+            }
+            return notes;
+        });
+        return cacheNote.get();
     }
 
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
-        Optional<LinedSpanNote> id = spanFromFirst(LinedSpanNote.class);
-        return Optional.of(id.flatMap(line -> line.buildId())
-            .orElseGet(() -> new CatalogueIdentity(Arrays.asList(TYPE_COMMENT),
-            this)));
+        cacheId = getCache(cacheId, () ->
+            Optional.of(spanFromFirst(LinedSpanNote.class)
+                .flatMap(line -> line.buildId())
+                .orElseGet(() ->
+                    new CatalogueIdentity(Arrays.asList(TYPE_COMMENT), this)
+                )
+            )
+        );
+        return cacheId.get();
     }
 
     @Override
@@ -62,46 +83,25 @@ public class NoteCardSpan extends MainSpan {
         return output.toString();
     }
 
-    private final int PARSE_START = 0;
-    private final int PARSE_ID = 1;
-    private final int PARSE_ESCAPE = 2;
-    private final int PARSE_CONTENT = 3;
-
     @Override
     protected SetupParser getParser(String text){
-        // text.replace(CHAR_ESCAPE + LINED_END, "")
-        int state = PARSE_START;
-        for (int i = 0; i < text.length(); i++){
-            switch (state){
-            case PARSE_START:
-                if (text.startsWith(LINED_CITE, i)){
-                    i++;
-                    state = PARSE_CONTENT;
-                } else if (text.startsWith(LINED_NOTE, i)){
-                    state = PARSE_ID;
-                    i++;
+        boolean isFirst = true;
+        if (text.endsWith(LINED_END)){
+            text = text.substring(0, text.length() - LINED_END.length());
+        }
+        for (String str : Splitter.on(LINED_END)
+                .split(text.replace(CHAR_ESCAPE + LINED_END, ""))){
+            if (isFirst){
+                if (LinedSpanNote.canParse(str) || LinedSpanCite.canParse(str)){
+                    isFirst = false;
                 } else {
                     return null;
                 }
-                break;
-            case PARSE_ID:
-                if (! CharMatcher.whitespace().matches(text.get(i))){
-                    if (text.startsWith(DIRECTORY_BEGIN, i)){
-                        return null;
-                    }
-                } else {
-                    state = PARSE_CONTENT;
+            } else {
+                if (!LinedSpanNote.canParseWithoutId(str) &&
+                        ! LinedSpanCite.canParse(str)){
+                    return null;
                 }
-                break;
-            case PARSE_CONTENT:
-                if (text.startsWith(LINED_END, i)){
-                    state = PARSE_START;
-                } else if (text.startsWith(CHAR_ESCAPE, i)){
-                    state = PARSE_ESCAPE;
-                }
-                break;
-            case PARSE_ESCAPE:
-                state = PARSE_CONTENT;
             }
         }
         return NoteCardParser.PARSER;
@@ -109,11 +109,13 @@ public class NoteCardSpan extends MainSpan {
 
     @Override
     protected void childEdited(){
-        // TODO childEdit
+        cacheStyles = Optional.empty();
+        cacheNote = Optional.empty();
+        cacheSources = Optional.empty();
     }
 
     @Override
     protected void docEdited(){
-        // TODO docEdited
+        cacheId = Optional.empty();
     }
 }

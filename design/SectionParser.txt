@@ -15,7 +15,7 @@ Second column of each method calls another method or return
 ║├>(Head > 1)┼▶Head > 1┐                                                             ║
 ║└>(Out)─────┴▶Out──┐  │                                                             ║
 ╠═══════════════════╪══╪═════════════════════════════════════════════════════════════╣
-║ParseSec:          │  │              ┌(b)                                           ║
+║ParseSection:      │  │              ┌(b)                                           ║
 ║                   │  ├▶Out✗         ├▶empty───────┐                                ║
 ║                   │  ├▶Head = Level─┼▶Head = Level┼▶(a)                            ║
 ║                   │  ├▶Head < Level✗├▶Head < Level┘                                ║
@@ -23,7 +23,7 @@ Second column of each method calls another method or return
 ║                   │  └─────────────┤└▶Head > Level┐│                               ║
 ║                   │                └──────────────┘│                               ║
 ╠═══════════════════╪════════════════════════════════╪═══════════════════════════════╣
-║ParseOut:          └────────────────────────────────┼────────────┐                  ║
+║ParseScene:        └────────────────────────────────┼────────────┐                  ║
 ║                                                    ├▶Head✗      │┌▶empty──────┐    ║
 ║                                                    ├▶Out > Level┘├▶Head───────┼▶(b)║
 ║                                                    ├▶Out < Level✗├▶Out < Level┤    ║

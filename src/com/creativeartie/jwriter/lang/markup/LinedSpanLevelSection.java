@@ -9,7 +9,8 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
  * Line that stores a section heading. Represented in design/ebnf.txt as
  * {@code LinedHeading}, {@code LinedOutline}.
  */
-public class LinedSpanLevelSection extends LinedSpanLevel implements Catalogued{
+public final class LinedSpanLevelSection extends LinedSpanLevel
+        implements Catalogued{
 
     private Optional<Optional<EditionSpan>> cacheEditionSpan;
     private Optional<Optional<CatalogueIdentity>> cacheId;

@@ -69,7 +69,6 @@ public class DocumentAssert {
     public DocumentAssert assertDoc(int childrenSize, String rawText){
         assertEquals(getError("text", doc), rawText,      doc.getRaw());
         assertEquals(getError("size", doc), childrenSize, doc.size());
-        idTester = new IDTestDocument();
         return this;
     }
 
@@ -202,6 +201,7 @@ public class DocumentAssert {
     public void insert(int location, String input, int ... idx){
         willEdit((SpanNode<?>)getFamily(idx)[0]);
         doc.insert(location, input);
+        idTester = new IDTestDocument();
         assertTrue("No span changed.", editPass);
         assertEquals("Wrong number of updater & editor called", totalSpans,
             editedSpans);
@@ -210,6 +210,7 @@ public class DocumentAssert {
     public void delete(int start, int end, int ... idx){
         willEdit((SpanNode<?>)getFamily(idx)[0]);
         doc.delete(start, end);
+        idTester = new IDTestDocument();
         assertTrue("No span changed.", editPass);
         assertEquals("Wrong number of updater & editor called", totalSpans,
             editedSpans);

@@ -10,11 +10,13 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
  * Line that stores a block quote. Represented in design/ebnf.txt as
  * {@code LinedQuote}.
  */
-public class SectionSpanOutline extends SpanBranch {
+public final class SectionSpanScene extends SectionSpan {
     private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(
-        AuxiliaryType.AGENDA);
+        AuxiliaryType.SECTION_SCENE);
+    private Optional<List<LinedSpan>> cacheSectionLines;
+    private Optional<List<SectionSpanScene>> cacheChildren;
 
-    SectionSpanOutline(List<Span> children){
+    SectionSpanScene(List<Span> children){
         super(children);
     }
 
@@ -32,10 +34,12 @@ public class SectionSpanOutline extends SpanBranch {
     @Override
     protected void childEdited(){
         //TODO childEdited
+        super.childEdited();
     }
 
     @Override
     protected void docEdited(){
         //TODO docEdited
+        super.docEdited();
     }
 }
