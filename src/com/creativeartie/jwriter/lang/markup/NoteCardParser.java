@@ -40,6 +40,6 @@ enum NoteCardParser implements SetupParser {
 
     private Optional<SpanBranch> buildSpan(List<Span> children){
         return Optional.ofNullable(children.isEmpty()? null:
-            new MainSpanNote(children));
+            new NoteCardSpan(children));
     }
 }

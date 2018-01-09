@@ -11,7 +11,9 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 
 /**
+ * Controller for Heading Pane.
  *
+ * @see HeadingPaneView
  */
 class HeadingPaneControl extends HeadingPaneView{
 

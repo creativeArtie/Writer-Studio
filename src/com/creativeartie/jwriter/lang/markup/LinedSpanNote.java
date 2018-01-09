@@ -48,6 +48,18 @@ public class LinedSpanNote extends LinedSpan{
             LinedParseRest.NOTE: null;
     }
 
+    static boolean canParseWithoutId(String text, boolean isLast){
+        if (text.startsWith(LINED_NOTE)){
+            for (int i = 2; i < text.length(); i++){
+                if (! Character.isWhitespace(text.charAt(i))){
+                    return ! text.startsWith(DIRECTORY_BEGIN, i);
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     @Override
     protected void childEdited(){
         cacheFormatted = Optional.empty();

@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import static com.creativeartie.jwriter.lang.DocumentAssert.*;
 import static com.creativeartie.jwriter.lang.markup.BranchTest.*;
 import static com.creativeartie.jwriter.lang.markup.BranchLineTest.*;
-import static com.creativeartie.jwriter.lang.markup.BranchMainTest.*;
+import static com.creativeartie.jwriter.lang.markup.BranchLinesTest.*;
 import static com.creativeartie.jwriter.lang.markup.BranchFormatTest.*;
 
 import org.junit.*;
@@ -21,7 +21,9 @@ import java.util.TreeMap;
 import com.creativeartie.jwriter.lang.*;
 
 @RunWith(JUnit4.class)
-public class MainNoteDebug {
+public class NoteCardDebug {
+
+    private static final NoteCardParser PARSER = NoteCardParser.PARSER;
 
     public static IDBuilder buildId(boolean isNameless, String name){
         String category = isNameless? "comment" : "note";
@@ -29,16 +31,16 @@ public class MainNoteDebug {
     }
 
     @Test
-    public void noteIdless(){
+    public void noIDStyle(){
         String raw = "!%abc {!deed}";
-        DocumentAssert doc = assertDoc(1, raw, new MainParser());
+        DocumentAssert doc = assertDoc(1, raw, PARSER);
 
         IDBuilder builder = buildId(true, "00");
         doc.addId(builder, 1);
         doc.addId(FormatAgendaDebug.buildId("06"), 0);
         doc.assertIds();
 
-        MainNoteTest note = new MainNoteTest().setNoteTotal(2)
+        NoteCardTest note = new NoteCardTest().setNoteTotal(2)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
 
         NoteLineTest line = new NoteLineTest()
@@ -50,14 +52,14 @@ public class MainNoteDebug {
     }
 
     @Test
-    public void noteIded(){
+    public void withIDStyle(){
         String raw = "!%@id:abc";
-        DocumentAssert doc = assertDoc(1, raw, new MainParser());
+        DocumentAssert doc = assertDoc(1, raw, PARSER);
 
         IDBuilder builder = buildId(false, "id");
         doc.addId(builder, 0);
 
-        MainNoteTest note = new MainNoteTest().setNoteTotal(1)
+        NoteCardTest note = new NoteCardTest().setNoteTotal(1)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         NoteLineTest line = new NoteLineTest()
             .setFormattedSpan(doc, 0, 0, 4).setNoteTotal(1)
@@ -69,11 +71,11 @@ public class MainNoteDebug {
     }
 
     @Test
-    public void noteSingle(){
+    public void basic(){
         String raw1 = "!%@see:basic note\n";
         String raw2 = "!>in-text: Smith, p3";
         String full = raw1 + raw2;
-        DocumentAssert doc = assertDoc(1, full, new MainParser());
+        DocumentAssert doc = assertDoc(1, full, PARSER);
 
 
         IDBuilder builder = new IDBuilder();
@@ -81,7 +83,8 @@ public class MainNoteDebug {
         doc.addId(builder, 0);
         doc.assertIds();
 
-        MainNoteTest note = new MainNoteTest().setNoteTotal(4)
+
+        NoteCardTest note = new NoteCardTest().setNoteTotal(4)
             .putData(InfoFieldType.IN_TEXT, doc, 0, 1, 3)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         NoteLineTest line1 = new NoteLineTest()
@@ -98,16 +101,16 @@ public class MainNoteDebug {
     }
 
     @Test
-    public void notesDouble(){
+    public void backToBackNotes(){
         String raw1 = "!%basic note \n";
         String raw2 = "!%@ed:data\n";
         String full = raw1 + raw2;
-        DocumentAssert doc = assertDoc(2, full, new MainParser());
+        DocumentAssert doc = assertDoc(2, full, PARSER);
 
         IDBuilder builder = buildId(true, "00");
         doc.addId(builder, 0);
 
-        MainNoteTest note1 = new MainNoteTest()
+        NoteCardTest note1 = new NoteCardTest()
             .setCatalogued(CatalogueStatus.UNUSED, builder)
             .setNoteTotal(2);
         NoteLineTest line1 = new NoteLineTest()
@@ -117,7 +120,7 @@ public class MainNoteDebug {
         IDBuilder id = buildId(false, "ed");
         doc.addId(id, 1);
 
-        MainNoteTest note2 = new MainNoteTest().setNoteTotal(1)
+        NoteCardTest note2 = new NoteCardTest().setNoteTotal(1)
             .setCatalogued(CatalogueStatus.UNUSED, id);
         NoteLineTest line2 = new NoteLineTest()
             .setFormattedSpan(doc, 1, 0, 4).setNoteTotal(1)
@@ -132,16 +135,16 @@ public class MainNoteDebug {
     }
 
     @Test
-    public void noteError(){
+    public void errorSources(){
         String raw1 = "!>dsaf\n";
         String raw2 = "!>in-text: Doe, p40\n";
         String raw3 = "!>in-text: Smith, p3";
         String full = raw1 + raw2 + raw3;
-        DocumentAssert doc = assertDoc(1, full, new MainParser());
+        DocumentAssert doc = assertDoc(1, full, PARSER);
         IDBuilder builder = buildId(true, "00");
         doc.addId(builder, 0);
 
-        MainNoteTest note = new MainNoteTest()
+        NoteCardTest note = new NoteCardTest()
             .putData(InfoFieldType.IN_TEXT, doc, 0, 1, 3)
             .putData(InfoFieldType.IN_TEXT, doc, 0, 2, 3)
             .setNoteTotal(4)
@@ -166,4 +169,30 @@ public class MainNoteDebug {
         doc.assertIds();
     }
 
+    @Test
+    public void editAddLineBasic(){
+        ///           012345678901234 56
+        String raw = "!%line 1!%line2\n";
+        DocumentAssert doc = assertDoc(1, raw, PARSER);
+        doc.insert(8, "\n", 0);
+
+        IDBuilder builder = buildId(true, "00");
+        doc.addId(builder, 0);
+
+        NoteCardTest note = new NoteCardTest().setNoteTotal(3)
+            .setCatalogued(CatalogueStatus.UNUSED, builder);
+        NoteLineTest line1 = new NoteLineTest()
+            .setFormattedSpan(doc, 0, 0, 1).setNoteTotal(2)
+            .setIsLast(false);
+        NoteLineTest line2 = new NoteLineTest()
+            .setFormattedSpan(doc, 0, 1, 1).setNoteTotal(1);
+
+        String out1 = "!%line 1\n";
+        String out2 = "!%line2\n";
+        String full = out1 + out2;
+        note.test(doc, 2, full, 0);
+        line1.test(doc, 3, out1, 0, 0);
+        line2.test(doc, 3, out2, 0, 1);
+
+    }
 }
