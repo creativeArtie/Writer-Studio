@@ -1,6 +1,8 @@
 package com.creativeartie.jwriter.lang.markup;
 
 import java.util.*;
+import java.util.Optional;
+import com.google.common.base.*;
 import com.google.common.collect.*;
 
 import com.creativeartie.jwriter.lang.*;
@@ -19,9 +21,16 @@ abstract class SectionSpan extends SpanBranch implements Catalogued{
     private Optional<Optional<CatalogueIdentity>> cacheId;
     private Optional<List<LinedSpan>> cacheLines;
     private Optional<List<NoteCardSpan>> cacheNotes;
+    private Optional<Boolean> cacheLast;
+    private final SectionParser spanReparser;
 
-    SectionSpan(List<Span> children){
+    SectionSpan(List<Span> children, SectionParser reparser){
         super(children);
+        spanReparser = reparser;
+    }
+
+    protected final  SectionParser getParser(){
+        return spanReparser;
     }
 
     public final Optional<SectionSpan> getUpperLevel(){
@@ -125,6 +134,31 @@ abstract class SectionSpan extends SpanBranch implements Catalogued{
         return cacheNotes.get();
     }
 
+    protected final boolean canParse(String text, SectionParser[] values){
+
+        boolean check = true;
+        for (String line : Splitter.on(LINED_END)
+                .split(text.replace(CHAR_ESCAPE + LINED_END, ""))
+            ){
+            for(SectionParser value: values){
+                if (line.startsWith(value.getStarter())){
+                    return false;
+                }
+                if (value == spanReparser){
+                    check = false;
+                }
+                if (spanReparser instanceof SectionParseScene){
+                    for (String str: getLevelTokens(LinedParseLevel.HEADING)){
+                        if (line.startsWith(str)){
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     @Override
     protected void childEdited(){
         cacheUpper = Optional.empty();
@@ -135,6 +169,7 @@ abstract class SectionSpan extends SpanBranch implements Catalogued{
         cachePublish = Optional.empty();
         cacheLines = Optional.empty();
         cacheNotes = Optional.empty();
+        cacheLast = Optional.empty();
     }
 
     @Override

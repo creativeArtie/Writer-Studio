@@ -30,7 +30,7 @@ public final class AuxiliaryData{
     private static final String LEVEL_NUMBERED = "#";
     private static final String LEVEL_OUTLINE  = "#";
     private static final String LEVEL_BULLET   = "-";
-    public static String[] getLevelToken(LinedParseLevel parser){
+    public static String[] getLevelTokens(LinedParseLevel parser){
         String[] levels = new String[LEVEL_MAX];
         for (int i = 0; i < LEVEL_MAX; i++){
             levels[i] = getLevelToken(parser, LEVEL_MAX - i);
@@ -75,10 +75,11 @@ public final class AuxiliaryData{
         }
         return builder.toString();
     }
+
     public static List<String> getLinedTokens(){
         ArrayList<String> list = new ArrayList<>();
         for (LinedParseLevel parser: LinedParseLevel.values()){
-            for (String token: getLevelToken(parser)){
+            for (String token: getLevelTokens(parser)){
                 list.add(token);
             }
         }

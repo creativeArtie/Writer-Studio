@@ -17,8 +17,8 @@ public final class SectionSpanHead extends SectionSpan {
     private Optional<List<SectionSpanHead>> cacheSections;
     private Optional<List<SectionSpanScene>> cacheScenes;
 
-    SectionSpanHead(List<Span> children){
-        super(children);
+    SectionSpanHead(List<Span> children, SectionParser reparser){
+        super(children, reparser);
     }
 
     @Override
@@ -57,8 +57,11 @@ public final class SectionSpanHead extends SectionSpan {
 
     @Override
     protected SetupParser getParser(String text){
-        ///TODO getParser
-        return null;
+        if (! AuxiliaryChecker.checkLineEnd(isLast(), text)){
+            return null;
+        }
+        return  text.startsWith(getParser().getStarter()) &&
+            canParse(text, SectionParseSection.values())? getParser(): null;
     }
 
     @Override
@@ -67,10 +70,5 @@ public final class SectionSpanHead extends SectionSpan {
         cacheSections = Optional.empty();
         cacheScenes = Optional.empty();
         super.childEdited();
-    }
-
-    @Override
-    protected void docEdited(){
-        super.docEdited();
     }
 }

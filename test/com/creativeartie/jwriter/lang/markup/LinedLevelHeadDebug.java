@@ -401,7 +401,7 @@ public class LinedLevelHeadDebug {
     public void editHeadingLevel(){
         String before = "===abc#DRAFT text\n";
         DocumentAssert doc = DocumentAssert.assertDoc(1, before, parsers);
-        doc.delete(0, 1, 0);
+        doc.delete(0, 1);
         editCommon(doc, LinedType.HEADING);
     }
 
@@ -427,7 +427,7 @@ public class LinedLevelHeadDebug {
     public void editOutlineLevel(){
         String before = "!##abc#DRAFT text\n";
         DocumentAssert doc = DocumentAssert.assertDoc(1, before, parsers);
-        doc.delete(1, 2, 0);
+        doc.delete(1, 2);
         editCommon(doc, LinedType.OUTLINE);
     }
 

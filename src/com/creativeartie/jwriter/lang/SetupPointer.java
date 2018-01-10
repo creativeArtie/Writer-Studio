@@ -365,6 +365,20 @@ public final class SetupPointer{
         return matchMarker < rawText.length();
     }
 
+    /** Checks if the next text matching on on the list of Strings */
+    public boolean hasNext(String ... strings){
+        for (String string: strings){
+            if (rawText.startsWith(string, matchMarker)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasNext(String string){
+        return rawText.startsWith(string, matchMarker);
+    }
+
     /** Checks if there is still text to be parsed. */
     protected String getRaw(){
         return rawText.substring(matchMarker, nextMarker);

@@ -16,8 +16,8 @@ public final class SectionSpanScene extends SectionSpan {
     private Optional<SectionSpanHead> cacheHead;
     private Optional<List<SectionSpanScene>> cacheScenes;
 
-    SectionSpanScene(List<Span> children){
-        super(children);
+    SectionSpanScene(List<Span> children, SectionParser reparser){
+        super(children, reparser);
     }
 
     @Override
@@ -28,10 +28,11 @@ public final class SectionSpanScene extends SectionSpan {
     public SectionSpanHead getSection(){
         cacheHead = getCache(cacheHead, () ->{
             SpanNode<?> span = getParent();
-            while (! span instanceof SectionSpanHead){
+            while (! (span instanceof SectionSpanHead)){
                 span = span.getParent();
-                assert ! span instanceof Document;
+                assert ! (span instanceof Document);
             }
+            return (SectionSpanHead) span;
         });
         return cacheHead.get();
     }
@@ -44,19 +45,17 @@ public final class SectionSpanScene extends SectionSpan {
 
     @Override
     protected SetupParser getParser(String text){
-        ///TODO getParser
-        return null;
+        if (! AuxiliaryChecker.checkLineEnd(isLast(), text)){
+            return null;
+        }
+        return  text.startsWith(getParser().getStarter()) &&
+            canParse(text, SectionParseScene.values())? getParser(): null;
     }
 
     @Override
     protected void childEdited(){
-        //TODO childEdited
+        cacheHead = Optional.empty();
+        cacheScenes = Optional.empty();
         super.childEdited();
-    }
-
-    @Override
-    protected void docEdited(){
-        //TODO docEdited
-        super.docEdited();
     }
 }

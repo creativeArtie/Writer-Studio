@@ -51,7 +51,7 @@ public class LinedSpanLevelList extends LinedSpanLevel {
      * {@link #getParser(String)}
      */
     private boolean getParser(String text, LinedParseLevel parser){
-        for (String token: getLevelToken(parser)){
+        for (String token: getLevelTokens(parser)){
             if (text.startsWith(token)){
                 return true;
             }

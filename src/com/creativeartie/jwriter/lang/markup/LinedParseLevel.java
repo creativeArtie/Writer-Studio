@@ -23,7 +23,7 @@ enum LinedParseLevel implements SetupParser {
         checkNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
         boolean isFirst = true;
-        for(String token: getLevelToken(this)){
+        for(String token: getLevelTokens(this)){
             if (pointer.startsWith(children, token)){
                 return ordinal() <= OUTLINE.ordinal()?
                     parseSec(children, pointer):

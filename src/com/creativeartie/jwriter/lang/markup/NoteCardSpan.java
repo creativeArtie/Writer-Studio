@@ -86,6 +86,9 @@ public class NoteCardSpan extends MainSpan {
     @Override
     protected SetupParser getParser(String text){
         boolean isFirst = true;
+        if (! AuxiliaryChecker.checkLineEnd(isLast(), text)){
+            return null;
+        }
         if (text.endsWith(LINED_END)){
             text = text.substring(0, text.length() - LINED_END.length());
         }
