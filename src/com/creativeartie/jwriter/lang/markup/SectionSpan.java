@@ -102,6 +102,16 @@ abstract class SectionSpan extends SpanBranch implements Catalogued{
         return cacheLines.get();
     }
 
+    protected <T> List<T> getChildren(Class<T> getting){
+        ImmutableList.Builder<T> builder = ImmutableList.builder();
+        for (Span span: this){
+            if (getting.isInstance(span)){
+                builder.add(getting.cast(span));
+            }
+        }
+        return builder.build();
+    }
+
     public final List<NoteCardSpan> getNotes(){
         cacheNotes = getCache(cacheNotes, () -> {
             ImmutableList.Builder<NoteCardSpan> lines = ImmutableList.builder();

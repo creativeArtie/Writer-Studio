@@ -14,7 +14,7 @@ public final class SectionSpanHead extends SectionSpan {
     private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(
             AuxiliaryType.SECTION_HEAD);
     private Optional<List<LinedSpan>> cacheSectionLines;
-    private Optional<List<SectionSpanHead>> cacheChildren;
+    private Optional<List<SectionSpanHead>> cacheSections;
     private Optional<List<SectionSpanScene>> cacheScenes;
 
     SectionSpanHead(List<Span> children){
@@ -33,14 +33,26 @@ public final class SectionSpanHead extends SectionSpan {
                 if (span instanceof LinedSpan){
                     lines.add((LinedSpan)span);
                 } else if (span instanceof SectionSpanHead){
-                    lines.addAll(((SectionSpanScene)span).getSectionLines());
-                } else if (span instanceof SectionSpanHead){
+                    lines.addAll(((SectionSpanHead)span).getSectionLines());
+                } else if (span instanceof SectionSpanScene){
                     return lines.build();
                 }
             }
             return lines.build();
         });
         return cacheSectionLines.get();
+    }
+
+    public List<SectionSpanHead> getSections(){
+        cacheSections = getCache(cacheSections, () ->
+            getChildren(SectionSpanHead.class));
+        return cacheSections.get();
+    }
+
+    public List<SectionSpanScene> getScenes(){
+        cacheScenes = getCache(cacheScenes, () ->
+            getChildren(SectionSpanScene.class));
+        return cacheScenes.get();
     }
 
     @Override
@@ -51,14 +63,14 @@ public final class SectionSpanHead extends SectionSpan {
 
     @Override
     protected void childEdited(){
-        //TODO childEdited
         cacheSectionLines = Optional.empty();
+        cacheSections = Optional.empty();
+        cacheScenes = Optional.empty();
         super.childEdited();
     }
 
     @Override
     protected void docEdited(){
-        //TODO docEdited
         super.docEdited();
     }
 }

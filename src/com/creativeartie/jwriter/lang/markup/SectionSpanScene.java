@@ -13,8 +13,8 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 public final class SectionSpanScene extends SectionSpan {
     private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(
         AuxiliaryType.SECTION_SCENE);
-    private Optional<List<LinedSpan>> cacheSectionLines;
-    private Optional<List<SectionSpanScene>> cacheChildren;
+    private Optional<SectionSpanHead> cacheHead;
+    private Optional<List<SectionSpanScene>> cacheScenes;
 
     SectionSpanScene(List<Span> children){
         super(children);
@@ -23,6 +23,23 @@ public final class SectionSpanScene extends SectionSpan {
     @Override
     public List<StyleInfo> getBranchStyles(){
         return BRANCH_STYLE;
+    }
+
+    public SectionSpanHead getSection(){
+        cacheHead = getCache(cacheHead, () ->{
+            SpanNode<?> span = getParent();
+            while (! span instanceof SectionSpanHead){
+                span = span.getParent();
+                assert ! span instanceof Document;
+            }
+        });
+        return cacheHead.get();
+    }
+
+    public List<SectionSpanScene> getSubscenes(){
+        cacheScenes = getCache(cacheScenes, () ->
+            getChildren(SectionSpanScene.class));
+        return cacheScenes.get();
     }
 
     @Override
