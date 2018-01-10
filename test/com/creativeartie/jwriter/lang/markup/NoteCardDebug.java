@@ -245,7 +245,7 @@ public class NoteCardDebug {
         String raw = "!%@see:Note Heading\n!%note content\n!>in-text: Smith, p3";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
         String full =
-            "!%@see:Note Heading\n!%Some note content\n!>in-text: Smith, p3";
+            "!%@see:Note Heading\n!%some note content\n!>in-text: Smith, p3";
         doc.insert(22, "some ", 0, 1);
         doc.assertDoc(1, full);
         testNoteBasic(doc);

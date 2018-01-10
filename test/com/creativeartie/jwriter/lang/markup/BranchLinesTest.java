@@ -1,7 +1,6 @@
 package com.creativeartie.jwriter.lang.markup;
 
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.*;
 
 import com.google.common.collect.*;
@@ -56,46 +55,69 @@ public class BranchLinesTest {
                 test.getNoteTotal());
         }
     }
-/*
-    public static class SectionTest extends MainTest<SectionTest>{
+
+
+    private static class SectionTest<T extends SectionTest>
+            extends SpanBranchAssert<T>{
+        private Optional<LinedSpanLevelSection> sectionHeading;
+        private int sectionLevel;
+        private EditionType sectionEdition;
         private int publishTotal;
         private int noteTotal;
+        private List<LinedSpan> sectionLines;
+        private List<NoteCardSpan> sectionNotes;
 
-        private EditionType edition;
-
-        public MainSectionTest(){
-            super(MainSectionTest.class);
+        public SectionTest(Class<T> clazz){
+            super(clazz);
+            sectionLines = new ArrayList<>();
+            sectionNotes = new ArrayList<>();
+            sectionHeading = Optional.empty();
+            sectionLevel = 1;
+            sectionEdition = EditionType.NONE;
         }
 
-        public MainSectionTest setEdition(EditionType type){
-            edition = type;
-            return this;
+        public T setHeading(DocumentAssert doc, int ... idx){
+            LinedSpanLevelSection line = doc.getChild(LinedSpanLevelSection
+                .class, idx);
+            sectionHeading = Optional.of(line);
+            sectionLevel = line.getLevel();
+            sectionEdition = line.getEdition();
+            return cast();
         }
 
-        @Override
-        public void setup(){
-            setStyles(AuxiliaryType.MAIN_SECTION);
+        public T setPublishTotal(int count){
+            publishTotal = count;
+            return cast();
         }
 
-        public NoteCardTest setNoteTotal(int count){
+        public T setNoteTotal(int count){
             noteTotal = count;
             return cast();
         }
 
-        public SectionTest setPublishTotal(int count){
-            publishTotal = count;
+        public T addLine(DocumentAssert doc, int ... idx){
+            LinedSpan line = doc.getChild(LinedSpan.class, idx);
+            sectionLines.add(line);
+            return cast();
+        }
+
+        public T addNote(DocumentAssert doc, int ... idx){
+            NoteCardSpan note = doc.getChild(NoteCardSpan.class, idx);
+            sectionNotes.add(note);
             return cast();
         }
 
         @Override
         public void test(SpanBranch span){
-            MainSpanSection test = assertClass(span, SectionHead.class);
-            assertEquals(getError("edition", test), edition, test.getEdition());
-            /// See SupplementSectionDebug for more details.
-            assertEquals(getError("publish", span), publishTotal,
-                test.getPublishTotal());
-            assertEquals(getError("note", span), noteTotal,
-                test.getNoteTotal());
+            SectionSpan test = (SectionSpan) span;
+            assertSpan("heading", span, sectionHeading, test.getHeading());
+            assertEquals(getError("level", span), sectionLevel, test.getLevel());
+            assertSame(getError("edition", span), sectionEdition,
+                test.getEdition());
+            assertEquals(getError("publish", span), publishTotal, test.getPublishTotal());
+            assertEquals(getError("note", span), noteTotal, test.getNoteTotal());
+            assertEquals(getError("lines", span), sectionLines, test.getLines());
+            assertEquals(getError("notes", span), sectionNotes, test.getNotes());
         }
-    }*/
+    }
 }

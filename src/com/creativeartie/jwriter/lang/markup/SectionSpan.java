@@ -12,7 +12,6 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
  * Section with notes and content
  */
 abstract class SectionSpan extends SpanBranch implements Catalogued{
-    private Optional<Optional<SectionSpan>> cacheUpper;
     private Optional<Optional<LinedSpanLevelSection>> cacheHeading;
     private Optional<Integer> cacheLevel;
     private Optional<EditionType> cacheEdition;
@@ -21,7 +20,6 @@ abstract class SectionSpan extends SpanBranch implements Catalogued{
     private Optional<Optional<CatalogueIdentity>> cacheId;
     private Optional<List<LinedSpan>> cacheLines;
     private Optional<List<NoteCardSpan>> cacheNotes;
-    private Optional<Boolean> cacheLast;
     private final SectionParser spanReparser;
 
     SectionSpan(List<Span> children, SectionParser reparser){
@@ -31,13 +29,6 @@ abstract class SectionSpan extends SpanBranch implements Catalogued{
 
     protected final  SectionParser getParser(){
         return spanReparser;
-    }
-
-    public final Optional<SectionSpan> getUpperLevel(){
-        cacheUpper = getCache(cacheUpper, () -> Optional.of(getParent())
-            .filter(span -> span instanceof SectionSpan)
-            .map(span -> (SectionSpan) span));
-        return cacheUpper.get();
     }
 
     public final Optional<LinedSpanLevelSection> getHeading(){
@@ -161,7 +152,6 @@ abstract class SectionSpan extends SpanBranch implements Catalogued{
 
     @Override
     protected void childEdited(){
-        cacheUpper = Optional.empty();
         cacheHeading = Optional.empty();
         cacheLevel = Optional.empty();
         cacheEdition = Optional.empty();
@@ -169,7 +159,6 @@ abstract class SectionSpan extends SpanBranch implements Catalogued{
         cachePublish = Optional.empty();
         cacheLines = Optional.empty();
         cacheNotes = Optional.empty();
-        cacheLast = Optional.empty();
     }
 
     @Override
