@@ -5,12 +5,25 @@ import java.util.*;
 import static com.creativeartie.jwriter.main.Checker.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.jwriter.lang.SetupParser.*;
+import com.creativeartie.jwriter.lang.*;
 
 /**
  * All methods meant to check if a string can be reparsed locally in a single
  * {@link SpanBranch}.
  */
 public final class AuxiliaryChecker{
+
+    static boolean checkSectionEnd(Span span, String text){
+        checkNotNull(span, "span");
+        checkNotNull(text, "text");
+        if (text.endsWith(CHAR_ESCAPE + LINED_END)){
+            return false;
+        }
+        if (! (span.isLast() || text.endsWith(LINED_END))){
+            return false;
+        }
+        return true;
+    }
 
     static boolean checkLineEnd(boolean optional, String text){
         checkNotNull(text, "text");

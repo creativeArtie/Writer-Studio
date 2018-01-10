@@ -20,6 +20,8 @@ interface SectionParser extends SetupParser {
 
     public static void parseContent(ArrayList<Span> children,
             SetupPointer pointer){
+        checkNotNull(children, "children");
+        checkNotNull(pointer, "pointer");
         while (! pointer.hasNext(HEAD_STARTERS)){
             if (! NoteCardParser.PARSER.parse(children, pointer)){
                 for (SetupParser parser: SECTION_PARSERS){
@@ -33,6 +35,9 @@ interface SectionParser extends SetupParser {
 
     public static boolean hasChild(SetupPointer pointer, SectionParser[] parsers,
             SectionParser current){
+        checkNotNull(pointer, "pointer");
+        checkNotNull(parsers, "parsers");
+        checkNotNull(current, "current");
         boolean checking = false;
         for (SectionParser parser: parsers){
             if (parser == current){

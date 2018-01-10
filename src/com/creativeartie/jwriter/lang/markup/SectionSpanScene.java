@@ -5,6 +5,7 @@ import com.google.common.collect.*;
 
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * Line that stores a block quote. Represented in design/ebnf.txt as
@@ -45,10 +46,9 @@ public final class SectionSpanScene extends SectionSpan {
 
     @Override
     protected SetupParser getParser(String text){
-        if (! AuxiliaryChecker.checkLineEnd(isLast(), text)){
-            return null;
-        }
-        return  text.startsWith(getParser().getStarter()) &&
+        checkNotNull(text, "text");
+        return  ! AuxiliaryChecker.checkSectionEnd(this, text) &&
+            text.startsWith(getParser().getStarter()) &&
             canParse(text, SectionParseScene.values())? getParser(): null;
     }
 

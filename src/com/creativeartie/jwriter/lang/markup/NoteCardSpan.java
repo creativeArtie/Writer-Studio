@@ -8,6 +8,7 @@ import com.google.common.base.*;
 
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * Research note with headings, ids, and citation. Represented in
@@ -85,10 +86,11 @@ public class NoteCardSpan extends MainSpan {
 
     @Override
     protected SetupParser getParser(String text){
-        boolean isFirst = true;
-        if (! AuxiliaryChecker.checkLineEnd(isLast(), text)){
+        checkNotNull(text, "text");
+        if (! AuxiliaryChecker.checkSectionEnd(this, text)){
             return null;
         }
+        boolean isFirst = true;
         if (text.endsWith(LINED_END)){
             text = text.substring(0, text.length() - LINED_END.length());
         }
