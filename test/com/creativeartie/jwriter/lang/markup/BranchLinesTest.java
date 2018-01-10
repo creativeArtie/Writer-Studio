@@ -96,14 +96,12 @@ public class BranchLinesTest {
         }
 
         public T addLine(DocumentAssert doc, int ... idx){
-            LinedSpan line = doc.getChild(LinedSpan.class, idx);
-            sectionLines.add(line);
+            sectionLines.add(doc.getChild(LinedSpan.class, idx));
             return cast();
         }
 
         public T addNote(DocumentAssert doc, int ... idx){
-            NoteCardSpan note = doc.getChild(NoteCardSpan.class, idx);
-            sectionNotes.add(note);
+            sectionNotes.add(doc.getChild(NoteCardSpan.class, idx));
             return cast();
         }
 
@@ -119,5 +117,61 @@ public class BranchLinesTest {
             assertEquals(getError("lines", span), sectionLines, test.getLines());
             assertEquals(getError("notes", span), sectionNotes, test.getNotes());
         }
+    }
+
+    public static class HeadSectionTest extends SectionTest<HeadSectionTest>{
+        private List<SectionSpanHead> spanSections;
+        private List<SectionSpanScene> spanScenes;
+
+        public HeadSectionTest(){
+            super(HeadSectionTest.class);
+            spanSections = new ArrayList<>();
+            spanScenes = new ArrayList<>();
+        }
+
+        public HeadSectionTest addSection(DocumentAssert doc, int ... idx){
+            spanSections.add(doc.getChild(SectionSpanHead.class, idx));
+            return this;
+        }
+
+        public HeadSectionTest addScene(DocumentAssert doc, int ... idx){
+            spanScenes.add(doc.getChild(SectionSpanScene.class, idx));
+            return this;
+        }
+
+        @Override
+        public void test(SpanBranch span){
+            SectionSpanHead test = assertClass(span, SectionSpanHead.class);
+            assertEquals(getError("sections", test), spanSections, test.getSections());
+            assertEquals(getError("scenes", test), spanSections, test.getScenes());
+            super.test(span);
+        }
+    }
+
+    public static class SceneSectionTest extends SectionTest<SceneSectionTest>{
+        private SectionSpanHead parentHead;
+        private List<SectionSpanScene> sceneList;
+
+        public SceneSectionTest(){
+            super(SceneSectionTest.class);
+            sceneList = new ArrayList<>();
+        }
+
+        public SceneSectionTest setParentHead(DocumentAssert doc, int ... idx){
+            parentHead = doc.getChild(SectionSpanHead.class, idx);
+            return this;
+        }
+
+        public SceneSectionTest addScene(DocumentAssert doc, int ... idx){
+            sceneList.add(doc.getChild(SectionSpanScene.class, idx));
+            return this;
+        }
+        public void test(SpanBranch span){
+            SectionSpanScene test = assertClass(span, SectionSpanScene.class);
+            assertEquals(getError("head", test), parentHead, test.getSection());
+            assertEquals(getError("scenes", test), sceneList, test.getSubscenes());
+            super.test(span);
+        }
+
     }
 }

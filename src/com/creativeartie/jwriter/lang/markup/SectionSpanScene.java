@@ -16,6 +16,7 @@ public final class SectionSpanScene extends SectionSpan {
         AuxiliaryType.SECTION_SCENE);
     private Optional<SectionSpanHead> cacheHead;
     private Optional<List<SectionSpanScene>> cacheScenes;
+    private Optional<List<LinedSpan>> cacheLines;
 
     SectionSpanScene(List<Span> children, SectionParser reparser){
         super(children, reparser);
@@ -38,6 +39,20 @@ public final class SectionSpanScene extends SectionSpan {
         return cacheHead.get();
     }
 
+    @Override
+    public final List<LinedSpan> getLines(){
+        cacheLines = getCache(cacheLines, () -> {
+            ImmutableList.Builder<LinedSpan> lines = ImmutableList.builder();
+            for (Span child: this){
+                if (child instanceof LinedSpan){
+                    lines.add((LinedSpan) child);
+                }
+            }
+            return lines.build();
+        });
+        return cacheLines.get();
+    }
+
     public List<SectionSpanScene> getSubscenes(){
         cacheScenes = getCache(cacheScenes, () ->
             getChildren(SectionSpanScene.class));
@@ -56,6 +71,7 @@ public final class SectionSpanScene extends SectionSpan {
     protected void childEdited(){
         cacheHead = Optional.empty();
         cacheScenes = Optional.empty();
+        cacheLines = Optional.empty();
         super.childEdited();
     }
 }

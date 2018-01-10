@@ -18,7 +18,6 @@ abstract class SectionSpan extends SpanBranch implements Catalogued{
     private Optional<Integer> cachePublish;
     private Optional<Integer> cacheNote;
     private Optional<Optional<CatalogueIdentity>> cacheId;
-    private Optional<List<LinedSpan>> cacheLines;
     private Optional<List<NoteCardSpan>> cacheNotes;
     private final SectionParser spanReparser;
 
@@ -89,19 +88,6 @@ abstract class SectionSpan extends SpanBranch implements Catalogued{
         return cacheNote.get();
     }
 
-    public final List<LinedSpan> getLines(){
-        cacheLines = getCache(cacheLines, () -> {
-            ImmutableList.Builder<LinedSpan> lines = ImmutableList.builder();
-            for (Span child: this){
-                if (child instanceof LinedSpan){
-                    lines.add((LinedSpan) child);
-                }
-            }
-            return lines.build();
-        });
-        return cacheLines.get();
-    }
-
     protected <T> List<T> getChildren(Class<T> getting){
         ImmutableList.Builder<T> builder = ImmutableList.builder();
         for (Span span: this){
@@ -150,6 +136,8 @@ abstract class SectionSpan extends SpanBranch implements Catalogued{
         return true;
     }
 
+    public abstract List<LinedSpan> getLines();
+
     @Override
     protected void childEdited(){
         cacheHeading = Optional.empty();
@@ -157,7 +145,6 @@ abstract class SectionSpan extends SpanBranch implements Catalogued{
         cacheEdition = Optional.empty();
         cacheNote = Optional.empty();
         cachePublish = Optional.empty();
-        cacheLines = Optional.empty();
         cacheNotes = Optional.empty();
     }
 

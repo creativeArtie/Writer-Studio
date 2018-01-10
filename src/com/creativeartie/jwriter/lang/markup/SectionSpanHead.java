@@ -27,15 +27,16 @@ public final class SectionSpanHead extends SectionSpan {
         return BRANCH_STYLE;
     }
 
-    public List<LinedSpan> getSectionLines(){
+    @Override
+    public List<LinedSpan> getLines(){
         cacheSectionLines = getCache(cacheSectionLines, () -> {
             ImmutableList.Builder<LinedSpan> lines = ImmutableList.builder();
             for (Span span: this){
                 if (span instanceof LinedSpan){
                     lines.add((LinedSpan)span);
-                } else if (span instanceof SectionSpanHead){
-                    lines.addAll(((SectionSpanHead)span).getSectionLines());
                 } else if (span instanceof SectionSpanScene){
+                    lines.addAll(((SectionSpanScene)span).getLines());
+                } else if (span instanceof SectionSpanHead){
                     return lines.build();
                 }
             }
