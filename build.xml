@@ -25,9 +25,9 @@
     <property name="args.test-junit-javac" value="-Xdiags:verbose" />
 <!-- =========================== Program Folders =========================== -->
     <!-- ........................ Root Folders .......................... -->
-    <property name="loc.src" value="src/" />
+    <property name="loc.src" value="src/main/" />
     <property name="loc.data" value="data/" />
-    <property name="loc.test" value="test/" />
+    <property name="loc.test" value="src/test/" />
     <property name="loc.lib" value="lib/" />
     <property name="loc.design" value="design/" />
 
@@ -40,7 +40,7 @@
     <property name="dir.data-run"  location="${dir.data}/run" />
     <property name="dir.data-jar"  location="${dir.data}/jar" />
     <property name="dir.data-test" location="${dir.data}/tests" />
-    <property name="dir.data-root"  location="${dir.data}/jar-root" />
+    <property name="dir.data-root" location="${dir.data}/jar-root" />
 
     <!-- .......................... Libraries ........................... -->
     <property name="dir.lib"  location="${loc.lib}" />
