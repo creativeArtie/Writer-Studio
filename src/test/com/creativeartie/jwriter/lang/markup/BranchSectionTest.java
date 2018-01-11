@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.DocumentAssert.*;
 
-public class BranchLinesTest {
+public class BranchSectionTest {
 
     public static class NoteCardTest extends SpanBranchAssert<NoteCardTest>{
 
@@ -29,15 +29,8 @@ public class BranchLinesTest {
         }
 
         public NoteCardTest putData(InfoFieldType key, DocumentAssert doc,
-            int ... idx){
-            SpanBranch span = doc.getChild(idx);
-
-            if (span instanceof InfoDataSpan){
-                    builder.put(key, (InfoDataSpan) span);
-            } else {
-                throw new IllegalArgumentException(span +
-                    " is not of type FormatSpanMain. Gotten: " + span.getClass());
-            }
+                int ... idx){
+            builder.put(key, doc.getChild(InfoDataSpan.class, idx));
             return this;
         }
 
@@ -140,6 +133,11 @@ public class BranchLinesTest {
         }
 
         @Override
+        public void setup(){
+            setStyles(AuxiliaryType.SECTION_HEAD);
+        }
+
+        @Override
         public void test(SpanBranch span){
             SectionSpanHead test = assertClass(span, SectionSpanHead.class);
             assertEquals(getError("sections", test), spanSections, test.getSections());
@@ -162,10 +160,16 @@ public class BranchLinesTest {
             return this;
         }
 
+        @Override
+        public void setup(){
+            setStyles(AuxiliaryType.SECTION_SCENE);
+        }
+
         public SceneSectionTest addScene(DocumentAssert doc, int ... idx){
             sceneList.add(doc.getChild(SectionSpanScene.class, idx));
             return this;
         }
+
         public void test(SpanBranch span){
             SectionSpanScene test = assertClass(span, SectionSpanScene.class);
             assertEquals(getError("head", test), parentHead, test.getSection());

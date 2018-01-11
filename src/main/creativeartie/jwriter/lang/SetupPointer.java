@@ -311,7 +311,7 @@ public final class SetupPointer{
     }
 
     /// ========================================================================
-    /// Part 8: nestChars Methods ----------------------------------------------
+    /// Part 8: nextChars Methods ----------------------------------------------
 
     /**
      * Create a {@link SpanLeaf} with a size. The created
@@ -368,7 +368,7 @@ public final class SetupPointer{
     /** Checks if the next text matching on on the list of Strings */
     public boolean hasNext(String ... strings){
         for (String string: strings){
-            if (rawText.startsWith(string, matchMarker)){
+            if (hasNext(string)){
                 return true;
             }
         }

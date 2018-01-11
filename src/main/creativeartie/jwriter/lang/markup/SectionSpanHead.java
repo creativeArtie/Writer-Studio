@@ -62,7 +62,7 @@ public final class SectionSpanHead extends SectionSpan {
         checkNotNull(text, "text");
         return  ! AuxiliaryChecker.checkSectionEnd(this, text) &&
             text.startsWith(getParser().getStarter()) &&
-            canParse(text, SectionParseSection.values())? getParser(): null;
+            canParse(text, SectionParseHead.values())? getParser(): null;
     }
 
     @Override
@@ -71,5 +71,17 @@ public final class SectionSpanHead extends SectionSpan {
         cacheSections = Optional.empty();
         cacheScenes = Optional.empty();
         super.childEdited();
+    }
+
+    @Override
+    public String toString(){
+        String out = "";
+        SpanNode<?> span = getParent();
+        while (span instanceof SectionSpanHead){
+            out += span.indexOf(this) + ":";
+            span = getParent();
+        }
+        out += span.indexOf(this) + ":";
+        return out + super.toString();
     }
 }

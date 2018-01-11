@@ -12,20 +12,20 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
  * for details
  *
  */
-enum SectionParseSection implements SectionParser {
+enum SectionParseHead implements SectionParser {
     SECTION_1, SECTION_2, SECTION_3, SECTION_4, SECTION_5, SECTION_6;
 
     private final String starter;
 
-    private SectionParseSection(){
-        starter = getLevelToken(LinedParseLevel.HEADING, ordinal());
+    private SectionParseHead(){
+        starter = getLevelToken(LinedParseLevel.HEADING, ordinal() + 1);
     }
 
     @Override
     public Optional<SpanBranch> parse(SetupPointer pointer){
         checkNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
-        if (pointer.hasNext(starter)){
+        if (pointer.hasNext(starter)){/// <- this is wrong!
             LinedParseLevel.HEADING.parse(children, pointer);
             SectionParser.parseContent(children, pointer);
         } else if (SECTION_1 == this){
@@ -33,6 +33,8 @@ enum SectionParseSection implements SectionParser {
                 SectionParser.parseContent(children, pointer);
             }
         }
+
+        System.out.println(pointer);
         while (pointer.hasNext(getLevelTokens(LinedParseLevel.OUTLINE))){
             SectionParseScene.SCENE_1.parse(children, pointer);
         }

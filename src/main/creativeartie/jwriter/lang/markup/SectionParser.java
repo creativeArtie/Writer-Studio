@@ -22,13 +22,14 @@ interface SectionParser extends SetupParser {
             SetupPointer pointer){
         checkNotNull(children, "children");
         checkNotNull(pointer, "pointer");
-        while (! pointer.hasNext(HEAD_STARTERS)){
+        while (! pointer.hasNext(HEAD_STARTERS) && pointer.hasNext()){
             if (! NoteCardParser.PARSER.parse(children, pointer)){
                 for (SetupParser parser: SECTION_PARSERS){
                     if (parser.parse(children, pointer)){
                         break;
                     }
                 }
+
             }
         }
     }
@@ -43,7 +44,7 @@ interface SectionParser extends SetupParser {
             if (parser == current){
                 checking = true;
             } else if (pointer.hasNext(parser.getStarter())){
-                    return true;
+                return true;
             }
         }
         return false;

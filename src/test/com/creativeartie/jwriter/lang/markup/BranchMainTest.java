@@ -53,15 +53,8 @@ public class BranchMainTest {
         }
 
         public MainNoteTest putData(InfoFieldType key, DocumentAssert doc,
-            int ... idx){
-            SpanBranch span = doc.getChild(idx);
-
-            if (span instanceof InfoDataSpan){
-                    builder.put(key, (InfoDataSpan) span);
-            } else {
-                throw new IllegalArgumentException(span +
-                    " is not of type FormatSpanMain. Gotten: " + span.getClass());
-            }
+                int ... idx){
+            builder.put(key, doc.getChild(InfoDataSpan.class, idx));
             return this;
         }
 

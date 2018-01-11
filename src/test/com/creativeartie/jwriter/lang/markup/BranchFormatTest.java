@@ -54,7 +54,7 @@ public class BranchFormatTest {
         }
 
         public FormatNoteTest setTarget(DocumentAssert doc, int ... idx){
-            target = Optional.of(doc.getChild(idx));
+            target = Optional.of(doc.getChild(SpanBranch.class, idx));
             return this;
         }
 

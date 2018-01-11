@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import static com.creativeartie.jwriter.lang.DocumentAssert.*;
 import static com.creativeartie.jwriter.lang.markup.BranchTest.*;
 import static com.creativeartie.jwriter.lang.markup.BranchLineTest.*;
-import static com.creativeartie.jwriter.lang.markup.BranchLinesTest.*;
+import static com.creativeartie.jwriter.lang.markup.BranchSectionTest.*;
 import static com.creativeartie.jwriter.lang.markup.BranchFormatTest.*;
 
 import org.junit.*;

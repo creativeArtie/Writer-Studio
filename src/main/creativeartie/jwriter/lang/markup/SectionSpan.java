@@ -11,7 +11,7 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 /**
  * Section with notes and content
  */
-abstract class SectionSpan extends SpanBranch implements Catalogued{
+abstract class SectionSpan extends SpanBranch {
     private Optional<Optional<LinedSpanLevelSection>> cacheHeading;
     private Optional<Integer> cacheLevel;
     private Optional<EditionType> cacheEdition;
@@ -60,18 +60,6 @@ abstract class SectionSpan extends SpanBranch implements Catalogued{
             return count;
         });
         return cachePublish.get();
-    }
-
-    @Override
-    public final Optional<CatalogueIdentity> getSpanIdentity(){
-        cacheId = getCache(cacheId, () ->
-            Optional.of(new CatalogueIdentity(TYPE_SECTION, this)));
-        return cacheId.get();
-    }
-
-    @Override
-    public final boolean isId(){
-        return true;
     }
 
     public final int getNoteTotal(){

@@ -74,14 +74,7 @@ public class BranchLineTest {
         }
 
         public CiteLineTest setDataSpan(DocumentAssert doc, int ... idx){
-            SpanBranch span = doc.getChild(idx);
-            if (span instanceof InfoDataSpan){
-                dataSpan = Optional.of((InfoDataSpan) span);
-            } else {
-                throw new IllegalArgumentException(span +
-                    " is not of type InfoDataSpan. Gotten: " + span.getClass());
-
-            }
+            dataSpan = Optional.of(doc.getChild(InfoDataSpan.class, idx));
             return this;
         }
 
@@ -141,14 +134,7 @@ public class BranchLineTest {
         }
 
         public T setFormattedSpan(DocumentAssert doc, int ... idx){
-            SpanBranch span = doc.getChild(idx);
-            if (span instanceof FormatSpanMain){
-                lineText = Optional.of((FormatSpanMain) span);
-            } else {
-                throw new IllegalArgumentException(span +
-                    " is not of type InfoDataSpan. Gotten: " + span.getClass());
-
-            }
+            lineText = Optional.of(doc.getChild(FormatSpanMain.class, idx));
             return cast();
         }
 
@@ -265,14 +251,7 @@ public class BranchLineTest {
         }
 
         public ParagraphLineTest setFormattedSpan(DocumentAssert doc, int ... idx){
-            SpanBranch span = doc.getChild(idx);
-            if (span instanceof FormatSpanMain){
-                lineText = Optional.of((FormatSpanMain) span);
-            } else {
-                throw new IllegalArgumentException(span +
-                    " is not of type FormatSpanMain. Gotten: " + span.getClass());
-
-            }
+            lineText = Optional.of(doc.getChild(FormatSpanMain.class, idx));
             return this;
         }
 
@@ -308,13 +287,7 @@ public class BranchLineTest {
         }
 
         public NoteLineTest setFormattedSpan(DocumentAssert doc, int ... idx){
-            SpanBranch span = doc.getChild(idx);
-            if (span instanceof FormatSpanMain){
-                lineText = Optional.of((FormatSpanMain) span);
-            } else {
-                throw new IllegalArgumentException(span +
-                    " is not of type FormatSpanMain. Gotten: " + span.getClass());
-            }
+            lineText = Optional.of(doc.getChild(FormatSpanMain.class, idx));
             return this;
         }
 
@@ -337,13 +310,7 @@ public class BranchLineTest {
         }
 
         public PointerNoteTest setFormattedSpan(DocumentAssert doc, int ... idx){
-            SpanBranch span = doc.getChild(idx);
-            if (span instanceof FormatSpanMain){
-                lineText = Optional.of((FormatSpanMain) span);
-            } else {
-                throw new IllegalArgumentException(span +
-                    " is not of type FormatSpanMain. Gotten: " + span.getClass());
-            }
+            lineText = Optional.of(doc.getChild(FormatSpanMain.class, idx));
             return this;
         }
 
@@ -369,14 +336,7 @@ public class BranchLineTest {
         }
 
         public QuoteLineTest setFormattedSpan(DocumentAssert doc, int ... idx){
-            SpanBranch span = doc.getChild(idx);
-            if (span instanceof FormatSpanMain){
-                lineText = Optional.of((FormatSpanMain) span);
-            } else {
-                throw new IllegalArgumentException(span +
-                    " is not of type FormatSpanMain. Gotten: " + span.getClass());
-
-            }
+            lineText = Optional.of(doc.getChild(FormatSpanMain.class, idx));
             return this;
         }
 

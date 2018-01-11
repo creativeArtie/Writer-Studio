@@ -87,7 +87,7 @@ public class DocumentAssert {
 
     public <T extends SpanBranch> T getChild(Class<T> clazz, int ... idx){
         Span child = getFamily(idx)[0];
-        assertTrue("Expects instance of" + clazz.getSimpleName() + ", gotten " +
+        assertTrue("Expects instance of " + clazz.getSimpleName() + ", gotten " +
             child.getClass(), clazz.isInstance(child));
         return clazz.cast(child);
 

@@ -22,7 +22,7 @@
     <!-- ........................ Arguments Data ........................ -->
     <property name="args.src-javac" value="-Xlint" />
     <property name="args.test-src-javac" value="-Xdiags:verbose" />
-    <property name="args.test-junit-javac" value="-Xdiags:verbose" />
+    <property name="args.test-junit-javac" value="-Xlint:deprecation" />
 <!-- =========================== Program Folders =========================== -->
     <!-- ........................ Root Folders .......................... -->
     <property name="loc.src" value="src/main/" />
