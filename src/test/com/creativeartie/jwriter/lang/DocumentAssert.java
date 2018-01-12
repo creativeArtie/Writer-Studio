@@ -21,6 +21,10 @@ public class DocumentAssert {
         }
         @Override protected void childEdited(){}
         @Override protected void docEdited(){}
+
+        @Override public String toString(){
+            return "unused:" + get(0);
+        }
     }
 
     private static final SetupParser END_PARSER = new SetupParser(){

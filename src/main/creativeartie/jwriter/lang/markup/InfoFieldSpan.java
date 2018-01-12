@@ -60,4 +60,9 @@ public final class InfoFieldSpan extends SpanBranch{
 
     @Override
     protected void docEdited(){}
+
+    @Override
+    public String toString(){
+        return getFieldType().toString() + ": ";
+    }
 }

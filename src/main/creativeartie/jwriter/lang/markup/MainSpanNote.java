@@ -45,16 +45,6 @@ public class MainSpanNote extends MainSpan {
     }
 
     @Override
-    public String toString(){
-        StringBuilder output = new StringBuilder("NOTE:{");
-        for(Span span: this){
-            output.append("\n\t").append(span.toString());
-        }
-        output.append("\n}");
-        return output.toString();
-    }
-
-    @Override
     protected SetupParser getParser(String text){
         // TODO editRaw
         return null;
@@ -68,5 +58,15 @@ public class MainSpanNote extends MainSpan {
     @Override
     protected void docEdited(){
         // TODO docEdited
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder output = new StringBuilder("NOTE:{");
+        for(Span span: this){
+            output.append("\n\t").append(span.toString());
+        }
+        output.append("\n}");
+        return output.toString();
     }
 }

@@ -69,4 +69,9 @@ public final class FormatSpanAgenda extends SpanBranch implements Catalogued{
     protected void docEdited(){
         cacheId = Optional.empty();
     }
+
+    @Override
+    public String toString(){
+        return "agenda(" + SpanLeaf.escapeText(getAgenda()) + ")";
+    }
 }

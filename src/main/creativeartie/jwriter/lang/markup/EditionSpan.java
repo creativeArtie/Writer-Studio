@@ -73,4 +73,9 @@ public final class EditionSpan extends SpanBranch{
 
     @Override
     protected void docEdited(){}
+
+    @Override
+    public String toString(){
+        return getEdition() + "(" + getDetailSpan().toString() + ")";
+    }
 }

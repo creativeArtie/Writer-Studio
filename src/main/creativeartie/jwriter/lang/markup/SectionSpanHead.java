@@ -1,6 +1,7 @@
 package com.creativeartie.jwriter.lang.markup;
 
 import java.util.*;
+import java.util.function.*;
 import com.google.common.collect.*;
 
 import com.creativeartie.jwriter.lang.*;
@@ -17,6 +18,8 @@ public final class SectionSpanHead extends SectionSpan {
     private Optional<List<LinedSpan>> cacheSectionLines;
     private Optional<List<SectionSpanHead>> cacheSections;
     private Optional<List<SectionSpanScene>> cacheScenes;
+    private Optional<Integer> cachePublish;
+    private Optional<Integer> cacheNote;
 
     SectionSpanHead(List<Span> children, SectionParser reparser){
         super(children, reparser);
@@ -57,6 +60,46 @@ public final class SectionSpanHead extends SectionSpan {
         return cacheScenes.get();
     }
 
+    public int getPublishTotal(){
+        cachePublish = getCache(cachePublish,
+            () -> getCount(this, span -> span.getPublishTotal(), true)
+        );
+        return cachePublish.get();
+    }
+
+    public int getNoteTotal(){
+        cacheNote = getCache(cacheNote,
+            () -> getCount(this, span -> span.getNoteTotal(), true)
+        );
+        return cacheNote.get();
+    }
+
+    private int getCount(Span span, ToIntFunction<LinedSpan> counter,
+            boolean isFirst){
+        if (isFirst){
+            assert span instanceof SectionSpanHead;
+            int sum = 0;
+            for (Span child: (SectionSpanHead)span){
+                /// recursive loop
+                sum += getCount(child, counter, false);
+            }
+            return sum;
+        }
+        if (span instanceof LinedSpan){
+            /// Base case: find LinedSpan
+            return counter.applyAsInt((LinedSpan) span);
+        } else if (span instanceof SectionSpanScene){
+            int sum = 0;
+            for (Span child: (SectionSpanScene) span){
+                /// recursive loop
+                sum += getCount(child, counter, false);
+            }
+            return sum;
+        }
+        /// Base case: match none
+        return 0;
+    }
+
     @Override
     protected SetupParser getParser(String text){
         checkNotNull(text, "text");
@@ -70,18 +113,13 @@ public final class SectionSpanHead extends SectionSpan {
         cacheSectionLines = Optional.empty();
         cacheSections = Optional.empty();
         cacheScenes = Optional.empty();
+        cachePublish = Optional.empty();
+        cacheNote = Optional.empty();
         super.childEdited();
     }
 
     @Override
     public String toString(){
-        String out = "";
-        SpanNode<?> span = getParent();
-        while (span instanceof SectionSpanHead){
-            out += span.indexOf(this) + ":";
-            span = getParent();
-        }
-        out += span.indexOf(this) + ":";
-        return out + super.toString();
+        return getParser().toString() + "{" + super.toString() + "}";
     }
 }

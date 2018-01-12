@@ -73,7 +73,19 @@ public final class DirectorySpan extends SpanBranch {
 
     @Override
     public String toString(){
-        return "ID" + buildId().toString();
+        CatalogueIdentity id = buildId();
+        StringBuilder output = new StringBuilder();
+        for (String cat: id.getCategories()){
+            if (output.length() != 0){
+                output.append("-");
+            }
+            output.append(SpanLeaf.escapeText(cat));
+        }
+        if (output.length() != 0){
+            output.append(":");
+        }
+        output.append(SpanLeaf.escapeText(id.getName()));
+        return "ID(" + output.toString() + ")";
     }
 
     @Override

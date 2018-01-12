@@ -79,4 +79,12 @@ public final class FormatSpanDirectory extends FormatSpan implements Catalogued{
 
     @Override
     protected void docEdited(){}
+
+    @Override
+    protected String toChildString(){
+        Optional<CatalogueIdentity> id = getSpanIdentity();
+        String data = id.isPresent()? SpanLeaf.escapeText(id.get().toString()):
+            "null";
+        return getIdType().toString() + data;
+    }
 }

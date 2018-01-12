@@ -15,8 +15,6 @@ abstract class SectionSpan extends SpanBranch {
     private Optional<Optional<LinedSpanLevelSection>> cacheHeading;
     private Optional<Integer> cacheLevel;
     private Optional<EditionType> cacheEdition;
-    private Optional<Integer> cachePublish;
-    private Optional<Integer> cacheNote;
     private Optional<Optional<CatalogueIdentity>> cacheId;
     private Optional<List<NoteCardSpan>> cacheNotes;
     private final SectionParser spanReparser;
@@ -46,34 +44,6 @@ abstract class SectionSpan extends SpanBranch {
         cacheEdition = getCache(cacheEdition, () -> getHeading()
             .map(span -> span.getEdition()).orElse(EditionType.NONE));
         return cacheEdition.get();
-    }
-
-    public final int getPublishTotal(){
-        cachePublish = getCache(cachePublish, () -> {
-            int count = 0;
-            for (Span span: this){
-                count += span instanceof LinedSpan?
-                    ((LinedSpan)span).getPublishTotal():
-                    (span instanceof NoteCardSpan?
-                        0: ((SectionSpan)span).getPublishTotal());
-            }
-            return count;
-        });
-        return cachePublish.get();
-    }
-
-    public final int getNoteTotal(){
-        cacheNote = getCache(cacheNote, () -> {
-            int count = 0;
-            for (Span span: this){
-                count += span instanceof LinedSpan?
-                    ((LinedSpan)span).getNoteTotal():
-                    (span instanceof NoteCardSpan?
-                        0: ((SectionSpan)span).getNoteTotal());
-            }
-            return count;
-        });
-        return cacheNote.get();
     }
 
     protected <T> List<T> getChildren(Class<T> getting){
@@ -131,8 +101,6 @@ abstract class SectionSpan extends SpanBranch {
         cacheHeading = Optional.empty();
         cacheLevel = Optional.empty();
         cacheEdition = Optional.empty();
-        cacheNote = Optional.empty();
-        cachePublish = Optional.empty();
         cacheNotes = Optional.empty();
     }
 

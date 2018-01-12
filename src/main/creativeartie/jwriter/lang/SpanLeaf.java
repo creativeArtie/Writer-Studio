@@ -23,8 +23,9 @@ public class SpanLeaf extends Span{
     /** create raw text for {@linkplain Object#toString()}. */
     public static String escapeText(String input){
         checkNotNull(input, "input");
-        return "\"" + input.replace("\"", "\" \\\" \"")
-            .replace("\n", "\" \\n \"").replace("\t", "\" \\t \"") + "\"";
+        return "\"" + input.replace("\"", "\" \\\" \"") /// replace quote
+            .replace("\n", "\" \\n \"") /// replace new line
+            .replace("\t", "\" \\t \"") + "\""; ///replace tabs
     }
 
     SpanLeaf(SetupPointer pointer, StyleInfoLeaf style){

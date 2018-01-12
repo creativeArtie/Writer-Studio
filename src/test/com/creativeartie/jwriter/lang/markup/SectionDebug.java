@@ -34,14 +34,13 @@ public class SectionDebug {
         String line2 = "Hello World!\n";
         String full = line1 + line2;
         DocumentAssert doc = assertDoc(1, full, PARSER);
-        System.out.println(doc.getDocument());
 
         HeadSectionTest head1 = new HeadSectionTest()
             .setPublishTotal(0).setNoteTotal(0)
             .addSection(doc, 0, 0);
          HeadSectionTest head2 = new HeadSectionTest()
             .setPublishTotal(4).setNoteTotal(0)
-            .setHeading(doc, 0, 0)
+            .setHeading(doc, 0, 0, 0)
             .addLine(doc, 0, 0, 0).addLine(doc, 0, 0, 1);
         HeadLevelLineTest child1 = new HeadLevelLineTest()
             .setFormattedSpan(doc, 0, 0, 0, 1).setLinedType(LinedType.HEADING)
@@ -52,14 +51,14 @@ public class SectionDebug {
             .setFormattedSpan(doc, 0, 0, 1, 0);
 
         head1.test( doc, 1, full,  0);
-        head2.test( doc, 2, full,  0);
-        child1.test(doc, 2, line1, 0, 0);
-        child2.test(doc, 2, line2, 0, 1);
+        head2.test( doc, 2, full,  0, 0);
+        child1.test(doc, 3, line1, 0, 0, 0);
+        child2.test(doc, 2, line2, 0, 0, 1);
         doc.assertLast();
         doc.assertIds();
     }
 
-    @Test@Ignore
+    @Test
     public void sectionWithHeading(){
         String line1 = "=Heading 1\n";
         String line2 = "Hello World!\n";
@@ -85,7 +84,7 @@ public class SectionDebug {
         doc.assertIds();
     }
 
-    @Test@Ignore
+    @Test
     public void sectionNoHeading(){
         String line1 = "Hello World!\n";
         String line2 = ">Beep! Beep! Beep?";

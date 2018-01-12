@@ -69,11 +69,7 @@ public final class ContentSpan extends SpanBranch implements BasicText{
 
     @Override
     public String toString(){
-        String ans = "";
-        for (Span span: this){
-            ans += span.toString() + "-";
-        }
-        return ans;
+        return SpanLeaf.escapeText(getText());
     }
 
     @Override

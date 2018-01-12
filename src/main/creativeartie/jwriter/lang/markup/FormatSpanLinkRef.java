@@ -93,4 +93,13 @@ public final class FormatSpanLinkRef extends FormatSpanLink
 
     @Override
     protected void docEdited(){}
+
+    @Override
+    protected String toChildString(){
+        Optional<DirectorySpan> id = spanFromFirst(DirectorySpan.class);
+        String data = spanFromFirst(DirectorySpan.class)
+            .map(span -> span.toString())
+            .orElse("null");
+        return data + "->" + SpanLeaf.escapeText(getPath());
+    }
 }

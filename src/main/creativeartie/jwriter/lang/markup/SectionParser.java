@@ -37,20 +37,16 @@ interface SectionParser extends SetupParser {
     public default boolean hasChild(SetupPointer pointer, SectionParser current){
         checkNotNull(pointer, "pointer");
         checkNotNull(current, "current");
-        System.out.println(pointer);
         boolean checking = false;
         for (SectionParser parser: getParsers()){
-            System.out.print(parser + ": ");
-            if (parser == current){
-                System.out.println("set");
-                checking = true;
-                continue;
+            if (! pointer.hasNext(parser.getStarter())){
+                return false;
             }
-            if (checking && pointer.hasNext(parser.getStarter())){
-                System.out.println("done");
+            if (checking){
                 return true;
+            } else if (parser == current){
+                checking = true;
             }
-            System.out.println(checking);
         }
         return false;
     }
@@ -59,14 +55,18 @@ interface SectionParser extends SetupParser {
     public default Optional<SpanBranch> parse(SetupPointer pointer){
         checkNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
+        boolean isReady = true;
         if (pointer.hasNext(getStarter())){
-            if (isLast() && ! pointer.hasNext(getNext().getStarter())){
+            if (! isLast() && ! pointer.hasNext(getNext().getStarter())){
                 LinedParseLevel.HEADING.parse(children, pointer);
                 parseContent(children, pointer);
             }
+        } else {
+            isReady = false;
         }
 
-        System.out.println(this);
+        headParsing(children, pointer, isReady);
+
         if (! isLast()){
             if (hasChild(pointer, this)){
                 getNext().parse(children, pointer);

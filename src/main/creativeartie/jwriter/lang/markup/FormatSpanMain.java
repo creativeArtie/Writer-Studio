@@ -82,4 +82,16 @@ public final class FormatSpanMain extends SpanBranch {
     @Override
     protected void docEdited(){}
 
+    @Override
+    public String toString(){
+        StringBuilder output = new StringBuilder();
+        for (Span span: this){
+            if (output.length() != 0){
+                output.append(", ");
+            }
+            output.append(span);
+        }
+        return output.toString();
+    }
+
 }

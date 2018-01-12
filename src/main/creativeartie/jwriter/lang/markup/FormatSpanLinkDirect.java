@@ -68,4 +68,10 @@ public final class FormatSpanLinkDirect extends FormatSpanLink {
     @Override
     protected void docEdited(){}
 
+    @Override
+    protected String toChildString(){
+        return SpanLeaf.escapeText(getText()) + "->" +
+            SpanLeaf.escapeText(getPath());
+    }
+
 }

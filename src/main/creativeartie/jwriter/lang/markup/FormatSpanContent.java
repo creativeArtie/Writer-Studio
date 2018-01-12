@@ -74,4 +74,9 @@ public final class FormatSpanContent extends FormatSpan implements BasicText{
 
     @Override
     protected void docEdited(){}
+
+    @Override
+    protected String toChildString(){
+        return SpanLeaf.escapeText(getText());
+    }
 }

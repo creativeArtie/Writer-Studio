@@ -49,16 +49,6 @@ public abstract class FormatSpan extends SpanBranch {
     }
 
     @Override
-    public String toString(){
-        StringBuilder ans = new StringBuilder();
-        if (spanFormats[0]) ans.append("b");
-        if (spanFormats[1]) ans.append("i");
-        if (spanFormats[2]) ans.append("u");
-        if (spanFormats[3]) ans.append("c");
-        return ans.toString() + super.toString();
-    }
-
-    @Override
     public List<StyleInfo> getBranchStyles(){
         cacheStyles = getCache(cacheStyles, () -> {
             ImmutableList.Builder<StyleInfo> list = ImmutableList.builder();
@@ -82,4 +72,17 @@ public abstract class FormatSpan extends SpanBranch {
 
     /** Gets the parsed text for display. */
     public abstract String getOutput();
+
+
+    @Override
+    public String toString(){
+        StringBuilder ans = new StringBuilder();
+        if (spanFormats[0]) ans.append("b");
+        if (spanFormats[1]) ans.append("i");
+        if (spanFormats[2]) ans.append("u");
+        if (spanFormats[3]) ans.append("c");
+        return ans.toString() + "(" + toChildString() + ")";
+    }
+
+    protected abstract String toChildString();
 }
