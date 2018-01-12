@@ -18,7 +18,7 @@ enum SectionParseScene implements SectionParser {
     private final String starter;
 
     private SectionParseScene(){
-        starter = getLevelToken(LinedParseLevel.OUTLINE, ordinal());
+        starter = getLevelToken(LinedParseLevel.OUTLINE, ordinal() + 1);
     }
 
     @Override
@@ -44,6 +44,11 @@ enum SectionParseScene implements SectionParser {
     @Override
     public SectionParser[] getParsers(){
         return values();
+    }
+
+    @Override
+    public LinedParseLevel getHeadLineParser(){
+        return LinedParseLevel.OUTLINE;
     }
 
     @Override

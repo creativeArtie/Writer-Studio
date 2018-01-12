@@ -28,12 +28,12 @@ long_line_behaviour=2
 long_line_column=80
 
 [files]
-current_page=15
-FILE_NAME_0=8614;XML;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fbuild.xml;0;4
-FILE_NAME_1=1991;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Ftest%2Fcom%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FSectionDebug.java;0;4
-FILE_NAME_2=2832;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FSectionSpanHead.java;0;4
-FILE_NAME_3=2076;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FSectionSpan.java;0;4
-FILE_NAME_4=0;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FSectionSpanScene.java;0;4
+current_page=2
+FILE_NAME_0=8301;XML;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fbuild.xml;0;4
+FILE_NAME_1=3427;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Ftest%2Fcom%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FSectionDebug.java;0;4
+FILE_NAME_2=3302;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FSectionSpanHead.java;0;4
+FILE_NAME_3=3326;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FSectionSpan.java;0;4
+FILE_NAME_4=1966;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FSectionSpanScene.java;0;4
 FILE_NAME_5=0;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Ftest%2Fcom%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FLinedCiteDebug.java;0;4
 FILE_NAME_6=1006;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Ftest%2Fcom%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FLinedLevelHeadDebug.java;0;4
 FILE_NAME_7=0;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Ftest%2Fcom%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FLinedLevelRestDebug.java;0;4
@@ -41,22 +41,23 @@ FILE_NAME_8=0;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWr
 FILE_NAME_9=0;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Ftest%2Fcom%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FLinedPointerDebug.java;0;4
 FILE_NAME_10=8979;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Ftest%2Fcom%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FLinedRestDebug.java;0;4
 FILE_NAME_11=10179;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FAuxiliaryData.java;0;4
-FILE_NAME_12=0;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FSectionHeading.java;0;4
-FILE_NAME_13=0;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FSection.java;0;4
-FILE_NAME_14=0;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FSectionOutline.java;0;4
-FILE_NAME_15=1394;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FSectionParser.java;0;4
-FILE_NAME_16=1056;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FSectionParseScene.java;0;4
-FILE_NAME_17=1073;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FSectionParseHead.java;0;4
-FILE_NAME_18=0;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FLinedParseRest.java;0;4
-FILE_NAME_19=0;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FAuxiliaryChecker.java;0;4
-FILE_NAME_20=2865;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Ftest%2Fcom%2Fcreativeartie%2Fjwriter%2Flang%2FDocumentAssert.java;0;4
-FILE_NAME_21=0;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FAuxiliaryType.java;0;4
-FILE_NAME_22=10295;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Ftest%2Fcom%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FBranchLineTest.java;0;4
-FILE_NAME_23=0;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Ftest%2Fcom%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FBranchSectionTest.java;0;4
-FILE_NAME_24=13031;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2FSetupPointer.java;0;4
+FILE_NAME_12=2170;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FSectionParser.java;0;4
+FILE_NAME_13=1056;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FSectionParseScene.java;0;4
+FILE_NAME_14=973;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FSectionParseHead.java;0;4
+FILE_NAME_15=0;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FLinedParseRest.java;0;4
+FILE_NAME_16=0;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FAuxiliaryChecker.java;0;4
+FILE_NAME_17=650;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Ftest%2Fcom%2Fcreativeartie%2Fjwriter%2Flang%2FDocumentAssert.java;0;4
+FILE_NAME_18=0;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FAuxiliaryType.java;0;4
+FILE_NAME_19=10295;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Ftest%2Fcom%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FBranchLineTest.java;0;4
+FILE_NAME_20=5014;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Ftest%2Fcom%2Fcreativeartie%2Fjwriter%2Flang%2Fmarkup%2FBranchSectionTest.java;0;4
+FILE_NAME_21=13031;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2FSetupPointer.java;0;4
+FILE_NAME_22=1695;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2FCatalogueIdentity.java;0;4
+FILE_NAME_23=1225;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2FSpanBranch.java;0;4
+FILE_NAME_24=0;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2FSpanNode.java;0;4
+FILE_NAME_25=0;Java;0;EUTF-8;0;1;0;%2Fhome%2Fwai-kin%2FDocuments%2Fcreative%2FJWriter%2Fsrc%2Fmain%2Fcreativeartie%2Fjwriter%2Flang%2FSetupParser.java;0;4
 
 [VTE]
-last_dir=/home/wai-kin
+last_dir=/home/wai-kin/Documents/creative/JWriter
 
 [build-menu]
 EX_00_LB=_Execute

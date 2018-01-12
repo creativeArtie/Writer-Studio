@@ -38,7 +38,7 @@ public final class SectionSpanHead extends SectionSpan {
                 if (span instanceof LinedSpan){
                     lines.add((LinedSpan)span);
                 } else if (span instanceof SectionSpanScene){
-                    lines.addAll(((SectionSpanScene)span).getLines());
+                    lines.addAll(getLines((SectionSpanScene) span));
                 } else if (span instanceof SectionSpanHead){
                     return lines.build();
                 }
@@ -46,6 +46,15 @@ public final class SectionSpanHead extends SectionSpan {
             return lines.build();
         });
         return cacheSectionLines.get();
+    }
+
+    private static List<LinedSpan> getLines(SectionSpanScene span){
+        ImmutableList.Builder<LinedSpan> lines = ImmutableList.builder();
+        lines.addAll(span.getLines());
+        for (SectionSpanScene child: span.getSubscenes()){
+            lines.addAll(getLines(child));
+        }
+        return lines.build();
     }
 
     public List<SectionSpanHead> getSections(){

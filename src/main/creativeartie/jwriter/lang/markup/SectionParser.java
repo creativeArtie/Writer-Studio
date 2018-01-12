@@ -57,8 +57,9 @@ interface SectionParser extends SetupParser {
         ArrayList<Span> children = new ArrayList<>();
         boolean isReady = true;
         if (pointer.hasNext(getStarter())){
+
             if (! isLast() && ! pointer.hasNext(getNext().getStarter())){
-                LinedParseLevel.HEADING.parse(children, pointer);
+                getHeadLineParser().parse(children, pointer);
                 parseContent(children, pointer);
             }
         } else {
@@ -85,6 +86,8 @@ interface SectionParser extends SetupParser {
     public SectionSpan create(ArrayList<Span> children);
 
     public SectionParser[] getParsers();
+
+    public LinedParseLevel getHeadLineParser();
 
     public default void headParsing(ArrayList<Span> children,
         SetupPointer pointer, boolean findHead){}

@@ -74,4 +74,9 @@ public final class SectionSpanScene extends SectionSpan {
         cacheLines = Optional.empty();
         super.childEdited();
     }
+
+    @Override
+    public String toString(){
+        return getParser().toString() + "{" + super.toString() + "}";
+    }
 }

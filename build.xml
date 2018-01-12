@@ -25,15 +25,16 @@
     <property name="args.test-junit-javac" value="-Xlint:deprecation" />
 <!-- =========================== Program Folders =========================== -->
     <!-- ........................ Root Folders .......................... -->
-    <property name="loc.src" value="src/main/" />
+    <property name="loc.src" value="main/" />
     <property name="loc.data" value="data/" />
-    <property name="loc.test" value="src/test/" />
+    <property name="loc.test" value="test/" />
     <property name="loc.lib" value="lib/" />
     <property name="loc.design" value="design/" />
 
     <!-- ........................ Code Location ......................... -->
-    <property name="dir.src" location="${loc.src}" />
-    <property name="dir.test" location="${loc.test}" />
+    <property name="dir.src"  location="src/" />
+    <property name="dir.src-main" location="${dir.src}/${loc.src}" />
+    <property name="dir.src-test" location="${dir.src}/${loc.test}" />
 
     <!-- ......................... Data Folder .......................... -->
     <property name="dir.data"      location="${loc.data}" />
@@ -87,7 +88,7 @@
 
     <path id="src-debug.path">
         <path refid="src-run.path" />
-        <fileset dir="${dir.test}" />
+        <fileset dir="${dir.src-test}" />
         <fileset dir="${dir.junit}" />
     </path>
 
@@ -112,10 +113,10 @@
             <fileset dir="${dir.data-run}" />
             <fileset dir="${dir.data-jar}" />
         </copy>
-        <!-- compile from ${dir.src} -->
+        <!-- compile from ${dir.src-main} -->
         <javac
             destdir="${dir.run}"
-            srcdir="${dir.src}"
+            srcdir="${dir.src-main}"
             classpathref="src-run.path"
             includeantruntime="false"
         >
@@ -182,10 +183,10 @@
             <fileset dir="${dir.data-jar}" />
             <fileset dir="${dir.data-test}" />
         </copy>
-        <!-- compile from ${dir.src} -->
+        <!-- compile from ${dir.src-main} -->
         <javac
             destdir="${dir.debug}"
-            srcdir="${dir.src}"
+            srcdir="${dir.src-main}"
             classpathref="src-run.path"
             includeantruntime="false"
             debug="on"
@@ -193,10 +194,10 @@
         >
              <compilerarg line="${args.test-src-javac}"/>
         </javac>
-        <!-- compile from ${dir.test} -->
+        <!-- compile from ${dir.src-test} -->
         <javac
             destdir="${dir.debug}"
-            srcdir="${dir.test}"
+            srcdir="${dir.src-test}"
             classpathref="src-debug.path"
             includeantruntime="false"
             debug="on"
@@ -273,7 +274,7 @@
     <!-- ............................ Others ............................ -->
     <!-- document the project -->
     <!-- target name="javadoc">
-        <javadoc sourcepath="${dir.src}" destdir="${dir.doc}"
+        <javadoc sourcepath="${dir.src-main}" destdir="${dir.doc}"
             access="${usr-access}" classpathref="src-run.path" />
     </target -->
 
