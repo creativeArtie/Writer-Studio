@@ -30,6 +30,10 @@ public final class AuxiliaryData{
     private static final String LEVEL_NUMBERED = "#";
     private static final String LEVEL_OUTLINE  = "#";
     private static final String LEVEL_BULLET   = "-";
+
+    /** Create a list of tokens for different level of a
+     * {@link LinedParseLevel}.
+     */
     public static String[] getLevelTokens(LinedParseLevel parser){
         String[] levels = new String[LEVEL_MAX];
         for (int i = 0; i < LEVEL_MAX; i++){
@@ -37,7 +41,13 @@ public final class AuxiliaryData{
         }
         return levels;
     }
+
     /** Creates a Leveled Line begin token.
+     *
+     * <b> Be aware that the {@linkplain String#startsWith(String)} will return
+     * true for several {@link LinedParseLevel#HEADING}'s or
+     * {@link LinedParseLevel#OUTLINE}'s tokens
+     *
      * @param parser
      *      use to specific which token. This should be all of them.
      * @param level
