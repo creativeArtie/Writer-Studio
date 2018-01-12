@@ -22,20 +22,28 @@ enum SectionParseScene implements SectionParser {
     }
 
     @Override
-    public Optional<SpanBranch> parse(SetupPointer pointer){
-        checkNotNull(pointer, "pointer");
-        ArrayList<Span> children = new ArrayList<>();
-        if (pointer.hasNext(starter)){
-            LinedParseLevel.OUTLINE.parse(children, pointer);
-            SectionParser.parseContent(children, pointer);
-        }
-        if (SCENE_6 != this){
-            while(SectionParser.hasChild(pointer, values(), this)){
-                values()[ordinal() + 1].parse(children, pointer);
-            }
-        }
-        return Optional.ofNullable(children.isEmpty()? null:
-            new SectionSpanHead(children, this));
+    public boolean isFirst(){
+        return this == SCENE_1;
+    }
+
+    @Override
+    public boolean isLast(){
+        return this == SCENE_6;
+    }
+
+    @Override
+    public SectionParser getNext(){
+        return values()[ordinal() + 1];
+    }
+
+    @Override
+    public SectionSpan create(ArrayList<Span> children){
+        return new SectionSpanScene(children, this);
+    }
+
+    @Override
+    public SectionParser[] getParsers(){
+        return values();
     }
 
     @Override

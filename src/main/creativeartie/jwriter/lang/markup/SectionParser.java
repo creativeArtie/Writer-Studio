@@ -34,21 +34,60 @@ interface SectionParser extends SetupParser {
         }
     }
 
-    public static boolean hasChild(SetupPointer pointer, SectionParser[] parsers,
-            SectionParser current){
+    public default boolean hasChild(SetupPointer pointer, SectionParser current){
         checkNotNull(pointer, "pointer");
-        checkNotNull(parsers, "parsers");
         checkNotNull(current, "current");
+        System.out.println(pointer);
         boolean checking = false;
-        for (SectionParser parser: parsers){
+        for (SectionParser parser: getParsers()){
+            System.out.print(parser + ": ");
             if (parser == current){
+                System.out.println("set");
                 checking = true;
-            } else if (pointer.hasNext(parser.getStarter())){
+                continue;
+            }
+            if (checking && pointer.hasNext(parser.getStarter())){
+                System.out.println("done");
                 return true;
             }
+            System.out.println(checking);
         }
         return false;
     }
+
+    @Override
+    public default Optional<SpanBranch> parse(SetupPointer pointer){
+        checkNotNull(pointer, "pointer");
+        ArrayList<Span> children = new ArrayList<>();
+        if (pointer.hasNext(getStarter())){
+            if (isLast() && ! pointer.hasNext(getNext().getStarter())){
+                LinedParseLevel.HEADING.parse(children, pointer);
+                parseContent(children, pointer);
+            }
+        }
+
+        System.out.println(this);
+        if (! isLast()){
+            if (hasChild(pointer, this)){
+                getNext().parse(children, pointer);
+            }
+        }
+        return Optional.ofNullable(children.isEmpty()? null:
+            create(children));
+    }
+
+    public boolean isFirst();
+
+    public boolean isLast();
+
+    public SectionParser getNext();
+
+    public SectionSpan create(ArrayList<Span> children);
+
+    public SectionParser[] getParsers();
+
+    public default void headParsing(ArrayList<Span> children,
+        SetupPointer pointer, boolean findHead){}
 
     public String getStarter();
 }

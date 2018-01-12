@@ -22,29 +22,41 @@ enum SectionParseHead implements SectionParser {
     }
 
     @Override
-    public Optional<SpanBranch> parse(SetupPointer pointer){
-        checkNotNull(pointer, "pointer");
-        ArrayList<Span> children = new ArrayList<>();
-        if (pointer.hasNext(starter)){/// <- this is wrong!
-            LinedParseLevel.HEADING.parse(children, pointer);
-            SectionParser.parseContent(children, pointer);
-        } else if (SECTION_1 == this){
+    public boolean isFirst(){
+        return this == SECTION_1;
+    }
+
+    @Override
+    public boolean isLast(){
+        return this == SECTION_6;
+    }
+
+    @Override
+    public SectionParser getNext(){
+        return values()[ordinal() + 1];
+    }
+
+    @Override
+    public SectionSpan create(ArrayList<Span> children){
+        return new SectionSpanHead(children, this);
+    }
+
+    @Override
+    public SectionParser[] getParsers(){
+        return values();
+    }
+
+    @Override
+    public void headParsing(ArrayList<Span> children, SetupPointer pointer,
+            boolean findHead){
+        if (!findHead && isFirst()){
             if (! pointer.hasNext(SectionParser.HEAD_STARTERS)){
                 SectionParser.parseContent(children, pointer);
             }
         }
-
-        System.out.println(pointer);
         while (pointer.hasNext(getLevelTokens(LinedParseLevel.OUTLINE))){
             SectionParseScene.SCENE_1.parse(children, pointer);
         }
-        if (this != SECTION_6){
-            while (SectionParser.hasChild(pointer, values(), this)){
-                values()[ordinal() + 1].parse(children, pointer);
-            }
-        }
-        return Optional.ofNullable(children.isEmpty()? null:
-            new SectionSpanHead(children, this));
     }
 
     @Override
