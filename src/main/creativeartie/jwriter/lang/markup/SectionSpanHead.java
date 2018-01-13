@@ -77,8 +77,9 @@ public final class SectionSpanHead extends SectionSpan {
     }
 
     public int getNoteTotal(){
-        cacheNote = getCache(cacheNote,
-            () -> getCount(this, span -> span.getNoteTotal(), true)
+        cacheNote = getCache(cacheNote, () ->
+            getCount(this, span -> span.getNoteTotal(), true) +
+            getNotes().stream().mapToInt(note -> note.getNoteTotal()).sum()
         );
         return cacheNote.get();
     }

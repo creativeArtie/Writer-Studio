@@ -24,8 +24,49 @@ import com.creativeartie.jwriter.lang.*;
 public class SectionDebug {
     private static final SetupParser PARSER = SectionParseHead.SECTION_1;
 
-    public static IDBuilder buildId(String name){
-        return new IDBuilder().addCategory("head").setId(name);
+    @Test
+    public void sectionWithStuff(){
+        String raw = "=Chapter 1\n==Section 1\n!# outline\n=Chapter 2\n" +
+            "some text\n";
+        DocumentAssert doc = assertDoc(2, raw, PARSER);
+        testSections(doc);
+    }
+
+    public void testSections(DocumentAssert doc){
+        String[] lines = new String[]{"=Chapter 1\n", "==Section 1\n",
+                "!# outline\n", "=Chapter 2\n", "some text\n"};
+        String full = String.join("", lines);
+        HeadSectionTest head1 = new HeadSectionTest()
+            .setPublishTotal(2).setNoteTotal(0)
+            .addSection(doc, 0, 1).setHeading(0, 0);
+        HeadSectionTest head1_1 = HeadSectionTest()
+            .setPublishTotal(2).setNoteTotal(1)
+            .addScene(doc, 0, 1, 1).setHeading(0, 1, 0);
+         SceneSectionTest out2 = new SceneSectionTest()
+            .setHeading(doc, 0, 0, 0, 0).setParentHead(doc, 0)
+            .addLine(doc, 0, 0, 0, 0)   .addLine(doc, 0, 0, 0, 1);
+        HeadSectionTest head2 = new HeadSectionTest()
+            .setPublishTotal(4).setNoteTotal(0);
+    }
+
+    @Test
+    public void sectionWithNote(){
+        String raw = "!%note";
+
+        DocumentAssert doc = assertDoc(1, raw, PARSER);
+
+        IDBuilder builder = doc.addId(NoteCardDebug.buildId(true, "0"), 0);
+
+        HeadSectionTest head = new HeadSectionTest()
+            .setPublishTotal(0).setNoteTotal(1)
+            .addNote(doc, 0, 0);
+        NoteCardTest note = new NoteCardTest().setNoteTotal(1)
+            .setCatalogued(CatalogueStatus.UNUSED, builder);
+
+        head.test(doc, 1, raw, 0);
+        note.test(doc, 1, raw, 0, 0);
+        doc.assertLast();
+        doc.assertIds();
     }
 
     @Test
