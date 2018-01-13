@@ -12,7 +12,8 @@ have a [WYSIWYG mode](https://en.wikipedia.org/wiki/WYSIWYG). This make learning
 the language as just a faster way to format and insert notes and agendas.
 
 This project is currently in alpha version, and will be optimized and will have
-more features.
+more features. The most up-to-date stable version is located 
+[here](https://github.com/creativeArtie/JWriter/releases/latest).
 
 ## Markup
 
