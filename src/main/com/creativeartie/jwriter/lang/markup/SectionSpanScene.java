@@ -60,11 +60,9 @@ public final class SectionSpanScene extends SectionSpan {
     }
 
     @Override
-    protected SetupParser getParser(String text){
-        checkNotNull(text, "text");
-        return  ! AuxiliaryChecker.checkSectionEnd(this, text) &&
-            text.startsWith(getParser().getStarter()) &&
-            canParse(text, SectionParseScene.values())? getParser(): null;
+    protected boolean checkStart(String text){
+        return text.startsWith(getLevelToken(LinedParseLevel.OUTLINE,
+            getLevel()));
     }
 
     @Override
@@ -77,6 +75,6 @@ public final class SectionSpanScene extends SectionSpan {
 
     @Override
     public String toString(){
-        return getParser().toString() + "{" + super.toString() + "}";
+        return "Scene " + getLevel() + "{" + super.toString() + "}";
     }
 }

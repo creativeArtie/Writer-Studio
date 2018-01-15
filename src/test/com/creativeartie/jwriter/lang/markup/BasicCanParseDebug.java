@@ -18,6 +18,55 @@ public class BasicCanParseDebug {
     private static final String ender = "}";
 
     @Test
+    public void sectionSingleEnd(){
+        String text = "abc\n";
+        assertTrue(AuxiliaryChecker.checkSectionEnd(true, text));
+        assertTrue(AuxiliaryChecker.checkSectionEnd(false, text));
+    }
+
+    @Test
+    public void sectionNoEnd(){
+        String text = "abc";
+        assertTrue(AuxiliaryChecker.checkSectionEnd(true, text));
+        assertFalse(AuxiliaryChecker.checkSectionEnd(false, text));
+    }
+
+    @Test
+    public void sectionDoubleEnd(){
+        String text = "abc\n\n";
+        assertTrue(AuxiliaryChecker.checkSectionEnd(true, text));
+        assertTrue(AuxiliaryChecker.checkSectionEnd(false, text));
+    }
+
+    @Test
+    public void sectionDoubleLine(){
+        String text = "abc\ndeed\n";
+        assertTrue(AuxiliaryChecker.checkSectionEnd(true, text));
+        assertTrue(AuxiliaryChecker.checkSectionEnd(false, text));
+    }
+
+    @Test
+    public void sectionDoubleWithEscape(){
+        String text = "abc\\\n\n";
+        assertTrue(AuxiliaryChecker.checkSectionEnd(true, text));
+        assertTrue(AuxiliaryChecker.checkSectionEnd(false, text));
+    }
+
+    @Test
+    public void sectionEscapedEnd(){
+        String text = "abc\\\n";
+        assertTrue(AuxiliaryChecker.checkSectionEnd(true, text));
+        assertFalse(AuxiliaryChecker.checkSectionEnd(false, text));
+    }
+
+    @Test
+    public void sectionEscapedNothing(){
+        String text = "abc\\";
+        assertFalse(AuxiliaryChecker.checkSectionEnd(true, text));
+        assertFalse(AuxiliaryChecker.checkSectionEnd(false, text));
+    }
+
+    @Test
     public void simplePass(){
         String test = "abc";
         assertTrue(AuxiliaryChecker.canParse(test, endList));

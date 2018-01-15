@@ -397,7 +397,7 @@ public final class SetupPointer{
     @Override
     public String toString(){
         return "(" + pointerHelper(lastMarker) + "-" + pointerHelper(matchMarker) + "-" +
-            pointerHelper(nextMarker) + "): " + rawText;
+            pointerHelper(nextMarker) + "): " + SpanLeaf.escapeText(rawText);
     }
 
     /**
@@ -408,7 +408,7 @@ public final class SetupPointer{
         assert ptr >= 0: "Too low ptr: " + ptr;
         assert ptr <= rawText.length(): "Too high ptr: " + ptr;
         if (ptr < rawText.length()){
-            return ptr + "(" + rawText.charAt(ptr) + ")";
+            return ptr + "(" + SpanLeaf.escapeText(rawText.substring(ptr)) + ")";
         }
         return ptr + "(end)";
     }

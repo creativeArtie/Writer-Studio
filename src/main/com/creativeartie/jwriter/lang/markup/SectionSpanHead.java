@@ -111,14 +111,6 @@ public final class SectionSpanHead extends SectionSpan {
     }
 
     @Override
-    protected SetupParser getParser(String text){
-        checkNotNull(text, "text");
-        return  ! AuxiliaryChecker.checkSectionEnd(this, text) &&
-            text.startsWith(getParser().getStarter()) &&
-            canParse(text, SectionParseHead.values())? getParser(): null;
-    }
-
-    @Override
     protected void childEdited(){
         cacheSectionLines = Optional.empty();
         cacheSections = Optional.empty();
@@ -129,7 +121,16 @@ public final class SectionSpanHead extends SectionSpan {
     }
 
     @Override
+    protected boolean checkStart(String text){
+        if (getLevel() == 1 && isFirst()){
+            return true;
+        }
+        return text.startsWith(getLevelToken(LinedParseLevel.HEADING,
+            getLevel()));
+    }
+
+    @Override
     public String toString(){
-        return getParser().toString() + "{" + super.toString() + "}";
+        return "Head " + getLevel() + "{" + super.toString() + "}";
     }
 }

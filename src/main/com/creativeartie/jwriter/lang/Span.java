@@ -115,10 +115,19 @@ public abstract class Span{
         return getStart() - index;
     }
 
+    public final boolean isFirst(){
+        return checkLocation(parent -> parent.get(0));
+    }
+
     public final boolean isLast(){
+        return checkLocation(parent -> parent.get(parent.size() - 1));
+    }
+
+
+    private final boolean checkLocation(Function<SpanNode<?>, Span> locateChild){
         Span child = this;
         SpanNode<?> parent = child.getParent();
-        while (parent.get(parent.size() - 1) == child){
+        while (locateChild.apply(parent) == child){
             if (parent instanceof Document) {
                 /// it is the last of the doucment
                 return true;

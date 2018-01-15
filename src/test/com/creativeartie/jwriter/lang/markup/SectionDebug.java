@@ -22,6 +22,7 @@ import com.creativeartie.jwriter.lang.*;
 
 @RunWith(JUnit4.class)
 public class SectionDebug {
+
     private static final SetupParser PARSER = SectionParseHead.SECTION_1;
     private static String COMMON_DOC = "=Chapter 1\n==Section 1\n" +
         "section 1 text\n!# outline\n=Chapter 2\nsome text\n";

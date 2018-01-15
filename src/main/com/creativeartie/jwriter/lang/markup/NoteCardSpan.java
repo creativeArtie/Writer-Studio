@@ -87,7 +87,7 @@ public class NoteCardSpan extends MainSpan {
     @Override
     protected SetupParser getParser(String text){
         checkNotNull(text, "text");
-        if (! AuxiliaryChecker.checkSectionEnd(this, text)){
+        if (! AuxiliaryChecker.checkSectionEnd(isLast(), text)){
             return null;
         }
         boolean isFirst = true;

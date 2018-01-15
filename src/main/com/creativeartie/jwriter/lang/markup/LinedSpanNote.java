@@ -33,7 +33,7 @@ public class LinedSpanNote extends LinedSpan{
         return cacheId.get();
     }
 
-    public boolean isFirst(){
+    public boolean isFirstLine(){
         cacheFirst = getCache(cacheFirst, () -> getParent().indexOf(this) == 0);
         return cacheFirst.get();
     }

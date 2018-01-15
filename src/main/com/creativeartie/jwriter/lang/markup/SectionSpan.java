@@ -7,11 +7,28 @@ import com.google.common.collect.*;
 
 import com.creativeartie.jwriter.lang.*;
 import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
+import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * Section with notes and content
  */
 abstract class SectionSpan extends SpanBranch {
+
+    static boolean allowChild(String text, int parent, boolean heading){
+        for (int i = LEVEL_MAX; i > 0; i--){
+            if (text.startsWith(getLevelToken(LinedParseLevel.OUTLINE, i))){
+                return heading || parent < i;
+            }
+        }
+
+        for (int i = LEVEL_MAX; i > 0; i--){
+            if (text.startsWith(getLevelToken(LinedParseLevel.HEADING, i))){
+                return heading? parent < i: false;
+            }
+        }
+        return true;
+    }
+
     private Optional<Optional<LinedSpanLevelSection>> cacheHeading;
     private Optional<Integer> cacheLevel;
     private Optional<EditionType> cacheEdition;
@@ -22,10 +39,6 @@ abstract class SectionSpan extends SpanBranch {
     SectionSpan(List<Span> children, SectionParser reparser){
         super(children);
         spanReparser = reparser;
-    }
-
-    protected final  SectionParser getParser(){
-        return spanReparser;
     }
 
     public final Optional<LinedSpanLevelSection> getHeading(){
@@ -46,7 +59,7 @@ abstract class SectionSpan extends SpanBranch {
         return cacheEdition.get();
     }
 
-    protected <T> List<T> getChildren(Class<T> getting){
+    protected final <T> List<T> getChildren(Class<T> getting){
         ImmutableList.Builder<T> builder = ImmutableList.builder();
         for (Span span: this){
             if (getting.isInstance(span)){
@@ -69,29 +82,22 @@ abstract class SectionSpan extends SpanBranch {
         return cacheNotes.get();
     }
 
-    protected final boolean canParse(String text, SectionParser[] values){
-        boolean check = true;
-        for (String line : Splitter.on(LINED_END)
-                .split(text.replace(CHAR_ESCAPE + LINED_END, ""))
-            ){
-            for(SectionParser value: values){
-                if (line.startsWith(value.getStarter())){
-                    return false;
-                }
-                if (value == spanReparser){
-                    check = false;
-                }
-                if (spanReparser instanceof SectionParseScene){
-                    for (String str: getLevelTokens(LinedParseLevel.HEADING)){
-                        if (line.startsWith(str)){
-                            return false;
-                        }
-                    }
+    @Override
+    protected final SetupParser getParser(String text){
+        checkNotNull(text, "text");
+        if (AuxiliaryChecker.checkSectionEnd(isLast(), text) &&
+                checkStart(text)){
+            for (String str: Splitter.on(LINED_END).split(text)){
+                if (! allowChild(str, getLevel(),
+                        this instanceof SectionSpanHead)){
+                    return null;
                 }
             }
         }
-        return true;
+        return spanReparser;
     }
+
+    protected abstract boolean checkStart(String text);
 
     public abstract List<LinedSpan> getLines();
 
@@ -106,5 +112,25 @@ abstract class SectionSpan extends SpanBranch {
     @Override
     protected void docEdited(){
         cacheId = Optional.empty();
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder text = new StringBuilder("[\n");
+        boolean isFirst = true;
+        for (Span span: this){
+            if (isFirst){
+                isFirst = false;
+            } else {
+                text.insert(text.length() - 2, ',');
+            }
+            String base = "\t" + span;
+            text.append(base.replace("\n", "\n\t"));
+            if (span instanceof LinedSpan){
+                text.append("\n");
+            }
+        }
+        text.append("]\n");
+        return text.toString();
     }
 }

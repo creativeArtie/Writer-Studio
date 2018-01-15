@@ -281,7 +281,7 @@ public class BranchLineTest {
             return this;
         }
 
-        public NoteLineTest setIsFirst(boolean bool){
+        public NoteLineTest setIsFirstLine(boolean bool){
             isFirst = bool;
             return this;
         }
@@ -296,7 +296,7 @@ public class BranchLineTest {
             LinedSpanNote test = assertClass(span, LinedSpanNote.class);
             assertSpan("data", span, lineText, test.getFormattedSpan());
             assertEquals(getError("id", span), buildId, test.buildId());
-            assertEquals(getError("isFirst", span), isFirst, test.isFirst());
+            assertEquals(getError("isFirst", span), isFirst, test.isFirstLine());
             super.test(span);
         }
     }

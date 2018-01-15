@@ -13,13 +13,16 @@ import com.creativeartie.jwriter.lang.*;
  */
 public final class AuxiliaryChecker{
 
-    static boolean checkSectionEnd(Span span, String text){
-        checkNotNull(span, "span");
+    static boolean checkSectionEnd(boolean isLast, String text){
         checkNotNull(text, "text");
-        if (text.endsWith(CHAR_ESCAPE + LINED_END)){
+        if (text.endsWith(CHAR_ESCAPE)){
             return false;
         }
-        if (! (span.isLast() || text.endsWith(LINED_END))){
+        if (text.endsWith(CHAR_ESCAPE + LINED_END)){
+            return isLast;
+        }
+
+        if (! (isLast || text.endsWith(LINED_END))){
             return false;
         }
         return true;
