@@ -99,14 +99,4 @@ abstract class AgendaPaneView extends GridPane{
     }
 
     /// Control Methods
-
-    /**
-     * Change the selection the ListView {@linkplain #getAgendaList()}.
-     */
-    public abstract void updateSelection(ManuscriptDocument doc, int index);
-
-    /**
-     * Fills the ListView {@linkplain #getAgendaList()} with agendas.
-     */
-    public abstract void fillAgenda(ManuscriptDocument doc);
 }

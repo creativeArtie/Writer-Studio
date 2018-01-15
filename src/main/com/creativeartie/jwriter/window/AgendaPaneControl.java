@@ -18,7 +18,6 @@ import com.creativeartie.jwriter.main.*;
  */
 class AgendaPaneControl extends AgendaPaneView{
 
-    @Override
      public void updateSelection(ManuscriptDocument doc, int index){
         Optional<FormatSpanAgenda> inline = doc.locateSpan(index,
             FormatSpanAgenda.class);
@@ -40,7 +39,6 @@ class AgendaPaneControl extends AgendaPaneView{
         getAgendaList().getSelectionModel().clearSelection();
      }
 
-    @Override
     public void fillAgenda(ManuscriptDocument doc){
         ArrayList<SpanBranch> input = new ArrayList<>();
         doc.getCatalogue().getCategory(AuxiliaryData.TYPE_AGENDA).values()

@@ -120,5 +120,4 @@ abstract class CheatsheetPaneView extends GridPane{
     /// Node Properties
 
     /// Control Methods
-    public abstract void updateLabels(ManuscriptDocument doc, int position);
 }

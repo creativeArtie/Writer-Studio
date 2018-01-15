@@ -213,12 +213,12 @@ public abstract class Document extends SpanNode<SpanBranch>{
         SpanNode<?> pointer = this;
         do {
             Span found = locateSpan(index, pointer);
-            if (found instanceof SpanLeaf){
-                /// Nothing found:
-                return Optional.empty();
-            } else if (clazz.isInstance(found)){
+            if (clazz.isInstance(found)){
                 /// Found and matched reqrested class
                 return Optional.of(clazz.cast(found));
+            } else if (found instanceof SpanLeaf){
+                /// Nothing found:
+                return Optional.empty();
             }
             assert found instanceof SpanNode: "Wrong class: " + found.getClass();
             pointer = (SpanNode<?>) found;

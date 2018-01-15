@@ -17,24 +17,23 @@ import com.creativeartie.jwriter.main.*;
  */
 class HeadingPaneControl extends HeadingPaneView{
 
-    private SectionHeading root;
 
     @Override
     public void loadHeadings(ManuscriptDocument document){
-        root = document.getSections();
-        getHeadings().loadHeadings(root.getChildren());
-        getOutlines().loadHeadings(null);
+        getHeadings().loadHeadings(document);
+        getOutlines().clear();
     }
 
     @Override
     public void setHeading(ManuscriptDocument doc, int position){
-        Checker.checkNotNull(root, "root");
-        doc.locateSpan(position, MainSpanSection.class).ifPresent(span ->{
-            Optional<LinedSpanLevelSection> heading = span.getHeading();
-            getHeadings().selectHeading(heading);
-            root.findChild(heading).ifPresent(found -> getOutlines()
-                .loadHeadings(found.getOutlines()));
-            getOutlines().selectHeading(span.getOutline());
+        doc.locateSpan(position, SpanLeaf.class).ifPresent(span -> {
+            SectionSpanHead head = span.getParent(SectionSpanHead.class).get();
+            getHeadings().selectHeading(head.getHeading());
+            getOutlines().loadOutline(head);
+            Optional<SectionSpanScene> scene = span.getParent(
+                SectionSpanScene.class);
+            scene.ifPresent(found -> getOutlines().selectHeading(found
+                .getHeading()));
         });
     }
 }

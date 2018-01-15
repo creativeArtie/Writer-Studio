@@ -93,7 +93,6 @@ abstract class HeadingTreeView extends TitledPane{
     }
 
     /// Control Methods
-    public abstract void loadHeadings(List<? extends Section> children);
 
     public abstract void selectHeading(Optional<LinedSpanLevelSection> section);
 }

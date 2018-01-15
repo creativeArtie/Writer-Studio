@@ -29,7 +29,6 @@ public class DocumentEditDebug{
         doc.assertChild(1,       done, 0, 0, 0);    /// Formatted text
         doc.assertChild(1,       done, 0, 0, 0, 0); /// Content
         doc.assertTextLeaf(0, 4, done, 0, 0, 0, 0, 0);
-        doc.addId(MainSectionDebug.buildId("0"), 0);
         doc.assertIds();
     }
 
@@ -49,7 +48,6 @@ public class DocumentEditDebug{
         doc.assertChild(2,       "\\c", 0, 0, 0, 0, 1);
         doc.assertKeyLeaf( 2, 3, "\\",  0, 0, 0, 0, 1, 0);
         doc.assertTextLeaf(3, 4, "c",   0, 0, 0, 0, 1, 1);
-        doc.addId(MainSectionDebug.buildId("0"), 0);
         doc.assertIds();
     }
 
@@ -69,7 +67,6 @@ public class DocumentEditDebug{
         doc.assertChild(2,       "\\c", 0, 0, 0, 0, 1);
         doc.assertKeyLeaf( 3, 4, "\\",  0, 0, 0, 0, 1, 0);
         doc.assertTextLeaf(4, 5, "c",   0, 0, 0, 0, 1, 1);
-        doc.addId(MainSectionDebug.buildId("0"), 0);
         doc.assertIds();
     }
 
@@ -89,7 +86,6 @@ public class DocumentEditDebug{
         doc.assertKeyLeaf( 0, 1, "\\",  0, 0, 0, 0, 0, 0);
         doc.assertTextLeaf(1, 2, "c",   0, 0, 0, 0, 0, 1);
         doc.assertTextLeaf(2, 3, "d",   0, 0, 0, 0, 1);
-        doc.addId(MainSectionDebug.buildId("0"), 0);
         doc.assertIds();
     }
 
@@ -106,7 +102,6 @@ public class DocumentEditDebug{
         doc.assertChild(1,       done,  0, 0, 0);    /// Formatted text
         doc.assertChild(1,       done,  0, 0, 0, 0); /// Content
         doc.assertTextLeaf(0, 6, done,  0, 0, 0, 0, 0);
-        doc.addId(MainSectionDebug.buildId("0"), 0);
         doc.assertIds();
     }
 
@@ -123,7 +118,6 @@ public class DocumentEditDebug{
         doc.assertChild(1,       done,  0, 0, 0);    /// Formatted text
         doc.assertChild(1,       done,  0, 0, 0, 0); /// Content
         doc.assertTextLeaf(0, 6, done,  0, 0, 0, 0, 0);
-        doc.addId(MainSectionDebug.buildId("0"), 0);
         doc.assertIds();
     }
 
@@ -140,7 +134,6 @@ public class DocumentEditDebug{
         doc.assertChild(1,       done,  0, 0, 0);    /// Formatted text
         doc.assertChild(1,       done,  0, 0, 0, 0); /// Content
         doc.assertTextLeaf(0, 2, done,  0, 0, 0, 0, 0);
-        doc.addId(MainSectionDebug.buildId("0"), 0);
         doc.assertIds();
     }
 
@@ -158,7 +151,6 @@ public class DocumentEditDebug{
         doc.assertChild(1,       "abc", 0, 0, 1);    /// Formatted
         doc.assertChild(1,       "abc", 0, 0, 1, 0); /// Formatted
         doc.assertTextLeaf(1, 4, "abc", 0, 0, 1, 0, 0);
-        doc.addId(MainSectionDebug.buildId("0"), 0);
         doc.assertIds();
     }
 
@@ -175,7 +167,6 @@ public class DocumentEditDebug{
         doc.assertChild(1,       done,  0, 0, 0);    /// Formatted text
         doc.assertChild(1,       done,  0, 0, 0, 0); /// Content
         doc.assertTextLeaf(0, 3, done,  0, 0, 0, 0, 0);
-        doc.addId(MainSectionDebug.buildId("0"), 0);
         doc.assertIds();
     }
 
@@ -198,7 +189,6 @@ public class DocumentEditDebug{
         doc.assertKeyLeaf(11, 12,  "#",     0, 0, 2, 0);
         doc.assertChild(1,         "abc",   0, 0, 2, 1); /// Status Content
         doc.assertTextLeaf(12, 15, "abc",   0, 0, 2, 1, 0);
-        doc.addId(MainSectionDebug.buildId("00"), 0);
         doc.assertIds();
     }
 
@@ -219,7 +209,6 @@ public class DocumentEditDebug{
         doc.assertChild(1,       "#DRAFT", 0, 0, 2);    /// Status
         doc.assertKeyLeaf(5, 11, "#DRAFT", 0, 0, 2, 0);
 
-        doc.addId(MainSectionDebug.buildId("00"), 0);
         doc.assertIds();
     }
 
@@ -242,7 +231,6 @@ public class DocumentEditDebug{
         doc.assertKeyLeaf(4,  5, "\\",         0, 0, 1, 0, 1, 0);
         doc.assertTextLeaf(5, 6, "\n",         0, 0, 1, 0, 1, 1);
         doc.assertTextLeaf(6, 15, "more text", 0, 0, 1, 0, 2);
-        doc.addId(MainSectionDebug.buildId("00"), 0);
         doc.assertIds();
     }
 
@@ -272,7 +260,6 @@ public class DocumentEditDebug{
         doc.assertKeyLeaf(11, 12, "}",    0, 0, 4, 0, 2);
         doc.addId(LinedLevelHeadDebug.buildId("akbc"), 1);
         doc.addRef(FormatCurlyDebug.buildNoteId("ad"),  2);
-        doc.addId(MainSectionDebug.buildId("00"), 0);
         doc.assertIds();
     }
 

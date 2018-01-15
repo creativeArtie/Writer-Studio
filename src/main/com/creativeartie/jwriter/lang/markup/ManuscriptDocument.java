@@ -28,7 +28,7 @@ public class ManuscriptDocument extends Document{
     }
 
     public ManuscriptDocument(String text){
-        super(text, new MainParser());
+        super(text, SectionParseHead.SECTION_1);
     }
 
     public LinedSpan getLine(int line){
@@ -47,35 +47,6 @@ public class ManuscriptDocument extends Document{
     public boolean allHasHeading(){
         Optional<MainSpanSection> found = spanAtFirst(MainSpanSection.class);
         return found.isPresent() && found.get().getHeading().isPresent();
-    }
-
-    public SectionHeading getSections(){
-        SectionHeading heading = new SectionHeading();
-        SectionHeading ans = heading;
-        Optional<SectionOutline> outline = Optional.empty();
-        for(CatalogueData data: getCatalogue().getCategory(TYPE_SECTION
-            .toArray(new String[0])).values())
-        {
-
-            MainSpanSection section = (MainSpanSection) data.getTarget();
-            Optional<LinedSpanLevelSection> found = section.getSelfSection();
-            if (found.isPresent()){
-                if (found.get().getLinedType() == LinedType.HEADING){
-                    heading = heading.appendHeading(found.get());
-                    outline = Optional.empty();
-                } else {
-                    assert found.get().getLinedType() == LinedType.OUTLINE;
-                    if (outline.isPresent()){
-                        outline = outline.get().append(found.get());
-                    }
-                    if (! outline.isPresent()){
-                        outline = Optional.of(heading.appendOutline(
-                            found.get()));
-                    }
-                }
-            }
-        }
-        return ans;
     }
 
     public int getPublishTotal(){
