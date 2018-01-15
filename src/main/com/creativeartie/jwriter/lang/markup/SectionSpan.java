@@ -70,7 +70,6 @@ abstract class SectionSpan extends SpanBranch {
     }
 
     protected final boolean canParse(String text, SectionParser[] values){
-
         boolean check = true;
         for (String line : Splitter.on(LINED_END)
                 .split(text.replace(CHAR_ESCAPE + LINED_END, ""))

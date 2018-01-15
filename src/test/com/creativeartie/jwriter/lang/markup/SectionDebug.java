@@ -23,31 +23,171 @@ import com.creativeartie.jwriter.lang.*;
 @RunWith(JUnit4.class)
 public class SectionDebug {
     private static final SetupParser PARSER = SectionParseHead.SECTION_1;
+    private static String COMMON_DOC = "=Chapter 1\n==Section 1\n" +
+        "section 1 text\n!# outline\n=Chapter 2\nsome text\n";
 
     @Test
     public void sectionWithStuff(){
-        String raw = "=Chapter 1\n==Section 1\n!# outline\n=Chapter 2\n" +
-            "some text\n";
+        DocumentAssert doc = assertDoc(2, COMMON_DOC, PARSER);
+        testSections(doc);
+    }
+    @Test
+    public void editAddOutline(){
+        ///           0000000000 111111111122 222222223333333 33
+        ///           0123456789 012345678901 234567890123456 78
+        String raw = "=Chapter 1\n==Section 1\nsection 1 text\n! outline\n" +
+            "=Chapter 2\nsome text\n";
         DocumentAssert doc = assertDoc(2, raw, PARSER);
+        doc.insert(39, "#", 0, 1);
+        doc.assertDoc(2, COMMON_DOC, PARSER);
         testSections(doc);
     }
 
-    public void testSections(DocumentAssert doc){
-        String[] lines = new String[]{"=Chapter 1\n", "==Section 1\n",
-                "!# outline\n", "=Chapter 2\n", "some text\n"};
+    private void testSections(DocumentAssert doc){
+        String[] lines = new String[]{
+            /// Section 1:
+                "=Chapter 1\n",
+                /// Section 1.1:
+                    "==Section 1\n", "section 1 text\n", "!# outline\n",
+            /// Section 2
+            "=Chapter 2\n", "some text\n"};
+
+        String sec1 = lines[0] + lines[1] + lines[2] + lines[3];
+        String sec1_1 = lines[1] + lines[2] + lines[3];
+        /// outline 3 = lines[3];
+        String sec2 = lines[4] + lines[5];
+
         String full = String.join("", lines);
-        HeadSectionTest head1 = new HeadSectionTest()
+        HeadSectionTest head1 = new HeadSectionTest() /// 0
+            .setPublishTotal(2)   .setNoteTotal(0)
+            .addSection(doc, 0, 1).setHeading(doc, 0, 0)
+            .addLine(doc, 0, 0);
+        HeadLevelLineTest line0 = new HeadLevelLineTest() ///0, 0
+            .setLevel(1)          .setEdition(EditionType.NONE)
+            .setPublishTotal(2)   .setNoteTotal(0)
+            .setIsLast(false)     .setFormattedSpan(doc, 0, 0, 1)
+            .setLinedType(LinedType.HEADING);
+
+        HeadSectionTest head1_1 = new HeadSectionTest() /// 0, 1
+            .setPublishTotal(5)      .setNoteTotal(1)
+            .addScene(doc, 0, 1, 2)  .setHeading(doc, 0, 1, 0)
+            .addLine(doc, 0, 1, 0)   .addLine(doc, 0, 1, 1)
+            .addLine(doc, 0, 1, 2, 0);
+        HeadLevelLineTest line1 = new HeadLevelLineTest() ///0, 1, 0
+            .setLevel(2)             .setEdition(EditionType.NONE)
+            .setPublishTotal(2)      .setNoteTotal(0)
+            .setIsLast(false)        .setFormattedSpan(doc, 0, 1, 0, 1)
+            .setLinedType(LinedType.HEADING);
+        ParagraphLineTest line2 = new ParagraphLineTest() /// 0, 1, 1
+            .setPublishTotal(3)      .setNoteTotal(0)
+            .setIsLast(false)        .setFormattedSpan(doc, 0, 1, 1, 0);
+
+        SceneSectionTest head1_1_1 = new SceneSectionTest() /// 0, 1, 2
+            .setParentHead(doc, 0, 1).setHeading(doc, 0, 1, 2, 0)
+            .addLine(doc, 0, 1, 2, 0);
+        HeadLevelLineTest line3 = new HeadLevelLineTest()/// 0, 1, 2, 0
+            .setLevel(1)             .setEdition(EditionType.NONE)
+            .setPublishTotal(0)      .setNoteTotal(1)
+            .setIsLast(false)        .setFormattedSpan(doc, 0, 1, 2, 0, 1)
+            .setLinedType(LinedType.OUTLINE);
+
+        HeadSectionTest head2 = new HeadSectionTest() /// 1
+            .setPublishTotal(4)   .setNoteTotal(0)
+            .setHeading(doc, 1, 0).addLine(doc, 1, 0)
+            .addLine(doc, 1, 1);
+        HeadLevelLineTest line4 = new HeadLevelLineTest() //1, 0
+            .setLevel(1)          .setEdition(EditionType.NONE)
+            .setPublishTotal(2)   .setNoteTotal(0)
+            .setIsLast(false)     .setFormattedSpan(doc, 1, 0, 1)
+            .setLinedType(LinedType.HEADING);
+        ParagraphLineTest line5 = new ParagraphLineTest()// 1, 1
             .setPublishTotal(2).setNoteTotal(0)
-            .addSection(doc, 0, 1).setHeading(0, 0);
-        HeadSectionTest head1_1 = HeadSectionTest()
-            .setPublishTotal(2).setNoteTotal(1)
-            .addScene(doc, 0, 1, 1).setHeading(0, 1, 0);
-         SceneSectionTest out2 = new SceneSectionTest()
-            .setHeading(doc, 0, 0, 0, 0).setParentHead(doc, 0)
-            .addLine(doc, 0, 0, 0, 0)   .addLine(doc, 0, 0, 0, 1);
-        HeadSectionTest head2 = new HeadSectionTest()
-            .setPublishTotal(4).setNoteTotal(0);
+            .setFormattedSpan(doc, 1, 1, 0);
+
+        head1.test(    doc, 2, sec1,     0);
+        line0.test(    doc, 3, lines[0], 0, 0);
+        head1_1.test(  doc, 3, sec1_1,   0, 1);
+        line1.test(    doc, 3, lines[1], 0, 1, 0);
+        line2.test(    doc, 2, lines[2], 0, 1, 1);
+        head1_1_1.test(doc, 1, lines[3], 0, 1, 2);
+        line3.test(    doc, 3, lines[3], 0, 1, 2, 0);
+        head2.test(    doc, 2, sec2,     1);
+        line4.test(    doc, 3, lines[4], 1, 0);
+        line5.test(    doc, 2, lines[5], 1, 1);
+        doc.assertLast();
+        doc.assertIds();
+
     }
+
+    public void allSectionLines(){
+        String[] texts = new String[]{">quote\n", "#numbered\n", "-bullet\n",
+            "!@hyperlink:http://google.com\n", "!^footnote: many text\n",
+            "!*endnote: text\n", "!!agenda\n", "***\n", "abc\n"};
+        String raw = String.join("", texts);
+        DocumentAssert doc = assertDoc(1, raw, new MainParser());
+
+        IDBuilder linkId = doc.addId(LinedPointerDebug
+            .buildLinkId("hyperlink"), 4);
+        IDBuilder footnoteId = doc.addId(LinedPointerDebug
+            .buildFootnoteId("footnote"), 2);
+        IDBuilder endnoteId = doc.addId(LinedPointerDebug
+            .buildEndnoteId("endnote"), 1);
+        IDBuilder agendaId = doc.addId(LinedRestDebug.buildAgendaId("093"), 0);
+
+
+        HeadSectionTest section = new HeadSectionTest()
+            .setPublishTotal(4)   .setNoteTotal(1)
+            .setHeading(doc, 1, 0).addLine(doc, 1, 0);
+        for (int i = 0; i < texts.length; i++){
+            section.addLine(doc, 0, i);
+        }
+        QuoteLineTest line1 = new QuoteLineTest()
+            .setFormattedSpan(doc, 0, 0, 1)
+            .setPublishTotal(1).setNoteTotal(0)
+            .setIsLast(false);
+        ListLevelLineTest line2 = new ListLevelLineTest()
+            .setLinedType(LinedType.NUMBERED).setLevel(1)
+            .setFormattedSpan(doc, 0, 1, 1).setPublishTotal(1)
+            .setNoteTotal(0).setIsLast(false);
+        ListLevelLineTest line3 = new ListLevelLineTest()
+            .setLinedType(LinedType.BULLET).setLevel(1)
+            .setFormattedSpan(doc, 0, 2, 1).setPublishTotal(1)
+            .setNoteTotal(0).setIsLast(false);
+        PointerLinkTest line4 = new PointerLinkTest()
+            .setPath("http://google.com").setIsLast(false)
+            .setCatalogued(CatalogueStatus.UNUSED, linkId);
+        PointerNoteTest line5 = new PointerNoteTest()
+            .setLinedType(LinedType.FOOTNOTE)
+            .setFormattedSpan(doc, 0, 4, 3).setIsLast(false)
+            .setCatalogued(CatalogueStatus.UNUSED, footnoteId);
+        PointerNoteTest line6 = new PointerNoteTest()
+            .setLinedType(LinedType.ENDNOTE)
+            .setFormattedSpan(doc, 0, 5, 3).setIsLast(false)
+            .setCatalogued(CatalogueStatus.UNUSED, endnoteId);
+        AgendaLineTest line7 = new AgendaLineTest()
+            .setAgenda("agenda").setNoteTotal(1)
+            .setCatalogued(CatalogueStatus.UNUSED, agendaId)
+            .setIsLast(false);
+        BreakLineTest line8 = new BreakLineTest().setIsLast(false);
+        ParagraphLineTest line9 = new ParagraphLineTest()
+            .setPublishTotal(1).setNoteTotal(0)
+            .setFormattedSpan(doc, 0, 8, 0);
+
+        int i = 0;
+        section.test(doc, 9, raw, 0);
+        line1.test(  doc, 3, texts[i], 0, i++); /// quote
+        line2.test(  doc, 3, texts[i], 0, i++); /// numbered
+        line3.test(  doc, 3, texts[i], 0, i++); /// bullet
+        line4.test(  doc, 5, texts[i], 0, i++); /// hyperlink
+        line5.test(  doc, 5, texts[i], 0, i++); /// footnote
+        line6.test(  doc, 5, texts[i], 0, i++); /// endnote
+        line7.test(  doc, 3, texts[i], 0, i++); /// agenda
+        line8.test(  doc, 1, texts[i], 0, i++); /// break
+        line9.test(  doc, 2, texts[i], 0, i++); /// paragraph
+        doc.assertLast();
+        doc.assertIds();
+    }
+
 
     @Test
     public void sectionWithNote(){

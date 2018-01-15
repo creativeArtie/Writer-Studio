@@ -18,6 +18,10 @@ import com.creativeartie.jwriter.lang.*;
 @RunWith(JUnit4.class)
 public class LinedRestDebug {
 
+    public static IDBuilder buildAgendaId(String name){
+        return new IDBuilder().addCategory("agenda").setId(name);
+    }
+
     private static final SetupParser[] parsers = LinedParseRest.values();
 
     @Test
@@ -122,9 +126,7 @@ public class LinedRestDebug {
     private void agendaEditCommon(DocumentAssert doc){
         String text = "abc**ab";
         String raw = "!!" + text;
-        IDBuilder id = new IDBuilder().addCategory("agenda")
-            .setId("0");
-        doc.addId(id, 0);
+        IDBuilder id = doc.addId(buildAgendaId("0"), 0);
 
         AgendaLineTest agenda = new AgendaLineTest()
             .setAgenda(text).setNoteTotal(1)
@@ -157,9 +159,7 @@ public class LinedRestDebug {
         String raw = "!!";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        IDBuilder id = new IDBuilder().addCategory("agenda")
-            .setId("0");
-        doc.addId(id, 0);
+        IDBuilder id = doc.addId(buildAgendaId("0"), 0);
 
         AgendaLineTest agenda = new AgendaLineTest()
             .setAgenda("").setNoteTotal(0)
@@ -176,9 +176,7 @@ public class LinedRestDebug {
         String raw = "!!  \n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        IDBuilder id = new IDBuilder().addCategory("agenda")
-            .setId("0");
-        doc.addId(id, 0);
+        IDBuilder id = doc.addId(buildAgendaId("0"), 0);
 
         AgendaLineTest agenda = new AgendaLineTest()
             .setAgenda("").setNoteTotal(0)
@@ -201,9 +199,7 @@ public class LinedRestDebug {
         String raw = "!!ab\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        IDBuilder id = new IDBuilder().addCategory("agenda")
-            .setId("0");
-        doc.addId(id, 0);
+        IDBuilder id = doc.addId(buildAgendaId("0"), 0);
 
         AgendaLineTest agenda = new AgendaLineTest()
             .setAgenda("ab").setNoteTotal(1)
@@ -227,9 +223,7 @@ public class LinedRestDebug {
         String raw = "!!" + text + "\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        IDBuilder id = new IDBuilder().addCategory("agenda")
-            .setId("0");
-        doc.addId(id, 0);
+        IDBuilder id = doc.addId(buildAgendaId("0"), 0);
 
         AgendaLineTest agenda = new AgendaLineTest()
             .setAgenda("Hi\\").setNoteTotal(1)

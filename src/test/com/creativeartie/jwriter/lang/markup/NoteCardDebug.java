@@ -69,18 +69,19 @@ public class NoteCardDebug {
         doc.assertIds();
     }
 
+    private static String COMMON_NOTE_BASE = "!%@see:Note Heading\n" +
+            "!%some note content\\\n\n" + "!>in-text: Smith, p3";
+
     @Test
     public void noteBasic(){
-        String raw = "!%@see:Note Heading\n" + "!%some note content\n" +
-            "!>in-text: Smith, p3";
-        DocumentAssert doc = assertDoc(1, raw, PARSER);
+        DocumentAssert doc = assertDoc(1, COMMON_NOTE_BASE, PARSER);
 
         testNoteBasic(doc);
     }
 
     private void testNoteBasic(DocumentAssert doc){
         String raw1 = "!%@see:Note Heading\n";
-        String raw2 = "!%some note content\n";
+        String raw2 = "!%some note content\\\n\n";
         String raw3 = "!>in-text: Smith, p3";
         String full = raw1 + raw2 + raw3;
 
@@ -240,14 +241,26 @@ public class NoteCardDebug {
     }
 
     @Test
+    public void editAddEscepNewline(){
+        ///           0000000000111111111122222222223333333333 4
+        ///           0123456789012345678901234567890123456789 0
+        String raw = "!%@see:Note Heading\n!%some note content\n" +
+            "!>in-text: Smith, p3";
+        DocumentAssert doc = assertDoc(1, raw, PARSER);
+        doc.insert(40, "\\\n", 0, 1);
+        System.out.println(doc.getDocument());
+        doc.assertDoc(1, COMMON_NOTE_BASE);
+        testNoteBasic(doc);
+    }
+
+    @Test
     public void editContent(){
         ///           012345678901234567890123
-        String raw = "!%@see:Note Heading\n!%note content\n!>in-text: Smith, p3";
+        String raw = "!%@see:Note Heading\n!%note content\\\n\n" +
+            "!>in-text: Smith, p3";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
-        String full =
-            "!%@see:Note Heading\n!%some note content\n!>in-text: Smith, p3";
         doc.insert(22, "some ", 0, 1);
-        doc.assertDoc(1, full);
+        doc.assertDoc(1, COMMON_NOTE_BASE);
         testNoteBasic(doc);
     }
 }
