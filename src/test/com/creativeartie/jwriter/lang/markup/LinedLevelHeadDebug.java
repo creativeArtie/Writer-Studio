@@ -125,16 +125,14 @@ public class LinedLevelHeadDebug {
         HeadLevelLineTest heading1 = new HeadLevelLineTest()
             .setFormattedSpan(doc, 0, 1).setLinedType(LinedType.HEADING)
             .setLevel(1).setEdition(EditionType.NONE)
-            .setPublishTotal(1).setNoteTotal(0)
-            .setIsLast(false);
+            .setPublishTotal(1).setNoteTotal(0);
         FormatMainTest content1 = new FormatMainTest()
             .setPublishTotal(1).setNoteTotal(0);
 
         HeadLevelLineTest heading2 = new HeadLevelLineTest()
-           .setFormattedSpan(doc, 1, 1).setLinedType(LinedType.HEADING)
-            .setLevel(1).setEdition(EditionType.NONE)
-            .setPublishTotal(2).setNoteTotal(0)
-            .setIsLast(false);
+            .setLevel(1)       .setFormattedSpan(doc, 1, 1)
+            .setPublishTotal(2).setLinedType(LinedType.HEADING)
+            .setNoteTotal(0)   .setEdition(EditionType.NONE);
         FormatMainTest content2 = new FormatMainTest()
             .setPublishTotal(2).setNoteTotal(0);
 

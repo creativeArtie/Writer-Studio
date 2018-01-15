@@ -73,7 +73,22 @@ public class DocumentAssert {
     public DocumentAssert assertDoc(int childrenSize, String rawText){
         assertEquals(getError("text", doc), rawText,      doc.getRaw());
         assertEquals(getError("size", doc), childrenSize, doc.size());
+        assertLocations(doc, true, true);
         return this;
+    }
+
+    private void assertLocations(SpanNode<?> span, boolean begin, boolean end){
+        for (int i = 0; i < span.size(); i++){
+            Span test = span.get(i);
+            boolean first = i == 0 && begin;
+            assertEquals(getError("isFirst", test), first, test.isFirst());
+
+            boolean last = i == span.size() - 1 && end;
+            assertEquals(getError("isLast", test), last, test.isLast());
+            if (test instanceof SpanNode){
+                assertLocations((SpanNode<?>) test, first, last);
+            }
+        }
     }
 
     private Span[] getFamily(int ... idx){

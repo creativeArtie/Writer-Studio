@@ -66,22 +66,21 @@ public class MainSectionDebug {
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         QuoteLineTest line1 = new QuoteLineTest()
             .setFormattedSpan(doc, 0, 0, 1)
-            .setPublishTotal(1).setNoteTotal(0)
-            .setIsLast(false);
+            .setPublishTotal(1).setNoteTotal(0);
         ListLevelLineTest line2 = new ListLevelLineTest()
             .setLinedType(LinedType.NUMBERED).setLevel(1)
             .setFormattedSpan(doc, 0, 1, 1).setPublishTotal(1)
-            .setNoteTotal(0).setIsLast(false);
+            .setNoteTotal(0);
         ListLevelLineTest line3 = new ListLevelLineTest()
             .setLinedType(LinedType.BULLET).setLevel(1)
             .setFormattedSpan(doc, 0, 2, 1).setPublishTotal(1)
-            .setNoteTotal(0).setIsLast(false);
+            .setNoteTotal(0);
 
         builder.reset().addCategory("link").setId("hyperlink");
         doc.addId(builder, 4);
 
         PointerLinkTest line4 = new PointerLinkTest()
-            .setPath("http://google.com").setIsLast(false)
+            .setPath("http://google.com")
             .setCatalogued(CatalogueStatus.UNUSED, builder);
 
         builder.reset().addCategory("foot").setId("footnote");
@@ -89,7 +88,7 @@ public class MainSectionDebug {
 
         PointerNoteTest line5 = new PointerNoteTest()
             .setLinedType(LinedType.FOOTNOTE)
-            .setFormattedSpan(doc, 0, 4, 3).setIsLast(false)
+            .setFormattedSpan(doc, 0, 4, 3)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
 
         builder.reset().addCategory("end").setId("endnote");
@@ -97,7 +96,7 @@ public class MainSectionDebug {
 
         PointerNoteTest line6 = new PointerNoteTest()
             .setLinedType(LinedType.ENDNOTE)
-            .setFormattedSpan(doc, 0, 5, 3).setIsLast(false)
+            .setFormattedSpan(doc, 0, 5, 3)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
 
         builder.reset().addCategory("agenda").setId("093");
@@ -105,9 +104,8 @@ public class MainSectionDebug {
 
         AgendaLineTest line7 = new AgendaLineTest()
             .setAgenda("agenda").setNoteTotal(1)
-            .setCatalogued(CatalogueStatus.UNUSED, builder)
-            .setIsLast(false);
-        BreakLineTest line8 = new BreakLineTest().setIsLast(false);
+            .setCatalogued(CatalogueStatus.UNUSED, builder);
+        BreakLineTest line8 = new BreakLineTest();
         ParagraphLineTest line9 = new ParagraphLineTest()
             .setPublishTotal(1).setNoteTotal(0)
             .setFormattedSpan(doc, 0, 8, 0);
@@ -148,9 +146,6 @@ public class MainSectionDebug {
                 .setLinedType(LinedType.NUMBERED).setLevel(1)
                 .setFormattedSpan(doc, 0, i, 1).setPublishTotal(1)
                 .setNoteTotal(0);
-            if (i < texts.length - 1){
-                lines[i].setIsLast(false);
-            }
         }
 
         section.test(doc, 4, raw, 0);
@@ -183,8 +178,7 @@ public class MainSectionDebug {
             .setFormattedSpan(doc, 0, 0, 4).setLinedType(LinedType.HEADING)
             .setLevel(1).setEdition(EditionType.DRAFT)
             .setPublishTotal(1).setNoteTotal(0)
-            .setCatalogued(CatalogueStatus.UNUSED, builder)
-            .setIsLast(false);
+            .setCatalogued(CatalogueStatus.UNUSED, builder);
         ParagraphLineTest line2 = new ParagraphLineTest()
             .setPublishTotal(1).setNoteTotal(0)
             .setFormattedSpan(doc, 0, 1, 0);
@@ -213,8 +207,7 @@ public class MainSectionDebug {
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         QuoteLineTest line1 = new QuoteLineTest()
             .setFormattedSpan(doc, 0, 0, 1)
-            .setPublishTotal(1).setNoteTotal(0)
-            .setIsLast(false);
+            .setPublishTotal(1).setNoteTotal(0);
 
         doc.addId(builder.reset().addCategory("head").setId("07"), 1);
 
@@ -225,8 +218,7 @@ public class MainSectionDebug {
         HeadLevelLineTest line2 = new HeadLevelLineTest()
             .setFormattedSpan(doc, 1, 0, 1).setLinedType(LinedType.HEADING)
             .setLevel(1).setEdition(EditionType.STUB)
-            .setPublishTotal(1).setNoteTotal(0)
-            .setIsLast(false);
+            .setPublishTotal(1).setNoteTotal(0);
         ParagraphLineTest line3 = new ParagraphLineTest()
             .setPublishTotal(1).setNoteTotal(0)
             .setFormattedSpan(doc, 1, 1, 0);

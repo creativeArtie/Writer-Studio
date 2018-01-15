@@ -132,8 +132,7 @@ public class LinedCiteDebug {
         DocumentAssert doc = assertDoc(2, raw, parsers);
 
         CiteLineTest cite = new CiteLineTest()
-            .setInfoType(InfoFieldType.ERROR)
-            .setIsLast(false);
+            .setInfoType(InfoFieldType.ERROR);
         FieldTest field = new FieldTest()
             .setType(InfoFieldType.ERROR);
 

@@ -92,10 +92,10 @@ public class NoteCardDebug {
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         NoteLineTest line1 = new NoteLineTest()
             .setNoteTotal(2)    .setFormattedSpan(doc, 0, 0, 4)
-            .setBuildId(builder).setIsLast(false);
+            .setBuildId(builder);
         NoteLineTest line2 = new NoteLineTest()
             .setNoteTotal(3)    .setFormattedSpan(doc, 0, 1, 1)
-            .setIsLast(false)   .setIsFirstLine(false);
+            .setIsFirstLine(false);
         CiteLineTest line3 = new CiteLineTest()
             .setNoteTotal(2)    .setDataSpan(doc, 0, 2, 3)
             .setInfoType(InfoFieldType.IN_TEXT);
@@ -128,7 +128,7 @@ public class NoteCardDebug {
             .setNoteTotal(2);
         NoteLineTest line1 = new NoteLineTest()
             .setFormattedSpan(doc, 0, 0, 1)
-            .setNoteTotal(2).setIsLast(false);
+            .setNoteTotal(2);
         NoteCardTest note2 = new NoteCardTest()
             .setCatalogued(CatalogueStatus.UNUSED, builder2)
             .setNoteTotal(1);
@@ -160,10 +160,10 @@ public class NoteCardDebug {
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         CiteLineTest line1 = new CiteLineTest()
             .setInfoType(InfoFieldType.ERROR)
-            .setNoteTotal(0).setIsLast(false);
+            .setNoteTotal(0);
         CiteLineTest line2 = new CiteLineTest()
-            .setInfoType(InfoFieldType.IN_TEXT).setIsLast(false)
-            .setDataSpan(doc, 0, 1, 3)         .setNoteTotal(2);
+            .setDataSpan(doc, 0, 1, 3).setNoteTotal(2)
+            .setInfoType(InfoFieldType.IN_TEXT);
         CiteLineTest line3 = new CiteLineTest()
             .setInfoType(InfoFieldType.IN_TEXT)
             .setDataSpan(doc, 0, 2, 3).setNoteTotal(2);
@@ -188,8 +188,7 @@ public class NoteCardDebug {
         NoteCardTest note = new NoteCardTest().setNoteTotal(3)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         NoteLineTest line1 = new NoteLineTest()
-            .setFormattedSpan(doc, 0, 0, 1).setNoteTotal(2)
-            .setIsLast(false);
+            .setFormattedSpan(doc, 0, 0, 1).setNoteTotal(2);
         NoteLineTest line2 = new NoteLineTest()
             .setFormattedSpan(doc, 0, 1, 1).setNoteTotal(1)
             .setIsFirstLine(false);
@@ -217,8 +216,7 @@ public class NoteCardDebug {
         NoteCardTest note = new NoteCardTest().setNoteTotal(2)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         NoteLineTest line1 = new NoteLineTest()
-            .setFormattedSpan(doc, 0, 0, 1).setNoteTotal(2)
-            .setIsLast(false);
+            .setFormattedSpan(doc, 0, 0, 1).setNoteTotal(2);
 
         String out1 = "!%line 1\n";
         String out2 = "\n";

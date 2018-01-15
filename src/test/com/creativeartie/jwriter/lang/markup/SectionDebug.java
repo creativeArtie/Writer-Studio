@@ -66,7 +66,7 @@ public class SectionDebug {
         HeadLevelLineTest line0 = new HeadLevelLineTest() ///0, 0
             .setLevel(1)          .setEdition(EditionType.NONE)
             .setPublishTotal(2)   .setNoteTotal(0)
-            .setIsLast(false)     .setFormattedSpan(doc, 0, 0, 1)
+            .setFormattedSpan(doc, 0, 0, 1)
             .setLinedType(LinedType.HEADING);
 
         HeadSectionTest head1_1 = new HeadSectionTest() /// 0, 1
@@ -77,11 +77,11 @@ public class SectionDebug {
         HeadLevelLineTest line1 = new HeadLevelLineTest() ///0, 1, 0
             .setLevel(2)             .setEdition(EditionType.NONE)
             .setPublishTotal(2)      .setNoteTotal(0)
-            .setIsLast(false)        .setFormattedSpan(doc, 0, 1, 0, 1)
+            .setFormattedSpan(doc, 0, 1, 0, 1)
             .setLinedType(LinedType.HEADING);
         ParagraphLineTest line2 = new ParagraphLineTest() /// 0, 1, 1
             .setPublishTotal(3)      .setNoteTotal(0)
-            .setIsLast(false)        .setFormattedSpan(doc, 0, 1, 1, 0);
+            .setFormattedSpan(doc, 0, 1, 1, 0);
 
         SceneSectionTest head1_1_1 = new SceneSectionTest() /// 0, 1, 2
             .setParentHead(doc, 0, 1).setHeading(doc, 0, 1, 2, 0)
@@ -89,7 +89,7 @@ public class SectionDebug {
         HeadLevelLineTest line3 = new HeadLevelLineTest()/// 0, 1, 2, 0
             .setLevel(1)             .setEdition(EditionType.NONE)
             .setPublishTotal(0)      .setNoteTotal(1)
-            .setIsLast(false)        .setFormattedSpan(doc, 0, 1, 2, 0, 1)
+            .setFormattedSpan(doc, 0, 1, 2, 0, 1)
             .setLinedType(LinedType.OUTLINE);
 
         HeadSectionTest head2 = new HeadSectionTest() /// 1
@@ -99,7 +99,7 @@ public class SectionDebug {
         HeadLevelLineTest line4 = new HeadLevelLineTest() //1, 0
             .setLevel(1)          .setEdition(EditionType.NONE)
             .setPublishTotal(2)   .setNoteTotal(0)
-            .setIsLast(false)     .setFormattedSpan(doc, 1, 0, 1)
+            .setFormattedSpan(doc, 1, 0, 1)
             .setLinedType(LinedType.HEADING);
         ParagraphLineTest line5 = new ParagraphLineTest()// 1, 1
             .setPublishTotal(2).setNoteTotal(0)
@@ -144,32 +144,30 @@ public class SectionDebug {
         }
         QuoteLineTest line1 = new QuoteLineTest()
             .setFormattedSpan(doc, 0, 0, 1)
-            .setPublishTotal(1).setNoteTotal(0)
-            .setIsLast(false);
+            .setPublishTotal(1).setNoteTotal(0);
         ListLevelLineTest line2 = new ListLevelLineTest()
             .setLinedType(LinedType.NUMBERED).setLevel(1)
             .setFormattedSpan(doc, 0, 1, 1).setPublishTotal(1)
-            .setNoteTotal(0).setIsLast(false);
+            .setNoteTotal(0);
         ListLevelLineTest line3 = new ListLevelLineTest()
             .setLinedType(LinedType.BULLET).setLevel(1)
             .setFormattedSpan(doc, 0, 2, 1).setPublishTotal(1)
-            .setNoteTotal(0).setIsLast(false);
+            .setNoteTotal(0);
         PointerLinkTest line4 = new PointerLinkTest()
-            .setPath("http://google.com").setIsLast(false)
+            .setPath("http://google.com")
             .setCatalogued(CatalogueStatus.UNUSED, linkId);
         PointerNoteTest line5 = new PointerNoteTest()
             .setLinedType(LinedType.FOOTNOTE)
-            .setFormattedSpan(doc, 0, 4, 3).setIsLast(false)
+            .setFormattedSpan(doc, 0, 4, 3)
             .setCatalogued(CatalogueStatus.UNUSED, footnoteId);
         PointerNoteTest line6 = new PointerNoteTest()
             .setLinedType(LinedType.ENDNOTE)
-            .setFormattedSpan(doc, 0, 5, 3).setIsLast(false)
+            .setFormattedSpan(doc, 0, 5, 3)
             .setCatalogued(CatalogueStatus.UNUSED, endnoteId);
         AgendaLineTest line7 = new AgendaLineTest()
             .setAgenda("agenda").setNoteTotal(1)
-            .setCatalogued(CatalogueStatus.UNUSED, agendaId)
-            .setIsLast(false);
-        BreakLineTest line8 = new BreakLineTest().setIsLast(false);
+            .setCatalogued(CatalogueStatus.UNUSED, agendaId);
+        BreakLineTest line8 = new BreakLineTest();
         ParagraphLineTest line9 = new ParagraphLineTest()
             .setPublishTotal(1).setNoteTotal(0)
             .setFormattedSpan(doc, 0, 8, 0);
@@ -229,7 +227,7 @@ public class SectionDebug {
         HeadLevelLineTest child1 = new HeadLevelLineTest()
             .setLevel(2)       .setEdition(EditionType.NONE)
             .setPublishTotal(0).setNoteTotal(2)
-            .setIsLast(false)  .setFormattedSpan(doc, 0, 0, 0, 0, 1)
+            .setFormattedSpan(doc, 0, 0, 0, 0, 1)
             .setLinedType(LinedType.OUTLINE);
         ParagraphLineTest child2 = new ParagraphLineTest()
             .setPublishTotal(2) .setNoteTotal(0)
@@ -260,7 +258,7 @@ public class SectionDebug {
         HeadLevelLineTest child1 = new HeadLevelLineTest()
             .setLevel(2)          .setEdition(EditionType.NONE)
             .setPublishTotal(2)   .setNoteTotal(0)
-            .setIsLast(false)     .setLinedType(LinedType.HEADING)
+            .setLinedType(LinedType.HEADING)
             .setFormattedSpan(doc, 0, 0, 0, 1);
         ParagraphLineTest child2 = new ParagraphLineTest()
             .setPublishTotal(2)   .setNoteTotal(0)
@@ -288,7 +286,7 @@ public class SectionDebug {
         HeadLevelLineTest child1 = new HeadLevelLineTest()
             .setLevel(1)       .setEdition(EditionType.NONE)
             .setPublishTotal(2).setNoteTotal(0)
-            .setIsLast(false)  .setLinedType(LinedType.HEADING)
+            .setLinedType(LinedType.HEADING)
             .setFormattedSpan(doc, 0, 0, 1);
         ParagraphLineTest child2 = new ParagraphLineTest()
             .setPublishTotal(2).setNoteTotal(0)
@@ -313,7 +311,6 @@ public class SectionDebug {
             .addLine(doc, 0, 0).addLine(doc, 0, 1);
         ParagraphLineTest child1 = new ParagraphLineTest()
             .setPublishTotal(2).setNoteTotal(0)
-            .setIsLast(false)
             .setFormattedSpan(doc, 0, 0, 0);
         QuoteLineTest child2 = new QuoteLineTest()
             .setFormattedSpan(doc, 0, 1, 1)
