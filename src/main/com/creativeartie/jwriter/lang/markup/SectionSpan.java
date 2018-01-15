@@ -15,6 +15,7 @@ import static com.creativeartie.jwriter.main.Checker.*;
 abstract class SectionSpan extends SpanBranch {
 
     static boolean allowChild(String text, int parent, boolean heading){
+        System.out.println(text + "\"\t" + parent + "\t" + heading);
         for (int i = LEVEL_MAX; i > 0; i--){
             if (text.startsWith(getLevelToken(LinedParseLevel.OUTLINE, i))){
                 return heading || parent < i;
@@ -87,12 +88,19 @@ abstract class SectionSpan extends SpanBranch {
         checkNotNull(text, "text");
         if (AuxiliaryChecker.checkSectionEnd(isLast(), text) &&
                 checkStart(text)){
+            boolean isFirst = true;
             for (String str: Splitter.on(LINED_END).split(text)){
+                if (isFirst){
+                    isFirst = false;
+                    continue;
+                }
                 if (! allowChild(str, getLevel(),
                         this instanceof SectionSpanHead)){
                     return null;
                 }
             }
+        } else {
+            return null;
         }
         return spanReparser;
     }

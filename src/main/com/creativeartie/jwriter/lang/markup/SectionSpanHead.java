@@ -125,8 +125,7 @@ public final class SectionSpanHead extends SectionSpan {
         if (getLevel() == 1 && isFirst()){
             return true;
         }
-        return text.startsWith(getLevelToken(LinedParseLevel.HEADING,
-            getLevel()));
+        return allowChild(text, getLevel() - 1, true);
     }
 
     @Override

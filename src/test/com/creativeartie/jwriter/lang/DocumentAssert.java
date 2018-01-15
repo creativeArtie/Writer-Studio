@@ -249,9 +249,9 @@ public class DocumentAssert {
         editedSpans = 0;
         Document doc = span.getDocument();
         doc.addUpdater(out -> editedSpans++);
-        doc.addRemover(out -> fail("Wrong span removed:" + out));
+        doc.addRemover(out -> fail("Document should not removed:" + out));
         doc.addEditor(span == doc? out -> editPass = true:
-            out -> fail("Wrong span updated:" + out));
+            out -> fail("Document should not edited:" + out));
         totalSpans = 1;
         willEdit(doc, span, false);
         return this;
@@ -262,12 +262,12 @@ public class DocumentAssert {
             if (span == target){
                 span.addEditor(out -> editPass = true);
                 doc.addUpdater(out -> editedSpans++);
-                doc.addRemover(out -> fail("Wrong span removed:" + out));
+                doc.addRemover(out -> fail("Edited span got removed:" + out));
                 isChild = false;
             } else {
-                span.addEditor(out -> fail("Wrong span changed:" + out));
+                span.addEditor(out -> fail("Wrong span edited:" + out));
                 if (isChild){
-                    doc.addUpdater(out -> fail("Wrong span updated:" + out));
+                    doc.addUpdater(out -> fail("Wrong child updated:" + out));
                     doc.addRemover(out -> editedSpans++);
                 } else {
                     doc.addUpdater(out -> editedSpans++);

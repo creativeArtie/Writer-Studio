@@ -61,8 +61,7 @@ public final class SectionSpanScene extends SectionSpan {
 
     @Override
     protected boolean checkStart(String text){
-        return text.startsWith(getLevelToken(LinedParseLevel.OUTLINE,
-            getLevel()));
+        return allowChild(text, getLevel() - 1, false);
     }
 
     @Override

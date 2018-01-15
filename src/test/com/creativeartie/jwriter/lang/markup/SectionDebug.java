@@ -27,12 +27,28 @@ public class SectionDebug {
     private static String COMMON_DOC = "=Chapter 1\n==Section 1\n" +
         "section 1 text\n!# outline\n=Chapter 2\nsome text\n";
 
+    /// TODO? test SectionSpan#checkStart() but it is a simplish method with
+    ///     loads of tests for the methods used in this method
+
     @Test
     public void sectionWithStuff(){
         DocumentAssert doc = assertDoc(2, COMMON_DOC, PARSER);
         testSections(doc);
     }
-    @Test
+
+
+    @Test@Ignore
+    public void editChangeSection1_1(){
+        ///           0123456789 0123
+        String raw = "=Chapter 1\n===Section 1\nsection 1 text\n!# outline\n" +
+            "=Chapter 2\nsome text\n";
+        DocumentAssert doc = assertDoc(2, raw, PARSER);
+        doc.delete(11, 12, 0, 1);
+        doc.assertDoc(2, COMMON_DOC, PARSER);
+        testSections(doc);
+    }
+
+    @Test@Ignore
     public void editAddOutline(){
         ///           0000000000 111111111122 222222223333333 33
         ///           0123456789 012345678901 234567890123456 78
@@ -40,6 +56,19 @@ public class SectionDebug {
             "=Chapter 2\nsome text\n";
         DocumentAssert doc = assertDoc(2, raw, PARSER);
         doc.insert(39, "#", 0, 1);
+        doc.assertDoc(2, COMMON_DOC, PARSER);
+        testSections(doc);
+    }
+
+    @Test
+    public void editChangeOutline(){
+        ///           0000000000 111111111122 222222223333333 3334
+        ///           0123456789 012345678901 234567890123456 7890
+        String raw = "=Chapter 1\n==Section 1\nsection 1 text\n!## outline\n" +
+            "=Chapter 2\nsome text\n";
+        DocumentAssert doc = assertDoc(2, raw, PARSER);
+        /// Note that the edited span is Chapter 1 -> Section 1 -> (Scene 1)
+        doc.delete(39, 40, 0, 1, 2);
         doc.assertDoc(2, COMMON_DOC, PARSER);
         testSections(doc);
     }
