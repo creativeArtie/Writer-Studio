@@ -20,7 +20,7 @@ abstract class WriterSceneView extends BorderPane{
     private NotesPaneControl userLists;
     private CheatsheetPaneControl langCheatsheet;
     private SimpleObjectProperty<ManuscriptFile> manuscriptFile;
-    private ReadOnlyObjectWrapper<ManuscriptDocument> document;
+    private ReadOnlyObjectWrapper<WritingText> document;
     private ReadOnlyObjectWrapper<RecordList> records;
     private SimpleBooleanProperty ready;
     private SimpleBooleanProperty isEdited;
@@ -138,11 +138,11 @@ abstract class WriterSceneView extends BorderPane{
         manuscriptFile.setValue(doc);
     }
 
-    public ReadOnlyObjectProperty<ManuscriptDocument> doumentProperty(){
+    public ReadOnlyObjectProperty<WritingText> doumentProperty(){
         return document.getReadOnlyProperty();
     }
 
-    public ManuscriptDocument getDocument(){
+    public WritingText getDocument(){
         return document.getValue();
     }
     public ReadOnlyObjectProperty<RecordList> recordsPoperty(){

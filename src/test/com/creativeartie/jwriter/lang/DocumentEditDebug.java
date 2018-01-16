@@ -19,7 +19,7 @@ public class DocumentEditDebug{
     @Test
     public void addBasic(){
         String raw = "abc";
-        ManuscriptDocument base = new ManuscriptDocument(raw);
+        WritingText base = new WritingText(raw);
         base.insert(3, "d");
 
         String done = "abcd";
@@ -35,7 +35,7 @@ public class DocumentEditDebug{
     @Test
     public void addEscape(){
         String raw = "abc";
-        ManuscriptDocument base = new ManuscriptDocument(raw);
+        WritingText base = new WritingText(raw);
         base.insert(2, "\\");
 
         String done = "ab\\c";
@@ -54,7 +54,7 @@ public class DocumentEditDebug{
     @Test
     public void insertBeforeEscape(){
         String raw = "ab\\c";
-        ManuscriptDocument base = new ManuscriptDocument(raw);
+        WritingText base = new WritingText(raw);
         base.insert(0, "k");
 
         String done = "kab\\c";
@@ -73,7 +73,7 @@ public class DocumentEditDebug{
     @Test
     public void changeEscape(){
         String raw = "\\d";
-        ManuscriptDocument base = new ManuscriptDocument(raw);
+        WritingText base = new WritingText(raw);
         base.insert(1, "c");
 
         String done = "\\cd";
@@ -92,7 +92,7 @@ public class DocumentEditDebug{
     @Test
     public void removeBasic(){
         String raw = "qwderty";
-        ManuscriptDocument base = new ManuscriptDocument(raw);
+        WritingText base = new WritingText(raw);
         base.delete(2, 3);
 
         String done = "qwerty";
@@ -108,7 +108,7 @@ public class DocumentEditDebug{
     @Test
     public void removeString(){
         String raw = "qwasdferty";
-        ManuscriptDocument base = new ManuscriptDocument(raw);
+        WritingText base = new WritingText(raw);
         base.delete(2, 6);
 
         String done = "qwerty";
@@ -124,7 +124,7 @@ public class DocumentEditDebug{
     @Test
     public void deleteLastChar(){
         String raw = "abc";
-        ManuscriptDocument base = new ManuscriptDocument(raw);
+        WritingText base = new WritingText(raw);
         base.delete(2, 3);
 
         String done = "ab";
@@ -140,7 +140,7 @@ public class DocumentEditDebug{
     @Test
     public void removesLastSpan(){
         String raw = "=abc#";
-        ManuscriptDocument base = new ManuscriptDocument(raw);
+        WritingText base = new WritingText(raw);
         base.delete(4, 5);
 
         String done = "=abc";
@@ -157,7 +157,7 @@ public class DocumentEditDebug{
     @Test
     public void removeEscape(){
         String raw = "ab\\c";
-        ManuscriptDocument base = new ManuscriptDocument(raw);
+        WritingText base = new WritingText(raw);
         base.delete(2, 3);
 
         String done = "abc";
@@ -173,7 +173,7 @@ public class DocumentEditDebug{
     @Test
     public void mergeLineByDelete(){
         String raw = "=asdf\n jkl; #abc";
-        ManuscriptDocument base = new ManuscriptDocument(raw);
+        WritingText base = new WritingText(raw);
         base.delete(5, 6);
 
         String done = "=asdf jkl; #abc";
@@ -195,7 +195,7 @@ public class DocumentEditDebug{
     @Test
     public void addStatus(){
         String raw = "=123 DRAFT";
-        ManuscriptDocument base = new ManuscriptDocument(raw);
+        WritingText base = new WritingText(raw);
         base.insert(5, "#");
 
         String done = "=123 #DRAFT";
@@ -215,7 +215,7 @@ public class DocumentEditDebug{
     @Test
     public void mergeLineByEscape(){
         String raw = "#321\nmore text";
-        ManuscriptDocument base = new ManuscriptDocument(raw);
+        WritingText base = new WritingText(raw);
         base.insert(4, "\\");
 
         String done = "#321\\\nmore text";
@@ -237,7 +237,7 @@ public class DocumentEditDebug{
     @Test
     public void changeHeadingID(){
         String raw = "=@abc:{@ad}";
-        ManuscriptDocument base = new ManuscriptDocument(raw);
+        WritingText base = new WritingText(raw);
         base.insert(3, "k");
 
 
@@ -266,49 +266,49 @@ public class DocumentEditDebug{
     @Test
     @Ignore("Test not ready")
     public void clearChildren(){
-        ManuscriptDocument base = new ManuscriptDocument("=@");
+        WritingText base = new WritingText("=@");
         base.delete(1, 2);
     }
 
     @Test
     @Ignore("Test not ready")
     public void changeCiteRef(){
-        ManuscriptDocument base = new ManuscriptDocument("=@abc:{@ad}");
+        WritingText base = new WritingText("=@abc:{@ad}");
         base.insert(base.getLocalEnd() - 2, "k");
     }
 
     @Test
     @Ignore("Test not ready")
     public void changeCiteCurly(){
-        ManuscriptDocument base = new ManuscriptDocument("=@abc:{@ad}");
+        WritingText base = new WritingText("=@abc:{@ad}");
         base.insert(base.getLocalEnd() - 1, "k");
     }
 
     @Test
     @Ignore("Test not ready")
     public void editNote(){
-        ManuscriptDocument base = new ManuscriptDocument("!%@abc:{@abc}");
+        WritingText base = new WritingText("!%@abc:{@abc}");
         base.insert(base.getLocalEnd(), "k");
     }
 
     @Test
     @Ignore("Test not ready")
     public void toHeading(){
-        ManuscriptDocument base = new ManuscriptDocument("Canada{@ad}#DRAFT");
+        WritingText base = new WritingText("Canada{@ad}#DRAFT");
         base.insert(0, "=");
     }
 
     @Test
     @Ignore("Test not ready")
     public void removeHeadingId(){
-        ManuscriptDocument base = new ManuscriptDocument("=@abc:{@ad}");
+        WritingText base = new WritingText("=@abc:{@ad}");
         base.delete(1, 1);
     }
 
     @Test
     @Ignore("Test not ready")
     public void splitByChanging(){
-        ManuscriptDocument base = new ManuscriptDocument("abc\nddd\nooo");
+        WritingText base = new WritingText("abc\nddd\nooo");
         base.insert(4, "=");
 
     }
@@ -316,7 +316,7 @@ public class DocumentEditDebug{
     @Test
     @Ignore("Test not ready")
     public void splitByNewLine(){
-        ManuscriptDocument base = new ManuscriptDocument("abc\n=ddd\nooo");
+        WritingText base = new WritingText("abc\n=ddd\nooo");
 
         base.insert(8, "\n");
     }
@@ -324,7 +324,7 @@ public class DocumentEditDebug{
     /*
     @Test
     public void changeCiteRef(){
-        ManuscriptDocument doc = new ManuscriptDocument("=@abc:{@ad}");
+        WritingText doc = new WritingText("=@abc:{@ad}");
         doc.insert(doc.getLocalEnd() - 2, "k");
         CatalogueMap map = doc.getCatalogue();
         assertEquals("Wrong size.", 2, map.size());
@@ -354,7 +354,7 @@ public class DocumentEditDebug{
 
     @Test
     public void changeCiteCurly(){
-        ManuscriptDocument doc = new ManuscriptDocument("=@abc:{@ad}");
+        WritingText doc = new WritingText("=@abc:{@ad}");
         doc.insert(doc.getLocalEnd() - 1, "k");
         CatalogueMap map = doc.getCatalogue();
         assertEquals("Wrong size.", 2, map.size());
@@ -384,7 +384,7 @@ public class DocumentEditDebug{
 
     @Test
     public void editNote(){
-        ManuscriptDocument doc = new ManuscriptDocument("!%@abc:{@abc}");
+        WritingText doc = new WritingText("!%@abc:{@abc}");
         doc.insert(doc.getLocalEnd(), "k");
         CatalogueMap map = doc.getCatalogue();
         assertEquals("Wrong size.", 1, map.size());
@@ -417,7 +417,7 @@ public class DocumentEditDebug{
 
     @Test
     public void toHeading(){
-        ManuscriptDocument doc = new ManuscriptDocument("Canada{@ad}#DRAFT");
+        WritingText doc = new WritingText("Canada{@ad}#DRAFT");
         doc.insert(0, "=");
         CatalogueMap map = doc.getCatalogue();
         assertEquals("Wrong size.", 1, map.size());
@@ -444,7 +444,7 @@ public class DocumentEditDebug{
 
     @Test
     public void removeHeadingId(){
-        ManuscriptDocument doc = new ManuscriptDocument("=@abc:{@ad}");
+        WritingText doc = new WritingText("=@abc:{@ad}");
         doc.delete(1, 1);
         CatalogueMap map = doc.getCatalogue();
         assertEquals("Wrong size.", 1, map.size());
@@ -468,7 +468,7 @@ public class DocumentEditDebug{
 
     @Test
     public void splitByChanging(){
-        ManuscriptDocument doc = new ManuscriptDocument("abc\nddd\nooo");
+        WritingText doc = new WritingText("abc\nddd\nooo");
 
         doc.insert(4, "=");
 
@@ -495,7 +495,7 @@ public class DocumentEditDebug{
     @Test
     public void splitByNewLine(){
         ///                                              012345678 9
-        ManuscriptDocument doc = new ManuscriptDocument("abc\n=ddd\nooo");
+        WritingText doc = new WritingText("abc\n=ddd\nooo");
 
         doc.insert(8, "\n");
 

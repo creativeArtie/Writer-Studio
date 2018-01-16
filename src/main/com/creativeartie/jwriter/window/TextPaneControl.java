@@ -15,13 +15,13 @@ import com.creativeartie.jwriter.property.window.*;
 class TextPaneControl extends TextPaneView {
 
     @Override
-    public void loadDoc(ManuscriptDocument doc){
+    public void loadDoc(WritingText doc){
         getTextArea().replaceText(0, getTextArea().getLength(),
             doc.getRaw());
     }
 
     @Override
-    public void updateCss(final ManuscriptDocument doc){
+    public void updateCss(final WritingText doc){
         doc.getLeaves().forEach(leaf -> getTextArea().setStyle(
             leaf.getStart(), leaf.getEnd(), LeafStyleParser.SCREEN.toCss(leaf)
         ));

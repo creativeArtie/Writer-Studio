@@ -18,7 +18,7 @@ import com.creativeartie.jwriter.main.*;
  */
 class AgendaPaneControl extends AgendaPaneView{
 
-     public void updateSelection(ManuscriptDocument doc, int index){
+     public void updateSelection(WritingText doc, int index){
         Optional<FormatSpanAgenda> inline = doc.locateSpan(index,
             FormatSpanAgenda.class);
         if (inline.isPresent()){
@@ -39,7 +39,7 @@ class AgendaPaneControl extends AgendaPaneView{
         getAgendaList().getSelectionModel().clearSelection();
      }
 
-    public void fillAgenda(ManuscriptDocument doc){
+    public void fillAgenda(WritingText doc){
         ArrayList<SpanBranch> input = new ArrayList<>();
         doc.getCatalogue().getCategory(AuxiliaryData.TYPE_AGENDA).values()
             .forEach(data -> input.add(data.getTarget()));

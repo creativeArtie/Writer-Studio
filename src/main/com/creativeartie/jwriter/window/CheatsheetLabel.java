@@ -29,7 +29,7 @@ class CheatsheetLabel extends Label{
      * getLabel(FormatType), getLabel(DirectoryType) and
      * getLabel(AuxiliaryType).
      */
-    private static boolean findContent(ManuscriptDocument doc, Integer point){
+    private static boolean findContent(WritingText doc, Integer point){
         return doc.locateSpan(point, FormatSpanContent.class).isPresent();
     }
 
@@ -145,12 +145,12 @@ class CheatsheetLabel extends Label{
         );
     }
 
-    private final BiPredicate<ManuscriptDocument, Integer> testSetted;
-    private final BiPredicate<ManuscriptDocument, Integer> testAllow;
+    private final BiPredicate<WritingText, Integer> testSetted;
+    private final BiPredicate<WritingText, Integer> testAllow;
 
     private CheatsheetLabel(String text,
-            BiPredicate<ManuscriptDocument, Integer> set,
-            BiPredicate<ManuscriptDocument, Integer> allow){
+            BiPredicate<WritingText, Integer> set,
+            BiPredicate<WritingText, Integer> allow){
         super(text);
         testSetted = set;
         testAllow = allow;
@@ -161,7 +161,7 @@ class CheatsheetLabel extends Label{
      * Update Label status with the information gather from document and the
      * current position.
      */
-    void updateLabelStatus(ManuscriptDocument doc, int point){
+    void updateLabelStatus(WritingText doc, int point){
         WindowStyleBuilder css = new WindowStyleBuilder();
 
         /// Add style based on cursor is on the syntax hint or not

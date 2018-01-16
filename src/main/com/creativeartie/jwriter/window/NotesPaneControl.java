@@ -23,7 +23,7 @@ class NotesPaneControl extends NotesPaneView{
         dataMap = new HashMap<>();
     }
 
-    public void loadDoc(ManuscriptDocument doc){
+    public void loadDoc(WritingText doc){
         dataMap.clear();
         for (DirectoryType type: getTypes().getItems()){
             if (type == DirectoryType.NOTE){
@@ -78,7 +78,7 @@ class NotesPaneControl extends NotesPaneView{
     }
 
     @Override
-    public void refreshPane(ManuscriptDocument doc){
+    public void refreshPane(WritingText doc){
         NotesData back = getDataTable().getSelectionModel()
             .getSelectedItem();
         loadDoc(doc);

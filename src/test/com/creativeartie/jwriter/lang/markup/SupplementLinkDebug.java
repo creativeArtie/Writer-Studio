@@ -23,7 +23,7 @@ public class SupplementLinkDebug {
         String test = "<@a|" + text + ">";
         String raw = test + "\n!@a:" + path + "\n";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
-            new ManuscriptDocument(raw));
+            new WritingText(raw));
         IDBuilder builder = FormatLinkDebug.buildLinkId("a");
         doc.addRef(builder, 0);
         doc.addId(builder);
@@ -39,7 +39,7 @@ public class SupplementLinkDebug {
         String test = "<@a>";
         String raw = test + "\n!@a:" + path + "\n";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
-            new ManuscriptDocument(raw));
+            new WritingText(raw));
         IDBuilder builder = FormatLinkDebug.buildLinkId("a");
         doc.addRef(builder, 0);
         doc.addId(builder);
@@ -58,7 +58,7 @@ public class SupplementLinkDebug {
         String test = "<@a|" + text + ">";
         String raw = test + "\n!@a:" + path + "\n@a:apple.com";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
-            new ManuscriptDocument(raw));
+            new WritingText(raw));
         IDBuilder builder = FormatLinkDebug.buildLinkId("a");
         doc.addRef(builder, 0);
         doc.addId(builder);

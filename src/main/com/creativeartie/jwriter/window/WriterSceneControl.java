@@ -33,7 +33,7 @@ public class WriterSceneControl extends WriterSceneView {
             @Override
             public void handle(long now) {
                 RecordList record = getRecords();
-                ManuscriptDocument doc = getDocument();
+                WritingText doc = getDocument();
                 if (record != null && doc != null){
                     if (editTimer == TIMER_START){
                        editTimer = now;

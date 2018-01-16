@@ -10,7 +10,7 @@ import com.google.common.base.MoreObjects;
 import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
- * Stores the {@link ManuscriptDocument} and {@link RecordList} in a zip file.
+ * Stores the {@link WritingText} and {@link RecordList} in a zip file.
  * Classes outside of this package must use this class to indirectly create
  * instances of {@link RecordList} and {@link Record}.
  */
@@ -43,8 +43,8 @@ public final class ManuscriptFile {
     public static ManuscriptFile open(File file) throws IOException{
         checkNotNull(file, "file");
 
-        /// {@link #ManuscriptFile(File,ManuscriptDocument, RecordList} params:
-        ManuscriptDocument doc = null;
+        /// {@link #ManuscriptFile(File,WritingText, RecordList} params:
+        WritingText doc = null;
         RecordList record = null;
 
         try (ZipInputStream input = new ZipInputStream(
@@ -56,7 +56,7 @@ public final class ManuscriptFile {
                 String text = extractText(input);
 
                 if (entry.getName().equals(TEXT + EXTENSION)){
-                    doc = new ManuscriptDocument(text);
+                    doc = new WritingText(text);
                 }
 
                 if (entry.getName().equals(RECORDS + EXTENSION)){
@@ -77,27 +77,27 @@ public final class ManuscriptFile {
 
     /** Create a {@linkplain ManuscriptFile} with no data. */
     public static ManuscriptFile newFile() {
-        return new ManuscriptFile(null, new ManuscriptDocument(),
+        return new ManuscriptFile(null, new WritingText(),
             new RecordList());
     }
 
     /**
      * Create a {@linkplain ManuscriptFile} with a test
-     * {@link ManuscriptDocument}.
+     * {@link WritingText}.
      */
     @Deprecated
-    public static ManuscriptFile withManuscript(ManuscriptDocument doc){
+    public static ManuscriptFile withManuscript(WritingText doc){
         checkNotNull(doc, "doc");
 
         return new ManuscriptFile(null, doc, new RecordList());
     }
 
-    private final ManuscriptDocument documentText;
+    private final WritingText documentText;
     private final RecordList recordsFile;
     private Optional<File> zipFile;
 
     /** {@linkplain ManuscriptFile}'s constructor.*/
-    private ManuscriptFile(File file, ManuscriptDocument doc,
+    private ManuscriptFile(File file, WritingText doc,
             RecordList table) {
         assert doc != null: "Null doc";
         assert table != null: "Null table";
@@ -114,7 +114,7 @@ public final class ManuscriptFile {
         zipFile = Optional.of(file);
     }
 
-    public ManuscriptDocument getDocument(){
+    public WritingText getDocument(){
         return documentText;
     }
 

@@ -115,9 +115,9 @@ abstract class TextPaneView extends BorderPane {
     }
 
     /// Control Methods
-    public abstract void loadDoc(ManuscriptDocument doc);
+    public abstract void loadDoc(WritingText doc);
 
-    public abstract void updateCss(ManuscriptDocument doc);
+    public abstract void updateCss(WritingText doc);
 
     public abstract void moveTo(int position);
 

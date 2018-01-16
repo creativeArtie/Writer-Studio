@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
-import com.creativeartie.jwriter.lang.markup.ManuscriptDocument;
+import com.creativeartie.jwriter.lang.markup.WritingText;
 
 @RunWith(Parameterized.class)
 public class DocumentAccessDebug{
@@ -107,8 +107,8 @@ public class DocumentAccessDebug{
     }
 
     private static String docText;
-    private static ManuscriptDocument filledDoc;
-    private static ManuscriptDocument emptyDoc;
+    private static WritingText filledDoc;
+    private static WritingText emptyDoc;
 
     @Parameter
     public int ptr;
@@ -122,8 +122,8 @@ public class DocumentAccessDebug{
 
     @BeforeClass
     public static void beforeClass(){
-        filledDoc = new ManuscriptDocument(docText);
-        emptyDoc = new ManuscriptDocument();
+        filledDoc = new WritingText(docText);
+        emptyDoc = new WritingText();
     }
 
     @Test

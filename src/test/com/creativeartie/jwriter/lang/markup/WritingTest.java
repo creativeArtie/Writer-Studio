@@ -18,7 +18,7 @@ import java.util.List;
 import com.google.common.base.Joiner;
 
 @RunWith(JUnit4.class)
-public class ManuscriptDebug {
+public class WritingDebug {
 
     @Test
     @Ignore("Because it doubles the test time for the package.")
@@ -26,7 +26,7 @@ public class ManuscriptDebug {
         String raw = new String(Files.readAllBytes(Paths.get("data/stressTest.txt")),
             StandardCharsets.UTF_8);
         LocalDateTime from = LocalDateTime.now();
-        new ManuscriptDocument(raw);
+        new WritingText(raw);
         System.out.println(Duration.between(from, LocalDateTime.now()));
     }
 
@@ -47,7 +47,7 @@ public class ManuscriptDebug {
     @Test
     public void getCount(){
         String text = Joiner.on("").join(spans);
-        ManuscriptDocument doc = new ManuscriptDocument(text);
+        WritingText doc = new WritingText(text);
         assertEquals(SpanBranchAssert.getError("publish count", doc), 16,
             doc.getPublishTotal());
         assertEquals(SpanBranchAssert.getError("note count", doc), 4,
@@ -57,7 +57,7 @@ public class ManuscriptDebug {
     @Test
     public void getLeaves(){
         String text = Joiner.on("").join(spans);
-        Document doc = new ManuscriptDocument(text);
+        Document doc = new WritingText(text);
         int start = 0;
         int i = 0;
         List<SpanLeaf> leaves = doc.getLeaves();

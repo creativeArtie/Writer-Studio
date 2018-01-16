@@ -19,13 +19,13 @@ class HeadingPaneControl extends HeadingPaneView{
 
 
     @Override
-    public void loadHeadings(ManuscriptDocument document){
+    public void loadHeadings(WritingText document){
         getHeadings().loadHeadings(document);
         getOutlines().clear();
     }
 
     @Override
-    public void setHeading(ManuscriptDocument doc, int position){
+    public void setHeading(WritingText doc, int position){
         doc.locateSpan(position, SpanLeaf.class).ifPresent(span -> {
             SectionSpanHead head = span.getParent(SectionSpanHead.class).get();
             getHeadings().selectHeading(head.getHeading());

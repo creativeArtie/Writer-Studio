@@ -16,18 +16,18 @@ import com.creativeartie.jwriter.main.Checker;
  * Main document that put all the {@link Span spans} together. Represented in
  * design/ebnf.txt as {@code Manuscript}
  */
-public class ManuscriptDocument extends Document{
+public class WritingText extends Document{
 
-    public ManuscriptDocument(File file) throws IOException{
+    public WritingText(File file) throws IOException{
         this(Files.asCharSource(Checker.checkNotNull(file, "textFile"),
             Charsets.UTF_8).read());
     }
 
-    public ManuscriptDocument(){
+    public WritingText(){
         this("");
     }
 
-    public ManuscriptDocument(String text){
+    public WritingText(String text){
         super(text, SectionParseHead.SECTION_1);
     }
 

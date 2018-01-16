@@ -20,7 +20,7 @@ import com.creativeartie.jwriter.property.window.*;
  */
 class CheatsheetPaneControl extends CheatsheetPaneView{
 
-    public void updateLabels(ManuscriptDocument doc, int position){
+    public void updateLabels(WritingText doc, int position){
         getLabels().forEach(label -> label.updateLabelStatus(doc, position));
     }
 }

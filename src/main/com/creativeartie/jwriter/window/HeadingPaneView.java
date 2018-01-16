@@ -91,8 +91,8 @@ abstract class HeadingPaneView extends VBox{
     }
 
     /// Control Methods
-    public abstract void loadHeadings(ManuscriptDocument document);
+    public abstract void loadHeadings(WritingText document);
 
-    public abstract void setHeading(ManuscriptDocument document, int index);
+    public abstract void setHeading(WritingText document, int index);
 
 }

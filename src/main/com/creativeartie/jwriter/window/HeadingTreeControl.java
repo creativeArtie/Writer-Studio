@@ -20,7 +20,7 @@ class HeadingTreeControl extends HeadingTreeView{
         getTree().setRoot(root);
     }
 
-    public void loadHeadings(ManuscriptDocument doc){
+    public void loadHeadings(WritingText doc){
         getMapper().clear();
         TreeItem<Optional<LinedSpanLevelSection>> root = new TreeItem<>();
         for (SpanBranch span: doc){

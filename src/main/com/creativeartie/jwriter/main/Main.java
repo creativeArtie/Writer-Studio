@@ -35,7 +35,7 @@ public class Main extends Application{
     @Deprecated
     private void testMainWindow(Stage stage) throws Exception{
         File file = new File("data/sectionDebug4.txt");
-        ManuscriptDocument doc = new ManuscriptDocument(file);
+        WritingText doc = new WritingText(file);
         setupWindow(stage, ManuscriptFile.withManuscript(doc));
     }
 
