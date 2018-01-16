@@ -258,8 +258,8 @@ public class DocumentEditDebug{
         doc.assertChild(1,       "ad",    0, 0, 4, 0, 1, 0); /// ID Content
         doc.assertIdLeaf(9,   11, "ad",   0, 0, 4, 0, 1, 0, 0);
         doc.assertKeyLeaf(11, 12, "}",    0, 0, 4, 0, 2);
-        doc.addId(LinedLevelHeadDebug.buildId("akbc"), 1);
-        doc.addRef(FormatCurlyDebug.buildNoteId("ad"),  2);
+        doc.addId(LinedLevelHeadDebug.buildId("akbc"), 0);
+        doc.addRef(FormatCurlyDebug.buildNoteId("ad"),  1);
         doc.assertIds();
     }
 

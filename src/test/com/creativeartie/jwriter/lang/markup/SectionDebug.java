@@ -154,7 +154,7 @@ public class SectionDebug {
             "!@hyperlink:http://google.com\n", "!^footnote: many text\n",
             "!*endnote: text\n", "!!agenda\n", "***\n", "abc\n"};
         String raw = String.join("", texts);
-        DocumentAssert doc = assertDoc(1, raw, new MainParser());
+        DocumentAssert doc = assertDoc(1, raw, PARSER);
 
         IDBuilder linkId = doc.addId(LinedPointerDebug
             .buildLinkId("hyperlink"), 4);

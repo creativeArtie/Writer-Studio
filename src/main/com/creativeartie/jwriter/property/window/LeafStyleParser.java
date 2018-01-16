@@ -25,7 +25,7 @@ public enum LeafStyleParser {
     public String toCss(SpanLeaf leaf){
         builder = new WindowStyleBuilder();
 
-        checkClass(leaf, MainSpanNote.class, "Note");
+        checkClass(leaf, NoteCardSpan.class, "Note");
 
         leaf.getParent(LinedSpanLevelSection.class).ifPresent(span -> {
             switch (span.getLinedType()){

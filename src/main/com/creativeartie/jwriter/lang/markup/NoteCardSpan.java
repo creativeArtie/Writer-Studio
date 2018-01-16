@@ -14,7 +14,7 @@ import static com.creativeartie.jwriter.main.Checker.*;
  * Research note with headings, ids, and citation. Represented in
  * design/ebnf.txt as {@code Note}
  */
-public class NoteCardSpan extends MainSpan {
+public class NoteCardSpan extends SpanBranch implements Catalogued {
 
     private Optional<List<StyleInfo>> cacheStyles;
     private Optional<Optional<CatalogueIdentity>> cacheId;
@@ -59,6 +59,11 @@ public class NoteCardSpan extends MainSpan {
             return notes;
         });
         return cacheNote.get();
+    }
+
+    @Override
+    public boolean isId(){
+        return true;
     }
 
     @Override

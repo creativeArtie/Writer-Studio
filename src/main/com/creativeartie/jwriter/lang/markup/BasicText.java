@@ -15,6 +15,11 @@ import com.creativeartie.jwriter.lang.*;
  */
 interface BasicText{
 
+    /**
+     * Get a list of children {@link Span}. Implemented by
+     * {@link SpanNode#delegate()}. If classes can have multiple inheritance,
+     * this method would not have been existed.
+     */
     public List<Span> delegate();
 
     /** Get the text with space collapsed, and escape character removed.*/

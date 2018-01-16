@@ -45,7 +45,7 @@ class NotesDetailPane extends BorderPane{
 
     }
 
-    public void setData(Optional<MainSpanNote> note){
+    public void setData(Optional<NoteCardSpan> note){
         if (note.isPresent()){
             GridPane cite = new GridPane();
             setupColumnConstraints(20.0, cite);

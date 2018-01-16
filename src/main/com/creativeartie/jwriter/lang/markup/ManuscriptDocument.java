@@ -45,14 +45,14 @@ public class ManuscriptDocument extends Document{
     }
 
     public boolean allHasHeading(){
-        Optional<MainSpanSection> found = spanAtFirst(MainSpanSection.class);
+        Optional<SectionSpanHead> found = spanAtFirst(SectionSpanHead.class);
         return found.isPresent() && found.get().getHeading().isPresent();
     }
 
     public int getPublishTotal(){
         int count = 0;
         for (SpanBranch span: this){
-            count += ((MainSpan)span).getPublishTotal();
+            /// TODO getPublishTotal
         }
         return count;
     }
@@ -60,7 +60,7 @@ public class ManuscriptDocument extends Document{
     public int getNoteTotal(){
         int count = 0;
         for (SpanBranch span: this){
-            count += ((MainSpan)span).getNoteTotal();
+            /// TODO getPublishTotal
         }
         return count;
     }

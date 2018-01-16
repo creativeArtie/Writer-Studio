@@ -55,20 +55,6 @@ public class ManuscriptDebug {
     }
 
     @Test
-    public void getLines(){
-        String text = Joiner.on("").join(spans);
-        ManuscriptDocument doc = new ManuscriptDocument(text);
-        assertSame(doc.get(0).get(0), doc.getLine(0));
-        assertSame(doc.get(0).get(1), doc.getLine(1));
-        assertSame(doc.get(0).get(2), doc.getLine(2));
-        assertSame(doc.get(0).get(3), doc.getLine(3));
-        assertSame(doc.get(1).get(0), doc.getLine(4));
-        assertSame(doc.get(2).get(0), doc.getLine(5));
-        assertSame(doc.get(2).get(1), doc.getLine(6));
-        assertSame(doc.get(3).get(0), doc.getLine(7));
-    }
-
-    @Test
     public void getLeaves(){
         String text = Joiner.on("").join(spans);
         Document doc = new ManuscriptDocument(text);

@@ -1,5 +1,7 @@
 package com.creativeartie.jwriter.lang;
 
+/// TODO: add getLine(int location) and getColumn(int location)
+
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.*;

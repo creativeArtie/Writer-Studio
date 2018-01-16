@@ -44,61 +44,59 @@ public class DocumentAccessDebug{
         docRaw.append(leafSpan(data, " Story of nobody", 0, 0, 4, 0, 0));
         docRaw.append(leafSpan(data, "\n",               0, 0, 5));
 
+        docRaw.append(leafSpan(data, "!%",                   0, 1, 0, 0));
+        docRaw.append(leafSpan(data, "Add some random note", 0, 1, 0, 1, 0, 0));
+        docRaw.append(leafSpan(data, "\n",                   0, 1, 0, 2));
 
-        docRaw.append(leafSpan(data, "!%",                   1, 0, 0));
-        docRaw.append(leafSpan(data, "Add some random note", 1, 0, 1, 0, 0));
-        docRaw.append(leafSpan(data, "\n",                   1, 0, 2));
+        docRaw.append(leafSpan(data, "!>",            0, 1, 1, 0));
+        docRaw.append(leafSpan(data, "in-text",       0, 1, 1, 1, 0));
+        docRaw.append(leafSpan(data, ":",             0, 1, 1, 2));
+        docRaw.append(leafSpan(data, "Some sources.", 0, 1, 1, 3, 0, 0));
+        docRaw.append(leafSpan(data, "\n",            0, 1, 1, 4));
 
-        docRaw.append(leafSpan(data, "!>",            1, 1, 0));
-        docRaw.append(leafSpan(data, "in-text",       1, 1, 1, 0));
-        docRaw.append(leafSpan(data, ":",             1, 1, 2));
-        docRaw.append(leafSpan(data, "Some sources.", 1, 1, 3, 0, 0));
-        docRaw.append(leafSpan(data, "\n",            1, 1, 4));
+        docRaw.append(leafSpan(data, "Paragraph ",  0, 2, 0, 0, 0));
+        docRaw.append(leafSpan(data, "*",           0, 2, 0, 1));
+        docRaw.append(leafSpan(data, "continue",    0, 2, 0, 2, 0));
+        docRaw.append(leafSpan(data, "*",           0, 2, 0, 3));
+        docRaw.append(leafSpan(data, " from above", 0, 2, 0, 4, 0));
+        docRaw.append(leafSpan(data, "\n",          0, 2, 1));
 
+        docRaw.append(leafSpan(data, "***\n", 0, 3, 0));
 
-        docRaw.append(leafSpan(data, "Paragraph ",  2, 0, 0, 0, 0));
-        docRaw.append(leafSpan(data, "*",           2, 0, 0, 1));
-        docRaw.append(leafSpan(data, "continue",    2, 0, 0, 2, 0));
-        docRaw.append(leafSpan(data, "*",           2, 0, 0, 3));
-        docRaw.append(leafSpan(data, " from above", 2, 0, 0, 4, 0));
-        docRaw.append(leafSpan(data, "\n",          2, 0, 1));
-
-        docRaw.append(leafSpan(data, "***\n", 2, 1, 0));
-
-        docRaw.append(leafSpan(data, "Text after the break.", 2, 2, 0, 0, 0));
-        docRaw.append(leafSpan(data, "\n",                    2, 2, 1));
+        docRaw.append(leafSpan(data, "Text after the break.", 0, 4, 0, 0, 0));
+        docRaw.append(leafSpan(data, "\n",                    0, 4, 1));
 
 
-        docRaw.append(leafSpan(data, "=",     3, 0, 0));
-        docRaw.append(leafSpan(data, "@",     3, 0, 1));
-        docRaw.append(leafSpan(data, "Ch 2",  3, 0, 2, 0, 0));
-        docRaw.append(leafSpan(data, ":",     3, 0, 3));
-        docRaw.append(leafSpan(data, " More", 3, 0, 4, 0, 0));
-        docRaw.append(leafSpan(data, "#STUB", 3, 0, 5, 0));
-        docRaw.append(leafSpan(data, " abc",  3, 0, 5, 1, 0));
-        docRaw.append(leafSpan(data, "\\",    3, 0, 5, 1, 1, 0));
-        docRaw.append(leafSpan(data, "d",     3, 0, 5, 1, 1, 1));
-        docRaw.append(leafSpan(data, "ee",    3, 0, 5, 1, 2));
-        docRaw.append(leafSpan(data, "\n",    3, 0, 6));
+        docRaw.append(leafSpan(data, "=",     1, 0, 0));
+        docRaw.append(leafSpan(data, "@",     1, 0, 1));
+        docRaw.append(leafSpan(data, "Ch 2",  1, 0, 2, 0, 0));
+        docRaw.append(leafSpan(data, ":",     1, 0, 3));
+        docRaw.append(leafSpan(data, " More", 1, 0, 4, 0, 0));
+        docRaw.append(leafSpan(data, "#STUB", 1, 0, 5, 0));
+        docRaw.append(leafSpan(data, " abc",  1, 0, 5, 1, 0));
+        docRaw.append(leafSpan(data, "\\",    1, 0, 5, 1, 1, 0));
+        docRaw.append(leafSpan(data, "d",     1, 0, 5, 1, 1, 1));
+        docRaw.append(leafSpan(data, "ee",    1, 0, 5, 1, 2));
+        docRaw.append(leafSpan(data, "\n",    1, 0, 6));
 
-        docRaw.append(leafSpan(data, "#",                 3, 1, 0));
-        docRaw.append(leafSpan(data, "An outline thing.", 3, 1, 1, 0, 0));
-        docRaw.append(leafSpan(data, "\n",                3, 1, 2));
+        docRaw.append(leafSpan(data, "#",                 1, 1, 0));
+        docRaw.append(leafSpan(data, "An outline thing.", 1, 1, 1, 0, 0));
+        docRaw.append(leafSpan(data, "\n",                1, 1, 2));
 
-        docRaw.append(leafSpan(data, "#",          3, 2, 0));
-        docRaw.append(leafSpan(data, "See me fly", 3, 2, 1, 0, 0));
-        docRaw.append(leafSpan(data, "{^",         3, 2, 1, 1, 0));
-        docRaw.append(leafSpan(data, "random ",    3, 2, 1, 1, 1, 0, 0));
-        docRaw.append(leafSpan(data, "}",          3, 2, 1, 1, 2));
-        docRaw.append(leafSpan(data, "\n",         3, 2, 2));
+        docRaw.append(leafSpan(data, "#",          1, 2, 0));
+        docRaw.append(leafSpan(data, "See me fly", 1, 2, 1, 0, 0));
+        docRaw.append(leafSpan(data, "{^",         1, 2, 1, 1, 0));
+        docRaw.append(leafSpan(data, "random ",    1, 2, 1, 1, 1, 0, 0));
+        docRaw.append(leafSpan(data, "}",          1, 2, 1, 1, 2));
+        docRaw.append(leafSpan(data, "\n",         1, 2, 2));
 
-        docRaw.append(leafSpan(data, "!^",                     3, 3, 0));
-        docRaw.append(leafSpan(data, "footnote",               3, 3, 1, 0, 0));
-        docRaw.append(leafSpan(data, ":",                      3, 3, 2));
-        docRaw.append(leafSpan(data, "text for the foot note", 3, 3, 3, 0, 0));
-        docRaw.append(leafSpan(data, "\n",                     3, 3, 4));
+        docRaw.append(leafSpan(data, "!^",                     1, 3, 0));
+        docRaw.append(leafSpan(data, "footnote",               1, 3, 1, 0, 0));
+        docRaw.append(leafSpan(data, ":",                      1, 3, 2));
+        docRaw.append(leafSpan(data, "text for the foot note", 1, 3, 3, 0, 0));
+        docRaw.append(leafSpan(data, "\n",                     1, 3, 4));
 
-        data.add(new Object[]{data.size() - 1, false, new int[]{3, 3, 4}});
+        data.add(new Object[]{data.size() - 1, false, new int[]{1, 3, 4}});
 
         data.add(new Object[]{data.size() - 1, false, new int[0]});
 
@@ -152,7 +150,7 @@ public class DocumentAccessDebug{
                 SpanNode);
             SpanNode parent = (SpanNode) span;
             assertTrue("Index (" + index + ") is not in range(" + parent.size()
-                +")", index < parent.size());
+                +"):" + parent, index < parent.size());
             span = ((SpanNode)span).get(index);
         }
         assertSame(span, leaf);

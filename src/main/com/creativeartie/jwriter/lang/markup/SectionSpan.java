@@ -15,7 +15,6 @@ import static com.creativeartie.jwriter.main.Checker.*;
 abstract class SectionSpan extends SpanBranch {
 
     static boolean allowChild(String text, int parent, boolean heading){
-        System.out.println(text + "\"\t" + parent + "\t" + heading);
         for (int i = LEVEL_MAX; i > 0; i--){
             if (text.startsWith(getLevelToken(LinedParseLevel.OUTLINE, i))){
                 return heading || parent < i;
