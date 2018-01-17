@@ -27,9 +27,9 @@ public class Main extends Application{
     public void start(Stage stage) throws Exception{
         stage.setTitle(WindowText.PROGRAM_NAME.getText());
 
-        // testStatsWindow(stage);
-        // testMainWindow(stage);
-        setupWindow(stage, ManuscriptFile.newFile());
+        // testChildWindows(stage);
+        testMainWindow(stage);
+        // setupWindow(stage, ManuscriptFile.newFile());
     }
 
     @Deprecated
@@ -49,14 +49,19 @@ public class Main extends Application{
     }
 
     @Deprecated
-    private void testStatsWindow(Stage stage) throws Exception{
-        Button button = new Button("Click");
-        Scene scene = new Scene(new BorderPane(button), 800, 600);
-        SceneStatsControl stats = new SceneStatsControl();
-        stats.setStatTable(RecordList.build(new File("data/record3.txt")));
-        Stage tmp = SceneStatsControl.createStage(stats);
-        button.setOnAction(event -> tmp.show());
-        button.setDefaultButton(true);
+    private void testChildWindows(Stage stage) throws Exception{
+        Button button1 = new Button("Stats");
+        SceneStatsControl pane = new SceneStatsControl();
+        pane.setStatTable(RecordList.build(new File("data/record3.txt")));
+        Stage stats = SceneStatsControl.createStage(pane);
+        button1.setOnAction(event -> stats.show());
+
+        Button button2 = new Button("copyright");
+        Stage about = new WriterAboutWindow();
+        button2.setOnAction(event -> about.show());
+        button2.setDefaultButton(true);
+
+        Scene scene = new Scene(new FlowPane(button1, button2), 800, 600);
         stage.setScene(scene);
         stage.show();
     }

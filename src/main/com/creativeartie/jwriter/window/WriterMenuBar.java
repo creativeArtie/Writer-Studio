@@ -21,6 +21,7 @@ import com.creativeartie.jwriter.property.window.*;
 
 class WriterMenuBar extends MenuBar{
 
+    private Stage aboutWindow;
     private Stage statWindow;
     private Stage mainWindow;
     private FileChooser chooser;
@@ -29,6 +30,7 @@ class WriterMenuBar extends MenuBar{
     public WriterMenuBar(Stage window){
         SceneStatsControl statTable = new SceneStatsControl();
         statWindow = SceneStatsView.createStage(statTable);
+        aboutWindow = new WriterAboutWindow();
 
         chooser = new FileChooser();
         mainWindow = window;
@@ -56,7 +58,12 @@ class WriterMenuBar extends MenuBar{
         goals.setOnAction(evt -> statWindow.show());
         stats.getItems().addAll(goals);
 
-        getMenus().addAll(file, stats);
+        Menu help = new Menu(WindowText.MENU_HELP.getText());
+        MenuItem about = new MenuItem(WindowText.MENU_HELP_ABOUT.getText());
+        about.setOnAction(evt -> aboutWindow.show());
+        help.getItems().addAll(about);
+
+        getMenus().addAll(file, stats, help);
     }
 
     public ObjectProperty<ManuscriptFile> manuscriptFileProperty(){

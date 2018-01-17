@@ -17,9 +17,10 @@ public enum WindowText {
     HEADING_NO_TEXT("DisplayHeading.HeadingNoText"),
     HEADING_PLACEHOLDER("DisplayHeading.HeadingPlaceholder"),
 
-    MENU_FILE("MainMenu.File"),          MENU_FILE_NEW("MainMenu.FileCreate"),
-    MENU_FILE_SAVE("MainMenu.FileSave"), MENU_FILE_OPEN("MainMenu.FileOpen"),
-    MENU_FILE_EXIT("MainMenu.FileExit"),
+    MENU_FILE("MainMenu.File"),           MENU_FILE_NEW("MainMenu.FileCreate"),
+    MENU_FILE_SAVE("MainMenu.FileSave"),  MENU_FILE_OPEN("MainMenu.FileOpen"),
+    MENU_FILE_EXIT("MainMenu.FileExit"),  MENU_HELP("MainMenu.Help"),
+    MENU_HELP_ABOUT("MainMenu.HelpAbout"),
 
     MENU_STATS("MainMenu.Stats"), MENU_STATS_GOALS("MainMenu.StatsGoal"),
 
@@ -53,7 +54,11 @@ public enum WindowText {
     NO_NOTE_TITLE("NoteDisplay.EmptyTitle"),
 
     SYNTAX_MODE("WriteScene.SyntaxMode"),
-    PARSED_MODE("WriteScene.ParsedMode");
+    PARSED_MODE("WriteScene.ParsedMode"),
+
+    ABOUT_TITLE("AboutWindow.Title"), ABOUT_LICENSE("AboutWindow.License"),
+    ABOUT_ITEXT("AboutWindow.IText"), ABOUT_RICH_TEXT("AboutWindow.RichText"),
+    ABOUT_GUAVA("AboutWindow.Guava"), ABOUT_LIBRARIES("AboutWindow.ThirdParty");
 
     public static String getText(DirectoryType type){
         return getDisplay(getText("UserLists.", type.name()) + "ListName");
