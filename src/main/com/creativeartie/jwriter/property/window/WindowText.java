@@ -46,12 +46,13 @@ public enum WindowText {
     COLUMN_REF("UserLists.ColumnReference"),
     COLUMN_SPAN("UserLists.ColumnSpan"),
 
-    NO_NOTE_SELECTED("NoteDisplay.NoNoteSelected"),
-    NO_NOTE_FOUND("NoteDisplay.NoNoteTarget"),
     FOOTNOTE_LABEL("NoteDisplay.FootnoteLabel"),
     IN_TEXT_LABEL("NoteDisplay.InTextLabel"),
     SOURCE_LABEL("NoteDisplay.SourceLabel"),
-    NO_NOTE_TITLE("NoteDisplay.EmptyTitle"),
+    NO_NOTE_TITLE("NoteDisplay.NoNoteTitle"),
+    NO_NOTE_SELECTED("NoteDisplay.NoNoteSelected"),
+    NO_NOTE_PLACEHOLDER("NoteDisplay.TitlePlaceholder"),
+    NO_NOTE_FOUND("NoteDisplay.NoNoteTarget"),
 
     SYNTAX_MODE("WriteScene.SyntaxMode"),
     PARSED_MODE("WriteScene.ParsedMode"),

@@ -68,7 +68,7 @@ class NotesPaneControl extends NotesPaneView{
     @Override
     protected void listenSelected(NotesData data){
         if (data != null){
-            getNoteDetail().setData(data.getTargetSpan()
+            getNoteDetail().setCardNote(data.getTargetSpan()
                 .filter(span -> span instanceof NoteCardSpan)
                 .map(span -> (NoteCardSpan) span));
             selectedRange = data.getTargetSpan().map(span -> span.getRange());
