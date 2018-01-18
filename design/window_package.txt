@@ -2,11 +2,11 @@ Main
 -> WriterSceneControl.setManuscriptFile()
     -> (setTextReady == false)
     -> [manuscriptFile.setValue] -> listenDoc()
-        -> TextPaneControl.loadDoc()
+        -> TextPaneControl.loadNotes()
             -> [textArea.replaceText] -> listenTextChange()
                 -> (lock)
                 -> (textRead = false; return)
-        -> NotesPaneControl.loadDoc()
+        -> NotesPaneControl.loadNotes()
             -> (refill note data map)
         -> NotesPaneControl.selectType(DirectoryType.NOTE);
             -> [types.selectionModel.setValue()] -> listenType() -> updateType()

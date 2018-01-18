@@ -40,8 +40,8 @@ class AgendaPaneControl extends AgendaPaneView{
         getAgendaList().getSelectionModel().clearSelection();
      }
 
-    /** Refill agenda list after document is updated. */
-    public void fillAgenda(WritingText doc){
+    /** Load agenda list. */
+    public void loadAgenda(WritingText doc){
         ArrayList<SpanBranch> input = new ArrayList<>();
         doc.getCatalogue().getCategory(AuxiliaryData.TYPE_AGENDA).values()
             .forEach(data -> input.add(data.getTarget()));

@@ -120,29 +120,38 @@ abstract class NotesPaneView extends GridPane{
         }
     }
 
+    /**
+     * Cell rendering for {@code dataTable} to show the span (exclude notes).
+     */
     private class SpanCell extends TableCell<NotesData,
             Optional<SpanBranch>>{
         @Override
         protected void updateItem(Optional<SpanBranch> item, boolean empty) {
+            /// Required by JavaFX API:
             super.updateItem(item, empty);
             if (empty || item == null || ! item.isPresent()){
                 setText(null);
                 setGraphic(null);
             } else {
+                /// Find the text to show
                 TextFlow graphic;
                 SpanBranch branch = item.get();
                 if (branch instanceof LinedSpanPointLink){
+                    /// Link is found
                     String path = ((LinedSpanPointLink)branch).getPath();
                     graphic = new TextFlow(new Hyperlink(path));
                 } else if (branch instanceof LinedSpanLevelSection){
+                    /// Heading is found
                     Optional<LinedSpanLevelSection> ans = item.map(span ->
                         (LinedSpanLevelSection)span);
                     graphic = WindowSpanParser.parseDisplay(ans.orElse(null));
                 } else if (branch instanceof LinedSpanPointNote){
+                    /// Footnote, or endnote is found
                     Optional<FormatSpanMain> ans = ((LinedSpanPointNote)branch)
                         .getFormattedSpan();
                     graphic = WindowSpanParser.parseDisplay(ans.orElse(null));
                 } else {
+                    /// note is found
                     graphic = null;
                 }
                 setGraphic(graphic);
@@ -158,17 +167,22 @@ abstract class NotesPaneView extends GridPane{
     private TableColumn<NotesData, Optional<SpanBranch>> lineColumn;
     private NotesDetailPane noteDetail;
 
+    /** Property set by {@link LocCell}.*/
     private ReadOnlyIntegerWrapper toLocation;
+    /**
+     * Property is binded to dataTable.foucsedProperty and
+     * typeList.foucsedProperty
+     */
     private ReadOnlyBooleanWrapper childFocused;
 
+    /// percentage that changes table column widths
     private static double DATA_FULL_WIDHT = 85.0;
     private static double DATA_HALF_WIDHT = 45.0;
     private static double NOTE_FULL_WIDHT = 40.0;
     private static double NOTE_HALF_WIDHT = 0.0;
 
     public NotesPaneView(){
-        typeList = new ListView<>(FXCollections.observableArrayList(DirectoryType
-            .getMenuList()));
+        typeList = setupTypeList();
         dataTable = new TableView<>();
         TitledPane headingPane = new TitledPane();
         noteDetail = new NotesDetailPane(headingPane);
@@ -190,44 +204,19 @@ abstract class NotesPaneView extends GridPane{
         childFocused.bind(typeList.focusedProperty().or(dataTable.focusedProperty()));
     }
 
-    /// Getters
-    protected ListView<DirectoryType> getTypes(){
-        return typeList;
-    }
 
-    protected TableView<NotesData> getDataTable(){
-        return dataTable;
-    }
-
-    protected TitledPane getTableTitle(){
-        return dataTitle;
-    }
-
-    protected TableColumn<NotesData, Optional<SpanBranch>> getLineColumn(){
-        return lineColumn;
-    }
-
-    protected NotesDetailPane getNoteDetail(){
-        return noteDetail;
-    }
-
-    protected void setNoteDetailVisible(boolean visible){
-        if (visible){
-            noteColumn.setPercentWidth(NOTE_FULL_WIDHT);
-            dataColumn.setPercentWidth(DATA_HALF_WIDHT);
-            return;
-        }
-        noteColumn.setPercentWidth(NOTE_HALF_WIDHT);
-        dataColumn.setPercentWidth(DATA_FULL_WIDHT);
-    }
 
     /// Layout Node
-    private void layoutTypes(){
+    private ListView<DirectoryType> setupTypeList(){
+        ListView<DirectoryType> ans = new ListView<>(FXCollections
+            .observableArrayList(DirectoryType.getMenuList()));
         setupColumnConstraints(15.0);
-        typeList.setCellFactory(list -> new TypeCell());
+        ans.setCellFactory(list -> new TypeCell());
+
         TitledPane pane = setupTitledPane(typeList);
         pane.setText(WindowText.ID_LIST_TITLE.getText());
         add(pane, 0, 0);
+        return ans;
     }
 
     @SuppressWarnings("unchecked")
@@ -293,6 +282,37 @@ abstract class NotesPaneView extends GridPane{
             new PropertyValueFactory<NotesData, T>(property)
         );
         return ans;
+    }
+
+    /// Getters
+    protected ListView<DirectoryType> getTypes(){
+        return typeList;
+    }
+
+    protected TableView<NotesData> getDataTable(){
+        return dataTable;
+    }
+
+    protected TitledPane getTableTitle(){
+        return dataTitle;
+    }
+
+    protected TableColumn<NotesData, Optional<SpanBranch>> getLineColumn(){
+        return lineColumn;
+    }
+
+    protected NotesDetailPane getNoteDetail(){
+        return noteDetail;
+    }
+
+    protected void setNoteDetailVisible(boolean visible){
+        if (visible){
+            noteColumn.setPercentWidth(NOTE_FULL_WIDHT);
+            dataColumn.setPercentWidth(DATA_HALF_WIDHT);
+            return;
+        }
+        noteColumn.setPercentWidth(NOTE_HALF_WIDHT);
+        dataColumn.setPercentWidth(DATA_FULL_WIDHT);
     }
 
     /// Node Properties

@@ -73,7 +73,7 @@ public class WriterSceneControl extends WriterSceneView {
     protected synchronized void listenDoc(){
         setTextReady(false);
         getTextArea().loadDoc(getDocument());
-        getUserLists().loadDoc(getDocument());
+        getUserLists().loadNotes(getDocument());
         getUserLists().selectType(DirectoryType.NOTE);
         getTextArea().returnFocus();
         setTextReady(true);
@@ -90,7 +90,7 @@ public class WriterSceneControl extends WriterSceneView {
                         updateTimer = now;
                     } else if (updateTimer + TIMER_LENGHT < now){
                         getTableOfContent().loadTrees(getDocument());
-                        getAgendaPane().fillAgenda(getDocument());
+                        getAgendaPane().loadAgenda(getDocument());
                         int pos = getTextArea().getPosition();
                         getAgendaPane().updateSelection(getDocument(), pos);
                         getTableOfContent().setHeading(getDocument(), pos);

@@ -42,11 +42,11 @@ abstract class HeadingTreeView extends TitledPane{
     private final TreeView<Optional<LinedSpanLevelSection>> sectionTree;
 
     /**
-     * Property bined to selectionTree.selectionModel().selectedItemProperty().
+     * Property binded to selectionTree.selectionModel().selectedItemProperty().
      */
     private ReadOnlyObjectWrapper<Optional<LinedSpanLevelSection>>
         sectionSelected;
-    /** Property bined to sectionTree.focusedProperty(). */
+    /** Property binded to sectionTree.focusedProperty(). */
     private ReadOnlyBooleanWrapper itemFocused;
 
 

@@ -24,7 +24,8 @@ class NotesPaneControl extends NotesPaneView{
         dataMap = new HashMap<>();
     }
 
-    public void loadDoc(WritingText doc){
+    /** Loads user-defined lists. */
+    public void loadNotes(WritingText doc){
         dataMap.clear();
         for (DirectoryType type: getTypes().getItems()){
             if (type == DirectoryType.NOTE){
@@ -44,6 +45,7 @@ class NotesPaneControl extends NotesPaneView{
         }
     }
 
+    /** Select the type of lists.*/
     protected void selectType(DirectoryType type){
         getTypes().getSelectionModel().select(type);
     }
@@ -53,6 +55,11 @@ class NotesPaneControl extends NotesPaneView{
         updateType(type);
     }
 
+    /**
+     * Update the data table base. Helper method of
+     * {@link #selectType(DirectoryType)} and
+     * {@link #listenType(DirectoryType)}.
+     */
     private void updateType(DirectoryType type){
         if (type == null){
             getNoteDetail().setVisible(false);
@@ -81,7 +88,7 @@ class NotesPaneControl extends NotesPaneView{
     public void refreshPane(WritingText doc){
         NotesData back = getDataTable().getSelectionModel()
             .getSelectedItem();
-        loadDoc(doc);
+        loadNotes(doc);
         updateType(getTypes().getSelectionModel().getSelectedItem());
         if (back != null){
             CatalogueIdentity id = back.getIdentity();
