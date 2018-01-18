@@ -22,19 +22,24 @@ import com.google.common.collect.*;
 
 class NotesDetailPane extends BorderPane{
     private TitledPane titlePane;
+    private TextFlow noteContent;
+    private GridPane citationPane;
+    private boolean hasHeading;
+    private boolean hasCitation;
+    private boolean hasIntext;
 
     NotesDetailPane(TitledPane title){
         titlePane = title;
     }
 
-    public void clearData(){
+    public void clearSelection(){
         clearBasicData();
-        setCenter(newLabel(WindowText.NO_NOTE_SELECTED));
+        setCenter(new Label(WindowText.NO_NOTE_SELECTED.getText()));
     }
 
     public void setEmptyData(){
         clearBasicData();
-        setCenter(newLabel(WindowText.NO_NOTE_FOUND));
+        setCenter(new Label(WindowText.NO_NOTE_FOUND.getText()));
     }
 
     private void clearBasicData(){
@@ -42,91 +47,95 @@ class NotesDetailPane extends BorderPane{
         text.setStyle(WindowStyle.EMPTY_TITLE.toCss());
         titlePane.setGraphic(text);
         setBottom(null);
+        clearFields();
+    }
 
+    private void clearFields(){
+        noteContent = null;
+        citationPane = null;
+        hasHeading = false;
+        hasCitation = false;
+        hasIntext = false;
     }
 
     public void setData(Optional<NoteCardSpan> note){
         if (note.isPresent()){
-            GridPane cite = new GridPane();
-            setupColumnConstraints(20.0, cite);
-            setupColumnConstraints(80.0, cite);
+            clearFields();
 
-            TextFlow text = new TextFlow();
-            boolean firstLine = true; /// First note is a heading
+            citationPane = new GridPane();
+            setupColumnConstraints(20.0, citationPane);
+            setupColumnConstraints(80.0, citationPane);
 
-            TextFlow source = new TextFlow();
-            boolean hasText = false; /// has source?
-            boolean hasRef = false; /// has in-text or footnote?
+            noteContent = new TextFlow();
             for (Span child: note.get()){
-                if(child instanceof LinedSpanNote){
-                    LinedSpanNote line = (LinedSpanNote)child;
-                    if (firstLine){
-                        titlePane.setGraphic(WindowSpanParser.parseDisplay(
-                            line.getFormattedSpan().orElse(null)
-                        ));
-                    } else {
-                        WindowSpanParser.parseDisplay(text, line
-                            .getFormattedSpan().orElse(null));
-                    }
-                    text.getChildren().add(new Text("\n"));
-                    firstLine = false;
+                if (child instanceof LinedSpanNote){
+                    fillContent((LinedSpanNote)child);
                 } else if (child instanceof LinedSpanCite){
-                    LinedSpanCite line = (LinedSpanCite)child;
-                    Optional<InfoDataSpan> data = line.getData();
-                    if (line.getFieldType() == InfoFieldType.SOURCE){
-                        if (! hasText){
-                            cite.add(newLabel(WindowText.SOURCE_LABEL), 0, 0);
-                            ScrollPane pane = new ScrollPane(source);
-                            pane.setFitToWidth(true);
-                            cite.add(pane, 1, 0);
-                            hasText = true;
-                        }
-                        addSources(source, data);
-                    } else if (line.getFieldType() == InfoFieldType.ERROR){
-                    } else if (! hasRef){
-                        if (line.getFieldType() == InfoFieldType.FOOTNOTE){
-                            hasRef = addInText(cite, data, WindowText.FOOTNOTE_LABEL);
-                        } else {
-                            hasRef = addInText(cite, data, WindowText.IN_TEXT_LABEL);
-                        }
-                    }
+                    fillContent((LinedSpanCite)child);
                 }
             }
-            setCenter(new ScrollPane(text));
-            setBottom(cite);
+            setCenter(new ScrollPane(noteContent));
+            setBottom(citationPane);
         } else {
-            setEmptyData();
+            clearBasicData();
         }
     }
 
-    private static Label newLabel(WindowText text){
-        Label ans = new Label(text.getText());
-        return ans;
+    private void fillContent(LinedSpanNote line){
+        if (hasHeading){
+            /// Find content line:
+            WindowSpanParser.parseDisplay(noteContent, line.getFormattedSpan()
+                .orElse(null));
+            noteContent.getChildren().add(new Text("\n"));
+        } else {
+            /// Find heading line:
+            titlePane.setGraphic(WindowSpanParser.parseDisplay(
+                line.getFormattedSpan().orElse(null)
+            ));
+            hasHeading = true;
+        }
     }
 
-    private void addSources(TextFlow source, Optional<InfoDataSpan> data){
-        data.ifPresent(span -> {
-            FormatSpanMain found = ((InfoDataSpanFormatted)span)
-                .getData();
+    private void fillContent(LinedSpanCite line){
+       Optional<InfoDataSpan> data = line.getData();
+        if (line.getFieldType() == InfoFieldType.SOURCE){
+            if (! hasCitation) {
+                hasCitation = addSources(data);
+            }
+        // } else if (line.getFieldType() == InfoFieldType.ERROR){
+        } else if (! hasIntext){
+            WindowText text = line.getFieldType() == InfoFieldType.FOOTNOTE?
+                WindowText.FOOTNOTE_LABEL: WindowText.IN_TEXT_LABEL;
+            hasIntext = addInText(data, text);
+        }
+    }
+
+    private boolean addSources(Optional<InfoDataSpan> data){
+        if (data.isPresent()){
+            TextFlow source = new TextFlow();
+            citationPane.add(new Label(WindowText.SOURCE_LABEL.getText()), 0, 0);
+            ScrollPane pane = new ScrollPane(source);
+            pane.setFitToWidth(true);
+            citationPane.add(pane, 1, 0);
+            FormatSpanMain found = ((InfoDataSpanFormatted)data.get()).getData();
             WindowSpanParser.parseDisplay(source, found);
-        });
+            return true;
+        }
+        return false;
     }
 
-    private boolean addInText(GridPane cite, Optional<InfoDataSpan> data,
-        WindowText text)
-    {
+    private boolean addInText(Optional<InfoDataSpan> data, WindowText text) {
         if (data.isPresent()){
             ContentSpan found = ((InfoDataSpanText)data.get()).getData();
-            cite.add(new TextFlow(new Text(found.getTrimmed())), 1, 1);
-            cite.add(newLabel(text), 0, 1);
+            citationPane.add(new TextFlow(new Text(found.getTrimmed())), 1, 1);
+            citationPane.add(new Label(text.getText()), 0, 1);
             return true;
         }
         return false;
     }
 
     private ColumnConstraints setupColumnConstraints(double precent,
-        GridPane cite)
-    {
+            GridPane cite) {
         ColumnConstraints column = new ColumnConstraints();
         column.setPercentWidth(precent);
         cite.getColumnConstraints().add(column);

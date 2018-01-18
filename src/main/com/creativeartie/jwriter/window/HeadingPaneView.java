@@ -13,26 +13,32 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.property.window.*;
 
+/**
+ * A pane with two {@link HeadingTreeControl} objects that
+ */
 abstract class HeadingPaneView extends VBox{
     private HeadingTreeControl headingNode;
     private HeadingTreeControl outlineNode;
-    private ReadOnlyObjectWrapper<Optional<LinedSpanLevelSection>> headingProp;
-    private ReadOnlyObjectWrapper<Optional<LinedSpanLevelSection>> outlineProp;
+
+    /** Property bined to headingNode.selectedSectedProperty() */
+    private ReadOnlyObjectWrapper<Optional<LinedSpanLevelSection>> headingSelected;
+    /** Property bined to outlineNode.selectedSectedProperty() */
+    private ReadOnlyObjectWrapper<Optional<LinedSpanLevelSection>> outlineSelected;
+
+    /** Property bined to headingNode.itemFoucedProperty() */
     private ReadOnlyBooleanWrapper headingFocused;
+    /** Property bined to outlineNode.itemFoucedProperty() */
     private ReadOnlyBooleanWrapper outlineFocused;
 
     public HeadingPaneView(){
-        headingNode = new HeadingTreeControl();
-        outlineNode = new HeadingTreeControl();
+        headingNode = setupTree(WindowText.HEADING_TITLE);
+        outlineNode = setupTree(WindowText.OUTLINE_TITLE);
 
-        setupTree(headingNode, WindowText.HEADING_TITLE.getText());
-        setupTree(outlineNode, WindowText.OUTLINE_TITLE.getText());
+        headingSelected = new ReadOnlyObjectWrapper<>(this, "heaing");
+        headingSelected.bind(headingNode.selectedSectionProperty());
 
-        headingProp = new ReadOnlyObjectWrapper<>(this, "heaing");
-        headingProp.bind(headingNode.selectedSectionProperty());
-
-        outlineProp = new ReadOnlyObjectWrapper<>(this, "outline");
-        outlineProp.bind(outlineNode.selectedSectionProperty());
+        outlineSelected = new ReadOnlyObjectWrapper<>(this, "outline");
+        outlineSelected.bind(outlineNode.selectedSectionProperty());
 
         headingFocused = new ReadOnlyBooleanWrapper(this, "headingFocused");
         headingFocused.bind(headingNode.itemFocusedProperty());
@@ -40,6 +46,14 @@ abstract class HeadingPaneView extends VBox{
         outlineFocused = new ReadOnlyBooleanWrapper(this, "outlineFocused");
         outlineFocused.bind(outlineNode.itemFocusedProperty());
 
+    }
+
+    /// Layout Node
+    private HeadingTreeControl setupTree(WindowText title){
+        HeadingTreeControl ans = new HeadingTreeControl();
+        ans.setText(title.getText());
+        getChildren().add(ans);
+        return ans;
     }
 
     /// Getters
@@ -51,27 +65,23 @@ abstract class HeadingPaneView extends VBox{
         return outlineNode;
     }
 
-    /// Layout Node
-    private void setupTree(HeadingTreeControl tree, String title){
-        tree.setText(title);
-        getChildren().add(tree);
-    }
-
     /// Node Properties
-    ReadOnlyObjectProperty<Optional<LinedSpanLevelSection>> headingProperty(){
-        return headingProp.getReadOnlyProperty();
+    ReadOnlyObjectProperty<Optional<LinedSpanLevelSection>>
+            headingSelectedProperty(){
+        return headingSelected.getReadOnlyProperty();
     }
 
-    Optional<LinedSpanLevelSection> getHeading(){
-        return headingProp.getValue();
+    Optional<LinedSpanLevelSection> getHeadingSelected(){
+        return headingSelected.getValue();
     }
 
-    ReadOnlyObjectProperty<Optional<LinedSpanLevelSection>> outlineProperty(){
-        return outlineProp.getReadOnlyProperty();
+    ReadOnlyObjectProperty<Optional<LinedSpanLevelSection>>
+            outlineSelectedProperty(){
+        return outlineSelected.getReadOnlyProperty();
     }
 
-    Optional<LinedSpanLevelSection> getOutline(){
-        return outlineProp.getValue();
+    Optional<LinedSpanLevelSection> getOutlineSelected(){
+        return outlineSelected.getValue();
     }
 
     ReadOnlyBooleanProperty headingFocusedProperty(){
@@ -91,8 +101,5 @@ abstract class HeadingPaneView extends VBox{
     }
 
     /// Control Methods
-    public abstract void loadHeadings(WritingText document);
-
-    public abstract void setHeading(WritingText document, int index);
 
 }

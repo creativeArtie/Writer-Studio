@@ -13,75 +13,79 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.property.window.*;
 
+/**
+ * A {@linkplain TreeView} of either {@link WritingText} or
+ * {@link SectionSpanHead}.
+ */
 abstract class HeadingTreeView extends TitledPane{
 
-    private class HeadingCell extends TreeCell<Optional<LinedSpanLevelSection>> {
+    /** A cell in {@link #getTree()}. */
+    private class HeadingCell extends TreeCell<Optional<LinedSpanLevelSection>>{
         @Override
-        public void updateItem(Optional<LinedSpanLevelSection> item, boolean empty){
+        public void updateItem(Optional<LinedSpanLevelSection> item,
+                boolean empty){
+            /// Required by JavaFX API:
             super.updateItem(item, empty);
             if (empty || item == null) {
                 setText(null);
                 setGraphic(null);
             } else {
-                TextFlow graphic = WindowSpanParser.parseDisplay(item.orElse(null));
+                /// Allows WindowSpanParser to create the Label
+                TextFlow graphic = WindowSpanParser.parseDisplay(item
+                    .orElse(null));
                 setText(null);
                 setGraphic(graphic);
             }
         }
     }
 
-    private final TreeView<Optional<LinedSpanLevelSection>> tree;
+    private final TreeView<Optional<LinedSpanLevelSection>> sectionTree;
 
-    private ReadOnlyObjectWrapper<Optional<LinedSpanLevelSection>> selectedSection;
+    /**
+     * Property bined to selectionTree.selectionModel().selectedItemProperty().
+     */
+    private ReadOnlyObjectWrapper<Optional<LinedSpanLevelSection>>
+        sectionSelected;
+    /** Property bined to sectionTree.focusedProperty(). */
     private ReadOnlyBooleanWrapper itemFocused;
 
-    private HashMap<Optional<LinedSpanLevelSection>,
-        TreeItem<Optional<LinedSpanLevelSection>>> mapper;
 
     public HeadingTreeView(){
-        tree = new TreeView<>();
-        mapper = new HashMap<>();
+        sectionTree = setupTree();
 
-        setupTree();
-
-        selectedSection = new ReadOnlyObjectWrapper<>(this, "selectedSection");
+        sectionSelected = new ReadOnlyObjectWrapper<>(this, "sectionSelected");
         ReadOnlyObjectProperty<TreeItem<Optional<LinedSpanLevelSection>>> prop =
-            tree.getSelectionModel().selectedItemProperty();
-        selectedSection.bind(Bindings.createObjectBinding(
+            sectionTree.getSelectionModel().selectedItemProperty();
+        sectionSelected.bind(Bindings.createObjectBinding(
             /// Optional.of(TreeItem).flatMap(TreeItem -> LinedSpanLevelSection)
             () -> Optional.ofNullable(prop.getValue()).flatMap(item ->
                 item.getValue()),
             prop));
 
         itemFocused = new ReadOnlyBooleanWrapper(this, "itemFocused");
-        itemFocused.bind(tree.focusedProperty());
+        itemFocused.bind(sectionTree.focusedProperty());
 
-    }
-
-    /// Getters
-
-    protected TreeView<Optional<LinedSpanLevelSection>> getTree(){
-        return tree;
-    }
-
-    protected HashMap<Optional<LinedSpanLevelSection>,
-        TreeItem<Optional<LinedSpanLevelSection>>>getMapper()
-    {
-        return mapper;
     }
 
     /// Layout Node
-    private void setupTree(){
+    private TreeView<Optional<LinedSpanLevelSection>> setupTree(){
+        TreeView<Optional<LinedSpanLevelSection>> tree = new TreeView<>();
         tree.setShowRoot(false);
         tree.setCellFactory(param -> new HeadingCell());
         setContent(tree);
+        return tree;
+    }
+
+    /// Getters
+    protected TreeView<Optional<LinedSpanLevelSection>> getTree(){
+        return sectionTree;
     }
 
     /// Node Properties
     public ReadOnlyObjectProperty<Optional<LinedSpanLevelSection>>
         selectedSectionProperty()
     {
-        return selectedSection.getReadOnlyProperty();
+        return sectionSelected.getReadOnlyProperty();
     }
 
     public ReadOnlyBooleanProperty itemFocusedProperty() {
@@ -93,6 +97,4 @@ abstract class HeadingTreeView extends TitledPane{
     }
 
     /// Control Methods
-
-    public abstract void selectHeading(Optional<LinedSpanLevelSection> section);
 }

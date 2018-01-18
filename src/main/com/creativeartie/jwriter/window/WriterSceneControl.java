@@ -89,10 +89,10 @@ public class WriterSceneControl extends WriterSceneView {
                     if (updateTimer == TIMER_OFF){
                         updateTimer = now;
                     } else if (updateTimer + TIMER_LENGHT < now){
-                        getTableOfContent().loadHeadings(getDocument());
-                        getAgendaList().fillAgenda(getDocument());
+                        getTableOfContent().loadTrees(getDocument());
+                        getAgendaPane().fillAgenda(getDocument());
                         int pos = getTextArea().getPosition();
-                        getAgendaList().updateSelection(getDocument(), pos);
+                        getAgendaPane().updateSelection(getDocument(), pos);
                         getTableOfContent().setHeading(getDocument(), pos);
                         getTextArea().updateCss(getDocument());
                         getUserLists().refreshPane(getDocument());
@@ -122,7 +122,7 @@ public class WriterSceneControl extends WriterSceneView {
     @Override
     protected void listenCaret(int moveTo){
         if (isTextReady()){
-            getAgendaList().updateSelection(getDocument(), moveTo);
+            getAgendaPane().updateSelection(getDocument(), moveTo);
             getTableOfContent().setHeading(getDocument(), moveTo);
         }
         getCheatsheet().updateLabels(getDocument(), moveTo);
@@ -130,14 +130,14 @@ public class WriterSceneControl extends WriterSceneView {
 
     protected void listenAgenda(boolean focused){
         if (focused){
-            getTextArea().moveTo(getAgendaList().getSelectedAgenda());
+            getTextArea().moveTo(getAgendaPane().getAgendaSelected());
             getTextArea().returnFocus();
         }
     }
 
     protected void listenHeading(boolean focused){
         if (focused){ /// Just in case
-            getTableOfContent().getHeading().ifPresent(span ->
+            getTableOfContent().getHeadingSelected().ifPresent(span ->
                 getTextArea().moveTo(span)
             );
             getTextArea().returnFocus();
@@ -146,7 +146,7 @@ public class WriterSceneControl extends WriterSceneView {
 
     protected void listenOutline(boolean focused){
         if (focused){
-            getTableOfContent().getOutline().ifPresent(span ->
+            getTableOfContent().getOutlineSelected().ifPresent(span ->
                 getTextArea().moveTo(span)
             );
             getTextArea().returnFocus();

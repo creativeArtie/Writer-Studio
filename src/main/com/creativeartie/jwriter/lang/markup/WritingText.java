@@ -3,6 +3,7 @@ package com.creativeartie.jwriter.lang.markup;
 import com.creativeartie.jwriter.lang.*;
 
 import java.util.*;
+import java.util.function.*;
 import java.util.Optional;
 import java.io.*;
 
@@ -52,7 +53,16 @@ public class WritingText extends Document{
     public int getPublishTotal(){
         int count = 0;
         for (SpanBranch span: this){
-            /// TODO getPublishTotal
+            count += count((SectionSpanHead) span, child -> child
+                .getPublishTotal());
+        }
+        return count;
+    }
+
+    private int count(SectionSpanHead span, ToIntFunction<SectionSpanHead> counter){
+        int count = counter.applyAsInt(span);
+        for (SectionSpanHead child: span.getSections()){
+            count += count(child, counter);
         }
         return count;
     }
@@ -60,10 +70,12 @@ public class WritingText extends Document{
     public int getNoteTotal(){
         int count = 0;
         for (SpanBranch span: this){
-            /// TODO getPublishTotal
+            count += count((SectionSpanHead) span, child -> child.getNoteTotal());
         }
         return count;
     }
+
+
 
     @Override
     protected void docEdited(){

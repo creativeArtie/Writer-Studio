@@ -1,0 +1,15 @@
+Main
+-> WriterSceneControl.setManuscriptFile()
+    -> (setTextReady == false)
+    -> [manuscriptFile.setValue] -> listenDoc()
+        -> TextPaneControl.loadDoc()
+            -> [textArea.replaceText] -> listenTextChange()
+                -> (lock)
+                -> (textRead = false; return)
+        -> NotesPaneControl.loadDoc()
+            -> (refill note data map)
+        -> NotesPaneControl.selectType(DirectoryType.NOTE);
+            -> [types.selectionModel.setValue()] -> listenType() -> updateType()
+                ->
+        -> TextPaneControl.returnFocus();
+        -> updateDoc()

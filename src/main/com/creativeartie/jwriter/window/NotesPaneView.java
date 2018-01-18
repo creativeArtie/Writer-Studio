@@ -294,12 +294,7 @@ abstract class NotesPaneView extends GridPane{
     }
 
     /// Control Methods
-
-    public abstract void loadDoc(WritingText doc);
-
     protected abstract void listenType(DirectoryType type);
 
     protected abstract void listenSelected(NotesData data);
-
-    public abstract void refreshPane(WritingText doc);
 }

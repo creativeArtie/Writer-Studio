@@ -62,7 +62,7 @@ class NotesPaneControl extends NotesPaneView{
         boolean isNote = type == DirectoryType.NOTE;
         getLineColumn().setVisible(! isNote);
         setNoteDetailVisible(isNote);
-        getNoteDetail().clearData();
+        getNoteDetail().clearSelection();
     }
 
     @Override
@@ -73,11 +73,10 @@ class NotesPaneControl extends NotesPaneView{
                 .map(span -> (NoteCardSpan) span));
             selectedRange = data.getTargetSpan().map(span -> span.getRange());
         } else {
-            getNoteDetail().clearData();
+            getNoteDetail().clearSelection();
         }
     }
 
-    @Override
     public void refreshPane(WritingText doc){
         NotesData back = getDataTable().getSelectionModel()
             .getSelectedItem();

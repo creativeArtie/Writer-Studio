@@ -16,7 +16,7 @@ import com.creativeartie.jwriter.property.window.*;
 abstract class WriterSceneView extends BorderPane{
     private TextPaneControl textArea;
     private HeadingPaneControl tableOfContent;
-    private AgendaPaneControl agendaList;
+    private AgendaPaneControl agendaPane;
     private NotesPaneControl userLists;
     private CheatsheetPaneControl langCheatsheet;
     private SimpleObjectProperty<ManuscriptFile> manuscriptFile;
@@ -28,7 +28,7 @@ abstract class WriterSceneView extends BorderPane{
     WriterSceneView(Stage window){
         textArea = new TextPaneControl();
         tableOfContent = new HeadingPaneControl();
-        agendaList = new AgendaPaneControl();
+        agendaPane = new AgendaPaneControl();
         userLists = new NotesPaneControl();
         langCheatsheet = new CheatsheetPaneControl();
 
@@ -53,7 +53,7 @@ abstract class WriterSceneView extends BorderPane{
         textArea.positionProperty().addListener((data, oldValue, newValue) ->
             listenCaret(newValue.intValue()));
 
-        agendaList.agendaFocusedProperty().addListener((data, oldValue,
+        agendaPane.agendaFocusedProperty().addListener((data, oldValue,
             newValue) -> listenAgenda(newValue));
 
         tableOfContent.headingFocusedProperty().addListener((data, oldValue,
@@ -87,8 +87,8 @@ abstract class WriterSceneView extends BorderPane{
         return tableOfContent;
     }
 
-    protected AgendaPaneControl getAgendaList(){
-        return agendaList;
+    protected AgendaPaneControl getAgendaPane(){
+        return agendaPane;
     }
 
     protected NotesPaneControl getUserLists(){
@@ -109,7 +109,7 @@ abstract class WriterSceneView extends BorderPane{
     }
 
     private void layoutRightPane(){
-        setRight(agendaList);
+        setRight(agendaPane);
     }
 
     private void layoutTopPane(Stage window){

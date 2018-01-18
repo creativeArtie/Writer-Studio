@@ -50,14 +50,19 @@ abstract class AgendaPaneView extends GridPane{
     }
 
     private final ListView<SpanBranch> agendaList;
-    private final SimpleObjectProperty<SpanBranch> selectedAgenda;
+
+    /**
+     * Property binded to agendaList.getSelectionModel().selectItemProperty().
+     */
+    private final SimpleObjectProperty<SpanBranch> agendaSelected;
+    /** Property bined to agendaList.foucsedProperty(). */
     private final ReadOnlyBooleanWrapper agendaFocused;
 
     public AgendaPaneView(){
         agendaList = setupAgendaList();
 
-        selectedAgenda = new SimpleObjectProperty<>(this, "selectedAgenda");
-        selectedAgenda.bind(agendaList.getSelectionModel().selectedItemProperty());
+        agendaSelected = new SimpleObjectProperty<>(this, "agendaSelected");
+        agendaSelected.bind(agendaList.getSelectionModel().selectedItemProperty());
 
         agendaFocused = new ReadOnlyBooleanWrapper(this, "agendaFocused");
         agendaFocused.bind(agendaList.focusedProperty());
@@ -77,16 +82,16 @@ abstract class AgendaPaneView extends GridPane{
     }
 
     /// Node Properties
-    ObjectProperty<SpanBranch> selectedAgendaProperty(){
-         return selectedAgenda;
+    ObjectProperty<SpanBranch> agendaSelectedProperty(){
+         return agendaSelected;
     }
 
-    SpanBranch getSelectedAgenda(){
-        return selectedAgenda.getValue();
+    SpanBranch getAgendaSelected(){
+        return agendaSelected.getValue();
     }
 
-    void setSelectedAgenda(SpanBranch value){
-        /// selectedAgenda is bind to agendaList.getSectectionModel
+    void setAgendaSelected(SpanBranch value){
+        /// agendaSelected is bind to agendaList.getSectectionModel
         agendaList.getSelectionModel().select(value);
     }
 

@@ -18,6 +18,7 @@ import com.creativeartie.jwriter.main.*;
  */
 class AgendaPaneControl extends AgendaPaneView{
 
+     /** Updates the selections base on the cursor movements. */
      public void updateSelection(WritingText doc, int index){
         Optional<FormatSpanAgenda> inline = doc.locateSpan(index,
             FormatSpanAgenda.class);
@@ -39,6 +40,7 @@ class AgendaPaneControl extends AgendaPaneView{
         getAgendaList().getSelectionModel().clearSelection();
      }
 
+    /** Refill agenda list after document is updated. */
     public void fillAgenda(WritingText doc){
         ArrayList<SpanBranch> input = new ArrayList<>();
         doc.getCatalogue().getCategory(AuxiliaryData.TYPE_AGENDA).values()
