@@ -19,20 +19,28 @@ import com.creativeartie.jwriter.property.window.*;
 import com.google.common.base.*;
 import com.google.common.collect.*;
 
+/**
+ * Stores a list of user notes, hyperlinks, footnotes, and endnotes.
+ */
 abstract class NotesPaneView extends GridPane{
+
+    /** Cell rendering for {@code typeList} */
     private class TypeCell extends ListCell<DirectoryType>{
         @Override
         protected void updateItem(DirectoryType item, boolean empty) {
+            /// Required by JavaFX API:
             super.updateItem(item, empty);
             if (empty || item == null){
                 setText(null);
                 setGraphic(null);
             } else {
+                /// set DirectoryType text
                 setText(WindowText.getText(item));
             }
         }
     }
 
+    /** Cell rendering for {@code dataTable} that category/reference. */
     private class TextCell extends TableCell<NotesData, String> {
         private WindowText emptyText;
 
@@ -42,16 +50,20 @@ abstract class NotesPaneView extends GridPane{
 
         @Override
         protected void updateItem(String item, boolean empty) {
+            /// Required by JavaFX API:
             super.updateItem(item, empty);
             if (empty || item == null) {
                 setText(null);
                 setGraphic(null);
             } else {
+                /// Set text:
                 Text out;
                 if (item.isEmpty()){
+                    /// No text is found
                     out = new Text(emptyText.getText());
                     out.setStyle(WindowStyle.NOT_FOUND.toCss());
                 } else {
+                    /// Text is found
                     out = new Text(item);
                 }
                 setGraphic(out);
@@ -59,15 +71,18 @@ abstract class NotesPaneView extends GridPane{
         }
     }
 
+    /** Cell rendering for {@code dataTable} to show the name & count. */
     private class NameCell extends TableCell<NotesData, IdentityData> {
 
         @Override
         protected void updateItem(IdentityData item, boolean empty) {
+            /// Required by JavaFX API:
             super.updateItem(item, empty);
             if (empty || item == null) {
                 setText(null);
                 setGraphic(null);
             } else {
+                /// Set text
                 Text name = new Text(item.getName());
                 Text target = new Text("\t" + item.getTarget());
                 target.setStyle(WindowStyle.NUMBERED_ID.toCss());
@@ -77,21 +92,26 @@ abstract class NotesPaneView extends GridPane{
         }
     }
 
+    /** Cell rendering for {@code dataTable} to show the span location */
     private class LocCell extends TableCell<NotesData,
             Optional<Range<Integer>>>{
         @Override
-        protected void updateItem(Optional<Range<Integer>> item, boolean empty) {
+        protected void updateItem(Optional<Range<Integer>> item, boolean empty){
+            /// Required by JavaFX API:
             super.updateItem(item, empty);
             if (empty || item == null){
                 setText(null);
                 setGraphic(null);
             } else {
+                /// Set text:
                 if (item.isPresent()){
+                    /// For when there is id location
                     Range<Integer> range = item.get();
                     Hyperlink ans = new Hyperlink(range.lowerEndpoint() + "");
                     ans.setOnAction(event -> toLocation.set(range.upperEndpoint()));
                     setGraphic(ans);
                 } else {
+                    /// For when there is no id location
                     Text ans = new Text(WindowText.NO_SPAN_LOC.getText());
                     ans.setStyle(WindowStyle.NOT_FOUND.toCss());
                     setGraphic(ans);
@@ -130,8 +150,8 @@ abstract class NotesPaneView extends GridPane{
         }
     }
 
-    private ListView<DirectoryType> types;
-    private TableView<NotesData> data;
+    private ListView<DirectoryType> typeList;
+    private TableView<NotesData> dataTable;
     private TitledPane dataTitle;
     private ColumnConstraints dataColumn;
     private ColumnConstraints noteColumn;
@@ -147,9 +167,9 @@ abstract class NotesPaneView extends GridPane{
     private static double NOTE_HALF_WIDHT = 0.0;
 
     public NotesPaneView(){
-        types = new ListView<>(FXCollections.observableArrayList(DirectoryType
+        typeList = new ListView<>(FXCollections.observableArrayList(DirectoryType
             .getMenuList()));
-        data = new TableView<>();
+        dataTable = new TableView<>();
         TitledPane headingPane = new TitledPane();
         noteDetail = new NotesDetailPane(headingPane);
         setupTitledPane(headingPane, noteDetail);
@@ -158,25 +178,25 @@ abstract class NotesPaneView extends GridPane{
         layoutTable();
         layoutNote(headingPane);
 
-        types.getSelectionModel().selectedItemProperty().addListener(
-            (data, oldValue, newValue) -> listenType(newValue));
+        typeList.getSelectionModel().selectedItemProperty().addListener(
+            (dataTable, oldValue, newValue) -> listenType(newValue));
 
-        data.getSelectionModel().selectedItemProperty().addListener(
-            (data, oldValue, newValue) -> listenSelected(newValue));
+        dataTable.getSelectionModel().selectedItemProperty().addListener(
+            (dataTable, oldValue, newValue) -> listenSelected(newValue));
 
         toLocation = new ReadOnlyIntegerWrapper(this, "toLocation");
 
         childFocused = new ReadOnlyBooleanWrapper(this, "childFocused");
-        childFocused.bind(types.focusedProperty().or(data.focusedProperty()));
+        childFocused.bind(typeList.focusedProperty().or(dataTable.focusedProperty()));
     }
 
     /// Getters
     protected ListView<DirectoryType> getTypes(){
-        return types;
+        return typeList;
     }
 
     protected TableView<NotesData> getDataTable(){
-        return data;
+        return dataTable;
     }
 
     protected TitledPane getTableTitle(){
@@ -204,8 +224,8 @@ abstract class NotesPaneView extends GridPane{
     /// Layout Node
     private void layoutTypes(){
         setupColumnConstraints(15.0);
-        types.setCellFactory(list -> new TypeCell());
-        TitledPane pane = setupTitledPane(types);
+        typeList.setCellFactory(list -> new TypeCell());
+        TitledPane pane = setupTitledPane(typeList);
         pane.setText(WindowText.ID_LIST_TITLE.getText());
         add(pane, 0, 0);
     }
@@ -213,10 +233,10 @@ abstract class NotesPaneView extends GridPane{
     @SuppressWarnings("unchecked")
     private void layoutTable(){
         dataColumn = setupColumnConstraints(DATA_HALF_WIDHT);
-        dataTitle = setupTitledPane(data);
-        data.setPlaceholder(new Label(WindowText.NO_SPAN_FOUND.getText()));
-        data.setFixedCellSize(30);
-        data.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        dataTitle = setupTitledPane(dataTable);
+        dataTable.setPlaceholder(new Label(WindowText.NO_SPAN_FOUND.getText()));
+        dataTable.setFixedCellSize(30);
+        dataTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         TableColumn<NotesData, String> cat = setupColumn(
             WindowText.COLUMN_CAT, "catalogueCategory");
@@ -236,9 +256,9 @@ abstract class NotesPaneView extends GridPane{
 
         lineColumn = setupColumn(WindowText.COLUMN_SPAN, "targetSpan");
         lineColumn.setCellFactory(lineColumn -> new SpanCell());
-        lineColumn.minWidthProperty().bind(data.widthProperty().multiply(0.4));
+        lineColumn.minWidthProperty().bind(dataTable.widthProperty().multiply(0.4));
 
-        data.getColumns().addAll(cat, name, ref, loc, lineColumn);
+        dataTable.getColumns().addAll(cat, name, ref, loc, lineColumn);
         add(dataTitle, 1, 0);
     }
 

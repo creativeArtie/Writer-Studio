@@ -12,14 +12,15 @@ import com.creativeartie.jwriter.property.window.*;
 
 import com.google.common.collect.*;
 
+/**
+ * Controller for Notes and Line Table.
+ *
+ * @see NotesPaneView
+ */
 class NotesPaneControl extends NotesPaneView{
-    private Optional<Range<Integer>> selectedRange;
-    private Optional<DirectoryType> selectedType;
     private HashMap<DirectoryType, ObservableList<NotesData>> dataMap;
 
     public NotesPaneControl(){
-        selectedRange = Optional.empty();
-        selectedType = Optional.empty();
         dataMap = new HashMap<>();
     }
 
@@ -47,6 +48,7 @@ class NotesPaneControl extends NotesPaneView{
         getTypes().getSelectionModel().select(type);
     }
 
+    @Override
     protected void listenType(DirectoryType type){
         updateType(type);
     }
@@ -71,7 +73,6 @@ class NotesPaneControl extends NotesPaneView{
             getNoteDetail().setCardNote(data.getTargetSpan()
                 .filter(span -> span instanceof NoteCardSpan)
                 .map(span -> (NoteCardSpan) span));
-            selectedRange = data.getTargetSpan().map(span -> span.getRange());
         } else {
             getNoteDetail().clearSelection();
         }

@@ -25,6 +25,7 @@ abstract class AgendaPaneView extends GridPane{
 
         @Override
         public void updateItem(SpanBranch item, boolean empty){
+            /// Required by JavaFX API:
             super.updateItem(item, empty);
             if (empty || item == null) {
                 setText(null);
@@ -32,17 +33,23 @@ abstract class AgendaPaneView extends GridPane{
             } else {
                 String text = "";
                 if (item instanceof LinedSpanAgenda){
+                    /// The selected agenda is a LinedSpanAgenda
                     text = ((LinedSpanAgenda)item).getAgenda();
                 } else if (item instanceof FormatSpanAgenda){
+                    /// The selected agenda is a FormatSpanAgenda
                     text = ((FormatSpanAgenda)item).getAgenda();
                 }
                 Label graphic = null;
                 if (text.isEmpty()){
+                    /// There is no text found.
                     graphic = new Label(WindowText.AGENDA_EMPTY.getText());
                     graphic.setStyle(WindowStyle.NOT_FOUND.toCss());
                 } else {
+                    /// Add the text that is found.
                     graphic = new Label(text);
                 }
+
+                /// Completing the setting
                 setText(null);
                 setGraphic(graphic);
             }
