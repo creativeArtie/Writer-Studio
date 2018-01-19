@@ -187,8 +187,7 @@ abstract class NotesPaneView extends GridPane{
         TitledPane headingPane = new TitledPane();
         noteDetail = new NotesDetailPane(headingPane);
         setupTitledPane(headingPane, noteDetail);
-
-        layoutTypes();
+        
         layoutTable();
         layoutNote(headingPane);
 

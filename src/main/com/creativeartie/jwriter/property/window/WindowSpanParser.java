@@ -12,7 +12,6 @@ import static com.google.common.base.Preconditions.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.main.*;
-import com.creativeartie.jwriter.property.*;
 public final class WindowSpanParser {
 
     public static TextFlow parseDisplay(FormatSpanMain main,

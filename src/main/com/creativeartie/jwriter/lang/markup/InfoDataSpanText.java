@@ -1,7 +1,6 @@
 package com.creativeartie.jwriter.lang.markup;
 
 import java.util.*;
-import com.creativeartie.jwriter.property.*;
 
 import com.creativeartie.jwriter.lang.*;
 

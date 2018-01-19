@@ -14,7 +14,6 @@ import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 
-import com.creativeartie.jwriter.property.*;
 import com.creativeartie.jwriter.property.window.*;
 
 import com.creativeartie.jwriter.window.*;
