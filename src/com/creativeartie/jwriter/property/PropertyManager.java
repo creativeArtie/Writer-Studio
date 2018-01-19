@@ -37,7 +37,12 @@ public class PropertyManager{
     }
 
     public StyleProperty getStyleProperty(String key){
-        StyleProperty ans = getProperty(key, StyleProperty.class);
+        StyleProperty ans = null;
+        try {
+            ans = getProperty(key, StyleProperty.class);
+        } catch (IllegalArgumentException ex){
+            return new StyleProperty(key, this);
+        }
         if (ans == null){
             ans = new StyleProperty(key, this);
             properties.put(key, ans);

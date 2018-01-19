@@ -7,24 +7,28 @@ import java.util.TreeMap;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
+import com.google.common.collect.*;
 
 public class StyleProperty extends MapProperty{
     private static final String FIELD = ":";
     private static final String LINE = ";";
-    
+
     StyleProperty(String propertyKey, PropertyManager propertyManager){
         super(propertyKey, propertyManager, FIELD, LINE);
     }
-    
+
     @Override
     protected Map<String, String> fromStorage(String value){
+        if (value == null){
+            return ImmutableMap.of();
+        }
         return super.fromStorage(CharMatcher.whitespace().removeFrom(value));
     }
-    
+
     public String toCss(){
         return toCss(Arrays.asList(new StyleProperty[]{this}));
     }
-    
+
     public static String toCss(List<StyleProperty> properties){
         TreeMap<String, String> rawMap = new TreeMap<>();
         properties.forEach((property) -> {
