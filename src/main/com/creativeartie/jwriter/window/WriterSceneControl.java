@@ -78,7 +78,7 @@ public class WriterSceneControl extends WriterSceneView {
         getTextArea().returnFocus();
         setTextReady(true);
         updateDoc();
-        getCheatsheet().updateLabels(getDocument(), getTextArea().getPosition());
+        getCheatsheet().updateLabels(getDocument(), getTextArea().getCursorPlaced());
     }
 
     private void updateDoc(){
@@ -91,7 +91,7 @@ public class WriterSceneControl extends WriterSceneView {
                     } else if (updateTimer + TIMER_LENGHT < now){
                         getTableOfContent().loadTrees(getDocument());
                         getAgendaPane().loadAgenda(getDocument());
-                        int pos = getTextArea().getPosition();
+                        int pos = getTextArea().getCursorPlaced();
                         getAgendaPane().updateSelection(getDocument(), pos);
                         getTableOfContent().setHeading(getDocument(), pos);
                         getTextArea().updateCss(getDocument());
@@ -111,7 +111,7 @@ public class WriterSceneControl extends WriterSceneView {
 
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         if (isTextReady()){
-            int pos = change.getPosition();
+            int pos = change.getCursorPlaced();
             getDocument().delete(pos, change.getRemovalEnd());
             getDocument().insert(pos, change.getInserted());
             updateDoc();

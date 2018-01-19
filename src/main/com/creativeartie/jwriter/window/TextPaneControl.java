@@ -11,6 +11,11 @@ import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.property.window.*;
 
+/**
+ * Controller for the main text area.
+ *
+ * @see TextPaneView
+ */
 class TextPaneControl extends TextPaneView {
 
     @Override

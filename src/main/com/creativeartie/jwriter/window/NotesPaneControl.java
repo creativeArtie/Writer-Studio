@@ -86,8 +86,7 @@ class NotesPaneControl extends NotesPaneView{
     }
 
     public void refreshPane(WritingText doc){
-        NotesData back = getDataTable().getSelectionModel()
-            .getSelectedItem();
+        NotesData back = getDataTable().getSelectionModel().getSelectedItem();
         loadNotes(doc);
         updateType(getTypes().getSelectionModel().getSelectedItem());
         if (back != null){

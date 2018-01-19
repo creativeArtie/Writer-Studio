@@ -48,9 +48,9 @@ abstract class WriterSceneView extends BorderPane{
             ).orElse(null), manuscriptFile));
 
 
-        textArea.editedProperty().addListener((data, oldValue, newValue) ->
+        textArea.textChangedProperty().addListener((data, oldValue, newValue) ->
             listenTextChange(newValue));
-        textArea.positionProperty().addListener((data, oldValue, newValue) ->
+        textArea.cursorPlacedProperty().addListener((data, oldValue, newValue) ->
             listenCaret(newValue.intValue()));
 
         agendaPane.agendaFocusedProperty().addListener((data, oldValue,
