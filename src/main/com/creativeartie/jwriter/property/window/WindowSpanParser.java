@@ -81,7 +81,7 @@ public final class WindowSpanParser {
             parsingDisplay(content, line, styles);
         } else {
             Text empty = new Text(WindowText.HEADING_PLACEHOLDER.getText());
-            empty.setStyle(WindowStyle.NOT_FOUND.toCss());
+            StyleClass.NO_TEXT.addClass(empty);
             content.getChildren().add(empty);
         }
     }

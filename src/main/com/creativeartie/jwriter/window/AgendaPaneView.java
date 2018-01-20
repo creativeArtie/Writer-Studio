@@ -43,7 +43,7 @@ abstract class AgendaPaneView extends GridPane{
                 if (text.isEmpty()){
                     /// There is no text found.
                     graphic = new Label(WindowText.AGENDA_EMPTY.getText());
-                    graphic.setStyle(WindowStyle.NOT_FOUND.toCss());
+                    StyleClass.NO_TEXT.addClass(graphic);
                 } else {
                     /// Add the text that is found.
                     graphic = new Label(text);

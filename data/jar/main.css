@@ -1,0 +1,25 @@
+.no-text, .id-numbered{
+    -fx-font-style:italic;
+}
+
+.hint-set, .hint-unset, .hint-allow, .hint-disallow{
+    -fx-label-padding:2,0,0,0
+}
+
+.hint-set{
+    -fx-font-weight:bold;
+}
+.hint-unset{
+    -fx-font-weight:normal;
+}
+.hint-allow{
+    -fx-text-fill:"black";
+} 
+.hint-disallow{
+    -fx-text-fill:"gray";
+}
+
+.formatted-agenda{
+    -fx-fill:"chocolate";
+    -fx-font-style:italic;
+}

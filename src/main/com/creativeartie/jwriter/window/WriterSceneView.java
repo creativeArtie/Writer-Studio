@@ -26,6 +26,7 @@ abstract class WriterSceneView extends BorderPane{
     private SimpleBooleanProperty isEdited;
 
     WriterSceneView(Stage window){
+        getStylesheets().add("data/main.css");
         textArea = new TextPaneControl();
         tableOfContent = new HeadingPaneControl();
         agendaPane = new AgendaPaneControl();

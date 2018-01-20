@@ -47,7 +47,7 @@ class NotesDetailPane extends BorderPane{
      * {@link #clearSelection()} and {@link #setCardNote(Optional)}.
      */
     private void clearBasicData(Text title){
-        title.setStyle(WindowStyle.EMPTY_TITLE.toCss());
+        StyleClass.NO_TEXT.addClass(title);
         titlePane.setGraphic(title);
         setBottom(null);
         noteContent = null;
