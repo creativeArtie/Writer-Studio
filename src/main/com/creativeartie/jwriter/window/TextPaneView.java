@@ -2,6 +2,7 @@ package com.creativeartie.jwriter.window;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.*;
 import javafx.beans.property.*;
 import javafx.animation.*;
 
@@ -32,10 +33,10 @@ abstract class TextPaneView extends BorderPane {
 
     TextPaneView(){
         textArea = setupTextArea();
-        Button mode = setupViewMode();
+        viewMode = setupViewMode();
         currentStats = new Label();
         currentTime = new Label();
-        layoutBottomPane(node, currentStats, currentTime);
+        layoutBottomPane(viewMode, currentStats, currentTime);
 
         textChanged = new ReadOnlyObjectWrapper<>(this, "textChanged");
         textArea.plainTextChanges().subscribe(value -> textChanged
@@ -50,12 +51,12 @@ abstract class TextPaneView extends BorderPane {
         modeUsed = new ReadOnlyObjectWrapper<>(this, "modeUsed");
         modeUsed.setValue(setNextMode(null));
 
-        mode.setOnAction(evt -> modeUsed
+        viewMode.setOnAction(evt -> modeUsed
             .setValue(setNextMode(modeUsed.getValue())));
     }
 
     /// Layout Node
-    private void setupTextArea(){
+    private InlineCssTextArea setupTextArea(){
         InlineCssTextArea area = new InlineCssTextArea();
         area.setWrapText(true);
         setCenter(area);

@@ -111,7 +111,7 @@ public class WriterSceneControl extends WriterSceneView {
 
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         if (isTextReady()){
-            int pos = change.getCursorPlaced();
+            int pos = change.getPosition();
             getDocument().delete(pos, change.getRemovalEnd());
             getDocument().insert(pos, change.getInserted());
             updateDoc();
