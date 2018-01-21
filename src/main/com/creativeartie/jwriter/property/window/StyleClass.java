@@ -1,7 +1,6 @@
 package com.creativeartie.jwriter.property.window;
 
 import javafx.scene.*;
-import javafx.scene.text.*;
 
 public enum StyleClass{
     NO_TEXT("no-text"), ID_NUMBERED("id-numbered"),
@@ -32,26 +31,4 @@ public enum StyleClass{
         node.getStyleClass().addAll(setClass.styleClass, allowClass.styleClass);
         System.out.println(node.getStyleClass());
     }
-    /*
-    public static TextFlow loadFormatText(Optional<FormatSpanMain> span){
-        TextFlow ans = new TextFlow();
-        parseFormatSpan(ans, span);
-        return ans;
-    }
-    
-    public static void loadFormatText(TextFlow node, 
-            Optional<FormatSpanMain> span){
-        span.ifPresent(format -> {
-            for (Span child: format){
-                node.addFormatSpan(child);
-            }
-        });
-    }
-    
-    private static Text addFormatSpan(Span child){
-        if (child instanceof FormatSpanAgenda){
-            Text ans = new Text(((FormatSpanAgenda)child).getAgenda());
-            ans.getStyleClass().add("format-agenda");
-        }
-    }*/
 }

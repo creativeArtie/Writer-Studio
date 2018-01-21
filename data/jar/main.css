@@ -23,3 +23,10 @@
     -fx-fill:"chocolate";
     -fx-font-style:italic;
 }
+.display-note{
+    -rtfx-background-color:"wheat";
+}
+
+.display-footnote, .display-endnote{
+    -fx-font-size:50%
+}
