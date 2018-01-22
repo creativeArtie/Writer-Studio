@@ -13,6 +13,8 @@ import static com.creativeartie.jwriter.main.Checker.*;
  */
 public abstract class Span{
 
+    /// Part 1: Basic Cache and basic instance fields setup:
+
     /** A simple cache method that make use of {@link Optional}.*/
     protected static <T> Optional<T> getCache(Optional<T> found,
             Supplier<T> maker){
@@ -34,17 +36,18 @@ public abstract class Span{
         updateListeners = new HashSet<>();
     }
 
+    /// Part 2: Common Methods of Span subclasses
+
     /** Get the raw text. */
     public abstract String getRaw();
-
-    /** Get the length of the local text length. */
-    public abstract int getLocalEnd();
 
     /** Get the {@link Document root span}. */
     public abstract Document getDocument();
 
     /** Get the {@link SpanNode parent span}. */
     public abstract SpanNode<?> getParent();
+
+    /// Part 3: Handling changes to the Span.
 
     /** Add a listener when this is removed. */
     public void addRemover(Consumer<Span> listener){
@@ -96,6 +99,8 @@ public abstract class Span{
     /** Listened that the document has been edited. */
     protected abstract void docEdited();
 
+    /// Part 4: Handling finding positions.
+
     /** Get the start and end of this span in relation the the document. */
     public Range<Integer> getRange(){
         /// Look up in the cache first
@@ -126,20 +131,32 @@ public abstract class Span{
         return getRange().upperEndpoint();
     }
 
+    // public int getLocalStart(){ return 0; } /// Code here for completeness
+
+    /** Get the length of the local text length. */
+    public abstract int getLocalEnd();
+
     /** Convert a global index to location index. */
     public final int toLocalPosition(int index){
-        checkIndex(index, "index", getLocalEnd(), true);
+        checkIndex(index, "index", getEnd(), true);
         return getStart() - index;
     }
 
+
+    /** Is this {@code Span}'s text is at the first in the document. */
     public final boolean isFirst(){
         return checkLocation(parent -> parent.get(0));
     }
 
+    /** Is this {@code Span}'s text is at the last in the document. */
     public final boolean isLast(){
         return checkLocation(parent -> parent.get(parent.size() - 1));
     }
 
+    /**
+     * Check if the span is at the first or at the end. Helper method of
+     * {@link #isFirst()} and {@link #isLast()}.
+     */
     private final boolean checkLocation(Function<SpanNode<?>, Span> locateChild){
         Span child = this;
         SpanNode<?> parent = child.getParent();

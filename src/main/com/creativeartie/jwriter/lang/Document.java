@@ -1,6 +1,5 @@
 package com.creativeartie.jwriter.lang;
 
-/// TODO: add getLine(int location) and getColumn(int location)
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -18,6 +17,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     /// Caches to reduce the need to recalculate data for each span.
     private final Cache<Span, Range<Integer>> spanRanges;
+    private final Cache<Integer, Integer[]> spanLocation;
     private final Cache<Span, List<SpanLeaf>> spanLeaves;
     private final Cache<Span, String> spanTexts;
 
@@ -32,6 +32,21 @@ public abstract class Document extends SpanNode<SpanBranch>{
         spanRanges = CacheBuilder.newBuilder().weakKeys().build();
         spanLeaves = CacheBuilder.newBuilder().weakKeys().build();
         spanTexts = CacheBuilder.newBuilder().weakKeys().build();
+        spanLocation = CacheBuilder.newBuilder().maximumSize(1000)
+            .build(CacheLoader.from(pos ->{
+                int column = 0;
+                int line = 1;
+                String input = getDocument().getRaw();
+                for (int i = 0; i < pos; i++){
+                    if (input.charAt(i) == '\n'){
+                        column = 0;
+                        line++;
+                    } else {
+                        column++;
+                    }
+                }
+                return new Integer[]{column, line};
+            }));
         documentParsers = parsers;
 
         /// Setup for building the doc and a pointer to use
@@ -82,10 +97,10 @@ public abstract class Document extends SpanNode<SpanBranch>{
     }
 
     protected void spanChanged(){
-        childEdited();
         spanRanges.invalidateAll();
         spanLeaves.invalidateAll();
         spanTexts.invalidateAll();
+        spanLocation.invalidateAll();
         catalogueMap = new CatalogueMap();
         updateSpan(this);
     }
@@ -151,6 +166,16 @@ public abstract class Document extends SpanNode<SpanBranch>{
     @Override
     public final Range<Integer> getRange(){
         return getRangeCache(this, () -> Range.closedOpen(0, getLocalEnd()));
+    }
+
+    /** Find column index. */
+    public final int getColumn(int global){
+        return getTextPosition(global)[0];
+    }
+
+    /** Fine line index. */
+    public final int getLine(int global){
+        return getTextPosition(global)[1];
     }
 
     /**
