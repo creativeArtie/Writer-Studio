@@ -81,6 +81,15 @@ public abstract class Document extends SpanNode<SpanBranch>{
         updateSpan(documentChildren);
     }
 
+    protected void spanChanged(){
+        childEdited();
+        spanRanges.invalidateAll();
+        spanLeaves.invalidateAll();
+        spanTexts.invalidateAll();
+        catalogueMap = new CatalogueMap();
+        updateSpan(this);
+    }
+
     /**
      * Recursively update all child {@link Span spans}. Helper method of
      * {@link #parseDocument(String)} and {@link #updateEdit()}.
@@ -249,7 +258,6 @@ public abstract class Document extends SpanNode<SpanBranch>{
         if (isEmpty()){
             parseDocument(input);
             setUpdated();
-            updateEdit();
             return;
         }
 
@@ -275,7 +283,6 @@ public abstract class Document extends SpanNode<SpanBranch>{
                 parseDocument(getRaw() + input);
                 setUpdated();
             }
-            updateEdit();
         } else {
             /// Insert in the begining at in the middle
             edit(span -> {
@@ -290,6 +297,9 @@ public abstract class Document extends SpanNode<SpanBranch>{
     public final void delete(int start, int end){
         checkRange(end, "end", 0, true, getEnd(), true);
         checkRange(start, "start", 0, true, end, true);
+        if (isEmpty()){
+            throw new IllegalStateException("Can't not delete in a empty document.");
+        }
 
         edit(span -> {
             if (span.getEnd() >= end){
@@ -310,13 +320,6 @@ public abstract class Document extends SpanNode<SpanBranch>{
         assert editedText != null: "Null editText";
         assert location >= 0 && location <= getEnd(): "Wrong location";
         Optional<SpanLeaf> found = getLeaf(location);
-
-        if (! found.isPresent()){
-            parseDocument(editedText.apply(this));
-            setUpdated();
-            updateEdit();
-            return;
-        }
 
         SpanNode<?> span = found.get().getParent();
 
@@ -340,17 +343,5 @@ public abstract class Document extends SpanNode<SpanBranch>{
             parseDocument(editedText.apply(this));
             setUpdated();
         }
-        updateEdit();
-    }
-
-    /** Update the document after editing. Helper method of
-     * {@link #insert(int, String)}, and {@link #edit(Function, int)}.
-     */
-    private final void updateEdit(){
-        spanRanges.invalidateAll();
-        spanLeaves.invalidateAll();
-        spanTexts.invalidateAll();
-        catalogueMap = new CatalogueMap();
-        updateSpan(this);
     }
 }

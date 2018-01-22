@@ -8,8 +8,21 @@ import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * A subdivision of a {@link Document document text}.
+ *
+ * This class when to set edit/remove, and locations.
  */
 public abstract class Span{
+
+    /** A simple cache method that make use of {@link Optional}.*/
+    protected static <T> Optional<T> getCache(Optional<T> found,
+            Supplier<T> maker){
+        checkNotNull(found, "found");
+        checkNotNull(maker, "maker");
+        if (found.isPresent()){
+            return found;
+        }
+        return Optional.of(maker.get());
+    }
 
     private final HashSet<Consumer<Span>> removeListeners;
     private final HashSet<Consumer<Span>> changeListeners;
@@ -71,7 +84,11 @@ public abstract class Span{
     private final void updateParent(){
         updateListeners.forEach(editor -> editor.accept(this));
         ((SpanNode<?>)this).childEdited();
-        if (! (this instanceof Document)){
+        if (this instanceof Document){
+            Document doc = (Document) this;
+            doc.spanChanged();
+            doc.childEdited();
+        } else {
             ((Span)getParent()).updateParent();
         }
     }
@@ -83,16 +100,16 @@ public abstract class Span{
     public Range<Integer> getRange(){
         /// Look up in the cache first
         return getDocument().getRangeCache(this, () ->{
-            // get the start of the parent's span.
+            /// get the start of the parent's span.
             int ans = getParent().getStart();
             for(Span span: getParent()){
                 if (span == this){
                     return Range.closedOpen(ans, ans + getLocalEnd());
                 }
-                // For each child of the parent exclude this:
+                /// For each child of the parent exclude this:
                 ans += span.getLocalEnd();
             }
-            // This Span is not a child of the parent
+            /// This Span is not a child of the parent
             assert false: getRaw();
             return null;
 
@@ -122,7 +139,6 @@ public abstract class Span{
     public final boolean isLast(){
         return checkLocation(parent -> parent.get(parent.size() - 1));
     }
-
 
     private final boolean checkLocation(Function<SpanNode<?>, Span> locateChild){
         Span child = this;

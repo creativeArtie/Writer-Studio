@@ -8,6 +8,9 @@ import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * A {@link Span} storing {@link SpanLeaf} and {@link SpanBranch}.
+ *
+ * This implements some abstract methods left over from {@link SpanNode}, and
+ * does the span editing.
  */
 public abstract class SpanBranch extends SpanNode<Span> {
 
@@ -81,7 +84,7 @@ public abstract class SpanBranch extends SpanNode<Span> {
         });
     }
 
-    /** Edit the children if this can hold the entire text. */
+    /** Edit the children if this span can hold the entire text. */
     final boolean editRaw(String text){
         checkNotEmpty(text, "text");
         SetupParser parser = getParser(text);
@@ -95,13 +98,13 @@ public abstract class SpanBranch extends SpanNode<Span> {
             /// Reparse text
             SetupPointer pointer = SetupPointer.updatePointer(text,
                 getDocument());
-            parser.parse(pointer).ifPresent(span ->
-                spanChildren = setParents(span)
-            );
-            /// There are text left over.
-            if (pointer.hasNext()){
-                throw new IllegalStateException("Has left over characters:" + pointer);
-            }
+            Optional<SpanBranch> found = parser.parse(pointer);
+
+            assert ! pointer.hasNext(): "Has left over characters: " + pointer;
+            assert found.isPresent(): "No children found.";
+
+            found.ifPresent(span -> spanChildren = setParents(span));
+
             setUpdated();
             spanStatus = Optional.empty();
             return true;
@@ -124,15 +127,5 @@ public abstract class SpanBranch extends SpanNode<Span> {
             return CatalogueStatus.NO_ID;
         });
         return spanStatus.get();
-    }
-
-    /** A simple cache method that make use of {@link Optional}.*/
-    protected <T> Optional<T> getCache(Optional<T> found, Supplier<T> maker){
-        checkNotNull(found, "found");
-        checkNotNull(maker, "maker");
-        if (found.isPresent()){
-            return found;
-        }
-        return Optional.of(maker.get());
     }
 }
