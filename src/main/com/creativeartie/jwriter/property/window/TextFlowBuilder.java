@@ -25,6 +25,7 @@ public final class TextFlowBuilder {
             heading.getEditionSpan().flatMap(child -> 
                 newText("(" + child.getEdition() + ")", "display-edition")
             ).ifPresent(text -> node.getChildren().add(text));
+            
         } else {
             Text empty = new Text(WindowText.HEADING_NO_TEXT.getText());
             empty.setStyle(WindowStyle.NOT_FOUND.toCss());
@@ -68,7 +69,6 @@ public final class TextFlowBuilder {
             FormatSpanDirectory span = (FormatSpanDirectory) child;
             String found = span.getSpanIdentity()
                 .map(id -> id.getFullIdentity()).orElse("");
-            
             DirectoryType type = span.getIdType();
             switch (type){
                 case NOTE:
