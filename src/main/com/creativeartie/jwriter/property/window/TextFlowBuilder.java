@@ -8,16 +8,37 @@ import javafx.scene.text.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.lang.*;
 
-public enum TextFlowBuilder {
-    BUILDER;
+public final class TextFlowBuilder {
     
-    public TextFlow loadFormatText(Optional<FormatSpanMain> span){
+    public static TextFlow loadHeadingLine(
+            Optional<LinedSpanLevelSection> span){
+        TextFlow ans = new TextFlow();
+        loadHeadingLine(ans, span);
+        return ans;
+    }
+    
+    public static void loadHeadingLine(TextFlow node, 
+            Optional<LinedSpanLevelSection> span){
+        if (span.isPresent()){
+            LinedSpanLevelSection heading = span.get();
+            loadFormatText(node, heading.getFormattedSpan());
+            heading.getEditionSpan().flatMap(child -> 
+                newText("(" + child.getEdition() + ")", "display-edition")
+            ).ifPresent(text -> node.getChildren().add(text));
+        } else {
+            Text empty = new Text(WindowText.HEADING_NO_TEXT.getText());
+            empty.setStyle(WindowStyle.NOT_FOUND.toCss());
+            node.getChildren().add(empty);
+        }
+    }
+    
+    public static TextFlow loadFormatText(Optional<FormatSpanMain> span){
         TextFlow ans = new TextFlow();
         loadFormatText(ans, span);
         return ans;
     }
     
-    public void loadFormatText(TextFlow node, 
+    public static void loadFormatText(TextFlow node, 
             Optional<FormatSpanMain> span){
         span.ifPresent(format -> {
             for (Span child: format){
@@ -27,14 +48,21 @@ public enum TextFlowBuilder {
         });
     }
     
-    private Optional<Text> createFormatSpan(Span child){
+    private static Optional<Text> createFormatSpan(Span child){
         Optional<Text> ans = Optional.empty();
         if (child instanceof FormatSpanAgenda){
             return newText(((FormatSpanAgenda)child).getAgenda(), 
                 "display-agenda");
             
         } else if (child instanceof FormatSpanContent){
-            ans = newText(((FormatSpanContent)child).getTrimmed());
+            FormatSpanContent content = (FormatSpanContent) child;
+            String text = content.getTrimmed();
+            if (content.isSpaceBegin()){
+                text = " " + text;
+            } else if (content.isSpaceEnd()){
+                text = text + " ";
+            }
+            ans = newText(text);
             
         } else if (child instanceof FormatSpanDirectory){
             FormatSpanDirectory span = (FormatSpanDirectory) child;
@@ -77,20 +105,20 @@ public enum TextFlowBuilder {
         return ans;
     }
     
-    private Optional<Text> newText(String text){
+    private static Optional<Text> newText(String text){
         if (text.isEmpty()){
             return Optional.empty();
         }
         return Optional.of(new Text(text));
     }
     
-    private Optional<Text> newText(String text, String style){
+    private static Optional<Text> newText(String text, String style){
         Optional<Text> ans = newText(text);
         addStyle(ans, style);
         return ans;
     }
     
-    private Optional<Text> addStyle(Optional<Text> text, String style){
+    private static Optional<Text> addStyle(Optional<Text> text, String style){
         text.ifPresent(node -> node.getStyleClass().add(style));
         return text;
     }

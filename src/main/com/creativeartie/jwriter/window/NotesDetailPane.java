@@ -117,14 +117,12 @@ class NotesDetailPane extends BorderPane{
     private void fillContent(LinedSpanNote line){
         if (hasHeading){
             /// Find content line:
-            WindowSpanParser.parseDisplay(noteContent, line.getFormattedSpan()
-                .orElse(null));
+            TextFlowBuilder.loadFormatText(noteContent,line.getFormattedSpan());
             noteContent.getChildren().add(new Text("\n"));
         } else {
             /// Find heading line:
-            titlePane.setGraphic(WindowSpanParser.parseDisplay(
-                line.getFormattedSpan().orElse(null)
-            ));
+            titlePane.setGraphic(TextFlowBuilder.loadFormatText(line
+                .getFormattedSpan()));
             hasHeading = true;
         }
     }
@@ -152,15 +150,15 @@ class NotesDetailPane extends BorderPane{
      *  {@link #fillContent(LinedSpanCite)}.
      */
     private boolean addSources(Optional<InfoDataSpan> data){
-        if (data.isPresent()){
+        Optional<FormatSpanMain> format = data.map(span -> (FormatSpanMain) span
+            .getData());
+        if (format.isPresent()){
             /// Add Label
-            citationPane.add(new Label(WindowText.SOURCE_LABEL.getText()), 0, 0);
+            citationPane.add(new Label(WindowText.SOURCE_LABEL.getText()), 0, 
+                0);
 
             /// create Node to store data
-            TextFlow source = new TextFlow();
-            FormatSpanMain found = ((InfoDataSpanFormatted)data.get())
-                .getData();
-            WindowSpanParser.parseDisplay(source, found);
+            TextFlow source = TextFlowBuilder.loadFormatText(format);
 
             /// Put the source node into a ScrollPane
             ScrollPane pane = new ScrollPane(source);

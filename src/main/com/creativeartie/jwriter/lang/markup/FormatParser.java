@@ -48,7 +48,8 @@ final class FormatParser implements SetupParser {
                 more = true;
             }
 
-            /// Keeps FomratContentParser parsing alone b/c of needs to edit format
+            /// Keeps FomratContentParser parsing alone b/c of needs to edit 
+            /// format
             int i = 0;
             for (String type : listFormatTextTokens()){
                 if (pointer.startsWith(children, type)){

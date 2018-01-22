@@ -29,6 +29,5 @@ public enum StyleClass{
         StyleClass setClass = set? HINT_SET: HINT_UNSET;
         StyleClass allowClass = allowed? HINT_ALLOW: HINT_DISALLOW;
         node.getStyleClass().addAll(setClass.styleClass, allowClass.styleClass);
-        System.out.println(node.getStyleClass());
     }
 }

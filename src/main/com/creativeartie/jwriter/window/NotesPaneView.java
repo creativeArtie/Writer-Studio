@@ -144,12 +144,12 @@ abstract class NotesPaneView extends GridPane{
                     /// Heading is found
                     Optional<LinedSpanLevelSection> ans = item.map(span ->
                         (LinedSpanLevelSection)span);
-                    graphic = WindowSpanParser.parseDisplay(ans.orElse(null));
+                    graphic = TextFlowBuilder.loadHeadingLine(ans);
                 } else if (branch instanceof LinedSpanPointNote){
                     /// Footnote, or endnote is found
                     Optional<FormatSpanMain> ans = ((LinedSpanPointNote)branch)
                         .getFormattedSpan();
-                    graphic = WindowSpanParser.parseDisplay(ans.orElse(null));
+                    graphic = TextFlowBuilder.loadFormatText(ans);
                 } else {
                     /// note is found
                     graphic = null;
