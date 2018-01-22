@@ -32,19 +32,6 @@ public class WritingText extends Document{
         super(text, SectionParseHead.SECTION_1);
     }
 
-    public LinedSpan getLine(int line){
-        Iterator<SpanBranch> it = iterator();
-        SpanBranch section = it.next();
-        int found = 0;
-        while (section.size() + found <= line){
-            found += section.size();
-            if (it.hasNext()){
-                section = it.next();
-            }
-        }
-        return (LinedSpan) section.get(line - found);
-    }
-
     public boolean allHasHeading(){
         Optional<SectionSpanHead> found = spanAtFirst(SectionSpanHead.class);
         return found.isPresent() && found.get().getHeading().isPresent();

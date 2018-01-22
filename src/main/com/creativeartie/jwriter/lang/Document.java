@@ -17,7 +17,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     /// Caches to reduce the need to recalculate data for each span.
     private final Cache<Span, Range<Integer>> spanRanges;
-    private final Cache<Integer, Integer[]> spanLocation;
+    private final LoadingCache<Integer, Integer[]> spanLocation;
     private final Cache<Span, List<SpanLeaf>> spanLeaves;
     private final Cache<Span, String> spanTexts;
 
@@ -36,7 +36,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
             .build(CacheLoader.from(pos ->{
                 int column = 0;
                 int line = 1;
-                String input = getDocument().getRaw();
+                String input = getRaw();
                 for (int i = 0; i < pos; i++){
                     if (input.charAt(i) == '\n'){
                         column = 0;
@@ -169,13 +169,21 @@ public abstract class Document extends SpanNode<SpanBranch>{
     }
 
     /** Find column index. */
-    public final int getColumn(int global){
-        return getTextPosition(global)[0];
+    public final int getColumn(int index){
+        try {
+            return spanLocation.get(index)[0];
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e.getCause());
+        }
     }
 
     /** Fine line index. */
-    public final int getLine(int global){
-        return getTextPosition(global)[1];
+    public final int getLine(int index){
+        try {
+            return spanLocation.get(index)[1];
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e.getCause());
+        }
     }
 
     /**
