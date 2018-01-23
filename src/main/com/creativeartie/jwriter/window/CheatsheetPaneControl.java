@@ -19,9 +19,9 @@ import com.creativeartie.jwriter.property.window.*;
  * @see CheatsheetPaneView
  */
 class CheatsheetPaneControl extends CheatsheetPaneView{
-
-     /** Updates the labels base on the cursor movements. */
-    public void updateLabels(WritingText doc, int position){
-        getLabels().forEach(label -> label.updateLabelStatus(doc, position));
-    }
+//
+//     /** Updates the labels base on the cursor movements. */
+//    public void updateLabels(WritingText doc, int position){
+//        getLabels().forEach(label -> label.updateLabelStatus(doc, position));
+//    }
 }

@@ -20,35 +20,29 @@ abstract class WriterSceneView extends BorderPane{
     private NotesPaneControl userLists;
     private CheatsheetPaneControl langCheatsheet;
     private SimpleObjectProperty<ManuscriptFile> manuscriptFile;
-    private ReadOnlyObjectWrapper<WritingText> document;
-    private ReadOnlyObjectWrapper<RecordList> records;
     private SimpleBooleanProperty ready;
     private SimpleBooleanProperty isEdited;
 
     WriterSceneView(Stage window){
-        getStylesheets().add("data/main.css");
-        textArea = new TextPaneControl();
         tableOfContent = new HeadingPaneControl();
         agendaPane = new AgendaPaneControl();
         userLists = new NotesPaneControl();
         langCheatsheet = new CheatsheetPaneControl();
 
         manuscriptFile = new SimpleObjectProperty<>(this, "manuscriptFile");
+        manuscriptFile.addListener((data, oldValue, newValue) ->
+            changeDoc(newValue));
 
-        document = new ReadOnlyObjectWrapper<>(this, "document");
-        document.addListener((data, oldValue, newValue) -> listenDoc());
-        document.bind(Bindings.createObjectBinding(
-            () -> Optional.ofNullable(manuscriptFile.getValue()).map(
-                  value -> value.getDocument()
-            ).orElse(null), manuscriptFile));
+        getStylesheets().add("data/main.css");
+        textArea = initTextPane();
+        VBox top = new VBox();
+        WriterMenuBar menu = initMenuBar(window);
+        top.getChildren().addAll(menu);
+        setTop(menu);
 
-        records = new ReadOnlyObjectWrapper<>(this, "records");
-        records.bind(Bindings.createObjectBinding(
-            () -> Optional.ofNullable(manuscriptFile.getValue()).map(
-                  value -> value.getRecords()
-            ).orElse(null), manuscriptFile));
-
-
+        textArea.textChangedProperty().addListener((data, oldValue, newValue) ->
+            textChanged(newValue));
+/*
         textArea.textChangedProperty().addListener((data, oldValue, newValue) ->
             listenTextChange(newValue));
         textArea.cursorPlacedProperty().addListener((data, oldValue, newValue) ->
@@ -66,41 +60,33 @@ abstract class WriterSceneView extends BorderPane{
             -> listenLocClicked(newValue.intValue()));
         userLists.childFocusedProperty().addListener((data, oldValue, newValue)
             -> listenListFocused(newValue));
-
+*/
         ready = new SimpleBooleanProperty(this, "ready", false);
         isEdited = new SimpleBooleanProperty(this, "isEdited", false);
-
+/*
         layoutLeftPane();
         layoutRightPane();
         layoutTopPane(window);
         layoutBottomPane();
         layoutCenterPane();
 
-        controlSetup();
-    }
-
-    /// Getters
-    protected TextPaneControl getTextArea(){
-        return textArea;
-    }
-
-    protected HeadingPaneControl getTableOfContent(){
-        return tableOfContent;
-    }
-
-    protected AgendaPaneControl getAgendaPane(){
-        return agendaPane;
-    }
-
-    protected NotesPaneControl getUserLists(){
-        return userLists;
-    }
-
-    protected CheatsheetPaneControl getCheatsheet(){
-        return langCheatsheet;
+        controlSetup();*/
     }
 
     /// Layout Nodes
+    private TextPaneControl initTextPane(){
+        TextPaneControl out = new TextPaneControl();
+        setCenter(out);
+        return out;
+    }
+
+    private WriterMenuBar initMenuBar(Stage window){
+        WriterMenuBar ans = new WriterMenuBar(window);
+        ans.manuscriptFileProperty().bindBidirectional(manuscriptFile);
+        return ans;
+    }
+/*
+
     private void layoutLeftPane(){
         setLeft(tableOfContent);
     }
@@ -124,6 +110,27 @@ abstract class WriterSceneView extends BorderPane{
 
     private void layoutBottomPane(){
         setBottom(langCheatsheet);
+    }*/
+
+    /// Getters
+    protected TextPaneControl getTextArea(){
+        return textArea;
+    }
+
+    protected HeadingPaneControl getTableOfContent(){
+        return tableOfContent;
+    }
+
+    protected AgendaPaneControl getAgendaPane(){
+        return agendaPane;
+    }
+
+    protected NotesPaneControl getUserLists(){
+        return userLists;
+    }
+
+    protected CheatsheetPaneControl getCheatsheet(){
+        return langCheatsheet;
     }
 
     /// Node Properties
@@ -137,21 +144,6 @@ abstract class WriterSceneView extends BorderPane{
 
     public void setManuscriptFile(ManuscriptFile doc){
         manuscriptFile.setValue(doc);
-    }
-
-    public ReadOnlyObjectProperty<WritingText> doumentProperty(){
-        return document.getReadOnlyProperty();
-    }
-
-    public WritingText getDocument(){
-        return document.getValue();
-    }
-    public ReadOnlyObjectProperty<RecordList> recordsPoperty(){
-        return records.getReadOnlyProperty();
-    }
-
-    public RecordList getRecords(){
-        return records.getValue();
     }
 
     public BooleanProperty readyProperty(){
@@ -179,7 +171,11 @@ abstract class WriterSceneView extends BorderPane{
     }
 
     /// Control Methods
-    protected abstract void controlSetup();
+    protected abstract void changeDoc(ManuscriptFile file);
+
+    protected abstract void textChanged(PlainTextChange changes);
+
+    /*protected abstract void controlSetup();
 
     protected abstract void listenDoc();
 
@@ -195,5 +191,5 @@ abstract class WriterSceneView extends BorderPane{
 
     protected abstract void listenLocClicked(int loc);
 
-    protected abstract void listenListFocused(boolean focused);
+    protected abstract void listenListFocused(boolean focused);*/
 }
