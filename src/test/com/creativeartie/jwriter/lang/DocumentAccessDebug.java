@@ -22,13 +22,16 @@ public class DocumentAccessDebug{
 
     private static int countColumn;
     private static int countLine;
+    private static int countIt;
 
     private static String leafSpan(ArrayList<Object[]> data, String span,
         int ... indexes
     ){
+        boolean isFirst = true;
         for(int i = 0; i < span.length(); i++){
+            int store = isFirst? countIt: -1;
             data.add(new Object[]{data.size() - 1, false, indexes, countColumn,
-                countLine});
+                countLine, store});
             if (span.charAt(i) == '\n'){
                 countLine++;
                 countColumn = 0;
@@ -36,7 +39,7 @@ public class DocumentAccessDebug{
                 countColumn++;
             }
         }
-
+        countIt++;
         return span;
     }
 
@@ -47,7 +50,7 @@ public class DocumentAccessDebug{
         countColumn = 0;
         countLine = 1;
 
-        data.add(new Object[]{-1, false, new int[0], 0 , 1});
+        data.add(new Object[]{-1, false, new int[0], 0 , 1, -1});
 
         docRaw.append(leafSpan(data, "=",                0, 0, 0));
         docRaw.append(leafSpan(data, "@",                0, 0, 1));
@@ -111,11 +114,11 @@ public class DocumentAccessDebug{
         docRaw.append(leafSpan(data, "\n",                     1, 3, 4));
 
         data.add(new Object[]{data.size() - 1, false, new int[]{1, 3, 4}, 0,
-                countLine});
+                countLine, countIt++});
 
-        data.add(new Object[]{data.size() - 1, false, new int[0], 0, 1});
+        data.add(new Object[]{data.size() - 1, false, new int[0], 0, 1, countIt++});
 
-        data.add(new Object[]{data.size() - 1, true, new int[0], 0, 1});
+        data.add(new Object[]{data.size() - 1, true, new int[0], 0, 1, countIt++});
 
         docText = docRaw.toString();
         return data;
@@ -140,6 +143,9 @@ public class DocumentAccessDebug{
     @Parameter(value = 4)
     public int line;
 
+    @Parameter(value = 5)
+    public int to;
+
 
     @BeforeClass
     public static void beforeClass(){
@@ -148,27 +154,26 @@ public class DocumentAccessDebug{
     }
 
     @Test
-    public void getLeaf(){
-
+    public void getColumn(){
         if (useEmpty){
             assertFalse(emptyDoc.getLeaf(0).isPresent());
-            assertEquals("Wrong column number: " + emptyDoc.getColumn(0),
-                column, emptyDoc.getColumn(0));
-            assertEquals("Wrong line number: " + emptyDoc.getLine(0),
-                line, emptyDoc.getLine(0));
+            assertEquals(column, emptyDoc.getColumn(0));
         }
+        Assume.assumeTrue(indexes.length > 0);
+        assertEquals(column, filledDoc.getColumn(ptr));
+    }
 
-        if (indexes.length == 0){
-            try {
-                filledDoc.getLeaf(ptr);
-            } catch (IndexOutOfBoundsException ex){
-                return;
-            }
-            fail("No IndexOutOfBoundsException thrown.");
+    @Test
+    public void getLine(){
+        if (useEmpty){
+            assertFalse(emptyDoc.getLeaf(0).isPresent());
+            assertEquals(line, emptyDoc.getLine(0));
         }
-        Optional<SpanLeaf> found = filledDoc.getLeaf(ptr);
-        assertTrue("Leaf not found.", found.isPresent());
-        SpanLeaf leaf = found.get();
+        Assume.assumeTrue(indexes.length > 0);
+        assertEquals(line, filledDoc.getLine(ptr));
+    }
+
+    private Span findLeaf(){
         Span span = filledDoc;
         for(int index: indexes){
             assertTrue("Span is not a SpanNode: " + span, span instanceof
@@ -178,11 +183,44 @@ public class DocumentAccessDebug{
                 +"):" + parent, index < parent.size());
             span = ((SpanNode)span).get(index);
         }
+        return span;
+    }
+
+    @Test
+    public void iterateLeaves(){
+        Assume.assumeTrue(countIt > 0);
+        if (useEmpty || indexes.length == 0){
+            try {
+                (useEmpty? emptyDoc: filledDoc).getLeaves().get(to);
+            } catch (IndexOutOfBoundsException ex){
+                return;
+            }
+            fail("No IndexOutOfBoundsException thrown.");
+        }
+        Span span = findLeaf();
+        assertSame(span, filledDoc.getLeaves().get(to));
+    }
+
+    @Test
+    public void getLeaf(){
+        if (indexes.length == 0){
+            try {
+                filledDoc.getLeaf(ptr);
+            } catch (IndexOutOfBoundsException ex){
+                return;
+            }
+            fail("No IndexOutOfBoundsException thrown.");
+        }
+        if (useEmpty){
+            Optional<SpanLeaf> found = emptyDoc.getLeaf(ptr);
+            assertFalse("Leaf is found.", found.isPresent());
+        }
+
+        Optional<SpanLeaf> found = filledDoc.getLeaf(ptr);
+        assertTrue("Leaf not found.", found.isPresent());
+        SpanLeaf leaf = found.get();
+        Span span = findLeaf();
         assertSame(span, leaf);
-        assertEquals("Wrong column number for (" + ptr + ") ",
-            column, filledDoc.getColumn(ptr));
-        assertEquals("Wrong line number for (" + ptr + ")",
-            line, filledDoc.getLine(ptr));
     }
 
 }

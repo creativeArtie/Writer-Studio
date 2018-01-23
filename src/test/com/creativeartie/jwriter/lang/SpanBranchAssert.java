@@ -14,7 +14,6 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
     private boolean isCatalogued;
     private Class<T> cast;
 
-
     public SpanBranchAssert(Class<T> clazz){
         cast = clazz;
         expectStatus = CatalogueStatus.NO_ID;
