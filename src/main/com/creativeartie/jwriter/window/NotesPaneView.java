@@ -61,7 +61,7 @@ abstract class NotesPaneView extends GridPane{
                 if (item.isEmpty()){
                     /// No text is found
                     out = new Text(emptyText.getText());
-                    out.setStyle(WindowStyle.NOT_FOUND.toCss());
+                    StyleClass.NO_TEXT.addClass(out);
                 } else {
                     /// Text is found
                     out = new Text(item);
@@ -85,7 +85,7 @@ abstract class NotesPaneView extends GridPane{
                 /// Set text
                 Text name = new Text(item.getName());
                 Text target = new Text("\t" + item.getTarget());
-                target.setStyle(WindowStyle.NUMBERED_ID.toCss());
+                StyleClass.ID_NUMBERED.addClass(target);
                 TextFlow graphic = new TextFlow(name, target);
                 setGraphic(graphic);
             }
@@ -113,7 +113,7 @@ abstract class NotesPaneView extends GridPane{
                 } else {
                     /// For when there is no id location
                     Text ans = new Text(WindowText.NO_SPAN_LOC.getText());
-                    ans.setStyle(WindowStyle.NOT_FOUND.toCss());
+                    StyleClass.NO_TEXT.addClass(ans);
                     setGraphic(ans);
                 }
             }
@@ -144,12 +144,12 @@ abstract class NotesPaneView extends GridPane{
                     /// Heading is found
                     Optional<LinedSpanLevelSection> ans = item.map(span ->
                         (LinedSpanLevelSection)span);
-                    graphic = WindowSpanParser.parseDisplay(ans.orElse(null));
+                    graphic = TextFlowBuilder.loadHeadingLine(ans);
                 } else if (branch instanceof LinedSpanPointNote){
                     /// Footnote, or endnote is found
                     Optional<FormatSpanMain> ans = ((LinedSpanPointNote)branch)
                         .getFormattedSpan();
-                    graphic = WindowSpanParser.parseDisplay(ans.orElse(null));
+                    graphic = TextFlowBuilder.loadFormatText(ans);
                 } else {
                     /// note is found
                     graphic = null;

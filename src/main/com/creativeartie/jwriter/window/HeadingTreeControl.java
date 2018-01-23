@@ -41,6 +41,7 @@ class HeadingTreeControl extends HeadingTreeView{
      * {@link #getMapper()} exists.
      */
     public void selectHeading(Optional<LinedSpanLevelSection> section){
+        System.out.println(selectionMapper);
         if (section.isPresent()){
             getTree().getSelectionModel().select(selectionMapper.get(section));
         } else {
@@ -77,8 +78,10 @@ class HeadingTreeControl extends HeadingTreeView{
                 new TreeItem<>(section.getHeading());
         /// Adding children
         for (SectionSpanHead subsection: section.getSections()){
-            child.getChildren().add(loadHeadings(subsection));
-            selectionMapper.put(section.getHeading(), child);
+            TreeItem<Optional<LinedSpanLevelSection>> item = loadHeadings(
+                subsection);
+            child.getChildren().add(item);
+            selectionMapper.put(subsection.getHeading(), item);
         }
         return child;
     }

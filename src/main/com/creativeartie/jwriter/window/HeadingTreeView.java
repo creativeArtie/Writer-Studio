@@ -31,8 +31,7 @@ abstract class HeadingTreeView extends TitledPane{
                 setGraphic(null);
             } else {
                 /// Allows WindowSpanParser to create the Label
-                TextFlow graphic = WindowSpanParser.parseDisplay(item
-                    .orElse(null));
+                TextFlow graphic = TextFlowBuilder.loadHeadingLine(item);
                 setText(null);
                 setGraphic(graphic);
             }

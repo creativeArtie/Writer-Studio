@@ -162,17 +162,7 @@ class CheatsheetLabel extends Label{
      * current position.
      */
     void updateLabelStatus(WritingText doc, int point){
-        WindowStyleBuilder css = new WindowStyleBuilder();
-
-        /// Add style based on cursor is on the syntax hint or not
-        css.add(testSetted.test(doc, point)? WindowStyle.MARKUP_Set:
-            WindowStyle.MARKUP_UNSET);
-
-        /// Add style based on span can be add at the cursor or not
-        css.add(testAllow.test(doc, point)? WindowStyle.SYNTAX_ALLOW:
-            WindowStyle.SYNTAX_FORBID);
-
-        css.add(WindowStyle.CHEATSHEET_BASE);
-        setStyle(css.toString());
+        StyleClass.setHintClass(this, testSetted.test(doc, point),
+            testAllow.test(doc, point));
     }
 }
