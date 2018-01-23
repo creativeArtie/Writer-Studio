@@ -115,15 +115,16 @@ public class IDTestDocument {
                 System.out.print(entry.getKey());
             }
             System.out.println();
+            System.out.println();
         }
         assertEquals("Wrong map size", ids.size(), map.size());
         int i = 0;
         for (Map.Entry<CatalogueIdentity, CatalogueData> entry: map.entrySet()){
             int idx = order.indexOf(i);
             assert idx != -1: idx;
-            assertEquals("Wrong span order at " + idx, ids.get(idx),
+            assertEquals("Wrong span order at " + ids.get(idx), ids.get(idx),
                 entry.getKey());
-            assertEquals("Wrong id status at " + idx,
+            assertEquals("Wrong id status at " + ids.get(idx),
                 status.get(idx), entry.getValue().getState());
             i++;
         }

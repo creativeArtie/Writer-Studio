@@ -17,28 +17,33 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
         idMap = new TreeMap<>();
     }
 
-    void addId(CatalogueIdentity id, SpanBranch span){
-        checkNotNull(id, "id");
-        checkNotNull(span, "span");
-
+    void add(Catalogued span){
+        Optional<CatalogueIdentity> search = span.getSpanIdentity();
+        if (! search.isPresent()){
+            return;
+        }
+        CatalogueIdentity id = search.get();
         CatalogueData data = idMap.get(id);
         if (data == null){
             data = new CatalogueData(this, id);
             idMap.put(id, data);
         }
-        data.addId(span);
+        data.add(span);
     }
 
-    void addRef(CatalogueIdentity ref, SpanBranch span){
-        checkNotNull(ref, "ref");
-        checkNotNull(span, "span");
-
-        CatalogueData data = idMap.get(ref);
-        if (data == null){
-            data = new CatalogueData(this, ref);
-            idMap.put(ref, data);
+    void remove(Catalogued span){
+        Optional<CatalogueIdentity> search = span.getSpanIdentity();
+        if (! search.isPresent()){
+            return;
         }
-        data.addRef(span);
+        CatalogueIdentity id = search.get();
+        CatalogueData data = idMap.get(id);
+        if (data == null){
+            return;
+        }
+        if (data.remove(span)){
+            idMap.remove(id);
+        }
     }
 
     @Override

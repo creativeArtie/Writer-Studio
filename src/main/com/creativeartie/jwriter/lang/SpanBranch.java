@@ -65,6 +65,12 @@ public abstract class SpanBranch extends SpanNode<Span> {
         spanParent = parent;
     }
 
+    final void addCatalgoue(){
+        if (this instanceof Catalogued){
+            getDocument().getCatalogue().add((Catalogued)this);
+        }
+    }
+
     /** Get style information about this {@linkplain SpanBranch}.*/
     public abstract List<StyleInfo> getBranchStyles();
 
@@ -92,9 +98,8 @@ public abstract class SpanBranch extends SpanNode<Span> {
             /// It can be fully parsed.
 
             /// Removes the children
-            for (Span span: this){
-                span.setRemove();
-            }
+            removeChildren();
+
             /// Reparse text
             SetupPointer pointer = SetupPointer.updatePointer(text,
                 getDocument());
@@ -110,6 +115,27 @@ public abstract class SpanBranch extends SpanNode<Span> {
             return true;
        }
        return false;
+    }
+
+    void removeChildren(){
+        if (this instanceof Catalogued){
+            getDocument().getCatalogue().remove((Catalogued)this);
+        }
+        setRemove();
+        for (Span child: this){
+            child.setRemove();
+            if (child instanceof SpanBranch){
+                ((SpanBranch)child).removeChildren();
+            }
+        }
+    }
+
+    protected void idChanged(){
+        if (this instanceof Catalogued){
+            getDocument().getCatalogue().remove((Catalogued)this);
+        } else if (getParent() instanceof SpanBranch){
+            ((SpanBranch)getParent()).idChanged();
+        }
     }
 
     /** Gets the parser only if it can reparsed the whole text. */

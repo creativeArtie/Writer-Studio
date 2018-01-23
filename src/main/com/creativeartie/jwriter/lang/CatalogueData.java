@@ -7,35 +7,38 @@ import static com.creativeartie.jwriter.main.Checker.*;
 
 /** A list of {@link SpanBranch} with the same {@link CatalogueIdentity}. */
 public final class CatalogueData{
-    private final ArrayList<SpanBranch> idSpans;
-    private final ArrayList<SpanBranch> refSpans;
+    private final TreeSet<SpanBranch> idSpans;
+    private final TreeSet<SpanBranch> refSpans;
     private final CatalogueMap catalogueParent;
     private final CatalogueIdentity catelogueKey;
+
+    private static int extractInt(SpanBranch span){
+        return span.getStart();
+    }
 
     /** {@linkplain CatalogueData}'s constructor.*/
     CatalogueData(CatalogueMap parent, CatalogueIdentity id){
         catalogueParent = checkNotNull(parent, "parent");
         catelogueKey = checkNotNull(id, "id");
-        idSpans = new ArrayList<>();
-        refSpans = new ArrayList<>();
+        idSpans = new TreeSet<>(Comparator.comparingInt(CatalogueData::extractInt));
+        refSpans = new TreeSet<>(Comparator.comparingInt(CatalogueData::extractInt));
     }
 
-    void addId(SpanBranch span){
-        checkNotNull(span, "Span");
-        checkArgument(span instanceof Catalogued,
-            "Parameter \"span\" is not of type Catalogued.");
-        checkArgument(((Catalogued)span).isId(),
-            "Parameter \"span\" is no an id. ");
+    void add(Catalogued span){
+        checkArgument(span instanceof SpanBranch,
+            "Parameter \"span\" is not of type SpanBranch.");
+        /// TODO throw exception with repeat (there are repeated added)
 
-        idSpans.add(span);
+        (span.isId()? idSpans:refSpans).add((SpanBranch)span);
     }
 
-    void addRef(SpanBranch span){
-        checkNotNull(span, "Span");
-        checkArgument(((Catalogued)span).isRef(),
-            "Parameter \"span\" is no an id. ");
+    boolean remove(Catalogued span){
+        checkArgument(span instanceof SpanBranch,
+            "Parameter \"span\" is not of type SpanBranch.");
+        /// TODO throw exception with repeat (there are repeated added)
 
-        refSpans.add(span);
+        (span.isId()? idSpans:refSpans).remove((SpanBranch)span);
+        return idSpans.isEmpty() && refSpans.isEmpty();
     }
 
     public CatalogueMap getParent(){
@@ -71,14 +74,16 @@ public final class CatalogueData{
         checkState(idSpans.size() == 1,
             "Id (" + catelogueKey + ") is in the wrong state.");
 
-        return idSpans.get(0);
+        return idSpans.first();
     }
 
     public ImmutableList<SpanBranch> getIds(){
+        /// TODO to set instead of list
         return ImmutableList.copyOf(idSpans);
     }
 
     public ImmutableList<SpanBranch> getRefs(){
+        /// TODO to set instead of list
         return ImmutableList.copyOf(refSpans);
     }
 

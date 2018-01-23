@@ -17,7 +17,7 @@ import com.creativeartie.jwriter.lang.*;
 @RunWith(JUnit4.class)
 public class FormatAgendaDebug{
 
-    static IDBuilder buildId(String id){
+    public static IDBuilder buildId(String id){
         return new IDBuilder().addCategory("agenda").setId(id);
     }
 

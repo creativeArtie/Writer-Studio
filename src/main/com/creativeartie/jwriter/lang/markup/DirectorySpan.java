@@ -97,6 +97,7 @@ public final class DirectorySpan extends SpanBranch {
     protected void childEdited(){
         cacheId = Optional.empty();
         cacheRaw = Optional.empty();
+        idChanged();
     }
 
     @Override

@@ -49,6 +49,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
             }));
         documentParsers = parsers;
 
+        catalogueMap = new CatalogueMap();
+
         /// Setup for building the doc and a pointer to use
         parseDocument(raw);
     }
@@ -92,7 +94,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         }
 
         /// Finalize the parse loop
-        catalogueMap = new CatalogueMap();
+        // catalogueMap = new CatalogueMap();
         updateSpan(documentChildren);
     }
 
@@ -101,7 +103,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         spanLeaves.invalidateAll();
         spanTexts.invalidateAll();
         spanLocation.invalidateAll();
-        catalogueMap = new CatalogueMap();
+        // catalogueMap = new CatalogueMap();
         updateSpan(this);
     }
 
@@ -111,24 +113,15 @@ public abstract class Document extends SpanNode<SpanBranch>{
      */
     private final void updateSpan(List<? extends Span> children){
         assert children != null: "Null children";
+        if (children instanceof SpanBranch){
+            ((SpanBranch)children).docEdited();
+        }
         for (Span child: children){
             /// Fill or refill {@link #catalogueMap}
             if (child instanceof SpanBranch){
                 SpanBranch branch = (SpanBranch) child;
-                if (branch instanceof Catalogued){
-                    Catalogued catalogued = (Catalogued) branch;
-                    Optional<CatalogueIdentity> id = catalogued
-                            .getSpanIdentity();
-                    /// Don't add ID if there isn't one
-                    id.ifPresent(found -> {
-                        if(catalogued.isId()){
-                            catalogueMap.addId(found, branch);
-                        } else {
-                            catalogueMap.addRef(found, branch);
-                        }
-                    });
-                }
                 updateSpan(branch);
+                branch.addCatalgoue();
             }
 
             /// Tell the child that the document has been updated.
@@ -313,6 +306,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
             /// Reparse the whole document
             if (span != null){
                 assert span instanceof Document: "Wrong class.";
+                catalogueMap = new CatalogueMap();
                 parseDocument(getRaw() + input);
                 setUpdated();
             }
@@ -373,6 +367,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         /// Must be parse at Document level
         if (span != null){
             assert span instanceof Document: "Wrong class:" + span.getClass();
+            catalogueMap = new CatalogueMap();
             parseDocument(editedText.apply(this));
             setUpdated();
         }

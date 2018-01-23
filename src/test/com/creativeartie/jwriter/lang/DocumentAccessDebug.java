@@ -20,11 +20,21 @@ public class DocumentAccessDebug{
     /// Print everything or not
     private static boolean verbose = true;
 
+    private static int countColumn;
+    private static int countLine;
+
     private static String leafSpan(ArrayList<Object[]> data, String span,
         int ... indexes
     ){
         for(int i = 0; i < span.length(); i++){
-            data.add(new Object[]{data.size() - 1, false, indexes});
+            data.add(new Object[]{data.size() - 1, false, indexes, countColumn,
+                countLine});
+            if (span.charAt(i) == '\n'){
+                countLine++;
+                countColumn = 0;
+            } else {
+                countColumn++;
+            }
         }
 
         return span;
@@ -34,14 +44,18 @@ public class DocumentAccessDebug{
     public static Collection<Object[]> data() {
         ArrayList<Object[]> data = new ArrayList<>();
         StringBuilder docRaw = new StringBuilder();
+        countColumn = 0;
+        countLine = 1;
 
-        data.add(new Object[]{-1, false, new int[0]});
+        data.add(new Object[]{-1, false, new int[0], 0 , 1});
 
         docRaw.append(leafSpan(data, "=",                0, 0, 0));
         docRaw.append(leafSpan(data, "@",                0, 0, 1));
         docRaw.append(leafSpan(data, "Chapter 1",        0, 0, 2, 0, 0));
         docRaw.append(leafSpan(data, ":",                0, 0, 3));
-        docRaw.append(leafSpan(data, " Story of nobody", 0, 0, 4, 0, 0));
+        docRaw.append(leafSpan(data, "\\",               0, 0, 4, 0, 0, 0));
+        docRaw.append(leafSpan(data, "\n",               0, 0, 4, 0, 0, 1));
+        docRaw.append(leafSpan(data, " Story of nobody", 0, 0, 4, 0, 1));
         docRaw.append(leafSpan(data, "\n",               0, 0, 5));
 
         docRaw.append(leafSpan(data, "!%",                   0, 1, 0, 0));
@@ -96,11 +110,12 @@ public class DocumentAccessDebug{
         docRaw.append(leafSpan(data, "text for the foot note", 1, 3, 3, 0, 0));
         docRaw.append(leafSpan(data, "\n",                     1, 3, 4));
 
-        data.add(new Object[]{data.size() - 1, false, new int[]{1, 3, 4}});
+        data.add(new Object[]{data.size() - 1, false, new int[]{1, 3, 4}, 0,
+                countLine});
 
-        data.add(new Object[]{data.size() - 1, false, new int[0]});
+        data.add(new Object[]{data.size() - 1, false, new int[0], 0, 1});
 
-        data.add(new Object[]{data.size() - 1, true, new int[0]});
+        data.add(new Object[]{data.size() - 1, true, new int[0], 0, 1});
 
         docText = docRaw.toString();
         return data;
@@ -119,6 +134,12 @@ public class DocumentAccessDebug{
     @Parameter(value = 2)
     public int[] indexes;
 
+    @Parameter(value = 3)
+    public int column;
+
+    @Parameter(value = 4)
+    public int line;
+
 
     @BeforeClass
     public static void beforeClass(){
@@ -131,6 +152,10 @@ public class DocumentAccessDebug{
 
         if (useEmpty){
             assertFalse(emptyDoc.getLeaf(0).isPresent());
+            assertEquals("Wrong column number: " + emptyDoc.getColumn(0),
+                column, emptyDoc.getColumn(0));
+            assertEquals("Wrong line number: " + emptyDoc.getLine(0),
+                line, emptyDoc.getLine(0));
         }
 
         if (indexes.length == 0){
@@ -154,6 +179,10 @@ public class DocumentAccessDebug{
             span = ((SpanNode)span).get(index);
         }
         assertSame(span, leaf);
+        assertEquals("Wrong column number for (" + ptr + ") ",
+            column, filledDoc.getColumn(ptr));
+        assertEquals("Wrong line number for (" + ptr + ")",
+            line, filledDoc.getLine(ptr));
     }
 
 }

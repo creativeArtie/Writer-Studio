@@ -57,6 +57,9 @@ public abstract class Span{
     /** Calls the remove listeners. */
     void setRemove(){
         removeListeners.forEach(remover -> remover.accept(this));
+        if (this instanceof Catalogued){
+            getDocument().getCatalogue().remove((Catalogued)this);
+        }
     }
 
     /** Add a listener when this span's children has been replaced. */
