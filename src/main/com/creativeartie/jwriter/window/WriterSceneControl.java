@@ -15,19 +15,41 @@ import com.creativeartie.jwriter.lang.markup.*;
 
 public class WriterSceneControl extends WriterSceneView {
 
-    private long updateTimer;
-    private long editTimer;
-    private static final long TIMER_START = -2;
-    private static final long TIMER_OFF = -1;
-    private static final long EDIT_LENGTH = 30 * 1000000000l;
-    private static final long TIMER_LENGHT = 1000;
-
     public WriterSceneControl(javafx.stage.Stage window){
         super(window);
-        updateTimer = TIMER_OFF;
-        editTimer = TIMER_OFF;
     }
 
+    protected void changeDoc(ManuscriptFile file){
+        getTextArea().loadDocumentText(file.getDocument());
+        getTextArea().updateStats(file.getRecords().getRecord());
+        getTextArea().setReady(true);
+    }
+
+    protected synchronized void textChanged(PlainTextChange change){
+        int pos = change.getPosition();
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        getManuscriptFile().getDocument().delete(pos, change.getRemovalEnd());
+        getManuscriptFile().getDocument().insert(pos, change.getInserted());
+        getTextArea().updateStats(getManuscriptFile().getRecords().getRecord());
+        assert getTextArea().getText().equals(getManuscriptFile().getDocument()
+            .getRaw());
+    }
+
+/*
+
+    @Override
+    protected synchronized void listenTextChange(PlainTextChange change){
+        setUpdateded(true);
+
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        if (isTextReady()){
+            int pos = change.getPosition();
+            getDocument().delete(pos, change.getRemovalEnd());
+            getDocument().insert(pos, change.getInserted());
+            updateDoc();
+            editTimer = TIMER_START;
+        }
+    }
     protected void controlSetup(){
         new AnimationTimer(){
             @Override
@@ -102,7 +124,7 @@ public class WriterSceneControl extends WriterSceneView {
                     }
                 }
             }.start();
-        }
+}
     }
 
     @Override
@@ -161,5 +183,5 @@ public class WriterSceneControl extends WriterSceneView {
     @Override
     protected void listenListFocused(boolean focused){
         getTextArea().returnFocus();
-    }
+    }*/
 }
