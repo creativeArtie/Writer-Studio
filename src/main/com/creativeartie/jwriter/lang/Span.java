@@ -43,6 +43,10 @@ public abstract class Span{
         removeListeners.forEach(remover -> remover.accept(this));
     }
 
+    public boolean isInUsed(){
+        return getParent() != null && getParent().indexOf(this) != 1;
+    }
+
     /** Add a listener when this span's children has been replaced. */
     public final void addEditor(Consumer<Span> listener){
         checkNotNull(listener, "listener");

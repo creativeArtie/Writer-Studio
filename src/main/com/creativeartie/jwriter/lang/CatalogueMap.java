@@ -17,7 +17,7 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
         idMap = new TreeMap<>();
     }
 
-    boolean add(SpanBranch span){
+    void add(SpanBranch span, HashSet<SpanBranch> edited){
         checkNotNull(span, "span");
         if (span instanceof Catalogued){
             Catalogued adding = (Catalogued)span;
@@ -30,10 +30,9 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
                     idMap.put(id, data);
                 }
                 data.add(adding);
-                return true;
+                edited.add(span);
             }
         }
-        return false;
     }
 
     @Override

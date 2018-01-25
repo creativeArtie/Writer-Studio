@@ -51,11 +51,11 @@ class TextPaneControl extends TextPaneView {
         setStyle(writing.getLeaves());
     }
 
-    void setStyle(List<SpanLeaf> leaves){
-        leaves.forEach(leaf -> {
-            getTextArea().setStyle(leaf.getStart(), leaf.getEnd(),
-                LeafStyleParser.SCREEN.toCss(leaf));
-        });
+    void setStyle(Collection<SpanLeaf> leaves){
+
+        leaves.forEach(leaf -> getTextArea().setStyle(leaf.getStart(),
+                    leaf.getEnd(), LeafStyleParser.SCREEN.toCss(leaf))
+            );
     }
 
 

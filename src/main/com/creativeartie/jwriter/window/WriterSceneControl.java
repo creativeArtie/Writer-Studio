@@ -46,11 +46,13 @@ public class WriterSceneControl extends WriterSceneView {
 
         /// update the text area
         int pos = change.getPosition();
-        currentDoc.delete(pos, change.getRemovalEnd());
-        currentDoc.insert(pos, change.getInserted());
+        HashSet<SpanLeaf> restyle = new HashSet<>();
+        restyle.addAll(currentDoc.delete(pos, change.getRemovalEnd()));
+        restyle.addAll(currentDoc.insert(pos, change.getInserted()));
 
         ///Update the record
-        getTextArea().setStyle(currentDoc.getLeaves());
+        restyle.removeIf(leaf -> ! leaf.isInUsed());
+        getTextArea().setStyle(restyle);
         markedTime = START;
         currentRecords.startWriting(currentDoc);
         assert getTextArea().getText().equals(currentDoc.getRaw());

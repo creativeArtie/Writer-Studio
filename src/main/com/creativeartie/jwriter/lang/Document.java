@@ -92,7 +92,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
         /// Finalize the parse loop
         catalogueMap = new CatalogueMap();
-        updateSpan(documentChildren);
+        updateSpan(documentChildren, new HashSet<>());
     }
 
 
@@ -100,14 +100,15 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * Recursively update all child {@link Span spans}. Helper method of
      * {@link #parseDocument(String)} and {@link #updateEdit()}.
      */
-    private final void updateSpan(List<? extends Span> children){
+    private final void updateSpan(List<? extends Span> children,
+            HashSet<SpanBranch> edited){
         assert children != null: "Null children";
         for (Span child: children){
             /// Fill or refill {@link #catalogueMap}
             if (child instanceof SpanBranch){
                 SpanBranch branch = (SpanBranch) child;
-                catalogueMap.add(branch);
-                updateSpan(branch);
+                catalogueMap.add(branch, edited);
+                updateSpan(branch, edited);
             }
         }
     }
@@ -261,13 +262,12 @@ public abstract class Document extends SpanNode<SpanBranch>{
     }
 
     /** Insert a {@linkplain String} at a location.*/
-    public final void insert(int location, String input){
+    public final Set<SpanLeaf> insert(int location, String input){
         checkRange(location, "location", 0, true, getEnd(), true);
         checkNotNull(input, "input");
         if (isEmpty()){
             parseDocument(input);
-            updateEdit(this);
-            return;
+            return updateEdit(this);
         }
 
         if (location == getLocalEnd()){
@@ -281,31 +281,28 @@ public abstract class Document extends SpanNode<SpanBranch>{
             span = span.getParent();
             while (span instanceof SpanBranch){
                 if (((SpanBranch)span).editRaw(span.getRaw() + input)){
-                    updateEdit((SpanBranch) span);
-                    return;
+                    return updateEdit((SpanBranch) span);
                 }
                 span = span.getParent();
             }
             /// Reparse the whole document
             assert span instanceof Document: "Wrong class.";
             parseDocument(getRaw() + input);
-            updateEdit(this);
-        } else {
-            /// Insert in the begining at in the middle
-            edit(span -> {
+            return updateEdit(this);
+        }
+            return edit(span -> {
                 StringBuilder text = new StringBuilder(span.getRaw());
                 text.insert(location - span.getStart(), input);
                 return text.toString();
             }, location);
-        }
     }
 
     /** Insert a {@linkplain String} at a location.*/
-    public final void delete(int start, int end){
+    public final Set<SpanLeaf> delete(int start, int end){
         checkRange(end, "end", 0, true, getEnd(), true);
         checkRange(start, "start", 0, true, end, true);
 
-        edit(span -> {
+        return edit(span -> {
             if (span.getEnd() >= end){
                 String text = span.getRaw();
                 text = text.substring(0,start - span.getStart()) +
@@ -320,15 +317,15 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * Edit the document, excluding adding to the end of it. Helper function for
      * {@link #insert(int, String)}, and {@link #delete(int, int)}.
      */
-    private final void edit(Function<Span, String> editedText, int location){
+    private Set<SpanLeaf> edit(Function<Span, String> editedText,
+            int location){
         assert editedText != null: "Null editText";
         assert location >= 0 && location <= getEnd(): "Wrong location";
         Optional<SpanLeaf> found = getLeaf(location);
 
         if (! found.isPresent()){
             parseDocument(editedText.apply(this));
-            updateEdit(this);
-            return;
+            return updateEdit(this);
         }
 
         SpanNode<?> span = found.get().getParent();
@@ -340,8 +337,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
                 /// edit is within the local text
                 if (((SpanBranch)span).editRaw(raw)){
                     /// edit is completed
-                    updateEdit((SpanBranch) span);
-                    return;
+                    return updateEdit((SpanBranch) span);
                 }
             }
             span = span.getParent();
@@ -350,13 +346,13 @@ public abstract class Document extends SpanNode<SpanBranch>{
         /// Must be parse at Document level
         assert span instanceof Document: "Wrong class:" + span.getClass();
         parseDocument(editedText.apply(this));
-        updateEdit(this);
+        return updateEdit(this);
     }
 
     /** Update the document after editing. Helper method of
      * {@link #insert(int, String)}, and {@link #edit(Function, int)}.
      */
-    private final void updateEdit(SpanNode<?> updated){
+    private final Set<SpanLeaf> updateEdit(SpanNode<?> updated){
         /// clear caches and data
         spanRanges.invalidateAll();
         spanLeaves.invalidateAll();
@@ -366,12 +362,27 @@ public abstract class Document extends SpanNode<SpanBranch>{
         updated.clearCache();
         setDocEdited();
 
+        /// Create a list of edited SpanBranches
+        HashSet<SpanBranch> edited = new HashSet<>();
+        if (updated instanceof SpanBranch){
+            edited.add((SpanBranch) updated);
+        }
+
         /// refill catalogue map
         catalogueMap = new CatalogueMap();
-        updateSpan(this);
+        updateSpan(this, edited);
 
         /// fire listeners
         updated.setUpdated();
         setDocEdited();
+
+        if (updated instanceof Document){
+            return new HashSet<>(getLeaves());
+        }
+        HashSet<SpanLeaf> ans = new HashSet<>();
+        for (SpanBranch span: edited){
+            ans.addAll(span.getLeaves());
+        }
+        return ans;
     }
 }
