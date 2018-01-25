@@ -83,8 +83,8 @@ public final class FormatSpanLinkRef extends FormatSpanLink
     }
 
     @Override
-    protected void clearLocalCache(){
-        super.clearLocalCache();
+    protected void childEdited(){
+        super.childEdited();
         cachePath = Optional.empty();
         cacheText = Optional.empty();
         cacheStyles = Optional.empty();
@@ -92,7 +92,7 @@ public final class FormatSpanLinkRef extends FormatSpanLink
     }
 
     @Override
-    protected void clearDocCache(){}
+    protected void docEdited(){}
 
     @Override
     protected String toChildString(){

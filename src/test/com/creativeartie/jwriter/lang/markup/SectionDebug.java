@@ -37,7 +37,7 @@ public class SectionDebug {
     }
 
 
-    @Test@Ignore
+    @Test
     public void editChangeSection1_1(){
         ///           0123456789 0123
         String raw = "=Chapter 1\n===Section 1\nsection 1 text\n!# outline\n" +
@@ -48,7 +48,7 @@ public class SectionDebug {
         testSections(doc);
     }
 
-    @Test@Ignore
+    @Test
     public void editAddOutline(){
         ///           0000000000 111111111122 222222223333333 33
         ///           0123456789 012345678901 234567890123456 78

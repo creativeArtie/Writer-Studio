@@ -91,7 +91,8 @@ public class IDOrderDebug {
             id = new CatalogueIdentity(i == 8? Arrays.asList("b", "a"):
                 Arrays.asList("b"), String.valueOf(i));
             CatalogueIdentity test = ((Catalogued)span).getSpanIdentity().get();
-            assertEquals("Wrong id.", test, id);
+            assertEquals("Wrong id.", id, test);
+            i++;
         }
     }
 }

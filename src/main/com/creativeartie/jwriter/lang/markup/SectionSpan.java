@@ -109,7 +109,7 @@ abstract class SectionSpan extends SpanBranch {
     public abstract List<LinedSpan> getLines();
 
     @Override
-    protected void clearLocalCache(){
+    protected void childEdited(){
         cacheHeading = Optional.empty();
         cacheLevel = Optional.empty();
         cacheEdition = Optional.empty();
@@ -117,7 +117,7 @@ abstract class SectionSpan extends SpanBranch {
     }
 
     @Override
-    protected void clearDocCache(){
+    protected void docEdited(){
         cacheId = Optional.empty();
     }
 

@@ -66,7 +66,7 @@ public abstract class FormatSpan extends SpanBranch {
     }
 
     @Override
-    protected void clearLocalCache(){
+    protected void childEdited(){
         cacheStyles = Optional.empty();
     }
 

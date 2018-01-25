@@ -8,9 +8,6 @@ import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * A {@link Span} storing {@link SpanLeaf} and {@link SpanBranch}.
- *
- * This implements some abstract methods left over from {@link SpanNode}, and
- * does the span editing.
  */
 public abstract class SpanBranch extends SpanNode<Span> {
 
@@ -25,8 +22,8 @@ public abstract class SpanBranch extends SpanNode<Span> {
     public SpanBranch(List<Span> spans){
         spanChildren = setParents(spans);
         spanStatus = Optional.empty();
-        clearLocalCache();
-        clearDocCache();
+        childEdited();
+        docEdited();
     }
 
     /**
@@ -65,12 +62,6 @@ public abstract class SpanBranch extends SpanNode<Span> {
         spanParent = parent;
     }
 
-    final void addCatalgoue(){
-        if (this instanceof Catalogued){
-            getDocument().getCatalogue().add((Catalogued)this);
-        }
-    }
-
     /** Get style information about this {@linkplain SpanBranch}.*/
     public abstract List<StyleInfo> getBranchStyles();
 
@@ -90,7 +81,7 @@ public abstract class SpanBranch extends SpanNode<Span> {
         });
     }
 
-    /** Edit the children if this span can hold the entire text. */
+    /** Edit the children if this can hold the entire text. */
     final boolean editRaw(String text){
         checkNotEmpty(text, "text");
         SetupParser parser = getParser(text);
@@ -98,43 +89,24 @@ public abstract class SpanBranch extends SpanNode<Span> {
             /// It can be fully parsed.
 
             /// Removes the children
-            removeChildren();
-
+            for (Span span: this){
+                span.setRemove();
+            }
             /// Reparse text
             SetupPointer pointer = SetupPointer.updatePointer(text,
                 getDocument());
-            Optional<SpanBranch> found = parser.parse(pointer);
-
-            assert ! pointer.hasNext(): "Has left over characters: " + pointer;
-            assert found.isPresent(): "No children found.";
-
-            found.ifPresent(span -> spanChildren = setParents(span));
-
+            parser.parse(pointer).ifPresent(span ->
+                spanChildren = setParents(span)
+            );
+            /// There are text left over.
+            if (pointer.hasNext()){
+                throw new IllegalStateException("Has left over characters.");
+            }
+            setUpdated();
             spanStatus = Optional.empty();
             return true;
        }
        return false;
-    }
-
-    void removeChildren(){
-        if (this instanceof Catalogued){
-            getDocument().getCatalogue().remove((Catalogued)this);
-        }
-        setRemove();
-        for (Span child: this){
-            child.setRemove();
-            if (child instanceof SpanBranch){
-                ((SpanBranch)child).removeChildren();
-            }
-        }
-    }
-
-    protected void idChanged(){
-        if (this instanceof Catalogued){
-            getDocument().getCatalogue().remove((Catalogued)this);
-        } else if (getParent() instanceof SpanBranch){
-            ((SpanBranch)getParent()).idChanged();
-        }
     }
 
     /** Gets the parser only if it can reparsed the whole text. */
@@ -152,5 +124,15 @@ public abstract class SpanBranch extends SpanNode<Span> {
             return CatalogueStatus.NO_ID;
         });
         return spanStatus.get();
+    }
+
+    /** A simple cache method that make use of {@link Optional}.*/
+    protected <T> Optional<T> getCache(Optional<T> found, Supplier<T> maker){
+        checkNotNull(found, "found");
+        checkNotNull(maker, "maker");
+        if (found.isPresent()){
+            return found;
+        }
+        return Optional.of(maker.get());
     }
 }

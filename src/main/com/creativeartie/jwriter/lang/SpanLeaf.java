@@ -4,6 +4,7 @@ import java.util.*;
 
 import com.google.common.collect.*;
 
+import com.creativeartie.jwriter.property.*;
 import com.creativeartie.jwriter.main.*;
 
 import static com.creativeartie.jwriter.main.Checker.*;
@@ -22,9 +23,8 @@ public class SpanLeaf extends Span{
     /** create raw text for {@linkplain Object#toString()}. */
     public static String escapeText(String input){
         checkNotNull(input, "input");
-        return "\"" + input.replace("\"", "\" \\\" \"") /// replace quote
-            .replace("\n", "\" \\n \"") /// replace new line
-            .replace("\t", "\" \\t \"") + "\""; ///replace tabs
+        return "\"" + input.replace("\"", "\" \\\" \"")
+            .replace("\n", "\" \\n \"").replace("\t", "\" \\t \"") + "\"";
     }
 
     SpanLeaf(SetupPointer pointer, StyleInfoLeaf style){
@@ -88,5 +88,13 @@ public class SpanLeaf extends Span{
     }
 
     @Override
-    protected void clearDocCache(){}
+    public void setRemove(){}
+
+    @Override
+    public void setUpdated(){
+        leafParent.setUpdated();
+    }
+
+    @Override
+    protected void docEdited(){}
 }

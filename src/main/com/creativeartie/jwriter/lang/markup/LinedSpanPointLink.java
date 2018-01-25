@@ -42,11 +42,11 @@ public class LinedSpanPointLink extends LinedSpanPoint {
     }
 
     @Override
-    protected void clearLocalCache(){
-        super.clearLocalCache();
+    protected void childEdited(){
+        super.childEdited();
         cachePath = Optional.empty();
     }
 
     @Override
-    protected void clearDocCache(){}
+    protected void docEdited(){}
 }

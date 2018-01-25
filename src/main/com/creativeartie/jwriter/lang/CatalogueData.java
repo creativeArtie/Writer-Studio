@@ -12,10 +12,6 @@ public final class CatalogueData{
     private final CatalogueMap catalogueParent;
     private final CatalogueIdentity catelogueKey;
 
-    private static int extractInt(SpanBranch span){
-        return span.getStart();
-    }
-
     /** {@linkplain CatalogueData}'s constructor.*/
     CatalogueData(CatalogueMap parent, CatalogueIdentity id){
         catalogueParent = checkNotNull(parent, "parent");
@@ -79,12 +75,10 @@ public final class CatalogueData{
     }
 
     public ImmutableList<SpanBranch> getIds(){
-        /// TODO to set instead of list
         return ImmutableList.copyOf(idSpans);
     }
 
     public ImmutableList<SpanBranch> getRefs(){
-        /// TODO to set instead of list
         return ImmutableList.copyOf(refSpans);
     }
 

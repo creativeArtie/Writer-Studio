@@ -64,8 +64,8 @@ public final class FormatSpanContent extends FormatSpan implements BasicText{
     }
 
     @Override
-    protected void clearLocalCache(){
-        super.clearLocalCache();
+    protected void childEdited(){
+        super.childEdited();
         cacheText = Optional.empty();
         cacheTrimmed = Optional.empty();
         cacheSpaceBegin = Optional.empty();
@@ -73,7 +73,7 @@ public final class FormatSpanContent extends FormatSpan implements BasicText{
     }
 
     @Override
-    protected void clearDocCache(){}
+    protected void docEdited(){}
 
     @Override
     protected String toChildString(){

@@ -28,11 +28,11 @@ public final class InfoDataSpanText extends InfoDataSpan{
     }
 
     @Override
-    protected void clearLocalCache(){
-        super.clearLocalCache();
+    protected void childEdited(){
+        super.childEdited();
         cacheData = Optional.empty();
     }
 
     @Override
-    protected void clearDocCache(){}
+    protected void docEdited(){}
 }

@@ -62,13 +62,13 @@ public class LinedSpanAgenda extends LinedSpan implements Catalogued{
     }
 
     @Override
-    protected void clearLocalCache(){
+    protected void childEdited(){
         cacheAgenda = Optional.empty();
         cacheNote = Optional.empty();
     }
 
     @Override
-    protected void clearDocCache(){
+    protected void docEdited(){
         cacheId = Optional.empty();
     }
 }

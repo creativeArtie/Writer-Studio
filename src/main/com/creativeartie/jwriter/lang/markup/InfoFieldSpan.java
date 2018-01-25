@@ -53,13 +53,13 @@ public final class InfoFieldSpan extends SpanBranch{
     }
 
     @Override
-    protected void clearLocalCache(){
+    protected void childEdited(){
         cacheStyles = Optional.empty();
         cacheField = Optional.empty();
     }
 
     @Override
-    protected void clearDocCache(){}
+    protected void docEdited(){}
 
     @Override
     public String toString(){

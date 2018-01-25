@@ -176,7 +176,7 @@ public class NoteCardDebug {
         doc.assertIds();
     }
 
-    @Test@Ignore
+    @Test
     public void editAddLineBasic(){
         ///           012345678901234567 89
         String raw = "!%line 1!%   line2\n";
@@ -204,7 +204,7 @@ public class NoteCardDebug {
         doc.assertIds();
     }
 
-    @Test@Ignore
+    @Test
     public void editAddParagraph(){
         ///           01234567 89
         String raw = "!%line 1\n";
@@ -228,7 +228,7 @@ public class NoteCardDebug {
         doc.assertIds();
     }
 
-    @Test@Ignore
+    @Test
     public void editSplitById(){
         ///           0123456789012 3456789012 34
         String raw = "!%basic note \n!%ed:data\n";
@@ -250,7 +250,7 @@ public class NoteCardDebug {
         testNoteBasic(doc);
     }
 
-    @Test@Ignore
+    @Test
     public void editContent(){
         ///           012345678901234567890123
         String raw = "!%@see:Note Heading\n!%note content\\\n\n" +

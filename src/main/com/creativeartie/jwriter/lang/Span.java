@@ -8,23 +8,8 @@ import static com.creativeartie.jwriter.main.Checker.*;
 
 /**
  * A subdivision of a {@link Document document text}.
- *
- * This class when to set edit/remove, and locations.
  */
 public abstract class Span{
-
-    /// Part 1: Basic Cache and basic instance fields setup:
-
-    /** A simple cache method that make use of {@link Optional}.*/
-    protected static <T> Optional<T> getCache(Optional<T> found,
-            Supplier<T> maker){
-        checkNotNull(found, "found");
-        checkNotNull(maker, "maker");
-        if (found.isPresent()){
-            return found;
-        }
-        return Optional.of(maker.get());
-    }
 
     private final HashSet<Consumer<Span>> removeListeners;
     private final HashSet<Consumer<Span>> changeListeners;
@@ -36,18 +21,17 @@ public abstract class Span{
         updateListeners = new HashSet<>();
     }
 
-    /// Part 2: Common Methods of Span subclasses
-
     /** Get the raw text. */
     public abstract String getRaw();
+
+    /** Get the length of the local text length. */
+    public abstract int getLocalEnd();
 
     /** Get the {@link Document root span}. */
     public abstract Document getDocument();
 
     /** Get the {@link SpanNode parent span}. */
     public abstract SpanNode<?> getParent();
-
-    /// Part 3: Handling changes to the Span.
 
     /** Add a listener when this is removed. */
     public void addRemover(Consumer<Span> listener){
@@ -57,9 +41,6 @@ public abstract class Span{
     /** Calls the remove listeners. */
     void setRemove(){
         removeListeners.forEach(remover -> remover.accept(this));
-        if (this instanceof Catalogued){
-            getDocument().getCatalogue().remove((Catalogued)this);
-        }
     }
 
     /** Add a listener when this span's children has been replaced. */
@@ -76,11 +57,6 @@ public abstract class Span{
 
     /** Calls the change listeners and all it's parent update listeners. */
     void setUpdated(){
-        if (this instanceof Catalogued){
-            ((Catalogued)this).getSpanIdentity().ifPresent(id ->{
-                assert getDocument().getCatalogue().get(id) != null;
-            });
-        }
         changeListeners.forEach(changer -> changer.accept(this));
         updateParent();
     }
@@ -94,30 +70,29 @@ public abstract class Span{
      */
     private final void updateParent(){
         updateListeners.forEach(editor -> editor.accept(this));
+        ((SpanNode<?>)this).childEdited();
         if (! (this instanceof Document)){
             ((Span)getParent()).updateParent();
         }
     }
 
     /** Listened that the document has been edited. */
-    protected abstract void clearDocCache();
-
-    /// Part 4: Handling finding positions.
+    protected abstract void docEdited();
 
     /** Get the start and end of this span in relation the the document. */
     public Range<Integer> getRange(){
         /// Look up in the cache first
         return getDocument().getRangeCache(this, () ->{
-            /// get the start of the parent's span.
+            // get the start of the parent's span.
             int ans = getParent().getStart();
             for(Span span: getParent()){
                 if (span == this){
                     return Range.closedOpen(ans, ans + getLocalEnd());
                 }
-                /// For each child of the parent exclude this:
+                // For each child of the parent exclude this:
                 ans += span.getLocalEnd();
             }
-            /// This Span is not a child of the parent
+            // This Span is not a child of the parent
             assert false: getRaw();
             return null;
 
@@ -134,18 +109,12 @@ public abstract class Span{
         return getRange().upperEndpoint();
     }
 
-    // public int getLocalStart(){ return 0; } /// Code here for completeness
-
-    /** Get the length of the local text length. */
-    public abstract int getLocalEnd();
-
     /** Convert a global index to location index. */
     public final int toLocalPosition(int index){
-        checkIndex(index, "index", getEnd(), true);
+        checkIndex(index, "index", getLocalEnd(), true);
         return getStart() - index;
     }
-
-
+    
     /** Is this {@code Span}'s text is at the first in the document. */
     public final boolean isFirst(){
         return checkLocation(parent -> parent.get(0));

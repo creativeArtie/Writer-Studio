@@ -311,7 +311,7 @@ public final class SetupPointer{
     }
 
     /// ========================================================================
-    /// Part 8: nextChars Methods ----------------------------------------------
+    /// Part 8: nestChars Methods ----------------------------------------------
 
     /**
      * Create a {@link SpanLeaf} with a size. The created
@@ -397,7 +397,7 @@ public final class SetupPointer{
     @Override
     public String toString(){
         return "(" + pointerHelper(lastMarker) + "-" + pointerHelper(matchMarker) + "-" +
-            pointerHelper(nextMarker) + "): " + SpanLeaf.escapeText(rawText);
+            pointerHelper(nextMarker) + "): " + rawText;
     }
 
     /**
@@ -408,7 +408,7 @@ public final class SetupPointer{
         assert ptr >= 0: "Too low ptr: " + ptr;
         assert ptr <= rawText.length(): "Too high ptr: " + ptr;
         if (ptr < rawText.length()){
-            return ptr + "(" + SpanLeaf.escapeText(rawText.substring(ptr)) + ")";
+            return ptr + "(" + rawText.charAt(ptr) + ")";
         }
         return ptr + "(end)";
     }

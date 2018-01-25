@@ -1,6 +1,5 @@
 package com.creativeartie.jwriter.lang;
 
-
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.*;
@@ -32,6 +31,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         spanRanges = CacheBuilder.newBuilder().weakKeys().build();
         spanLeaves = CacheBuilder.newBuilder().weakKeys().build();
         spanTexts = CacheBuilder.newBuilder().weakKeys().build();
+        documentParsers = parsers; 
         spanLocation = CacheBuilder.newBuilder().maximumSize(1000)
             .build(CacheLoader.from(pos ->{
                 int column = 0;
@@ -47,9 +47,6 @@ public abstract class Document extends SpanNode<SpanBranch>{
                 }
                 return new Integer[]{column, line};
             }));
-        documentParsers = parsers;
-
-        catalogueMap = new CatalogueMap();
 
         /// Setup for building the doc and a pointer to use
         parseDocument(raw);
@@ -91,21 +88,13 @@ public abstract class Document extends SpanNode<SpanBranch>{
                     break;
                 }
             }
-        }
+        }    
 
         /// Finalize the parse loop
-        // catalogueMap = new CatalogueMap();
+        catalogueMap = new CatalogueMap();
         updateSpan(documentChildren);
     }
 
-    protected void spanChanged(){
-        spanRanges.invalidateAll();
-        spanLeaves.invalidateAll();
-        spanTexts.invalidateAll();
-        spanLocation.invalidateAll();
-        // catalogueMap = new CatalogueMap();
-        updateSpan(this);
-    }
 
     /**
      * Recursively update all child {@link Span spans}. Helper method of
@@ -113,9 +102,6 @@ public abstract class Document extends SpanNode<SpanBranch>{
      */
     private final void updateSpan(List<? extends Span> children){
         assert children != null: "Null children";
-        if (children instanceof SpanBranch){
-            ((SpanBranch)children).docEdited();
-        }
         for (Span child: children){
             /// Fill or refill {@link #catalogueMap}
             if (child instanceof SpanBranch){
@@ -134,7 +120,6 @@ public abstract class Document extends SpanNode<SpanBranch>{
                     });
                 }
                 updateSpan(branch);
-                branch.addCatalgoue();
             }
 
             /// Tell the child that the document has been updated.
@@ -172,24 +157,6 @@ public abstract class Document extends SpanNode<SpanBranch>{
     @Override
     public final Range<Integer> getRange(){
         return getRangeCache(this, () -> Range.closedOpen(0, getLocalEnd()));
-    }
-
-    /** Find column index. */
-    public final int getColumn(int index){
-        try {
-            return spanLocation.get(index)[0];
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e.getCause());
-        }
-    }
-
-    /** Fine line index. */
-    public final int getLine(int index){
-        try {
-            return spanLocation.get(index)[1];
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e.getCause());
-        }
     }
 
     /**
@@ -248,7 +215,25 @@ public abstract class Document extends SpanNode<SpanBranch>{
             }
             return builder.build();
         });
+    }   
+    
+    /** Find column index. */
+    public final int getColumn(int index){
+        try {
+            return spanLocation.get(index)[0];
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e.getCause());
+        }
     }
+
+    /** Fine line index. */
+    public final int getLine(int index){
+        try {
+            return spanLocation.get(index)[1];
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e.getCause());
+        }
+}
 
     /** Locate a {@link Span} that is a instance of a certain class  */
     public final <T> Optional<T> locateSpan(int index, Class<T> clazz){
@@ -263,12 +248,12 @@ public abstract class Document extends SpanNode<SpanBranch>{
         SpanNode<?> pointer = this;
         do {
             Span found = locateSpan(index, pointer);
-            if (clazz.isInstance(found)){
-                /// Found and matched reqrested class
-                return Optional.of(clazz.cast(found));
-            } else if (found instanceof SpanLeaf){
+            if (found instanceof SpanLeaf){
                 /// Nothing found:
                 return Optional.empty();
+            } else if (clazz.isInstance(found)){
+                /// Found and matched reqrested class
+                return Optional.of(clazz.cast(found));
             }
             assert found instanceof SpanNode: "Wrong class: " + found.getClass();
             pointer = (SpanNode<?>) found;
@@ -297,6 +282,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         if (isEmpty()){
             parseDocument(input);
             setUpdated();
+            updateEdit();
             return;
         }
 
@@ -319,10 +305,10 @@ public abstract class Document extends SpanNode<SpanBranch>{
             /// Reparse the whole document
             if (span != null){
                 assert span instanceof Document: "Wrong class.";
-                catalogueMap = new CatalogueMap();
                 parseDocument(getRaw() + input);
                 setUpdated();
             }
+            updateEdit();
         } else {
             /// Insert in the begining at in the middle
             edit(span -> {
@@ -337,9 +323,6 @@ public abstract class Document extends SpanNode<SpanBranch>{
     public final void delete(int start, int end){
         checkRange(end, "end", 0, true, getEnd(), true);
         checkRange(start, "start", 0, true, end, true);
-        if (isEmpty()){
-            throw new IllegalStateException("Can't not delete in a empty document.");
-        }
 
         edit(span -> {
             if (span.getEnd() >= end){
@@ -361,6 +344,13 @@ public abstract class Document extends SpanNode<SpanBranch>{
         assert location >= 0 && location <= getEnd(): "Wrong location";
         Optional<SpanLeaf> found = getLeaf(location);
 
+        if (! found.isPresent()){
+            parseDocument(editedText.apply(this));
+            setUpdated();
+            updateEdit();
+            return;
+        }
+
         SpanNode<?> span = found.get().getParent();
 
         /// Attempt to parse at a SpanBranch level
@@ -380,9 +370,20 @@ public abstract class Document extends SpanNode<SpanBranch>{
         /// Must be parse at Document level
         if (span != null){
             assert span instanceof Document: "Wrong class:" + span.getClass();
-            catalogueMap = new CatalogueMap();
             parseDocument(editedText.apply(this));
             setUpdated();
         }
+        updateEdit();
+    }
+
+    /** Update the document after editing. Helper method of
+     * {@link #insert(int, String)}, and {@link #edit(Function, int)}.
+     */
+    private final void updateEdit(){
+        spanRanges.invalidateAll();
+        spanLeaves.invalidateAll();
+        spanTexts.invalidateAll();
+        catalogueMap = new CatalogueMap();
+        updateSpan(this);
     }
 }

@@ -60,12 +60,12 @@ public class LinedSpanLevelList extends LinedSpanLevel {
     }
 
     @Override
-    protected void clearLocalCache(){
-        super.clearLocalCache();
+    protected void childEdited(){
+        super.childEdited();
         cachePublish = Optional.empty();
         cacheNote = Optional.empty();
     }
 
     @Override
-    protected void clearDocCache(){}
+    protected void docEdited(){}
 }

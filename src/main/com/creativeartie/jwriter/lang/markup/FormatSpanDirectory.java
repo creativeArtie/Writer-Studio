@@ -70,15 +70,15 @@ public final class FormatSpanDirectory extends FormatSpan implements Catalogued{
     }
 
     @Override
-    protected void clearLocalCache(){
-        super.clearLocalCache();
+    protected void childEdited(){
+        super.childEdited();
         cacheId = Optional.empty();
         cacheStyles = Optional.empty();
         cacheOutput = Optional.empty();
     }
 
     @Override
-    protected void clearDocCache(){}
+    protected void docEdited(){}
 
     @Override
     protected String toChildString(){

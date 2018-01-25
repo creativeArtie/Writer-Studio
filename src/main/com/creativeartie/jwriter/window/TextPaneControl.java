@@ -57,7 +57,7 @@ class TextPaneControl extends TextPaneView {
                 LeafStyleParser.SCREEN.toCss(leaf));
         });
     }
-/*
+
 
     public void moveTo(int position){
         if (position == getTextArea().getLength()){
@@ -70,7 +70,7 @@ class TextPaneControl extends TextPaneView {
     public void returnFocus(){
         getTextArea().requestFollowCaret();
         getTextArea().requestFocus();
-    }*/
+    }
 
     @Override
     public WindowText setNextMode(WindowText last){

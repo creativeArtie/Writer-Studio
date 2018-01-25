@@ -58,15 +58,15 @@ public final class FormatSpanLinkDirect extends FormatSpanLink {
     }
 
     @Override
-    protected void clearLocalCache(){
-        super.clearLocalCache();
+    protected void childEdited(){
+        super.childEdited();
         cachePath = Optional.empty();
         cacheText = Optional.empty();
         cacheStyles = Optional.empty();
     }
 
     @Override
-    protected void clearDocCache(){}
+    protected void docEdited(){}
 
     @Override
     protected String toChildString(){

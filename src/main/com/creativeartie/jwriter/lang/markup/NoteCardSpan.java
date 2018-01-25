@@ -118,14 +118,14 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
     }
 
     @Override
-    protected void clearLocalCache(){
+    protected void childEdited(){
         cacheStyles = Optional.empty();
         cacheNote = Optional.empty();
         cacheSources = Optional.empty();
     }
 
     @Override
-    protected void clearDocCache(){
+    protected void docEdited(){
         cacheId = Optional.empty();
     }
 }

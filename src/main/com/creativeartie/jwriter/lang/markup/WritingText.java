@@ -65,12 +65,12 @@ public class WritingText extends Document{
 
 
     @Override
-    protected void clearDocCache(){
-        // TODO clearDocCache
+    protected void docEdited(){
+        // TODO docEdited
     }
 
     @Override
-    protected void clearLocalCache(){
-        // TODO clearLocalCache
+    protected void childEdited(){
+        // TODO childEdited
     }
 }

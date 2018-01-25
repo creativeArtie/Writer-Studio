@@ -73,14 +73,14 @@ public final class FormatSpanMain extends SpanBranch {
     }
 
     @Override
-    protected void clearLocalCache(){
+    protected void childEdited(){
         cachePublish = Optional.empty();
         cacheNote = Optional.empty();
         cacheTotal = Optional.empty();
     }
 
     @Override
-    protected void clearDocCache(){}
+    protected void docEdited(){}
 
     @Override
     public String toString(){

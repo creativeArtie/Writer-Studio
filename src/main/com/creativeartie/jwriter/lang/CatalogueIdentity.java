@@ -25,7 +25,8 @@ public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
         categoryPart = ImmutableList.copyOf(categories);
 
         int ptr = span.getStart();
-        int padding = String.valueOf(span.getDocument().getEnd()).length();
+        int padding = String.valueOf(span.getDocument().getLocalEnd())
+            .length();
         namePart = String.format("%0" + padding + "d",  ptr);
 
     }
@@ -45,13 +46,14 @@ public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
     /** Find the status base on a {@link CatalogueMap}. */
     CatalogueStatus getStatus(CatalogueMap parent){
         checkNotNull(parent, "parent");
+
         return parent.get(this).getState();
     }
 
     public List<String> getCategories(){
         return categoryPart;
     }
-
+    
     public String getBase(){
         if (categoryPart.isEmpty()){
             return "";

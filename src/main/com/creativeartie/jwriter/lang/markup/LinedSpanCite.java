@@ -82,7 +82,7 @@ public class LinedSpanCite extends LinedSpan {
     }
 
     @Override
-    protected void clearLocalCache(){
+    protected void childEdited(){
         cacheFieldType = Optional.empty();
         cacheData = Optional.empty();
         cacheStyles = Optional.empty();
@@ -90,5 +90,5 @@ public class LinedSpanCite extends LinedSpan {
     }
 
     @Override
-    protected void clearDocCache(){}
+    protected void docEdited(){}
 }

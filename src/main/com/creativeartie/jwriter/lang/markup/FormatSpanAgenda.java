@@ -61,12 +61,12 @@ public final class FormatSpanAgenda extends SpanBranch implements Catalogued{
     }
 
     @Override
-    protected void clearLocalCache(){
+    protected void childEdited(){
         cacheAgenda = Optional.empty();
     }
 
     @Override
-    protected void clearDocCache(){
+    protected void docEdited(){
         cacheId = Optional.empty();
     }
 

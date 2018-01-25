@@ -46,6 +46,20 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
         return ImmutableSortedMap.copyOf(idMap);
     }
 
+    public SortedMap<CatalogueIdentity, CatalogueData> getCategory(
+            String ... category){
+        checkNotEmpty(category, "category");
+
+        SortedMap<CatalogueIdentity, CatalogueData> map = delegate();
+        CatalogueIdentity first = new CatalogueIdentity(
+            ImmutableList.copyOf(category), "");
+
+        category[category.length - 1] = category[category.length - 1] + (char)0;
+        CatalogueIdentity last = new CatalogueIdentity(
+            ImmutableList.copyOf(category), "");
+        return map.subMap(first, last);
+    }
+    
     public TreeSet<SpanBranch> getIds(String base){
         TreeSet<SpanBranch> spans = new TreeSet<>(Comparator.comparing(
             span -> Optional.of(span)
@@ -62,5 +76,5 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
             }
         }
         return spans;
-    }
+}
 }

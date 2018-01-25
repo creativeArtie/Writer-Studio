@@ -37,10 +37,10 @@ public final class BasicTextEscape extends SpanBranch{
     }
 
     @Override
-    protected void clearLocalCache(){
+    protected void childEdited(){
         cacheEscape = Optional.empty();
     }
 
     @Override
-    protected void clearDocCache(){}
+    protected void docEdited(){}
 }
