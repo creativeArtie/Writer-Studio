@@ -1,4 +1,0 @@
-Scene Writer#setManuscriptFile
-   #listenDoc()
-       textReady = false
-   

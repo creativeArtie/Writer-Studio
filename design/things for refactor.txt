@@ -1,2 +1,0 @@
-For assert* methods:
-    move the order to something reasonable
