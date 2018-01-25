@@ -20,22 +20,12 @@ public final class CatalogueData{
         refSpans = new ArrayList<>();
     }
 
-    void addId(SpanBranch span){
+    void add(Catalogued span){
         checkNotNull(span, "Span");
-        checkArgument(span instanceof Catalogued,
-            "Parameter \"span\" is not of type Catalogued.");
-        checkArgument(((Catalogued)span).isId(),
-            "Parameter \"span\" is no an id. ");
+        checkArgument(span instanceof SpanBranch,
+            "Parameter \"span\" is not of type SpanBranch.");
 
-        idSpans.add(span);
-    }
-
-    void addRef(SpanBranch span){
-        checkNotNull(span, "Span");
-        checkArgument(((Catalogued)span).isRef(),
-            "Parameter \"span\" is no an id. ");
-
-        refSpans.add(span);
+        (span.isId()? idSpans: refSpans).add((SpanBranch)span);
     }
 
     public CatalogueMap getParent(){

@@ -106,19 +106,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
             /// Fill or refill {@link #catalogueMap}
             if (child instanceof SpanBranch){
                 SpanBranch branch = (SpanBranch) child;
-                if (branch instanceof Catalogued){
-                    Catalogued catalogued = (Catalogued) branch;
-                    Optional<CatalogueIdentity> id = catalogued
-                            .getSpanIdentity();
-                    /// Don't add ID if there isn't one
-                    id.ifPresent(found -> {
-                        if(catalogued.isId()){
-                            catalogueMap.addId(found, branch);
-                        } else {
-                            catalogueMap.addRef(found, branch);
-                        }
-                    });
-                }
+                catalogueMap.add(branch);
                 updateSpan(branch);
             }
         }
@@ -369,13 +357,20 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * {@link #insert(int, String)}, and {@link #edit(Function, int)}.
      */
     private final void updateEdit(SpanNode<?> updated){
+        /// clear caches and data
         spanRanges.invalidateAll();
         spanLeaves.invalidateAll();
         spanTexts.invalidateAll();
-        catalogueMap = new CatalogueMap();
+
+        /// clear children caches and data
         updated.clearCache();
         setDocEdited();
+
+        /// refill catalogue map
+        catalogueMap = new CatalogueMap();
         updateSpan(this);
+
+        /// fire listeners
         updated.setUpdated();
         setDocEdited();
     }

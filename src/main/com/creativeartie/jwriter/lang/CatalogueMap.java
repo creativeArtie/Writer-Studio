@@ -17,28 +17,23 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
         idMap = new TreeMap<>();
     }
 
-    void addId(CatalogueIdentity id, SpanBranch span){
-        checkNotNull(id, "id");
+    boolean add(SpanBranch span){
         checkNotNull(span, "span");
-
-        CatalogueData data = idMap.get(id);
-        if (data == null){
-            data = new CatalogueData(this, id);
-            idMap.put(id, data);
+        if (span instanceof Catalogued){
+            Catalogued adding = (Catalogued)span;
+            Optional<CatalogueIdentity> found = adding.getSpanIdentity();
+            if (found.isPresent()){
+                CatalogueIdentity id = found.get();
+                CatalogueData data = idMap.get(id);
+                if (data == null){
+                    data = new CatalogueData(this, id);
+                    idMap.put(id, data);
+                }
+                data.add(adding);
+                return true;
+            }
         }
-        data.addId(span);
-    }
-
-    void addRef(CatalogueIdentity ref, SpanBranch span){
-        checkNotNull(ref, "ref");
-        checkNotNull(span, "span");
-
-        CatalogueData data = idMap.get(ref);
-        if (data == null){
-            data = new CatalogueData(this, ref);
-            idMap.put(ref, data);
-        }
-        data.addRef(span);
+        return false;
     }
 
     @Override
@@ -59,7 +54,7 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
             ImmutableList.copyOf(category), "");
         return map.subMap(first, last);
     }
-    
+
     public TreeSet<SpanBranch> getIds(String base){
         TreeSet<SpanBranch> spans = new TreeSet<>(Comparator.comparing(
             span -> Optional.of(span)
