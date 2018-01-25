@@ -65,14 +65,14 @@ public final class EditionSpan extends SpanBranch{
     }
 
     @Override
-    protected void childEdited(){
+    protected void clearLocalCache(){
         cacheEdition = Optional.empty();
         cacheDetail = Optional.empty();
         cacheBranchStyles = Optional.empty();
     }
 
     @Override
-    protected void docEdited(){}
+    protected void clearDocCache(){}
 
     @Override
     public String toString(){

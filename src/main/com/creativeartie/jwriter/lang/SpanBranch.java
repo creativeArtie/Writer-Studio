@@ -25,8 +25,8 @@ public abstract class SpanBranch extends SpanNode<Span> {
     public SpanBranch(List<Span> spans){
         spanChildren = setParents(spans);
         spanStatus = Optional.empty();
-        childEdited();
-        docEdited();
+        clearLocalCache();
+        clearDocCache();
     }
 
     /**
@@ -110,7 +110,6 @@ public abstract class SpanBranch extends SpanNode<Span> {
 
             found.ifPresent(span -> spanChildren = setParents(span));
 
-            setUpdated();
             spanStatus = Optional.empty();
             return true;
        }

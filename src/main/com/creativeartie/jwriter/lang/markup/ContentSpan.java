@@ -78,7 +78,7 @@ public final class ContentSpan extends SpanBranch implements BasicText{
     }
 
     @Override
-    protected void childEdited(){
+    protected void clearLocalCache(){
         cacheText = Optional.empty();
         cacheTrimmed = Optional.empty();
         cacheSpaceBegin = Optional.empty();
@@ -87,5 +87,5 @@ public final class ContentSpan extends SpanBranch implements BasicText{
     }
 
     @Override
-    protected void docEdited(){}
+    protected void clearDocCache(){}
 }

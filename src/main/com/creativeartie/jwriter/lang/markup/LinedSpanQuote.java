@@ -48,12 +48,12 @@ public class LinedSpanQuote extends LinedSpan {
     }
 
     @Override
-    protected void childEdited(){
+    protected void clearLocalCache(){
         cacheFormatted = Optional.empty();
         cachePublish = Optional.empty();
         cacheNote = Optional.empty();
     }
 
     @Override
-    protected void docEdited(){}
+    protected void clearDocCache(){}
 }

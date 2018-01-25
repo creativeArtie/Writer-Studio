@@ -86,8 +86,8 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
     }
 
     @Override
-    protected void childEdited(){
-        super.childEdited();
+    protected void clearLocalCache(){
+        super.clearLocalCache();
         cacheEditionSpan = Optional.empty();
         cacheId = Optional.empty();
         cacheEdition = Optional.empty();
@@ -96,5 +96,5 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
     }
 
     @Override
-    protected void docEdited(){}
+    protected void clearDocCache(){}
 }

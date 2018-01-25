@@ -61,18 +61,9 @@ class TextPaneControl extends TextPaneView {
 
     public void moveTo(int position){
         if (position == getTextArea().getLength()){
-            getTextArea().moveTo(position);
-        } else {
             getTextArea().moveTo(position - 1);
-        }
-    }
-
-    public void moveTo(Span span){
-        int end = span.getEnd();
-        if (end == getTextArea().getLength()){
-            getTextArea().moveTo(end);
         } else {
-            getTextArea().moveTo(end - 1);
+            getTextArea().moveTo(position);
         }
     }
 

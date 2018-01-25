@@ -7,8 +7,8 @@ import static com.creativeartie.jwriter.main.Checker.*;
 
 /** A list of {@link SpanBranch} with the same {@link CatalogueIdentity}. */
 public final class CatalogueData{
-    private final ArrayList<SpanBranch> idSpans;
-    private final ArrayList<SpanBranch> refSpans;
+    private final TreeSet<SpanBranch> idSpans;
+    private final TreeSet<SpanBranch> refSpans;
     private final CatalogueMap catalogueParent;
     private final CatalogueIdentity catelogueKey;
 
@@ -20,26 +20,33 @@ public final class CatalogueData{
     CatalogueData(CatalogueMap parent, CatalogueIdentity id){
         catalogueParent = checkNotNull(parent, "parent");
         catelogueKey = checkNotNull(id, "id");
-        idSpans = new ArrayList<>();
-        refSpans = new ArrayList<>();
+        idSpans = new TreeSet<>(Comparator.comparingInt(CatalogueData::extractInt));
+        refSpans = new TreeSet<>(Comparator.comparingInt(CatalogueData::extractInt));
     }
 
-    void addId(SpanBranch span){
+<<<<<<< HEAD
+    void add(Catalogued span){
+        checkArgument(span instanceof SpanBranch,
+            "Parameter \"span\" is not of type SpanBranch.");
+        /// TODO throw exception with repeat (there are repeated added)
+
+        (span.isId()? idSpans:refSpans).add((SpanBranch)span);
+    }
+
+    boolean remove(Catalogued span){
+        checkArgument(span instanceof SpanBranch,
+            "Parameter \"span\" is not of type SpanBranch.");
+        /// TODO throw exception with repeat (there are repeated added)
+
+        (span.isId()? idSpans:refSpans).remove((SpanBranch)span);
+        return idSpans.isEmpty() && refSpans.isEmpty();
+=======
+    void add(SpanBranch span){
         checkNotNull(span, "Span");
         checkArgument(span instanceof Catalogued,
             "Parameter \"span\" is not of type Catalogued.");
-        checkArgument(((Catalogued)span).isId(),
-            "Parameter \"span\" is no an id. ");
-
-        idSpans.add(span);
-    }
-
-    void addRef(SpanBranch span){
-        checkNotNull(span, "Span");
-        checkArgument(((Catalogued)span).isRef(),
-            "Parameter \"span\" is no an id. ");
-
-        refSpans.add(span);
+        (((Catalogued)span).isId()? idSpans: refSpans).add(span);
+>>>>>>> fada46eeaabae6262e901a2e482ef1edfe764579
     }
 
     public CatalogueMap getParent(){
@@ -75,7 +82,7 @@ public final class CatalogueData{
         checkState(idSpans.size() == 1,
             "Id (" + catelogueKey + ") is in the wrong state.");
 
-        return idSpans.get(0);
+        return idSpans.first();
     }
 
     public ImmutableList<SpanBranch> getIds(){

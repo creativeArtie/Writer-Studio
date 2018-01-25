@@ -76,6 +76,11 @@ public abstract class Span{
 
     /** Calls the change listeners and all it's parent update listeners. */
     void setUpdated(){
+        if (this instanceof Catalogued){
+            ((Catalogued)this).getSpanIdentity().ifPresent(id ->{
+                assert getDocument().getCatalogue().get(id) != null;
+            });
+        }
         changeListeners.forEach(changer -> changer.accept(this));
         updateParent();
     }
@@ -89,18 +94,13 @@ public abstract class Span{
      */
     private final void updateParent(){
         updateListeners.forEach(editor -> editor.accept(this));
-        ((SpanNode<?>)this).childEdited();
-        if (this instanceof Document){
-            Document doc = (Document) this;
-            doc.spanChanged();
-            doc.childEdited();
-        } else {
+        if (! (this instanceof Document)){
             ((Span)getParent()).updateParent();
         }
     }
 
     /** Listened that the document has been edited. */
-    protected abstract void docEdited();
+    protected abstract void clearDocCache();
 
     /// Part 4: Handling finding positions.
 

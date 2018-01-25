@@ -51,9 +51,15 @@ abstract class TextPaneView extends BorderPane {
         textArea.plainTextChanges().subscribe(value -> {
             if(isReady()){ textChanged.setValue(value);}
         });
+<<<<<<< HEAD
+=======
 
         caretPlaced = new ReadOnlyIntegerWrapper(this, "caretPlaced");
         caretPlaced.bind(textArea.caretPositionProperty());
+>>>>>>> fada46eeaabae6262e901a2e482ef1edfe764579
+
+        textProperty = new ReadOnlyObjectWrapper<>(this, "text");
+        textProperty.bind(textArea.textProperty());
 
         textProperty = new ReadOnlyObjectWrapper<>(this, "text");
         textProperty.bind(textArea.textProperty());

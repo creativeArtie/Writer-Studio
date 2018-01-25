@@ -46,7 +46,7 @@ public abstract class LinedSpanLevel extends LinedSpan {
 
 
     @Override
-    protected void childEdited(){
+    protected void clearLocalCache(){
         cacheFormatted = Optional.empty();
         cacheLevel = Optional.empty();
     }

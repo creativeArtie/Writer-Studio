@@ -21,8 +21,8 @@ public class LinedSpanBreak extends LinedSpan {
     }
 
     @Override
-    protected void childEdited(){}
+    protected void clearLocalCache(){}
 
     @Override
-    protected void docEdited(){}
+    protected void clearDocCache(){}
 }

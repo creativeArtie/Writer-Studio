@@ -30,6 +30,17 @@ abstract class WriterSceneView extends BorderPane{
         userLists = new NotesPaneControl();
         langCheatsheet = new CheatsheetPaneControl();
 
+<<<<<<< HEAD
+        manuscriptFile = new SimpleObjectProperty<>(this, "manuscriptFile");
+        manuscriptFile.addListener((data, oldValue, newValue) ->
+            changeDoc(newValue));
+
+        getStylesheets().add("data/main.css");
+        textArea = initTextPane();
+        VBox top = new VBox();
+        WriterMenuBar menu = initMenuBar(window);
+        top.getChildren().addAll(menu);
+=======
         getStylesheets().add("data/main.css");
 
         manuscriptFile = new SimpleObjectProperty<>(this, "manuscriptFile");
@@ -44,9 +55,13 @@ abstract class WriterSceneView extends BorderPane{
 
         VBox top = new VBox();
         WriterMenuBar menu = initMenuBar(window, top);
+>>>>>>> fada46eeaabae6262e901a2e482ef1edfe764579
         setTop(menu);
 
         agendaPane = initAgendaPane();
+/*
+        textArea.textChangedProperty().addListener((data, oldValue, newValue) ->
+            textChanged(newValue));
 /*
         textArea.textChangedProperty().addListener((data, oldValue, newValue) ->
             listenTextChange(newValue));
@@ -91,13 +106,22 @@ abstract class WriterSceneView extends BorderPane{
         return out;
     }
 
+<<<<<<< HEAD
+    private WriterMenuBar initMenuBar(Stage window){
+        WriterMenuBar ans = new WriterMenuBar(window);
+        ans.manuscriptFileProperty().bindBidirectional(manuscriptFile);
+=======
     private WriterMenuBar initMenuBar(Stage window, Pane top){
         WriterMenuBar ans = new WriterMenuBar(window);
         ans.manuscriptFileProperty().bindBidirectional(manuscriptFile);
         top.getChildren().addAll(ans);
+>>>>>>> fada46eeaabae6262e901a2e482ef1edfe764579
         return ans;
     }
+/*
 
+<<<<<<< HEAD
+=======
     private AgendaPaneControl initAgendaPane(){
         AgendaPaneControl ans = new AgendaPaneControl();
         setRight(ans);
@@ -105,6 +129,7 @@ abstract class WriterSceneView extends BorderPane{
     }
 /*
 
+>>>>>>> fada46eeaabae6262e901a2e482ef1edfe764579
     private void layoutLeftPane(){
         setLeft(tableOfContent);
     }
@@ -193,10 +218,13 @@ abstract class WriterSceneView extends BorderPane{
 
     protected abstract void textChanged(PlainTextChange changes);
 
+<<<<<<< HEAD
+=======
     protected abstract void selectionChanged(Range<Integer> range);
 
     protected abstract void caretChanged(int position);
 
+>>>>>>> fada46eeaabae6262e901a2e482ef1edfe764579
     /*protected abstract void controlSetup();
 
     protected abstract void listenDoc();

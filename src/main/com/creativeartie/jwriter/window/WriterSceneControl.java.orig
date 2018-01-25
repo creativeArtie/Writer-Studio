@@ -16,13 +16,21 @@ import com.creativeartie.jwriter.lang.markup.*;
 
 public class WriterSceneControl extends WriterSceneView {
 
+<<<<<<< HEAD
+=======
     private WritingText currentDoc;
 
+>>>>>>> fada46eeaabae6262e901a2e482ef1edfe764579
     public WriterSceneControl(javafx.stage.Stage window){
         super(window);
     }
 
     protected void changeDoc(ManuscriptFile file){
+<<<<<<< HEAD
+        getTextArea().loadDocumentText(file.getDocument());
+        getTextArea().updateStats(file.getRecords().getRecord());
+        getTextArea().setReady(true);
+=======
         currentDoc = file.getDocument();
 
         getTextArea().setReady(false);
@@ -31,11 +39,21 @@ public class WriterSceneControl extends WriterSceneView {
         getTextArea().setReady(true);
 
         getAgendaPane().loadAgenda(currentDoc);
+>>>>>>> fada46eeaabae6262e901a2e482ef1edfe764579
     }
 
     protected synchronized void textChanged(PlainTextChange change){
         int pos = change.getPosition();
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+<<<<<<< HEAD
+        getManuscriptFile().getDocument().delete(pos, change.getRemovalEnd());
+        getManuscriptFile().getDocument().insert(pos, change.getInserted());
+        getTextArea().updateStats(getManuscriptFile().getRecords().getRecord());
+        assert getTextArea().getText().equals(getManuscriptFile().getDocument()
+            .getRaw());
+    }
+
+=======
         currentDoc.delete(pos, change.getRemovalEnd());
         currentDoc.insert(pos, change.getInserted());
         getTextArea().updateStats(getManuscriptFile().getRecords().getRecord());
@@ -73,6 +91,7 @@ public class WriterSceneControl extends WriterSceneView {
         }
         return true;
     }
+>>>>>>> fada46eeaabae6262e901a2e482ef1edfe764579
 /*
 
     @Override

@@ -173,7 +173,12 @@ public abstract class SpanNode<T extends Span> extends Span
     public abstract List<SpanLeaf> getLeaves();
 
     /** Listens that one of its child is edited. */
-    protected abstract void childEdited();
+    protected abstract void clearLocalCache();
+
+    void clearCache(){
+        clearLocalCache();
+        getParent().clearCache();
+    }
 
     /// Implements List (ForwardList cannot be the super class)
     public abstract List<T> delegate();

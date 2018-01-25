@@ -111,13 +111,13 @@ public final class SectionSpanHead extends SectionSpan {
     }
 
     @Override
-    protected void childEdited(){
+    protected void clearLocalCache(){
         cacheSectionLines = Optional.empty();
         cacheSections = Optional.empty();
         cacheScenes = Optional.empty();
         cachePublish = Optional.empty();
         cacheNote = Optional.empty();
-        super.childEdited();
+        super.clearLocalCache();
     }
 
     @Override
