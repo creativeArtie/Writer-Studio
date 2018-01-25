@@ -46,12 +46,19 @@ public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
     /** Find the status base on a {@link CatalogueMap}. */
     CatalogueStatus getStatus(CatalogueMap parent){
         checkNotNull(parent, "parent");
-
+        System.out.println(parent.get(this));
         return parent.get(this).getState();
     }
 
     public List<String> getCategories(){
         return categoryPart;
+    }
+
+    public String getBase(){
+        if (categoryPart.isEmpty()){
+            return "";
+        }
+        return categoryPart.get(0);
     }
 
     public String getName(){

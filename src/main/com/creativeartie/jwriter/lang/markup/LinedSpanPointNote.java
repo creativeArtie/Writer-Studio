@@ -43,12 +43,12 @@ public class LinedSpanPointNote extends LinedSpanPoint {
     }
 
     @Override
-    protected void childEdited(){
-        super.childEdited();
+    protected void clearLocalCache(){
+        super.clearLocalCache();
         cacheType = Optional.empty();
         cacheFormatted = Optional.empty();
     }
 
     @Override
-    protected void docEdited(){}
+    protected void clearDocCache(){}
 }

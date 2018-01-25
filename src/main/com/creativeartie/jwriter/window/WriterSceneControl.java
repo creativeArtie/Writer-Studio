@@ -8,6 +8,7 @@ import java.time.*;
 import java.time.format.*;
 import org.fxmisc.richtext.*;
 import org.fxmisc.richtext.model.*;
+import com.google.common.collect.*;
 
 import com.creativeartie.jwriter.file.*;
 import com.creativeartie.jwriter.lang.*;
@@ -15,26 +16,63 @@ import com.creativeartie.jwriter.lang.markup.*;
 
 public class WriterSceneControl extends WriterSceneView {
 
+    private WritingText currentDoc;
+
     public WriterSceneControl(javafx.stage.Stage window){
         super(window);
     }
 
     protected void changeDoc(ManuscriptFile file){
-        getTextArea().loadDocumentText(file.getDocument());
+        currentDoc = file.getDocument();
+
+        getTextArea().setReady(false);
+        getTextArea().loadDocumentText(currentDoc);
         getTextArea().updateStats(file.getRecords().getRecord());
         getTextArea().setReady(true);
+
+        getAgendaPane().loadAgenda(currentDoc);
     }
 
     protected synchronized void textChanged(PlainTextChange change){
         int pos = change.getPosition();
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-        getManuscriptFile().getDocument().delete(pos, change.getRemovalEnd());
-        getManuscriptFile().getDocument().insert(pos, change.getInserted());
+        currentDoc.delete(pos, change.getRemovalEnd());
+        currentDoc.insert(pos, change.getInserted());
         getTextArea().updateStats(getManuscriptFile().getRecords().getRecord());
-        assert getTextArea().getText().equals(getManuscriptFile().getDocument()
-            .getRaw());
+        getTextArea().setStyle(currentDoc.getLeaves());
+        assert getTextArea().getText().equals(currentDoc.getRaw());
     }
 
+    protected void selectionChanged(Range<Integer> range){
+        System.out.print("selectedChanged: ");
+        if (! range.contains(getTextArea().getCaretPlaced())){
+            System.out.println("will move");
+            getTextArea().moveTo(range.upperEndpoint());
+        } else {
+            System.out.println("will NOT move");
+        }
+    }
+
+    protected void caretChanged(int position){
+        System.out.print("caretChanged: ");
+        if (shouldMove(getAgendaPane().getAgendaSelected(), position)){
+            System.out.println("will MAYBE move agenda");
+            getAgendaPane().updateSelection(position);
+        } else {
+            System.out.println("will NOT move agenda");
+        }
+    }
+
+    private boolean shouldMove(SpanBranch span, int position){
+        if (span == null){
+            return true;
+        }
+        Range<Integer> pos = span.getRange();
+        if (pos.contains(position) || pos.upperEndpoint() == position){
+            return false;
+        }
+        return true;
+    }
 /*
 
     @Override
@@ -100,7 +138,7 @@ public class WriterSceneControl extends WriterSceneView {
         getTextArea().returnFocus();
         setTextReady(true);
         updateDoc();
-        getCheatsheet().updateLabels(getDocument(), getTextArea().getCursorPlaced());
+        getCheatsheet().updateLabels(getDocument(), getTextArea().getCaretPlaced());
     }
 
     private void updateDoc(){
@@ -113,7 +151,7 @@ public class WriterSceneControl extends WriterSceneView {
                     } else if (updateTimer + TIMER_LENGHT < now){
                         getTableOfContent().loadTrees(getDocument());
                         getAgendaPane().loadAgenda(getDocument());
-                        int pos = getTextArea().getCursorPlaced();
+                        int pos = getTextArea().getCaretPlaced();
                         getAgendaPane().updateSelection(getDocument(), pos);
                         getTableOfContent().setHeading(getDocument(), pos);
                         getTextArea().updateCss(getDocument());

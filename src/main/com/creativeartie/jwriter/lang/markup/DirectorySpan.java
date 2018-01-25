@@ -94,11 +94,11 @@ public final class DirectorySpan extends SpanBranch {
     }
 
     @Override
-    protected void childEdited(){
+    protected void clearLocalCache(){
         cacheId = Optional.empty();
         cacheRaw = Optional.empty();
     }
 
     @Override
-    protected void docEdited(){}
+    protected void clearDocCache(){}
 }

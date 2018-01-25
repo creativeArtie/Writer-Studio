@@ -13,6 +13,8 @@ import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.property.window.*;
 
+import com.google.common.collect.*;
+
 abstract class WriterSceneView extends BorderPane{
     private TextPaneControl textArea;
     private HeadingPaneControl tableOfContent;
@@ -25,32 +27,41 @@ abstract class WriterSceneView extends BorderPane{
 
     WriterSceneView(Stage window){
         tableOfContent = new HeadingPaneControl();
-        agendaPane = new AgendaPaneControl();
         userLists = new NotesPaneControl();
         langCheatsheet = new CheatsheetPaneControl();
+
+        getStylesheets().add("data/main.css");
 
         manuscriptFile = new SimpleObjectProperty<>(this, "manuscriptFile");
         manuscriptFile.addListener((data, oldValue, newValue) ->
             changeDoc(newValue));
 
-        getStylesheets().add("data/main.css");
         textArea = initTextPane();
-        VBox top = new VBox();
-        WriterMenuBar menu = initMenuBar(window);
-        top.getChildren().addAll(menu);
-        setTop(menu);
-
         textArea.textChangedProperty().addListener((data, oldValue, newValue) ->
             textChanged(newValue));
+        textArea.caretPlacedProperty().addListener((data, oldValue, newValue) ->
+            caretChanged(newValue.intValue()));
+
+        VBox top = new VBox();
+        WriterMenuBar menu = initMenuBar(window, top);
+        setTop(menu);
+
+        agendaPane = initAgendaPane();
 /*
         textArea.textChangedProperty().addListener((data, oldValue, newValue) ->
             listenTextChange(newValue));
-        textArea.cursorPlacedProperty().addListener((data, oldValue, newValue) ->
+        textArea.caretPlacedProperty().addListener((data, oldValue, newValue) ->
             listenCaret(newValue.intValue()));
+*/
+        //agendaPane.agendaFocusedProperty().addListener((data, oldValue,
+        //    newValue) -> cursorMoved(newValue.getRange()));
 
-        agendaPane.agendaFocusedProperty().addListener((data, oldValue,
-            newValue) -> listenAgenda(newValue));
+        agendaPane.agendaSelectedProperty().addListener(
+            (data, oldValue, newValue) -> Optional.ofNullable(newValue)
+                .ifPresent(value -> selectionChanged(value.getRange()))
+        );
 
+/*
         tableOfContent.headingFocusedProperty().addListener((data, oldValue,
             newValue) -> listenHeading(newValue));
         tableOfContent.outlineFocusedProperty().addListener((data, oldValue,
@@ -80,9 +91,16 @@ abstract class WriterSceneView extends BorderPane{
         return out;
     }
 
-    private WriterMenuBar initMenuBar(Stage window){
+    private WriterMenuBar initMenuBar(Stage window, Pane top){
         WriterMenuBar ans = new WriterMenuBar(window);
         ans.manuscriptFileProperty().bindBidirectional(manuscriptFile);
+        top.getChildren().addAll(ans);
+        return ans;
+    }
+
+    private AgendaPaneControl initAgendaPane(){
+        AgendaPaneControl ans = new AgendaPaneControl();
+        setRight(ans);
         return ans;
     }
 /*
@@ -174,6 +192,10 @@ abstract class WriterSceneView extends BorderPane{
     protected abstract void changeDoc(ManuscriptFile file);
 
     protected abstract void textChanged(PlainTextChange changes);
+
+    protected abstract void selectionChanged(Range<Integer> range);
+
+    protected abstract void caretChanged(int position);
 
     /*protected abstract void controlSetup();
 

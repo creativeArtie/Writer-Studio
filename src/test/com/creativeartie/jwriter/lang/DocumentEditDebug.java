@@ -253,7 +253,6 @@ public class DocumentEditDebug{
         WritingText base = new WritingText(raw);
         base.insert(3, "k");
 
-
         String done = "=@akbc:{@ad}";
         DocumentAssert doc = DocumentAssert.assertDoc(1, done, base);
         doc.assertChild(1,       done,    0);    /// Section

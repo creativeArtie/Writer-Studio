@@ -93,16 +93,48 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
         /// Finalize the parse loop
         catalogueMap = new CatalogueMap();
-        updateSpan(documentChildren);
+        fillCatalogue(documentChildren);
     }
 
-    protected void spanChanged(){
+    private void spanChanged(SpanNode<?> changed){
         spanRanges.invalidateAll();
         spanLeaves.invalidateAll();
         spanTexts.invalidateAll();
         spanLocation.invalidateAll();
+        SpanNode<?> ptr = changed;
+        do{
+            ptr.clearLocalCache();
+            ptr = ptr instanceof Document? ptr: ptr.getParent();
+        }while(ptr instanceof SpanBranch);
+        clearDocCache(this);
         catalogueMap = new CatalogueMap();
-        updateSpan(this);
+        fillCatalogue(this);
+
+        changed.setUpdated();
+    }
+
+    private void clearDocCache(List<? extends Span> children){
+        for (Span child: children){
+            child.clearDocCache();
+            if (child instanceof SpanBranch){
+                clearDocCache((SpanBranch)child);
+            }
+        }
+    }
+
+    /**
+     * Recursively update all child {@link Span spans}. Helper method of
+     * {@link #parseDocument(String)} and {@link #spanChanged()}.
+     */
+    private final void fillCatalogue(List<? extends Span> children){
+        assert children != null: "Null children";
+        for (Span child: children){
+            if (child instanceof SpanBranch){
+                SpanBranch branch = (SpanBranch) child;
+                catalogueMap.add(branch);
+                fillCatalogue(branch);
+            }
+        }
     }
 
     /**
@@ -115,24 +147,9 @@ public abstract class Document extends SpanNode<SpanBranch>{
             /// Fill or refill {@link #catalogueMap}
             if (child instanceof SpanBranch){
                 SpanBranch branch = (SpanBranch) child;
-                if (branch instanceof Catalogued){
-                    Catalogued catalogued = (Catalogued) branch;
-                    Optional<CatalogueIdentity> id = catalogued
-                            .getSpanIdentity();
-                    /// Don't add ID if there isn't one
-                    id.ifPresent(found -> {
-                        if(catalogued.isId()){
-                            catalogueMap.addId(found, branch);
-                        } else {
-                            catalogueMap.addRef(found, branch);
-                        }
-                    });
-                }
+                catalogueMap.add(branch);
                 updateSpan(branch);
             }
-
-            /// Tell the child that the document has been updated.
-            child.docEdited();
         }
     }
 
@@ -290,7 +307,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         checkNotNull(input, "input");
         if (isEmpty()){
             parseDocument(input);
-            setUpdated();
+            spanChanged(this);
             return;
         }
 
@@ -305,8 +322,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
             span = span.getParent();
             while (span instanceof SpanBranch){
                 if (((SpanBranch)span).editRaw(span.getRaw() + input)){
-                    span = null;
-                    break;
+                    spanChanged((SpanBranch)span);
+                    return;
                 }
                 span = span.getParent();
             }
@@ -314,7 +331,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
             if (span != null){
                 assert span instanceof Document: "Wrong class.";
                 parseDocument(getRaw() + input);
-                setUpdated();
+                spanChanged(this);
+                return;
             }
         } else {
             /// Insert in the begining at in the middle
@@ -363,8 +381,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
                 /// edit is within the local text
                 if (((SpanBranch)span).editRaw(raw)){
                     /// edit is completed
-                    span = null;
-                    break;
+                    spanChanged((SpanBranch)span);
+                    return;
                 }
             }
             span = span.getParent();
@@ -374,7 +392,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         if (span != null){
             assert span instanceof Document: "Wrong class:" + span.getClass();
             parseDocument(editedText.apply(this));
-            setUpdated();
+            spanChanged(this);
         }
     }
 }

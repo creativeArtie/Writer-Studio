@@ -39,7 +39,7 @@ public abstract class InfoDataSpan extends SpanBranch{
     }
 
     @Override
-    protected void childEdited(){
+    protected void clearLocalCache(){
         cacheList = Optional.empty();
     }
 }

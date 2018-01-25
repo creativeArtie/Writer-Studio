@@ -33,7 +33,7 @@ abstract class TextPaneView extends BorderPane {
     /** Property edided by textArea.getText()*/
     private final ReadOnlyObjectWrapper<String> textProperty;
     /** Property binded with textArea.caretPosition. */
-    private final ReadOnlyIntegerWrapper cursorPlaced;
+    private final ReadOnlyIntegerWrapper caretPlaced;
     /** Property binded with textArea.focused. */
     private final ReadOnlyBooleanWrapper editorFocused;
     /** Property binded with textArea.focused. */
@@ -52,8 +52,8 @@ abstract class TextPaneView extends BorderPane {
             if(isReady()){ textChanged.setValue(value);}
         });
 
-        cursorPlaced = new ReadOnlyIntegerWrapper(this, "cursorPlaced");
-        cursorPlaced.bind(textArea.caretPositionProperty());
+        caretPlaced = new ReadOnlyIntegerWrapper(this, "caretPlaced");
+        caretPlaced.bind(textArea.caretPositionProperty());
 
         textProperty = new ReadOnlyObjectWrapper<>(this, "text");
         textProperty.bind(textArea.textProperty());
@@ -136,12 +136,12 @@ abstract class TextPaneView extends BorderPane {
         return textChanged.getValue();
     }
 
-    public ReadOnlyIntegerProperty cursorPlacedProperty(){
-        return cursorPlaced.getReadOnlyProperty();
+    public ReadOnlyIntegerProperty caretPlacedProperty(){
+        return caretPlaced.getReadOnlyProperty();
     }
 
-    public int getCursorPlaced(){
-        return cursorPlaced.getValue();
+    public int getCaretPlaced(){
+        return caretPlaced.getValue();
     }
 
     public ReadOnlyBooleanProperty editorFocusedProperty(){

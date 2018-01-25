@@ -17,28 +17,20 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
         idMap = new TreeMap<>();
     }
 
-    void addId(CatalogueIdentity id, SpanBranch span){
-        checkNotNull(id, "id");
-        checkNotNull(span, "span");
-
-        CatalogueData data = idMap.get(id);
-        if (data == null){
-            data = new CatalogueData(this, id);
-            idMap.put(id, data);
+    void add(SpanBranch span){
+        if (span instanceof Catalogued){
+            Catalogued cat = (Catalogued) span;
+            Optional<CatalogueIdentity> search = cat.getSpanIdentity();
+            if (search.isPresent()){
+                CatalogueIdentity id = search.get();
+                CatalogueData data = idMap.get(id);
+                if (data == null){
+                    data = new CatalogueData(this, id);
+                    idMap.put(id, data);
+                }
+                data.add(span);
+            }
         }
-        data.addId(span);
-    }
-
-    void addRef(CatalogueIdentity ref, SpanBranch span){
-        checkNotNull(ref, "ref");
-        checkNotNull(span, "span");
-
-        CatalogueData data = idMap.get(ref);
-        if (data == null){
-            data = new CatalogueData(this, ref);
-            idMap.put(ref, data);
-        }
-        data.addRef(span);
     }
 
     @Override
@@ -46,17 +38,21 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
         return ImmutableSortedMap.copyOf(idMap);
     }
 
-    public SortedMap<CatalogueIdentity, CatalogueData> getCategory(
-            String ... category){
-        checkNotEmpty(category, "category");
-
-        SortedMap<CatalogueIdentity, CatalogueData> map = delegate();
-        CatalogueIdentity first = new CatalogueIdentity(
-            ImmutableList.copyOf(category), "");
-
-        category[category.length - 1] = category[category.length - 1] + (char)0;
-        CatalogueIdentity last = new CatalogueIdentity(
-            ImmutableList.copyOf(category), "");
-        return map.subMap(first, last);
+    public TreeSet<SpanBranch> getIds(String base){
+        TreeSet<SpanBranch> spans = new TreeSet<>(Comparator.comparing(
+            span -> Optional.of(span)
+                .filter(found -> found instanceof Catalogued)
+                .flatMap(found -> ((Catalogued)found).getSpanIdentity())
+                .orElseThrow(() -> new RuntimeException(
+                    "Span is not of type Catalogued: " + span))
+        ));
+        for (Entry<CatalogueIdentity, CatalogueData> entry: idMap.entrySet()){
+            if (entry.getKey().getBase().equals(base)){
+                for (SpanBranch span: entry.getValue().getIds()){
+                    spans.add(span);
+                }
+            }
+        }
+        return spans;
     }
 }

@@ -73,14 +73,14 @@ public class LinedSpanNote extends LinedSpan{
     }
 
     @Override
-    protected void childEdited(){
+    protected void clearLocalCache(){
         cacheFormatted = Optional.empty();
         cacheId = Optional.empty();
         cacheNote = Optional.empty();
     }
 
     @Override
-    protected void docEdited(){
+    protected void clearDocCache(){
         cacheFirst = Optional.empty();
     }
 }

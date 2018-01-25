@@ -45,7 +45,7 @@ public abstract class LinedSpanPoint extends LinedSpan implements Catalogued{
     }
 
     @Override
-    protected void childEdited(){
+    protected void clearLocalCache(){
         cacheStyles = Optional.empty();
         cacheId = Optional.empty();
     }
