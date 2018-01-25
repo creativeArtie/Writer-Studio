@@ -102,7 +102,6 @@ public abstract class SpanBranch extends SpanNode<Span> {
             if (pointer.hasNext()){
                 throw new IllegalStateException("Has left over characters.");
             }
-            setUpdated();
             spanStatus = Optional.empty();
             return true;
        }

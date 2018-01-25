@@ -76,6 +76,13 @@ public abstract class Span{
         }
     }
 
+    protected final void clearCache(){
+        ((SpanNode<?>)this).childEdited();
+        if (! (this instanceof Document)){
+            ((Span)getParent()).clearCache();
+        }
+    }
+
     /** Listened that the document has been edited. */
     protected abstract void docEdited();
 
@@ -114,7 +121,7 @@ public abstract class Span{
         checkIndex(index, "index", getLocalEnd(), true);
         return getStart() - index;
     }
-    
+
     /** Is this {@code Span}'s text is at the first in the document. */
     public final boolean isFirst(){
         return checkLocation(parent -> parent.get(0));

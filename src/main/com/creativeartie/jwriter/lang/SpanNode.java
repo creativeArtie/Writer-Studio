@@ -44,6 +44,15 @@ public abstract class SpanNode<T extends Span> extends Span
         super.setRemove();
     }
 
+    void setDocEdited(){
+        for (Span span: this){
+            if (span instanceof SpanNode){
+                ((SpanNode)span).setDocEdited();
+            }
+        }
+        docEdited();
+    }
+
     /** Get the first span if it a subclass of {@code clazz}. */
     protected <T extends SpanBranch> Optional<T> spanAtFirst(Class<T> clazz){
         checkNotNull(clazz, "clazz");

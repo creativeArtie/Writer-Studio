@@ -375,6 +375,6 @@ public class DocumentEditDebug{
         doc.assertKeyLeaf(12, 13, "}",     0, 0, 4, 0, 2);
         doc.addId(LinedLevelHeadDebug.buildId("akbc"), 0);
         doc.addRef(FormatCurlyDebug.buildNoteId("add"),  1);
-        doc.assertIds(true);
+        doc.assertIds();
     }
 }
