@@ -3,7 +3,6 @@ package com.creativeartie.jwriter.window;
 import java.util.*;
 import javafx.scene.layout.*;
 import javafx.beans.property.*;
-import javafx.animation.*;
 import java.time.*;
 import java.time.format.*;
 import org.fxmisc.richtext.*;
@@ -16,14 +15,22 @@ import com.creativeartie.jwriter.lang.markup.*;
 
 public class WriterSceneControl extends WriterSceneView {
 
+    private static final long START = -1;
+    private static final long LENGTH = 60 * 1000000l;
+    private long markedTime;
+
     private WritingText currentDoc;
+    private RecordList currentRecords;
 
     public WriterSceneControl(javafx.stage.Stage window){
         super(window);
+        markedTime = START;
     }
 
+    @Override
     protected void changeDoc(ManuscriptFile file){
         currentDoc = file.getDocument();
+        currentRecords = file.getRecords();
 
         getTextArea().setReady(false);
         getTextArea().loadDocumentText(currentDoc);
@@ -33,16 +40,33 @@ public class WriterSceneControl extends WriterSceneView {
         getAgendaPane().loadAgenda(currentDoc);
     }
 
+    @Override
     protected synchronized void textChanged(PlainTextChange change){
-        int pos = change.getPosition();
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+
+        /// update the text area
+        int pos = change.getPosition();
         currentDoc.delete(pos, change.getRemovalEnd());
         currentDoc.insert(pos, change.getInserted());
+
+        ///Update the record
         getTextArea().updateStats(getManuscriptFile().getRecords().getRecord());
         getTextArea().setStyle(currentDoc.getLeaves());
+        markedTime = START;
+        currentRecords.startWriting(currentDoc);
         assert getTextArea().getText().equals(currentDoc.getRaw());
     }
 
+    @Override
+    protected void updateRecord(long now){
+        if (markedTime == START){
+            markedTime = now + LENGTH;
+        } else if (markedTime < now){
+            currentRecords.stopWriting(currentDoc);
+        }
+    }
+
+    @Override
     protected void selectionChanged(Range<Integer> range){
         System.out.print("selectedChanged: ");
         if (! range.contains(getTextArea().getCaretPlaced())){
@@ -53,6 +77,7 @@ public class WriterSceneControl extends WriterSceneView {
         }
     }
 
+    @Override
     protected void caretChanged(int position){
         System.out.print("caretChanged: ");
         if (shouldMove(getAgendaPane().getAgendaSelected(), position)){
@@ -72,6 +97,11 @@ public class WriterSceneControl extends WriterSceneView {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void returnFocus(){
+        getTextArea().returnFocus();
     }
 /*
 

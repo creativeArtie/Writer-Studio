@@ -6,6 +6,7 @@ import javafx.scene.layout.*;
 import javafx.beans.property.*;
 import javafx.beans.binding.*;
 import org.fxmisc.richtext.model.*;
+import javafx.animation.*;
 
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.file.*;
@@ -22,8 +23,6 @@ abstract class WriterSceneView extends BorderPane{
     private NotesPaneControl userLists;
     private CheatsheetPaneControl langCheatsheet;
     private SimpleObjectProperty<ManuscriptFile> manuscriptFile;
-    private SimpleBooleanProperty ready;
-    private SimpleBooleanProperty isEdited;
 
     WriterSceneView(Stage window){
         tableOfContent = new HeadingPaneControl();
@@ -47,19 +46,18 @@ abstract class WriterSceneView extends BorderPane{
         setTop(menu);
 
         agendaPane = initAgendaPane();
-/*
-        textArea.textChangedProperty().addListener((data, oldValue, newValue) ->
-            listenTextChange(newValue));
-        textArea.caretPlacedProperty().addListener((data, oldValue, newValue) ->
-            listenCaret(newValue.intValue()));
-*/
-        //agendaPane.agendaFocusedProperty().addListener((data, oldValue,
-        //    newValue) -> cursorMoved(newValue.getRange()));
+        agendaPane.agendaFocusedProperty().addListener((data, oldValue,
+            newValue) -> returnFocus());
 
         agendaPane.agendaSelectedProperty().addListener(
             (data, oldValue, newValue) -> Optional.ofNullable(newValue)
                 .ifPresent(value -> selectionChanged(value.getRange()))
         );
+
+
+        new AnimationTimer(){
+            @Override public void handle(long now) {updateRecord(now);}
+        }.start();
 
 /*
         tableOfContent.headingFocusedProperty().addListener((data, oldValue,
@@ -72,8 +70,6 @@ abstract class WriterSceneView extends BorderPane{
         userLists.childFocusedProperty().addListener((data, oldValue, newValue)
             -> listenListFocused(newValue));
 */
-        ready = new SimpleBooleanProperty(this, "ready", false);
-        isEdited = new SimpleBooleanProperty(this, "isEdited", false);
 /*
         layoutLeftPane();
         layoutRightPane();
@@ -164,30 +160,6 @@ abstract class WriterSceneView extends BorderPane{
         manuscriptFile.setValue(doc);
     }
 
-    public BooleanProperty readyProperty(){
-        return ready;
-    }
-
-    public boolean isTextReady(){
-        return ready.get();
-    }
-
-    public void setTextReady(boolean bool){
-        ready.setValue(bool);
-    }
-
-    public BooleanProperty isEditedProperty(){
-        return isEdited;
-    }
-
-    public boolean isEdited(){
-        return isEdited.get();
-    }
-
-    public void setUpdateded(boolean bool){
-        isEdited.setValue(bool);
-    }
-
     /// Control Methods
     protected abstract void changeDoc(ManuscriptFile file);
 
@@ -196,6 +168,10 @@ abstract class WriterSceneView extends BorderPane{
     protected abstract void selectionChanged(Range<Integer> range);
 
     protected abstract void caretChanged(int position);
+
+    protected abstract void returnFocus();
+
+    protected abstract void updateRecord(long now);
 
     /*protected abstract void controlSetup();
 

@@ -5,6 +5,7 @@ import java.time.*;
 
 import com.google.common.collect.*;
 import static com.creativeartie.jwriter.main.Checker.*;
+import com.creativeartie.jwriter.lang.markup.*;
 
 /**
  * A list of {@link Record} and methods to save and edit today's {@link Record}.
@@ -98,9 +99,10 @@ public final class RecordList extends ForwardingList<Record>{
      * Start the record timer for the record. If the date have change,
      * create a new record.
      */
-    public void startWriting(int publish, int note){
-        checkGreater(publish, "publish", 0, true);
-        checkGreater(note, "note", 0, true);
+    public void startWriting(WritingText doc){
+        checkNotNull(doc, "doc");
+        int publish = doc.getPublishTotal();
+        int note = doc.getNoteTotal();
         updateRecord(publish, note);
         getRecord().startWriting(publish, note);
     }
@@ -109,7 +111,10 @@ public final class RecordList extends ForwardingList<Record>{
      * Stop the record timer for the record. If the date have change,
      * create a new record.
      */
-    public void stopWriting(int publish, int note){
+    public void stopWriting(WritingText doc){
+        checkNotNull(doc, "doc");
+        int publish = doc.getPublishTotal();
+        int note = doc.getNoteTotal();
         updateRecord(publish, note);
         getRecord().stopWriting(publish, note);
     }
