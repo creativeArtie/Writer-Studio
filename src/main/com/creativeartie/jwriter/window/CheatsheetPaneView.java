@@ -21,11 +21,11 @@ abstract class CheatsheetPaneView extends GridPane{
     private final ArrayList<CheatsheetLabel> labelList;
 
     CheatsheetPaneView(){
-        labelList = setupHintsLabels();
+        labelList = initHintsLabels();
     }
 
     /// Layout Node
-    private ArrayList<CheatsheetLabel> setupHintsLabels(){
+    private ArrayList<CheatsheetLabel> initHintsLabels(){
         /// Magic numbers just change the positions with column sizes
         ArrayList<CheatsheetLabel> ans = new ArrayList<>();
 
@@ -77,14 +77,14 @@ abstract class CheatsheetPaneView extends GridPane{
         addLabel(ans, CheatsheetLabel.getLabel(FormatType.BOLD),      8, 0);
         addLabel(ans, CheatsheetLabel.getLabel(FormatType.CODED),     8, 1);
         addLabel(ans, CheatsheetLabel.getLabel(FormatType.ITALICS),   8, 2);
-        addLabel(ans, CheatsheetLabel.getLabel(FormatType.UNDERLINE), 9, 3);
+        addLabel(ans, CheatsheetLabel.getLabel(FormatType.UNDERLINE), 8, 3);
         setPrecentWidth(11); /// fills to: 100
         return ans;
     }
 
     /**
      * Adds a {@link CheatsheetLabe} to the grid and to a
-     * {@linkplain ArrayList}. Helper method of {@link #setupHintsLabels()}.
+     * {@linkplain ArrayList}. Helper method of {@link #initHintsLabels()}.
      */
     private void addLabel(ArrayList<CheatsheetLabel> labels,
             CheatsheetLabel label, int column, int row){
@@ -94,7 +94,7 @@ abstract class CheatsheetPaneView extends GridPane{
 
     /**
      * Adds a {@link CheatsheetLabe} to the grid and to a
-     * {@linkplain ArrayList}. Helper method of {@link #setupHintsLabels()}.
+     * {@linkplain ArrayList}. Helper method of {@link #initHintsLabels()}.
      */
     private void addLabel(ArrayList<CheatsheetLabel> labels,
             CheatsheetLabel label, int column, int row, int columnSpan,
@@ -105,7 +105,7 @@ abstract class CheatsheetPaneView extends GridPane{
 
     /**
      * Set the next column by percent width. Helper method of
-     * {@link #setupHintsLabels()}.
+     * {@link #initHintsLabels()}.
      */
     private void setPrecentWidth(double value){
         ColumnConstraints column = new ColumnConstraints();

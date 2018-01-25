@@ -27,7 +27,6 @@ abstract class WriterSceneView extends BorderPane{
     WriterSceneView(Stage window){
         tableOfContent = new HeadingPaneControl();
         userLists = new NotesPaneControl();
-        langCheatsheet = new CheatsheetPaneControl();
 
         getStylesheets().add("data/main.css");
 
@@ -54,6 +53,8 @@ abstract class WriterSceneView extends BorderPane{
                 .ifPresent(value -> selectionChanged(value.getRange()))
         );
 
+        langCheatsheet = initCheatsheetPane();
+
 
         new AnimationTimer(){
             @Override public void handle(long now) {updateRecord(now);}
@@ -70,14 +71,6 @@ abstract class WriterSceneView extends BorderPane{
         userLists.childFocusedProperty().addListener((data, oldValue, newValue)
             -> listenListFocused(newValue));
 */
-/*
-        layoutLeftPane();
-        layoutRightPane();
-        layoutTopPane(window);
-        layoutBottomPane();
-        layoutCenterPane();
-
-        controlSetup();*/
     }
 
     /// Layout Nodes
@@ -97,6 +90,12 @@ abstract class WriterSceneView extends BorderPane{
     private AgendaPaneControl initAgendaPane(){
         AgendaPaneControl ans = new AgendaPaneControl();
         setRight(ans);
+        return ans;
+    }
+
+    private CheatsheetPaneControl initCheatsheetPane(){
+        CheatsheetPaneControl ans = new CheatsheetPaneControl();
+        setBottom(ans);
         return ans;
     }
 /*

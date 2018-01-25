@@ -34,7 +34,7 @@ public class WriterSceneControl extends WriterSceneView {
 
         getTextArea().setReady(false);
         getTextArea().loadDocumentText(currentDoc);
-        getTextArea().updateStats(file.getRecords().getRecord());
+        getTextArea().updateStats(currentRecords.getRecord());
         getTextArea().setReady(true);
 
         getAgendaPane().loadAgenda(currentDoc);
@@ -50,7 +50,6 @@ public class WriterSceneControl extends WriterSceneView {
         currentDoc.insert(pos, change.getInserted());
 
         ///Update the record
-        getTextArea().updateStats(getManuscriptFile().getRecords().getRecord());
         getTextArea().setStyle(currentDoc.getLeaves());
         markedTime = START;
         currentRecords.startWriting(currentDoc);
@@ -59,6 +58,7 @@ public class WriterSceneControl extends WriterSceneView {
 
     @Override
     protected void updateRecord(long now){
+        getTextArea().updateStats(currentRecords.getRecord());
         if (markedTime == START){
             markedTime = now + LENGTH;
         } else if (markedTime < now){
@@ -86,6 +86,7 @@ public class WriterSceneControl extends WriterSceneView {
         } else {
             System.out.println("will NOT move agenda");
         }
+        getCheatsheet().updateLabels(currentDoc, position);
     }
 
     private boolean shouldMove(SpanBranch span, int position){
