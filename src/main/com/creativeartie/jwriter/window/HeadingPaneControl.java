@@ -16,6 +16,31 @@ import com.creativeartie.jwriter.main.*;
  * @see HeadingPaneView
  */
 class HeadingPaneControl extends HeadingPaneView{
+
+    private WritingText documentText;
+
+    public void loadHeadings(WritingText document){
+        documentText = document;
+        fillHeadings();
+        getOutlines().clearTree();
+    }
+
+    public void fillHeadings(){
+        for (Span child: documentText){
+            getHeadings().addItem((SectionSpan) child, span ->
+                ((SectionSpanHead)span).getSections());
+        }
+    }
+
+    public void moveCursor(int position){
+        Optional<SpanLeaf> leaf = documentText.locateLeaf(position);
+        if (! leaf.isPresent()){
+            /// TODO Select first
+            return;
+        }
+        /// TODO Find and select child
+    }
+
 //
 //    /** Loads the document sections. */
 //    public void loadTrees(WritingText document){

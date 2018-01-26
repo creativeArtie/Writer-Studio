@@ -12,7 +12,7 @@ import static com.creativeartie.jwriter.main.Checker.*;
 /**
  * Section with notes and content
  */
-abstract class SectionSpan extends SpanBranch {
+public abstract class SectionSpan extends SpanBranch {
 
     static boolean allowChild(String text, int parent, boolean heading){
         for (int i = LEVEL_MAX; i > 0; i--){

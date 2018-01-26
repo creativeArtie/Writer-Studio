@@ -108,6 +108,18 @@ public final class ManuscriptFile {
         recordsFile = table;
     }
 
+    public File dumpFile() throws IOException{
+        File dump = new File("tmp.zip");
+        int counter = 1;
+        while(dump.exists()){
+            dump = new File("tmp" + counter + ".zip");
+            counter++;
+        }
+        setSave(dump);
+        save();
+        return dump;
+    }
+
     public void setSave(File file){
         checkNotNull(file, "file");
 

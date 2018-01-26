@@ -44,7 +44,7 @@ public abstract class Span{
     }
 
     public boolean isInUsed(){
-        return getParent() != null && getParent().indexOf(this) != 1;
+        return getParent() != null && getParent().indexOf(this) != -1;
     }
 
     /** Add a listener when this span's children has been replaced. */
@@ -92,18 +92,21 @@ public abstract class Span{
 
     /** Get the start and end of this span in relation the the document. */
     public Range<Integer> getRange(){
+
         /// Look up in the cache first
         return getDocument().getRangeCache(this, () ->{
-            // get the start of the parent's span.
+            /// get the start of the parent's span.
             int ans = getParent().getStart();
             for(Span span: getParent()){
                 if (span == this){
                     return Range.closedOpen(ans, ans + getLocalEnd());
                 }
-                // For each child of the parent exclude this:
+                /// For each child of the parent exclude this:
                 ans += span.getLocalEnd();
             }
-            // This Span is not a child of the parent
+            System.out.println(toString());
+            System.out.println(isInUsed());
+            /// This Span is not a child of the parent
             assert false: getRaw();
             return null;
 

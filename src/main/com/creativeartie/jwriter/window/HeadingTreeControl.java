@@ -18,6 +18,41 @@ import com.creativeartie.jwriter.main.*;
  * @see HeadingTreeView
  */
 class HeadingTreeControl extends HeadingTreeView{
+
+    @Override
+    protected void clearTree(){
+        getTree().setRoot(new TreeItem<>());
+    }
+
+    protected void addItem(SectionSpan replace,
+            Function<SectionSpan, List<? extends SectionSpan>> list){
+        addChildren(getTree().getRoot(), replace, list);
+    }
+
+    protected void replaceTree(SectionSpan replace,
+            Function<SectionSpan, List<? extends SectionSpan>> list){
+        TreeItem<SectionSpan> root = new TreeItem<>();
+        addChildren(root, replace, list);
+        getTree().setRoot(root);
+    }
+
+    /**
+     * add the children in a {@link TreeItem}. Parameter {@code insert} is not
+     * being inserted into the node. Helper method of
+     * {@link #addItem(SectionSpan, Function)} and
+     * {@link #replaceTree(SectionSpan, Function)}.
+     */
+    private void addChildren(TreeItem<SectionSpan> item, SectionSpan insert,
+            Function<SectionSpan, List<? extends SectionSpan>> list){
+        for (SectionSpan span : list.apply(insert)){
+            TreeItem<SectionSpan> child = new TreeItem<>(span);
+            if (! list.apply(span).isEmpty()){
+                addChildren(child, span, list);
+            }
+            item.getChildren().add(child);
+        }
+    }
+
 //    /** Hash map to help with selecting items.*/
 //    private HashMap<Optional<LinedSpanLevelSection>,
 //        TreeItem<Optional<LinedSpanLevelSection>>> selectionMapper;

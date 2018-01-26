@@ -34,12 +34,14 @@ abstract class WriterSceneView extends BorderPane{
         manuscriptFile.addListener((data, oldValue, newValue) ->
             changeDoc(newValue));
 
+        /// Center
         textArea = initTextPane();
         textArea.textChangedProperty().addListener((data, oldValue, newValue) ->
             textChanged(newValue));
         textArea.caretPlacedProperty().addListener((data, oldValue, newValue) ->
             caretChanged(newValue.intValue()));
 
+        /// Top
         VBox top = new VBox();
         WriterMenuBar menu = initMenuBar(window, top);
         setTop(menu);
@@ -53,11 +55,14 @@ abstract class WriterSceneView extends BorderPane{
                 .ifPresent(value -> selectionChanged(value.getRange()))
         );
 
+        /// bottom
         langCheatsheet = initCheatsheetPane();
 
+        /// left
+        tableOfContent = initTableOfContent();
 
         new AnimationTimer(){
-            @Override public void handle(long now) {updateRecord(now);}
+            @Override public void handle(long now) {timerAction(now);}
         }.start();
 
 /*
@@ -98,19 +103,14 @@ abstract class WriterSceneView extends BorderPane{
         setBottom(ans);
         return ans;
     }
+
+    private HeadingPaneControl initTableOfContent(){
+        HeadingPaneControl ans = new HeadingPaneControl();
+        setRight(ans);
+        return ans;
+    }
 /*
 
-    private void layoutLeftPane(){
-        setLeft(tableOfContent);
-    }
-
-    private void layoutCenterPane(){
-        setCenter(textArea);
-    }
-
-    private void layoutRightPane(){
-        setRight(agendaPane);
-    }
 
     private void layoutTopPane(Stage window){
         VBox pane = new VBox();
@@ -170,23 +170,5 @@ abstract class WriterSceneView extends BorderPane{
 
     protected abstract void returnFocus();
 
-    protected abstract void updateRecord(long now);
-
-    /*protected abstract void controlSetup();
-
-    protected abstract void listenDoc();
-
-    protected abstract void listenTextChange(PlainTextChange changes);
-
-    protected abstract void listenCaret(int moveTo);
-
-    protected abstract void listenAgenda(boolean focused);
-
-    protected abstract void listenHeading(boolean focused);
-
-    protected abstract void listenOutline(boolean focused);
-
-    protected abstract void listenLocClicked(int loc);
-
-    protected abstract void listenListFocused(boolean focused);*/
+    protected abstract void timerAction(long now);
 }

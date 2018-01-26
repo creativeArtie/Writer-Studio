@@ -17,39 +17,58 @@ import com.creativeartie.jwriter.lang.markup.*;
 
 
 public class Main extends Application{
-    private Stage mainStage;
+    private static Stage mainStage;
+    private static ManuscriptFile writeFile;
 
     public static void main(String[] args) {
         launch(args);
     }
 
+    private static void killProgram(Thread t, Throwable e){
+        try {
+            e.printStackTrace();
+            writeFile.dumpFile();
+        } catch (Exception ex){
+            /// An exception in default exception handling!!!
+            ex.printStackTrace();
+        } finally {
+            mainStage.close();
+            Platform.exit();
+        }
+    }
+
     @Override
     public void start(Stage stage) throws Exception{
+        Thread.setDefaultUncaughtExceptionHandler(Main::killProgram);
         stage.setTitle(WindowText.PROGRAM_NAME.getText());
+        mainStage = stage;
 
-        // testChildWindows(stage);
-        testMainWindow(stage);
-        // setupWindow(stage, ManuscriptFile.newFile());
+        // testChildWindows();
+        testMainWindow();
+        // setupWindow(ManuscriptFile.newFile());
     }
 
     @Deprecated
-    private void testMainWindow(Stage stage) throws Exception{
+    private void testMainWindow() throws Exception{
         File file = new File("data/sectionDebug4.txt");
         WritingText doc = new WritingText(file);
-        setupWindow(stage, ManuscriptFile.withManuscript(doc));
+        setupWindow(ManuscriptFile.withManuscript(doc));
     }
 
-    private void setupWindow(Stage stage, ManuscriptFile file) {
-        WriterSceneControl writer = new WriterSceneControl(stage);
+    private void setupWindow(ManuscriptFile file) {
+        writeFile = file;
+        WriterSceneControl writer = new WriterSceneControl(mainStage);
         Scene scene = new Scene(writer, 800, 600);
         writer.setManuscriptFile(file);
-        stage.setScene(scene);
-        stage.setMaximized(true);
-        stage.show();
+        writer.manuscriptFileProperty().addListener((data, oldValue, newValue)
+            -> writeFile = newValue);
+        mainStage.setScene(scene);
+        mainStage.setMaximized(true);
+        mainStage.show();
     }
 
     @Deprecated
-    private void testChildWindows(Stage stage) throws Exception{
+    private void testChildWindows() throws Exception{
         Button button1 = new Button("Stats");
         SceneStatsControl pane = new SceneStatsControl();
         pane.setStatTable(RecordList.build(new File("data/record3.txt")));
@@ -62,7 +81,7 @@ public class Main extends Application{
         button2.setDefaultButton(true);
 
         Scene scene = new Scene(new FlowPane(button1, button2), 800, 600);
-        stage.setScene(scene);
-        stage.show();
+        mainStage.setScene(scene);
+        mainStage.show();
     }
 }

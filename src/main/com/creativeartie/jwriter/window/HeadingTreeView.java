@@ -18,82 +18,90 @@ import com.creativeartie.jwriter.property.window.*;
  * {@link SectionSpanHead}.
  */
 abstract class HeadingTreeView extends TitledPane{
-//
-//    /** A cell in {@link #getTree()}. */
-//    private class HeadingCell extends TreeCell<Optional<LinedSpanLevelSection>>{
-//        @Override
-//        public void updateItem(Optional<LinedSpanLevelSection> item,
-//                boolean empty){
-//            /// Required by JavaFX API:
-//            super.updateItem(item, empty);
-//            if (empty || item == null) {
-//                setText(null);
-//                setGraphic(null);
-//            } else {
-//                /// Allows WindowSpanParser to create the Label
-//                TextFlow graphic = TextFlowBuilder.loadHeadingLine(item);
-//                setText(null);
-//                setGraphic(graphic);
-//            }
-//        }
-//    }
-//
-//    private final TreeView<Optional<LinedSpanLevelSection>> sectionTree;
-//
-//    /**
-//     * Property binded to selectionTree.selectionModel().selectedItemProperty().
-//     */
-//    private ReadOnlyObjectWrapper<Optional<LinedSpanLevelSection>>
-//        sectionSelected;
-//    /** Property binded to sectionTree.focusedProperty(). */
-//    private ReadOnlyBooleanWrapper itemFocused;
-//
-//
-//    public HeadingTreeView(){
-//        sectionTree = setupTree();
-//
-//        sectionSelected = new ReadOnlyObjectWrapper<>(this, "sectionSelected");
-//        ReadOnlyObjectProperty<TreeItem<Optional<LinedSpanLevelSection>>> prop =
-//            sectionTree.getSelectionModel().selectedItemProperty();
-//        sectionSelected.bind(Bindings.createObjectBinding(
-//            /// Optional.of(TreeItem).flatMap(TreeItem -> LinedSpanLevelSection)
-//            () -> Optional.ofNullable(prop.getValue()).flatMap(item ->
-//                item.getValue()),
-//            prop));
-//
-//        itemFocused = new ReadOnlyBooleanWrapper(this, "itemFocused");
-//        itemFocused.bind(sectionTree.focusedProperty());
-//
-//    }
-//
-//    /// Layout Node
-//    private TreeView<Optional<LinedSpanLevelSection>> setupTree(){
-//        TreeView<Optional<LinedSpanLevelSection>> tree = new TreeView<>();
-//        tree.setShowRoot(false);
-//        tree.setCellFactory(param -> new HeadingCell());
-//        setContent(tree);
-//        return tree;
-//    }
-//
-//    /// Getters
-//    protected TreeView<Optional<LinedSpanLevelSection>> getTree(){
-//        return sectionTree;
-//    }
-//
-//    /// Node Properties
-//    public ReadOnlyObjectProperty<Optional<LinedSpanLevelSection>>
-//        selectedSectionProperty()
-//    {
-//        return sectionSelected.getReadOnlyProperty();
-//    }
-//
-//    public ReadOnlyBooleanProperty itemFocusedProperty() {
-//        return itemFocused.getReadOnlyProperty();
-//    }
-//
-//    public boolean isItemFocused(){
-//        return itemFocused.getValue();
-//    }
-//
-//    /// Control Methods
+
+    private class HeadingCell extends TreeCell<SectionSpan>{
+        @Override
+        public void updateItem(SectionSpan item, boolean empty){
+            /// Required by JavaFX API:
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setText(null);
+                setGraphic(null);
+            } else {
+                /// Allows WindowSpanParser to create the Label
+                TextFlow graphic = TextFlowBuilder.loadHeadingLine(item.getHeading());
+                setText(null);
+                setGraphic(graphic);
+            }
+        }
+    }
+
+    private final TreeView<SectionSpan> sectionTree;
+
+    /**
+     * Property binded to selectionTree.selectionModel().selectedItemProperty().
+     */
+    private ReadOnlyObjectWrapper<SectionSpan> sectionSelected;
+    /** Property binded to sectionTree.focusedProperty(). */
+    private ReadOnlyBooleanWrapper itemFocused;
+
+
+    public HeadingTreeView(){
+        sectionTree = initTree();
+
+        sectionSelected = new ReadOnlyObjectWrapper<>(this, "sectionSelected");
+        ReadOnlyObjectProperty<TreeItem<SectionSpan>> prop =
+            sectionTree.getSelectionModel().selectedItemProperty();
+        sectionSelected.bind(Bindings.createObjectBinding(
+            /// to Optional<TreeItem<SectionSpan>>
+            () -> Optional.ofNullable(prop.getValue())
+                /// to Optional<SectionSpan>
+                .map(item ->item.getValue())
+                /// to SectionSpan
+                .orElse(null),
+            prop));
+
+        itemFocused = new ReadOnlyBooleanWrapper(this, "itemFocused");
+        itemFocused.bind(sectionTree.focusedProperty());
+
+    }
+
+    private TreeItem<SectionSpan> initItem(){
+        return new TreeItem<>();
+    }
+
+    /// Layout Node
+    private TreeView<SectionSpan> initTree(){
+        TreeView<SectionSpan> tree = new TreeView<>();
+        tree.setShowRoot(false);
+        tree.setCellFactory(param -> new HeadingCell());
+        setContent(tree);
+        clearTree();
+        return tree;
+    }
+
+    /// Getters
+    protected TreeView<SectionSpan> getTree(){
+        return sectionTree;
+    }
+
+    /// Node Properties
+    public ReadOnlyObjectProperty<SectionSpan> selectedSectionProperty(){
+        return sectionSelected.getReadOnlyProperty();
+    }
+
+    public SectionSpan  getSelectedSection(){
+        return sectionSelected.getValue();
+    }
+
+    public ReadOnlyBooleanProperty itemFocusedProperty() {
+        return itemFocused.getReadOnlyProperty();
+    }
+
+    public boolean isItemFocused(){
+        return itemFocused.getValue();
+    }
+
+    /// Control Methods
+    protected abstract void clearTree();
 }
