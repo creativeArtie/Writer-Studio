@@ -26,10 +26,8 @@ class HeadingPaneControl extends HeadingPaneView{
     }
 
     public void fillHeadings(){
-        for (Span child: documentText){
-            getHeadings().addItem((SectionSpan) child, span ->
-                ((SectionSpanHead)span).getSections());
-        }
+        getHeadings().loadTree(documentText);
+        System.out.println(documentText);
     }
 
     public void moveCursor(int position){

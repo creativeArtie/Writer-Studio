@@ -106,7 +106,7 @@ abstract class WriterSceneView extends BorderPane{
 
     private HeadingPaneControl initTableOfContent(){
         HeadingPaneControl ans = new HeadingPaneControl();
-        setRight(ans);
+        setLeft(ans);
         return ans;
     }
 /*

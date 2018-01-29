@@ -76,7 +76,7 @@ abstract class HeadingTreeView extends TitledPane{
         tree.setShowRoot(false);
         tree.setCellFactory(param -> new HeadingCell());
         setContent(tree);
-        clearTree();
+        tree.setRoot(new TreeItem<>());
         return tree;
     }
 
