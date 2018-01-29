@@ -1,0 +1,410 @@
+[HEAD 1{[
+	PARAGRAPH[("Before Text"), "" \n ""]
+	,NOTE:{
+		NOTE["!%", (" abc"), "" \n ""]
+	},PARAGRAPH["" \n ""]
+	,NOTE:{
+		NOTE["!%", (" more note"), "" \n ""]
+	},NOTE:{
+		NOTE["!%", " @", ID("note":"abc"), ":", (" See"), "" \n ""]
+	},SCENE 1{[
+		SCENE 2{[
+			OUTLINE["!##", (" one more line"), "" \n ""]
+			,NOTE:{
+				SOURCE["!>", ERROR: , "" \n ""]
+			},PARAGRAPH[("Stuck in the middle"), "" \n ""]
+			,NOTE:{
+				SOURCE["!>", "" \n ""]
+			},PARAGRAPH[("Text here"), "" \n ""]
+			,PARAGRAPH[("End of "), "*", i("random"), "*", (" sub two outline"), "" \n ""]
+			]
+		}]
+	},SCENE 1{[
+		OUTLINE["!#", (" First outline start"), "" \n ""]
+		,NOTE:{
+			SOURCE["!>", IN_TEXT: , ":", {" source"}, "" \n ""]
+		},PARAGRAPH["" \n ""]
+		,SCENE 2{[
+			OUTLINE["!##", (" Hello Charlie"), "" \n ""]
+			]
+		}]
+	},SCENE 1{[
+		SCENE 2{[
+			OUTLINE["!##", (" Subpoint 2"), "" \n ""]
+			]
+		}]
+	},SCENE 1{[
+		OUTLINE["!#", (" Last major point before heading"), "" \n ""]
+		,SCENE 1{[
+			SCENE 3{[
+				OUTLINE["!###", (" Skip a sub"), "" \n ""]
+				]
+			}]
+		}]
+	}]
+}, HEAD 1{[
+	HEADING["=", (" First ever Heading!!!!"), "" \n ""]
+	,HEAD 2{[
+		HEADING["==", (" One step at a time"), "" \n ""]
+		,SCENE 1{[
+			OUTLINE["!#", (" First restart"), "" \n ""]
+			,SCENE 2{[
+				OUTLINE["!##", (" setting"), "" \n ""]
+				]
+			}]
+		},HEAD 3{[
+			HEADING["===", (" Heading 3"), "" \n ""]
+			,SCENE 1{[
+				OUTLINE["!#", (" The quick brown fox jumps over a lazy dog."), "" \n ""]
+				,SCENE 2{[
+					OUTLINE["!##", (" The quick..."), "" \n ""]
+					]
+				}]
+			},SCENE 1{[
+				SCENE 2{[
+					OUTLINE["!##", (" ... lazy dog"), "" \n ""]
+					,NOTE:{
+						NOTE["!%", ("in-text: add line afterwards"), "" \n ""]
+					}]
+				}]
+			}]
+		}]
+	}]
+}]
+
+[HEAD 1{[
+	HEADING["=", ("Chapter 1"), "" \n ""]
+	,SCENE 1{[
+		OUTLINE["!#", (" Story hook"), "" \n ""]
+		,SCENE 2{[
+			OUTLINE["!##", (" Question"), "" \n ""]
+			]
+		}]
+	},SCENE 1{[
+		OUTLINE["!#", (" Scene 1"), "" \n ""]
+		,SCENE 2{[
+			OUTLINE["!##", (" Intro"), "" \n ""]
+			,SCENE 3{[
+				OUTLINE["!###", (" Setting"), "" \n ""]
+				]
+			}]
+		}]
+	},SCENE 1{[
+		SCENE 1{[
+			SCENE 3{[
+				OUTLINE["!###", (" Events"), "" \n ""]
+				,SCENE 4{[
+					OUTLINE["!####", (" Character do this..."), "" \n ""]
+					]
+				}]
+			}]
+		}]
+	},SCENE 1{[
+		SCENE 1{[
+			SCENE 1{[
+				SCENE 4{[
+					OUTLINE["!####", (" Response with this..."), "" \n ""]
+					]
+				}]
+			}]
+		}]
+	},SCENE 1{[
+		SCENE 1{[
+			SCENE 1{[
+				SCENE 4{[
+					OUTLINE["!####", (" Ends like this"), "" \n ""]
+					]
+				}]
+			}]
+		}]
+	},SCENE 1{[
+		OUTLINE["!#", (" Chapter end"), "" \n ""]
+		]
+	},HEAD 2{[
+		HEADING["==", ("Sub chapter"), "" \n ""]
+		,SCENE 1{[
+			OUTLINE["!#", (" Intro to computers"), "" \n ""]
+			,SCENE 2{[
+				OUTLINE["!##", (" Computer terms"), "" \n ""]
+				,SCENE 3{[
+					OUTLINE["!###", (" RAM"), "" \n ""]
+					]
+				}]
+			}]
+		},SCENE 1{[
+			SCENE 1{[
+				SCENE 3{[
+					OUTLINE["!###", (" Hard drive"), "" \n ""]
+					]
+				}]
+			}]
+		},SCENE 1{[
+			SCENE 1{[
+				SCENE 3{[
+					OUTLINE["!###", (" Mouse"), "" \n ""]
+					]
+				}]
+			}]
+		},SCENE 1{[
+			SCENE 2{[
+				OUTLINE["!##", (" Basic Terms"), "" \n ""]
+				,SCENE 3{[
+					OUTLINE["!###", (" Kill the parent node"), "" \n ""]
+					]
+				}]
+			}]
+		},SCENE 1{[
+			SCENE 1{[
+				SCENE 3{[
+					OUTLINE["!###", (" How to kill orphans nodes"), "" \n ""]
+					]
+				}]
+			}]
+		},SCENE 1{[
+			SCENE 2{[
+				OUTLINE["!##", (" Tree Terms"), "" \n ""]
+				,SCENE 3{[
+					OUTLINE["!###", (" See above"), "" \n ""]
+					]
+				}]
+			}]
+		}]
+	},HEAD 2{[
+		HEADING["==", (" More random sub"), "" \n ""]
+		,SCENE 1{[
+			OUTLINE["!#", (" Day of life in the ocean"), "" \n ""]
+			,SCENE 2{[
+				OUTLINE["!##", (" Rising monster"), "" \n ""]
+				]
+			}]
+		},SCENE 1{[
+			SCENE 2{[
+				OUTLINE["!##", (" No more monsters"), "" \n ""]
+				]
+			}]
+		}]
+	}]
+}, HEAD 1{[
+	HEADING["=", ("Chapter 2"), "" \n ""]
+	]
+}, HEAD 1{[
+	HEADING["=", ("Chapter 3"), "" \n ""]
+	,HEAD 2{[
+		HEADING["==", (" Scuba, laser and teaser "), "" \n ""]
+		]
+	},HEAD 2{[
+		HEADING["==", (" seesaw, outlaw, in-law"), "" \n ""]
+		]
+	},HEAD 2{[
+		HEADING["==", (" beaver, otter, moose!!!!"), "" \n ""]
+		,HEAD 3{[
+			HEADING["===", (" more on moose"), "" \n ""]
+			]
+		},HEAD 3{[
+			HEADING["===", (" moose on dolphin"), "" \n ""]
+			]
+		},HEAD 3{[
+			HEADING["===", (" sky-to-sea highway"), "" \n ""]
+			]
+		}]
+	},HEAD 2{[
+		HEADING["==", (" I see you?!"), "" \n ""]
+		]
+	},HEAD 2{[
+		HEADING["==", (" you have ice"), "" \n ""]
+		]
+	},HEAD 2{[
+		HEADING["==", (" rabbit-like dinosauar"), "" \n ""]
+		,HEAD 3{[
+			HEADING["===", (" ABC"), "" \n ""]
+			,HEAD 4{[
+				HEADING["====", (" DEFG"), "" \n ""]
+				]
+			},HEAD 4{[
+				HEADING["====", (" HIGK"), "" \n ""]
+				]
+			},HEAD 4{[
+				HEADING["====", (" LMNO"), "" \n ""]
+				]
+			}]
+		},HEAD 3{[
+			HEADING["===", (" PQR"), "" \n ""]
+			]
+		},HEAD 3{[
+			HEADING["===", (" STUV"), "" \n ""]
+			]
+		},HEAD 3{[
+			HEADING["===", (" WXYZ"), "" \n ""]
+			]
+		}]
+	}]
+}, HEAD 1{[
+	HEADING["=", (" Chapter 4"), "" \n ""]
+	,SCENE 1{[
+		OUTLINE["!#", (" action to see you"), "" \n ""]
+		]
+	},HEAD 2{[
+		HEADING["==", (" Final heading"), "" \n ""]
+		,SCENE 1{[
+			OUTLINE["!#", (" final major outline point"), "" \n ""]
+			,SCENE 2{[
+				OUTLINE["!##", (" finalize second level outline point"), "" \n ""]
+				,SCENE 1{[
+					SCENE 4{[
+						OUTLINE["!####", (" ?? "), "" \n ""]
+						]
+					}]
+				}]
+			}]
+		},SCENE 1{[
+			SCENE 1{[
+				SCENE 3{[
+					OUTLINE["!###", (" illuminati confirmed!"), "" \n ""]
+					]
+				}]
+			}]
+		},SCENE 1{[
+			SCENE 2{[
+				OUTLINE["!##", (" story is finally over!!!!")]
+				]
+			}]
+		}]
+	}]
+}]
+
+[HEAD 1{[
+	SCENE 1{[
+		OUTLINE["!#", (" outline"), "" \n ""]
+		,AGENDA["!!", " Needs Heading 1!!!!", "" \n ""]
+		]
+	},HEAD 2{[
+		HEADING["==", (" No "), "*", i("Heading 1"), "*", ("!"), "" \n ""]
+		,PARAGRAPH[("Some text here"), "" \n ""]
+		]
+	}]
+}, HEAD 1{[
+	HEADING["=", (" Chapter 1: "), "**", b("Bold"), "**", (" and "), "_", u("underlined"), "_", (" "), Stub(Optional.empty), "" \n ""]
+	,HEAD 1{[
+		HEAD 3{[
+			HEADING["===", (" Sub-sub <b>heading</b>"), "" \n ""]
+			]
+		}]
+	}]
+}, HEAD 1{[
+	HEADING["=", (" Chapter 2: "), Draft(Optional.empty), "" \n ""]
+	,HEAD 2{[
+		HEADING["==", (" Standard 1"), "" \n ""]
+		]
+	},HEAD 2{[
+		HEADING["==", (" Standard 2 "), agenda("done"), "" \n ""]
+		]
+	}]
+}, HEAD 1{[
+	HEADING["=", (" Chapter 3"), (FOOTNOTE"(foot-num-123)"), (" "), Final(Optional.empty), "" \n ""]
+	]
+}, HEAD 1{[
+	HEADING["=", (" "), "`", c("Chapter"), "`", (" 4"), (ENDNOTE"(end-ded)"), (" "), Other(Optional["other"]), "" \n ""]
+	,ENDNOTE["!*", ID("end":"ded"), ":", (" ready"), "" \n ""]
+	]
+}]
+
+[HEAD 1{[
+	PARAGRAPH["" \n ""]
+	,HEAD 2{[
+		HEADING["==", ("Hello "), "*", i("World!"), "*", (" \"), Other(Optional[" abc # Hello"]), "" \n ""]
+		,SCENE 1{[
+			OUTLINE["!#", "@", ID("link":"outlne"), ":", ("Outline 1 "), Draft(Optional.empty), "" \n ""]
+			,NUMBERED["#", ("number "), "**", "_", bu("line "), "**", u("1"), "_", "" \n ""]
+			,NUMBERED["#", ("number line 2 "), ("google"->"google.com"), (" "), (ID("link":"apple")->"apple.com"), ("."), "" \n ""]
+			,HYPERLINK["!@", ID("link":"apple"), ":", "apple.com", "" \n ""]
+			,HYPERLINK["!@", ID("link":"amazon"), ":", "amanzon.com", "" \n ""]
+			,AGENDA["!!", "more todo", "" \n ""]
+			,PARAGRAPH[("Some more text"), (NOTE"(note-unknown)"), "" \n ""]
+			,NOTE:{
+				NOTE["!%", ("Note 1"), "" \n ""]
+			},NOTE:{
+				NOTE["!%", "@", ID("note":"note 2"), ":", (" Proper note "), (ID("link":"apple")->"apple.com"), "" \n ""]
+				SOURCE["!>", SOURCE: , ":", {("abc "), "*", i("abc"), "*", (" "), "**", b("ddd"), "**"}, "" \n ""]
+				SOURCE["!>", ERROR: , "" \n ""]
+			},QUOTE[">", ("quote with "), "_", u("underline"), "_", (", "), "*", i("italics"), "*", (", "), "`", c("code"), "`", (", and "), "**", b("bold"), b(ENDNOTE"(end-endnote)"), "" \n ""]
+			]
+		}]
+	}]
+}, HEAD 1{[
+	HEADING["=", ("Chapter 2 "), agenda("help"), "" \n ""]
+	,PARAGRAPH[("Simple paragraph with footnote"), (FOOTNOTE"(foot-1)"), (" and "), agenda("in line to do"), "" \n ""]
+	,FOOTNOTE["!^", ID("foot":"1"), ":", (" Some text"), "" \n ""]
+	,ENDNOTE["!*", ID("end":"a"), ":", (" unused endnote")]
+	]
+}]
+
+[HEAD 1{[
+	NOTE:{
+		NOTE["!%", (" Nameless Note"), "" \n ""]
+		SOURCE["!>", ERROR: , ":", " adfasdf", "" \n ""]
+	},NOTE:{
+		NOTE["!%", "  @", ID("note":"basic note"), ":", (" Title 1"), "" \n ""]
+		SOURCE["!>", SOURCE: , ":", {(" abc")}, "" \n ""]
+		NOTE["!%", ("Some text here "), "*", i("abc"), "*", "" \n ""]
+		NOTE["!%", ("More Text here"), "" \n ""]
+	},NOTE:{
+		NOTE["!%", "  @", ID("note":"sourced"), ":", (" From some book unkown"), "" \n ""]
+		NOTE["!%", (" lalalala "), (ID("link":"hello")->"HelloWorld.com"), "" \n ""]
+		SOURCE["!>", SOURCE: , ":", {(" Berndt, T. J. (2002). Friendship quality and social development. "), "*", i("Current Directions in Psychological Science"), "*", (", 11, 7-10.")}, "" \n ""]
+		SOURCE["!>", IN_TEXT: , ":", {" Chapter 1 _abc_"}, "" \n ""]
+	},NOTE:{
+		NOTE["!%", " @", ID("note"-"a":"b"), ":", (" bbb"), "" \n ""]
+		SOURCE["!>", FOOTNOTE: , ":", {" abc"}, "" \n ""]
+	},NOTE:{
+		NOTE["!%", " @", ID("note"-"a":"c"), ":", (" aaa"), "" \n ""]
+	},NOTE:{
+		NOTE["!%", " @", ID("note"-"a"-"b":"a"), ":", (" welcome"), "" \n ""]
+	},NOTE:{
+		NOTE["!%", " @", ID("note"-"a"-"b":"c"), ":", (" to"), "" \n ""]
+	},NOTE:{
+		NOTE["!%", " @", ID("note"-"a"-"b":"d"), ":", (" break up note into"), "" \n ""]
+		NOTE["!%", (" random lines, except for"), "" \n ""]
+		NOTE["!%", (" "), "*", i("this"), "*", (" one!!!"), "" \n ""]
+	}]
+}, HEAD 1{[
+	HEADING["=", "@", ID("link":"ch 1"), ":", (" Sing along"), (ENDNOTE"(end-unknowable)"), "" \n ""]
+	,PARAGRAPH[("See here. "), (NOTE"(note-random)"), (" Cite there "), (NOTE"(note-sourced)"), ("."), "" \n ""]
+	,ENDNOTE["!*", ID("end":"footnote 1"), ":", (" some text with "), "*", i("bold"), "*", (" and "), "_", u("underlined"), "_", "" \n ""]
+	,ENDNOTE["!*", ID("end":"funny"), ":", (" funny joke in the wrong place"), "" \n ""]
+	]
+}, HEAD 1{[
+	HEADING["=", ("More text"), "" \n ""]
+	,PARAGRAPH[("abc"), (ENDNOTE"(end-funny)"), (" "), (ID("link":"hello")->"HelloWorld.com"), (" "), "*", i("google.com"->"www.google.com"), "*", ("."), "" \n ""]
+	,AGENDA["!!", " Todo list 1 2 3", "" \n ""]
+	,AGENDA["!!", " more todos", "" \n ""]
+	,PARAGRAPH[agenda("local todo"), (" yah :( "), agenda("even more"), (" boo!!!"), "" \n ""]
+	,HYPERLINK["!@", ID("link":"hello"), ":", "HelloWorld.com", "" \n ""]
+	,ENDNOTE["!*", ID("end":"a"), ":", ("lists"), "" \n ""]
+	,ENDNOTE["!*", ID("end"-"b":"a"), ":", ("abc"), "" \n ""]
+	,ENDNOTE["!*", ID("end"-"b":"a"), ":", ("first!!!"), "" \n ""]
+	,ENDNOTE["!*", ID("end"-"b":"a"), ":", ("repeated"), "" \n ""]
+	,ENDNOTE["!*", ID("end"-"b":"b"), ":", ("id b"), "" \n ""]
+	,ENDNOTE["!*", ID("end"-"b":"c"), ":", ("id c"), "" \n ""]
+	,ENDNOTE["!*", ID("end"-"b":"d"), ":", ("id d"), "" \n ""]
+	,ENDNOTE["!*", ID("end"-"b":"e"), ":", ("id e"), "" \n ""]
+	,ENDNOTE["!*", ID("end"-"b":"f"), ":", ("id f"), "" \n ""]
+	,ENDNOTE["!*", ID("end"-"b":"g"), ":", ("id g"), "" \n ""]
+	,ENDNOTE["!*", ID("end"-"b":"h"), ":", ("id h"), "" \n ""]
+	,ENDNOTE["!*", ID("end"-"b":"i"), ":", ("id i"), "" \n ""]
+	,ENDNOTE["!*", ID("end"-"b":"j"), ":", ("id j"), "" \n ""]
+	,ENDNOTE["!*", ID("end"-"b":"k"), ":", ("id k"), "" \n ""]
+	,ENDNOTE["!*", ID("end"-"b":"ka"), ":", ("id ka"), "" \n ""]
+	,ENDNOTE["!*", ID("end"-"b":"kb"), ":", ("id kb"), "" \n ""]
+	,ENDNOTE["!*", ID("end"-"b":"l"), ":", ("id l"), "" \n ""]
+	,ENDNOTE["!*", ID("end"-"b":"m"), ":", ("id m")]
+	]
+}]
+
+[HEAD 1{[
+	AGENDA["!!", "" \n ""]
+	,PARAGRAPH[("aafadfa "), agenda("abc"), "" \n ""]
+	,AGENDA["!!", " some text", "" \n ""]
+	,PARAGRAPH["" \n ""]
+	,AGENDA["!!", "!adfasf"]
+	]
+}]
