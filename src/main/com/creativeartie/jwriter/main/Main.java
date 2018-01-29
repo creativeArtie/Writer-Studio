@@ -50,7 +50,7 @@ public class Main extends Application{
 
     @Deprecated
     private void testMainWindow() throws Exception{
-        File file = new File("data/sectionDebug4.txt");
+        File file = new File("data/sectionDebug2.txt");
         WritingText doc = new WritingText(file);
         setupWindow(ManuscriptFile.withManuscript(doc));
     }

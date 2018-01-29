@@ -128,14 +128,12 @@ public abstract class SectionSpan extends SpanBranch {
         for (Span span: this){
             if (isFirst){
                 isFirst = false;
+                text.append("\t");
             } else {
-                text.insert(text.length() - 2, ',');
+                text.append(",");
             }
-            String base = "\t" + span;
+            String base = span.toString();
             text.append(base.replace("\n", "\n\t"));
-            if (span instanceof LinedSpan){
-                text.append("\n");
-            }
         }
         text.append("]\n");
         return text.toString();

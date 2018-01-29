@@ -16,7 +16,7 @@ import com.google.common.collect.ImmutableListMultimap;
 @RunWith(Parameterized.class)
 public class HelloDebug{
 
-     @Parameters
+    @Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
             {0}, {1}, {2}

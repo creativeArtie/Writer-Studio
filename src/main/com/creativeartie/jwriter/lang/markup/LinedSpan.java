@@ -27,7 +27,7 @@ public abstract class LinedSpan extends SpanBranch {
 
     @Override
     public String toString(){
-        return getLinedType() + super.toString();
+        return getLinedType() + super.toString() + "\n";
     }
 
     @Override

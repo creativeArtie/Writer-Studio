@@ -74,6 +74,6 @@ public final class SectionSpanScene extends SectionSpan {
 
     @Override
     public String toString(){
-        return "Scene " + getLevel() + "{" + super.toString() + "}";
+        return "SCENE " + getLevel() + "{" + super.toString() + "}";
     }
 }

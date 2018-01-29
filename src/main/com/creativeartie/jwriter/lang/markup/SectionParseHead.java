@@ -54,8 +54,14 @@ enum SectionParseHead implements SectionParser {
                 SectionParser.parseContent(children, pointer);
             }
         }
-        if (pointer.hasNext(getLevelTokens(LinedParseLevel.OUTLINE))){
+        while (pointer.hasNext(getLevelTokens(LinedParseLevel.OUTLINE))){
             SectionParseScene.SCENE_1.parse(children, pointer);
+        }
+        if (! isLast()){
+            SectionParseHead child = values()[ordinal() + 1];
+            while (pointer.hasNext(child.starter)){
+                    child.parse(children, pointer);
+            }
         }
     }
 

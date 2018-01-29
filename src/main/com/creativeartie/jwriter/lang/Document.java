@@ -117,13 +117,13 @@ public abstract class Document extends SpanNode<SpanBranch>{
         return catalogueMap;
     }
 
-    @Override
+    /*@Override
     public String toString(){
         if (catalogueMap.isEmpty()){
             return super.toString() + catalogueMap.toString();
         }
         return super.toString() + "\n" + catalogueMap.toString();
-    }
+    }*/
 
     @Override
     public final Document getDocument(){

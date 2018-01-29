@@ -130,6 +130,6 @@ public final class SectionSpanHead extends SectionSpan {
 
     @Override
     public String toString(){
-        return "Head " + getLevel() + "{" + super.toString() + "}";
+        return "HEAD " + getLevel() + "{" + super.toString() + "}";
     }
 }
