@@ -21,12 +21,12 @@ class AgendaPaneControl extends AgendaPaneView{
     private int docIndex;
 
      /** Updates the selections base on the cursor movements. */
-     public void updateSelection(int index){
+     public void updateAgenda(int index){
          docIndex = index;
-         updateSelection();
+         updateAgenda();
      }
 
-    private void updateSelection(){
+    private void updateAgenda(){
         if (docText == null){
             return;
         }
@@ -64,6 +64,6 @@ class AgendaPaneControl extends AgendaPaneView{
                 docText.getCatalogue().getIds(AuxiliaryData.TYPE_AGENDA)
             )
         ));
-        updateSelection();
+        updateAgenda();
     }
 }

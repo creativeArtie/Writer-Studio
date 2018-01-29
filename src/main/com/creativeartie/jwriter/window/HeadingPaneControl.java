@@ -10,6 +10,8 @@ import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.main.*;
 
+import com.google.common.collect.*;
+
 /**
  * Controller for Heading Pane.
  *
@@ -26,17 +28,43 @@ class HeadingPaneControl extends HeadingPaneView{
     }
 
     public void fillHeadings(){
-        getHeadings().loadTree(documentText);
-        System.out.println(documentText);
+        getHeadings().loadSections(documentText);
     }
 
-    public void moveCursor(int position){
+    public void updateTable(int position){
+        if (documentText == null){
+            /// Heading Pane is not ready
+            return;
+        }
         Optional<SpanLeaf> leaf = documentText.locateLeaf(position);
         if (! leaf.isPresent()){
             /// TODO Select first
             return;
         }
         /// TODO Find and select child
+        TreeItem<SectionSpan> root = getHeadings().getTree().getRoot();
+        SectionSpanHead found = leaf.get().getParent(SectionSpanHead.class)
+            .get();
+        setSection(root, found, getHeadings().getTree());
+        getOutlines().loadScenes(found);
+    }
+
+    private void setSection(TreeItem<SectionSpan> parent,
+            SectionSpan target, TreeView<SectionSpan> tree){
+        for (TreeItem<SectionSpan> child: parent.getChildren()){
+            Range<Integer> ptr = child.getValue().getRange();
+            Range<Integer> range = target.getRange();
+            if (ptr.equals(range)){
+                /// Found item
+                tree.getSelectionModel().select(child);
+                return;
+            } else if (ptr.encloses(range)){
+                /// traget is a child of child
+                setSection(child, target, tree);
+                return;
+            }
+            /// target is a slibing of child
+        }
     }
 
 //

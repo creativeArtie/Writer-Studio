@@ -24,21 +24,22 @@ class HeadingTreeControl extends HeadingTreeView{
         getTree().setRoot(new TreeItem<>());
     }
 
-    protected void loadTree(WritingText text){
+    protected void loadSections(WritingText text){
         TreeItem<SectionSpan> root = new TreeItem<>();
         for (Span child: text){
             SectionSpan span = (SectionSpan)child;
             TreeItem<SectionSpan> item = new TreeItem<>(span);
             root.getChildren().add(item);
-            addChildren(item, span, found -> 
+            addChildren(item, span, found ->
                 ((SectionSpanHead)found).getSections());
         }
         getTree().setRoot(root);
     }
 
-    protected void loadTree(SectionSpan replace){
+    protected void loadScenes(SectionSpanHead replace){
         TreeItem<SectionSpan> root = new TreeItem<>();
-        addChildren(root, replace, span ->
+        addChildren(root, replace, span -> span instanceof SectionSpanHead?
+            ((SectionSpanHead)span).getScenes():
             ((SectionSpanScene)span).getSubscenes());
         getTree().setRoot(root);
     }
