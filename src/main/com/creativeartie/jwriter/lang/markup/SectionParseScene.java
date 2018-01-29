@@ -21,6 +21,17 @@ enum SectionParseScene implements SectionParser {
         starter = getLevelToken(LinedParseLevel.OUTLINE, ordinal() + 1);
     }
 
+    public void headParsing(ArrayList<Span> children, SetupPointer pointer,
+            boolean findHead){
+        checkArgument(findHead, "heading is not found.");
+        if (! isLast()){
+            SectionParseScene child = values()[ordinal() + 1];
+            while (pointer.hasNext(child.starter)){
+                child.parse(children, pointer);
+            }
+        }
+    }
+
     @Override
     public boolean isFirst(){
         return this == SCENE_1;

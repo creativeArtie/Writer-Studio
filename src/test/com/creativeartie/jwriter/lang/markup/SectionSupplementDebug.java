@@ -17,6 +17,8 @@ import com.creativeartie.jwriter.lang.*;
 @RunWith(Parameterized.class)
 public class SectionSupplementDebug {
 
+    private static boolean verbose = false;
+
     private static enum Type {HEADING, OUTLINE, OTHERS, SKIP_LINE, NEW_FILE};
 
     @Parameters
@@ -26,8 +28,8 @@ public class SectionSupplementDebug {
             File file = new File("data/sectionDebug" + i + ".txt");
             texts[i - 1] = new WritingText(Files
                 .asCharSource(file, Charsets.UTF_8).read());
-            // System.out.println(texts[i - 1]);
-            // System.out.println();
+            if (verbose) System.out.println(texts[i - 1]);
+            if (verbose) System.out.println();
         }
         ArrayList<Object[]> test = new ArrayList<>();
         File file = new File("data/sectionDebugOutcomes.txt");

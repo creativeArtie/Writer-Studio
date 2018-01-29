@@ -81,11 +81,17 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
 
     @Override
     public String toString(){
-        StringBuilder output = new StringBuilder("NOTE:{");
+        StringBuilder output = new StringBuilder("NOTE:{\n\t");
+        boolean isFirst = true;
         for(Span span: this){
-            output.append("\n\t").append(span.toString());
+            if(isFirst){
+                isFirst = false;
+            } else {
+                output.append("\t,");
+            }
+            output.append(span.toString());
         }
-        output.append("\n}");
+        output.append("}");
         return output.toString();
     }
 

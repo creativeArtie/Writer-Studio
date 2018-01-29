@@ -27,9 +27,7 @@
 		,SCENE 2{[
 			OUTLINE["!##", (" Hello Charlie"), "" \n ""]
 			]
-		}]
-	},SCENE 1{[
-		SCENE 2{[
+		},SCENE 2{[
 			OUTLINE["!##", (" Subpoint 2"), "" \n ""]
 			]
 		}]
@@ -59,9 +57,7 @@
 				,SCENE 2{[
 					OUTLINE["!##", (" The quick..."), "" \n ""]
 					]
-				}]
-			},SCENE 1{[
-				SCENE 2{[
+				},SCENE 2{[
 					OUTLINE["!##", (" ... lazy dog"), "" \n ""]
 					,NOTE:{
 						NOTE["!%", ("in-text: add line afterwards"), "" \n ""]
@@ -87,31 +83,15 @@
 			,SCENE 3{[
 				OUTLINE["!###", (" Setting"), "" \n ""]
 				]
-			}]
-		}]
-	},SCENE 1{[
-		SCENE 1{[
-			SCENE 3{[
+			},SCENE 3{[
 				OUTLINE["!###", (" Events"), "" \n ""]
 				,SCENE 4{[
 					OUTLINE["!####", (" Character do this..."), "" \n ""]
 					]
-				}]
-			}]
-		}]
-	},SCENE 1{[
-		SCENE 1{[
-			SCENE 1{[
-				SCENE 4{[
+				},SCENE 4{[
 					OUTLINE["!####", (" Response with this..."), "" \n ""]
 					]
-				}]
-			}]
-		}]
-	},SCENE 1{[
-		SCENE 1{[
-			SCENE 1{[
-				SCENE 4{[
+				},SCENE 4{[
 					OUTLINE["!####", (" Ends like this"), "" \n ""]
 					]
 				}]
@@ -129,39 +109,23 @@
 				,SCENE 3{[
 					OUTLINE["!###", (" RAM"), "" \n ""]
 					]
-				}]
-			}]
-		},SCENE 1{[
-			SCENE 1{[
-				SCENE 3{[
+				},SCENE 3{[
 					OUTLINE["!###", (" Hard drive"), "" \n ""]
 					]
-				}]
-			}]
-		},SCENE 1{[
-			SCENE 1{[
-				SCENE 3{[
+				},SCENE 3{[
 					OUTLINE["!###", (" Mouse"), "" \n ""]
 					]
 				}]
-			}]
-		},SCENE 1{[
-			SCENE 2{[
+			},SCENE 2{[
 				OUTLINE["!##", (" Basic Terms"), "" \n ""]
 				,SCENE 3{[
 					OUTLINE["!###", (" Kill the parent node"), "" \n ""]
 					]
-				}]
-			}]
-		},SCENE 1{[
-			SCENE 1{[
-				SCENE 3{[
+				},SCENE 3{[
 					OUTLINE["!###", (" How to kill orphans nodes"), "" \n ""]
 					]
 				}]
-			}]
-		},SCENE 1{[
-			SCENE 2{[
+			},SCENE 2{[
 				OUTLINE["!##", (" Tree Terms"), "" \n ""]
 				,SCENE 3{[
 					OUTLINE["!###", (" See above"), "" \n ""]
@@ -176,9 +140,7 @@
 			,SCENE 2{[
 				OUTLINE["!##", (" Rising monster"), "" \n ""]
 				]
-			}]
-		},SCENE 1{[
-			SCENE 2{[
+			},SCENE 2{[
 				OUTLINE["!##", (" No more monsters"), "" \n ""]
 				]
 			}]
@@ -254,17 +216,11 @@
 						OUTLINE["!####", (" ?? "), "" \n ""]
 						]
 					}]
-				}]
-			}]
-		},SCENE 1{[
-			SCENE 1{[
-				SCENE 3{[
+				},SCENE 3{[
 					OUTLINE["!###", (" illuminati confirmed!"), "" \n ""]
 					]
 				}]
-			}]
-		},SCENE 1{[
-			SCENE 2{[
+			},SCENE 2{[
 				OUTLINE["!##", (" story is finally over!!!!")]
 				]
 			}]
@@ -324,8 +280,8 @@
 				NOTE["!%", ("Note 1"), "" \n ""]
 			},NOTE:{
 				NOTE["!%", "@", ID("note":"note 2"), ":", (" Proper note "), (ID("link":"apple")->"apple.com"), "" \n ""]
-				SOURCE["!>", SOURCE: , ":", {("abc "), "*", i("abc"), "*", (" "), "**", b("ddd"), "**"}, "" \n ""]
-				SOURCE["!>", ERROR: , "" \n ""]
+				,SOURCE["!>", SOURCE: , ":", {("abc "), "*", i("abc"), "*", (" "), "**", b("ddd"), "**"}, "" \n ""]
+				,SOURCE["!>", ERROR: , "" \n ""]
 			},QUOTE[">", ("quote with "), "_", u("underline"), "_", (", "), "*", i("italics"), "*", (", "), "`", c("code"), "`", (", and "), "**", b("bold"), b(ENDNOTE"(end-endnote)"), "" \n ""]
 			]
 		}]
@@ -341,20 +297,20 @@
 [HEAD 1{[
 	NOTE:{
 		NOTE["!%", (" Nameless Note"), "" \n ""]
-		SOURCE["!>", ERROR: , ":", " adfasdf", "" \n ""]
+		,SOURCE["!>", ERROR: , ":", " adfasdf", "" \n ""]
 	},NOTE:{
 		NOTE["!%", "  @", ID("note":"basic note"), ":", (" Title 1"), "" \n ""]
-		SOURCE["!>", SOURCE: , ":", {(" abc")}, "" \n ""]
-		NOTE["!%", ("Some text here "), "*", i("abc"), "*", "" \n ""]
-		NOTE["!%", ("More Text here"), "" \n ""]
+		,SOURCE["!>", SOURCE: , ":", {(" abc")}, "" \n ""]
+		,NOTE["!%", ("Some text here "), "*", i("abc"), "*", "" \n ""]
+		,NOTE["!%", ("More Text here"), "" \n ""]
 	},NOTE:{
 		NOTE["!%", "  @", ID("note":"sourced"), ":", (" From some book unkown"), "" \n ""]
-		NOTE["!%", (" lalalala "), (ID("link":"hello")->"HelloWorld.com"), "" \n ""]
-		SOURCE["!>", SOURCE: , ":", {(" Berndt, T. J. (2002). Friendship quality and social development. "), "*", i("Current Directions in Psychological Science"), "*", (", 11, 7-10.")}, "" \n ""]
-		SOURCE["!>", IN_TEXT: , ":", {" Chapter 1 _abc_"}, "" \n ""]
+		,NOTE["!%", (" lalalala "), (ID("link":"hello")->"HelloWorld.com"), "" \n ""]
+		,SOURCE["!>", SOURCE: , ":", {(" Berndt, T. J. (2002). Friendship quality and social development. "), "*", i("Current Directions in Psychological Science"), "*", (", 11, 7-10.")}, "" \n ""]
+		,SOURCE["!>", IN_TEXT: , ":", {" Chapter 1 _abc_"}, "" \n ""]
 	},NOTE:{
 		NOTE["!%", " @", ID("note"-"a":"b"), ":", (" bbb"), "" \n ""]
-		SOURCE["!>", FOOTNOTE: , ":", {" abc"}, "" \n ""]
+		,SOURCE["!>", FOOTNOTE: , ":", {" abc"}, "" \n ""]
 	},NOTE:{
 		NOTE["!%", " @", ID("note"-"a":"c"), ":", (" aaa"), "" \n ""]
 	},NOTE:{
@@ -363,8 +319,8 @@
 		NOTE["!%", " @", ID("note"-"a"-"b":"c"), ":", (" to"), "" \n ""]
 	},NOTE:{
 		NOTE["!%", " @", ID("note"-"a"-"b":"d"), ":", (" break up note into"), "" \n ""]
-		NOTE["!%", (" random lines, except for"), "" \n ""]
-		NOTE["!%", (" "), "*", i("this"), "*", (" one!!!"), "" \n ""]
+		,NOTE["!%", (" random lines, except for"), "" \n ""]
+		,NOTE["!%", (" "), "*", i("this"), "*", (" one!!!"), "" \n ""]
 	}]
 }, HEAD 1{[
 	HEADING["=", "@", ID("link":"ch 1"), ":", (" Sing along"), (ENDNOTE"(end-unknowable)"), "" \n ""]
@@ -408,3 +364,4 @@
 	,AGENDA["!!", "!adfasf"]
 	]
 }]
+
