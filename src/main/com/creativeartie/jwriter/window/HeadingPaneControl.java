@@ -23,8 +23,9 @@ class HeadingPaneControl extends HeadingPaneView{
 
     public void loadHeadings(WritingText document){
         documentText = document;
-        fillHeadings();
+        documentText.addUpdater(span -> fillHeadings());
         getOutlines().clearTree();
+        fillHeadings();
     }
 
     public void fillHeadings(){
@@ -41,12 +42,19 @@ class HeadingPaneControl extends HeadingPaneView{
             /// TODO Select first
             return;
         }
-        /// TODO Find and select child
+        /// Select Heading
         TreeItem<SectionSpan> root = getHeadings().getTree().getRoot();
-        SectionSpanHead found = leaf.get().getParent(SectionSpanHead.class)
+        SectionSpanHead heading = leaf.get().getParent(SectionSpanHead.class)
             .get();
-        setSection(root, found, getHeadings().getTree());
-        getOutlines().loadScenes(found);
+        setSection(root, heading, getHeadings().getTree());
+        getOutlines().loadScenes(heading);
+
+        /// Select outline
+        TreeItem<SectionSpan> root1 = getOutlines().getTree().getRoot();
+        Optional<SectionSpanScene> scene = leaf.get().getParent(SectionSpanScene
+            .class);
+        scene.ifPresent(find -> setSection(root1, find, getOutlines()
+            .getTree()));
     }
 
     private void setSection(TreeItem<SectionSpan> parent,
@@ -66,32 +74,4 @@ class HeadingPaneControl extends HeadingPaneView{
             /// target is a slibing of child
         }
     }
-
-//
-//    /** Loads the document sections. */
-//    public void loadTrees(WritingText document){
-//        getHeadings().loadHeadings(document);
-//        getOutlines().clearTree();
-//    }
-//
-//     /** Updates the selection base on the cursor movements. */
-//    public void setHeading(WritingText doc, int position){
-//        doc.locateSpan(position, SpanLeaf.class).ifPresent(span -> {
-//            /// should always run b/c every leaf is a SpanLeaf
-//
-//            /// Get the lowest SectionSpanHead
-//            SectionSpanHead head = span.getParent(SectionSpanHead.class).get();
-//
-//            /// Selection at the top
-//            getHeadings().selectHeading(head.getHeading());
-//
-//            /// Section at the bottom
-//            getOutlines().loadOutline(head);
-//            Optional<SectionSpanScene> scene = span.getParent(
-//                SectionSpanScene.class);
-//            scene.ifPresent(
-//                found -> getOutlines().selectHeading(found.getHeading())
-//            );
-//        });
-//    }
 }

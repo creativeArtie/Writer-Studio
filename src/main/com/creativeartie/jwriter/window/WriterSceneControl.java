@@ -41,6 +41,8 @@ public class WriterSceneControl extends WriterSceneView {
 
         getAgendaPane().loadAgenda(currentDoc);
         getTableOfContent().loadHeadings(currentDoc);
+        getTableOfContent().updateTable(getTextArea().getCaretPlaced());
+        getTextArea().returnFocus();
     }
 
     @Override
@@ -75,8 +77,13 @@ public class WriterSceneControl extends WriterSceneView {
     }
 
     @Override
-    protected void selectionChanged(Range<Integer> range){
+    protected void selectionChanged(SpanBranch span){
         System.out.print("selectedChanged: ");
+        if (span == null){
+            System.out.println("will NOT move");
+            return;
+        }
+        Range<Integer> range = span.getRange();
         if (! range.contains(getTextArea().getCaretPlaced())){
             System.out.println("will move");
             getTextArea().moveTo(range.upperEndpoint());
@@ -88,24 +95,24 @@ public class WriterSceneControl extends WriterSceneView {
     @Override
     protected void caretChanged(int position){
         System.out.print("caretChanged: ");
-        if (shouldMove(getAgendaPane().getAgendaSelected(), position)){
+        if (shouldMoveAgenda(position)){
             System.out.print("will MAYBE move agenda");
             getAgendaPane().updateAgenda(position);
         } else {
             System.out.print("will NOT move agenda");
         }
         HeadingPaneControl content = getTableOfContent();
-        if (shouldMove(content.getHeadingSelected(), position) &&
-                shouldMove(content.getOutlineSelected(), position)){
-            System.out.println("will move table of content");
+        if (shouldMoveHead(position)){
+            System.out.println(" & will MAYBE move table of content");
             getTableOfContent().updateTable(position);
         } else {
-            System.out.println("will NOT move table of content");
+            System.out.println(" & will NOT move table of content");
         }
         getCheatsheet().updateLabels(currentDoc, position);
     }
 
-    private boolean shouldMove(SpanBranch span, int position){
+    private boolean shouldMoveAgenda(int position){
+        SpanBranch span = getAgendaPane().getAgendaSelected();
         if (span == null){
             return true;
         }
@@ -115,6 +122,35 @@ public class WriterSceneControl extends WriterSceneView {
         }
         return true;
     }
+
+    private boolean shouldMoveHead(int position){
+        SectionSpanHead head = getTableOfContent().getHeadingSelected();
+        if (head == null){
+            return true;
+        }
+        Range<Integer> pos = head.getRange();
+        if (pos.contains(position) || pos.upperEndpoint() == position){
+            if(head.getSections().isEmpty() && head.getScenes().isEmpty()){
+                /// 2 ifs because it get too complicated when combined
+                return false;
+            }
+        } else {
+            return true;
+        }
+
+        /// is inside the SectionSpan, but it is in on of the children?
+        List<? extends SectionSpan> list = head.getSections();
+        if(! list.isEmpty() && list.get(0).getStart() < position){
+            return true;
+        }
+
+        list = head.getScenes();
+        if (! list.isEmpty() && list.get(0).getStart() < position){
+            return true;
+        }
+        return false;
+    }
+
 
     @Override
     public void returnFocus(){

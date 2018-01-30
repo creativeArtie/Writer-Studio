@@ -49,10 +49,8 @@ abstract class WriterSceneView extends BorderPane{
         agendaPane = initAgendaPane();
         agendaPane.agendaFocusedProperty().addListener((data, oldValue,
             newValue) -> returnFocus());
-
         agendaPane.agendaSelectedProperty().addListener(
-            (data, oldValue, newValue) -> Optional.ofNullable(newValue)
-                .ifPresent(value -> selectionChanged(value.getRange()))
+            (data, oldValue, newValue) -> selectionChanged(newValue)
         );
 
         /// bottom
@@ -60,6 +58,14 @@ abstract class WriterSceneView extends BorderPane{
 
         /// left
         tableOfContent = initTableOfContent();
+        tableOfContent.treeFocusedProperty().addListener((data, oldValue,
+            newValue) -> returnFocus());
+        tableOfContent.headingSelectedProperty().addListener(
+            (data, oldValue, newValue) -> selectionChanged(newValue)
+        );
+        tableOfContent.outlineSelectedProperty().addListener(
+            (data, oldValue, newValue) -> selectionChanged(newValue)
+        );
 
         new AnimationTimer(){
             @Override public void handle(long now) {timerAction(now);}
@@ -164,7 +170,7 @@ abstract class WriterSceneView extends BorderPane{
 
     protected abstract void textChanged(PlainTextChange changes);
 
-    protected abstract void selectionChanged(Range<Integer> range);
+    protected abstract void selectionChanged(SpanBranch range);
 
     protected abstract void caretChanged(int position);
 
