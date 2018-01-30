@@ -16,37 +16,47 @@ import com.creativeartie.jwriter.property.window.*;
  * The agenda pane stores a list of to do item from either complete lines or in
  * line.
  */
-abstract class AgendaPaneView extends GridPane{
+abstract class AgendaPaneView extends TableView<AgendaData>{
+    private static class SectionCell extends TableCell<AgendaData, SectionSpan>{
+        @Override
+        protected void updateItem(SectionSpan item, boolean empty) {
+            /// Required by JavaFX API:
+            super.updateItem(item, empty);
+            if (empty || item == null){
+                setText(null);
+                setGraphic(null);
+            } else {
+                /// Allows WindowSpanParser to create the Label
+                TextFlow graphic = TextFlowBuilder.loadHeadingLine(item
+                    .getHeading());
+                setText(null);
+                setGraphic(graphic);
+            }
+        }
+    }
+
 
     /**
      * ListCell for agendaList.
      */
-    private static class AgendaCell extends ListCell<SpanBranch> {
+    private static class AgendaCell extends TableCell<AgendaData, String> {
 
         @Override
-        public void updateItem(SpanBranch item, boolean empty){
+        public void updateItem(String item, boolean empty){
             /// Required by JavaFX API:
             super.updateItem(item, empty);
             if (empty || item == null) {
                 setText(null);
                 setGraphic(null);
             } else {
-                String text = "";
-                if (item instanceof LinedSpanAgenda){
-                    /// The selected agenda is a LinedSpanAgenda
-                    text = ((LinedSpanAgenda)item).getAgenda();
-                } else if (item instanceof FormatSpanAgenda){
-                    /// The selected agenda is a FormatSpanAgenda
-                    text = ((FormatSpanAgenda)item).getAgenda();
-                }
                 Label graphic = null;
-                if (text.isEmpty()){
+                if (item.isEmpty()){
                     /// There is no text found.
-                    graphic = new Label(WindowText.AGENDA_EMPTY.getText());
+                    graphic = new Label(WindowText.AGENDA_NOTEXT.getText());
                     StyleClass.NO_TEXT.addClass(graphic);
                 } else {
                     /// Add the text that is found.
-                    graphic = new Label(text);
+                    graphic = new Label(item);
                 }
 
                 /// Completing the setting
@@ -56,37 +66,34 @@ abstract class AgendaPaneView extends GridPane{
         }
     }
 
-    private final ListView<SpanBranch> agendaList;
-
     /**
      * Property binded to agendaList.getSelectionModel().selectItemProperty().
      */
     private final SimpleObjectProperty<SpanBranch> agendaSelected;
-    /** Property bined to agendaList.foucsedProperty(). */
-    private final ReadOnlyBooleanWrapper agendaFocused;
 
+    @SuppressWarnings("unchecked") /// For ans.getColumns().addAdd(...)
     public AgendaPaneView(){
-        agendaList = setupAgendaList();
+        initAgendaColumns();
 
         agendaSelected = new SimpleObjectProperty<>(this, "agendaSelected");
-        agendaSelected.bind(agendaList.getSelectionModel().selectedItemProperty());
-
-        agendaFocused = new ReadOnlyBooleanWrapper(this, "agendaFocused");
-        agendaFocused.bind(agendaList.focusedProperty());
+        // agendaSelected.bind(agendaList.getSelectionModel().selectedItemProperty());
     }
 
     /// Layout Node
-    private ListView<SpanBranch> setupAgendaList(){
-        ListView<SpanBranch> ans = new ListView<>();
-        ans.setCellFactory(param -> new AgendaCell());
-        add(new TitledPane(WindowText.AGENDA_TITLE.getText(), ans), 0, 0);
-        return ans;
+    @SuppressWarnings("unchecked") /// For getColumns().addAdd(AgendaData ...)
+    private void initAgendaColumns(){
+        TableColumn<AgendaData, Integer> location =
+            new TableColumn<>(WindowText.AGENDA_LINE.getText());
+        TableColumn<AgendaData, Boolean> type =
+            new TableColumn<>(WindowText.AGENDA_TYPE.getText());
+        TableColumn<AgendaData, SectionSpan> section =
+            new TableColumn<>(WindowText.AGENDA_SECTION.getText());
+        TableColumn<AgendaData, String> text =
+            new TableColumn<>(WindowText.AGENDA_TEXT.getText());
+        getColumns().addAll(location, type, section, text);
     }
 
     /// Getters
-    protected ListView<SpanBranch> getAgendaList(){
-        return agendaList;
-    }
 
     /// Node Properties
     ObjectProperty<SpanBranch> agendaSelectedProperty(){
@@ -99,15 +106,7 @@ abstract class AgendaPaneView extends GridPane{
 
     void setAgendaSelected(SpanBranch value){
         /// agendaSelected is bind to agendaList.getSectectionModel
-        agendaList.getSelectionModel().select(value);
-    }
-
-    ReadOnlyBooleanProperty agendaFocusedProperty(){
-        return agendaFocused.getReadOnlyProperty();
-    }
-
-    boolean isAgendaFocused(){
-        return agendaFocused.getValue();
+        // agendaList.getSelectionModel().select(value);
     }
 
     /// Control Methods

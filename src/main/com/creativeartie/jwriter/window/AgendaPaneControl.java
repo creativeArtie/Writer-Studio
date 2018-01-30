@@ -26,7 +26,7 @@ class AgendaPaneControl extends AgendaPaneView{
          updateAgenda();
      }
 
-    private void updateAgenda(){
+    private void updateAgenda(){/*
         if (docText == null){
             return;
         }
@@ -48,7 +48,7 @@ class AgendaPaneControl extends AgendaPaneView{
         }
 
         /// Nothing is found:
-        getAgendaList().getSelectionModel().clearSelection();
+        getAgendaList().getSelectionModel().clearSelection();*/
      }
 
     /** Load agenda list. */
@@ -59,11 +59,11 @@ class AgendaPaneControl extends AgendaPaneView{
     }
 
     public void updateList(){
-        getAgendaList().setItems(FXCollections.observableList(
+        /*getAgendaList().setItems(FXCollections.observableList(
             new ArrayList<>(
                 docText.getCatalogue().getIds(AuxiliaryData.TYPE_AGENDA)
             )
-        ));
+        ));*/
         updateAgenda();
     }
 }

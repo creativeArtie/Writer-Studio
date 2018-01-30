@@ -160,4 +160,30 @@ public abstract class Span{
         /// it is in the middle of the children list
         return false;
     }
+
+    /** Gets the parent that the subclasses {@link Class}*/
+    public <T> Optional<T> getParent(Class<T> clazz){
+        checkNotNull(clazz, "clazz");
+        ImmutableList.Builder<SpanBranch> builder = ImmutableList.builder();
+        SpanNode<?> parent = getParent();
+        while(parent instanceof SpanBranch){
+            if (clazz.isInstance(parent)){
+                /// Finds a match
+                return Optional.of(clazz.cast(parent));
+            }
+            /// get the parent
+            parent = parent.getParent();
+        }
+        /// Not found.
+        return Optional.empty();
+    }
+
+    public final int getStartColumn(){
+        return getDocument().getColumn(getStart());
+    }
+
+    /** Fine line index. */
+    public final int getStartLine(){
+        return getDocument().getColumn(getStart());
+    }
 }

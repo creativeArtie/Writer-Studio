@@ -23,7 +23,9 @@ public enum WindowText {
 
     MENU_STATS("MainMenu.Stats"), MENU_STATS_GOALS("MainMenu.StatsGoal"),
 
-    AGENDA_EMPTY("AgendaList.NoText"), AGENDA_TITLE("AgendaList.PaneTitle"),
+    AGENDA_NOTEXT("AgendaTable.NoText"), AGENDA_LINE("AgenaTable.LineColumn"),
+    AGENDA_TYPE("AgendaTable.TypeColumn"), AGENDA_SECTION("AgenaTable.SectionColumn"),
+    AGENDA_TEXT("AgendaTable.TextColumn"),
 
     CALENDAR_NO_RECORD("Calendar.NoRecord"),
 
@@ -33,6 +35,8 @@ public enum WindowText {
     GOALS_TITLE("StatsScreen.Title"),   GOAL_WORD_TEXT("StatsScreen.WordGoal"),
     GOALS_TIME_TEXT("StatsScreen.TimeGoal"), HOUR_UNIT("StatsScreen.HourUnit"),
     MINUTE_UNIT("StatsScreen.MinuteUnit"),
+
+    LINK_TAB("NoteTabs.TitleLink"),
 
     ID_LIST_TITLE("UserLists.HeadingTypes"),
     NO_SPAN_LOC("UserLists.NoLocation"),

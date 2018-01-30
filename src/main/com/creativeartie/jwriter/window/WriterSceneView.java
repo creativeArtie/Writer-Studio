@@ -5,6 +5,7 @@ import javafx.stage.*;
 import javafx.scene.layout.*;
 import javafx.beans.property.*;
 import javafx.beans.binding.*;
+import javafx.scene.control.*;
 import org.fxmisc.richtext.model.*;
 import javafx.animation.*;
 
@@ -20,14 +21,10 @@ abstract class WriterSceneView extends BorderPane{
     private TextPaneControl textArea;
     private HeadingPaneControl tableOfContent;
     private AgendaPaneControl agendaPane;
-    private NotesPaneControl userLists;
     private CheatsheetPaneControl langCheatsheet;
     private SimpleObjectProperty<ManuscriptFile> manuscriptFile;
 
     WriterSceneView(Stage window){
-        tableOfContent = new HeadingPaneControl();
-        userLists = new NotesPaneControl();
-
         getStylesheets().add("data/main.css");
 
         manuscriptFile = new SimpleObjectProperty<>(this, "manuscriptFile");
@@ -44,14 +41,17 @@ abstract class WriterSceneView extends BorderPane{
         /// Top
         VBox top = new VBox();
         WriterMenuBar menu = initMenuBar(window, top);
-        setTop(menu);
-
-        agendaPane = initAgendaPane();
-        agendaPane.agendaFocusedProperty().addListener((data, oldValue,
+        TabPane tabs = new TabPane();
+        tabs.setMaxHeight(200);
+        ///agenda pane:
+        agendaPane = initAgendaPane(tabs);
+        agendaPane.focusedProperty().addListener((data, oldValue,
             newValue) -> returnFocus());
         agendaPane.agendaSelectedProperty().addListener(
             (data, oldValue, newValue) -> selectionChanged(newValue)
         );
+        top.getChildren().add(tabs);
+        setTop(top);
 
         /// bottom
         langCheatsheet = initCheatsheetPane();
@@ -71,17 +71,6 @@ abstract class WriterSceneView extends BorderPane{
             @Override public void handle(long now) {timerAction(now);}
         }.start();
 
-/*
-        tableOfContent.headingFocusedProperty().addListener((data, oldValue,
-            newValue) -> listenHeading(newValue));
-        tableOfContent.outlineFocusedProperty().addListener((data, oldValue,
-            newValue) -> listenOutline(newValue));
-
-        userLists.toLocationProperty().addListener((data, oldValue, newValue)
-            -> listenLocClicked(newValue.intValue()));
-        userLists.childFocusedProperty().addListener((data, oldValue, newValue)
-            -> listenListFocused(newValue));
-*/
     }
 
     /// Layout Nodes
@@ -94,13 +83,15 @@ abstract class WriterSceneView extends BorderPane{
     private WriterMenuBar initMenuBar(Stage window, Pane top){
         WriterMenuBar ans = new WriterMenuBar(window);
         ans.manuscriptFileProperty().bindBidirectional(manuscriptFile);
-        top.getChildren().addAll(ans);
+        top.getChildren().add(ans);
         return ans;
     }
 
-    private AgendaPaneControl initAgendaPane(){
+    private AgendaPaneControl initAgendaPane(TabPane top){
         AgendaPaneControl ans = new AgendaPaneControl();
-        setRight(ans);
+        Tab tab = new Tab("Agenda");
+        tab.setContent(ans);
+        top.getTabs().add(tab);
         return ans;
     }
 
@@ -115,21 +106,6 @@ abstract class WriterSceneView extends BorderPane{
         setLeft(ans);
         return ans;
     }
-/*
-
-
-    private void layoutTopPane(Stage window){
-        VBox pane = new VBox();
-        WriterMenuBar bar = new WriterMenuBar(window);
-        bar.manuscriptFileProperty().bindBidirectional(manuscriptFile);
-
-        pane.getChildren().addAll(bar, userLists);
-        setTop(pane);
-    }
-
-    private void layoutBottomPane(){
-        setBottom(langCheatsheet);
-    }*/
 
     /// Getters
     protected TextPaneControl getTextArea(){
@@ -142,10 +118,6 @@ abstract class WriterSceneView extends BorderPane{
 
     protected AgendaPaneControl getAgendaPane(){
         return agendaPane;
-    }
-
-    protected NotesPaneControl getUserLists(){
-        return userLists;
     }
 
     protected CheatsheetPaneControl getCheatsheet(){

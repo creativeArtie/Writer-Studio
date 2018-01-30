@@ -78,35 +78,24 @@ public class WriterSceneControl extends WriterSceneView {
 
     @Override
     protected void selectionChanged(SpanBranch span){
-        System.out.print("selectedChanged: ");
         if (span == null){
-            System.out.println("will NOT move");
             return;
         }
         Range<Integer> range = span.getRange();
         if (! range.contains(getTextArea().getCaretPlaced())){
-            System.out.println("will move");
             getTextArea().moveTo(range.upperEndpoint());
-        } else {
-            System.out.println("will NOT move");
         }
     }
 
     @Override
     protected void caretChanged(int position){
-        System.out.print("caretChanged: ");
         if (shouldMoveAgenda(position)){
-            System.out.print("will MAYBE move agenda");
             getAgendaPane().updateAgenda(position);
-        } else {
-            System.out.print("will NOT move agenda");
         }
+
         HeadingPaneControl content = getTableOfContent();
         if (shouldMoveHead(position)){
-            System.out.println(" & will MAYBE move table of content");
             getTableOfContent().updateTable(position);
-        } else {
-            System.out.println(" & will NOT move table of content");
         }
         getCheatsheet().updateLabels(currentDoc, position);
     }

@@ -45,22 +45,6 @@ public class SpanLeaf extends Span{
         leafParent = childOf;
     }
 
-    /** Gets the parent that the subclasses {@link Class}*/
-    public <T> Optional<T> getParent(Class<T> clazz){
-        checkNotNull(clazz, "clazz");
-        ImmutableList.Builder<SpanBranch> builder = ImmutableList.builder();
-        SpanNode<?> parent = getParent();
-        while(parent instanceof SpanBranch){
-            if (clazz.isInstance(parent)){
-                /// Finds a match
-                return Optional.of(clazz.cast(parent));
-            }
-            /// get the parent
-            parent = parent.getParent();
-        }
-        /// Not found.
-        return Optional.empty();
-    }
 
     @Override
     public final String getRaw(){
