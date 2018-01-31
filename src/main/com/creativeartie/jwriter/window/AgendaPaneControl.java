@@ -59,11 +59,7 @@ class AgendaPaneControl extends AgendaPaneView{
     }
 
     public void updateList(){
-        /*getAgendaList().setItems(FXCollections.observableList(
-            new ArrayList<>(
-                docText.getCatalogue().getIds(AuxiliaryData.TYPE_AGENDA)
-            )
-        ));*/
+        setItems(AgendaData.extractList(docText));
         updateAgenda();
     }
 }

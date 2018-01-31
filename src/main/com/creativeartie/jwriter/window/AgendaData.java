@@ -39,9 +39,10 @@ public class AgendaData{
         String text = null;
         if (span instanceof FormatSpanAgenda){
             text = ((FormatSpanAgenda)span).getAgenda();
-        } else if (span instanceof LinedSpanAgenda){
+        } else {
+            assert span instanceof LinedSpanAgenda: "Wrong span class: " + span;
             type = true;
-            text = ((FormatSpanAgenda)span).getAgenda();
+            text = ((LinedSpanAgenda)span).getAgenda();
         }
 
         agendaLineLocation = new ReadOnlyIntegerWrapper(span.getStartLine());

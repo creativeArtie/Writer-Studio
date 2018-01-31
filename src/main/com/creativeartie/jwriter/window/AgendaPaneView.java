@@ -4,6 +4,7 @@ import javafx.scene.control.*;
 import javafx.scene.text.*;
 import javafx.scene.layout.*;
 import javafx.beans.property.*;
+import javafx.scene.control.cell.*;
 
 import java.util.*;
 
@@ -39,7 +40,7 @@ abstract class AgendaPaneView extends TableView<AgendaData>{
     /**
      * ListCell for agendaList.
      */
-    private static class AgendaCell extends TableCell<AgendaData, String> {
+    private static class TextCell extends TableCell<AgendaData, String> {
 
         @Override
         public void updateItem(String item, boolean empty){
@@ -84,13 +85,18 @@ abstract class AgendaPaneView extends TableView<AgendaData>{
     private void initAgendaColumns(){
         TableColumn<AgendaData, Integer> location =
             new TableColumn<>(WindowText.AGENDA_LINE.getText());
+        
         TableColumn<AgendaData, Boolean> type =
             new TableColumn<>(WindowText.AGENDA_TYPE.getText());
+        
         TableColumn<AgendaData, SectionSpan> section =
             new TableColumn<>(WindowText.AGENDA_SECTION.getText());
+        section.setCellFactory(list -> new SectionCell());
+        
         TableColumn<AgendaData, String> text =
             new TableColumn<>(WindowText.AGENDA_TEXT.getText());
         getColumns().addAll(location, type, section, text);
+        text.setCellFactory(list -> new TextCell());
     }
 
     /// Getters
