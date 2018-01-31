@@ -19,7 +19,19 @@ import com.google.common.base.*;
 import com.google.common.collect.*;
 
 /**
- * Stores a list of user notes, hyperlinks.
+ * Stores a list hyperlinks.
  */
-public class NoteLinkData{
+abstract class LinksPaneView extends Tab{
+    private TableView<LinksData> linkTable;
+    public LinksPaneView(){
+        super(WindowText.LINK_TAB.getText());
+        setContent(new Label("Hello World"));
+        // linkTable = initLinkTable();
+    }
+
+    private TableView<LinksData> initLinkTable(){
+        TableView<LinksData> ans = new TableView<>();
+        setContent(ans);
+        return ans;
+    }
 }

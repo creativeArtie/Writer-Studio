@@ -25,7 +25,7 @@ public class AgendaData{
                 .TYPE_AGENDA)){
             if (span instanceof FormatSpanAgenda ||
                     span instanceof LinedSpanAgenda){
-                list.add(span);
+                list.add(new AgendaData(span));
             }
         }
         return FXCollections.observableList(list);

@@ -18,5 +18,8 @@ import com.creativeartie.jwriter.property.window.*;
 import com.google.common.base.*;
 import com.google.common.collect.*;
 
-public class NotePaneControl extends NotesPaneView{
+/**
+ * Stores a list of user notes, hyperlinks.
+ */
+public class LinksData{
 }
