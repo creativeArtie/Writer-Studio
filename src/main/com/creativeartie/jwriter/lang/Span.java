@@ -184,6 +184,6 @@ public abstract class Span{
 
     /** Fine line index. */
     public final int getStartLine(){
-        return getDocument().getColumn(getStart());
+        return getDocument().getLine(getStart());
     }
 }

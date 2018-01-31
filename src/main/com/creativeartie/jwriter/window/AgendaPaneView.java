@@ -3,6 +3,7 @@ package com.creativeartie.jwriter.window;
 import javafx.scene.control.*;
 import javafx.scene.text.*;
 import javafx.scene.layout.*;
+import javafx.beans.binding.*;
 import javafx.beans.property.*;
 import javafx.scene.control.cell.*;
 
@@ -18,101 +19,60 @@ import com.creativeartie.jwriter.property.window.*;
  * line.
  */
 abstract class AgendaPaneView extends TableView<AgendaData>{
-    private static class SectionCell extends TableCell<AgendaData, SectionSpan>{
-        @Override
-        protected void updateItem(SectionSpan item, boolean empty) {
-            /// Required by JavaFX API:
-            super.updateItem(item, empty);
-            if (empty || item == null){
-                setText(null);
-                setGraphic(null);
-            } else {
-                /// Allows WindowSpanParser to create the Label
-                TextFlow graphic = TextFlowBuilder.loadHeadingLine(item
-                    .getHeading());
-                setText(null);
-                setGraphic(graphic);
-            }
-        }
-    }
-
-
-    /**
-     * ListCell for agendaList.
-     */
-    private static class TextCell extends TableCell<AgendaData, String> {
-
-        @Override
-        public void updateItem(String item, boolean empty){
-            /// Required by JavaFX API:
-            super.updateItem(item, empty);
-            if (empty || item == null) {
-                setText(null);
-                setGraphic(null);
-            } else {
-                Label graphic = null;
-                if (item.isEmpty()){
-                    /// There is no text found.
-                    graphic = new Label(WindowText.AGENDA_NOTEXT.getText());
-                    StyleClass.NO_TEXT.addClass(graphic);
-                } else {
-                    /// Add the text that is found.
-                    graphic = new Label(item);
-                }
-
-                /// Completing the setting
-                setText(null);
-                setGraphic(graphic);
-            }
-        }
-    }
 
     /**
      * Property binded to agendaList.getSelectionModel().selectItemProperty().
      */
-    private final SimpleObjectProperty<SpanBranch> agendaSelected;
+    private final ReadOnlyObjectWrapper<SpanBranch> agendaSelected;
 
     @SuppressWarnings("unchecked") /// For ans.getColumns().addAdd(...)
     public AgendaPaneView(){
         initAgendaColumns();
+        TableViewHelper.styleTableView(this);
 
-        agendaSelected = new SimpleObjectProperty<>(this, "agendaSelected");
-        // agendaSelected.bind(agendaList.getSelectionModel().selectedItemProperty());
+        agendaSelected = new ReadOnlyObjectWrapper<>(this, "agendaSelected");
+        ReadOnlyObjectProperty<AgendaData> selected =
+            getSelectionModel().selectedItemProperty();
+        agendaSelected.bind(Bindings.createObjectBinding(() -> Optional
+            .ofNullable(selected.get()) /// Maybe null
+            .map(data -> data.getTargetSpan()) /// get target if found
+            .orElse(null), selected));
     }
 
     /// Layout Node
     @SuppressWarnings("unchecked") /// For getColumns().addAdd(AgendaData ...)
     private void initAgendaColumns(){
-        TableColumn<AgendaData, Integer> location =
-            new TableColumn<>(WindowText.AGENDA_LINE.getText());
-        
-        TableColumn<AgendaData, Boolean> type =
-            new TableColumn<>(WindowText.AGENDA_TYPE.getText());
-        
-        TableColumn<AgendaData, SectionSpan> section =
-            new TableColumn<>(WindowText.AGENDA_SECTION.getText());
-        section.setCellFactory(list -> new SectionCell());
-        
-        TableColumn<AgendaData, String> text =
-            new TableColumn<>(WindowText.AGENDA_TEXT.getText());
+        TableColumn<AgendaData, Number> location = TableViewHelper
+            .getNumberColumn(WindowText.AGENDA_LINE, d ->
+                d.agendaLineLocationProperty());
+        TableViewHelper.setPrecentWidth(location, this, 10.0);
+
+        TableColumn<AgendaData, Boolean> type = TableViewHelper
+            .getBooleanColumn(WindowText.AGENDA_TYPE, d ->
+                d.agendaLineTypeProperty());
+        TableViewHelper.setPrecentWidth(type, this, 10.0);
+
+        TableColumn<AgendaData, SectionSpan> section = TableViewHelper
+            .getSectionColumn(WindowText.AGENDA_SECTION, d ->
+                d.agendaSectionProperty());
+        TableViewHelper.setPrecentWidth(section, this, 40.0);
+
+        TableColumn<AgendaData, String> text = TableViewHelper.getTextColumn(
+            WindowText.AGENDA_TEXT, d -> d.agendaTextProperty());
+        TableViewHelper.setPrecentWidth(text, this, 40.0);
+
         getColumns().addAll(location, type, section, text);
-        text.setCellFactory(list -> new TextCell());
     }
 
     /// Getters
 
     /// Node Properties
-    ObjectProperty<SpanBranch> agendaSelectedProperty(){
-         return agendaSelected;
+    ReadOnlyObjectProperty<SpanBranch> agendaSelectedProperty(){
+         return agendaSelected.getReadOnlyProperty();
     }
 
     SpanBranch getAgendaSelected(){
         return agendaSelected.getValue();
-    }
-
-    void setAgendaSelected(SpanBranch value){
-        /// agendaSelected is bind to agendaList.getSectectionModel
-        // agendaList.getSelectionModel().select(value);
     }
 
     /// Control Methods

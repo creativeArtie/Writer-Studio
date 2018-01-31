@@ -9,62 +9,63 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.lang.*;
 
 public final class TextFlowBuilder {
-    
+
     public static TextFlow loadHeadingLine(
             Optional<LinedSpanLevelSection> span){
         TextFlow ans = new TextFlow();
         loadHeadingLine(ans, span);
         return ans;
     }
-    
-    public static void loadHeadingLine(TextFlow node, 
+
+    public static void loadHeadingLine(TextFlow node,
             Optional<LinedSpanLevelSection> span){
         if (span.isPresent()){
             LinedSpanLevelSection heading = span.get();
             loadFormatText(node, heading.getFormattedSpan());
-            heading.getEditionSpan().flatMap(child -> 
+            heading.getEditionSpan().flatMap(child ->
                 newText("(" + child.getEdition() + ")", "display-edition")
             ).ifPresent(text -> node.getChildren().add(text));
-            
+
         } else {
             Text empty = new Text(WindowText.HEADING_NO_TEXT.getText());
             empty.setStyle(WindowStyle.NOT_FOUND.toCss());
             node.getChildren().add(empty);
         }
     }
-    
+
     public static TextFlow loadFormatText(Optional<FormatSpanMain> span){
         TextFlow ans = new TextFlow();
         loadFormatText(ans, span);
         return ans;
     }
-    
-    public static void loadFormatText(TextFlow node, 
+
+    public static void loadFormatText(TextFlow node,
             Optional<FormatSpanMain> span){
         span.ifPresent(format -> {
             for (Span child: format){
-                createFormatSpan(child).ifPresent(found -> 
+                createFormatSpan(child).ifPresent(found ->
                     node.getChildren().add(found));
             }
         });
     }
-    
+
     private static Optional<Text> createFormatSpan(Span child){
         Optional<Text> ans = Optional.empty();
         if (child instanceof FormatSpanAgenda){
-            return newText(((FormatSpanAgenda)child).getAgenda(), 
+            return newText(((FormatSpanAgenda)child).getAgenda(),
                 "display-agenda");
-            
+
         } else if (child instanceof FormatSpanContent){
             FormatSpanContent content = (FormatSpanContent) child;
             String text = content.getTrimmed();
             if (content.isSpaceBegin()){
                 text = " " + text;
-            } else if (content.isSpaceEnd()){
+            }
+            if (content.isSpaceEnd()){
                 text = text + " ";
             }
             ans = newText(text);
-            
+
         } else if (child instanceof FormatSpanDirectory){
             FormatSpanDirectory span = (FormatSpanDirectory) child;
             String found = span.getSpanIdentity()
@@ -83,15 +84,15 @@ public final class TextFlowBuilder {
                 default:
                     assert false: "Span with incorrect Directory Type:" + type;
             }
-            
+
         } else if (child instanceof FormatSpanLink){
             FormatSpanLink span = (FormatSpanLink) child;
             ans = newText(span.getText(), "display-link");
-            
+
         } else {
             return Optional.empty();
         }
-        
+
         FormatSpan format = (FormatSpan) child;
         if (format.isBold()){
             addStyle(ans, "display-bold");
@@ -104,20 +105,20 @@ public final class TextFlowBuilder {
         }
         return ans;
     }
-    
+
     private static Optional<Text> newText(String text){
         if (text.isEmpty()){
             return Optional.empty();
         }
         return Optional.of(new Text(text));
     }
-    
+
     private static Optional<Text> newText(String text, String style){
         Optional<Text> ans = newText(text);
         addStyle(ans, style);
         return ans;
     }
-    
+
     private static Optional<Text> addStyle(Optional<Text> text, String style){
         text.ifPresent(node -> node.getStyleClass().add(style));
         return text;

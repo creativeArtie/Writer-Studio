@@ -18,6 +18,7 @@ public class AgendaData{
     private final ReadOnlyBooleanWrapper agendaLineType;
     private final ReadOnlyObjectWrapper<SectionSpan> agendaSection;
     private final ReadOnlyStringWrapper agendaText;
+    private final SpanBranch targetAgenda;
 
     public static ObservableList<AgendaData> extractList(WritingText text){
         ArrayList<AgendaData> list = new ArrayList<>();
@@ -50,6 +51,7 @@ public class AgendaData{
         agendaSection = new ReadOnlyObjectWrapper<>(span.getParent(SectionSpan
             .class).orElse(null));
         agendaText = new ReadOnlyStringWrapper(text);
+        targetAgenda = span;
     }
 
     public ReadOnlyIntegerProperty agendaLineLocationProperty(){
@@ -81,5 +83,9 @@ public class AgendaData{
 
     public String getAgendaText(){
         return agendaText.getValue();
+    }
+
+    public SpanBranch getTargetSpan(){
+        return targetAgenda;
     }
 }

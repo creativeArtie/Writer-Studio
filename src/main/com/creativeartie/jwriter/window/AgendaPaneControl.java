@@ -26,7 +26,7 @@ class AgendaPaneControl extends AgendaPaneView{
          updateAgenda();
      }
 
-    private void updateAgenda(){/*
+    private void updateAgenda(){
         if (docText == null){
             return;
         }
@@ -35,7 +35,7 @@ class AgendaPaneControl extends AgendaPaneView{
             FormatSpanAgenda.class);
         if (inline.isPresent()){
             /// Finds a FormatSpanAgenda to select:
-            getAgendaList().getSelectionModel().select(inline.get());
+            selectAgenda(inline.get());
             return;
         }
 
@@ -43,12 +43,26 @@ class AgendaPaneControl extends AgendaPaneView{
             LinedSpanAgenda.class);
         if (line.isPresent()){
             /// Finds a LinedSpanAgenda to select:
-            getAgendaList().getSelectionModel().select(line.get());
+            selectAgenda(line.get());
             return;
         }
 
         /// Nothing is found:
-        getAgendaList().getSelectionModel().clearSelection();*/
+        getSelectionModel().clearSelection();
+     }
+
+     private void selectAgenda(SpanBranch span){
+         int ptr = 0;
+         for(AgendaData data: getItems()){
+             if (data.getTargetSpan().equals(span)){
+                 getSelectionModel().select(ptr);
+                 return;
+             }
+             ptr++;
+         }
+
+        /// Nothing is found (somehow):
+        getSelectionModel().clearSelection();
      }
 
     /** Load agenda list. */

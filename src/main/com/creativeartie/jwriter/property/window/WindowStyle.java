@@ -17,8 +17,7 @@ public enum WindowStyle {
     NOT_FOUND("Other.NotFound"), EMPTY_TITLE("Other.EmptyNoteTitle"),
     NOTE_HEADING("ListNote.NoteHeading"), NUMBERED_ID("ListNote.NameCell"),
     MARKUP_Set("CheatSheet.HasSet"),MARKUP_UNSET("CheatSheet.NotSet"),
-    SYNTAX_ALLOW("CheatSheet.Allow"), SYNTAX_FORBID("CheatSheet.Forbid"),
-    CHEATSHEET_BASE("CheatSheet.Base");
+    SYNTAX_ALLOW("CheatSheet.Allow"), SYNTAX_FORBID("CheatSheet.Forbid");
 
     private static PropertyManager styleManager;
 
