@@ -55,7 +55,7 @@ class TextPaneControl extends TextPaneView {
 
         leaves.stream().filter(leaf -> leaf.isInUsed())
             .forEach(leaf -> getTextArea().setStyle(leaf.getStart(),
-                leaf.getEnd(), LeafStyleParser.SCREEN.toCss(leaf))
+                leaf.getEnd(), CodeStyleBuilder.toCss(leaf))
             );
     }
 

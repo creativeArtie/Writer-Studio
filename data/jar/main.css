@@ -30,11 +30,12 @@
     -fx-font-style:italic;
 }
 .display-note{
-    -rtfx-background-color:"wheat";
+    -fx-fill:"darkslategray";
 }
 
 .display-footnote, .display-endnote{
-    -fx-font-size:50em;
+    -fx-translate-y:-800%;
+    -fx-font-size:80%;
 }
 
 .display-link{
