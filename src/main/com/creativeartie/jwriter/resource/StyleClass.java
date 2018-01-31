@@ -1,9 +1,9 @@
-package com.creativeartie.jwriter.property.window;
+package com.creativeartie.jwriter.resource;
 
 import javafx.scene.*;
 
 public enum StyleClass{
-    NO_TEXT("no-text"), ID_NUMBERED("id-numbered"),
+    NO_TEXT("no-text"), NOT_FOUND("no-span"), ID_NUMBERED("id-numbered"),
 
     HINT_SET("hint-set"), HINT_UNSET("hint-unset"),
     HINT_ALLOW("hint-allow"), HINT_DISALLOW("hint-disallow"),

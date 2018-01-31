@@ -1,4 +1,4 @@
-package com.creativeartie.jwriter.property.window;
+package com.creativeartie.jwriter.resource;
 
 import java.util.*;
 import java.io.*;

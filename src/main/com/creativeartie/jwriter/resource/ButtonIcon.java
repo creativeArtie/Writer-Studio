@@ -1,4 +1,4 @@
-package com.creativeartie.jwriter.property.window;
+package com.creativeartie.jwriter.resource;
 
 import javafx.scene.image.*;
 import javafx.geometry.*;

@@ -11,7 +11,7 @@ import org.fxmisc.richtext.model.*;
 
 import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
-import com.creativeartie.jwriter.property.window.*;
+import com.creativeartie.jwriter.resource.*;
 
 /**
  * A rict text fx text area that show the text

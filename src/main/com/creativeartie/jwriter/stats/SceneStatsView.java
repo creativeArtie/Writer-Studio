@@ -12,7 +12,7 @@ import java.io.*;
 
 import com.creativeartie.jwriter.file.*;
 import com.creativeartie.jwriter.main.*;
-import com.creativeartie.jwriter.property.window.*;
+import com.creativeartie.jwriter.resource.*;
 
 public abstract class SceneStatsView extends BorderPane{
     protected static int WIDTH = 490;

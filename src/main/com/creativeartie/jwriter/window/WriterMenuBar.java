@@ -16,7 +16,7 @@ import com.creativeartie.jwriter.file.*;
 import com.creativeartie.jwriter.stats.*;
 import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
-import com.creativeartie.jwriter.property.window.*;
+import com.creativeartie.jwriter.resource.*;
 
 class WriterMenuBar extends MenuBar{
 

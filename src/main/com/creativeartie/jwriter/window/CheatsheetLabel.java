@@ -11,7 +11,7 @@ import java.util.*;
 
 import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.*;
-import com.creativeartie.jwriter.property.window.*;
+import com.creativeartie.jwriter.resource.*;
 import com.creativeartie.jwriter.main.*;
 
 /**

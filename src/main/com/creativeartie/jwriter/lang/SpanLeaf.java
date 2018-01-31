@@ -4,7 +4,6 @@ import java.util.*;
 
 import com.google.common.collect.*;
 
-import com.creativeartie.jwriter.property.*;
 import com.creativeartie.jwriter.main.*;
 
 import static com.creativeartie.jwriter.main.Checker.*;

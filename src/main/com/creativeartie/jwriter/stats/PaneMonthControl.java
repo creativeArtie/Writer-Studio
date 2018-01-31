@@ -6,7 +6,7 @@ import java.util.function.*;
 
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.file.*;
-import com.creativeartie.jwriter.property.window.*;
+import com.creativeartie.jwriter.resource.*;
 
 public class PaneMonthControl extends PaneMonthView{
 

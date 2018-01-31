@@ -1,4 +1,4 @@
-package com.creativeartie.jwriter.property.window;
+package com.creativeartie.jwriter.resource;
 
 
 import java.util.*;
@@ -28,7 +28,7 @@ public final class TextFlowBuilder {
 
         } else {
             Text empty = new Text(WindowText.HEADING_NO_TEXT.getText());
-            empty.setStyle(WindowStyle.NOT_FOUND.toCss());
+            StyleClass.NOT_FOUND.addClass(empty);
             node.getChildren().add(empty);
         }
     }
