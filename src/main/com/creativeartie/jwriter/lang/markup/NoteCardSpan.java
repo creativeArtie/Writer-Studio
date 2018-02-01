@@ -18,6 +18,7 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
 
     private Optional<List<StyleInfo>> cacheStyles;
     private Optional<Optional<CatalogueIdentity>> cacheId;
+    private Optional<String> cacheLookup;
     private Optional<Integer> cacheNote;
     private Optional<ImmutableListMultimap<InfoFieldType, InfoDataSpan>>
         cacheSources;
@@ -79,6 +80,15 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
         return cacheId.get();
     }
 
+    public String getLookupText(){
+        cacheLookup = getCache(cacheLookup, () ->
+            spanFromFirst(LinedSpanNote.class)
+                .map(span -> span.getLookupText())
+                .orElse("")
+        );
+        return cacheLookup.get();
+    }
+
     @Override
     public String toString(){
         StringBuilder output = new StringBuilder("NOTE:{\n\t");
@@ -128,6 +138,7 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
         cacheStyles = Optional.empty();
         cacheNote = Optional.empty();
         cacheSources = Optional.empty();
+        cacheLookup = Optional.empty();
     }
 
     @Override

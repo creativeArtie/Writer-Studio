@@ -57,7 +57,7 @@ public final class FormatSpanDirectory extends FormatSpan implements Catalogued{
         cacheOutput = getCache(cacheOutput, () -> {
             Optional<DirectorySpan> id = spanFromFirst(DirectorySpan.class);
             if (id.isPresent()){
-                return id.get().getIdRaw();
+                return id.get().getLookupText();
             }
             return "";
         });

@@ -49,4 +49,12 @@ public class LinedSpanPointLink extends LinedSpanPoint {
 
     @Override
     protected void docEdited(){}
+
+    protected String getLookupStart(){
+        return LINK_REF;
+    }
+
+    protected String getLookupEnd(){
+        return LINK_END;
+    }
 }

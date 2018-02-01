@@ -20,7 +20,7 @@ import com.google.common.collect.*;
 abstract class WriterSceneView extends BorderPane{
     private TextPaneControl textArea;
     private HeadingPaneControl tableOfContent;
-    private AgendaPaneControl agendaPane;
+    private WriterTabControl tabsPane;
     private CheatsheetPaneControl langCheatsheet;
     private SimpleObjectProperty<ManuscriptFile> manuscriptFile;
 
@@ -41,16 +41,13 @@ abstract class WriterSceneView extends BorderPane{
         /// Top
         VBox top = new VBox();
         WriterMenuBar menu = initMenuBar(window, top);
-        TabPane tabs = new TabPane();
-        tabs.setMaxHeight(200);
+        tabsPane = initTabPane(top);
         ///agenda pane:
-        agendaPane = initAgendaPane(tabs);
-        agendaPane.focusedProperty().addListener((data, oldValue,
+        getAgendaPane().focusedProperty().addListener((data, oldValue,
             newValue) -> returnFocus());
-        agendaPane.agendaSelectedProperty().addListener(
+        getAgendaPane().agendaSelectedProperty().addListener(
             (data, oldValue, newValue) -> selectionChanged(newValue)
         );
-        top.getChildren().add(tabs);
         setTop(top);
 
         /// bottom
@@ -87,11 +84,10 @@ abstract class WriterSceneView extends BorderPane{
         return ans;
     }
 
-    private AgendaPaneControl initAgendaPane(TabPane top){
-        AgendaPaneControl ans = new AgendaPaneControl();
-        Tab tab = new Tab("Agenda");
-        tab.setContent(ans);
-        top.getTabs().add(tab);
+    private WriterTabControl initTabPane(Pane top){
+        WriterTabControl ans = new WriterTabControl();
+        ans.setMaxHeight(200);
+        top.getChildren().add(ans);
         return ans;
     }
 
@@ -117,7 +113,7 @@ abstract class WriterSceneView extends BorderPane{
     }
 
     protected AgendaPaneControl getAgendaPane(){
-        return agendaPane;
+        return tabsPane.getAgendaPane();
     }
 
     protected CheatsheetPaneControl getCheatsheet(){

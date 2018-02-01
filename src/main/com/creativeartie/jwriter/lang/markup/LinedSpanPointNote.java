@@ -51,4 +51,11 @@ public class LinedSpanPointNote extends LinedSpanPoint {
 
     @Override
     protected void docEdited(){}
+       protected String getLookupStart(){
+        return getLinedType() == LinedType.ENDNOTE? CURLY_ENDNOTE: CURLY_FOOTNOTE;
+    }
+
+    protected String getLookupEnd(){
+        return CURLY_END;
+    }
 }

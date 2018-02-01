@@ -14,6 +14,7 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
 
     private Optional<Optional<EditionSpan>> cacheEditionSpan;
     private Optional<Optional<CatalogueIdentity>> cacheId;
+    private Optional<String> cacheLookup;
     private Optional<EditionType> cacheEdition;
     private Optional<Integer> cachePublish;
     private Optional<Integer> cacheNote;
@@ -31,6 +32,15 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
         cacheId = getCache(cacheId, () ->
             spanFromFirst(DirectorySpan.class).map(span -> span.buildId()));
         return cacheId.get();
+    }
+
+    public String getLookupText(){
+        cacheLookup = getCache(cacheLookup, () ->
+            spanFromFirst(DirectorySpan.class)
+                .map(span -> LINK_REF + span.getLookupText() + LINK_END)
+                .orElse("")
+        );
+        return cacheLookup.get();
     }
 
     @Override
@@ -90,6 +100,7 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
         super.childEdited();
         cacheEditionSpan = Optional.empty();
         cacheId = Optional.empty();
+        cacheLookup = Optional.empty();
         cacheEdition = Optional.empty();
         cachePublish = Optional.empty();
         cacheNote = Optional.empty();

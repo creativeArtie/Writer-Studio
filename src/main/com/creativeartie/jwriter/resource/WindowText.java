@@ -13,6 +13,8 @@ import com.creativeartie.jwriter.main.*;
 public enum WindowText {
     PROGRAM_NAME("MainWindow.Title"),
     EMPTY_TEXT("CommonText.NoText"),
+    EMPTY_NA("CommonText.NA"),
+    NO_ID("CommonText.NoId"),
 
 
     MENU_FILE("MainMenu.File"),           MENU_FILE_NEW("MainMenu.FileCreate"),
@@ -22,11 +24,23 @@ public enum WindowText {
 
     MENU_STATS("MainMenu.Stats"), MENU_STATS_GOALS("MainMenu.StatsGoal"),
 
+    TAB_AGENDA("NoteTabs.TitleAgenda"),
+    TAB_LINK("NoteTabs.TitleLink"),
+    TAB_NOTE_DOC("NoteTabs.TitleDocNote"),
+    TAB_NOTE_RESEARCH("NoteTabs.TitleUserNote"),
+
     AGENDA_LINE("AgendaTable.LineColumn"),
     AGENDA_TYPE("AgendaTable.TypeColumn"),
     AGENDA_SECTION("AgendaTable.SectionColumn"),
     AGENDA_TEXT("AgendaTable.TextColumn"),
     AGENDA_EMPTY("AgendaTable.EmptyTable"),
+
+    LINKS_ID("LinksTable.IdentityColumn"),
+    LINKS_LOOKUP("LinksTable.LookupColumn"),
+    LINKS_LOCATION("LinksTable.LocationColumn"),
+    LINKS_BOOKMARK("LinksTable.BookmarkColumn"),
+    LINKS_DATA("LinksTable.ContentColumn"),
+    LINKS_EMPTY("LinksTable.EmptyTable"),
 
     CALENDAR_NO_RECORD("Calendar.NoRecord"),
 
@@ -38,26 +52,6 @@ public enum WindowText {
     GOALS_TIME_TEXT("StatsScreen.TimeGoal"), HOUR_UNIT("StatsScreen.HourUnit"),
     MINUTE_UNIT("StatsScreen.MinuteUnit"),
 
-    TAB_LINK("NoteTabs.TitleLink"),
-
-    ID_LIST_TITLE("UserLists.HeadingTypes"),
-    NO_SPAN_LOC("UserLists.NoLocation"),
-    NO_SPAN_FOUND("UserLists.NoItems"),
-    NO_ID_CATEGORY("UserLists.NoCategory"),
-    NO_SPAN_ID("UserLists.NoReference"),
-    COLUMN_CAT("UserLists.ColumnCategory"),
-    COLUMN_NAME("UserLists.ColumnName"),
-    COLUMN_LOC("UserLists.ColumnLocation"),
-    COLUMN_REF("UserLists.ColumnReference"),
-    COLUMN_SPAN("UserLists.ColumnSpan"),
-
-    FOOTNOTE_LABEL("NoteDisplay.FootnoteLabel"),
-    IN_TEXT_LABEL("NoteDisplay.InTextLabel"),
-    SOURCE_LABEL("NoteDisplay.SourceLabel"),
-    NO_NOTE_TITLE("NoteDisplay.NoNoteTitle"),
-    NO_NOTE_SELECTED("NoteDisplay.NoNoteSelected"),
-    NO_NOTE_PLACEHOLDER("NoteDisplay.TitlePlaceholder"),
-    NO_NOTE_FOUND("NoteDisplay.NoNoteTarget"),
 
     SYNTAX_MODE("WriteScene.SyntaxMode"),
     PARSED_MODE("WriteScene.ParsedMode"),

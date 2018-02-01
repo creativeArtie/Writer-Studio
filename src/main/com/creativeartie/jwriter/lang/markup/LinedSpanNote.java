@@ -13,6 +13,7 @@ public class LinedSpanNote extends LinedSpan{
 
     private Optional<Optional<FormatSpanMain>> cacheFormatted;
     private Optional<Optional<CatalogueIdentity>> cacheId;
+    private Optional<String> cacheLookup;
     private Optional<Integer> cacheNote;
     private Optional<Boolean> cacheFirst;
 
@@ -24,6 +25,15 @@ public class LinedSpanNote extends LinedSpan{
         cacheFormatted = getCache(cacheFormatted, () -> spanFromLast(
             FormatSpanMain.class));
         return cacheFormatted.get();
+    }
+
+    public String getLookupText(){
+        cacheLookup = getCache(cacheLookup, () ->
+            spanFromFirst(DirectorySpan.class)
+                .map(span -> CURLY_CITE + span.getLookupText() + CURLY_END)
+                .orElse("")
+        );
+        return cacheLookup.get();
     }
 
     Optional<CatalogueIdentity> buildId(){
@@ -76,6 +86,7 @@ public class LinedSpanNote extends LinedSpan{
     protected void childEdited(){
         cacheFormatted = Optional.empty();
         cacheId = Optional.empty();
+        cacheLookup = Optional.empty();
         cacheNote = Optional.empty();
     }
 

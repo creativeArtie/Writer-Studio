@@ -77,6 +77,7 @@ public class AgendaData{
     public SectionSpan getAgendaSection(){
         return agendaSection.getValue();
     }
+
     public ReadOnlyStringProperty agendaTextProperty(){
         return agendaText.getReadOnlyProperty();
     }

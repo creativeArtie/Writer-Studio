@@ -21,17 +21,41 @@ import com.google.common.collect.*;
 /**
  * Stores a list hyperlinks.
  */
-abstract class LinksPaneView extends Tab{
-    private TableView<LinksData> linkTable;
+abstract class LinksPaneView extends TableView<LinksData>{
     public LinksPaneView(){
-        super(WindowText.TAB_LINK.getText());
-        setContent(new Label("Hello World"));
-        // linkTable = initLinkTable();
+        TableViewHelper.styleTableView(this, WindowText.LINKS_EMPTY);
+        initLinksColumns();
     }
 
-    private TableView<LinksData> initLinkTable(){
-        TableView<LinksData> ans = new TableView<>();
-        setContent(ans);
-        return ans;
+
+    @SuppressWarnings("unchecked") /// For getColumns().addAdd(TableColumn ...)
+    private void initLinksColumns(){
+        TableColumn<LinksData, Number> location = TableViewHelper
+            .getNumberColumn(WindowText.LINKS_LOCATION, d ->
+                d.linkLocationProperty());
+        TableViewHelper.setPrecentWidth(location, this, 10.0);
+
+        TableColumn<LinksData, Optional<CatalogueIdentity>> id =
+            TableViewHelper.getIdColumn(WindowText.LINKS_ID, d ->
+                d.linkIdProperty());
+        TableViewHelper.setPrecentWidth(id, this, 20.0);
+
+        TableColumn<LinksData, Boolean> bookmark =
+            TableViewHelper.getBooleanColumn(WindowText.LINKS_BOOKMARK, d ->
+                d.linkBookmarkProperty());
+        TableViewHelper.setPrecentWidth(bookmark, this, 10.0);
+
+        TableColumn<LinksData, String> lookup =
+            TableViewHelper.getTextColumn(WindowText.LINKS_LOOKUP, d ->
+                d.linkLookupTextProperty(), WindowText.EMPTY_NA);
+        TableViewHelper.setPrecentWidth(lookup, this, 20.0);
+
+        TableColumn<LinksData, Object> data =
+            TableViewHelper.getLinkColumn(WindowText.LINKS_DATA, d ->
+                d.linkDataProperty());
+        TableViewHelper.setPrecentWidth(data, this, 40.0);
+
+        getColumns().addAll(location, id, bookmark, lookup, data);
     }
+
 }

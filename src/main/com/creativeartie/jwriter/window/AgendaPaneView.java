@@ -27,8 +27,8 @@ abstract class AgendaPaneView extends TableView<AgendaData>{
 
     @SuppressWarnings("unchecked") /// For ans.getColumns().addAdd(...)
     public AgendaPaneView(){
-        initAgendaColumns();
         TableViewHelper.styleTableView(this, WindowText.AGENDA_EMPTY);
+        initAgendaColumns();
 
         agendaSelected = new ReadOnlyObjectWrapper<>(this, "agendaSelected");
         ReadOnlyObjectProperty<AgendaData> selected =
@@ -40,7 +40,7 @@ abstract class AgendaPaneView extends TableView<AgendaData>{
     }
 
     /// Layout Node
-    @SuppressWarnings("unchecked") /// For getColumns().addAdd(AgendaData ...)
+    @SuppressWarnings("unchecked") /// For getColumns().addAdd(TableColumn ...)
     private void initAgendaColumns(){
         TableColumn<AgendaData, Number> location = TableViewHelper
             .getNumberColumn(WindowText.AGENDA_LINE, d ->
@@ -58,7 +58,8 @@ abstract class AgendaPaneView extends TableView<AgendaData>{
         TableViewHelper.setPrecentWidth(section, this, 40.0);
 
         TableColumn<AgendaData, String> text = TableViewHelper.getTextColumn(
-            WindowText.AGENDA_TEXT, d -> d.agendaTextProperty());
+            WindowText.AGENDA_TEXT, d -> d.agendaTextProperty(), WindowText
+            .EMPTY_TEXT);
         TableViewHelper.setPrecentWidth(text, this, 40.0);
 
         getColumns().addAll(location, type, section, text);

@@ -14,6 +14,7 @@ public abstract class LinedSpanPoint extends LinedSpan implements Catalogued{
 
     private Optional<List<StyleInfo>> cacheStyles;
     private Optional<Optional<CatalogueIdentity>> cacheId;
+    private Optional<String> cacheLookup;
 
     LinedSpanPoint(List<Span> children){
         super(children);
@@ -30,6 +31,20 @@ public abstract class LinedSpanPoint extends LinedSpan implements Catalogued{
         });
         return cacheStyles.get();
     }
+
+    public String getLookupText(){
+        cacheLookup = getCache(cacheLookup, () ->
+            spanFromFirst(DirectorySpan.class)
+                .map(span -> getLookupStart()  + span.getLookupText() +
+                    getLookupEnd())
+                .orElse("")
+        );
+        return cacheLookup.get();
+    }
+
+    protected abstract String getLookupStart();
+
+    protected abstract String getLookupEnd();
 
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
@@ -48,5 +63,6 @@ public abstract class LinedSpanPoint extends LinedSpan implements Catalogued{
     protected void childEdited(){
         cacheStyles = Optional.empty();
         cacheId = Optional.empty();
+        cacheLookup = Optional.empty();
     }
 }

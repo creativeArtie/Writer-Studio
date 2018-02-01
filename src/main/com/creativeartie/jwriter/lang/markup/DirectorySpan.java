@@ -15,7 +15,7 @@ public final class DirectorySpan extends SpanBranch {
     /// helps with categorizing and describes purpose
     private final DirectoryType idPurpose;
     private Optional<CatalogueIdentity> cacheId;
-    private Optional<String> cacheRaw;
+    private Optional<String> cacheText;
     private final DirectoryParser spanReparser;
 
     DirectorySpan(List<Span> spanChildren, DirectoryType purpose,
@@ -50,15 +50,15 @@ public final class DirectorySpan extends SpanBranch {
     }
 
     /** Get the display for {@link FormatSpanDirectory#getOutput()}*/
-    public String getIdRaw(){
-        cacheRaw = getCache(cacheRaw, () -> {
+    public String getLookupText(){
+        cacheText = getCache(cacheText, () -> {
             StringBuilder builder = new StringBuilder();
             this.forEach((span) -> {
                 builder.append(span.getRaw());
             });
             return builder.toString();
         });
-        return cacheRaw.get();
+        return cacheText.get();
     }
 
     /** Get the purpose of this span. */
@@ -96,7 +96,7 @@ public final class DirectorySpan extends SpanBranch {
     @Override
     protected void childEdited(){
         cacheId = Optional.empty();
-        cacheRaw = Optional.empty();
+        cacheText = Optional.empty();
     }
 
     @Override
