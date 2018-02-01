@@ -26,4 +26,15 @@ public enum InfoFieldType implements StyleInfo{
     Optional<SetupParser> getDataParser(){
         return dataParser;
     }
+
+    public static InfoFieldType parseText(String text){
+        String name = CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_UNDERSCORE,
+            text.trim());
+        for (InfoFieldType type: values()){
+            if (type.name().equals(name)){
+                return type;
+            }
+        }
+        return InfoFieldType.ERROR;
+    }
 }

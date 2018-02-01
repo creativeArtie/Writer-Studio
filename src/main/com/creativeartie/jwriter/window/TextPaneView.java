@@ -53,6 +53,7 @@ abstract class TextPaneView extends BorderPane {
         });
 
         caretPlaced = new ReadOnlyIntegerWrapper(this, "caretPlaced");
+        caretPlaced.bind(textArea.caretPositionProperty());
 
         textProperty = new ReadOnlyObjectWrapper<>(this, "text");
         textProperty.bind(textArea.textProperty());
@@ -64,10 +65,6 @@ abstract class TextPaneView extends BorderPane {
         modeUsed.setValue(setNextMode(null));
 
         readyProperty = new SimpleBooleanProperty(this, "ready", false);
-        readyProperty.addListener((data, oldValue, newValue) ->{
-            if (newValue) {caretPlaced.bind(textArea.caretPositionProperty());}
-            else {caretPlaced.unbind();}
-        });
         viewMode.setOnAction(evt -> modeUsed
             .setValue(setNextMode(modeUsed.getValue())));
     }

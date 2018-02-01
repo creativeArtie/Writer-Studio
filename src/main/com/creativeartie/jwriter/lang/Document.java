@@ -149,7 +149,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         try {
             return spanRanges.get(child, caller);
         } catch (ExecutionException ex) {
-            throw new RuntimeException(ex);
+            throw new RuntimeException(ex.getCause());
         }
     }
     /**
@@ -163,7 +163,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         try {
             return spanTexts.get(child, caller);
         } catch (ExecutionException ex) {
-            throw new RuntimeException(ex);
+            throw new RuntimeException(ex.getCause());
         }
     }
 
@@ -179,7 +179,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         try {
             return spanLeaves.get(child, caller);
         } catch (ExecutionException ex) {
-            throw new RuntimeException(ex);
+            throw new RuntimeException(ex.getCause());
         }
     }
 
@@ -267,7 +267,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     }
 
     /** Insert a {@linkplain String} at a location.*/
-    public final void insert(int location, String input){
+    public synchronized final void insert(int location, String input){
         checkRange(location, "location", 0, true, getEnd(), true);
         checkNotNull(input, "input");
         if (isEmpty()){
@@ -306,7 +306,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     }
 
     /** Insert a {@linkplain String} at a location.*/
-    public final void delete(int start, int end){
+    public synchronized final void delete(int start, int end){
         checkRange(end, "end", 0, true, getEnd(), true);
         checkRange(start, "start", 0, true, end, true);
 

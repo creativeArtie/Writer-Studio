@@ -28,7 +28,7 @@ abstract class AgendaPaneView extends TableView<AgendaData>{
     @SuppressWarnings("unchecked") /// For ans.getColumns().addAdd(...)
     public AgendaPaneView(){
         initAgendaColumns();
-        TableViewHelper.styleTableView(this);
+        TableViewHelper.styleTableView(this, WindowText.AGENDA_EMPTY);
 
         agendaSelected = new ReadOnlyObjectWrapper<>(this, "agendaSelected");
         ReadOnlyObjectProperty<AgendaData> selected =

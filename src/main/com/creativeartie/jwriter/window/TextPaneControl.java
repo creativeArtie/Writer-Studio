@@ -52,7 +52,6 @@ class TextPaneControl extends TextPaneView {
     }
 
     void setStyle(Collection<SpanLeaf> leaves){
-
         leaves.stream().filter(leaf -> leaf.isInUsed())
             .forEach(leaf -> getTextArea().setStyle(leaf.getStart(),
                 leaf.getEnd(), CodeStyleBuilder.toCss(leaf))
@@ -62,7 +61,7 @@ class TextPaneControl extends TextPaneView {
 
     public void moveTo(int position){
         if (position == getTextArea().getLength()){
-            getTextArea().moveTo(position - 1);
+            getTextArea().end(NavigationActions.SelectionPolicy.CLEAR);
         } else {
             getTextArea().moveTo(position);
         }

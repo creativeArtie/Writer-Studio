@@ -14,8 +14,6 @@ public enum WindowText {
     PROGRAM_NAME("MainWindow.Title"),
     EMPTY_TEXT("CommonText.NoText"),
 
-    HEADING_NO_TEXT("DisplayHeading.HeadingNoText"),
-    HEADING_PLACEHOLDER("DisplayHeading.HeadingPlaceholder"),
 
     MENU_FILE("MainMenu.File"),           MENU_FILE_NEW("MainMenu.FileCreate"),
     MENU_FILE_SAVE("MainMenu.FileSave"),  MENU_FILE_OPEN("MainMenu.FileOpen"),
@@ -24,20 +22,23 @@ public enum WindowText {
 
     MENU_STATS("MainMenu.Stats"), MENU_STATS_GOALS("MainMenu.StatsGoal"),
 
-    AGENDA_NOTEXT("AgendaTable.NoText"), AGENDA_LINE("AgenaTable.LineColumn"),
-    AGENDA_TYPE("AgendaTable.TypeColumn"), AGENDA_SECTION("AgenaTable.SectionColumn"),
+    AGENDA_LINE("AgendaTable.LineColumn"),
+    AGENDA_TYPE("AgendaTable.TypeColumn"),
+    AGENDA_SECTION("AgendaTable.SectionColumn"),
     AGENDA_TEXT("AgendaTable.TextColumn"),
+    AGENDA_EMPTY("AgendaTable.EmptyTable"),
 
     CALENDAR_NO_RECORD("Calendar.NoRecord"),
 
-    HEADING_TITLE("TreeList.HeadingTitle"),
-    OUTLINE_TITLE("TreeList.OutlineTitle"),
+    HEADING_TITLE("HeadingTree.HeadingTitle"),
+    OUTLINE_TITLE("HeadingTree.OutlineTitle"),
+    PLACEHOLDER_HEADING("HeadingTree.HeadingPlaceholder"),
 
     GOALS_TITLE("StatsScreen.Title"),   GOAL_WORD_TEXT("StatsScreen.WordGoal"),
     GOALS_TIME_TEXT("StatsScreen.TimeGoal"), HOUR_UNIT("StatsScreen.HourUnit"),
     MINUTE_UNIT("StatsScreen.MinuteUnit"),
 
-    LINK_TAB("NoteTabs.TitleLink"),
+    TAB_LINK("NoteTabs.TitleLink"),
 
     ID_LIST_TITLE("UserLists.HeadingTypes"),
     NO_SPAN_LOC("UserLists.NoLocation"),

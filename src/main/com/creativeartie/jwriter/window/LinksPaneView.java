@@ -24,7 +24,7 @@ import com.google.common.collect.*;
 abstract class LinksPaneView extends Tab{
     private TableView<LinksData> linkTable;
     public LinksPaneView(){
-        super(WindowText.LINK_TAB.getText());
+        super(WindowText.TAB_LINK.getText());
         setContent(new Label("Hello World"));
         // linkTable = initLinkTable();
     }

@@ -27,7 +27,11 @@ class AgendaPaneControl extends AgendaPaneView{
      }
 
     private void updateAgenda(){
-        if (docText == null){
+        if (docText == null || docText.isEmpty()){
+            return;
+        }
+        if (docIndex > docText.getEnd()){
+            /// TODO Select the last item (if there is one)
             return;
         }
 

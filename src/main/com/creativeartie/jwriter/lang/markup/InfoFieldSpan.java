@@ -3,7 +3,6 @@ package com.creativeartie.jwriter.lang.markup;
 import java.util.*;
 import java.util.Optional;
 import com.google.common.collect.*;
-import com.google.common.base.*;
 
 import com.creativeartie.jwriter.lang.*;
 
@@ -33,14 +32,7 @@ public final class InfoFieldSpan extends SpanBranch{
         cacheField = getCache(cacheField, () -> {
             Optional<SpanLeaf> found = leafFromFrist(StyleInfoLeaf.FIELD);
             if (found.isPresent()){
-                String name = CaseFormat.LOWER_HYPHEN
-                    .to(CaseFormat.UPPER_UNDERSCORE,
-                    found.get().getRaw().trim());
-                try {
-                    return InfoFieldType.valueOf(name);
-                } catch (IllegalArgumentException ex){
-                    /// return InfoFieldType.ERROR;
-                }
+                InfoFieldType.parseText(found.get().getRaw());
             }
             return InfoFieldType.ERROR;
         });

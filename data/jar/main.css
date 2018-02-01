@@ -1,4 +1,4 @@
-.no-text, .id-numbered, .display-italics{
+.no-text, .no-span, .id-numbered, .display-italics{
     -fx-font-style:italic;
 }
 
@@ -19,10 +19,9 @@
     -fx-text-fill:"gray"
 }
 
-.display-edition{
-    -fx-text-fill:"gray";
+.display-edition, .no-text, .no-span{
+    -fx-fill:"gray";
     -fx-font-family:'monospace';
-    -fx-font-size:.8em;
 }
 
 .display-agenda{

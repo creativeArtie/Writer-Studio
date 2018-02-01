@@ -43,6 +43,7 @@ public class WriterSceneControl extends WriterSceneView {
         getTableOfContent().loadHeadings(currentDoc);
         getTableOfContent().updateTable(getTextArea().getCaretPlaced());
         getTextArea().returnFocus();
+        assert textReady(): getTextArea().getText();
     }
 
     @Override
@@ -58,11 +59,14 @@ public class WriterSceneControl extends WriterSceneView {
         writeTime = START;
         restyleTime = restyleTime == STOP? START: restyleTime;
         currentRecords.startWriting(currentDoc);
-        assert getTextArea().getText().equals(currentDoc.getRaw());
+        assert textReady(): getTextArea().getText();
     }
 
     @Override
     protected void timerAction(long now){
+        if (! textReady()){
+            return;
+        }
         getTextArea().updateStats(currentRecords.getRecord());
         if (writeTime == START){
             writeTime = now + LENGTH;
@@ -78,6 +82,10 @@ public class WriterSceneControl extends WriterSceneView {
 
     @Override
     protected void selectionChanged(SpanBranch span){
+        System.out.println("selectionChanged");
+        if (! textReady()){
+            return;
+        }
         if (span == null){
             return;
         }
@@ -89,6 +97,9 @@ public class WriterSceneControl extends WriterSceneView {
 
     @Override
     protected void caretChanged(int position){
+        if (! ! textReady()){
+            return;
+        }
         if (shouldMoveAgenda(position)){
             getAgendaPane().updateAgenda(position);
         }
@@ -144,5 +155,11 @@ public class WriterSceneControl extends WriterSceneView {
     @Override
     public void returnFocus(){
         getTextArea().returnFocus();
+        assert getTextArea().getText().equals(currentDoc.getRaw());
+    }
+
+    /** Check if text is ready for things other then editing.*/
+    private boolean textReady(){
+        return getTextArea().getText().equals(currentDoc.getRaw());
     }
 }

@@ -29,19 +29,24 @@ class HeadingPaneControl extends HeadingPaneView{
     }
 
     public void fillHeadings(){
+        if (documentText == null || documentText.isEmpty()){
+            getHeadings().clearTree();
+            return;
+        }
         getHeadings().loadSections(documentText);
     }
 
     public void updateTable(int position){
-        if (documentText == null){
+        if (documentText == null || documentText.isEmpty()){
             /// Heading Pane is not ready
             return;
         }
-        Optional<SpanLeaf> leaf = documentText.locateLeaf(position);
-        if (! leaf.isPresent()){
-            /// TODO Select first
+        if (position > documentText.getEnd()){
+            /// TODO Select the last item
             return;
         }
+        Optional<SpanLeaf> leaf = documentText.locateLeaf(position);
+        assert leaf.isPresent() : "Leaf is not present.";
         /// Select Heading
         TreeItem<SectionSpan> root = getHeadings().getTree().getRoot();
         SectionSpanHead heading = leaf.get().getParent(SectionSpanHead.class)

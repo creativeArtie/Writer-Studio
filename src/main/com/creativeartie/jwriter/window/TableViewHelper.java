@@ -134,7 +134,8 @@ final class TableViewHelper{
         return ans;
     }
 
-    public static void styleTableView(TableView<?> table){
+    public static void styleTableView(TableView<?> table, WindowText empty){
         table.setFixedCellSize(30);
+        table.setPlaceholder(new Label(empty.getText()));
     }
 }

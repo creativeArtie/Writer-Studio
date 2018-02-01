@@ -27,7 +27,7 @@ public final class TextFlowBuilder {
             ).ifPresent(text -> node.getChildren().add(text));
 
         } else {
-            Text empty = new Text(WindowText.HEADING_NO_TEXT.getText());
+            Text empty = new Text(WindowText.EMPTY_TEXT.getText());
             StyleClass.NOT_FOUND.addClass(empty);
             node.getChildren().add(empty);
         }

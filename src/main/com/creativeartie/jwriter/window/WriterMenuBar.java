@@ -25,6 +25,10 @@ class WriterMenuBar extends MenuBar{
     private Stage mainWindow;
     private FileChooser chooser;
     private SimpleObjectProperty<ManuscriptFile> manuscriptFile;
+    private SimpleBooleanProperty agendaChecked;
+    private SimpleBooleanProperty linkChecked;
+    private SimpleBooleanProperty noteChecked;
+    private SimpleBooleanProperty researchChecked;
 
     public WriterMenuBar(Stage window){
         SceneStatsControl statTable = new SceneStatsControl();
@@ -84,9 +88,7 @@ class WriterMenuBar extends MenuBar{
             try {
                 manuscriptFile.setValue(ManuscriptFile.open(file));
             } catch (Exception ex){
-                System.err.println("unhandled exception (WriterMenuBar#openFile):");
-                ex.printStackTrace();
-                System.exit(-1);
+                throw new RuntimeException(ex);
             }
         }
     }

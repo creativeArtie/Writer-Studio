@@ -44,8 +44,8 @@ public class Main extends Application{
         mainStage = stage;
 
         // testChildWindows();
-        testMainWindow();
-        // setupWindow(ManuscriptFile.newFile());
+        // testMainWindow();
+        setupWindow(ManuscriptFile.newFile());
     }
 
     @Deprecated
