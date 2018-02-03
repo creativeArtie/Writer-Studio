@@ -26,8 +26,9 @@ public enum WindowText {
 
     TAB_AGENDA("NoteTabs.TitleAgenda"),
     TAB_LINK("NoteTabs.TitleLink"),
-    TAB_NOTE_DOC("NoteTabs.TitleDocNote"),
-    TAB_NOTE_RESEARCH("NoteTabs.TitleUserNote"),
+    TAB_FOOTNOTE("NoteTabs.TitleFootnote"),
+    TAB_ENDNOTE("NoteTabs.TitleEndnote"),
+    TAB_NOTE_CARD("NoteTabs.TitleNoteCard"),
 
     AGENDA_LINE("AgendaTable.LineColumn"),
     AGENDA_TYPE("AgendaTable.TypeColumn"),
@@ -41,6 +42,14 @@ public enum WindowText {
     LINKS_BOOKMARK("LinksTable.BookmarkColumn"),
     LINKS_DATA("LinksTable.ContentColumn"),
     LINKS_EMPTY("LinksTable.EmptyTable"),
+    
+    NOTES_ID("NotesTable.IdentityColumn"),
+    NOTES_LOOKUP("NotesTable.LookupColumn"),
+    NOTES_LOCATION("NotesTable.LocationColumn"),
+    NOTES_BOOKMARK("NotesTable.BookmarkColumn"),
+    NOTES_DATA("NotesTable.ContentColumn"),
+    FOOTNOTE_EMPTY("NotesTable.EmptyFootnote"),
+    ENDNOTE_EMPTY("NotesTable.EmptyEndnote"),
 
     CALENDAR_NO_RECORD("Calendar.NoRecord"),
 

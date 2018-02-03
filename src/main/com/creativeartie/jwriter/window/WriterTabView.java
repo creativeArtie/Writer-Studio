@@ -22,7 +22,8 @@ abstract class WriterTabView extends TabPane{
 
     public WriterTabView(){
         tableTabs = Arrays.asList(
-            initAgendaPane(), initLinksPane()
+            initAgendaPane(), initLinksPane(), initFootnotePane(),
+            initEndnotePane()
         );
     }
 
@@ -36,6 +37,20 @@ abstract class WriterTabView extends TabPane{
     private TableLinkPane initLinksPane(){
         TableLinkPane ans = new TableLinkPane();
         Tab tab = new Tab(WindowText.TAB_LINK.getText(), ans);
+        getTabs().add(tab);
+        return ans;
+    }
+
+    private TableNotePane initFootnotePane(){
+        TableNotePane ans = new TableNotePane(DirectoryType.FOOTNOTE);
+        Tab tab = new Tab(WindowText.TAB_FOOTNOTE.getText(), ans);
+        getTabs().add(tab);
+        return ans;
+    }
+    
+    private TableNotePane initEndnotePane(){
+        TableNotePane ans = new TableNotePane(DirectoryType.ENDNOTE);
+        Tab tab = new Tab(WindowText.TAB_ENDNOTE.getText(), ans);
         getTabs().add(tab);
         return ans;
     }

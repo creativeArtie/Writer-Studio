@@ -129,6 +129,42 @@ final class TableViewHelper{
     }
 
     /** TableCell for strings */
+    private static class FormatCell<T> extends TableCell<T, 
+            Optional<FormatSpanMain>> {
+
+        @Override
+        public void updateItem(Optional<FormatSpanMain> item, boolean empty){
+            /// Required by JavaFX API:
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setText(null);
+                setGraphic(null);
+            } else {
+                Node graphic = null;
+                graphic = TextFlowBuilder.loadFormatText(item);
+
+                /// Completing the setting
+                setText(null);
+                setGraphic(graphic);
+            }
+        }
+    }
+
+    public static <T> TableColumn<T, Optional<FormatSpanMain>> getFormatColumn(
+            WindowText title,
+            Function<T, ObservableObjectValue<Optional<FormatSpanMain>>> 
+                property){
+        TableColumn<T, Optional<FormatSpanMain>> ans = new TableColumn<>(title
+            .getText());
+        ans.setCellFactory(list -> new TableViewHelper.FormatCell<>());
+        ans.setCellValueFactory(c -> new SimpleObjectProperty<>(
+            /// 1st getValue() = T data; 2nd getValue() = Text
+            property.apply(c.getValue()).getValue()
+        ));
+        return ans;
+    }
+
+    /** TableCell for strings */
     private static class LinkCell<T> extends TableCell<T, Object> {
 
         @Override
