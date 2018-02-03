@@ -55,13 +55,8 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
     }
 
     public TreeSet<SpanBranch> getIds(String base){
-        TreeSet<SpanBranch> spans = new TreeSet<>(Comparator.comparing(
-            span -> Optional.of(span)
-                .filter(found -> found instanceof Catalogued)
-                .flatMap(found -> ((Catalogued)found).getSpanIdentity())
-                .orElseThrow(() -> new RuntimeException(
-                    "Span is not of type Catalogued: " + span))
-        ));
+        TreeSet<SpanBranch> spans = new TreeSet<>(Comparator.comparingInt(
+            span -> span.getStart()));
         for (Entry<CatalogueIdentity, CatalogueData> entry: idMap.entrySet()){
             if (entry.getKey().getBase().equals(base)){
                 for (SpanBranch span: entry.getValue().getIds()){
@@ -70,5 +65,5 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
             }
         }
         return spans;
-}
+    }
 }

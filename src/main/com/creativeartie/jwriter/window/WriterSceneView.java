@@ -43,11 +43,13 @@ abstract class WriterSceneView extends BorderPane{
         WriterMenuBar menu = initMenuBar(window, top);
         tabsPane = initTabPane(top);
         ///agenda pane:
-        getAgendaPane().focusedProperty().addListener((data, oldValue,
-            newValue) -> returnFocus());
-        getAgendaPane().agendaSelectedProperty().addListener(
-            (data, oldValue, newValue) -> selectionChanged(newValue)
-        );
+        tabsPane.getTableTabs().forEach(pane -> {
+            pane.focusedProperty().addListener((data, oldValue, newValue) ->
+                returnFocus());
+            pane.itemSelectedProperty().addListener(
+                (data, oldValue, newValue) -> selectionChanged(newValue)
+            );
+        });
         setTop(top);
 
         /// bottom
@@ -112,8 +114,8 @@ abstract class WriterSceneView extends BorderPane{
         return tableOfContent;
     }
 
-    protected AgendaPaneControl getAgendaPane(){
-        return tabsPane.getAgendaPane();
+    protected List<TableDataControl<?>> getTableTabs(){
+        return tabsPane.getTableTabs();
     }
 
     protected CheatsheetPaneControl getCheatsheet(){

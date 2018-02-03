@@ -26,12 +26,12 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
     }
 
      /** Updates the selections base on the cursor movements. */
-     public void updateTable(int index){
+     public void updateLocation(int index){
          docIndex = index;
-         updateTable();
+         updateLocation();
      }
 
-    private void updateTable(){
+    private void updateLocation(){
         if (docText == null || docText.isEmpty()){
             return;
         }
@@ -46,7 +46,7 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
             if (span.isPresent()){
                  int ptr = 0;
                  for(TableData data: getItems()){
-                     if (data.getTargetSpan().equals(span)){
+                     if (data.getTargetSpan().equals(span.get())){
                          getSelectionModel().select(ptr);
                          return;
                      }
@@ -62,20 +62,21 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
     /** Load agenda list. */
     public void loadList(WritingText doc){
         docText = doc;
-        doc.addUpdater(span -> updateList());
-        updateList();
+        doc.addUpdater(span -> updateItems());
+        updateItems();
     }
 
-    public void updateList(){
+    public void updateItems(){
         ArrayList<T> list = new ArrayList<>();
         for (SpanBranch span: docText.getCatalogue().getIds(getCategory())){
-            if (span instanceof FormatSpanAgenda ||
-                    span instanceof LinedSpanAgenda){
-                list.add(buildSpan(span));
+            for (Class<? extends SpanBranch> clazz: getTargetClass()){
+                if (clazz.isInstance(span)){
+                    list.add(buildSpan(span));
+                }
             }
         }
         setItems(FXCollections.observableList(list));
-        updateList();
+        updateLocation();
     }
 
      protected abstract List<Class<? extends SpanBranch>> getTargetClass();

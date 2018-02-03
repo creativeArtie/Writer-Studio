@@ -39,7 +39,7 @@ public class WriterSceneControl extends WriterSceneView {
         getTextArea().updateStats(currentRecords.getRecord());
         getTextArea().setReady(true);
 
-        getAgendaPane().loadAgenda(currentDoc);
+        getTableTabs().forEach(pane -> pane.loadList(currentDoc));
         getTableOfContent().loadHeadings(currentDoc);
         getTableOfContent().updateTable(getTextArea().getCaretPlaced());
         getTextArea().returnFocus();
@@ -59,6 +59,7 @@ public class WriterSceneControl extends WriterSceneView {
         writeTime = START;
         restyleTime = restyleTime == STOP? START: restyleTime;
         currentRecords.startWriting(currentDoc);
+        getTextArea().setReady(true);
         assert textReady(): getTextArea().getText();
     }
 
@@ -82,7 +83,6 @@ public class WriterSceneControl extends WriterSceneView {
 
     @Override
     protected void selectionChanged(SpanBranch span){
-        System.out.println("selectionChanged");
         if (! textReady()){
             return;
         }
@@ -97,12 +97,12 @@ public class WriterSceneControl extends WriterSceneView {
 
     @Override
     protected void caretChanged(int position){
-        if (! ! textReady()){
+        if (! textReady()){
             return;
         }
-        if (shouldMoveAgenda(position)){
-            getAgendaPane().updateAgenda(position);
-        }
+        getTableTabs().forEach(pane -> {
+            if (shouldMoveTable(pane, position)){pane.updateLocation(position);}
+        });
 
         HeadingPaneControl content = getTableOfContent();
         if (shouldMoveHead(position)){
@@ -111,8 +111,8 @@ public class WriterSceneControl extends WriterSceneView {
         getCheatsheet().updateLabels(currentDoc, position);
     }
 
-    private boolean shouldMoveAgenda(int position){
-        SpanBranch span = getAgendaPane().getAgendaSelected();
+    private boolean shouldMoveTable(TableDataControl<?> pane, int position){
+        SpanBranch span = pane.getItemSelected();
         if (span == null){
             return true;
         }
@@ -160,6 +160,10 @@ public class WriterSceneControl extends WriterSceneView {
 
     /** Check if text is ready for things other then editing.*/
     private boolean textReady(){
-        return getTextArea().getText().equals(currentDoc.getRaw());
+        if (getTextArea().getText().equals(currentDoc.getRaw())){
+            return true;
+        }
+        getTextArea().setReady(false);
+        return false;
     }
 }

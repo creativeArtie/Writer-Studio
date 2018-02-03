@@ -18,32 +18,37 @@ import com.creativeartie.jwriter.resource.*;
 import com.google.common.collect.*;
 
 abstract class WriterTabView extends TabPane{
-    private Tab[] tabs;
+    private List<TableDataControl<?>> tableTabs;
 
     public WriterTabView(){
-        tabs = new Tab[]{
+        tableTabs = Arrays.asList(
             initAgendaPane(), initLinksPane()
-        };
-        getTabs().addAll(tabs);
+        );
     }
 
-    private Tab initAgendaPane(){
-        AgendaPaneControl content = new AgendaPaneControl();
-        Tab ans = new Tab(WindowText.TAB_AGENDA.getText(), content);
+    private TableAgendaPane initAgendaPane(){
+        TableAgendaPane ans = new TableAgendaPane();
+        Tab tab = new Tab(WindowText.TAB_AGENDA.getText(), ans);
+        getTabs().add(tab);
         return ans;
     }
 
-    private Tab initLinksPane(){
-        LinksPaneControl content = new LinksPaneControl();
-        Tab ans = new Tab(WindowText.TAB_LINK.getText(), content);
+    private TableLinkPane initLinksPane(){
+        TableLinkPane ans = new TableLinkPane();
+        Tab tab = new Tab(WindowText.TAB_LINK.getText(), ans);
+        getTabs().add(tab);
         return ans;
     }
 
-    public AgendaPaneControl getAgendaPane(){
-        return (AgendaPaneControl) tabs[0].getContent();
+    public List<TableDataControl<?>> getTableTabs(){
+        return tableTabs;
     }
 
-    public LinksPaneControl getLinksPane(){
-        return (LinksPaneControl) tabs[1].getContent();
+    public TableAgendaPane getAgendaPane(){
+        return (TableAgendaPane) tableTabs.get(0);
+    }
+
+    public TableLinkPane getLinksPane(){
+        return (TableLinkPane) tableTabs.get(1);
     }
 }

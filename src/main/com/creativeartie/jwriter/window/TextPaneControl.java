@@ -4,6 +4,7 @@ import java.util.*;
 import java.time.*;
 import java.time.format.*;
 import javafx.scene.control.*;
+import javafx.beans.property.*;
 
 import org.fxmisc.richtext.*;
 
@@ -89,5 +90,12 @@ class TextPaneControl extends TextPaneView {
         }
         getViewModeButton().setText(ans.getText());
         return ans;
+    }
+
+    @Override
+    void updatePosition(ReadOnlyIntegerWrapper caret){
+        if (isReady()){
+            caret.setValue(getTextArea().getCaretPosition());
+        }
     }
 }

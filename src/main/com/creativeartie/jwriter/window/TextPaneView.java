@@ -53,7 +53,8 @@ abstract class TextPaneView extends BorderPane {
         });
 
         caretPlaced = new ReadOnlyIntegerWrapper(this, "caretPlaced");
-        caretPlaced.bind(textArea.caretPositionProperty());
+        textArea.caretPositionProperty().addListener((data, oldValue, newValue)
+            -> updatePosition(caretPlaced));
 
         textProperty = new ReadOnlyObjectWrapper<>(this, "text");
         textProperty.bind(textArea.textProperty());
@@ -63,10 +64,12 @@ abstract class TextPaneView extends BorderPane {
 
         modeUsed = new ReadOnlyObjectWrapper<>(this, "modeUsed");
         modeUsed.setValue(setNextMode(null));
-
-        readyProperty = new SimpleBooleanProperty(this, "ready", false);
         viewMode.setOnAction(evt -> modeUsed
             .setValue(setNextMode(modeUsed.getValue())));
+
+        readyProperty = new SimpleBooleanProperty(this, "ready", false);
+        readyProperty.addListener((data, oldValue, newValue) ->
+            updatePosition(caretPlaced));
     }
 
     /// Layout Node
@@ -183,4 +186,6 @@ abstract class TextPaneView extends BorderPane {
     public abstract WindowText setNextMode(WindowText lastMode);
 
     abstract void updateTime(Label show);
+
+    abstract void updatePosition(ReadOnlyIntegerWrapper caret);
 }
