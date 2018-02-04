@@ -24,7 +24,8 @@ final class TableViewHelper{
     private static class IdCell<T> extends TableCell<T,
             Optional<CatalogueIdentity>>{
         @Override
-        protected void updateItem(Optional<CatalogueIdentity> item, boolean empty) {
+        protected void updateItem(Optional<CatalogueIdentity> item, 
+                boolean empty) {
             /// Required by JavaFX API:
             super.updateItem(item, empty);
             if (empty || item == null){

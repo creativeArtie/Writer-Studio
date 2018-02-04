@@ -1,6 +1,7 @@
 package com.creativeartie.jwriter.lang.markup;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.Optional;
 
 import com.google.common.collect.*;
@@ -18,6 +19,8 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
 
     private Optional<List<StyleInfo>> cacheStyles;
     private Optional<Optional<CatalogueIdentity>> cacheId;
+    private Optional<Optional<LinedSpanCite>> cacheInText;
+    private Optional<Optional<FormatSpanMain>> cacheSource;
     private Optional<String> cacheLookup;
     private Optional<Integer> cacheNote;
     private Optional<ImmutableListMultimap<InfoFieldType, InfoDataSpan>>
@@ -49,6 +52,44 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
             return data.build();
         });
         return cacheSources.get();
+    }
+    
+    public Optional<LinedSpanCite> getInTextLine(){
+        cacheInText = getCache(cacheInText, () ->{
+            for (Span child: this){
+                if(isType(child, type -> type == InfoFieldType.FOOTNOTE ||
+                        type == InfoFieldType.IN_TEXT)){
+                    return Optional.of((LinedSpanCite) child);
+                }
+            }
+            return Optional.empty();
+        });
+        
+        return cacheInText.get();
+    }
+    
+    public Optional<FormatSpanMain> getSource(){
+        cacheSource = getCache(cacheSource, () ->{
+            for (Span child: this){
+                if (isType(child, type -> type == InfoFieldType.SOURCE)){
+                    LinedSpanCite cite = (LinedSpanCite) child;
+                    InfoDataSpan data = cite.getData().get();
+                    
+                    return Optional.of((FormatSpanMain)data.getData());
+                }
+            }
+            return Optional.empty();
+        });
+        return cacheSource.get();
+    }
+    
+    private boolean isType(Span child, Predicate<InfoFieldType> filter){
+        return Optional.ofNullable(child instanceof LinedSpanCite?
+                (LinedSpanCite) child: null)
+            .filter(cite -> cite.getData().isPresent())
+            .map(cite -> cite.getFieldType())
+            .filter(filter)
+            .isPresent();
     }
 
     public int getNoteTotal(){
@@ -137,6 +178,8 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
     protected void childEdited(){
         cacheStyles = Optional.empty();
         cacheNote = Optional.empty();
+        cacheInText = Optional.empty();
+        cacheSource = Optional.empty();
         cacheSources = Optional.empty();
         cacheLookup = Optional.empty();
     }
