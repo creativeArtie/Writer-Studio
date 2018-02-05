@@ -19,12 +19,14 @@ import com.google.common.collect.*;
 
 abstract class WriterTabView extends TabPane{
     private List<TableDataControl<?>> tableTabs;
+    private NoteCardControl noteCards;
 
     public WriterTabView(){
         tableTabs = Arrays.asList(
             initAgendaPane(), initLinksPane(), initFootnotePane(),
             initEndnotePane()
         );
+        noteCards = initNoteCardPane();
     }
 
     private TableAgendaPane initAgendaPane(){
@@ -47,10 +49,17 @@ abstract class WriterTabView extends TabPane{
         getTabs().add(tab);
         return ans;
     }
-    
+
     private TableNotePane initEndnotePane(){
         TableNotePane ans = new TableNotePane(DirectoryType.ENDNOTE);
         Tab tab = new Tab(WindowText.TAB_ENDNOTE.getText(), ans);
+        getTabs().add(tab);
+        return ans;
+    }
+
+    private NoteCardControl initNoteCardPane(){
+        NoteCardControl ans = new NoteCardControl();
+        Tab tab = new Tab(WindowText.TAB_NOTE_CARD.getText(), ans);
         getTabs().add(tab);
         return ans;
     }

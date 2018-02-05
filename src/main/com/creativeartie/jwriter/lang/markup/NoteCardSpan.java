@@ -18,13 +18,14 @@ import static com.creativeartie.jwriter.main.Checker.*;
 public class NoteCardSpan extends SpanBranch implements Catalogued {
 
     private Optional<List<StyleInfo>> cacheStyles;
+    private Optional<Optional<SectionSpanHead>> cacheSection;
     private Optional<Optional<CatalogueIdentity>> cacheId;
+    private Optional<Optional<FormatSpanMain>> cacheHead;
+    private Optional<List<Optional<FormatSpanMain>>> cacheContent;
     private Optional<Optional<LinedSpanCite>> cacheInText;
     private Optional<Optional<FormatSpanMain>> cacheSource;
     private Optional<String> cacheLookup;
     private Optional<Integer> cacheNote;
-    private Optional<ImmutableListMultimap<InfoFieldType, InfoDataSpan>>
-        cacheSources;
 
     NoteCardSpan(List<Span> children){
         super(children);
@@ -37,23 +38,30 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
         return cacheStyles.get();
     }
 
-    public ImmutableListMultimap<InfoFieldType, InfoDataSpan> getSources(){
-        cacheSources = getCache(cacheSources, () -> {
-            ImmutableListMultimap.Builder<InfoFieldType, InfoDataSpan> data =
-                ImmutableListMultimap.builder();
+    public Optional<FormatSpanMain> getTitle(){
+        cacheHead = getCache(cacheHead, () -> spanFromFirst(LinedSpanNote.class)
+            .flatMap(span -> span.getFormattedSpan()));
+        return cacheHead.get();
+    }
+
+    public List<Optional<FormatSpanMain>> getContent(){
+        cacheContent = getCache(cacheContent, () -> {
+            ArrayList<Optional<FormatSpanMain>> ans = new ArrayList<>();
+            boolean first = true;
             for (Span child: this){
-                if (child instanceof LinedSpanCite){
-                    LinedSpanCite cite = (LinedSpanCite) child;
-                    if (cite.getData().isPresent()){
-                        data.put(cite.getFieldType(), cite.getData().get());
+                if (child instanceof LinedSpanNote){
+                    if (first){
+                        first = false;
+                    } else {
+                        ans.add(((LinedSpanNote)child).getFormattedSpan());
                     }
                 }
             }
-            return data.build();
+            return ImmutableList.copyOf(ans);
         });
-        return cacheSources.get();
+        return cacheContent.get();
     }
-    
+
     public Optional<LinedSpanCite> getInTextLine(){
         cacheInText = getCache(cacheInText, () ->{
             for (Span child: this){
@@ -64,17 +72,17 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
             }
             return Optional.empty();
         });
-        
+
         return cacheInText.get();
     }
-    
+
     public Optional<FormatSpanMain> getSource(){
         cacheSource = getCache(cacheSource, () ->{
             for (Span child: this){
                 if (isType(child, type -> type == InfoFieldType.SOURCE)){
                     LinedSpanCite cite = (LinedSpanCite) child;
                     InfoDataSpan data = cite.getData().get();
-                    
+
                     return Optional.of((FormatSpanMain)data.getData());
                 }
             }
@@ -82,7 +90,7 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
         });
         return cacheSource.get();
     }
-    
+
     private boolean isType(Span child, Predicate<InfoFieldType> filter){
         return Optional.ofNullable(child instanceof LinedSpanCite?
                 (LinedSpanCite) child: null)
@@ -177,10 +185,12 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
     @Override
     protected void childEdited(){
         cacheStyles = Optional.empty();
+        cacheSection = Optional.empty();
         cacheNote = Optional.empty();
+        cacheHead = Optional.empty();
+        cacheContent = Optional.empty();
         cacheInText = Optional.empty();
         cacheSource = Optional.empty();
-        cacheSources = Optional.empty();
         cacheLookup = Optional.empty();
     }
 

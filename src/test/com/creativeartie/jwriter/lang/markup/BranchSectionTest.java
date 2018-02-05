@@ -15,6 +15,7 @@ public class BranchSectionTest {
     public static class NoteCardTest extends SpanBranchAssert<NoteCardTest>{
 
         private ImmutableMultimap.Builder<InfoFieldType, InfoDataSpan> builder;
+        /// TODO remove sources and replace with its replacements.
         private Multimap<InfoFieldType, InfoDataSpan> sources;
         private int noteTotal;
 
@@ -43,7 +44,6 @@ public class BranchSectionTest {
         @Override
         public void test(SpanBranch span){
             NoteCardSpan test = assertClass(span, NoteCardSpan.class);
-            assertEquals(getError("sources", test), sources, test.getSources());
             assertEquals(getError("note", span), noteTotal,
                 test.getNoteTotal());
         }

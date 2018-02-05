@@ -16,7 +16,6 @@ public enum WindowText {
     EMPTY_NA("CommonText.NA"),
     NO_ID("CommonText.NoId"),
 
-
     MENU_FILE("MainMenu.File"),           MENU_FILE_NEW("MainMenu.FileCreate"),
     MENU_FILE_SAVE("MainMenu.FileSave"),  MENU_FILE_OPEN("MainMenu.FileOpen"),
     MENU_FILE_EXIT("MainMenu.FileExit"),  MENU_HELP("MainMenu.Help"),
@@ -42,7 +41,7 @@ public enum WindowText {
     LINKS_BOOKMARK("LinksTable.BookmarkColumn"),
     LINKS_DATA("LinksTable.ContentColumn"),
     LINKS_EMPTY("LinksTable.EmptyTable"),
-    
+
     NOTES_ID("NotesTable.IdentityColumn"),
     NOTES_LOOKUP("NotesTable.LookupColumn"),
     NOTES_LOCATION("NotesTable.LocationColumn"),
@@ -50,6 +49,18 @@ public enum WindowText {
     NOTES_DATA("NotesTable.ContentColumn"),
     FOOTNOTE_EMPTY("NotesTable.EmptyFootnote"),
     ENDNOTE_EMPTY("NotesTable.EmptyEndnote"),
+
+    NOTE_CARDS_ID("NoteCards.IdentityColumn"),
+    NOTE_CARDS_SECTION("NoteCards.SectionColumn"),
+    NOTE_CARDS_TITLE("NoteCards.TitleColumn"),
+    NOTE_CARDS_EMPTY("NoteCards.EmptyTables"),
+    NOTE_CARD_PLACEHOLDER_TITLE("NoteDetail.PlaceholderTitle"),
+    NOTE_CARD_PLACHOLDER_DETAIL("NoteDetail.PlaceholderDetail"),
+    NOTE_CARD_EMPTY_TITLE("NoteDetail.NoTitle"),
+    NOTE_CARD_EMTPY_DETAIL("NoteDetail.NoDetail"),
+    NOTE_CARD_FOOTNOTE("NoteDetail.FootnoteLabel"),
+    NOTE_CARD_IN_TEXT("NoteDetail.InTextLabel"),
+    NOTE_CARD_SOURCE("NoteDetail.SourceLabel"),
 
     CALENDAR_NO_RECORD("Calendar.NoRecord"),
 

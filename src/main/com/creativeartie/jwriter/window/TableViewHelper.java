@@ -24,7 +24,7 @@ final class TableViewHelper{
     private static class IdCell<T> extends TableCell<T,
             Optional<CatalogueIdentity>>{
         @Override
-        protected void updateItem(Optional<CatalogueIdentity> item, 
+        protected void updateItem(Optional<CatalogueIdentity> item,
                 boolean empty) {
             /// Required by JavaFX API:
             super.updateItem(item, empty);
@@ -130,7 +130,7 @@ final class TableViewHelper{
     }
 
     /** TableCell for strings */
-    private static class FormatCell<T> extends TableCell<T, 
+    private static class FormatCell<T> extends TableCell<T,
             Optional<FormatSpanMain>> {
 
         @Override
@@ -153,7 +153,7 @@ final class TableViewHelper{
 
     public static <T> TableColumn<T, Optional<FormatSpanMain>> getFormatColumn(
             WindowText title,
-            Function<T, ObservableObjectValue<Optional<FormatSpanMain>>> 
+            Function<T, ObservableObjectValue<Optional<FormatSpanMain>>>
                 property){
         TableColumn<T, Optional<FormatSpanMain>> ans = new TableColumn<>(title
             .getText());

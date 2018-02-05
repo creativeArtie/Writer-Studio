@@ -1,0 +1,25 @@
+!%
+!%Empty note title
+
+!%Help
+!>error:123
+
+=Bible
+!%@first: Basic Note
+!%Some text
+!%
+!% *Joy to the world*.
+!>source: _Chapter 1_ of *somthing*
+!>in-text:text
+
+!%Too many in-text
+!>footnote:abc
+!>in-text: ccc
+
+!% Too many sources
+!> source:add
+!> source:dde
+
+!# outline in bible???
+
+!% heading = Bilble
