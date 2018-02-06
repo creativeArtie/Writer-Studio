@@ -8,6 +8,7 @@ import javafx.beans.binding.*;
 import javafx.scene.control.*;
 import org.fxmisc.richtext.model.*;
 import javafx.animation.*;
+import javafx.geometry.*;
 
 import com.creativeartie.jwriter.main.*;
 import com.creativeartie.jwriter.file.*;
@@ -19,30 +20,29 @@ import com.google.common.collect.*;
 
 abstract class WriterSceneView extends BorderPane{
     private TextPaneControl textArea;
+    private WriterMenuBar menuBar;
     private HeadingPaneControl tableOfContent;
     private WriterTabControl tabsPane;
     private CheatsheetPaneControl langCheatsheet;
     private SimpleObjectProperty<ManuscriptFile> manuscriptFile;
+    private double[] verDividerPos;
+    private double[] hozDividerPos;
 
     WriterSceneView(Stage window){
         getStylesheets().add("data/main.css");
+        verDividerPos = new double[]{.2, .8};
+        hozDividerPos = new double[]{.0, 1.0};
 
         manuscriptFile = new SimpleObjectProperty<>(this, "manuscriptFile");
         manuscriptFile.addListener((data, oldValue, newValue) ->
             changeDoc(newValue));
 
-        /// Center
-        textArea = initTextPane();
-        textArea.textChangedProperty().addListener((data, oldValue, newValue) ->
-            textChanged(newValue));
-        textArea.caretPlacedProperty().addListener((data, oldValue, newValue) ->
-            caretChanged(newValue.intValue()));
-
         /// Top
-        VBox top = new VBox();
-        WriterMenuBar menu = initMenuBar(window, top);
-        tabsPane = initTabPane(top);
-        ///agenda pane:
+        menuBar = initMenuBar(window);
+        setTop(menuBar);
+
+        /// Upper split pane
+        tabsPane = initTabPane();
         tabsPane.getTableTabs().forEach(pane -> {
             pane.focusedProperty().addListener((data, oldValue, newValue) ->
                 returnFocus());
@@ -53,12 +53,14 @@ abstract class WriterSceneView extends BorderPane{
         tabsPane.getNoteCardsPane().locationChoosenProperty().addListener(
             (data, oldValue, newValue) -> moveCursor(newValue.intValue())
         );
-        setTop(top);
 
-        /// bottom
-        langCheatsheet = initCheatsheetPane();
-
-        /// left
+        /// Inner SplitPane - Right
+        textArea = initTextPane();
+        textArea.textChangedProperty().addListener((data, oldValue, newValue) ->
+            textChanged(newValue));
+        textArea.caretPlacedProperty().addListener((data, oldValue, newValue) ->
+            caretChanged(newValue.intValue()));
+        /// Inner SplitPane - Left
         tableOfContent = initTableOfContent();
         tableOfContent.treeFocusedProperty().addListener((data, oldValue,
             newValue) -> returnFocus());
@@ -69,6 +71,20 @@ abstract class WriterSceneView extends BorderPane{
             (data, oldValue, newValue) -> selectionChanged(newValue)
         );
 
+        /// bottom
+        langCheatsheet = initCheatsheetPane();
+
+        SplitPane center = new SplitPane(tableOfContent, textArea);
+        center.setDividerPositions(hozDividerPos);
+        BorderPane bottom = new BorderPane();
+        bottom.setCenter(center);
+        bottom.setBottom(langCheatsheet);
+
+        SplitPane full = new SplitPane(tabsPane, bottom);
+        full.setOrientation(Orientation.VERTICAL);
+        full.setDividerPositions(verDividerPos);
+        setCenter(full);
+
         new AnimationTimer(){
             @Override public void handle(long now) {timerAction(now);}
         }.start();
@@ -78,33 +94,27 @@ abstract class WriterSceneView extends BorderPane{
     /// Layout Nodes
     private TextPaneControl initTextPane(){
         TextPaneControl out = new TextPaneControl();
-        setCenter(out);
         return out;
     }
 
-    private WriterMenuBar initMenuBar(Stage window, Pane top){
+    private WriterMenuBar initMenuBar(Stage window){
         WriterMenuBar ans = new WriterMenuBar(window);
         ans.manuscriptFileProperty().bindBidirectional(manuscriptFile);
-        top.getChildren().add(ans);
         return ans;
     }
 
-    private WriterTabControl initTabPane(Pane top){
+    private WriterTabControl initTabPane(){
         WriterTabControl ans = new WriterTabControl();
-        ans.setMaxHeight(300);
-        top.getChildren().add(ans);
         return ans;
     }
 
     private CheatsheetPaneControl initCheatsheetPane(){
         CheatsheetPaneControl ans = new CheatsheetPaneControl();
-        setBottom(ans);
         return ans;
     }
 
     private HeadingPaneControl initTableOfContent(){
         HeadingPaneControl ans = new HeadingPaneControl();
-        setLeft(ans);
         return ans;
     }
 
@@ -127,6 +137,10 @@ abstract class WriterSceneView extends BorderPane{
 
     protected CheatsheetPaneControl getCheatsheet(){
         return langCheatsheet;
+    }
+
+    protected WriterMenuBar getMenuBar(){
+        return menuBar;
     }
 
     /// Node Properties
@@ -154,6 +168,6 @@ abstract class WriterSceneView extends BorderPane{
     protected abstract void returnFocus();
 
     protected abstract void timerAction(long now);
-    
+
     protected abstract void moveCursor(int position);
 }

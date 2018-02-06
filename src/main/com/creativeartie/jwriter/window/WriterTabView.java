@@ -22,11 +22,12 @@ abstract class WriterTabView extends TabPane{
     private NoteCardControl noteCards;
 
     public WriterTabView(){
+        setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        noteCards = initNoteCardPane();
         tableTabs = Arrays.asList(
             initAgendaPane(), initLinksPane(), initFootnotePane(),
             initEndnotePane()
         );
-        noteCards = initNoteCardPane();
     }
 
     private TableAgendaPane initAgendaPane(){
