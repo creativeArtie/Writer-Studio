@@ -21,7 +21,7 @@ import com.google.common.base.Joiner;
 public class WritingDebug {
 
     @Test
-    @Ignore("Because it doubles the test time for the package.")
+    @Ignore("Because it will cause an timeout error.")
     public void reallyLarge() throws Exception{
         String raw = new String(Files.readAllBytes(Paths.get("data/stressTest.txt")),
             StandardCharsets.UTF_8);
