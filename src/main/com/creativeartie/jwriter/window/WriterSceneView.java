@@ -88,7 +88,7 @@ abstract class WriterSceneView extends BorderPane{
 
     private WriterTabControl initTabPane(Pane top){
         WriterTabControl ans = new WriterTabControl();
-        ans.setMaxHeight(200);
+        ans.setMaxHeight(300);
         top.getChildren().add(ans);
         return ans;
     }
@@ -116,6 +116,10 @@ abstract class WriterSceneView extends BorderPane{
 
     protected List<TableDataControl<?>> getTableTabs(){
         return tabsPane.getTableTabs();
+    }
+
+    protected NoteCardControl getNoteCardsPane(){
+        return tabsPane.getNoteCardsPane();
     }
 
     protected CheatsheetPaneControl getCheatsheet(){

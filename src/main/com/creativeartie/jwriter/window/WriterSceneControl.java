@@ -42,6 +42,7 @@ public class WriterSceneControl extends WriterSceneView {
         getTableTabs().forEach(pane -> pane.loadList(currentDoc));
         getTableOfContent().loadHeadings(currentDoc);
         getTableOfContent().updateTable(getTextArea().getCaretPlaced());
+        getNoteCardsPane().loadCards(currentDoc);
         getTextArea().returnFocus();
         assert textReady(): getTextArea().getText();
     }

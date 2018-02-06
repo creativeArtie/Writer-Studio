@@ -32,7 +32,7 @@ public final class InfoFieldSpan extends SpanBranch{
         cacheField = getCache(cacheField, () -> {
             Optional<SpanLeaf> found = leafFromFrist(StyleInfoLeaf.FIELD);
             if (found.isPresent()){
-                InfoFieldType.parseText(found.get().getRaw());
+                return InfoFieldType.parseText(found.get().getRaw());
             }
             return InfoFieldType.ERROR;
         });

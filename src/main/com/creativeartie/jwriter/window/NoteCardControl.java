@@ -23,5 +23,35 @@ public class NoteCardControl extends NoteCardView{
     private WritingText currentDoc;
     public void loadCards(WritingText doc){
         currentDoc = doc;
+        doc.addUpdater(span -> updateCards());
+        updateCards();
+    }
+
+    public void updateCards(){
+        CatalogueMap map = currentDoc.getCatalogue();
+        TreeSet<SpanBranch> set = map.getIds(AuxiliaryData.TYPE_COMMENT);
+        set.addAll(map.getIds(AuxiliaryData.TYPE_NOTE));
+        ArrayList<NoteCardData> data = new ArrayList<>();
+
+        NoteCardSpan last = Optional
+            .ofNullable(getNoteTable().getSelectionModel().getSelectedItem())
+            .map(found -> found.getTargetSpan())
+            .orElse(null);
+        Optional<NoteCardData> selected = Optional.empty();
+        for(SpanBranch span: set){
+            NoteCardData item = new NoteCardData((NoteCardSpan)span);
+            data.add(item);
+            if (span == last){
+                selected = Optional.of(item);
+            }
+        }
+        getNoteTable().setItems(FXCollections.observableList(data));
+        selected.ifPresent(item -> getNoteTable().getSelectionModel()
+            .select(item));
+    }
+
+    @Override
+    protected void noteSelected(NoteCardSpan span){
+        getNoteCardDetail().setNoteCard(span);
     }
 }

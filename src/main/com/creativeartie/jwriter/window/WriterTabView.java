@@ -68,11 +68,7 @@ abstract class WriterTabView extends TabPane{
         return tableTabs;
     }
 
-    public TableAgendaPane getAgendaPane(){
-        return (TableAgendaPane) tableTabs.get(0);
-    }
-
-    public TableLinkPane getLinksPane(){
-        return (TableLinkPane) tableTabs.get(1);
+    public NoteCardControl getNoteCardsPane(){
+        return noteCards;
     }
 }

@@ -38,6 +38,10 @@ public abstract class Span{
         removeListeners.add(listener);
     }
 
+    public void removeRemover(Consumer<Span> listener){
+        removeListeners.remove(listener);
+    }
+
     /** Calls the remove listeners. */
     void setRemove(){
         removeListeners.forEach(remover -> remover.accept(this));
@@ -53,10 +57,20 @@ public abstract class Span{
         changeListeners.add(listener);
     }
 
+    public final void removeEditor(Consumer<Span> listener){
+        checkNotNull(listener, "listener");
+        changeListeners.remove(listener);
+    }
+
     /** Add a listener when this span's text has changed. */
     public final void addUpdater(Consumer<Span> listener){
         checkNotNull(listener, "listener");
         updateListeners.add(listener);
+    }
+
+    public final void removeUpdater(Consumer<Span> listener){
+        checkNotNull(listener, "listener");
+        updateListeners.remove(listener);
     }
 
     /** Calls the change listeners and all it's parent update listeners. */
@@ -104,8 +118,6 @@ public abstract class Span{
                 /// For each child of the parent exclude this:
                 ans += span.getLocalEnd();
             }
-            System.out.println(toString());
-            System.out.println(isInUsed());
             /// This Span is not a child of the parent
             assert false: getRaw();
             return null;

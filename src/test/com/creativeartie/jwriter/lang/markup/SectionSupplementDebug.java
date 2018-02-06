@@ -17,14 +17,16 @@ import com.creativeartie.jwriter.lang.*;
 @RunWith(Parameterized.class)
 public class SectionSupplementDebug {
 
+    private static final int FILE_SIZE = 7;
+
     private static boolean verbose = false;
 
     private static enum Type {HEADING, OUTLINE, OTHERS, SKIP_LINE, NEW_FILE};
 
     @Parameters
     public static Collection<Object[]> data() throws Exception{
-        WritingText[] texts = new WritingText[6];
-        for (int i = 1; i <= 6; i++){
+        WritingText[] texts = new WritingText[FILE_SIZE];
+        for (int i = 1; i <= FILE_SIZE; i++){
             File file = new File("data/sectionDebug" + i + ".txt");
             texts[i - 1] = new WritingText(Files
                 .asCharSource(file, Charsets.UTF_8).read());

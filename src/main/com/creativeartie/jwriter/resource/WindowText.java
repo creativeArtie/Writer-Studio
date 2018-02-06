@@ -61,6 +61,7 @@ public enum WindowText {
     NOTE_CARD_FOOTNOTE("NoteDetail.FootnoteLabel"),
     NOTE_CARD_IN_TEXT("NoteDetail.InTextLabel"),
     NOTE_CARD_SOURCE("NoteDetail.SourceLabel"),
+    NOTE_CARD_EDIT("NoteDetail.GotoEdit"),
 
     CALENDAR_NO_RECORD("Calendar.NoRecord"),
 

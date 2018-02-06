@@ -21,13 +21,21 @@ import com.google.common.collect.*;
 /**
  * Stores a list of user notes, hyperlinks.
  */
-public class NoteCardView extends GridPane{
+public abstract class NoteCardView extends GridPane{
     private TableView<NoteCardData> noteTable;
     private NoteCardDetail noteDetail;
 
     public NoteCardView(){
         noteTable = initNoteTable();
         noteDetail = initNoteDetail();
+
+        noteTable.getSelectionModel().selectedItemProperty().addListener(
+            (data, oldValue, newValue) -> noteSelected(Optional
+                .ofNullable(newValue)
+                .map(span -> span.getTargetSpan())
+                .orElse(null)
+            )
+        );
     }
 
     @SuppressWarnings("unchecked") /// For ans.getColumns().addAdd(TableColumn ...)
@@ -64,4 +72,14 @@ public class NoteCardView extends GridPane{
         ans.prefHeightProperty().bind(heightProperty());
         return ans;
     }
+
+    TableView<NoteCardData> getNoteTable(){
+        return noteTable;
+    }
+
+    NoteCardDetail getNoteCardDetail(){
+        return noteDetail;
+    }
+
+    protected abstract void noteSelected(NoteCardSpan span);
 }

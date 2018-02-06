@@ -52,7 +52,6 @@ public class Main extends Application{
     private void testMainWindow() throws Exception{
         File file = new File("data/sectionDebug7.txt");
         WritingText doc = new WritingText(file);
-        System.out.println(doc);
         setupWindow(ManuscriptFile.withManuscript(doc));
     }
 
