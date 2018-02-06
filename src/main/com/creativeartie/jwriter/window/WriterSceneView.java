@@ -50,6 +50,9 @@ abstract class WriterSceneView extends BorderPane{
                 (data, oldValue, newValue) -> selectionChanged(newValue)
             );
         });
+        tabsPane.getNoteCardsPane().locationChoosenProperty().addListener(
+            (data, oldValue, newValue) -> moveCursor(newValue.intValue())
+        );
         setTop(top);
 
         /// bottom
@@ -151,4 +154,6 @@ abstract class WriterSceneView extends BorderPane{
     protected abstract void returnFocus();
 
     protected abstract void timerAction(long now);
+    
+    protected abstract void moveCursor(int position);
 }

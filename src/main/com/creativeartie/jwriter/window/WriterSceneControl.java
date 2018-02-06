@@ -167,4 +167,10 @@ public class WriterSceneControl extends WriterSceneView {
         getTextArea().setReady(false);
         return false;
     }
+    
+    @Override
+    protected void moveCursor(int position){
+        getTextArea().moveTo(position);
+        getTextArea().returnFocus();
+    }
 }

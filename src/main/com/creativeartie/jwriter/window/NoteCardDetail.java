@@ -24,13 +24,23 @@ public class NoteCardDetail extends TitledPane{
 
     private final Label sourceLabel;
     private Optional<NoteCardSpan> targetSpan;
+    private ReadOnlyIntegerWrapper locationChoosen;
     /// No listenerss for changes, NoteCardControl deselect and reselect it
 
     public NoteCardDetail(){
         setCollapsible(false);
         targetSpan = Optional.empty();
         sourceLabel = new Label(WindowText.NOTE_CARD_SOURCE.getText());
+        locationChoosen = new ReadOnlyIntegerWrapper(this, "locationChoosen");
         clearContent();
+    }
+    
+    public ReadOnlyIntegerProperty locationChoosenProperty(){
+        return locationChoosen.getReadOnlyProperty();
+    }
+    
+    public int getLocationChoose(){
+        return locationChoosen.getValue();
     }
 
     public void clearContent(){
@@ -105,6 +115,7 @@ public class NoteCardDetail extends TitledPane{
 
         bottom.add(new StackPane(new Label(span.getLookupText())), 0, 2);
         Button button = new Button(WindowText.NOTE_CARD_EDIT.getText());
+        button.setOnAction(evt -> locationChoosen.setValue(span.getEnd()));
         bottom.add(new StackPane(button), 1, 2);
 
         BorderPane ans = new BorderPane();

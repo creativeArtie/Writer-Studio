@@ -24,6 +24,7 @@ import com.google.common.collect.*;
 public abstract class NoteCardView extends GridPane{
     private TableView<NoteCardData> noteTable;
     private NoteCardDetail noteDetail;
+    private ReadOnlyIntegerWrapper locationChoosen;
 
     public NoteCardView(){
         noteTable = initNoteTable();
@@ -36,6 +37,17 @@ public abstract class NoteCardView extends GridPane{
                 .orElse(null)
             )
         );
+        
+        locationChoosen = new ReadOnlyIntegerWrapper(this, "locationChoosen");
+        locationChoosen.bind(noteDetail.locationChoosenProperty());
+    }
+    
+    public ReadOnlyIntegerProperty locationChoosenProperty(){
+        return locationChoosen.getReadOnlyProperty();
+    }
+    
+    public int getLocationChoose(){
+        return locationChoosen.getValue();
     }
 
     @SuppressWarnings("unchecked") /// For ans.getColumns().addAdd(TableColumn ...)
