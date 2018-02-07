@@ -60,6 +60,7 @@
     <property name="dir.trial" location="${dir.out}/trial" />
     <property name="dir.trial-file" location="${dir.trial}/trial.jar" />
     <property name="dir.trial-data" location="${dir.trial}/data" />
+    <property name="dir.trial-lib" location="${dir.trial}/lib" />
     <!-- Jar and assoicated files -->
     <property name="dir.jar-name"     value="${ant.project.name}.${usr.version}" />
     <property name="dir.jar-out"      location="${dir.out}/jar" />
@@ -67,6 +68,7 @@
     <property name="dir.jar-out-file" location="${dir.jar-out}/${dir.jar-name}.jar" />
     <property name="dir.jar-tmp"      location="${dir.out}/jar-bin" />
     <property name="dir.jar-tmp-data" location="${dir.jar-tmp}/data" />
+    <property name="dir.jar-lib"      location="${dir.jar-out}/lib" />
     <property name="dir.zip"        location="${dir.out}" />
     <property name="dir.zip-prefix" location="${dir.jar.name}" />
     <property name="dir.zip-file"   location="${dir.zip}/${dir.jar-name}.zip" />
@@ -148,17 +150,26 @@
                 <exclude name="${loc.data}" />
             </fileset>
         </copy>
+        <!-- Add class path to dependence library with class path-->
+        <copy toDir="${dir.jar-lib}">
+            <fileset dir="${dir.3rd}" includes="*.jar" />
+        </copy>
+        <manifestclasspath property="lib.path" jarfile="${dir.jar-out-file}">
+            <classpath>
+                <fileset dir="${dir.jar-lib}" />
+            </classpath>
+        </manifestclasspath>
         <!-- copy files into future jar file-->
         <copy toDir="${dir.jar-tmp-data}">
             <fileset dir="${dir.data-jar}" />
         </copy>
         <!-- jar classes -->
         <jar destfile="${dir.jar-out-file}" baseDir="${dir.jar-tmp}">
-            <zipgroupfileset dir="${dir.3rd}" includes="*.jar"/>
             <!-- setup manifest file -->
             <manifest>
                 <attribute name="Program-Name" value="${ant.project.name}" />
                 <attribute name="Main-Class" value="${usr.main}" />
+                <attribute name="Class-Path" value="${lib.path}" />
             </manifest>
         </jar>
         <!-- set execute flag -->
@@ -257,13 +268,23 @@
             <fileset dir="${dir.data-test}" />
         </copy>
 
+        <!-- Add class path to dependence library with class path-->
+        <copy toDir="${dir.trial-lib}">
+            <fileset dir="${dir.3rd}" />
+        </copy>
+        <manifestclasspath property="lib.path" jarfile="${dir.trial-file}">
+            <classpath>
+                <fileset dir="${dir.trial-lib}" />
+            </classpath>
+        </manifestclasspath>
+
         <!-- jar classes -->
         <jar destfile="${dir.trial-file}" baseDir="${dir.debug}">
-            <zipgroupfileset dir="${dir.3rd}" includes="*.jar"/>
             <!-- setup manifest file -->
             <manifest>
                 <attribute name="Program-Name" value="${ant.project.name}" />
                 <attribute name="Main-Class" value="${usr.main}" />
+                <attribute name="Class-Path" value="${lib.path}" />
             </manifest>
         </jar>
         <java jar="${dir.trial-file}" fork="true" dir="${dir.trial}">
