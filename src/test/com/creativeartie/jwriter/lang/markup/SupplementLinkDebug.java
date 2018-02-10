@@ -6,144 +6,140 @@ import org.junit.*;
 import org.junit.runner.*;
 import org.junit.runners.*;
 
-import java.io.File;
-import java.util.Optional;
+import java.io.*;
+import java.util.*;
+import java.util.function.*;
 
 import com.creativeartie.jwriter.lang.*;
 import com.creativeartie.jwriter.lang.markup.BranchFormatTest.*;
 
 
-@RunWith(JUnit4.class)
-public class SupplementLinkDebug {
+@RunWith(Parameterized.class)
+public class SupplementLinkDebug extends IDParamTest{
 
     @Test
-    public void linkComplete(){
-        String path = "www.google.com";
+    public void linkExternalTest(){
         String text = "Google";
-        String test = "<@a|" + text + ">";
-        String raw = test + "\n!@a:" + path + "\n";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
-            new WritingText(raw));
-        IDBuilder builder = FormatLinkDebug.buildLinkId("a");
-        doc.addRef(builder, 0);
-        doc.addId(builder);
-        new FormatLinkTest().setPath(path).setText(text)
-            .setCatalogued(CatalogueStatus.READY, builder)
-            ///               section, line, format, link
-            .test(doc, 5, test,     0,    0,      0,    0);
+        String id = "id";
+        String target = "!@" + id + ":www.google.com";
+        String pointer = "<@" + id + "|" + text + ">";
+        WritingText doc = buildDoc(target, pointer);
+
+        FormatSpanLink test = findSpan(doc, FormatSpanLink.class);
+        linkTest(findSpan(doc, FormatSpanLink.class),
+            findSpan(doc, LinedSpanPointLink.class), text);
     }
 
     @Test
-    public void linkNoText(){
-        String path = "www.google.com";
-        String test = "<@a>";
-        String raw = test + "\n!@a:" + path + "\n";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
-            new WritingText(raw));
-        IDBuilder builder = FormatLinkDebug.buildLinkId("a");
-        doc.addRef(builder, 0);
-        doc.addId(builder);
-        new FormatLinkTest().setPath(path).setText(path)
-            .setCatalogued(CatalogueStatus.READY, builder)
-            ///               section, line, format, link
-            .test(doc, 3, test,     0,    0,      0,    0);
+    public void linkInternalTest(){
+        String text = "Ch 1";
+        String id = "a";
+        String target = "=@" + id + ": Chapter 1: Rise and fall of tests";
+        String pointer = "<@" + id + "|" + text + ">";
+        WritingText doc = buildDoc(target, pointer);
+
+        FormatSpanLink test = findSpan(doc, FormatSpanLink.class);
+        linkTest(findSpan(doc, FormatSpanLink.class),
+            findSpan(doc, LinedSpanLevelSection.class), text);
     }
 
-    /// linkNoPath -> see FormatLinkDebug
-
-    @Test
-    public void linkConflictID(){
-        String path = "www.google.com";
-        String text = "Google";
-        String test = "<@a|" + text + ">";
-        String raw = test + "\n!@a:" + path + "\n@a:apple.com";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
-            new WritingText(raw));
-        IDBuilder builder = FormatLinkDebug.buildLinkId("a");
-        doc.addRef(builder, 0);
-        doc.addId(builder);
-        new FormatLinkTest().setPath(path).setText("Google")
-            .setCatalogued(CatalogueStatus.READY, builder)
-            ///               section, line, format, link
-            .test(doc, 5, test,     0,    0,      0,    0);
-    }
-
-
-    /*
-
-    @Test
-    public void footnoteComplete(){
-        SpanExpect paragraph = addLine(curlyHelp(DirectoryType.FOOTNOTE,
-            new String[]{"foot"}, "n"), "{^", "n", "}");
-
-        SpanExpect note = new SpanExpect();
-        note.addChildren("!^", "n", ":", "text", "\n");
-
-        SpanExpect section = addSection(note, paragraph);
-        SpanExpect doc = new SpanExpect();
-        doc.addChild(section);
-        Document main = doc.testAll(parsers);
-
-        SpanBranch setup = main.get(0); /// Main Section
-        setup = (SpanBranch)setup.get(1); /// Paragraph
-        setup = (SpanBranch)setup.get(0); /// Format span
-        setup = (SpanBranch)setup.get(0); /// SetupPointer span
-        Optional<Span> test = ((FormatSpanDirectory)setup).getTarget();
-
-        SpanBranch expect = main.get(0); /// Main Section
-        expect = (SpanBranch)expect.get(0); /// footnote
-        assertTrue("Span not found.", test.isPresent());
-        assertSame("Span are not equal", test.get(), expect);
+    private void linkTest(FormatSpanLink test, SpanBranch expect, String text){
+        switch(expected){
+        case NOT_FOUND:
+            assertEquals(text, test.getText());
+            assertFalse(test.getPathSpan().isPresent());
+            break;
+        case MULTIPLE:
+            assertEquals(text, test.getText());
+            assertFalse(test.getPathSpan().isPresent());
+            break;
+        case READY:
+            assertEquals(text, test.getText());
+            assertTrue(test.getPathSpan().isPresent());
+            assertSame(expect, test.getPathSpan().get());
+            break;
+        default:
+            assert false: "Untesed status: " + expected;
+        }
     }
 
     @Test
-    public void endnoteComplete(){
-        SpanExpect note = new SpanExpect();
-        note.addChildren("!*", "n", ":", "text", "\n");
-
-        SpanExpect paragraph = addLine(curlyHelp(DirectoryType.ENDNOTE,
-            new String[]{"end"}, "n"), "{*", "n", "}");
-
-        SpanExpect section = addSection(paragraph, note);
-        SpanExpect doc = new SpanExpect();
-        doc.addChild(section);
-        Document main = doc.testAll(parsers);
-
-        SpanBranch setup = main.get(0); /// Main Section
-        setup = (SpanBranch)setup.get(0); /// Paragraph
-        setup = (SpanBranch)setup.get(0); /// Format span
-        setup = (SpanBranch)setup.get(0); /// SetupPointer span
-        Optional<Span> test = ((FormatSpanDirectory)setup).getTarget();
-
-        SpanBranch expect = main.get(0); /// Main Section
-        expect = (SpanBranch)expect.get(1); /// footnote
-        assertTrue("Span not found.", test.isPresent());
-        assertSame("Span are not equal", test.get(), expect);
+    public void footnoteTest(){
+        noteLineTest("^");
     }
 
     @Test
-    public void citeComplete(){
-        SpanExpect note = new SpanExpect();
-        SpanExpect noteLine = new SpanExpect();
-        noteLine.addChildren("!%", "@", "n", ":", "title", "\n");
-        note.addChild(noteLine);
+    public void endnoteTest(){
+        noteLineTest("*");
+    }
 
-        SpanExpect paragraph = addLine(curlyHelp(DirectoryType.NOTE,
-            new String[]{"note"}, "n"), "{@", "n", "}");
+    private void noteLineTest(String token){
+        String id = "id";
+        String target = "!" + token + id + ":_Random text_";
+        String pointer = "{" + token + id + "}";
+        WritingText doc = buildDoc(target, pointer);
+        noteTest(findSpan(doc, FormatSpanDirectory.class),
+            findSpan(doc, LinedSpanPointNote.class));
+    }
 
-        SpanExpect doc = new SpanExpect();
-        doc.addChild(note);
-        doc.addChild(addSection(paragraph));
-        Document main = doc.testAll(parsers);
+    @Test
+    public void noteCardTest(){
+        String id = "id";
+        String target = "!%@" + id + ":_Random text_";
+        String pointer = "{@" + id + "}";
+        WritingText doc = buildDoc(target, pointer);
+        noteTest(findSpan(doc, FormatSpanDirectory.class),
+            findSpan(doc, NoteCardSpan.class));
+    }
 
-        SpanBranch setup = main.get(1); /// Main Section
-        setup = (SpanBranch)setup.get(0); /// Paragraph
-        setup = (SpanBranch)setup.get(0); /// Format span
-        setup = (SpanBranch)setup.get(0); /// SetupPointer span
-        Optional<Span> test = ((FormatSpanDirectory)setup).getTarget();
+    private void noteTest(FormatSpanDirectory test, SpanBranch expect){
+        switch(expected){
+        case NOT_FOUND:
+            assertFalse(test.getTarget().isPresent());
+            break;
+        case MULTIPLE:
+            assertFalse(test.getTarget().isPresent());
+            break;
+        case READY:
+            assertTrue(test.getTarget().isPresent());
+            assertSame(expect, test.getTarget().get());
+            break;
+        default:
+            assert false: "Untesed status: " + expected;
+        }
+    }
 
-        SpanBranch expect = main.get(0); /// Note Section
-        assertTrue("Span not found.", test.isPresent());
-        assertSame("Span are not equal", test.get(), expect);
-    }*/
+    private WritingText buildDoc(String target, String pointer){
+        StringBuilder raw = new StringBuilder();
+        boolean hasRef = false;
+        for (IDParamTest.States state: input){
+            switch(state){
+            case ID:
+                raw.append(target + "\n");
+                break;
+            default:
+                assert state == IDParamTest.States.REF;
+                raw.append(pointer + "\n");
+                hasRef = true;
+            }
+        }
+        Assume.assumeTrue(hasRef);
+        return new WritingText(raw.toString());
+    }
+
+    private <T> T findSpan(SpanNode<?> span, Class<T> cast){
+        if (cast.isInstance(span)){
+            return cast.cast(span);
+        }
+        for (Span child: span){
+            if (child instanceof SpanNode){
+                T found = findSpan((SpanNode<?>)child, cast);
+                if (found != null){
+                    return found;
+                }
+            }
+            // if (child instanceof SpanLeaf) { continue; }
+        }
+        return null;
+    }
 }

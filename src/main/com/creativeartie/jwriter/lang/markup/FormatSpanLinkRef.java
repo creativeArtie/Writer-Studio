@@ -14,10 +14,11 @@ public final class FormatSpanLinkRef extends FormatSpanLink
         implements Catalogued{
 
     private final FormatParseLinkRef spanReparser;
-    private Optional<String> cachePath;
+    private Optional<Optional<SpanBranch>> cachePath;
     private Optional<String> cacheText;
     private Optional<List<StyleInfo>> cacheStyles;
     private Optional<Optional<CatalogueIdentity>> cacheId;
+    private Optional<Boolean> cacheExternal;
 
     FormatSpanLinkRef(List<Span> children, FormatParseLinkRef reparser){
         super(children, reparser.getFormats());
@@ -25,17 +26,19 @@ public final class FormatSpanLinkRef extends FormatSpanLink
     }
 
     @Override
-    public String getPath(){
+    public Optional<SpanBranch> getPathSpan(){
         cachePath = getCache(cachePath, () ->{
             Optional<CatalogueIdentity> id = getSpanIdentity();
             if (id.isPresent()){
                 CatalogueData data = getDocument().getCatalogue().get(id.get());
                 if (data.isReady()){
                     Span span = data.getTarget();
-                    return ((LinedSpanPointLink)span).getPath();
+                    assert span instanceof LinedSpanPointLink ||
+                        span instanceof LinedSpanLevelSection;
+                    return Optional.of((SpanBranch) span);
                 }
             }
-            return "";
+            return Optional.empty();
         });
         return cachePath.get();
     }
@@ -47,7 +50,10 @@ public final class FormatSpanLinkRef extends FormatSpanLink
             if (text.isPresent()){
                 return text.get().getTrimmed();
             }
-            return getPath();
+            return getPathSpan()
+                .filter(span -> span instanceof LinedSpanPointLink)
+                .map(span -> ((LinedSpanPointLink)span).getPath())
+                .orElse("");
         });
         return cacheText.get();
     }
@@ -64,6 +70,15 @@ public final class FormatSpanLinkRef extends FormatSpanLink
     @Override
     public boolean isId(){
         return false;
+    }
+
+    public boolean isExternal(){
+        cacheExternal = getCache(cacheExternal, () ->
+            getSpanIdentity().map(id -> getDocument().getCatalogue()
+                    .get(id).getTarget() instanceof LinedSpanPointLink)
+                .orElseThrow(() -> new IllegalStateException("Link not found."))
+        );
+        return cacheExternal.get();
     }
 
     @Override
@@ -89,6 +104,7 @@ public final class FormatSpanLinkRef extends FormatSpanLink
         cacheText = Optional.empty();
         cacheStyles = Optional.empty();
         cacheId = Optional.empty();
+        cacheExternal = Optional.empty();
     }
 
     @Override
@@ -100,6 +116,6 @@ public final class FormatSpanLinkRef extends FormatSpanLink
         String data = spanFromFirst(DirectorySpan.class)
             .map(span -> span.toString())
             .orElse("null");
-        return data + "->" + SpanLeaf.escapeText(getPath());
+        return data + "->" + getPathSpan().toString();
     }
 }

@@ -14,6 +14,7 @@ import static com.creativeartie.jwriter.lang.markup.AuxiliaryData.*;
 public final class FormatSpanLinkDirect extends FormatSpanLink {
 
     private final FormatParseLinkDirect spanReparser;
+    private Optional<Optional<SpanBranch>> cacheTarget;
     private Optional<String> cachePath;
     private Optional<String> cacheText;
     private Optional<List<StyleInfo>> cacheStyles;
@@ -24,11 +25,17 @@ public final class FormatSpanLinkDirect extends FormatSpanLink {
     }
 
     @Override
+    public Optional<SpanBranch> getPathSpan(){
+        cacheTarget = getCache(cacheTarget, () -> spanFromFirst(ContentSpan
+            .class).map(span -> (SpanBranch) span));
+        return cacheTarget.get();
+    }
+
     public String getPath(){
-        cachePath = getCache(cachePath, () -> {
-            Optional<ContentSpan> path = spanFromFirst(ContentSpan.class);
-            return path.isPresent()? path.get().getTrimmed(): "";
-        });
+        cachePath = getCache(cachePath, () -> getPathSpan()
+            .map(span -> (ContentSpan) span)
+            .map(path -> path.getTrimmed())
+            .orElse(""));
         return cachePath.get();
     }
 
@@ -60,9 +67,15 @@ public final class FormatSpanLinkDirect extends FormatSpanLink {
     @Override
     protected void childEdited(){
         super.childEdited();
+        cacheTarget = Optional.empty();
         cachePath = Optional.empty();
         cacheText = Optional.empty();
         cacheStyles = Optional.empty();
+    }
+
+
+    public boolean isExternal(){
+        return false;
     }
 
     @Override

@@ -16,10 +16,10 @@ import com.creativeartie.jwriter.lang.*;
 @RunWith(Parameterized.class)
 public abstract class IDParamTest {
     public enum States{ID, REF}
-    
+
     private static States ID = States.ID;
     private static States REF = States.REF;
-    
+
     @Parameters
     public static Collection<Object[]> data() {
         ArrayList<Object[]> data = new ArrayList<>();
@@ -55,10 +55,9 @@ public abstract class IDParamTest {
         add(data, CatalogueStatus.NOT_FOUND, new States[]{REF, REF, REF, REF});
         return data;
     }
-    
-    private static void add(ArrayList<Object[]> data, CatalogueStatus expect, 
+
+    private static void add(ArrayList<Object[]> data, CatalogueStatus expect,
             States[] inputs){
-        
         data.add(new Object[]{expect, inputs});
     }
 
@@ -67,5 +66,5 @@ public abstract class IDParamTest {
 
     @Parameter(1)
     public States[] input;
-    
+
 }

@@ -4,7 +4,7 @@ package com.creativeartie.jwriter.lang;
  * Types of error with the CatalogueIdentity.
  */
 public enum CatalogueStatus implements StyleInfo {
-    /// This is no id assoicate in a CatalogueHolder
+    /// This is no id assoicate in a SpanBranch
     NO_ID,
     /// There is an id but nothing is refer to it
     UNUSED,

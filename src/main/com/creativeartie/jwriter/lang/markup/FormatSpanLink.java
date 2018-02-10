@@ -16,12 +16,15 @@ public abstract class FormatSpanLink extends FormatSpan {
     /**
      * Return the path of the link.
      */
-    public abstract String getPath();
+    public abstract Optional<SpanBranch> getPathSpan();
 
     /**
      * Return the display output text.
      */
     public abstract String getText();
+
+
+    public abstract boolean isExternal();
 
     @Override
     public final String getOutput(){

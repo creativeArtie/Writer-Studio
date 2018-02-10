@@ -42,7 +42,7 @@ public class FormatLinkDebug {
         DocumentAssert doc = DocumentAssert.assertDoc(2, raw, parsers);
 
         FormatLinkTest ref = new FormatLinkTest()
-            .setPath("").setText("")
+            .setText("")
             .setCatalogued(CatalogueStatus.NO_ID);
 
         ref.test(       doc,  1, "<@",     0);
@@ -61,7 +61,7 @@ public class FormatLinkDebug {
             buildLinkId("id").addCategory("cat"),
             CatalogueStatus.NOT_FOUND, 0);
         FormatLinkTest ref = new FormatLinkTest()
-            .setPath("").setText("")
+            .setText("")
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder);
         DirectoryTest id = new DirectoryTest()
             .setPurpose(DirectoryType.LINK)
@@ -97,7 +97,7 @@ public class FormatLinkDebug {
             buildLinkId("id").addCategory("cat"),
             CatalogueStatus.NOT_FOUND, 0);
         FormatLinkTest ref = new FormatLinkTest()
-            .setPath("").setText("")
+            .setText("")
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder);
         DirectoryTest id = new DirectoryTest()
             .setPurpose(DirectoryType.LINK)
@@ -132,7 +132,7 @@ public class FormatLinkDebug {
             buildLinkRefId("id"),
             CatalogueStatus.NOT_FOUND, 0);
         FormatLinkTest ref = new FormatLinkTest()
-            .setPath("").setText("")
+            .setText("")
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder);
         DirectoryTest id = new DirectoryTest()
             .setPurpose(DirectoryType.LINK)
@@ -158,7 +158,7 @@ public class FormatLinkDebug {
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
 
         FormatLinkTest ref = new FormatLinkTest()
-            .setPath("").setText("")
+            .setText("")
             .setCatalogued(CatalogueStatus.NO_ID);
 
         ref.test(       doc, 2, raw,  0);
@@ -175,7 +175,7 @@ public class FormatLinkDebug {
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
 
         FormatLinkTest ref = new FormatLinkTest()
-            .setPath("").setText("")
+            .setText("")
             .setCatalogued(CatalogueStatus.NO_ID, null);
 
         ref.test(       doc, 1, raw,  0);
@@ -217,7 +217,7 @@ public class FormatLinkDebug {
             buildLinkId("id").addCategory("cat"),
             CatalogueStatus.NOT_FOUND, 0);
         FormatLinkTest ref = new FormatLinkTest()
-            .setPath("").setText("text")
+            .setText("text")
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder);
         DirectoryTest id = new DirectoryTest()
             .setPurpose(DirectoryType.LINK)
@@ -287,7 +287,7 @@ public class FormatLinkDebug {
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
 
         FormatLinkTest link = new FormatLinkTest()
-            .setPath("path").setText("path");
+            .setText("path").setPath(doc, 0, 1);
         ContentTest content = new ContentTest()
             .setBegin(false).setText("path")
             .setEnd(false)  .setCount(1);
@@ -308,7 +308,7 @@ public class FormatLinkDebug {
         DocumentAssert doc = DocumentAssert.assertDoc(2, raw, parsers);
 
         FormatLinkTest link = new FormatLinkTest()
-            .setPath("path").setText("path");
+            .setText("path").setPath(doc, 0, 1);
         ContentTest content = new ContentTest()
             .setBegin(false).setText("path")
             .setEnd(false)  .setCount(1);
@@ -328,7 +328,7 @@ public class FormatLinkDebug {
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
 
         FormatLinkTest link = new FormatLinkTest()
-            .setPath("").setText("");
+            .setText("");
 
         link.test ( doc,1, raw,    0);
         doc.assertKeyLeaf(0, 1, "<", 0, 0);
@@ -343,7 +343,7 @@ public class FormatLinkDebug {
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
 
         FormatLinkTest link = new FormatLinkTest()
-            .setPath("path").setText("text");
+            .setText("text").setPath(doc, 0, 1);
         ContentTest content1 = new ContentTest()
             .setBegin(false).setText("path")
             .setEnd(false)  .setCount(1);
@@ -367,7 +367,7 @@ public class FormatLinkDebug {
         String raw = "<path|text>";
 
         FormatLinkTest link = new FormatLinkTest()
-            .setPath("path").setText("text");
+            .setPath(doc, 0, 1).setText("text");
         ContentTest content1 = new ContentTest()
             .setBegin(false).setText("path")
             .setEnd(false)  .setCount(1);

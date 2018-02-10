@@ -287,7 +287,7 @@ public class FormatSpanDebug {
         /// "<@link>"
         builder = doc.addRef(FormatLinkDebug.buildLinkId("link"), 1);
         FormatLinkTest ref = new FormatLinkTest()
-            .setPath("").setText("")
+            .setText("")
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder)
             .setFormats(FormatType.ITALICS);
         DirectoryTest refId = new DirectoryTest()
@@ -297,7 +297,7 @@ public class FormatSpanDebug {
             .setEnd(false)  .setCount(1);
         /// "<a.ca| web>"
         FormatLinkTest link = new FormatLinkTest()
-            .setPath("a.ca").setText("web")
+            .setText("web").setPath(doc, 0, 15, 1)
             .setFormats(FormatType.ITALICS);
         ContentTest linkPath = new BranchTest.ContentTest()
             .setBegin(false).setText("a.ca")

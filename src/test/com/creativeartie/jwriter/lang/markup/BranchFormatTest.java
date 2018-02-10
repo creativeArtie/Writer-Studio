@@ -82,16 +82,17 @@ public class BranchFormatTest {
     public static class FormatLinkTest extends SpanBranchAssert<FormatLinkTest> {
 
         private FormatType[] formats;
-        private String path;
+        private Optional<SpanBranch> path;
         private String text;
 
         public FormatLinkTest(){
             super(FormatLinkTest.class);
             formats = new FormatType[0];
+            path = Optional.empty();
         }
 
-        public FormatLinkTest setPath(String str){
-            path = str;
+        public FormatLinkTest setPath(DocumentAssert doc, int ... idx){
+            path = Optional.of(doc.getChild(SpanBranch.class, idx));
             return cast();
         }
 
@@ -129,7 +130,7 @@ public class BranchFormatTest {
             }
 
             FormatSpanLink test = (FormatSpanLink) span;
-            assertEquals(getError("link path", test), path, test.getPath());
+            assertSpan("link path", test, path, test.getPathSpan());
             assertEquals(getError("link text", test), text, test.getText());
             testFormats(test, formats);
         }

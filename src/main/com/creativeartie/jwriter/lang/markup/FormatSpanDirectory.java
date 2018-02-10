@@ -13,6 +13,7 @@ import com.creativeartie.jwriter.lang.*;
 public final class FormatSpanDirectory extends FormatSpan implements Catalogued{
     private final FormatParseDirectory spanReparser;
     private final DirectoryType spanType;
+    private Optional<Optional<SpanBranch>> cacheTarget;
     private Optional<Optional<CatalogueIdentity>> cacheId;
     private Optional<List<StyleInfo>> cacheStyles;
     private Optional<String> cacheOutput;
@@ -26,6 +27,15 @@ public final class FormatSpanDirectory extends FormatSpan implements Catalogued{
     /** Gets the type of note it is pointing to. */
     public DirectoryType getIdType(){
         return spanType;
+    }
+
+    public Optional<SpanBranch> getTarget(){
+        cacheTarget = getCache(cacheTarget, () -> getSpanIdentity()
+            .map(id -> getDocument().getCatalogue().get(id))
+            .filter(data -> data.isReady())
+            .map(data -> data.getTarget())
+        );
+        return  cacheTarget.get();
     }
 
     @Override
@@ -72,6 +82,7 @@ public final class FormatSpanDirectory extends FormatSpan implements Catalogued{
     @Override
     protected void childEdited(){
         super.childEdited();
+        cacheTarget = Optional.empty();
         cacheId = Optional.empty();
         cacheStyles = Optional.empty();
         cacheOutput = Optional.empty();
