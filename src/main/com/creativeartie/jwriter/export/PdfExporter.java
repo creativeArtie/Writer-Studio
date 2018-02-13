@@ -46,6 +46,8 @@ public final class PdfExporter implements Publisher{
     }
 
     public void addSecionBreak(){
+        Paragraph breaker = new Paragraph();
+        
     }
 
     private ArrayList<ILeafElement> createTexts(FormatSpan format, int size){
