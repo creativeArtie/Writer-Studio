@@ -66,11 +66,11 @@ public final class AuxiliaryData{
             /// !#, !##, !###, ...
             return LINED_BEGIN + repeat(LEVEL_OUTLINE, level);
         case NUMBERED:
-            /// #, \t#, \t\t#, ...
-            return repeat(LEVEL_BEGIN, level - 1) + LEVEL_NUMBERED;
+            /// #, ##, ###, ...
+            return repeat(LEVEL_NUMBERED, level);
         case BULLET:
-            /// -, \t-, \t\t-
-            return repeat(LEVEL_BEGIN, level - 1) + LEVEL_BULLET;
+            /// -, --, ---, ...
+            return repeat(LEVEL_BULLET, level);
         default:
             throw new IllegalArgumentException("LinedParseLavel not use: " +
                 parser);
