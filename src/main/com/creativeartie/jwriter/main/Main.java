@@ -14,6 +14,7 @@ import com.creativeartie.jwriter.stats.*;
 import com.creativeartie.jwriter.resource.*;
 import com.creativeartie.jwriter.window.*;
 import com.creativeartie.jwriter.lang.markup.*;
+import com.creativeartie.jwriter.export.*;
 
 
 public class Main extends Application{
@@ -42,17 +43,21 @@ public class Main extends Application{
         Thread.setDefaultUncaughtExceptionHandler(Main::killProgram);
         stage.setTitle(WindowText.PROGRAM_NAME.getText());
         mainStage = stage;
-
         // testChildWindows();
-        // testMainWindow();
-        setupWindow(ManuscriptFile.newFile());
+        testMainWindow();
+        // setupWindow(ManuscriptFile.newFile());
     }
 
     @Deprecated
     private void testMainWindow() throws Exception{
-        File file = new File("data/sectionDebug7.txt");
+        // File file = new File("data/sectionDebug7.txt");
+        File file = new File("data/pdf-base.txt");
         WritingText doc = new WritingText(file);
-        setupWindow(ManuscriptFile.withManuscript(doc));
+        ManuscriptFile use = ManuscriptFile.withManuscript(doc);
+
+        File out = new File("test.pdf");
+        FileExporter.PDF_MANUSCRIPT.exportFile(use, out);
+        setupWindow(use);
     }
 
     private void setupWindow(ManuscriptFile file) {

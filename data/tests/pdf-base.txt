@@ -1,0 +1,41 @@
+=@bookmark:Chapter 1: Notes ends
+!%@note: With no source ends
+!% Line 3 start to end
+
+!% With No Id ends
+!% Line 6 start to end
+Line 7 is a paragraph ends
+<@bookmark>
+=Chapter 2: *italics*, **bold**, _underline_, `code` ***bold + italics*** ends
+==Chaptee 2.2: abc ends
+Line 11 *italics*, **bold**, _underline_, `code` ***bold + italics*** ends
+Line 12 _<@ref|link with reference> <www.google.com|direct link> {@note}, {^footnote}, {*endnote}_ ends
+!% @text:full intext ends
+!% *italics*, **bold**, _underline_, `code` ***bold + italics*** ends
+!> in-text: see see see ends
+!> source: ***bold + italics*** ends
+{!todo}
+!! Todo line
+!% @text:full footnote ends
+!% <@ref|link with reference> <www.google.com|direct link> {@note}, {^footnote}, {*endnote} ends
+!> footnote: Author APA ends
+!> source: ***bold + italics*** ends
+!^footnote: some footnote ends
+!*endnote: some endnote ends
+Text
+***
+- bullet 1 item 1 ends
+-- bullet 2 item 1 ends
+-- bullet 2 item 2 ends
+---- bullet 3 item 1 ends
+---- bullet 3 item 2 ends
+-- bullet 2 item 3 ends
+- bullet 1 item 2 ends
+# numbered 1 item 1 end
+# numbered 1 item 2 end
+## numbered 2 item 1 end
+## numbered 2 item 2 end
+
+Some more text
+=Chapter 3<@ref|link with reference> <www.google.com|direct link> {@note}, {^footnote}, {*endnote} ends
+!@ref:www.facebook.com
