@@ -22,6 +22,7 @@ import com.itextpdf.kernel.colors.*;
 final class ITextBridge{
     private static int HEADING_SIZE = 18;
     private static int TEXT_SIZE = 12;
+    private static int QUOTE_PADDING = 40;
 
 
     public static void pdfManuscript(ManuscriptFile input, File output) throws
@@ -65,12 +66,21 @@ final class ITextBridge{
                 doc.add(para);
             } else if (child instanceof SectionSpan){
                 pdfManuscript(doc, (SectionSpan) child);
+            } else if (child instanceof LinedSpanQuote){
+                LinedSpanQuote line = (LinedSpanQuote) child;
+                Paragraph para = addLine(line.getFormattedSpan());
+                para.setPaddingLeft(QUOTE_PADDING);
+                para.setPaddingRight(QUOTE_PADDING);
+                doc.add(para);
+            } else {
+                listEnds = false;
             }
             if (listEnds){
                 list.ifPresent(completed -> completed.completed());
                 list = Optional.empty();
             }
         }
+        list.ifPresent(completed -> completed.completed());
     }
 
     static Paragraph addLine(Optional<FormatSpanMain> format){

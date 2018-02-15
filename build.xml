@@ -6,10 +6,10 @@
     <!-- ** Edit these ones!!! ** -->
     <!-- ..................... Manifest/Running data .................... -->
     <!-- main(String[]) Location -->
-    <property name="usr.main" value="com.creativeartie.jwriter.main.Main" />
+    <property name="usr.main-run" value="com.creativeartie.jwriter.main.Main" />
+    <property name="usr.main-trial" value="com.creativeartie.jwriter.main.MainTest" />
     <!-- archive file postfix -->
     <property name="usr.version" value="0.3.1" />
-    <property name="usr.test-main" value="com.creativeartie.jwriter.main.MainTest" />
     <!-- ......................... Javadoc Data ......................... -->
     <!-- Document up to public/protect/default/private level-->
     <property name="usr-access" value="public" />
@@ -128,7 +128,7 @@
 
     <target name="run" depends="compile.run">
         <java
-            classname="${usr.main}"
+            classname="${usr.main-run}"
             classpathref="run.path"
             fork="true"
             dir="${dir.run}"
@@ -168,7 +168,7 @@
             <!-- setup manifest file -->
             <manifest>
                 <attribute name="Program-Name" value="${ant.project.name}" />
-                <attribute name="Main-Class" value="${usr.main}" />
+                <attribute name="Main-Class" value="${usr.main-run}" />
                 <attribute name="Class-Path" value="${lib.path}" />
             </manifest>
         </jar>
@@ -252,7 +252,7 @@
 
     <target name="test-run" depends="compile.debug">
         <java
-            classname="${usr.test-main}"
+            classname="${usr.main-trial}"
             classpathref="debug.path"
             fork="true"
             dir="${dir.debug}"
@@ -283,7 +283,7 @@
             <!-- setup manifest file -->
             <manifest>
                 <attribute name="Program-Name" value="${ant.project.name}" />
-                <attribute name="Main-Class" value="${usr.main}" />
+                <attribute name="Main-Class" value="${usr.main-trial}" />
                 <attribute name="Class-Path" value="${lib.path}" />
             </manifest>
         </jar>

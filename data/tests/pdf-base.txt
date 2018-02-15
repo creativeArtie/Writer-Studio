@@ -8,8 +8,8 @@ Line 7 is a paragraph ends
 <@bookmark>
 =Chapter 2: *italics*, **bold**, _underline_, `code` ***bold + italics*** ends
 ==Chaptee 2.2: abc ends
-Line 11 *italics*, **bold**, _underline_, `code` ***bold + italics*** ends
-Line 12 _<@ref|link with reference> <www.google.com|direct link> {@note}, {^footnote}, {*endnote}_ ends
+> Line 11 *italics*, **bold**, _underline_, `code` ***bold + italics*** ends
+> Line 12 _<@ref|link with reference> <www.google.com|direct link> {@note}, {^footnote}, {*endnote}_ ends
 !% @text:full intext ends
 !% *italics*, **bold**, _underline_, `code` ***bold + italics*** ends
 !> in-text: see see see ends
@@ -36,6 +36,13 @@ Text
 ## numbered 2 item 1 end
 ## numbered 2 item 2 end
 
-Some more text
+-- hanging bullet ends
+
+-- child ends
+- parent ends
+
+Some more text ends
 =Chapter 3<@ref|link with reference> <www.google.com|direct link> {@note}, {^footnote}, {*endnote} ends
 !@ref:www.facebook.com
+
+- last bullet ends

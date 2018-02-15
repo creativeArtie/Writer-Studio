@@ -16,6 +16,5 @@ public enum FileExporter{
     public void exportFile(ManuscriptFile input, File output) throws
             FileNotFoundException{
         exportConsumer.exportFile(input, output);
-        System.out.println("done");
     }
 }

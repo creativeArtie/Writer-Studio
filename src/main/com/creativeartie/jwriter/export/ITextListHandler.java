@@ -29,6 +29,10 @@ class ITextListHandler{
         return ans;
     }
 
+    public static ITextListHandler start(Document doc, LinedType type){
+        return new ITextListHandler(doc, type);
+    }
+
     private static final String BULLET_SYMBOL = "•  ";
     private final Document baseDoc;
     private final LinedType listType;
@@ -36,10 +40,6 @@ class ITextListHandler{
     private final List filledList;
     private final int listLevel;
     private ListItem lastItem;
-
-    public static ITextListHandler start(Document doc, LinedType type){
-        return new ITextListHandler(doc, type);
-    }
 
     private ITextListHandler(Document doc, LinedType type){
         baseDoc = doc;
@@ -59,52 +59,42 @@ class ITextListHandler{
 
     Optional<ITextListHandler> add(LinedSpanLevelList line){
         if (line.getLinedType() == listType){
-            if (listLevel == line.getLevel()){
-                addLast();
+            if (line.getLevel() == listLevel){
                 lastItem = new ListItem();
                 lastItem.add(ITextBridge.addLine(line.getFormattedSpan()));
+                filledList.add(lastItem);
                 return Optional.of(this);
             }
-            if (listLevel < line.getLevel()){
+            if (line.getLevel() > listLevel){
                 ITextListHandler child = new ITextListHandler(baseDoc, this);
                 return child.add(line);
             }
-            if (listLevel > line.getLevel()){
-                assert listLevel > 1;
-                completed(false);
-                parentList.get().add(line);
-                return parentList;
+            if (line.getLevel() < listLevel){
+                assert listLevel > 1: line;
+                parentList.get().getLast().add(filledList);
+                return parentList.get().add(line);
             }
-            return Optional.of(this);
+            assert false;
         }
         completed();
-        ITextListHandler next = start(baseDoc, line.getLinedType());
-        next.add(line);
-        return Optional.of(next);
+        ITextListHandler ans = new ITextListHandler(baseDoc, line.getLinedType());
+        return ans.add(line);
+    }
+
+    private ListItem getLast(){
+        if (lastItem == null){
+            lastItem = new ListItem();
+            filledList.add(lastItem);
+        }
+        return lastItem;
     }
 
     void completed(){
-        completed(true);
-    }
-    void completed(boolean all){
-        addLast();
-        if (parentList.isPresent()){
-            ListItem last = parentList.get().lastItem;
-            if (last == null){
-                last = new ListItem();
-            }
-            last.add(filledList);
-
-            if (all) parentList.get().completed();
-            return;
-        }
-        baseDoc.add(filledList);
-    }
-
-    private void addLast(){
-        if (lastItem != null){
-            filledList.add(lastItem);
-            System.out.println(lastItem);
+        if(parentList.isPresent()){
+            parentList.get().getLast().add(filledList);
+            parentList.get().completed();
+        } else {
+            baseDoc.add(filledList);
         }
     }
 }
