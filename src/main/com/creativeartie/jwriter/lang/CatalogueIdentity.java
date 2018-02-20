@@ -31,6 +31,10 @@ public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
 
     }
 
+    public CatalogueData findData(CatalogueMap map){
+        return map.get(this);
+    }
+
     /**
      * {@linkplain CatalogueIdentity}'s constructor using a category list and a
      * name.
@@ -53,7 +57,7 @@ public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
     public List<String> getCategories(){
         return categoryPart;
     }
-    
+
     public String getBase(){
         if (categoryPart.isEmpty()){
             return "";

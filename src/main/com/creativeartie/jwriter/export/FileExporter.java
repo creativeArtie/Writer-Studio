@@ -5,7 +5,14 @@ import java.io.*;
 import com.creativeartie.jwriter.file.*;
 
 public enum FileExporter{
-    PDF_MANUSCRIPT(ITextBridge::pdfManuscript);
+    PDF_MANUSCRIPT(FileExporter::pdfManuscript);
+
+    private static void pdfManuscript(ManuscriptFile input, File output) throws
+            FileNotFoundException{
+        try (ITextBridge export = new ITextBridge(input, output)){
+            export.parse();
+        }
+    }
 
     private final ExportLambda exportConsumer;
 

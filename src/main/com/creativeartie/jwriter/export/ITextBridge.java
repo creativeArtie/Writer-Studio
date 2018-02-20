@@ -11,67 +11,134 @@ import com.creativeartie.jwriter.file.*;
 import com.creativeartie.jwriter.lang.*;
 
 import com.itextpdf.kernel.pdf.*;
+import com.itextpdf.kernel.pdf.canvas.*;
+import com.itextpdf.kernel.geom.*;
 import com.itextpdf.layout.*;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.*;
+import com.itextpdf.layout.element.List;
 import com.itextpdf.io.font.constants.*;
 import com.itextpdf.layout.property.*;
 import com.itextpdf.kernel.pdf.action.*;
 import com.itextpdf.kernel.colors.*;
+import com.itextpdf.kernel.events.*;
 
-final class ITextBridge{
-    private static int HEADING_SIZE = 18;
-    private static int TEXT_SIZE = 12;
-    private static int QUOTE_PADDING = 40;
+final class ITextBridge implements Exporter{
+    private static final int HEADING_SIZE = 18;
+    private static final int TEXT_SIZE = 12;
+    private static final int QUOTE_PADDING = 40;
+    private static final String BULLET_SYMBOL = "•  ";
+    private static final String LINE_SEP = "━━━━━━━━━━━━━━━━━━━━";
+    private static final float NOTE_RISE = 8f;
+    private static final int NOTE_SIZE = 8;
 
+    private final Document pdfDocument;
+    private final ManuscriptFile fileInput;
+    private ArrayList<SpanBranch> endnoteAdded;
+    private ArrayList<SpanBranch> footnoteAdded;
+    private Optional<Div> footnoteDiv;
 
-    public static void pdfManuscript(ManuscriptFile input, File output) throws
+    public ITextBridge(ManuscriptFile input, File output) throws
             FileNotFoundException{
         PdfWriter writer = new PdfWriter(output);
         PdfDocument pdf = new PdfDocument(writer);
         pdf.addNewPage();
-        try (Document doc = new Document(pdf)){
-            for(SpanBranch child: input.getDocument()){
-                pdfManuscript(doc, (SectionSpan)child);
+        pdfDocument = new Document(pdf);
+        fileInput = input;
+        endnoteAdded = new ArrayList<>();
+        footnoteAdded = new ArrayList<>();
+        footnoteDiv = Optional.empty();
+        pdf.addEventHandler(PdfDocumentEvent.END_PAGE, evt ->{
+            if (! footnoteDiv.isPresent()){
+                return;
             }
+            Div adding = footnoteDiv.get();
+            PdfDocumentEvent event = (PdfDocumentEvent) evt;
+            PdfPage page = event.getPage();
+            Rectangle size = page.getPageSize();
+            PdfCanvas canvas = new PdfCanvas(page.newContentStreamBefore(),
+                page.getResources(), pdf);
+            System.out.println(adding.getHeight());
+            new Canvas(canvas, pdf,  new Rectangle(
+                    pdf.getDefaultPageSize().getX() + pdfDocument.getLeftMargin(),
+                    pdf.getDefaultPageSize().getY() + pdfDocument.getBottomMargin(),
+                    100,
+                    40
+                )).add(footnoteDiv.get());
+            footnoteDiv = Optional.empty();
+            footnoteAdded.clear();
+        });
+    }
+
+    @Override
+    public void parse(){
+        for(SpanBranch child: fileInput.getDocument()){
+            newSection((SectionSpan)child);
+        }
+        if (! endnoteAdded.isEmpty()){
+            pdfDocument.add(new AreaBreak());
+            addEndnote();
         }
     }
 
-    private static void pdfManuscript(Document doc, SectionSpan section){
-        Optional<ITextListHandler> list = Optional.empty();
+    @Override
+    public void close(){
+        pdfDocument.close();
+    }
+
+    private void addEndnote(){
+        int ptr = 1;
+        for (SpanBranch span: endnoteAdded){
+
+            Text text = new Text(RomanNumbering.toRomanLower(ptr) + "  ");
+            pdfDocument.add(addNote(text, ((LinedSpanPointNote)span)
+                .getFormattedSpan()));
+        }
+    }
+
+    private Paragraph addNote(Text start, Optional<FormatSpanMain> format){
+        start.setTextRise(NOTE_RISE);
+        start.setFontSize(NOTE_SIZE);
+        Paragraph line = new Paragraph();
+        line.add(start);
+        addLine(format, line);
+        return line;
+    }
+
+    private void newSection(SectionSpan section){
+        Optional<ListHandler> list = Optional.empty();
         for (Span child: section){
             boolean listEnds = true;
             if (child instanceof LinedSpanBreak){
                 Paragraph paragaraph = new Paragraph("*");
                 paragaraph.setTextAlignment(TextAlignment.CENTER);
-                doc.add(paragaraph);
+                pdfDocument.add(paragaraph);
             } else if (child instanceof LinedSpanLevelSection){
-                doc.add(new AreaBreak());
+                pdfDocument.add(new AreaBreak());
                 LinedSpanLevelSection line = (LinedSpanLevelSection) child;
                 Paragraph para = addLine(line.getFormattedSpan());
                 para.setFontSize(HEADING_SIZE);
-                doc.add(para);
+                pdfDocument.add(para);
             } else if (child instanceof LinedSpanLevelList){
                 listEnds = false;
                 LinedSpanLevelList line = (LinedSpanLevelList) child;
                 if (! list.isPresent()){
-                    list = Optional.of(ITextListHandler.start(doc, line
-                        .getLinedType()));
+                    list = Optional.of(start(pdfDocument, line.getLinedType()));
                 }
                 list = list.get().add(line);
             } else if (child instanceof LinedSpanParagraph){
                 LinedSpanParagraph line = (LinedSpanParagraph) child;
                 Paragraph para = addLine(line.getFormattedSpan());
                 para.setFontSize(TEXT_SIZE);
-                doc.add(para);
+                pdfDocument.add(para);
             } else if (child instanceof SectionSpan){
-                pdfManuscript(doc, (SectionSpan) child);
+                newSection((SectionSpan) child);
             } else if (child instanceof LinedSpanQuote){
                 LinedSpanQuote line = (LinedSpanQuote) child;
                 Paragraph para = addLine(line.getFormattedSpan());
                 para.setPaddingLeft(QUOTE_PADDING);
                 para.setPaddingRight(QUOTE_PADDING);
-                doc.add(para);
+                pdfDocument.add(para);
             } else {
                 listEnds = false;
             }
@@ -83,20 +150,30 @@ final class ITextBridge{
         list.ifPresent(completed -> completed.completed());
     }
 
-    static Paragraph addLine(Optional<FormatSpanMain> format){
-        Paragraph ans = new Paragraph();
+    private Paragraph addLine(Optional<FormatSpanMain> format){
+        return addLine(format, new Paragraph());
+    }
+
+    private int getFootnotesHeight(){
+        if (footnoteDiv.isPresent()){
+
+        }
+        return 0;
+    }
+
+    private Paragraph addLine(Optional<FormatSpanMain> format, Paragraph para){
         if (! format.isPresent()){
-            return ans;
+            return para;
         }
         for (Span child: format.get()){
             if (child instanceof FormatSpan){
-                ans.addAll(addSpan((FormatSpan)child));
+                para.addAll(addSpan((FormatSpan)child));
             }
         }
-        return ans;
+        return para;
     }
 
-    private static ArrayList<ILeafElement> addSpan(FormatSpan format){
+    private ArrayList<ILeafElement> addSpan(FormatSpan format){
         ArrayList<ILeafElement> ans = new ArrayList<>();
         if (format instanceof FormatSpanContent){
             FormatSpanContent content = (FormatSpanContent) format;
@@ -135,17 +212,65 @@ final class ITextBridge{
             }
             path.setFontColor(ColorConstants.BLUE);
             ans.add(setFormat(path, format));
+        } else if (format instanceof FormatSpanDirectory){
+            FormatSpanDirectory ref = (FormatSpanDirectory) format;
+            ref.getSpanIdentity()
+                .map(id -> id.findData(ref.getDocument().getCatalogue()))
+                .filter(data -> data.isReady())
+                .map(data -> data.getTarget())
+                .ifPresent(span ->
+                    addNote(span, ref).ifPresent(text -> ans.add(text))
+                );
         }
         return ans;
     }
 
-    private static Text newText(String data, FormatSpan format){
+    private Optional<Text> addNote(SpanBranch span, FormatSpanDirectory ref){
+        if (ref.getIdType() == DirectoryType.ENDNOTE){
+            return addNote((LinedSpanPointNote) span, note ->{
+                if (! endnoteAdded.contains(note)){
+                    endnoteAdded.add(note);
+                }
+                return newText(RomanNumbering.toRomanLower(
+                    endnoteAdded.indexOf(note) + 1), ref);
+            });
+        } else if (ref.getIdType() == DirectoryType.FOOTNOTE){
+            return addNote((LinedSpanPointNote) span, note ->{
+                if (! footnoteAdded.contains(note)){
+                    footnoteAdded.add(note);
+                    if (! footnoteDiv.isPresent()){
+                        footnoteDiv = Optional.of(new Div());
+                    }
+                    Text text = new Text(footnoteAdded.size() + "  ");
+                    footnoteDiv.get().add(addNote(text, note
+                        .getFormattedSpan()));
+                }
+                return newText(footnoteAdded.indexOf(note) + 1 + "", ref);
+            });
+        }
+
+        return Optional.of(newText(ref.getIdType().name(), ref));
+    }
+
+    private Optional<Text> addNote(LinedSpanPointNote span,
+            Function<LinedSpanPointNote, Text> special){
+        Optional<FormatSpanMain> content = span.getFormattedSpan();
+        if (! content.isPresent()){
+            return Optional.empty();
+        }
+        Text text = special.apply(span);
+        text.setTextRise(NOTE_RISE);
+        text.setFontSize(NOTE_SIZE);
+        return Optional.of(text);
+    }
+
+    private Text newText(String data, FormatSpan format){
         Text text = new Text(data);
         setFormat(text, format);
         return text;
     }
 
-    private static Text setFormat(Text text, FormatSpan format){
+    private Text setFormat(Text text, FormatSpan format){
         if (format.isItalics()){
             text.setItalic();
         }
@@ -159,5 +284,84 @@ final class ITextBridge{
             // text.setFont(StandardFonts.COURIER);
         }
         return text;
+    }
+
+    private List buildList(LinedType type){
+        if (type == LinedType.NUMBERED){
+            return new List(ListNumberingType.DECIMAL);
+        }
+        List ans = new List();
+        ans.setListSymbol(BULLET_SYMBOL);
+        return ans;
+    }
+
+    private ListHandler start(Document doc, LinedType type){
+        return new ListHandler(doc, type);
+    }
+
+    private class ListHandler{
+        private final Document baseDoc;
+        private final LinedType listType;
+        private final Optional<ListHandler> parentList;
+        private final List filledList;
+        private final int listLevel;
+        private ListItem lastItem;
+
+        private ListHandler(Document doc, LinedType type){
+            baseDoc = doc;
+            listLevel = 1;
+            listType = type;
+            filledList = buildList(type);
+            parentList = Optional.empty();
+        }
+
+        private ListHandler(Document doc, ListHandler parent){
+            baseDoc = doc;
+            listLevel = parent.listLevel + 1;
+            listType = parent.listType;
+            filledList = buildList(listType);
+            parentList = Optional.of(parent);
+        }
+
+        Optional<ListHandler> add(LinedSpanLevelList line){
+            if (line.getLinedType() == listType){
+                if (line.getLevel() == listLevel){
+                    lastItem = new ListItem();
+                    lastItem.add(addLine(line.getFormattedSpan()));
+                    filledList.add(lastItem);
+                    return Optional.of(this);
+                }
+                if (line.getLevel() > listLevel){
+                    ListHandler child = new ListHandler(baseDoc, this);
+                    return child.add(line);
+                }
+                if (line.getLevel() < listLevel){
+                    assert listLevel > 1: line;
+                    parentList.get().getLast().add(filledList);
+                    return parentList.get().add(line);
+                }
+                assert false;
+            }
+            completed();
+            ListHandler ans = new ListHandler(baseDoc, line.getLinedType());
+            return ans.add(line);
+        }
+
+        private ListItem getLast(){
+            if (lastItem == null){
+                lastItem = new ListItem();
+                filledList.add(lastItem);
+            }
+            return lastItem;
+        }
+
+        void completed(){
+            if(parentList.isPresent()){
+                parentList.get().getLast().add(filledList);
+                parentList.get().completed();
+            } else {
+                baseDoc.add(filledList);
+            }
+        }
     }
 }

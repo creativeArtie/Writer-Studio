@@ -9,7 +9,12 @@ Line 7 is a paragraph ends
 =Chapter 2: *italics*, **bold**, _underline_, `code` ***bold + italics*** ends
 ==Chaptee 2.2: abc ends
 > Line 11 *italics*, **bold**, _underline_, `code` ***bold + italics*** ends
-> Line 12 _<@ref|link with reference> <www.google.com|direct link> {@note}, {^footnote}, {*endnote}_ ends
+> Line 12 _<@ref|link with reference> <www.google.com|direct link>{@note}, {^footnote}_, blah{*endnote} ends
+Some text{@footed}, Some text{@text} ends
+!%@footed: abbb ends
+!> footnote: to end
+!> source: some sourced
+
 !% @text:full intext ends
 !% *italics*, **bold**, _underline_, `code` ***bold + italics*** ends
 !> in-text: see see see ends
@@ -17,7 +22,7 @@ Line 7 is a paragraph ends
 {!todo}
 !! Todo line
 !% @text:full footnote ends
-!% <@ref|link with reference> <www.google.com|direct link> {@note}, {^footnote}, {*endnote} ends
+!% <@ref|link with reference> <www.google.com|direct link> {@up}, {^footnote}, {*endnote} ends
 !> footnote: Author APA ends
 !> source: ***bold + italics*** ends
 !^footnote: some footnote ends
