@@ -12,9 +12,11 @@ import com.creativeartie.jwriter.lang.*;
 
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.kernel.pdf.canvas.*;
+import com.itextpdf.layout.renderer.*;
 import com.itextpdf.kernel.geom.*;
 import com.itextpdf.layout.*;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.layout.*;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.element.List;
 import com.itextpdf.io.font.constants.*;
@@ -58,12 +60,13 @@ final class ITextBridge implements Exporter{
             Rectangle size = page.getPageSize();
             PdfCanvas canvas = new PdfCanvas(page.newContentStreamBefore(),
                 page.getResources(), pdf);
-            System.out.println(adding.getHeight());
+            float footnotes = getFootnotesHeight();
             new Canvas(canvas, pdf,  new Rectangle(
-                    pdf.getDefaultPageSize().getX() + pdfDocument.getLeftMargin(),
-                    pdf.getDefaultPageSize().getY() + pdfDocument.getBottomMargin(),
-                    100,
-                    40
+                    size.getX() + pdfDocument.getLeftMargin(),
+                    size.getY() + pdfDocument.getBottomMargin() + footnotes,
+                    size.getWidth() - pdfDocument.getLeftMargin()
+                        - pdfDocument.getRightMargin(),
+                    footnotes
                 )).add(footnoteDiv.get());
             footnoteDiv = Optional.empty();
             footnoteAdded.clear();
@@ -154,11 +157,17 @@ final class ITextBridge implements Exporter{
         return addLine(format, new Paragraph());
     }
 
-    private int getFootnotesHeight(){
-        if (footnoteDiv.isPresent()){
-
+    private float getFootnotesHeight(){
+        if (footnoteDiv.isPresent()){ 
+            DivRenderer renderer = (DivRenderer) footnoteDiv.get()
+                .createRendererSubTree();
+            renderer.setParent(new Document(new PdfDocument(new PdfWriter(
+                new ByteArrayOutputStream()))).getRenderer());
+            return renderer.layout(new LayoutContext(
+                new LayoutArea(0, PageSize.A4))).getOccupiedArea().getBBox()
+                .getHeight();
         }
-        return 0;
+        return 0f;
     }
 
     private Paragraph addLine(Optional<FormatSpanMain> format, Paragraph para){
