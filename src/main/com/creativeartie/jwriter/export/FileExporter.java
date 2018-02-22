@@ -9,9 +9,14 @@ public enum FileExporter{
 
     private static void pdfManuscript(ManuscriptFile input, File output) throws
             FileNotFoundException{
-        try (ITextBridge export = new ITextBridge(input, output)){
+        try (PdfManuscript export = new PdfManuscript(input, output)){
             export.parse();
         }
+    }
+
+    private interface ExportLambda{
+        public void exportFile(ManuscriptFile input, File output) throws
+            FileNotFoundException;
     }
 
     private final ExportLambda exportConsumer;
