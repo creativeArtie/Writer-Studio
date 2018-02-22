@@ -24,6 +24,8 @@ import com.itextpdf.layout.property.*;
 import com.itextpdf.kernel.pdf.action.*;
 import com.itextpdf.kernel.colors.*;
 import com.itextpdf.kernel.events.*;
+import com.itextpdf.kernel.font.*;
+import com.itextpdf.io.font.*;
 
 final class ITextBridge implements Exporter{
     private static final int HEADING_SIZE = 18;
@@ -257,7 +259,7 @@ final class ITextBridge implements Exporter{
                 return newText(footnoteAdded.indexOf(note) + 1 + "", ref);
             });
         }
-
+        
         return Optional.of(newText(ref.getIdType().name(), ref));
     }
 
@@ -290,7 +292,12 @@ final class ITextBridge implements Exporter{
             text.setUnderline();
         }
         if (format.isCoded()){
-            // text.setFont(StandardFonts.COURIER);
+            try {
+                PdfFont font = PdfFontFactory.createFont(StandardFonts.COURIER);
+                text.setFont(font);
+            } catch (IOException ex){
+                throw new RuntimeException(ex);
+            }
         }
         return text;
     }
