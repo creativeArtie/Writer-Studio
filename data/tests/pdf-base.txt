@@ -12,12 +12,12 @@ Line 7 is a paragraph ends
 > Line 12 _<@ref|link with reference> <www.google.com|direct link>{@note}, {^footnote}_, blah{*endnote} ends
 Some text{@footed}, Some text{@text} ends
 !%@footed: abbb ends
-!> footnote: to end
+!> footnote: [to end]
 !> source: some sourced
 
 !% @text:full intext ends
 !% *italics*, **bold**, _underline_, `code` ***bold + italics*** ends
-!> in-text: see see see ends
+!> in-text: [see see see ends]
 !> source: ***bold + italics*** ends
 {!todo}
 !! Todo line

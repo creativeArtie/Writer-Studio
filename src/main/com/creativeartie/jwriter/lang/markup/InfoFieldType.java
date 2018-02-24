@@ -13,7 +13,7 @@ import com.creativeartie.jwriter.lang.*;
 public enum InfoFieldType implements StyleInfo{
 
     SOURCE(InfoDataParser.FORMATTED), IN_TEXT(InfoDataParser.TEXT),
-    FOOTNOTE(InfoDataParser.TEXT),
+    FOOTNOTE(InfoDataParser.FORMATTED),
 
     ERROR(null);
 
