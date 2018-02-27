@@ -79,7 +79,13 @@ public enum WindowText {
 
     ABOUT_TITLE("AboutWindow.Title"), ABOUT_LICENSE("AboutWindow.License"),
     ABOUT_ITEXT("AboutWindow.IText"), ABOUT_RICH_TEXT("AboutWindow.RichText"),
-    ABOUT_GUAVA("AboutWindow.Guava"), ABOUT_LIBRARIES("AboutWindow.ThirdParty");
+    ABOUT_GUAVA("AboutWindow.Guava"), ABOUT_LIBRARIES("AboutWindow.ThirdParty"),
+
+    WORK_CITED("ExportText.WorkCited");
+
+    static String getText(MetaData data){
+        return getDisplay(data.getKey());
+    }
 
     public static String getText(DirectoryType type){
         return getDisplay(getText("UserLists.", type.name()) + "ListName");

@@ -21,7 +21,7 @@ Some text{@footed}, Some text{@text} ends
 !> source: ***bold + italics*** ends
 {!todo}
 !! Todo line
-!% @text:full footnote ends
+!% @text1:full footnote ends
 !% <@ref|link with reference> <www.google.com|direct link> {@up}, {^footnote}, {*endnote} ends
 !> footnote: Author APA ends
 !> source: ***bold + italics*** ends

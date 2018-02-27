@@ -8,6 +8,7 @@ import java.util.*;
 
 import com.google.common.base.MoreObjects;
 import static com.creativeartie.jwriter.main.Checker.*;
+import com.creativeartie.jwriter.resource.*;
 
 /**
  * Stores the {@link WritingText} and {@link RecordList} in a zip file.
@@ -19,6 +20,7 @@ public final class ManuscriptFile {
     /// file name and extension for {@link #open(File)} and {@link #save()}
     private static final String TEXT = "manuscript";
     private static final String RECORDS = "records";
+    private static final String META = "meta.properties";
     private static final String EXTENSION = ".txt";
 
     /**
@@ -46,6 +48,7 @@ public final class ManuscriptFile {
         /// {@link #ManuscriptFile(File,WritingText, RecordList} params:
         WritingText doc = null;
         RecordList record = null;
+        TextProperties prop = null;
 
         try (ZipInputStream input = new ZipInputStream(
             new FileInputStream(file))
@@ -63,22 +66,26 @@ public final class ManuscriptFile {
                     record = new RecordList(text);
                 }
 
+                if (entry.getName().equals(META)){
+                    // prop = new TextProperties(input);
+                }
+
                 entry = input.getNextEntry();
             }
         }
 
         /// Create Object or throw exception
-        if (doc != null && record != null){
-            return new ManuscriptFile(file, doc, record);
+        if (doc != null && record != null && prop != null){
+            return new ManuscriptFile(file, doc, record, prop);
         }
         throw new IOException("Corrupted file: document -> " + doc +
-            "records -> " + record);
+            "; records -> " + record + "; data -> " + prop);
     }
 
     /** Create a {@linkplain ManuscriptFile} with no data. */
     public static ManuscriptFile newFile() {
         return new ManuscriptFile(null, new WritingText(),
-            new RecordList());
+            new RecordList(), new TextProperties());
     }
 
     /**
@@ -88,17 +95,32 @@ public final class ManuscriptFile {
     @Deprecated
     public static ManuscriptFile withManuscript(WritingText doc){
         checkNotNull(doc, "doc");
-
-        return new ManuscriptFile(null, doc, new RecordList());
+        TextProperties props = new TextProperties();
+        props.setText(MetaData.AGENT_NAME, "John Smith");
+        props.setText(MetaData.AGENT_ADDRESS, "555 Main Street\nVancouver");
+        props.setText(MetaData.AGENT_EMAIL, "test@example.com");
+        props.setText(MetaData.AGENT_PHONE, "(555)123-4567");
+        props.setText(MetaData.TITLE, "Some Novel Title");
+        props.setText(MetaData.PEN_NAME, "Mary Sue");
+        props.setText(MetaData.FIRST_NAME, "Jane");
+        props.setText(MetaData.LAST_NAME, "Smith");
+        props.setText(MetaData.ADDRESS, "123 Nowhere");
+        props.setText(MetaData.EMAIL, "author@example.com");
+        props.setText(MetaData.PHONE, "(556)765-4321");
+        props.setText(MetaData.COPYRIGHT, "1900");
+        ManuscriptFile ans = new ManuscriptFile(null, doc, new RecordList(),
+            props);
+        return ans;
     }
 
     private final WritingText documentText;
     private final RecordList recordsFile;
+    private final TextProperties textData;
     private Optional<File> zipFile;
 
     /** {@linkplain ManuscriptFile}'s constructor.*/
     private ManuscriptFile(File file, WritingText doc,
-            RecordList table) {
+            RecordList table, TextProperties prop) {
         assert doc != null: "Null doc";
         assert table != null: "Null table";
         /// nullable file
@@ -106,6 +128,7 @@ public final class ManuscriptFile {
         zipFile = Optional.ofNullable(file);
         documentText = doc;
         recordsFile = table;
+        textData = prop;
     }
 
     public File dumpFile() throws IOException{
@@ -134,6 +157,28 @@ public final class ManuscriptFile {
         return recordsFile;
     }
 
+    public String getText(MetaData data){
+        if (data == MetaData.BY){
+            return "By";
+        }
+        if (data == MetaData.PAGE){
+            return "Page";
+        }
+        if (data == MetaData.AUTHOR){
+            return getText(MetaData.FIRST_NAME) + " " + getText(MetaData
+                .LAST_NAME);
+        }
+        return textData.getText(data);
+    }
+
+    public String getText(MetaData data, MetaData backup){
+        return textData.getText(data);
+    }
+
+    public void setText(MetaData data, String text){
+        textData.setText(data, text);
+    }
+
     public boolean canSave(){
         return zipFile.isPresent();
     }
@@ -146,6 +191,7 @@ public final class ManuscriptFile {
                 (zipFile.get()))){
             save(writeTo, TEXT + EXTENSION, documentText.getRaw());
             save(writeTo, RECORDS + EXTENSION, recordsFile.getSaveText());
+            ///TODO
         }
     }
 

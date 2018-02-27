@@ -26,6 +26,7 @@ import com.itextpdf.kernel.colors.*;
 import com.itextpdf.kernel.events.*;
 import com.itextpdf.kernel.font.*;
 import com.itextpdf.io.font.*;
+import com.itextpdf.kernel.pdf.navigation.*;
 
 abstract class PdfBase implements Exporter{
 
@@ -35,9 +36,11 @@ abstract class PdfBase implements Exporter{
     private final Document pdfDocument;
     private final ManuscriptFile fileInput;
     private ArrayList<FormatSpanMain> endnoteList;
-    private ArrayList<SpanBranch> footnoteAdded;
-    private Optional<Div> footnoteDiv;
+    private ArrayList<FormatSpanMain> noteCited;
+    private PdfFooterHeader pageEnder;
     private boolean listEnds;
+    public static final float PAGE_THIRD = PageSize.A4.getHeight() / 3;
+    public static final float PAGE_HALF = PageSize.A4.getHeight() / 2;
 
     public PdfBase(ManuscriptFile input, File output) throws
             FileNotFoundException{
@@ -47,34 +50,20 @@ abstract class PdfBase implements Exporter{
         endnoteList = new ArrayList<>();
         pdf.addNewPage();
         pdfDocument = new Document(pdf);
-        footnoteDiv = Optional.empty();
-        pdf.addEventHandler(PdfDocumentEvent.END_PAGE, evt ->{
-            if (! footnoteDiv.isPresent()){
-                return;
-            }
-            Div adding = footnoteDiv.get();
-            PdfDocumentEvent event = (PdfDocumentEvent) evt;
-            PdfPage page = event.getPage();
-            Rectangle size = page.getPageSize();
-            PdfCanvas canvas = new PdfCanvas(page.newContentStreamBefore(),
-                page.getResources(), pdf);
-            float footnotes = getFootnotesHeight();
-            new Canvas(canvas, pdf,  new Rectangle(
-                    size.getX() + pdfDocument.getLeftMargin(),
-                    size.getY() + pdfDocument.getBottomMargin() + footnotes,
-                    size.getWidth() - pdfDocument.getLeftMargin()
-                        - pdfDocument.getRightMargin(),
-                    footnotes
-                )).add(footnoteDiv.get());
-            footnoteDiv = Optional.empty();
+        pageEnder = new PdfFooterHeader(pdfDocument, pdf);
+        pdf.addEventHandler(PdfDocumentEvent.END_PAGE, evt -> {
+            pageEnder.handleEvent(evt);
             endPage();
         });
     }
 
+    protected abstract void startDoc(ManuscriptFile input);
     protected abstract void endPage();
+    protected abstract void endDoc();
 
     @Override
     public void parse(){
+        startDoc(fileInput);
         for(SpanBranch child: fileInput.getDocument()){
             newSection((SectionSpan)child);
         }
@@ -85,6 +74,7 @@ abstract class PdfBase implements Exporter{
 
     @Override
     public void close(){
+        endDoc();
         pdfDocument.close();
     }
 
@@ -130,20 +120,6 @@ abstract class PdfBase implements Exporter{
         return Optional.of(PdfListHandler.start(pdfDocument, type));
     }
 
-
-    private float getFootnotesHeight(){
-        if (footnoteDiv.isPresent()){
-            DivRenderer renderer = (DivRenderer) footnoteDiv.get()
-                .createRendererSubTree();
-            renderer.setParent(new Document(new PdfDocument(new PdfWriter(
-                new ByteArrayOutputStream()))).getRenderer());
-            return renderer.layout(new LayoutContext(
-                new LayoutArea(0, PageSize.A4))).getOccupiedArea().getBBox()
-                .getHeight();
-        }
-        return 0f;
-    }
-
     protected Paragraph addLine(Optional<FormatSpanMain> format){
         return addLine(format, new Paragraph());
     }
@@ -182,6 +158,9 @@ abstract class PdfBase implements Exporter{
                 para.addAll(addLinkSpan((FormatSpanLink) child));
             }
         }
+        para.setMargin(0);
+        para.setPadding(0);
+        para.setMultipliedLeading(2.0f);
         return para;
     }
 
@@ -197,14 +176,11 @@ abstract class PdfBase implements Exporter{
     }
 
     protected boolean hasFootnoteDiv(){
-        return footnoteDiv.isPresent();
+        return pageEnder.isFootnotePresent();
     }
 
     protected void addFootnoteLine(IBlockElement element){
-        if (! footnoteDiv.isPresent()){
-            footnoteDiv = Optional.of(new Div());
-        }
-        footnoteDiv.get().add(element);
+        pageEnder.addFootnoteLine(element);
     }
 
     protected int addEndnoteSpan(FormatSpanMain span){

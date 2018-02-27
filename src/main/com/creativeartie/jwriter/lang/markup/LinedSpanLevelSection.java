@@ -18,6 +18,7 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
     private Optional<EditionType> cacheEdition;
     private Optional<Integer> cachePublish;
     private Optional<Integer> cacheNote;
+    private Optional<String> cacheTitle;
 
     LinedSpanLevelSection(List<Span> children){
         super(children);
@@ -85,6 +86,14 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
         return cacheNote.get();
     }
 
+    public String getTitle(){
+        cacheTitle = getCache(cacheTitle, () ->{
+            Optional<FormatSpanMain> main = spanFromLast(FormatSpanMain.class);
+            return main.isPresent()? main.get().getParsedText(): "";
+        });
+        return cacheTitle.get();
+    }
+
     @Override
     protected SetupParser getParser(String text){
         if (! AuxiliaryChecker.checkLineEnd(isLast(), text)){
@@ -104,6 +113,7 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
         cacheEdition = Optional.empty();
         cachePublish = Optional.empty();
         cacheNote = Optional.empty();
+        cacheTitle = Optional.empty();
     }
 
     @Override

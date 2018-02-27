@@ -21,6 +21,7 @@ public final class FormatSpanMain extends SpanBranch {
     private Optional<Integer> cachePublish;
     private Optional<Integer> cacheNote;
     private Optional<Integer> cacheTotal;
+    private Optional<String> cacheText;
 
     FormatSpanMain(List<Span> spanChildren){
         super(spanChildren);
@@ -67,6 +68,28 @@ public final class FormatSpanMain extends SpanBranch {
             .omitEmptyStrings().splitToList(text).size();
     }
 
+    public String getParsedText(){
+        cacheText = getCache(cacheText, () -> {
+            StringBuilder text = new StringBuilder();
+            for (Span span: this){
+                if (span instanceof FormatSpanContent){
+                    FormatSpanContent content = (FormatSpanContent) span;
+                    if (content.isSpaceBegin()){
+                        text.append(" ");
+                    }
+                    text.append(content.getTrimmed());
+                    if (content.isSpaceEnd()){
+                        text.append(" ");
+                    }
+                } else if (span instanceof FormatSpanLink){
+                    text.append(((FormatSpanLink)span).getText());
+                }
+            }
+            return text.toString();
+        });
+        return cacheText.get();
+    }
+
     @Override
     protected SetupParser getParser(String text){
         return null;
@@ -77,6 +100,7 @@ public final class FormatSpanMain extends SpanBranch {
         cachePublish = Optional.empty();
         cacheNote = Optional.empty();
         cacheTotal = Optional.empty();
+        cacheText = Optional.empty();
     }
 
     @Override

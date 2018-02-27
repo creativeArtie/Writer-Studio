@@ -9,6 +9,7 @@ import static com.creativeartie.jwriter.main.Checker.*;
 import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.file.*;
 import com.creativeartie.jwriter.lang.*;
+import com.creativeartie.jwriter.resource.*;
 
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.kernel.pdf.canvas.*;
@@ -28,6 +29,7 @@ import com.itextpdf.kernel.font.*;
 import com.itextpdf.io.font.*;
 import com.itextpdf.kernel.pdf.canvas.draw.*;
 
+/// Format follow: https://www.scribophile.com/academy/how-to-format-a-novel-manuscript
 final class PdfManuscript extends PdfBase{
     private static final int HEADING_SIZE = 18;
     private static final int TEXT_SIZE = 12;
@@ -35,18 +37,65 @@ final class PdfManuscript extends PdfBase{
     private static final float NOTE_RISE = 8f;
     private static final int NOTE_SIZE = 8;
     private ArrayList<FormatSpanMain> footnoteList;
-    private Consumer<FormatSpanMain> footnoteSpan;
+    private TreeSet<FormatSpanMain> citationsList;
+    private boolean willIndent;
 
     public PdfManuscript(ManuscriptFile input, File output) throws
             FileNotFoundException{
         super(input, output);
         footnoteList = new ArrayList<>();
+        citationsList = new TreeSet<>(Comparator.comparing(span ->
+            span.getParsedText()));
     }
 
+    @Override
     protected void endPage(){
         footnoteList.clear();
     }
 
+    @Override
+    protected void startDoc(ManuscriptFile input){
+        Div div = new Div();
+        div.add(new Paragraph(input.getText(MetaData.AGENT_NAME)));
+        div.add(new Paragraph(input.getText(MetaData.AGENT_ADDRESS)));
+        div.add(new Paragraph(input.getText(MetaData.AGENT_EMAIL)));
+        div.add(new Paragraph(input.getText(MetaData.AGENT_PHONE)));
+        div.setVerticalAlignment(VerticalAlignment.TOP);
+        add(div);
+
+        div = new Div();
+        div.add(new Paragraph(input.getText(MetaData.TITLE)));
+        div.add(new Paragraph());
+        div.add(new Paragraph(input.getText(MetaData.BY)));
+        div.add(new Paragraph());
+        div.add(new Paragraph(input.getText(MetaData.PEN_NAME, MetaData.AUTHOR)));
+        div.setVerticalAlignment(VerticalAlignment.TOP);
+        div.setTextAlignment(TextAlignment.CENTER);
+
+        DivRenderer renderer = (DivRenderer) footnote.get()
+            .createRendererSubTree();
+        renderer.setParent(new Document(new PdfDocument(new PdfWriter(
+            new ByteArrayOutputStream()))).getRenderer());
+        int height = renderer.layout(new LayoutContext(
+            new LayoutArea(0, PageSize.A4))).getOccupiedArea().getBBox()
+            .getHeight();
+
+    }
+
+    @Override
+    protected void endDoc(){
+        if (! citationsList.isEmpty()){
+            newPage();
+            Paragraph title = new Paragraph(WindowText.WORK_CITED.getText());
+            title.setTextAlignment(TextAlignment.CENTER);
+            add(title);
+            for (FormatSpanMain cite: citationsList){
+                add(addLine(cite));
+            }
+        }
+    }
+
+    @Override
     protected void addEndnoteLines(ArrayList<FormatSpanMain> endnotes){
         newPage();
         int ptr = 1;
@@ -59,12 +108,16 @@ final class PdfManuscript extends PdfBase{
         }
     }
 
+    @Override
     protected void addBreakLine(LinedSpanBreak line){
-        Paragraph ans = new Paragraph("*");
+        Paragraph ans = new Paragraph("#");
         ans.setTextAlignment(TextAlignment.CENTER);
+        add(new Paragraph());
         add(ans);
+        willIndent = false;
     }
 
+    @Override
     protected Optional<PdfListHandler> addList(LinedSpanLevelList line,
             Optional<PdfListHandler> list){
         sameList();
@@ -74,23 +127,41 @@ final class PdfManuscript extends PdfBase{
         return list.get().add(line, span -> addLine(span.getFormattedSpan()));
     }
 
+    @Override
     protected void addHeadingLine(LinedSpanLevelSection line){
         if (line.getLinedType() == LinedType.OUTLINE){
             sameList();
             return;
         }
-        newPage();
         Paragraph ans = addLine(line.getFormattedSpan());
+        if (line.getLevel() == 1){
+            newPage();
+            ans.setMarginTop(PAGE_THIRD);
+            ans.setTextAlignment(TextAlignment.CENTER);
+        }
         ans.setFontSize(HEADING_SIZE);
         add(ans);
+        if (line.getLevel() == 1){
+            for (int i = 0; i < 3; i++){
+                add(new Paragraph());
+            }
+        }
+        willIndent = false;
     }
 
+    @Override
     protected void addParagraphLine(LinedSpanParagraph line){
         Paragraph ans = addLine(line.getFormattedSpan());
+        if (willIndent){
+            ans.setFirstLineIndent(20f);
+        } else {
+            willIndent = true;
+        }
         ans.setFontSize(TEXT_SIZE);
         add(ans);
     }
 
+    @Override
     protected void addQuoteLine(LinedSpanQuote line){
         Paragraph ans = addLine(line.getFormattedSpan());
         ans.setPaddingLeft(QUOTE_PADDING);
@@ -98,11 +169,13 @@ final class PdfManuscript extends PdfBase{
         add(ans);
     }
 
+    @Override
     protected ArrayList<ILeafElement> addAgendaSpan(FormatSpanAgenda span){
         ArrayList<ILeafElement> ans = new ArrayList<>();
         return ans;
     }
 
+    @Override
     protected ArrayList<ILeafElement> addContentSpan(FormatSpanContent span){
         ArrayList<ILeafElement> ans = new ArrayList<>();
         String text = span.getTrimmed();
@@ -116,6 +189,7 @@ final class PdfManuscript extends PdfBase{
         return ans;
     }
 
+    @Override
     protected ArrayList<ILeafElement> addEndnoteSpan(FormatSpanDirectory span){
         ArrayList<ILeafElement> ans = new ArrayList<>();
         searchPointNote(span, add -> {
@@ -125,6 +199,7 @@ final class PdfManuscript extends PdfBase{
         return ans;
     }
 
+    @Override
     protected ArrayList<ILeafElement> addFootnoteSpan(FormatSpanDirectory span){
         ArrayList<ILeafElement> ans = new ArrayList<>();
         searchPointNote(span, found -> {
@@ -161,6 +236,7 @@ final class PdfManuscript extends PdfBase{
             .ifPresent(consumer);
     }
 
+    @Override
     protected ArrayList<ILeafElement> addNoteSpan(FormatSpanDirectory span){
         ArrayList<ILeafElement> ans = new ArrayList<>();
         Optional<NoteCardSpan> line = span.getTarget()
@@ -179,12 +255,16 @@ final class PdfManuscript extends PdfBase{
                 .get().getTrimmed(), span));
         } else {
             assert cite.getFieldType() == InfoFieldType.FOOTNOTE;
-            return ans;
+            FormatSpanMain footnote = (FormatSpanMain) cite.getData().get()
+                .getData();
+            int ptr = addFootnote(footnote);
+            ans.add(addSuperscript(ptr + 1 + "", span));
         }
-
+        citationsList.add(source.get());
         return ans;
     }
 
+    @Override
     protected ArrayList<ILeafElement> addLinkSpan(FormatSpanLink span){
         ArrayList<ILeafElement> ans = new ArrayList<>();
         String text = span.getText();
