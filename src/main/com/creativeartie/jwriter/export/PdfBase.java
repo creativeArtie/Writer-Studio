@@ -30,17 +30,26 @@ import com.itextpdf.kernel.pdf.navigation.*;
 
 abstract class PdfBase implements Exporter{
 
+    public  static float getElementHeight(IBlockElement element){
+        IRenderer renderer = element.createRendererSubTree();
+        renderer.setParent(new Document(new PdfDocument(new PdfWriter(
+            new ByteArrayOutputStream()))).getRenderer());
+        return renderer.layout(new LayoutContext(
+            new LayoutArea(0, PageSize.A4))).getOccupiedArea().getBBox()
+            .getHeight();
+    }
+
     private static final float NOTE_RISE = 8f;
     private static final int NOTE_SIZE = 8;
 
     private final Document pdfDocument;
+    private final PdfFrontPageHandler frontPage;
     private final ManuscriptFile fileInput;
     private ArrayList<FormatSpanMain> endnoteList;
     private ArrayList<FormatSpanMain> noteCited;
     private PdfFooterHeader pageEnder;
     private boolean listEnds;
     public static final float PAGE_THIRD = PageSize.A4.getHeight() / 3;
-    public static final float PAGE_HALF = PageSize.A4.getHeight() / 2;
 
     public PdfBase(ManuscriptFile input, File output) throws
             FileNotFoundException{
@@ -48,22 +57,23 @@ abstract class PdfBase implements Exporter{
         PdfWriter writer = new PdfWriter(output);
         PdfDocument pdf = new PdfDocument(writer);
         endnoteList = new ArrayList<>();
-        pdf.addNewPage();
         pdfDocument = new Document(pdf);
         pageEnder = new PdfFooterHeader(pdfDocument, pdf);
         pdf.addEventHandler(PdfDocumentEvent.END_PAGE, evt -> {
             pageEnder.handleEvent(evt);
             endPage();
         });
+        frontPage = new PdfFrontPageHandler(pdf.addNewPage(), pdf, pdfDocument);
     }
 
-    protected abstract void startDoc(ManuscriptFile input);
+    protected abstract void startDoc(ManuscriptFile input,
+        PdfFrontPageHandler output);
     protected abstract void endPage();
     protected abstract void endDoc();
 
     @Override
     public void parse(){
-        startDoc(fileInput);
+        startDoc(fileInput, frontPage);
         for(SpanBranch child: fileInput.getDocument()){
             newSection((SectionSpan)child);
         }
@@ -158,10 +168,11 @@ abstract class PdfBase implements Exporter{
                 para.addAll(addLinkSpan((FormatSpanLink) child));
             }
         }
-        para.setMargin(0);
-        para.setPadding(0);
-        para.setMultipliedLeading(2.0f);
-        return para;
+        return clearMargin(para).setMultipliedLeading(2.0f);
+    }
+
+    protected Paragraph clearMargin(Paragraph para){
+        return para.setMargin(0).setPadding(0);
     }
 
     protected abstract ArrayList<ILeafElement> addAgendaSpan(FormatSpanAgenda span);

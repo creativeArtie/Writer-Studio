@@ -171,8 +171,14 @@ public final class ManuscriptFile {
         return textData.getText(data);
     }
 
-    public String getText(MetaData data, MetaData backup){
-        return textData.getText(data);
+    public String getText(MetaData ... keys){
+        for (MetaData key: keys){
+            String ans = textData.getText(key);
+            if (ans != null && ans.length() > 0){
+                return ans;
+            }
+        }
+        return "";
     }
 
     public void setText(MetaData data, String text){

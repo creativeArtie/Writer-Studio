@@ -54,32 +54,29 @@ final class PdfManuscript extends PdfBase{
     }
 
     @Override
-    protected void startDoc(ManuscriptFile input){
+    protected void startDoc(ManuscriptFile input, PdfFrontPageHandler output){
         Div div = new Div();
-        div.add(new Paragraph(input.getText(MetaData.AGENT_NAME)));
-        div.add(new Paragraph(input.getText(MetaData.AGENT_ADDRESS)));
-        div.add(new Paragraph(input.getText(MetaData.AGENT_EMAIL)));
-        div.add(new Paragraph(input.getText(MetaData.AGENT_PHONE)));
+        div.add(getFrontParagraph(input, MetaData.AGENT_NAME));
+        div.add(getFrontParagraph(input, MetaData.AGENT_ADDRESS));
+        div.add(getFrontParagraph(input, MetaData.AGENT_EMAIL));
+        div.add(getFrontParagraph(input, MetaData.AGENT_PHONE));
         div.setVerticalAlignment(VerticalAlignment.TOP);
-        add(div);
+        output.addTop(div);
 
         div = new Div();
-        div.add(new Paragraph(input.getText(MetaData.TITLE)));
-        div.add(new Paragraph());
-        div.add(new Paragraph(input.getText(MetaData.BY)));
-        div.add(new Paragraph());
-        div.add(new Paragraph(input.getText(MetaData.PEN_NAME, MetaData.AUTHOR)));
-        div.setVerticalAlignment(VerticalAlignment.TOP);
+        div.add(getFrontParagraph(input, MetaData.TITLE));
+        div.add(clearMargin(new Paragraph()));
+        div.add(getFrontParagraph(input, MetaData.BY));
+        div.add(clearMargin(new Paragraph()));
+        div.add(getFrontParagraph(input, MetaData.PEN_NAME, MetaData.AUTHOR));
+        div.setHorizontalAlignment(HorizontalAlignment.CENTER);
+        div.setVerticalAlignment(VerticalAlignment.MIDDLE);
         div.setTextAlignment(TextAlignment.CENTER);
+        output.addCentre(div);
+    }
 
-        DivRenderer renderer = (DivRenderer) footnote.get()
-            .createRendererSubTree();
-        renderer.setParent(new Document(new PdfDocument(new PdfWriter(
-            new ByteArrayOutputStream()))).getRenderer());
-        int height = renderer.layout(new LayoutContext(
-            new LayoutArea(0, PageSize.A4))).getOccupiedArea().getBBox()
-            .getHeight();
-
+    private Paragraph getFrontParagraph(ManuscriptFile input, MetaData... data){
+        return clearMargin(new Paragraph(input.getText(data)));
     }
 
     @Override

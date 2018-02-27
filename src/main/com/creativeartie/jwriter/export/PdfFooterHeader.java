@@ -48,22 +48,21 @@ class PdfFooterHeader implements IEventHandler{
     }
 
     public void handleEvent(Event event){
-        if (lastFootnote.isPresent()){
-            Div adding = lastFootnote.get();
+        lastFootnote.ifPresent(adding -> {
             PdfDocumentEvent use = (PdfDocumentEvent) event;
             PdfPage page = use.getPage();
             Rectangle size = page.getPageSize();
             PdfCanvas canvas = new PdfCanvas(page.newContentStreamBefore(),
                 page.getResources(), pdfDocument);
-            float footnotes = getFootnotesHeight(lastFootnote);
-            new Canvas(canvas, pdfDocument,  new Rectangle(
+            float footnotes = PdfBase.getElementHeight(adding);
+            new Canvas(canvas, pdfDocument, new Rectangle(
                 size.getX() + pdfMargin.getLeftMargin(),
-                size.getY() + pdfMargin.getBottomMargin() + footnotes,
+                size.getY() + pdfMargin.getBottomMargin(),
                 size.getWidth() - pdfMargin.getLeftMargin()
                     - pdfMargin.getRightMargin(),
                 footnotes
-            )).add(lastFootnote.get());
-        }
+            )).add(adding);
+        });
         lastFootnote = curFootnote;
         curFootnote = Optional.empty();
     }
@@ -77,22 +76,5 @@ class PdfFooterHeader implements IEventHandler{
             curFootnote = Optional.of(new Div());
         }
         curFootnote.get().add(element);
-    }
-
-    float getFootnotesHeight(){
-        return getFootnotesHeight(curFootnote);
-    }
-
-    private float getFootnotesHeight(Optional<Div> footnote){
-        if (footnote.isPresent()){
-            DivRenderer renderer = (DivRenderer) footnote.get()
-                .createRendererSubTree();
-            renderer.setParent(new Document(new PdfDocument(new PdfWriter(
-                new ByteArrayOutputStream()))).getRenderer());
-            return renderer.layout(new LayoutContext(
-                new LayoutArea(0, PageSize.A4))).getOccupiedArea().getBBox()
-                .getHeight();
-        }
-        return 0f;
     }
 }

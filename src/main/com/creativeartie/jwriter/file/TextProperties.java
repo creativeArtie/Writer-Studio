@@ -26,11 +26,6 @@ public final class TextProperties {
         return metaData.getProperty(key.getKey());
     }
 
-    public String getText(MetaData key, MetaData alter){
-        String ans = getText(key);
-        return (ans == null || ans.isEmpty())? getText(alter) : ans;
-    }
-
     public void setText(MetaData key, String text){
         metaData.setProperty(key.getKey(), text);
     }
