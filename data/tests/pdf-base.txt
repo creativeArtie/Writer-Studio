@@ -39,7 +39,8 @@ Text
 # numbered 1 item 1 end
 # numbered 1 item 2 end
 ## numbered 2 item 1 end
-## numbered 2 item 2 end
+## numbered 2 item 2{^extra} end
+!^extra: new page footnote end
 
 -- hanging bullet ends
 

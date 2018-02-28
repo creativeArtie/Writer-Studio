@@ -56,27 +56,51 @@ final class PdfManuscript extends PdfBase{
     @Override
     protected void startDoc(ManuscriptFile input, PdfFrontPageHandler output){
         Div div = new Div();
-        div.add(getFrontParagraph(input, MetaData.AGENT_NAME));
-        div.add(getFrontParagraph(input, MetaData.AGENT_ADDRESS));
-        div.add(getFrontParagraph(input, MetaData.AGENT_EMAIL));
-        div.add(getFrontParagraph(input, MetaData.AGENT_PHONE));
+        div.add(clearMargin(getFrontParagraph(input, MetaData.AGENT_NAME)));
+        div.add(clearMargin(getFrontParagraph(input, MetaData.AGENT_ADDRESS)));
+        div.add(clearMargin(getFrontParagraph(input, MetaData.AGENT_EMAIL)));
+        div.add(clearMargin(getFrontParagraph(input, MetaData.AGENT_PHONE)));
         div.setVerticalAlignment(VerticalAlignment.TOP);
         output.addTop(div);
 
         div = new Div();
-        div.add(getFrontParagraph(input, MetaData.TITLE));
-        div.add(clearMargin(new Paragraph()));
-        div.add(getFrontParagraph(input, MetaData.BY));
-        div.add(clearMargin(new Paragraph()));
-        div.add(getFrontParagraph(input, MetaData.PEN_NAME, MetaData.AUTHOR));
+        div.add(getCenterTitle(input, MetaData.TITLE));
+        div.add(getCenterTitle(input, MetaData.BY));
+        div.add(getCenterTitle(input, MetaData.PEN_NAME, MetaData.AUTHOR));
         div.setHorizontalAlignment(HorizontalAlignment.CENTER);
         div.setVerticalAlignment(VerticalAlignment.MIDDLE);
         div.setTextAlignment(TextAlignment.CENTER);
         output.addCentre(div);
+
+        div = new Div();
+        div.add(clearMargin(getFrontParagraph(input, MetaData.AUTHOR)));
+        div.add(clearMargin(getFrontParagraph(input, MetaData.ADDRESS)));
+        div.add(clearMargin(getFrontParagraph(input, MetaData.PHONE)));
+        div.add(clearMargin(getFrontParagraph(input, MetaData.EMAIL)));
+        div.add(clearMargin(getFrontParagraph(input, MetaData.WEBSITE)));
+        String copyright = input.getText(MetaData.AUTHOR) + " © " +
+            input.getText(MetaData.COPYRIGHT);
+        div.add(clearMargin(new Paragraph(copyright))
+            .setTextAlignment(TextAlignment.CENTER)
+            .setMarginTop(40f)
+        );
+
+        div.setTextAlignment(TextAlignment.RIGHT);
+        output.addBottom(div);
+
+    }
+
+    private Paragraph getCenterTitle(ManuscriptFile input, MetaData... data){
+        return clearMargin(getFrontParagraph(input, data)
+            .setMultipliedLeading(2.0f));
     }
 
     private Paragraph getFrontParagraph(ManuscriptFile input, MetaData... data){
-        return clearMargin(new Paragraph(input.getText(data)));
+        return getFrontParagraph(input.getText(data));
+    }
+
+    private Paragraph getFrontParagraph(String text){
+        return clearMargin(new Paragraph(text));
     }
 
     @Override

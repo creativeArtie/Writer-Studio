@@ -98,7 +98,7 @@ public final class ManuscriptFile {
         TextProperties props = new TextProperties();
         props.setText(MetaData.AGENT_NAME, "John Smith");
         props.setText(MetaData.AGENT_ADDRESS, "555 Main Street\nVancouver");
-        props.setText(MetaData.AGENT_EMAIL, "test@example.com");
+        props.setText(MetaData.AGENT_EMAIL, "agent@example.com");
         props.setText(MetaData.AGENT_PHONE, "(555)123-4567");
         props.setText(MetaData.TITLE, "Some Novel Title");
         props.setText(MetaData.PEN_NAME, "Mary Sue");
@@ -108,6 +108,7 @@ public final class ManuscriptFile {
         props.setText(MetaData.EMAIL, "author@example.com");
         props.setText(MetaData.PHONE, "(556)765-4321");
         props.setText(MetaData.COPYRIGHT, "1900");
+        props.setText(MetaData.WEBSITE, "www.exmaple.com");
         ManuscriptFile ans = new ManuscriptFile(null, doc, new RecordList(),
             props);
         return ans;
@@ -173,7 +174,7 @@ public final class ManuscriptFile {
 
     public String getText(MetaData ... keys){
         for (MetaData key: keys){
-            String ans = textData.getText(key);
+            String ans = getText(key);
             if (ans != null && ans.length() > 0){
                 return ans;
             }

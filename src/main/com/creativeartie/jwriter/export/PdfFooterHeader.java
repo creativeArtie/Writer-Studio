@@ -48,12 +48,15 @@ class PdfFooterHeader implements IEventHandler{
     }
 
     public void handleEvent(Event event){
+        /// Setup
+        PdfDocumentEvent use = (PdfDocumentEvent) event;
+        PdfPage page = use.getPage();
+        Rectangle size = page.getPageSize();
+        PdfCanvas canvas = new PdfCanvas(page.newContentStreamBefore(), page
+            .getResources(), pdfDocument);
+
+        /// Work with footnotes
         lastFootnote.ifPresent(adding -> {
-            PdfDocumentEvent use = (PdfDocumentEvent) event;
-            PdfPage page = use.getPage();
-            Rectangle size = page.getPageSize();
-            PdfCanvas canvas = new PdfCanvas(page.newContentStreamBefore(),
-                page.getResources(), pdfDocument);
             float footnotes = PdfBase.getElementHeight(adding);
             new Canvas(canvas, pdfDocument, new Rectangle(
                 size.getX() + pdfMargin.getLeftMargin(),
@@ -65,6 +68,11 @@ class PdfFooterHeader implements IEventHandler{
         });
         lastFootnote = curFootnote;
         curFootnote = Optional.empty();
+
+        /// Work with header
+        curHeader.ifPresent(adding -> {
+
+        });
     }
 
     public boolean isFootnotePresent(){
