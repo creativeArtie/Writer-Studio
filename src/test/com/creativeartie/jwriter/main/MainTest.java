@@ -5,9 +5,11 @@ import java.io.*;
 import java.io.File;
 import java.io.IOException;
 
-import com.creativeartie.jwriter.export.*;
+import com.creativeartie.jwriter.output.*;
 import com.creativeartie.jwriter.file.*;
 import com.creativeartie.jwriter.lang.markup.*;
+
+import com.creativeartie.jwriter.export.*;
 
 public class MainTest {
 
@@ -17,6 +19,9 @@ public class MainTest {
         ManuscriptFile use = ManuscriptFile.withManuscript(doc);
 
         File out = new File("test.pdf");
-        FileExporter.PDF_MANUSCRIPT.exportFile(use, out);
+        try (PdfFileOutput output = new PdfFileOutput(out)){
+            output.render(new OutputInfo(use));
+        }
+        // FileExporter.PDF_MANUSCRIPT.exportFile(use, out);
     }
 }
