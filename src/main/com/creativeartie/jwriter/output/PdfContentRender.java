@@ -44,8 +44,8 @@ class PdfContentRender extends PdfPageRender{
 
     private void newLine(){
         checkingLine = new Paragraph();
-        checkingContent.add(checkingLine());
-        addLine = new Paragraph();
+        checkingContent.add(checkingLine);
+        addingLine = Optional.of(new Paragraph());
     }
 
     private Text setFormat(String string, FormatSpan format){
