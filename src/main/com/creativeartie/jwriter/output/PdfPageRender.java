@@ -23,7 +23,6 @@ abstract class PdfPageRender{
     PdfPageRender(OutputInfo info, PdfFileOutput file){
         docInfo = info;
         outputDoc = file.getPdfDocument();
-        addNewPage();
     }
 
     void addNewPage(){

@@ -6,11 +6,11 @@ import com.creativeartie.jwriter.resource.*;
 import com.creativeartie.jwriter.lang.markup.*;
 
 public final class OutputInfo{
-    private static float inchToPoint(float inches){
+    static float inchToPoint(float inches){
         return inches * 72f;
     }
 
-    private static float millimeterToPoint(float mm){
+    static float millimeterToPoint(float mm){
         return mm * 2.83465f;
     }
 

@@ -9,6 +9,7 @@ class PdfTitleRender extends PdfPageRender{
 
     PdfTitleRender(OutputInfo info, PdfFileOutput file){
         super(info, file);
+        addNewPage();
     }
 
     void render(){

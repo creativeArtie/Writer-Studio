@@ -7,7 +7,9 @@ import java.util.Optional;
 import com.google.common.base.*;
 
 import com.itextpdf.layout.element.*;
+import com.itextpdf.layout.Document;
 import com.itextpdf.layout.property.*;
+import com.itextpdf.kernel.events.*;
 import com.itextpdf.kernel.font.*;
 import com.itextpdf.io.font.constants.*;
 
@@ -16,20 +18,21 @@ import com.creativeartie.jwriter.lang.markup.*;
 
 class PdfContentRender extends PdfPageRender{
 
-    private Paragraph checkingLine;
-    private Optional<Paragraph> addingLine;
-    private Div checkingContent;
-    private Div addingContent;
+    private Document documentOutput;
+    private Paragraph documentLine;
+    private int pageNumber;
 
     PdfContentRender(OutputInfo info, PdfFileOutput file){
         super(info, file);
-        checkingContent = new Div();
-        addingContent = new Div();
-    }
-
-    void completedPage(){
-        addingLine.ifPresent(found -> addingContent.add(found));
-        addContent(addingContent);
+        documentOutput = new Document(file.getPdfDocument());
+        documentOutput.add(new AreaBreak());
+        float margin = OutputInfo.inchToPoint(1f);
+        documentOutput.setMargins(margin, margin, margin, margin);
+        //Document.setFixedPosition(int pageNumber, float left, float bottom, float width)
+        pageNumber = 1;
+        file.getPdfDocument().addEventHandler(PdfDocumentEvent.END_PAGE, evt -> {
+            System.out.println(pageNumber++);
+        });
     }
 
     void render(LinedSpan span){
@@ -39,13 +42,22 @@ class PdfContentRender extends PdfPageRender{
         }
     }
 
-    private void renderLine(FormatSpanMain span){
-    }
-
-    private void newLine(){
-        checkingLine = new Paragraph();
-        checkingContent.add(checkingLine);
-        addingLine = Optional.of(new Paragraph());
+    private void renderLine(FormatSpanMain content){
+        Paragraph para = new Paragraph();
+        for(Span child: content){
+            if (child instanceof FormatSpanContent){
+                FormatSpanContent format = (FormatSpanContent) child;
+                String text = format.getTrimmed();
+                if (format.isSpaceBegin()){
+                    text = " " + text;
+                }
+                if (format.isSpaceEnd()){
+                    text = text + " ";
+                }
+                para.add(setFormat(text, format));
+            }
+        }
+        documentOutput.add(para);
     }
 
     private Text setFormat(String string, FormatSpan format){

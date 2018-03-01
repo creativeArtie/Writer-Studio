@@ -27,7 +27,6 @@ public class PdfFileOutput implements Closeable{
         for (Span span: info.getWritingText()){
             renderContent(content, (SectionSpan) span);
         }
-        content.completedPage();
     }
 
     private void renderContent(PdfContentRender content, SectionSpan section){
