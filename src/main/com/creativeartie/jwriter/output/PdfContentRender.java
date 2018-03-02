@@ -20,19 +20,24 @@ class PdfContentRender extends PdfPageRender{
 
     private Document documentOutput;
     private Paragraph documentLine;
+    private Optional<Div> footnoteDiv;
     private int pageNumber;
+    private PdfMarginCalculator pdfCalculator;
 
     PdfContentRender(OutputInfo info, PdfFileOutput file){
         super(info, file);
         documentOutput = new Document(file.getPdfDocument());
-        documentOutput.add(new AreaBreak());
         float margin = OutputInfo.inchToPoint(1f);
         documentOutput.setMargins(margin, margin, margin, margin);
+        documentOutput.add(new AreaBreak());
         //Document.setFixedPosition(int pageNumber, float left, float bottom, float width)
         pageNumber = 1;
+        footnoteDiv = Optional.empty();
         file.getPdfDocument().addEventHandler(PdfDocumentEvent.END_PAGE, evt -> {
             System.out.println(pageNumber++);
+            documentOutput.setBottomMargin(margin);
         });
+        pdfCalculator = new PdfMarginCalculator(margin);
     }
 
     void render(LinedSpan span){
@@ -42,6 +47,7 @@ class PdfContentRender extends PdfPageRender{
         }
     }
 
+    private int bottom = 0;
     private void renderLine(FormatSpanMain content){
         Paragraph para = new Paragraph();
         for(Span child: content){
@@ -55,9 +61,15 @@ class PdfContentRender extends PdfPageRender{
                     text = text + " ";
                 }
                 para.add(setFormat(text, format));
+            } else if (child instanceof FormatSpanDirectory){
+                bottom += 20;
+                para.add(setFormat("[[Hello]]", (FormatSpan) child));
+                documentOutput.setBottomMargin(OutputInfo.inchToPoint(1) + bottom);
+                pdfCalculator.addFootnote(OutputInfo.inchToPoint(1) + bottom);
             }
         }
         documentOutput.add(para);
+        pdfCalculator.addParagraph(para);
     }
 
     private Text setFormat(String string, FormatSpan format){
