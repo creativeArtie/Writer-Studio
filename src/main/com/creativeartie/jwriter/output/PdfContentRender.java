@@ -44,7 +44,7 @@ class PdfContentRender extends PdfPageRender{
     void render(LinedSpan span){
         if (span instanceof LinedSpanParagraph){
             ((LinedSpanParagraph)span).getFormattedSpan()
-                .ifPresent(found -> docHolder.add(renderLine(found)));
+                .ifPresent(found -> docHolder.addParagraph(renderLine(found)));
         }
     }
 

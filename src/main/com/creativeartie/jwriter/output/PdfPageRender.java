@@ -39,12 +39,11 @@ abstract class PdfPageRender{
 
     /// Code copied and modified from
     /// https://developers.itextpdf.com/examples/page-events/clone-page-events-headers-and-footers#2654-tableheader.java
-    float getElementHeight(IBlockElement element){
+    static float getElementHeight(IBlockElement element, float margin){
         IRenderer renderer = element.createRendererSubTree();
         Document doc = new Document(new PdfDocument(new PdfWriter(
             new ByteArrayOutputStream()
         )));
-        float margin = docInfo.getMargin();
         doc.setMargins(margin, margin, margin, margin);
         renderer.setParent(doc.getRenderer());
         return renderer
@@ -54,7 +53,7 @@ abstract class PdfPageRender{
     }
 
     void addBottom(Div div){
-        float height = getElementHeight(div);
+        float height = getElementHeight(div, docInfo.getMargin());
         new Canvas(pageCanvas, outputDoc, new Rectangle(
             pageSize.getX() + docInfo.getMargin(),
             pageSize.getY() + docInfo.getMargin(),
@@ -64,7 +63,7 @@ abstract class PdfPageRender{
     }
 
     void addTop(Div div){
-        float height = getElementHeight(div);
+        float height = getElementHeight(div, docInfo.getMargin());
         new Canvas(pageCanvas, outputDoc, new Rectangle(
             pageSize.getX() + docInfo.getMargin(),
             pageSize.getTop() - docInfo.getMargin() - height,
@@ -73,7 +72,7 @@ abstract class PdfPageRender{
     }
 
     void addCentre(Div div){
-        float height = getElementHeight(div);
+        float height = getElementHeight(div, docInfo.getMargin());
         new Canvas(pageCanvas, outputDoc, new Rectangle(
             pageSize.getX() + docInfo.getMargin(),
             pageSize.getHeight() / 2  - height / 2,
@@ -82,17 +81,17 @@ abstract class PdfPageRender{
     }
 
     void setTopPadding(Div div){
-        topPadding = div == null? 0: getElementHeight(div);
+        topPadding = div == null? 0: getElementHeight(div, docInfo.getMargin());
         topPadding += docInfo.getMargin();
     }
 
     void setBottomPadding(Div div){
-        bottomPadding = div == null? 0: getElementHeight(div);
-        bottomPadding += getElementHeight(div) + docInfo.getMargin();
+        bottomPadding = div == null? 0: getElementHeight(div, docInfo.getMargin());
+        bottomPadding += docInfo.getMargin();
     }
 
     void addContent(Div div){
-        float height = getElementHeight(div);
+        float height = getElementHeight(div, docInfo.getMargin());
         new Canvas(pageCanvas, outputDoc, new Rectangle(
             pageSize.getX() + docInfo.getMargin(),
             pageSize.getTop() - docInfo.getMargin() - height,

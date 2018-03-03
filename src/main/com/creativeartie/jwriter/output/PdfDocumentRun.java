@@ -26,6 +26,7 @@ class PdfDocumentRun{
     private Div currentDiv;
     private PdfDocument writeDoc;
     private Document useDoc;
+    private float pageMargin;
 
     private int count;
     public PdfDocumentRun(float margin){
@@ -33,17 +34,31 @@ class PdfDocumentRun{
         pageMargins = new ArrayList<>();
         pageFootnotes = new ArrayList<>();
         count = 0;
+        try {
         writeDoc = new PdfDocument(new PdfWriter("Test" + (count++) + ".pdf"));
+        } catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
+        PdfPage page = writeDoc.addNewPage();
         currentMargin = margin;
         currentDiv = new Div();
-        new Canvas(canvas, doc, new Rectangle(
-            0, 0,
-            size.getWidth() - margin - margin, 0
-        )).add(currentDiv);
-        useDoc = new Document(doc);
+        pageMargin = margin;
+        useDoc = new Document(writeDoc);
     }
 
     public void close(){
         writeDoc.close();
+    }
+    
+    public void addParagraph(Paragraph para){
+        addParagraphs.add(para);
+        useDoc.add(para);
+        
+    }
+    
+    public void addFootnote(Paragraph para){
+        currentDiv.add(para);
+        System.out.println(PdfPageRender.getElementHeight(currentDiv, pageMargin));
+        
     }
 }
