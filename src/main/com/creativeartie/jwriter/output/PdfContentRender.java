@@ -47,6 +47,10 @@ class PdfContentRender extends PdfPageRender{
         }
     }
 
+    public void completed(){
+        pdfCalculator.close();
+    }
+
     private int bottom = 0;
     private void renderLine(FormatSpanMain content){
         Paragraph para = new Paragraph();

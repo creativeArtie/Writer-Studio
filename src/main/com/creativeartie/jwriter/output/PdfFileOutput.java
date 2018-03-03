@@ -15,6 +15,7 @@ public class PdfFileOutput implements Closeable{
     private PdfDocument pdfDocument;
     private PdfPageRender pageRender;
 
+
     public PdfFileOutput(File output) throws IOException{
         PdfWriter writer = new PdfWriter(output);
         pdfDocument = new PdfDocument(writer);
@@ -27,6 +28,7 @@ public class PdfFileOutput implements Closeable{
         for (Span span: info.getWritingText()){
             renderContent(content, (SectionSpan) span);
         }
+        content.completed();
     }
 
     private void renderContent(PdfContentRender content, SectionSpan section){
