@@ -2,6 +2,7 @@ package com.creativeartie.jwriter.output;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.Function;
 import java.util.Optional;
 
 import com.google.common.base.*;
@@ -18,11 +19,12 @@ import com.creativeartie.jwriter.lang.markup.*;
 
 class PdfContentRender extends PdfPageRender{
 
+    private static final float NOTE_RISE = 8f;
+    private static final int NOTE_SIZE = 8;
+
     private Document documentOutput;
-    private Paragraph documentLine;
-    private Optional<Div> footnoteDiv;
     private int pageNumber;
-    private PdfMarginCalculator pdfCalculator;
+    private PdfDocumentRun docHolder;
 
     PdfContentRender(OutputInfo info, PdfFileOutput file){
         super(info, file);
@@ -32,27 +34,37 @@ class PdfContentRender extends PdfPageRender{
         documentOutput.add(new AreaBreak());
         //Document.setFixedPosition(int pageNumber, float left, float bottom, float width)
         pageNumber = 1;
-        footnoteDiv = Optional.empty();
         file.getPdfDocument().addEventHandler(PdfDocumentEvent.END_PAGE, evt -> {
-            System.out.println(pageNumber++);
-            documentOutput.setBottomMargin(margin);
+            documentOutput.setBottomMargin(margin + (50 * pageNumber));
+            pageNumber++;
         });
-        pdfCalculator = new PdfMarginCalculator(margin);
+        docHolder = new PdfDocumentRun(margin);
     }
 
     void render(LinedSpan span){
         if (span instanceof LinedSpanParagraph){
             ((LinedSpanParagraph)span).getFormattedSpan()
-                .ifPresent(found -> renderLine(found));
+                .ifPresent(found -> docHolder.add(renderLine(found)));
         }
     }
 
-    public void completed(){
-        pdfCalculator.close();
+    void close(){
+        docHolder.close();
     }
 
-    private int bottom = 0;
-    private void renderLine(FormatSpanMain content){
+    protected Text addSuperscript(String string){
+        Text text = new Text(string);
+        text.setTextRise(NOTE_RISE);
+        text.setFontSize(NOTE_SIZE);
+        return text;
+
+    }
+
+    protected Text addSuperscript(String string, FormatSpan format){
+        return setFormat(addSuperscript(string), format);
+    }
+
+    private Paragraph renderLine(FormatSpanMain content){
         Paragraph para = new Paragraph();
         for(Span child: content){
             if (child instanceof FormatSpanContent){
@@ -66,18 +78,46 @@ class PdfContentRender extends PdfPageRender{
                 }
                 para.add(setFormat(text, format));
             } else if (child instanceof FormatSpanDirectory){
-                bottom += 20;
-                para.add(setFormat("[[Hello]]", (FormatSpan) child));
-                documentOutput.setBottomMargin(OutputInfo.inchToPoint(1) + bottom);
-                pdfCalculator.addFootnote(OutputInfo.inchToPoint(1) + bottom);
+                FormatSpanDirectory ref = (FormatSpanDirectory) child;
+                switch (ref.getIdType()){
+                    case ENDNOTE:
+                        // para.addAll(addEndnoteSpan(ref));
+                        break;
+                    case FOOTNOTE:
+                        para.add(newFootnoteText(ref));
+                        break;
+                    case NOTE:
+                        // para.addAll(addNoteSpan(ref));
+                        break;
+                }
             }
         }
-        documentOutput.add(para);
-        pdfCalculator.addParagraph(para);
+        return para;
+    }
+
+    private Text newFootnoteText(FormatSpanDirectory ref){
+        return searchPointNote(ref, found -> {
+            return addSuperscript(1 + "", ref);
+        });
+    }
+
+    private Text searchPointNote(FormatSpanDirectory span,
+            Function<FormatSpanMain, Text> consumer){
+        return span.getTarget().map(found -> (LinedSpanPointNote) found)
+            .flatMap(found -> found.getFormattedSpan())
+            .map(consumer).get();
+    }
+
+    private void addFootnoteBottom(FormatSpanMain span){
+        Paragraph line = renderLine(span);
+        docHolder.addFootnote(line);
     }
 
     private Text setFormat(String string, FormatSpan format){
-        Text text = new Text(string);
+        return setFormat(new Text(string), format);
+    }
+
+    private Text setFormat(Text text, FormatSpan format){
         if (format.isItalics()){
             text.setItalic();
         }
