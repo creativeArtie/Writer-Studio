@@ -19,7 +19,7 @@ import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.layout.*;
 
 class PdfDocumentRun{
-    private ArrayList<Paragraph> addParagraphs;
+    private ArrayList<IBlockElement> addParagraphs;
     private ArrayList<Div> pageFootnotes;
     private ArrayList<Float> pageMargins;
     private float currentMargin;
@@ -35,7 +35,7 @@ class PdfDocumentRun{
         pageFootnotes = new ArrayList<>();
         count = 0;
         try {
-        writeDoc = new PdfDocument(new PdfWriter("Test" + (count++) + ".pdf"));
+            writeDoc = new PdfDocument(new PdfWriter("Test" + (count++) + ".pdf"));
         } catch (Exception ex){
             throw new RuntimeException(ex);
         }
@@ -44,6 +44,20 @@ class PdfDocumentRun{
         currentDiv = new Div();
         pageMargin = margin;
         useDoc = new Document(writeDoc);
+        addListener();
+    }
+    
+    private void addListener(){
+        writeDoc.addEventHandler(PdfDocumentEvent.END_PAGE, evt -> endPage());
+    }
+    
+    private void endPage(){
+        System.out.println("hello");
+        pageMargins.add(currentMargin);
+        pageFootnotes.add(currentDiv);
+        useDoc.setBottomMargin(pageMargin);
+        currentMargin = pageMargin;
+        currentDiv = new Div();
     }
 
     public void close(){
@@ -58,7 +72,27 @@ class PdfDocumentRun{
     
     public void addFootnote(Paragraph para){
         currentDiv.add(para);
-        System.out.println(PdfPageRender.getElementHeight(currentDiv, pageMargin));
-        
+        currentDiv = PdfPageRender.getElementHeight(currentDiv, pageMargin);
+        System.out.println(currentDiv);
+        writeDoc.close();
+        try {
+            writeDoc = new PdfDocument(new PdfWriter("Test" + (count++) + ".pdf"));
+        } catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
+        Optional<Iterator<Float>> it = Optional.of(pageMargins.iterator());
+        writeDoc.addEventHandler(PdfDocumentEvent.END_PAGE, evt -> {
+            if (it.isPresent()){
+                useDoc.setBottomMargin(it.get().getNext());
+                if (! it.get().hasNext()){
+                    it = Optional.empty();
+                }
+            } else {
+                endPage();
+            }
+        });
+        for (IBlockElement line: addParagraphs){
+            writeDoc.add(line);
+        }
     }
 }

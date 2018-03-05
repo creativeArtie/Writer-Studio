@@ -84,7 +84,7 @@ class PdfContentRender extends PdfPageRender{
                         // para.addAll(addEndnoteSpan(ref));
                         break;
                     case FOOTNOTE:
-                        para.add(newFootnoteText(ref));
+                        newFootnoteText(ref).ifPresent(found -> para.add(found));
                         break;
                     case NOTE:
                         // para.addAll(addNoteSpan(ref));
@@ -95,17 +95,18 @@ class PdfContentRender extends PdfPageRender{
         return para;
     }
 
-    private Text newFootnoteText(FormatSpanDirectory ref){
+    private Optional<Text> newFootnoteText(FormatSpanDirectory ref){
         return searchPointNote(ref, found -> {
+            docHolder.addFootnote(renderLine(found));
             return addSuperscript(1 + "", ref);
         });
     }
 
-    private Text searchPointNote(FormatSpanDirectory span,
+    private Optional<Text> searchPointNote(FormatSpanDirectory span,
             Function<FormatSpanMain, Text> consumer){
         return span.getTarget().map(found -> (LinedSpanPointNote) found)
             .flatMap(found -> found.getFormattedSpan())
-            .map(consumer).get();
+            .map(consumer);
     }
 
     private void addFootnoteBottom(FormatSpanMain span){
