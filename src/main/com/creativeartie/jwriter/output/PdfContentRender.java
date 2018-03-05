@@ -7,11 +7,15 @@ import java.util.Optional;
 
 import com.google.common.base.*;
 
+import com.itextpdf.layout.*;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.property.*;
 import com.itextpdf.kernel.events.*;
 import com.itextpdf.kernel.font.*;
+import com.itextpdf.kernel.geom.*;
+import com.itextpdf.kernel.pdf.*;
+import com.itextpdf.kernel.pdf.canvas.*;
 import com.itextpdf.io.font.constants.*;
 
 import com.creativeartie.jwriter.lang.*;
@@ -33,9 +37,33 @@ class PdfContentRender extends PdfPageRender{
         documentOutput.setMargins(margin, margin, margin, margin);
         documentOutput.add(new AreaBreak());
         //Document.setFixedPosition(int pageNumber, float left, float bottom, float width)
-        pageNumber = 1;
-        file.getPdfDocument().addEventHandler(PdfDocumentEvent.END_PAGE, evt -> {
-            documentOutput.setBottomMargin(margin + (50 * pageNumber));
+        pageNumber = -1;
+        PdfDocument doc = file.getPdfDocument();
+        doc.addEventHandler(PdfDocumentEvent.END_PAGE, evt -> {
+            if (pageNumber == -1){
+                pageNumber++;
+                return;
+            }
+            documentOutput.setBottomMargin(docHolder.marginOnPage(pageNumber));
+            Div footnote = docHolder.footnoteOnPage(pageNumber);
+
+            /// Setup
+            PdfDocumentEvent use = (PdfDocumentEvent) evt;
+            PdfPage page = use.getPage();
+            Rectangle size = page.getPageSize();
+            PdfCanvas canvas = new PdfCanvas(page.newContentStreamBefore(), page
+                .getResources(), doc);
+
+            /// Work with footnotes
+            float footnotes = getElementHeight(footnote, margin);
+            System.out.println(pageNumber + "\t" + docHolder.marginOnPage(pageNumber) +
+                "\t" + footnotes);
+            new Canvas(canvas, doc, new Rectangle(
+                size.getX() + margin,
+                size.getY() + margin,
+                size.getWidth() - (margin * 2),
+                footnotes
+            )).add(footnote);
             pageNumber++;
         });
         docHolder = new PdfDocumentRun(margin);
@@ -45,11 +73,17 @@ class PdfContentRender extends PdfPageRender{
         if (span instanceof LinedSpanParagraph){
             ((LinedSpanParagraph)span).getFormattedSpan()
                 .ifPresent(found -> docHolder.addParagraph(renderLine(found)));
+        } else if (span instanceof LinedSpanLevelSection){
+            ((LinedSpanLevelSection)span).getFormattedSpan()
+                .ifPresent(found -> docHolder.addParagraph(renderLine(found)));
         }
     }
 
     void close(){
         docHolder.close();
+        for (IBlockElement element: docHolder.getContent()){
+            documentOutput.add(element);
+        }
     }
 
     protected Text addSuperscript(String string){
