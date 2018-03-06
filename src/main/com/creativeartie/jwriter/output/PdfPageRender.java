@@ -48,7 +48,7 @@ abstract class PdfPageRender{
         renderer.setParent(doc.getRenderer());
         return renderer
             .layout(new LayoutContext(new LayoutArea(0, PageSize.A4)))
-            .getOccupiedArea().getBBox().getHeight();
+            .getOccupiedArea().getBBox().getHeight() + margin;
 
     }
 

@@ -20,63 +20,22 @@ import com.itextpdf.layout.*;
 
 class PdfDocumentRun{
 
-    private class PageMargins{
-        private ArrayList<Float> pageMargins;
-        private Optional<Float> currentMargin;
-        private float defaultMargin;
-        private int marginPointer;
-        private boolean isLastPage;
-
-        PageMargins(float margin){
-            pageMargins = new ArrayList<>();
-            currentMargin = Optional.empty();
-            defaultMargin = margin;
-            marginPointer = 0;
-            isLastPage = true;
-        }
-
-        void restart(){
-            marginPointer = 0;
-            isLastPage = false;
-        }
-
-        void addMargin(){
-            pageMargins.add(currentMargin.orElse(defaultMargin));
-            currentMargin = Optional.empty();
-        }
-
-        void setMargin(IBlockElement div){
-            currentMargin = Optional.of(PdfPageRender.getElementHeight(
-                pageFootnotes.get(pageFootnotes.size() -1), defaultMargin));
-        }
-
-        boolean isLastPage(){
-            return isLastPage;
-        }
-
-        float nextMargin(){
-            if (marginPointer < pageMargins.size()){
-                return pageMargins.get(marginPointer++);
-            }
-            marginPointer++;
-            isLastPage = true;
-            return currentMargin.orElse(defaultMargin);
-        }
-    }
-
-
     private ArrayList<IBlockElement> addParagraphs;
-    private ArrayList<Div> pageFootnotes;
+    private ArrayList<PdfPageLayout> pageFootnotes;
     private PdfDocument writeDoc;
     private Document useDoc;
-    private PageMargins pageMargins;
+    private float pageMargin;
+    private int pageNumber;
 
     private int count;
     public PdfDocumentRun(float margin){
         addParagraphs = new ArrayList<>();
-        pageMargins = new PageMargins(margin);
+        pageMargin = margin;
         pageFootnotes = new ArrayList<>();
-        pageFootnotes.add(new Div());
+        pageFootnotes.add(new PdfPageLayout(margin));
+        pageFootnotes.add(new PdfPageLayout(margin));
+        pageNumber = 0;
+
         count = 0;
         try {
             writeDoc = new PdfDocument(new PdfWriter("Test" + (count++) + ".pdf"));
@@ -88,19 +47,23 @@ class PdfDocumentRun{
         addListener();
     }
 
+    PdfPageLayout getPage(int page){
+        return pageFootnotes.get(page);
+    }
+
     private void addListener(){
         writeDoc.addEventHandler(PdfDocumentEvent.END_PAGE, evt -> endPage());
     }
 
     private void endPage(){
-        float margin = pageMargins.nextMargin();
-        if (pageMargins.isLastPage()){
-            pageMargins.addMargin();
-            pageFootnotes.add(new Div());
+        if (pageNumber == pageFootnotes.size()){
+            pageFootnotes.add(new PdfPageLayout(pageMargin));
         }
-        System.out.println(count + "\t" + margin + "\t" +
-            pageMargins.marginPointer + " " + pageMargins.pageMargins);
-        useDoc.setBottomMargin(margin);
+
+        PdfPageLayout page = pageFootnotes.get(pageNumber);
+        System.out.println(count + "\t" + pageNumber + "\t" + pageFootnotes);
+        useDoc.setBottomMargin(page.getMargin());
+        pageNumber++;
     }
 
     public void close(){
@@ -113,12 +76,10 @@ class PdfDocumentRun{
     }
 
     public void addFootnote(Paragraph para){
-        Div last = pageFootnotes.get(pageFootnotes.size() - 1);
-        last.add(para);
+        pageFootnotes.get(pageFootnotes.size() - 1).addFootnote(para);
         writeDoc.close();
 
-        pageMargins.restart();
-        pageMargins.setMargin(last);
+        pageNumber = 0;
         try {
             writeDoc = new PdfDocument(new PdfWriter("Test" + (count++) + ".pdf"));
         } catch (Exception ex){
@@ -132,17 +93,23 @@ class PdfDocumentRun{
     }
 
     public float marginOnPage(int page){
-        if (page < pageMargins.pageMargins.size()){
-            return pageMargins.pageMargins.get(page);
+        if (page < 0){
+            return pageMargin;
         }
-        return pageMargins.currentMargin.orElse(pageMargins.defaultMargin);
+        if (page < pageFootnotes.size()){
+            return pageFootnotes.get(page).getMargin();
+        }
+        return pageMargin;
     }
 
     public Div footnoteOnPage(int page){
-        if (page < pageFootnotes.size()){
-            return pageFootnotes.get(page);
+        if (page < 0){
+            return new Div();
         }
-        return pageFootnotes.get(pageFootnotes.size() - 1);
+        if (page < pageFootnotes.size()){
+            return pageFootnotes.get(page).getFootnoteDiv();
+        }
+        return new Div();
     }
 
     public ArrayList<IBlockElement> getContent(){

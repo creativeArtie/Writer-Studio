@@ -37,22 +37,21 @@ class PdfContentRender extends PdfPageRender{
         documentOutput.setMargins(margin, margin, margin, margin);
         documentOutput.add(new AreaBreak());
         //Document.setFixedPosition(int pageNumber, float left, float bottom, float width)
-        pageNumber = -1;
+        pageNumber = 0;
         PdfDocument doc = file.getPdfDocument();
         doc.addEventHandler(PdfDocumentEvent.END_PAGE, evt -> {
-            if (pageNumber == -1){
+            /*if (pageNumber == -1){
                 pageNumber++;
                 return;
-            }
+            }*/
             documentOutput.setBottomMargin(docHolder.marginOnPage(pageNumber));
-            Div footnote = docHolder.footnoteOnPage(pageNumber);
+            Div footnote = docHolder.footnoteOnPage(pageNumber - 2);
 
             /// Setup
             PdfDocumentEvent use = (PdfDocumentEvent) evt;
             PdfPage page = use.getPage();
             Rectangle size = page.getPageSize();
-            PdfCanvas canvas = new PdfCanvas(page.newContentStreamBefore(), page
-                .getResources(), doc);
+            PdfCanvas canvas = new PdfCanvas(page);
 
             /// Work with footnotes
             float footnotes = getElementHeight(footnote, margin);
@@ -99,7 +98,10 @@ class PdfContentRender extends PdfPageRender{
     }
 
     private Paragraph renderLine(FormatSpanMain content){
-        Paragraph para = new Paragraph();
+        return renderLine(content, new Paragraph());
+    }
+
+    private Paragraph renderLine(FormatSpanMain content, Paragraph para){
         for(Span child: content){
             if (child instanceof FormatSpanContent){
                 FormatSpanContent format = (FormatSpanContent) child;
@@ -131,8 +133,8 @@ class PdfContentRender extends PdfPageRender{
 
     private Optional<Text> newFootnoteText(FormatSpanDirectory ref){
         return searchPointNote(ref, found -> {
-            docHolder.addFootnote(renderLine(found));
-            return addSuperscript(1 + "", ref);
+            addFootnoteBottom(found);
+            return addSuperscript("*", ref);
         });
     }
 
@@ -144,8 +146,9 @@ class PdfContentRender extends PdfPageRender{
     }
 
     private void addFootnoteBottom(FormatSpanMain span){
-        Paragraph line = renderLine(span);
-        docHolder.addFootnote(line);
+        Paragraph line = new Paragraph();
+        line.add(new Text("+"));
+        docHolder.addFootnote(renderLine(span, line));
     }
 
     private Text setFormat(String string, FormatSpan format){
