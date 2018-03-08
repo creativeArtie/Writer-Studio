@@ -5,6 +5,9 @@ import java.io.*;
 import org.apache.pdfbox.pdmodel.font.*;
 import com.google.common.base.*;
 
+/**
+ * Decides the length of a text and if it need to be keep with the last text.
+ */
 class PdfText{
     private static final String SPACE = " ";
 

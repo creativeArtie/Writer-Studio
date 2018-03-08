@@ -5,6 +5,10 @@ import java.util.*;
 
 import org.apache.pdfbox.pdmodel.font.*;
 
+/**
+ * Decides if the text can be filled in a single line, or if it needs a second
+ * line.
+ */
 class PdfLine{
     private ArrayList<PdfText> inputText;
     private float maxWidth;
@@ -26,9 +30,12 @@ class PdfLine{
 
     public ArrayList<PdfText> appendText(String string, PDFont font, int size)
             throws IOException{
-        ArrayList<PdfText> ans = PdfText.createWords(string, font, size);
+        return appendText(PdfText.createWords(string, font, size));
+    }
+
+    public ArrayList<PdfText> appendText(ArrayList<PdfText> texts){
         ArrayList<PdfText> overflow = null;
-        for (PdfText text: ans){
+        for (PdfText text: texts){
             if (overflow == null){
                 if (curWidth + text.getWidth() > maxWidth){
                     overflow = new ArrayList<>();
@@ -43,6 +50,7 @@ class PdfLine{
                         textHeight = text.getHeight();
                     }
                     if (! inputText.isEmpty() || ! text.isSpaceText()){
+                        /// Don't a space in the begining of the text
                         inputText.add(text);
                     }
                 }
