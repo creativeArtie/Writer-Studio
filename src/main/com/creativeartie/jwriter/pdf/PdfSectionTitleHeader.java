@@ -12,43 +12,44 @@ import org.apache.pdfbox.pdmodel.font.*;
 class PdfSectionTitleHeader extends PdfSection{
     private float baseMargins;
     private PDPage outputPage;
-    private ArrayList<String> headerLines;
+    private ArrayList<PdfBlock> outputLines;
     private float startX;
     private float startY;
-    private float contentWidth;
 
     public PdfSectionTitleHeader(float margins){
         super();
-        headerLines = new ArrayList<>();
         baseMargins = margins;
     }
 
-    void loadContent(DocumentData file, PdfDocument doc){
-        headerLines = file.getTitleTopText();
+    void loadContent(DocumentData file, PdfDocument doc) throws IOException{
         startY = doc.getPage().getMediaBox().getHeight() - baseMargins;
         startX = baseMargins;
-        contentWidth = doc.getPage().getMediaBox().getWidth() - (baseMargins * 2);
-    }
 
-    void render(PDPageContentStream output) throws IOException{
-        PDFont font = PDType1Font.HELVETICA_BOLD;
 
-        output.beginText();
-        output.setFont(font, 12);
-        output.newLineAtOffset(startX, startY);
-        for (String text: headerLines){
-            for (PdfLine line: new PdfBlock(contentWidth).setLeading(0)
-                    .appendText(text, font, 12)){
-                //TODO render line
-            }
+        PDFont font = PDType1Font.TIMES_ROMAN;
+        float width = doc.getPage().getMediaBox().getWidth() - (baseMargins * 2);
+
+        outputLines = new ArrayList<>();
+        for (String line: file.getTitleTopText()){
+            outputLines.add(new PdfBlock(width).setLeading(1)
+                .appendText(line, font, 12));
         }
-        output.endText();
+
     }
 
+    @Override
     public float getX(){
-        return baseMargins;
+        return startX;
     }
+
+    @Override
     public float getY(){
-        return baseMargins;
+        return startY;
+    }
+
+
+    @Override
+    public List<PdfBlock> getOutputBlocks(){
+        return outputLines;
     }
 }

@@ -17,15 +17,17 @@ class PdfSectionContent extends PdfSection{
         super();
     }
 
-    void loadContent(DocumentData file, PdfDocument doc){
-    }
-
     void render(PDPageContentStream output){}
 
     public float getX(){
         return baseMargins;
     }
+
     public float getY(){
         return baseMargins;
+    }
+
+    List<PdfBlock> getOutputBlocks(){
+        return null;
     }
 }

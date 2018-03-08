@@ -51,8 +51,8 @@ class PdfText{
         fontSize = size;
         /// From https://stackoverflow.com/questions/13701017/calculation-string-width-in-pdfbox-seems-only-to-count-characters
         textWidth = textFont.getStringWidth(outputText) / 1000 * fontSize;
-        /// From https://stackoverflow.com/questions/17171815/get-the-font-height-of-a-character-in-pdfbox
-        textHeight = textFont.getFontDescriptor().getCapHeight() / 1000 * fontSize;
+        PDFontDescriptor descipter = textFont.getFontDescriptor();
+        textHeight = (descipter.getCapHeight() + descipter.getXHeight()) / 1000 * fontSize;
         spaceText = space;
     }
 
@@ -70,5 +70,13 @@ class PdfText{
 
     public boolean isSpaceText(){
         return spaceText;
+    }
+
+    public PDFont getFont(){
+        return textFont;
+    }
+
+    public int getSize(){
+        return fontSize;
     }
 }

@@ -4,12 +4,13 @@ import java.io.*;
 import java.util.*;
 
 import org.apache.pdfbox.pdmodel.font.*;
+import com.google.common.collect.*;
 
 /**
  * Decides if the text can be filled in a single line, or if it needs a second
  * line.
  */
-class PdfLine{
+class PdfLine extends ForwardingList<PdfText>{
     private ArrayList<PdfText> inputText;
     private float maxWidth;
     private float curWidth;
@@ -67,5 +68,10 @@ class PdfLine{
 
     public float getWidth(){
         return curWidth;
+    }
+
+    @Override
+    protected List<PdfText> delegate(){
+        return ImmutableList.copyOf(inputText);
     }
 }

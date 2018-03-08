@@ -3,6 +3,7 @@ package com.creativeartie.jwriter.pdf;
 import java.io.*;
 import java.util.*;
 
+import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.*;
 import com.google.common.collect.*;
 
@@ -38,6 +39,25 @@ class PdfBlock extends ForwardingList<PdfLine>{
     public PdfBlock setIndent(float indent){
         divIndent = indent;
         return this;
+    }
+
+    void render(PDPageContentStream output, PdfSection section) throws IOException{
+        for (PdfLine line: divLines){
+            for(PdfText text: line){
+                setFont(output, section, text);
+                output.showText(text.getText());
+            }
+            output.newLineAtOffset(0, line.getHeight() * - 1);
+        }
+    }
+
+    private void setFont(PDPageContentStream output, PdfSection section,
+            PdfText text) throws IOException{
+        PDFont font = text.getFont();
+        int size = text.getSize();
+        if (section.setFont(font, size)){
+            output.setFont(font, size);
+        }
     }
 
     public PdfBlock appendText(String text, PDFont font, int size)
