@@ -5,39 +5,17 @@ import com.creativeartie.jwriter.file.*;
 import com.creativeartie.jwriter.resource.*;
 import com.creativeartie.jwriter.lang.markup.*;
 
-public final class DocumentData{
-    static float inchToPoint(float inches){
-        return inches * 72f;
-    }
-
-    static float millimeterToPoint(float mm){
-        return mm * 2.83465f;
-    }
-
-    private boolean isInches;
-    private float pageMargin;
+public final class DataTitle implements Data{
+    private DataWriting baseData;
     private ManuscriptFile outputDoc;
 
-    public DocumentData(ManuscriptFile doc){
-        isInches = true;
-        pageMargin = toPoint(1);
-        outputDoc = doc;
+    public DataTitle(DataWriting data){
+        baseData = data;
+        outputDoc = data.getOutputDoc();
     }
 
-    private float toPoint(float value){
-        return isInches? inchToPoint(value): millimeterToPoint(value);
-    }
-
-    public float getMargin(){
-        return pageMargin;
-    }
-
-    public ManuscriptFile getOutputDoc(){
-        return outputDoc;
-    }
-
-    public WritingText getWritingText(){
-        return outputDoc.getDocument();
+    public DataWriting getBaseData(){
+        return baseData;
     }
 
     public ArrayList<String> getTitleTopText(){

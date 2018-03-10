@@ -9,7 +9,7 @@ import org.apache.pdfbox.pdmodel.font.*;
 /**
  * Defines the placement of the text on the page.
  */
-abstract class PdfSection{
+abstract class PdfArea{
     private PDFont textFont;
     private int textSize;
 

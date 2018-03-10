@@ -24,8 +24,8 @@ public class MainTest {
         WritingText doc = new WritingText(file);
         ManuscriptFile use = ManuscriptFile.withManuscript(doc);
 
-        try (PdfDocument output = new PdfDocument("test.pdf")
-            .loadContent(new DocumentData(use)).render()){}
+        try (OutputPdfFile output = new OutputPdfFile("test.pdf",
+            new DataWriting(use)).render()){}
 
         /*File out = new File("test.pdf");
         try (PdfFileOutput output = new PdfFileOutput(out)){

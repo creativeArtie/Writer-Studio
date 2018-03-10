@@ -7,32 +7,29 @@ import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.*;
 
 /**
- * Prints the agent data
+ * Prints the title page header
  */
-class PdfSectionTitleHeader extends PdfSection{
+class PdfAreaTitleHeader extends PdfArea{
     private float baseMargins;
     private PDPage outputPage;
     private ArrayList<PdfBlock> outputLines;
     private float startX;
     private float startY;
 
-    public PdfSectionTitleHeader(float margins){
-        super();
-        baseMargins = margins;
-    }
+    public PdfAreaTitleHeader(DataTitle file, OutputPdfFile doc) throws IOException{
+        baseMargins = file.getMargin();
 
-    void loadContent(DocumentData file, PdfDocument doc) throws IOException{
         startY = doc.getPage().getMediaBox().getHeight() - baseMargins;
         startX = baseMargins;
 
-
-        PDFont font = PDType1Font.TIMES_ROMAN;
+        PDFont font = file.getBaseFontType();
+        int size = file.getBaseFontSize();
         float width = doc.getPage().getMediaBox().getWidth() - (baseMargins * 2);
 
         outputLines = new ArrayList<>();
         for (String line: file.getTitleTopText()){
             outputLines.add(new PdfBlock(width).setLeading(1)
-                .appendText(line, font, 12));
+                .appendText(line, font, size));
         }
 
     }

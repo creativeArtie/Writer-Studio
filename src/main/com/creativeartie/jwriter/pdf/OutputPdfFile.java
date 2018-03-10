@@ -4,40 +4,39 @@ import java.io.*;
 import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.*;
 
-public class PdfDocument implements AutoCloseable{
+public class OutputPdfFile implements AutoCloseable{
     private final String saveFile;
     private final PDDocument pdfDocument;
-    private final PdfSectionTitleHeader titleTop;
+    private final PdfAreaTitleHeader titleTop;
+    private final PdfAreaTitleFooter titleBottom;
     private PDPageContentStream contentStream;
 
     private PDPage currentPage;
 
-    public PdfDocument(String file) throws IOException{
+    public OutputPdfFile(String file, DataWriting data) throws IOException{
         pdfDocument = new PDDocument();
         saveFile = file;
         newPage();
-        titleTop = new PdfSectionTitleHeader(72);
+        titleTop = new PdfAreaTitleHeader(data.getTitleData(), this);
+        titleBottom = new PdfAreaTitleFooter(data.getTitleData(), this);
     }
 
-    public PdfDocument loadContent(DocumentData data){
-        titleTop.loadContent(data, this);
-        return this;
-    }
-
-    private PdfDocument newPage() throws IOException{
+    private OutputPdfFile newPage() throws IOException{
         currentPage = new PDPage();
         pdfDocument.addPage(currentPage);
         contentStream = new PDPageContentStream(pdfDocument, currentPage);
         return this;
     }
 
-    PdfDocument addPage() throws IOException{
+    OutputPdfFile addPage() throws IOException{
         contentStream.close();
+        newPage();
         return this;
     }
 
-    public PdfDocument render() throws IOException{
+    public OutputPdfFile render() throws IOException{
         titleTop.render(contentStream);
+        titleBottom.render(contentStream);
         return this;
     }
 

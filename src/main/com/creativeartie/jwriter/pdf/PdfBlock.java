@@ -41,17 +41,25 @@ class PdfBlock extends ForwardingList<PdfLine>{
         return this;
     }
 
-    void render(PDPageContentStream output, PdfSection section) throws IOException{
+    public float getHeight(){
+        float ans = 0;
+        for (PdfLine line: divLines){
+            ans += line.getHeight();
+        }
+        return ans;
+    }
+
+    void render(PDPageContentStream output, PdfArea section) throws IOException{
         for (PdfLine line: divLines){
             for(PdfText text: line){
                 setFont(output, section, text);
                 output.showText(text.getText());
             }
-            output.newLineAtOffset(0, line.getHeight() * - 1);
+            output.newLineAtOffset(0, line.getHeight() * -1);
         }
     }
 
-    private void setFont(PDPageContentStream output, PdfSection section,
+    private void setFont(PDPageContentStream output, PdfArea section,
             PdfText text) throws IOException{
         PDFont font = text.getFont();
         int size = text.getSize();
