@@ -8,27 +8,27 @@ import com.google.common.base.*;
 /**
  * Decides the length of a text and if it need to be keep with the last text.
  */
-class PdfText{
+class PdfData{
     private static final String SPACE = " ";
 
-    public static ArrayList<PdfText> createWords(String text, PDFont font,
+    public static ArrayList<PdfData> createWords(String text, PDFont font,
             int size) throws IOException{
 
-        PdfText space = new PdfText(SPACE, font, size, true);
+        PdfData space = new PdfData(SPACE, font, size, true);
         CharMatcher whitespace = CharMatcher.whitespace();
 
-        ArrayList<PdfText> holder = new ArrayList<>();
+        ArrayList<PdfData> holder = new ArrayList<>();
         for (String word: Splitter.on(whitespace).omitEmptyStrings()
                 .split(text)){
-            holder.add(new PdfText(word, font, size, false));
+            holder.add(new PdfData(word, font, size, false));
         }
         int i = 0;
         boolean isFirst = true;
-        ArrayList<PdfText> ans = new ArrayList<>();
+        ArrayList<PdfData> ans = new ArrayList<>();
         if (whitespace.indexIn(text) == 0){
             ans.add(space);
         }
-        for (PdfText item: holder){
+        for (PdfData item: holder){
             if (isFirst){
                 isFirst = false;
             } else {
@@ -49,7 +49,7 @@ class PdfText{
     private float textHeight;
     private boolean spaceText;
 
-    private PdfText(String word, PDFont font, int size, boolean space)
+    private PdfData(String word, PDFont font, int size, boolean space)
             throws IOException{
         outputText = word;
         textFont = font;

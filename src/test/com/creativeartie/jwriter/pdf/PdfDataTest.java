@@ -12,17 +12,17 @@ import org.junit.runners.*;
 import org.apache.pdfbox.pdmodel.font.*;
 
 @RunWith(JUnit4.class)
-public class PdfTextTest{
+public class PdfDataTest{
 
     private static void test(String test, String ... expects)
             throws IOException{
-        test(PdfText.createWords(test, PDType1Font.TIMES_ROMAN, 12), expects);
+        test(PdfData.createWords(test, PDType1Font.TIMES_ROMAN, 12), expects);
     }
 
-    public static void test(ArrayList<PdfText> test, String ... expects){
+    public static void test(ArrayList<PdfData> test, String ... expects){
         assertEquals(expects.length, test.size());
         int i = 0;
-        for(PdfText text: test){
+        for(PdfData text: test){
             assertEquals("Positional:" + i, expects[i], text.getText());
             i++;
         }

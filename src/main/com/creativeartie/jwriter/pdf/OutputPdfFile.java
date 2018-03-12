@@ -7,9 +7,9 @@ import org.apache.pdfbox.pdmodel.font.*;
 public class OutputPdfFile implements AutoCloseable{
     private final String saveFile;
     private final PDDocument pdfDocument;
-    private final PdfAreaTitleHeader titleTop;
-    private final PdfAreaTitleCenter titleCenter;
-    private final PdfAreaTitleFooter titleBottom;
+    private final PdfSectionTitleTop titleTop;
+    private final PdfSectionTitleCenter titleCenter;
+    private final PdfSectionTitleBottom titleBottom;
     private PDPageContentStream contentStream;
 
     private PDPage currentPage;
@@ -18,9 +18,9 @@ public class OutputPdfFile implements AutoCloseable{
         pdfDocument = new PDDocument();
         saveFile = file;
         newPage();
-        titleTop = new PdfAreaTitleHeader(data.getTitleData(), this);
-        titleCenter = new PdfAreaTitleCenter(data.getTitleData(), this);
-        titleBottom = new PdfAreaTitleFooter(data.getTitleData(), this);
+        titleTop = new PdfSectionTitleTop(data.getTitleData(), this);
+        titleCenter = new PdfSectionTitleCenter(data.getTitleData(), this);
+        titleBottom = new PdfSectionTitleBottom(data.getTitleData(), this);
     }
 
     private OutputPdfFile newPage() throws IOException{

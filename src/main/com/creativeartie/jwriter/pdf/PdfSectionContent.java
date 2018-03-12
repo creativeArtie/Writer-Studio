@@ -8,12 +8,12 @@ import org.apache.pdfbox.pdmodel.*;
 /**
  * Defines the placement of the text on the page.
  *
-class PdfAreaContent extends PdfArea{
+class PdfSectionContent extends PdfSection{
     private float baseMargins;
     private PDPage outputPage;
-    private TreeSet<PdfArea> sections;
+    private TreeSet<PdfSection> sections;
 
-    public PdfAreaContent(DataContent file){
+    public PdfSectionContent(DataContent file){
         super(file);
     }
 
@@ -32,7 +32,7 @@ class PdfAreaContent extends PdfArea{
     }
 
     @Override
-    protected List<PdfBlock> delegate(){
+    protected List<PdfLine> delegate(){
         return new ArrayList<>();
     }
 }*/

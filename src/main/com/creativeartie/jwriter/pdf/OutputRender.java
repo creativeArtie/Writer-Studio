@@ -13,14 +13,14 @@ import com.creativeartie.jwriter.pdf.value.*;
 /**
  * Defines the placement of the text on the page.
  */
-final class PdfAreaRender{
+final class OutputRender{
     private PDPageContentStream contentStream;
     private TextAlignment textAlignment;
     private PDFont textFont;
     private int textSize;
     private float sectionWidth;
 
-    public PdfAreaRender(PDPageContentStream output, float x, float y, float w)
+    public OutputRender(PDPageContentStream output, float x, float y, float w)
             throws IOException{
         contentStream = output;
         sectionWidth = w;
@@ -90,13 +90,13 @@ final class PdfAreaRender{
         contentStream.newLineAtOffset(0, -y);
     }
 
-    void printText(PdfLine line) throws IOException{
+    void printText(PdfDiv line) throws IOException{
         if (textAlignment == TextAlignment.RIGHT){
             contentStream.newLineAtOffset(-line.getWidth(), 0);
         } else if (textAlignment == TextAlignment.CENTER){
             contentStream.newLineAtOffset(-(line.getWidth() / 2), 0);
         }
-        for (PdfText text: line){
+        for (PdfData text: line){
             changeFont(text.getFont(), text.getSize());
             contentStream.showText(text.getText());
         }

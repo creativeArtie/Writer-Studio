@@ -23,9 +23,9 @@ public final class DataTitle implements Data{
         return baseData;
     }
 
-    public ArrayList<PdfBlock> getTitleTopText(float width)
+    public ArrayList<PdfLine> getTitleTopText(float width)
              throws IOException{
-        ArrayList<PdfBlock> ans = new ArrayList<>();
+        ArrayList<PdfLine> ans = new ArrayList<>();
         ans.add(newBlock(MetaData.AGENT_NAME, TextAlignment.LEFT, width));
         ans.add(newBlock(MetaData.AGENT_ADDRESS, TextAlignment.LEFT, width));
         ans.add(newBlock(MetaData.AGENT_EMAIL, TextAlignment.LEFT, width));
@@ -33,18 +33,18 @@ public final class DataTitle implements Data{
         return ans;
     }
 
-    public ArrayList<PdfBlock> getTitleCenterText(float width)
+    public ArrayList<PdfLine> getTitleCenterText(float width)
              throws IOException{
-        ArrayList<PdfBlock> ans = new ArrayList<>();
+        ArrayList<PdfLine> ans = new ArrayList<>();
         ans.add(newBlock(MetaData.TITLE, TextAlignment.CENTER, width, 2));
         ans.add(newBlock("By", TextAlignment.CENTER, width, 2));
         ans.add(newBlock(MetaData.AUTHOR, TextAlignment.CENTER, width, 2));
         return ans;
     }
 
-    public ArrayList<PdfBlock> getTitleBottomText(float width)
+    public ArrayList<PdfLine> getTitleBottomText(float width)
              throws IOException{
-        ArrayList<PdfBlock> ans = new ArrayList<>();
+        ArrayList<PdfLine> ans = new ArrayList<>();
         ans.add(newBlock(MetaData.AUTHOR, TextAlignment.RIGHT, width));
         ans.add(newBlock(MetaData.ADDRESS, TextAlignment.RIGHT, width));
         ans.add(newBlock(MetaData.PHONE, TextAlignment.RIGHT, width));
@@ -58,19 +58,19 @@ public final class DataTitle implements Data{
         return ans;
     }
 
-    private PdfBlock newBlock(MetaData data, TextAlignment alignment,
+    private PdfLine newBlock(MetaData data, TextAlignment alignment,
             float width) throws IOException{
         return newBlock(data, alignment, width, 1);
     }
 
-    private PdfBlock newBlock(MetaData data, TextAlignment alignment,
+    private PdfLine newBlock(MetaData data, TextAlignment alignment,
             float width, float leading) throws IOException{
         return newBlock(outputDoc.getText(data), alignment, width, leading);
     }
 
-    private PdfBlock newBlock(String text, TextAlignment alignment,
+    private PdfLine newBlock(String text, TextAlignment alignment,
             float width, float leading) throws IOException{
-        return new PdfBlock(width, alignment).setLeading(leading)
+        return new PdfLine(width, alignment).setLeading(leading)
             .appendText(text, getBaseFontType(), getBaseFontSize());
     }
 }

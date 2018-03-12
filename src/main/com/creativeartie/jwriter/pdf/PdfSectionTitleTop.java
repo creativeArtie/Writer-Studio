@@ -9,29 +9,26 @@ import org.apache.pdfbox.pdmodel.font.*;
 import com.google.common.collect.*;
 
 /**
- * Prints the title page center text
+ * Prints the title page header
  */
-class PdfAreaTitleCenter extends PdfArea{
+class PdfSectionTitleTop extends PdfSection{
     private float baseMargins;
     private PDPage outputPage;
-    private ArrayList<PdfBlock> outputLines;
+    private ArrayList<PdfLine> outputLines;
     private float startX;
     private float startY;
 
-    public PdfAreaTitleCenter(DataTitle file, OutputPdfFile doc) throws IOException{
+    public PdfSectionTitleTop(DataTitle file, OutputPdfFile doc) throws IOException{
         super(file, doc);
         baseMargins = file.getMargin();
 
-        startY = doc.getPage().getMediaBox().getHeight() / 2 ;
+        startY = doc.getPage().getMediaBox().getHeight() - baseMargins;
         startX = baseMargins;
 
         PDFont font = file.getBaseFontType();
         int size = file.getBaseFontSize();
 
-        outputLines = file.getTitleCenterText(getWidth());
-        for (PdfBlock block: outputLines){
-            startY += block.getHeight() / 2 ;
-        }
+        outputLines = file.getTitleTopText(getWidth());
     }
 
     @Override
@@ -45,7 +42,7 @@ class PdfAreaTitleCenter extends PdfArea{
     }
 
     @Override
-    public List<PdfBlock> delegate(){
+    public List<PdfLine> delegate(){
         return outputLines;
     }
 
