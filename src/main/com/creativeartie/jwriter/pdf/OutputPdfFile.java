@@ -8,6 +8,7 @@ public class OutputPdfFile implements AutoCloseable{
     private final String saveFile;
     private final PDDocument pdfDocument;
     private final PdfAreaTitleHeader titleTop;
+    private final PdfAreaTitleCenter titleCenter;
     private final PdfAreaTitleFooter titleBottom;
     private PDPageContentStream contentStream;
 
@@ -18,6 +19,7 @@ public class OutputPdfFile implements AutoCloseable{
         saveFile = file;
         newPage();
         titleTop = new PdfAreaTitleHeader(data.getTitleData(), this);
+        titleCenter = new PdfAreaTitleCenter(data.getTitleData(), this);
         titleBottom = new PdfAreaTitleFooter(data.getTitleData(), this);
     }
 
@@ -36,6 +38,7 @@ public class OutputPdfFile implements AutoCloseable{
 
     public OutputPdfFile render() throws IOException{
         titleTop.render(contentStream);
+        titleCenter.render(contentStream);
         titleBottom.render(contentStream);
         return this;
     }

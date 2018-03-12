@@ -62,36 +62,8 @@ class PdfBlock extends ForwardingList<PdfLine>{
         return ans;
     }
 
-    float render(PDPageContentStream output, PdfArea section) throws IOException{
-        float ptr = section.getPointer();
-        for (PdfLine line: divLines){
-            for(PdfText text: line){
-                section.setFont(text.getFont(), text.getSize());
-                output.showText(text.getText());
-            }
-            float ren = getRenderX(line);
-            float move = ren - ptr;
-            output.newLineAtOffset(move, line.getHeight() * -1);
-            ptr = move + ptr;
-            System.out.println(ptr + line.getWidth());
-        }
-        return ptr;
-    }
-
-    float getRenderX(){
-        if(isEmpty()){
-            return 0;
-        }
-        return getRenderX(get(0));
-    }
-
-    private float getRenderX(PdfLine line){
-        switch (divAlignment){
-            case RIGHT:
-                return divWidth - line.getWidth();
-            default:
-                return 0;
-        }
+    TextAlignment getTextAlignment(){
+        return divAlignment;
     }
 
     public PdfBlock appendText(String text, PDFont font, int size)

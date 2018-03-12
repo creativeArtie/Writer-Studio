@@ -4,56 +4,38 @@ import java.io.*;
 import java.util.*;
 
 import org.apache.pdfbox.pdmodel.*;
-import org.apache.pdfbox.pdmodel.font.*;
+
+import com.google.common.collect.*;
 
 /**
  * Defines the placement of the text on the page.
  */
-abstract class PdfArea {
-    private PDPageContentStream contentStream;
-    private PDFont textFont;
-    private int textSize;
-    private float textPointer;
-    private float leftMargin;
+abstract class PdfArea extends ForwardingList<PdfBlock>{
+    private float divWidth;
 
-    public PdfArea(Data data){
-        leftMargin = data.getMargin();
-        textPointer = 0;
+    public PdfArea(Data data, OutputPdfFile doc){
+        divWidth = doc.getPage().getMediaBox().getWidth() - (data.getMargin() * 2);
+    }
+
+    public float getWidth(){
+        return divWidth;
     }
 
     void render(PDPageContentStream output) throws IOException{
-        contentStream = output;
         output.beginText();
-        textPointer = getRenderX();
-        output.newLineAtOffset(textPointer + leftMargin, getYLocation());
-        for (PdfBlock block: getOutputBlocks()){
-            System.out.println(block);
-            textPointer = block.render(output, this);
+        PdfAreaRender render = new PdfAreaRender(output, getXLocation(),
+            getYLocation(), divWidth);
+        for (PdfBlock block: this){
+            render.changeAlign(block.getTextAlignment());
+            for (PdfLine line: block){
+                // TODO change indent
+                render.printText(line);
+                render.nextLine(line.getHeight());
+            }
         }
         output.endText();
     }
 
-    void setFont(PDFont font, int size) throws IOException{
-        boolean update = false;
-        if (textFont == null || ! textFont.equals(font)){
-            update = true;
-            textFont = font;
-        }
-        if (size != textSize){
-            update = true;
-            textSize = size;
-        }
-        if (update){
-            contentStream.setFont(font, size);
-        }
-    }
-
-    float getPointer(){
-        return textPointer;
-    }
-
-    abstract float getRenderX();
     abstract float getXLocation();
     abstract float getYLocation();
-    abstract List<PdfBlock> getOutputBlocks();
 }

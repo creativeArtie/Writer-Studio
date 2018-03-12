@@ -7,7 +7,7 @@ import org.apache.pdfbox.pdmodel.*;
 
 /**
  * Defines the placement of the text on the page.
- */
+ *
 class PdfAreaContent extends PdfArea{
     private float baseMargins;
     private PDPage outputPage;
@@ -31,7 +31,8 @@ class PdfAreaContent extends PdfArea{
         return baseMargins;
     }
 
-    List<PdfBlock> getOutputBlocks(){
-        return null;
+    @Override
+    protected List<PdfBlock> delegate(){
+        return new ArrayList<>();
     }
-}
+}*/

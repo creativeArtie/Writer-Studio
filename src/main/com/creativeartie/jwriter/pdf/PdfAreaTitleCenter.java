@@ -6,32 +6,31 @@ import java.util.*;
 import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.*;
 
-import com.creativeartie.jwriter.pdf.value.*;
-
 import com.google.common.collect.*;
 
 /**
- * Prints the title page footer
+ * Prints the title page center text
  */
-class PdfAreaTitleFooter extends PdfArea{
+class PdfAreaTitleCenter extends PdfArea{
     private float baseMargins;
     private PDPage outputPage;
     private ArrayList<PdfBlock> outputLines;
     private float startX;
     private float startY;
 
-    public PdfAreaTitleFooter(DataTitle file, OutputPdfFile doc) throws IOException{
+    public PdfAreaTitleCenter(DataTitle file, OutputPdfFile doc) throws IOException{
         super(file, doc);
         baseMargins = file.getMargin();
-        startY = baseMargins;
+
+        startY = doc.getPage().getMediaBox().getHeight() / 2 ;
         startX = baseMargins;
 
         PDFont font = file.getBaseFontType();
         int size = file.getBaseFontSize();
 
-        outputLines = file.getTitleBottomText(getWidth());
-        for (PdfBlock line: outputLines){
-            startY += line.getHeight();
+        outputLines = file.getTitleCenterText(getWidth());
+        for (PdfBlock block: outputLines){
+            startY += block.getHeight() / 2 ;
         }
     }
 
@@ -46,7 +45,8 @@ class PdfAreaTitleFooter extends PdfArea{
     }
 
     @Override
-    protected List<PdfBlock> delegate(){
-        return ImmutableList.copyOf(outputLines);
+    public List<PdfBlock> delegate(){
+        return outputLines;
     }
+
 }
