@@ -14,11 +14,11 @@ import com.google.common.collect.*;
 class PdfSectionTitleCenter extends PdfSection{
     private float baseMargins;
     private PDPage outputPage;
-    private ArrayList<PdfLine> outputLines;
+    private ArrayList<PdfParagraph> outputLines;
     private float startX;
     private float startY;
 
-    public PdfSectionTitleCenter(DataTitle file, OutputPdfFile doc) throws IOException{
+    public PdfSectionTitleCenter(DataTitle file, StreamPdfFile doc) throws IOException{
         super(file, doc);
         baseMargins = file.getMargin();
 
@@ -29,7 +29,7 @@ class PdfSectionTitleCenter extends PdfSection{
         int size = file.getBaseFontSize();
 
         outputLines = file.getTitleCenterText(getWidth());
-        for (PdfLine block: outputLines){
+        for (PdfParagraph block: outputLines){
             startY += block.getHeight() / 2 ;
         }
     }
@@ -45,7 +45,7 @@ class PdfSectionTitleCenter extends PdfSection{
     }
 
     @Override
-    public List<PdfLine> delegate(){
+    public List<PdfParagraph> delegate(){
         return outputLines;
     }
 

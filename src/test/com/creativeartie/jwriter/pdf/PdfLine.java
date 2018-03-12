@@ -12,16 +12,16 @@ import org.junit.runners.*;
 import org.apache.pdfbox.pdmodel.font.*;
 
 @RunWith(JUnit4.class)
-public class PdfDivTest{
+public class PdfLineTest{
 
-    private ArrayList<PdfData> test(PdfDiv line, String text)
+    private ArrayList<PdfData> test(PdfLine line, String text)
             throws IOException{
         return line.appendText(text, PDType1Font.TIMES_ROMAN, 12);
     }
 
     @Test
     public void BasicTest() throws IOException{
-        PdfDiv line = new PdfDiv(5000, 1);
+        PdfLine line = new PdfLine(5000, 1);
         ArrayList<PdfData> output = test(line, "Hello World! Testing Joey.");
         assertEquals(131.31f, line.getWidth(), 0.1);
         PdfDataTest.test(output);
@@ -29,7 +29,7 @@ public class PdfDivTest{
 
     @Test
     public void TwoLines() throws IOException{
-        PdfDiv line = new PdfDiv(50, 1);
+        PdfLine line = new PdfLine(50, 1);
         ArrayList<PdfData> output = test(line, "Hello World! Testing Joey.");
         assertEquals(29.66f, line.getWidth(), 0.1);
         PdfDataTest.test(output, "World!", " ", "Testing", " ", "Joey.");
@@ -37,7 +37,7 @@ public class PdfDivTest{
 
     @Test
     public void spaceStart() throws IOException{
-        PdfDiv line = new PdfDiv(5000, 1);
+        PdfLine line = new PdfLine(5000, 1);
         ArrayList<PdfData> output = test(line, " Hello World! Testing Joey.");
         assertEquals(131.31f, line.getWidth(), 0.1);
         PdfDataTest.test(output);

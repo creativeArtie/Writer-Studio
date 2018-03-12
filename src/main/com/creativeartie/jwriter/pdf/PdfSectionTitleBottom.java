@@ -16,11 +16,11 @@ import com.google.common.collect.*;
 class PdfSectionTitleBottom extends PdfSection{
     private float baseMargins;
     private PDPage outputPage;
-    private ArrayList<PdfLine> outputLines;
+    private ArrayList<PdfParagraph> outputLines;
     private float startX;
     private float startY;
 
-    public PdfSectionTitleBottom(DataTitle file, OutputPdfFile doc) throws IOException{
+    public PdfSectionTitleBottom(DataTitle file, StreamPdfFile doc) throws IOException{
         super(file, doc);
         baseMargins = file.getMargin();
         startY = baseMargins;
@@ -30,7 +30,7 @@ class PdfSectionTitleBottom extends PdfSection{
         int size = file.getBaseFontSize();
 
         outputLines = file.getTitleBottomText(getWidth());
-        for (PdfLine line: outputLines){
+        for (PdfParagraph line: outputLines){
             startY += line.getHeight();
         }
     }
@@ -46,7 +46,7 @@ class PdfSectionTitleBottom extends PdfSection{
     }
 
     @Override
-    protected List<PdfLine> delegate(){
+    protected List<PdfParagraph> delegate(){
         return ImmutableList.copyOf(outputLines);
     }
 }

@@ -4,43 +4,42 @@ import java.io.*;
 import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.*;
 
-public class OutputPdfFile implements AutoCloseable{
+public class StreamPdfFile implements AutoCloseable{
     private final String saveFile;
     private final PDDocument pdfDocument;
-    private final PdfSectionTitleTop titleTop;
-    private final PdfSectionTitleCenter titleCenter;
-    private final PdfSectionTitleBottom titleBottom;
     private PDPageContentStream contentStream;
+    private PdfWritingTitle titlePage;
 
     private PDPage currentPage;
 
-    public OutputPdfFile(String file, DataWriting data) throws IOException{
+    public StreamPdfFile(String file, DataWriting data) throws IOException{
         pdfDocument = new PDDocument();
         saveFile = file;
         newPage();
-        titleTop = new PdfSectionTitleTop(data.getTitleData(), this);
-        titleCenter = new PdfSectionTitleCenter(data.getTitleData(), this);
-        titleBottom = new PdfSectionTitleBottom(data.getTitleData(), this);
+
+        titlePage = new PdfWritingTitle(data, this);
     }
 
-    private OutputPdfFile newPage() throws IOException{
+    private StreamPdfFile newPage() throws IOException{
         currentPage = new PDPage();
         pdfDocument.addPage(currentPage);
         contentStream = new PDPageContentStream(pdfDocument, currentPage);
         return this;
     }
 
-    OutputPdfFile addPage() throws IOException{
+    StreamPdfFile addPage() throws IOException{
         contentStream.close();
         newPage();
         return this;
     }
 
-    public OutputPdfFile render() throws IOException{
-        titleTop.render(contentStream);
-        titleCenter.render(contentStream);
-        titleBottom.render(contentStream);
+    public StreamPdfFile render() throws IOException{
+        titlePage.render();
         return this;
+    }
+
+    PDPageContentStream getContentStream(){
+        return contentStream;
     }
 
     public PDPage getPage(){

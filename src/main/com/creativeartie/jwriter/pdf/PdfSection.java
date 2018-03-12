@@ -10,10 +10,10 @@ import com.google.common.collect.*;
 /**
  * Defines the placement of the text on the page.
  */
-abstract class PdfSection extends ForwardingList<PdfLine>{
+abstract class PdfSection extends ForwardingList<PdfParagraph>{
     private float divWidth;
 
-    public PdfSection(Data data, OutputPdfFile doc){
+    public PdfSection(Data data, StreamPdfFile doc){
         divWidth = doc.getPage().getMediaBox().getWidth() - (data.getMargin() * 2);
     }
 
@@ -23,11 +23,11 @@ abstract class PdfSection extends ForwardingList<PdfLine>{
 
     void render(PDPageContentStream output) throws IOException{
         output.beginText();
-        OutputRender render = new OutputRender(output, getXLocation(),
+        StreamRender render = new StreamRender(output, getXLocation(),
             getYLocation(), divWidth);
-        for (PdfLine block: this){
+        for (PdfParagraph block: this){
             render.changeAlign(block.getTextAlignment());
-            for (PdfDiv line: block){
+            for (PdfLine line: block){
                 // TODO change indent
                 render.printText(line);
                 render.nextLine(line.getHeight());

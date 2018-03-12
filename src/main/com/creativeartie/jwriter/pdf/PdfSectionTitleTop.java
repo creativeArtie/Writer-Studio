@@ -14,11 +14,11 @@ import com.google.common.collect.*;
 class PdfSectionTitleTop extends PdfSection{
     private float baseMargins;
     private PDPage outputPage;
-    private ArrayList<PdfLine> outputLines;
+    private ArrayList<PdfParagraph> outputLines;
     private float startX;
     private float startY;
 
-    public PdfSectionTitleTop(DataTitle file, OutputPdfFile doc) throws IOException{
+    public PdfSectionTitleTop(DataTitle file, StreamPdfFile doc) throws IOException{
         super(file, doc);
         baseMargins = file.getMargin();
 
@@ -42,7 +42,7 @@ class PdfSectionTitleTop extends PdfSection{
     }
 
     @Override
-    public List<PdfLine> delegate(){
+    public List<PdfParagraph> delegate(){
         return outputLines;
     }
 
