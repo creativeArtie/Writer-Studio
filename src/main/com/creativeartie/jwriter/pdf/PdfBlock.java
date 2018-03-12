@@ -7,6 +7,8 @@ import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.*;
 import com.google.common.collect.*;
 
+import com.creativeartie.jwriter.pdf.value.*;
+
 /**
  * Represent a single line of writing text, like paragraph, list item, text box,
  * etc.
@@ -17,26 +19,37 @@ class PdfBlock extends ForwardingList<PdfLine>{
     private float divFirstIndent;
     private float divIndent;
     private float divLeading;
+    private boolean noEdited;
+    private TextAlignment divAlignment;
 
     public PdfBlock(float width){
+        this (width, TextAlignment.LEFT);
+    }
+
+    public PdfBlock(float width, TextAlignment alignment){
         divLines = new ArrayList<>();
         divLeading = 2;
         divFirstIndent = 0;
         divIndent = 0;
         divWidth = width;
+        divAlignment = alignment;
+        noEdited = false;
     }
 
     public PdfBlock setLeading(float leading){
+        formatChanged();
         divLeading = leading;
         return this;
     }
 
     public PdfBlock setFirstIndent(float indent){
+        formatChanged();
         divFirstIndent = indent;
         return this;
     }
 
     public PdfBlock setIndent(float indent){
+        formatChanged();
         divIndent = indent;
         return this;
     }
@@ -49,22 +62,35 @@ class PdfBlock extends ForwardingList<PdfLine>{
         return ans;
     }
 
-    void render(PDPageContentStream output, PdfArea section) throws IOException{
+    float render(PDPageContentStream output, PdfArea section) throws IOException{
+        float ptr = section.getPointer();
         for (PdfLine line: divLines){
             for(PdfText text: line){
-                setFont(output, section, text);
+                section.setFont(text.getFont(), text.getSize());
                 output.showText(text.getText());
             }
-            output.newLineAtOffset(0, line.getHeight() * -1);
+            float ren = getRenderX(line);
+            float move = ren - ptr;
+            output.newLineAtOffset(move, line.getHeight() * -1);
+            ptr = move + ptr;
+            System.out.println(ptr + line.getWidth());
         }
+        return ptr;
     }
 
-    private void setFont(PDPageContentStream output, PdfArea section,
-            PdfText text) throws IOException{
-        PDFont font = text.getFont();
-        int size = text.getSize();
-        if (section.setFont(font, size)){
-            output.setFont(font, size);
+    float getRenderX(){
+        if(isEmpty()){
+            return 0;
+        }
+        return getRenderX(get(0));
+    }
+
+    private float getRenderX(PdfLine line){
+        switch (divAlignment){
+            case RIGHT:
+                return divWidth - line.getWidth();
+            default:
+                return 0;
         }
     }
 
@@ -78,6 +104,12 @@ class PdfBlock extends ForwardingList<PdfLine>{
             line = divLines.get(divLines.size() - 1);
         }
         appendText(line.appendText(text, font, size));
+        noEdited = true;
+        return this;
+    }
+
+    public PdfBlock setTextAlignment(TextAlignment alignment){
+        divAlignment = alignment;
         return this;
     }
 
@@ -91,5 +123,12 @@ class PdfBlock extends ForwardingList<PdfLine>{
     @Override
     protected List<PdfLine> delegate(){
         return ImmutableList.copyOf(divLines);
+    }
+
+    private void formatChanged(){
+        // TODO redo adding text
+        if (noEdited){
+            throw new IllegalStateException("Format can not be change after text added.");
+        }
     }
 }

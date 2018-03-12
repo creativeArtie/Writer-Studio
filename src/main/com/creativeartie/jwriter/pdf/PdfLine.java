@@ -35,17 +35,20 @@ class PdfLine extends ForwardingList<PdfText>{
     }
 
     public ArrayList<PdfText> appendText(ArrayList<PdfText> texts){
+        // System.out.println(texts);
         ArrayList<PdfText> overflow = null;
         for (PdfText text: texts){
+            // System.out.printf("%5.0f %5.0f, %5.0f\t", curWidth, text.getWidth(), maxWidth);
+            // System.out.println(text);
             if (overflow == null){
                 if (curWidth + text.getWidth() > maxWidth){
+
                     overflow = new ArrayList<>();
                     int last = inputText.size() - 1;
                     if (! inputText.get(last).isSpaceText()){
                         overflow.add(inputText.remove(last));
                     }
                     overflow.add(text);
-                    curWidth += text.getWidth();
                 } else {
                     if (text.getHeight() > textHeight){
                         textHeight = text.getHeight();
@@ -53,12 +56,15 @@ class PdfLine extends ForwardingList<PdfText>{
                     if (! inputText.isEmpty() || ! text.isSpaceText()){
                         /// Don't a space in the begining of the text
                         inputText.add(text);
+                        curWidth += text.getWidth();
                     }
                 }
             } else {
                 overflow.add(text);
             }
         }
+        // System.out.println(curWidth);
+        // System.out.println(overflow);
         return overflow == null? new ArrayList<>(): overflow;
     }
 

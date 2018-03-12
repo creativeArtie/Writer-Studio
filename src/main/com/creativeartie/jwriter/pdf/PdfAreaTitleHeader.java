@@ -17,6 +17,7 @@ class PdfAreaTitleHeader extends PdfArea{
     private float startY;
 
     public PdfAreaTitleHeader(DataTitle file, OutputPdfFile doc) throws IOException{
+        super(file);
         baseMargins = file.getMargin();
 
         startY = doc.getPage().getMediaBox().getHeight() - baseMargins;
@@ -34,13 +35,20 @@ class PdfAreaTitleHeader extends PdfArea{
 
     }
 
+    public float getRenderX(){
+        if (outputLines.isEmpty()){
+            return startX;
+        }
+        return outputLines.get(0).getRenderX();
+    }
+
     @Override
-    public float getX(){
+    public float getXLocation(){
         return startX;
     }
 
     @Override
-    public float getY(){
+    public float getYLocation(){
         return startY;
     }
 

@@ -1,6 +1,6 @@
-0123456789
-      1234|pointer = 0, total(10) - width(4) = need = 6, move by 6
-       123|pointer = 6, total(10) - width(3) = need = 7, move by 1
-     12345|pointer = 7, total(10) - width(5) = need = 5, move by -2
- 123456789|pointer = 5, total(10) - width(9) = need = 1, move by -5
-   1234567|pointer = 1, total(10) - width(7) = need = 3, move by 2
+0123456789|ptr|width - len = ren|ren - ptr = mov| mov + ptr = ptr
+      1234|  0|   10 - 4   = 6  |  6 - 0   = 6  |   6 + 0   = 6
+       123|  6|   10 - 3   = 7  |  7 - 6   = 1  |   1 + 6   = 7
+     12345|  7|   10 - 5   = 5  |  5 - 7   = -2 |  -2 + 7   = 5
+ 123456789|  5|   10 - 9   = 1  |  1 - 5   = -4 |  -4 + 5   = 1
+   1234567|  1|   10 - 7   = 3  |  3 - 1   = 2  |   2 + 1   = 3

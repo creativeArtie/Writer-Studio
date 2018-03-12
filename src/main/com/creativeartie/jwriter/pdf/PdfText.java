@@ -23,13 +23,18 @@ class PdfText{
             holder.add(new PdfText(word, font, size, false));
         }
         int i = 0;
+        boolean isFirst = true;
         ArrayList<PdfText> ans = new ArrayList<>();
         if (whitespace.indexIn(text) == 0){
             ans.add(space);
         }
         for (PdfText item: holder){
+            if (isFirst){
+                isFirst = false;
+            } else {
+                ans.add(space);
+            }
             ans.add(item);
-            ans.add(space);
         }
         if (whitespace.lastIndexIn(text) == text.length() - 1){
             ans.add(space);
@@ -78,5 +83,9 @@ class PdfText{
 
     public int getSize(){
         return fontSize;
+    }
+
+    public String toString(){
+        return "\"" + outputText + "\"";
     }
 }

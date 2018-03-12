@@ -13,17 +13,21 @@ class PdfAreaContent extends PdfArea{
     private PDPage outputPage;
     private TreeSet<PdfArea> sections;
 
-    public PdfAreaContent(){
-        super();
+    public PdfAreaContent(DataContent file){
+        super(file);
     }
 
     void render(PDPageContentStream output){}
 
-    public float getX(){
+    public float getRenderX(){
+        return 0;
+    }
+
+    public float getXLocation(){
         return baseMargins;
     }
 
-    public float getY(){
+    public float getYLocation(){
         return baseMargins;
     }
 
