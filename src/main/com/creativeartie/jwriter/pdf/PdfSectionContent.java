@@ -8,7 +8,7 @@ import org.apache.pdfbox.pdmodel.*;
 import com.google.common.collect.*;
 
 /**
- * Defines the placement of the text on the page.
+ * Prints text on a page with ability to change height and detect overflow.
  */
 class PdfSectionContent extends PdfSection{
     private float baseMargins;
