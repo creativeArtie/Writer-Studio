@@ -19,7 +19,7 @@ public class PdfDataTest{
         test(PdfData.createWords(test, PDType1Font.TIMES_ROMAN, 12), expects);
     }
 
-    public static void test(ArrayList<PdfData> test, String ... expects){
+    public static void test(List<PdfData> test, String ... expects){
         assertEquals(expects.length, test.size());
         int i = 0;
         for(PdfData text: test){

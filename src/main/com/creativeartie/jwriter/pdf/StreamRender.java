@@ -90,7 +90,7 @@ final class StreamRender{
         contentStream.newLineAtOffset(0, -y);
     }
 
-    void printText(PdfLine line) throws IOException{
+    void printText(PdfItem.Line line) throws IOException{
         if (textAlignment == TextAlignment.RIGHT){
             contentStream.newLineAtOffset(-line.getWidth(), 0);
         } else if (textAlignment == TextAlignment.CENTER){

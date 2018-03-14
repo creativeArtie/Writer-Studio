@@ -11,25 +11,27 @@ import com.google.common.collect.*;
 /**
  * Prints the title page header
  */
-class PdfSectionTitleTop extends PdfSection{
+class PdfMatterTitleTop extends PdfMatter<DataTitle>{
     private float baseMargins;
     private PDPage outputPage;
-    private ArrayList<PdfParagraph> outputLines;
+    private ArrayList<PdfItem> outputLines;
     private float startX;
     private float startY;
 
-    public PdfSectionTitleTop(DataTitle file, StreamPdfFile doc) throws IOException{
-        super(file, doc);
-        baseMargins = file.getMargin();
+    @Override
+    protected void parseData(DataTitle data, StreamPdfFile output)
+            throws IOException{
+        baseMargins = data.getMargin();
 
-        startY = doc.getPage().getMediaBox().getHeight() - baseMargins;
+        startY = output.getPage().getMediaBox().getHeight() - baseMargins;
         startX = baseMargins;
 
-        PDFont font = file.getBaseFontType();
-        int size = file.getBaseFontSize();
+        PDFont font = data.getBaseFontType();
+        int size = data.getBaseFontSize();
 
-        outputLines = file.getTitleTopText(getWidth());
+        outputLines = data.getTitleTopText(getWidth());
     }
+
 
     @Override
     public float getXLocation(){
@@ -42,7 +44,7 @@ class PdfSectionTitleTop extends PdfSection{
     }
 
     @Override
-    public List<PdfParagraph> delegate(){
+    public List<PdfItem> delegate(){
         return outputLines;
     }
 

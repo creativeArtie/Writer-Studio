@@ -8,16 +8,15 @@ public class StreamPdfFile implements AutoCloseable{
     private final String saveFile;
     private final PDDocument pdfDocument;
     private PDPageContentStream contentStream;
-    private PdfWritingTitle titlePage;
+    private PdfSectionTitle titlePage;
+    private PdfSectionContent writtenContent;
 
     private PDPage currentPage;
 
-    public StreamPdfFile(String file, DataWriting data) throws IOException{
+    public StreamPdfFile(String file) throws IOException{
         pdfDocument = new PDDocument();
         saveFile = file;
         newPage();
-
-        titlePage = new PdfWritingTitle(data, this);
     }
 
     private StreamPdfFile newPage() throws IOException{
@@ -33,16 +32,11 @@ public class StreamPdfFile implements AutoCloseable{
         return this;
     }
 
-    public StreamPdfFile render() throws IOException{
-        titlePage.render();
-        return this;
-    }
-
     PDPageContentStream getContentStream(){
         return contentStream;
     }
 
-    public PDPage getPage(){
+    PDPage getPage(){
         return currentPage;
     }
 

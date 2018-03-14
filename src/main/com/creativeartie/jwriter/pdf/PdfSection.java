@@ -4,38 +4,38 @@ import java.io.*;
 import java.util.*;
 
 import org.apache.pdfbox.pdmodel.*;
-
+import org.apache.pdfbox.pdmodel.font.*;
 import com.google.common.collect.*;
 
+import com.creativeartie.jwriter.pdf.value.*;
+
 /**
- * Defines the placement of the text on the page.
+ * Represent a section of the manuscript, an essay or an research paper.
  */
-abstract class PdfSection extends ForwardingList<PdfParagraph>{
-    private float divWidth;
+public abstract class PdfSection{
 
-    public PdfSection(Data data, StreamPdfFile doc){
-        divWidth = doc.getPage().getMediaBox().getWidth() - (data.getMargin() * 2);
+    private Optional<DataWriting> inputData;
+    private Optional<StreamPdfFile> outputStream;
+
+    PdfSection(){}
+
+    public PdfSection setData(DataWriting data, StreamPdfFile output)
+            throws IOException{
+        inputData = Optional.of(data);
+        outputStream = Optional.of(output);
+        loadData(data, output);
+        return this;
     }
 
-    public float getWidth(){
-        return divWidth;
+    protected abstract void loadData(DataWriting data, StreamPdfFile output)
+        throws IOException;
+
+    public final PdfSection render() throws IOException{
+        render(outputStream.orElseThrow(() ->
+            new IllegalStateException("setData(...) was not call before render")
+        ));
+        return this;
     }
 
-    void render(PDPageContentStream output) throws IOException{
-        output.beginText();
-        StreamRender render = new StreamRender(output, getXLocation(),
-            getYLocation(), divWidth);
-        for (PdfParagraph block: this){
-            render.changeAlign(block.getTextAlignment());
-            for (PdfLine line: block){
-                // TODO change indent
-                render.printText(line);
-                render.nextLine(line.getHeight());
-            }
-        }
-        output.endText();
-    }
-
-    abstract float getXLocation();
-    abstract float getYLocation();
+    protected abstract void render(StreamPdfFile output) throws IOException;
 }

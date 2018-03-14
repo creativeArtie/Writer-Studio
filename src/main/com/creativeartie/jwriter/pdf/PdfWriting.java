@@ -1,19 +1,26 @@
 package com.creativeartie.jwriter.pdf;
 
 import java.io.*;
-import java.util.*;
-
 import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.*;
-import com.google.common.collect.*;
 
-import com.creativeartie.jwriter.pdf.value.*;
+public class PdfWriting {
+    private PdfSectionTitle titlePage;
+    // private PdfSectionContent contentPages;
 
-/**
- * Represent a section of the manuscript, an essay or an research paper.
- */
-class PdfWriting{
-    private class Page{
-        private PdfSection section;
+    public PdfWriting(){
+        titlePage = new PdfSectionTitle();
+        // contentPages = new PdfSectionContent();
+    }
+
+    public PdfWriting setData(DataWriting data, StreamPdfFile output) throws
+            IOException{
+        titlePage.setData(data, output);
+        return this;
+    }
+
+    public PdfWriting render() throws IOException{
+        titlePage.render();
+        return this;
     }
 }

@@ -11,28 +11,30 @@ import com.google.common.collect.*;
 /**
  * Prints the title page center text
  */
-class PdfSectionTitleCenter extends PdfSection{
+class PdfMatterTitleCenter extends PdfMatter<DataTitle>{
     private float baseMargins;
     private PDPage outputPage;
-    private ArrayList<PdfParagraph> outputLines;
+    private ArrayList<PdfItem> outputLines;
     private float startX;
     private float startY;
 
-    public PdfSectionTitleCenter(DataTitle file, StreamPdfFile doc) throws IOException{
-        super(file, doc);
-        baseMargins = file.getMargin();
+    @Override
+    protected void parseData(DataTitle data, StreamPdfFile output)
+            throws IOException{
+        baseMargins = data.getMargin();
 
-        startY = doc.getPage().getMediaBox().getHeight() / 2 ;
+        startY = output.getPage().getMediaBox().getHeight() / 2 ;
         startX = baseMargins;
 
-        PDFont font = file.getBaseFontType();
-        int size = file.getBaseFontSize();
+        PDFont font = data.getBaseFontType();
+        int size = data.getBaseFontSize();
 
-        outputLines = file.getTitleCenterText(getWidth());
-        for (PdfParagraph block: outputLines){
+        outputLines = data.getTitleCenterText(getWidth());
+        for (PdfItem block: outputLines){
             startY += block.getHeight() / 2 ;
         }
     }
+
 
     @Override
     public float getXLocation(){
@@ -45,7 +47,7 @@ class PdfSectionTitleCenter extends PdfSection{
     }
 
     @Override
-    public List<PdfParagraph> delegate(){
+    public List<PdfItem> delegate(){
         return outputLines;
     }
 

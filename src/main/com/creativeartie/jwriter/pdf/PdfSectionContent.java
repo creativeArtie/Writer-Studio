@@ -4,34 +4,39 @@ import java.io.*;
 import java.util.*;
 
 import org.apache.pdfbox.pdmodel.*;
-
+import org.apache.pdfbox.pdmodel.font.*;
 import com.google.common.collect.*;
 
+import com.creativeartie.jwriter.pdf.value.*;
+
 /**
- * Prints text on a page with ability to change height and detect overflow.
+ * Represent a title page.
  */
 class PdfSectionContent extends PdfSection{
-    private float baseMargins;
-    private ArrayList<PdfParagraph> outputLines;
-    private PdfParagraph currentLine;
-    private float height;
+    private class Page{
+        private PdfMatterContent pageContent;
+        private PdfMatterFootnote pageFootnote;
+        private int pageNumber;
+    }
+    private PdfMatterHeader pageHeader;
+    private int pageTotal;
 
-    public PdfSectionContent(DataContent data, StreamPdfFile file){
-        super(data, file);
+    private ArrayList<Page> contentPages;
+    private ArrayList<Page> contentEndnotes;
+    private ArrayList<Page> contentCitations;
+
+    public PdfSectionContent() {
+        contentCitations = new ArrayList<>();
+        contentEndnotes = new ArrayList<>();
+        contentPages = new ArrayList<>();
     }
 
     @Override
-    public float getXLocation(){
-        return baseMargins;
+    public void loadData(DataWriting data, StreamPdfFile output)
+        throws IOException{
     }
 
     @Override
-    public float getYLocation(){
-        return baseMargins;
-    }
-
-    @Override
-    protected List<PdfParagraph> delegate(){
-        return ImmutableList.copyOf(outputLines);
+    public void render(StreamPdfFile output) throws IOException{
     }
 }
