@@ -31,42 +31,44 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
             curWidth = 0;
         }
 
-        public ArrayList<PdfData> appendText(String string, PDFont font, int size)
+        private ArrayList<PdfData> appendText(String string, PDFont font, int size)
                 throws IOException{
             return appendText(PdfData.createWords(string, font, size));
         }
 
-        public ArrayList<PdfData> appendText(ArrayList<PdfData> texts){
-            // System.out.println(texts);
+        private ArrayList<PdfData> appendText(ArrayList<PdfData> texts){
             ArrayList<PdfData> overflow = null;
             for (PdfData text: texts){
-                // System.out.printf("%5.0f %5.0f, %5.0f\t", curWidth, text.getWidth(), maxWidth);
-                // System.out.println(text);
+                if (inputText.isEmpty() && text.isSpaceText()){
+                    continue;
+                }
                 if (overflow == null){
                     if (curWidth + text.getWidth() > maxWidth){
-
+                        /// Appending text does not fit line
                         overflow = new ArrayList<>();
+                        if (inputText.isEmpty()){
+                            /// Text can not fit line
+                            inputText.add(text);
+                            curWidth = text.getWidth();
+                            continue;
+                        }
                         int last = inputText.size() - 1;
                         if (! inputText.get(last).isSpaceText()){
                             overflow.add(inputText.remove(last));
                         }
                         overflow.add(text);
                     } else {
+                        /// text fit line
                         if (text.getHeight() > textHeight){
                             textHeight = text.getHeight();
                         }
-                        if (! inputText.isEmpty() || ! text.isSpaceText()){
-                            /// Don't a space in the begining of the text
-                            inputText.add(text);
-                            curWidth += text.getWidth();
-                        }
+                        inputText.add(text);
+                        curWidth += text.getWidth();
                     }
                 } else {
                     overflow.add(text);
                 }
             }
-            // System.out.println(curWidth);
-            // System.out.println(overflow);
             return overflow == null? new ArrayList<>(): overflow;
         }
 
@@ -89,6 +91,8 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
     private float divFirstIndent;
     private float divIndent;
     private float divLeading;
+    private float divTopSpacing;
+    private boolean newPage;
     private boolean noEdited;
     private TextAlignment divAlignment;
 
@@ -103,6 +107,8 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
         divIndent = 0;
         divWidth = width;
         divAlignment = alignment;
+        divTopSpacing = 0;
+        newPage = false;
         noEdited = false;
     }
 
@@ -124,6 +130,16 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
         return this;
     }
 
+    public PdfItem setNewPage(boolean b){
+        newPage = b;
+        return this;
+    }
+
+    public PdfItem setTopSpacing(float padding){
+        divTopSpacing = padding;
+        return this;
+    }
+
     public float getHeight(){
         float ans = 0;
         for (Line line: divLines){
@@ -136,6 +152,11 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
         return divAlignment;
     }
 
+    public PdfItem setTextAlignment(TextAlignment alignment){
+        divAlignment = alignment;
+        return this;
+    }
+
     public PdfItem appendText(String text, PDFont font, int size)
             throws IOException{
         Line line;
@@ -145,14 +166,9 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
         } else {
             line = divLines.get(divLines.size() - 1);
         }
-        // TODO deal with overflow
+        /// Append text to the previous line
         appendText(line.appendText(text, font, size));
         noEdited = true;
-        return this;
-    }
-
-    public PdfItem setTextAlignment(TextAlignment alignment){
-        divAlignment = alignment;
         return this;
     }
 
@@ -160,6 +176,7 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
         if (overflow.isEmpty()) return this;
         Line line = new Line(divWidth - divIndent);
         divLines.add(line);
+        /// recursively call children
         appendText(line.appendText(overflow));
         return this;
     }

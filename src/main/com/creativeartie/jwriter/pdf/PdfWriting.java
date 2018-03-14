@@ -6,21 +6,23 @@ import org.apache.pdfbox.pdmodel.font.*;
 
 public class PdfWriting {
     private PdfSectionTitle titlePage;
-    // private PdfSectionContent contentPages;
+    private PdfSectionContent contentPages;
 
     public PdfWriting(){
         titlePage = new PdfSectionTitle();
-        // contentPages = new PdfSectionContent();
+        contentPages = new PdfSectionContent();
     }
 
     public PdfWriting setData(DataWriting data, StreamPdfFile output) throws
             IOException{
         titlePage.setData(data, output);
+        contentPages.setData(data, output);
         return this;
     }
 
     public PdfWriting render() throws IOException{
         titlePage.render();
+        contentPages.render();
         return this;
     }
 }

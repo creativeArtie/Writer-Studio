@@ -10,15 +10,15 @@ import com.google.common.collect.*;
 /**
  * Prints text on a page with ability to change height and detect overflow.
  */
-class PdfMatterContent extends PdfMatter<DataContent>{
+class PdfMatterContent extends PdfMatter{
     private float baseMargins;
     private ArrayList<PdfItem> outputLines;
     private PdfItem currentLine;
     private float height;
 
     @Override
-    protected void parseData(DataContent data, StreamPdfFile output)
-        throws IOException{
+    float getWidth(){
+        return 0f;
     }
 
     @Override
@@ -35,4 +35,5 @@ class PdfMatterContent extends PdfMatter<DataContent>{
     protected List<PdfItem> delegate(){
         return ImmutableList.copyOf(outputLines);
     }
+
 }

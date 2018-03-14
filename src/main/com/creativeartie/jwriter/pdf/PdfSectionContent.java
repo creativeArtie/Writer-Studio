@@ -33,7 +33,8 @@ class PdfSectionContent extends PdfSection{
 
     @Override
     public void loadData(DataWriting data, StreamPdfFile output)
-        throws IOException{
+            throws IOException{
+
     }
 
     @Override

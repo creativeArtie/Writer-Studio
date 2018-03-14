@@ -10,7 +10,7 @@ import com.google.common.collect.*;
 /**
  * Prints the page header.
  */
-class PdfMatterHeader extends PdfMatter<DataContent>{
+class PdfMatterHeader extends PdfMatter{
 
     private float baseMargins;
     private ArrayList<PdfItem> outputLines;
@@ -18,8 +18,8 @@ class PdfMatterHeader extends PdfMatter<DataContent>{
     private float height;
 
     @Override
-    protected void parseData(DataContent data, StreamPdfFile output)
-        throws IOException{
+    float getWidth(){
+        return 0f;
     }
 
     @Override

@@ -11,7 +11,7 @@ import com.google.common.collect.*;
 /**
  * Prints the title page center text
  */
-class PdfMatterTitleCenter extends PdfMatter<DataTitle>{
+class PdfMatterTitleCenter extends PdfMatterTitle<DataTitle>{
     private float baseMargins;
     private PDPage outputPage;
     private ArrayList<PdfItem> outputLines;

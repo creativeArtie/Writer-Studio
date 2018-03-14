@@ -11,7 +11,7 @@ import com.google.common.collect.*;
 /**
  * Prints the title page header
  */
-class PdfMatterTitleTop extends PdfMatter<DataTitle>{
+class PdfMatterTitleTop extends PdfMatterTitle<DataTitle>{
     private float baseMargins;
     private PDPage outputPage;
     private ArrayList<PdfItem> outputLines;

@@ -13,7 +13,7 @@ import com.google.common.collect.*;
 /**
  * Prints the title page footer
  */
-class PdfMatterTitleBottom extends PdfMatter<DataTitle>{
+class PdfMatterTitleBottom extends PdfMatterTitle<DataTitle>{
     private float baseMargins;
     private PDPage outputPage;
     private ArrayList<PdfItem> outputLines;

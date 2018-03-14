@@ -10,12 +10,11 @@ import com.google.common.collect.*;
 /**
  * Prints the footnotes and do some preview of changes.
  */
-class PdfMatterFootnote extends PdfMatter<DataContent>{
-
+class PdfMatterFootnote extends PdfMatter{
 
     @Override
-    protected void parseData(DataContent data, StreamPdfFile output)
-        throws IOException{
+    float getWidth(){
+        return 0f;
     }
 
     @Override
