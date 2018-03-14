@@ -31,9 +31,9 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
             curWidth = 0;
         }
 
-        private ArrayList<PdfData> appendText(String string, PDFont font, int size)
+        private ArrayList<PdfData> appendText(String string, SizedFont font)
                 throws IOException{
-            return appendText(PdfData.createWords(string, font, size));
+            return appendText(PdfData.createWords(string, font));
         }
 
         private ArrayList<PdfData> appendText(ArrayList<PdfData> texts){
@@ -157,8 +157,7 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
         return this;
     }
 
-    public PdfItem appendText(String text, PDFont font, int size)
-            throws IOException{
+    public PdfItem appendText(String text, SizedFont font) throws IOException{
         Line line;
         if (divLines.isEmpty()){
             line = new Line(divWidth - divFirstIndent);
@@ -167,7 +166,7 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
             line = divLines.get(divLines.size() - 1);
         }
         /// Append text to the previous line
-        appendText(line.appendText(text, font, size));
+        appendText(line.appendText(text, font));
         noEdited = true;
         return this;
     }

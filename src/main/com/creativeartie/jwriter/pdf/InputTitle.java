@@ -10,16 +10,16 @@ import org.apache.pdfbox.pdmodel.font.*;
 
 import com.creativeartie.jwriter.pdf.value.*;
 
-public final class DataTitle implements Data{
-    private DataWriting baseData;
+public final class InputTitle implements Input{
+    private InputWriting baseData;
     private ManuscriptFile outputDoc;
 
-    public DataTitle(DataWriting data){
+    public InputTitle(InputWriting data){
         baseData = data;
         outputDoc = data.getOutputDoc();
     }
 
-    public DataWriting getBaseData(){
+    public InputWriting getBaseData(){
         return baseData;
     }
 
@@ -71,6 +71,6 @@ public final class DataTitle implements Data{
     private PdfItem newBlock(String text, TextAlignment alignment,
             float width, float leading) throws IOException{
         return new PdfItem(width, alignment).setLeading(leading)
-            .appendText(text, getBaseFontType(), getBaseFontSize());
+            .appendText(text, getBaseFont());
     }
 }

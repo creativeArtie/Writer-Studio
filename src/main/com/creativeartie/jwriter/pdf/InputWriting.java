@@ -4,10 +4,11 @@ import java.util.*;
 import com.creativeartie.jwriter.file.*;
 import com.creativeartie.jwriter.resource.*;
 import com.creativeartie.jwriter.lang.markup.*;
+import com.creativeartie.jwriter.pdf.value.*;
 
 import org.apache.pdfbox.pdmodel.font.*;
 
-public final class DataWriting implements Data{
+public final class InputWriting implements Input{
     static float inchToPoint(float inches){
         return inches * 72f;
     }
@@ -20,7 +21,7 @@ public final class DataWriting implements Data{
     private float pageMargin;
     private ManuscriptFile outputDoc;
 
-    public DataWriting(ManuscriptFile doc){
+    public InputWriting(ManuscriptFile doc){
         isInches = true;
         pageMargin = toPoint(1);
         outputDoc = doc;
@@ -31,18 +32,13 @@ public final class DataWriting implements Data{
     }
 
     @Override
-    public DataWriting getBaseData(){
+    public InputWriting getBaseData(){
         return this;
     }
 
     @Override
-    public PDFont getBaseFontType(){
-        return PDType1Font.TIMES_ROMAN;
-    }
-
-    @Override
-    public int getBaseFontSize(){
-        return 12;
+    public SizedFont getBaseFont(){
+        return new SizedFont(PDType1Font.TIMES_ROMAN, 12);
     }
 
     @Override
@@ -60,8 +56,8 @@ public final class DataWriting implements Data{
         return outputDoc.getDocument();
     }
 
-    public DataTitle getTitleData(){
-        return new DataTitle(this);
+    public InputTitle getTitleData(){
+        return new InputTitle(this);
     }
 
 }

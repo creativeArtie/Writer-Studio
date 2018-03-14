@@ -23,7 +23,7 @@ class PdfSectionTitle extends PdfSection{
         titleBottom = new PdfMatterTitleBottom();
     }
 
-    public void loadData(DataWriting data, StreamPdfFile output) throws
+    public void loadData(InputWriting data, StreamPdfFile output) throws
             IOException{
         titleTop.setData(data.getTitleData(), output);
         titleCenter.setData(data.getTitleData(), output);

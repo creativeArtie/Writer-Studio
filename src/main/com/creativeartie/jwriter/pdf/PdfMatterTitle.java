@@ -13,10 +13,10 @@ import com.google.common.collect.*;
 /**
  * Prints the title page footer
  */
-abstract class PdfMatterTitle<T extends Data> extends PdfMatter{
+abstract class PdfMatterTitle extends PdfMatter{
 
     private Optional<Float> divWidth;
-    private Optional<T> inputData;
+    private Optional<InputTitle> inputData;
     private Optional<StreamPdfFile> outputDoc;
 
     public PdfMatterTitle(){
@@ -35,7 +35,7 @@ abstract class PdfMatterTitle<T extends Data> extends PdfMatter{
         return divWidth.get();
     }
 
-    public PdfMatterTitle<T> setData(T data, StreamPdfFile output)
+    public PdfMatterTitle setData(InputTitle data, StreamPdfFile output)
             throws IOException{
         divWidth = Optional.of(output.getPage().getMediaBox().getWidth() -
             (data.getMargin() * 2));
@@ -45,7 +45,7 @@ abstract class PdfMatterTitle<T extends Data> extends PdfMatter{
         return this;
     }
 
-    protected abstract void parseData(T data, StreamPdfFile output)
+    protected abstract void parseData(InputTitle data, StreamPdfFile output)
         throws IOException;
 
 }

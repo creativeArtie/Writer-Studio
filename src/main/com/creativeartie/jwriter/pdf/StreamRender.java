@@ -16,8 +16,7 @@ import com.creativeartie.jwriter.pdf.value.*;
 final class StreamRender{
     private PDPageContentStream contentStream;
     private TextAlignment textAlignment;
-    private PDFont textFont;
-    private int textSize;
+    private SizedFont textFont;
     private float sectionWidth;
 
     public StreamRender(PDPageContentStream output, float x, float y, float w)
@@ -26,11 +25,10 @@ final class StreamRender{
         sectionWidth = w;
 
         textAlignment = TextAlignment.LEFT;
-        textFont = PDType1Font.TIMES_ROMAN;
-        textSize = 12;
+        textFont = new SizedFont(PDType1Font.TIMES_ROMAN, 12);
 
         output.newLineAtOffset(x, y);
-        output.setFont(textFont, textSize);
+        output.setFont(textFont.getFont(), textFont.getSize());
     }
 
     void changeAlign(TextAlignment next) throws IOException{
@@ -97,7 +95,7 @@ final class StreamRender{
             contentStream.newLineAtOffset(-(line.getWidth() / 2), 0);
         }
         for (PdfData text: line){
-            changeFont(text.getFont(), text.getSize());
+            changeFont(text.getFont());
             contentStream.showText(text.getText());
         }
         if (textAlignment == TextAlignment.RIGHT){
@@ -107,18 +105,10 @@ final class StreamRender{
         }
     }
 
-    void changeFont(PDFont font, int size) throws IOException{
-        boolean update = false;
-        if (textFont == null || ! textFont.equals(font)){
-            update = true;
+    void changeFont(SizedFont font) throws IOException{
+        if (! textFont.equals(font)){
             textFont = font;
-        }
-        if (size != textSize){
-            update = true;
-            textSize = size;
-        }
-        if (update){
-            contentStream.setFont(font, size);
+            contentStream.setFont(font.getFont(), font.getSize());
         }
     }
 }

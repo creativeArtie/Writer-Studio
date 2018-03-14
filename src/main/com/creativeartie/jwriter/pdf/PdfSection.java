@@ -14,12 +14,12 @@ import com.creativeartie.jwriter.pdf.value.*;
  */
 public abstract class PdfSection{
 
-    private Optional<DataWriting> inputData;
+    private Optional<InputWriting> inputData;
     private Optional<StreamPdfFile> outputStream;
 
     PdfSection(){}
 
-    public PdfSection setData(DataWriting data, StreamPdfFile output)
+    public PdfSection setData(InputWriting data, StreamPdfFile output)
             throws IOException{
         inputData = Optional.of(data);
         outputStream = Optional.of(output);
@@ -27,7 +27,7 @@ public abstract class PdfSection{
         return this;
     }
 
-    protected abstract void loadData(DataWriting data, StreamPdfFile output)
+    protected abstract void loadData(InputWriting data, StreamPdfFile output)
         throws IOException;
 
     public final PdfSection render() throws IOException{

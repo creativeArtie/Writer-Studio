@@ -5,14 +5,14 @@ import com.creativeartie.jwriter.file.*;
 import com.creativeartie.jwriter.resource.*;
 import com.creativeartie.jwriter.lang.markup.*;
 
-public final class DataContent implements Data{
-    private DataWriting baseData;
+public final class InputContent implements Input{
+    private InputWriting baseData;
 
-    public DataContent(DataWriting DataWriting){
-        baseData = DataWriting;
+    public InputContent(InputWriting InputWriting){
+        baseData = InputWriting;
     }
 
-    public DataWriting getBaseData(){
+    public InputWriting getBaseData(){
         return baseData;
     }
 }

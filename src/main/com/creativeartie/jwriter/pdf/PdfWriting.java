@@ -13,7 +13,7 @@ public class PdfWriting {
         contentPages = new PdfSectionContent();
     }
 
-    public PdfWriting setData(DataWriting data, StreamPdfFile output) throws
+    public PdfWriting setData(InputWriting data, StreamPdfFile output) throws
             IOException{
         titlePage.setData(data, output);
         contentPages.setData(data, output);

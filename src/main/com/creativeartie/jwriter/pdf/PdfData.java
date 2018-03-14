@@ -5,22 +5,24 @@ import java.io.*;
 import org.apache.pdfbox.pdmodel.font.*;
 import com.google.common.base.*;
 
+import com.creativeartie.jwriter.pdf.value.*;
+
 /**
  * Decides the length of a text and if it need to be keep with the last text.
  */
 class PdfData{
     private static final String SPACE = " ";
 
-    public static ArrayList<PdfData> createWords(String text, PDFont font,
-            int size) throws IOException{
+    public static ArrayList<PdfData> createWords(String text, SizedFont font)
+            throws IOException{
 
-        PdfData space = new PdfData(SPACE, font, size, true);
+        PdfData space = new PdfData(SPACE, font, true);
         CharMatcher whitespace = CharMatcher.whitespace();
 
         ArrayList<PdfData> holder = new ArrayList<>();
         for (String word: Splitter.on(whitespace).omitEmptyStrings()
                 .split(text)){
-            holder.add(new PdfData(word, font, size, false));
+            holder.add(new PdfData(word, font, false));
         }
         int i = 0;
         boolean isFirst = true;
@@ -42,22 +44,18 @@ class PdfData{
         return ans;
     }
 
-    private PDFont textFont;
-    private int fontSize;
+    private SizedFont textFont;
     private String outputText;
     private float textWidth;
     private float textHeight;
     private boolean spaceText;
 
-    private PdfData(String word, PDFont font, int size, boolean space)
+    private PdfData(String word, SizedFont font, boolean space)
             throws IOException{
         outputText = word;
         textFont = font;
-        fontSize = size;
-        /// From https://stackoverflow.com/questions/13701017/calculation-string-width-in-pdfbox-seems-only-to-count-characters
-        textWidth = textFont.getStringWidth(outputText) / 1000 * fontSize;
-        PDFontDescriptor descipter = textFont.getFontDescriptor();
-        textHeight = (descipter.getCapHeight() + descipter.getXHeight()) / 1000 * fontSize;
+        textWidth = textFont.getWidth(word);
+        textHeight = textFont.getHeight();
         spaceText = space;
     }
 
@@ -77,12 +75,8 @@ class PdfData{
         return spaceText;
     }
 
-    public PDFont getFont(){
+    public SizedFont getFont(){
         return textFont;
-    }
-
-    public int getSize(){
-        return fontSize;
     }
 
     public String toString(){

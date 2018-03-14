@@ -11,12 +11,16 @@ import org.junit.runners.*;
 
 import org.apache.pdfbox.pdmodel.font.*;
 
+import com.creativeartie.jwriter.pdf.value.*;
+
 @RunWith(JUnit4.class)
 public class PdfDataTest{
+    private static final SizedFont baseFont = new SizedFont(PDType1Font
+        .TIMES_ROMAN, 12);
 
     private static void test(String test, String ... expects)
             throws IOException{
-        test(PdfData.createWords(test, PDType1Font.TIMES_ROMAN, 12), expects);
+        test(PdfData.createWords(test, baseFont), expects);
     }
 
     public static void test(List<PdfData> test, String ... expects){

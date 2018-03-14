@@ -25,7 +25,7 @@ public class MainTest {
         ManuscriptFile use = ManuscriptFile.withManuscript(doc);
 
         try (StreamPdfFile output = new StreamPdfFile("test.pdf")){
-            new PdfWriting().setData(new DataWriting(use), output).render();
+            new PdfWriting().setData(new InputWriting(use), output).render();
         }
 
         /*File out = new File("test.pdf");

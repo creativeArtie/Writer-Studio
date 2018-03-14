@@ -6,16 +6,14 @@ import com.creativeartie.jwriter.lang.markup.*;
 
 import org.apache.pdfbox.pdmodel.font.*;
 
-public interface Data{
+import com.creativeartie.jwriter.pdf.value.*;
 
-    public DataWriting getBaseData();
+public interface Input{
 
-    public default PDFont getBaseFontType(){
-        return getBaseData().getBaseFontType();
-    }
+    public InputWriting getBaseData();
 
-    public default int getBaseFontSize(){
-        return getBaseData().getBaseFontSize();
+    public default SizedFont getBaseFont(){
+        return getBaseData().getBaseFont();
     }
 
     public default float getMargin(){

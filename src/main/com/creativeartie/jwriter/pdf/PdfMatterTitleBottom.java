@@ -13,7 +13,7 @@ import com.google.common.collect.*;
 /**
  * Prints the title page footer
  */
-class PdfMatterTitleBottom extends PdfMatterTitle<DataTitle>{
+class PdfMatterTitleBottom extends PdfMatterTitle{
     private float baseMargins;
     private PDPage outputPage;
     private ArrayList<PdfItem> outputLines;
@@ -21,14 +21,11 @@ class PdfMatterTitleBottom extends PdfMatterTitle<DataTitle>{
     private float startY;
 
     @Override
-    protected void parseData(DataTitle data, StreamPdfFile output)
+    protected void parseData(InputTitle data, StreamPdfFile output)
             throws IOException{
         baseMargins = data.getMargin();
         startY = baseMargins;
         startX = baseMargins;
-
-        PDFont font = data.getBaseFontType();
-        int size = data.getBaseFontSize();
 
         outputLines = data.getTitleBottomText(getWidth());
         for (PdfItem line: outputLines){

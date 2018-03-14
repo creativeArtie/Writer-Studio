@@ -11,7 +11,7 @@ import com.google.common.collect.*;
 /**
  * Prints the title page center text
  */
-class PdfMatterTitleCenter extends PdfMatterTitle<DataTitle>{
+class PdfMatterTitleCenter extends PdfMatterTitle{
     private float baseMargins;
     private PDPage outputPage;
     private ArrayList<PdfItem> outputLines;
@@ -19,15 +19,12 @@ class PdfMatterTitleCenter extends PdfMatterTitle<DataTitle>{
     private float startY;
 
     @Override
-    protected void parseData(DataTitle data, StreamPdfFile output)
+    protected void parseData(InputTitle data, StreamPdfFile output)
             throws IOException{
         baseMargins = data.getMargin();
 
         startY = output.getPage().getMediaBox().getHeight() / 2 ;
         startX = baseMargins;
-
-        PDFont font = data.getBaseFontType();
-        int size = data.getBaseFontSize();
 
         outputLines = data.getTitleCenterText(getWidth());
         for (PdfItem block: outputLines){

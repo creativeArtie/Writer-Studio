@@ -11,7 +11,7 @@ import com.google.common.collect.*;
 /**
  * Prints the title page header
  */
-class PdfMatterTitleTop extends PdfMatterTitle<DataTitle>{
+class PdfMatterTitleTop extends PdfMatterTitle{
     private float baseMargins;
     private PDPage outputPage;
     private ArrayList<PdfItem> outputLines;
@@ -19,15 +19,12 @@ class PdfMatterTitleTop extends PdfMatterTitle<DataTitle>{
     private float startY;
 
     @Override
-    protected void parseData(DataTitle data, StreamPdfFile output)
+    protected void parseData(InputTitle data, StreamPdfFile output)
             throws IOException{
         baseMargins = data.getMargin();
 
         startY = output.getPage().getMediaBox().getHeight() - baseMargins;
         startX = baseMargins;
-
-        PDFont font = data.getBaseFontType();
-        int size = data.getBaseFontSize();
 
         outputLines = data.getTitleTopText(getWidth());
     }

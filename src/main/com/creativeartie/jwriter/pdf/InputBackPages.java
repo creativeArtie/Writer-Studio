@@ -5,14 +5,14 @@ import com.creativeartie.jwriter.file.*;
 import com.creativeartie.jwriter.resource.*;
 import com.creativeartie.jwriter.lang.markup.*;
 
-public final class DataBackPages implements Data{
-    private DataWriting baseData;
+public final class InputBackPages implements Input{
+    private InputWriting baseData;
 
-    public DataBackPages(DataWriting DataWriting){
-        baseData = DataWriting;
+    public InputBackPages(InputWriting InputWriting){
+        baseData = InputWriting;
     }
 
-    public DataWriting getBaseData(){
+    public InputWriting getBaseData(){
         return baseData;
     }
 }
