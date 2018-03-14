@@ -16,7 +16,7 @@ public interface Input{
         return getBaseData().getBaseFont();
     }
 
-    public default float getMargin(){
+    public default Margin getMargin(){
         return getBaseData().getMargin();
     }
 

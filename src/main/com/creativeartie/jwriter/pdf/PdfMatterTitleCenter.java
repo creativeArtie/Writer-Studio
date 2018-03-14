@@ -8,11 +8,13 @@ import org.apache.pdfbox.pdmodel.font.*;
 
 import com.google.common.collect.*;
 
+import com.creativeartie.jwriter.pdf.value.*;
+
 /**
  * Prints the title page center text
  */
 class PdfMatterTitleCenter extends PdfMatterTitle{
-    private float baseMargins;
+    private Margin baseMargins;
     private PDPage outputPage;
     private ArrayList<PdfItem> outputLines;
     private float startX;
@@ -24,7 +26,7 @@ class PdfMatterTitleCenter extends PdfMatterTitle{
         baseMargins = data.getMargin();
 
         startY = output.getPage().getMediaBox().getHeight() / 2 ;
-        startX = baseMargins;
+        startX = baseMargins.getLeft();
 
         outputLines = data.getTitleCenterText(getWidth());
         for (PdfItem block: outputLines){

@@ -8,11 +8,13 @@ import org.apache.pdfbox.pdmodel.font.*;
 
 import com.google.common.collect.*;
 
+import com.creativeartie.jwriter.pdf.value.*;
+
 /**
  * Prints the title page header
  */
 class PdfMatterTitleTop extends PdfMatterTitle{
-    private float baseMargins;
+    private Margin baseMargins;
     private PDPage outputPage;
     private ArrayList<PdfItem> outputLines;
     private float startX;
@@ -23,8 +25,9 @@ class PdfMatterTitleTop extends PdfMatterTitle{
             throws IOException{
         baseMargins = data.getMargin();
 
-        startY = output.getPage().getMediaBox().getHeight() - baseMargins;
-        startX = baseMargins;
+        startY = output.getPage().getMediaBox().getHeight() - baseMargins
+            .getBottom();
+        startX = baseMargins.getLeft();
 
         outputLines = data.getTitleTopText(getWidth());
     }

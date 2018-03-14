@@ -7,12 +7,14 @@ import org.apache.pdfbox.pdmodel.*;
 
 import com.google.common.collect.*;
 
+import com.creativeartie.jwriter.pdf.value.*;
+
 /**
  * Prints the page header.
  */
 class PdfMatterHeader extends PdfMatter{
 
-    private float baseMargins;
+    private Margin baseMargins;
     private ArrayList<PdfItem> outputLines;
     private PdfItem currentLine;
     private float height;
@@ -24,12 +26,12 @@ class PdfMatterHeader extends PdfMatter{
 
     @Override
     public float getXLocation(){
-        return baseMargins;
+        return 0f;
     }
 
     @Override
     public float getYLocation(){
-        return baseMargins;
+        return 0f;
     }
 
     @Override

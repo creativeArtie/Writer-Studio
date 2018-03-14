@@ -4,6 +4,8 @@ import java.io.*;
 import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.*;
 
+import com.creativeartie.jwriter.pdf.value.*;
+
 public class StreamPdfFile implements AutoCloseable{
     private final String saveFile;
     private final PDDocument pdfDocument;

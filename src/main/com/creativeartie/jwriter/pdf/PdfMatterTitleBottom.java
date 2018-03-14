@@ -14,7 +14,7 @@ import com.google.common.collect.*;
  * Prints the title page footer
  */
 class PdfMatterTitleBottom extends PdfMatterTitle{
-    private float baseMargins;
+    private Margin baseMargins;
     private PDPage outputPage;
     private ArrayList<PdfItem> outputLines;
     private float startX;
@@ -24,8 +24,8 @@ class PdfMatterTitleBottom extends PdfMatterTitle{
     protected void parseData(InputTitle data, StreamPdfFile output)
             throws IOException{
         baseMargins = data.getMargin();
-        startY = baseMargins;
-        startX = baseMargins;
+        startY = baseMargins.getBottom();
+        startX = baseMargins.getLeft();
 
         outputLines = data.getTitleBottomText(getWidth());
         for (PdfItem line: outputLines){

@@ -7,6 +7,8 @@ import org.apache.pdfbox.pdmodel.*;
 
 import com.google.common.collect.*;
 
+import com.creativeartie.jwriter.pdf.value.*;
+
 /**
  * Prints the footnotes and do some preview of changes.
  */

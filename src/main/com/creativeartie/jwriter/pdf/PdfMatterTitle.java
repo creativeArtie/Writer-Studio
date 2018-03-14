@@ -37,8 +37,7 @@ abstract class PdfMatterTitle extends PdfMatter{
 
     public PdfMatterTitle setData(InputTitle data, StreamPdfFile output)
             throws IOException{
-        divWidth = Optional.of(output.getPage().getMediaBox().getWidth() -
-            (data.getMargin() * 2));
+        divWidth = Optional.of(data.getMargin().calcluateWidth(output.getPage()));
         inputData = Optional.of(data);
         outputDoc = Optional.of(output);
         parseData(data, output);
