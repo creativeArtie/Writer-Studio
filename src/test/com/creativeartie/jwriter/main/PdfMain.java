@@ -17,7 +17,7 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 */
-public class MainTest {
+public class PdfMain {
 
     public static void main(String args[]) throws IOException {
         File file = new File("data/pdf-long.txt");

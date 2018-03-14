@@ -17,7 +17,7 @@ import com.creativeartie.jwriter.lang.markup.*;
 import com.creativeartie.jwriter.export.*;
 
 
-public class Main extends Application{
+public class WindowMain extends Application{
     private static Stage mainStage;
     private static ManuscriptFile writeFile;
 
@@ -25,25 +25,24 @@ public class Main extends Application{
         launch(args);
     }
 
-    private static void killProgram(Thread t, Throwable e){
-        try {
-            e.printStackTrace();
-            writeFile.dumpFile();
-        } catch (Exception ex){
-            /// An exception in default exception handling!!!
-            ex.printStackTrace();
-        } finally {
-            mainStage.close();
-            Platform.exit();
-        }
-    }
-
     @Override
     public void start(Stage stage) throws Exception{
-        Thread.setDefaultUncaughtExceptionHandler(Main::killProgram);
         stage.setTitle(WindowText.PROGRAM_NAME.getText());
         mainStage = stage;
-        setupWindow(ManuscriptFile.newFile());
+        // testChildWindows();
+        testMainWindow();
+    }
+
+    @Deprecated
+    private void testMainWindow() throws Exception{
+        // File file = new File("data/sectionDebug7.txt");
+        File file = new File("data/pdf-base.txt");
+        WritingText doc = new WritingText(file);
+        ManuscriptFile use = ManuscriptFile.withManuscript(doc);
+
+        File out = new File("test.pdf");
+        FileExporter.PDF_MANUSCRIPT.exportFile(use, out);
+        setupWindow(use);
     }
 
     private void setupWindow(ManuscriptFile file) {
@@ -55,6 +54,24 @@ public class Main extends Application{
             -> writeFile = newValue);
         mainStage.setScene(scene);
         mainStage.setMaximized(true);
+        mainStage.show();
+    }
+
+    @Deprecated
+    private void testChildWindows() throws Exception{
+        Button button1 = new Button("Stats");
+        SceneStatsControl pane = new SceneStatsControl();
+        pane.setStatTable(RecordList.build(new File("data/record3.txt")));
+        Stage stats = SceneStatsControl.createStage(pane);
+        button1.setOnAction(event -> stats.show());
+
+        Button button2 = new Button("copyright");
+        Stage about = new WriterAboutWindow();
+        button2.setOnAction(event -> about.show());
+        button2.setDefaultButton(true);
+
+        Scene scene = new Scene(new FlowPane(button1, button2), 800, 600);
+        mainStage.setScene(scene);
         mainStage.show();
     }
 }

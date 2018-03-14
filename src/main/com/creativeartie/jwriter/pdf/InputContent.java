@@ -10,6 +10,12 @@ import com.creativeartie.jwriter.pdf.value.*;
 public final class InputContent implements Input{
     private InputWriting baseData;
 
+    public class Paragraph{
+
+        public class Span{
+        }
+    }
+
     public InputContent(InputWriting InputWriting){
         baseData = InputWriting;
     }
