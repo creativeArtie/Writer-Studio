@@ -3,11 +3,11 @@ package com.creativeartie.jwriter.project;
 import java.io.*;
 import java.util.*;
 
-public class ProjectFolder{
+public class FolderProject{
 
-    public ProjectFolder newProject(){
-    }
+    /*public static ProjectFolder newProject(){
+    }*/
 
-    private ArrayList<TextFolder> fileList;
+    private ArrayList<FolderText> fileList;
     private Properties projectPropeties;
 }

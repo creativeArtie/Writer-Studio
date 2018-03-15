@@ -3,8 +3,6 @@ package com.creativeartie.jwriter.project;
 import java.util.*;
 
 public class PropertyName extends Property{
-    static final String[] STORED_PARTS = new String[]{"FirstName", "MiddleName",
-        "LastName"}
 
     static final String FIRST_NAME = "FirstName";
     static final String LAST_NAME = "Surname";

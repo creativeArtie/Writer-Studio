@@ -1,5 +1,7 @@
 package com.creativeartie.jwriter.project;
 
+import java.util.*;
+
 public abstract class Property{
     public static String SEPARATOR = ".";
 

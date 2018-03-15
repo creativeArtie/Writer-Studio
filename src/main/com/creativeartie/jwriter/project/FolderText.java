@@ -2,11 +2,13 @@ package com.creativeartie.jwriter.project;
 
 import java.io.*;
 
-public class TextFolder{
+import com.creativeartie.jwriter.lang.*;
+
+public class FolderText{
 
     // private ArrayList<VersionDiff> versionDiffs
     private Document document;
 
-    TextFolder()
+    FolderText(){}
 
 }

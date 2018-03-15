@@ -4,8 +4,9 @@ import java.io.*;
 import java.util.*;
 
 import com.google.common.base.*;
+import com.google.common.collect.*;
 
-public class FileProperty{
+public class FileProperty extends ForwardingMap<String, Property>{
     private Properties fileProperty;
     private File file;
     private HashMap<String, Property> loadedProperties;
@@ -14,15 +15,15 @@ public class FileProperty{
     private final String ADDRESS_PROPERTY = "Address";
     private final String NAME_PROPERTY = "Name";
 
-    FileProperty(File file){
+    FileProperty(File file) throws FileNotFoundException, IOException{
         fileProperty = new Properties();
-        HashMap<String, Property> keys = null;
+        HashMap<String, Property> props = null;
         try (FileInputStream input = new FileInputStream(file)){
             fileProperty.load(input);
             String keys = fileProperty.getProperty("Interal.PropertyLists");
-            keys = loadProps(keys);
+            props = loadProps(keys);
         }
-        loadedProperties = keys == null? new HashMap<>() keys;
+        loadedProperties = props == null? new HashMap<>(): props;
     }
 
     private HashMap<String, Property> loadProps(String keys){
@@ -30,37 +31,23 @@ public class FileProperty{
         for( Map.Entry<String, String> entry: Splitter.on(VALUE_SEPARATOR)
                 .withKeyValueSeparator(ENTRY_SEPARATOR)
                 .split(keys).entrySet()){
-            Property prop;
-            switch (entry.getValue()){
-            case ADDRESS_PROPERTY:
-                prop = new PropertyAddress(entry.getKey(), fileProperty);
-                break;
-            case NAME_PROPERTY:
-                prop = new PropertyName(entry.getKey(), fileProperty);
-                break;
-            default:
-                throw new IllegalArgumentException(
-                    "Unknown property type for: " + entry.getKey());
-            }
+            Property prop = PropertyType.getType(entry.getValue())
+                .buildProperty(entry.getKey(), fileProperty);
             ans.put(prop.getKeyName(), prop);
         }
         return ans;
     }
 
     public String getValue(String key){
-        String name = key.substring(key, key.indexOf(Property.SEPARATOR));
-        if (loadProperties.contains(name)){
-            return loadProperties.get(name).getValue(name);
+        String name = key.substring(0, key.indexOf(Property.SEPARATOR));
+        if (loadedProperties.containsKey(name)){
+            return loadedProperties.get(name).getValue(name);
         }
         return "";
     }
 
-    public Property getProperty(String name, String type){
-        String name = key.substring(key, key.indexOf(Property.SEPARATOR));
-        if (loadProperties.contains(name)){
-            return loadProperties.get(name).getValue(name);
-        }
-        return "";
-
+    @Override
+    public Map<String, Property> delegate(){
+        return ImmutableMap.copyOf(loadedProperties);
     }
 }
