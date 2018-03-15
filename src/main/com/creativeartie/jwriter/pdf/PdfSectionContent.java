@@ -16,7 +16,10 @@ class PdfSectionContent extends PdfSection{
     private class Page{
         private PdfMatterContent pageContent;
         private PdfMatterFootnote pageFootnote;
-        private int pageNumber;
+        private Page(PdfMatterContent content, PdfMatterFootnote footnote){
+            pageContent = content;
+            pageFootnote = footnote;
+        }
     }
     private PdfMatterHeader pageHeader;
     private int pageTotal;
@@ -34,10 +37,21 @@ class PdfSectionContent extends PdfSection{
     @Override
     public void loadData(InputWriting data, StreamPdfFile output)
             throws IOException{
-
+        PdfMatterContent content = new PdfMatterContent();
+        content.setBasics(data, output);
+        PdfMatterFootnote footnote = new PdfMatterFootnote();
+        footnote.setBasics(data, output);
+        for (InputContentLine line : data.getContentData().getContentLines(content.getWidth())){
+            content.addContentLine(line.getPdfItem());
+        }
+        contentPages.add(new Page(content, footnote));
     }
 
     @Override
     public void render(StreamPdfFile output) throws IOException{
+        for (Page page: contentPages){
+            page.pageContent.render(output.getContentStream());
+            page.pageFootnote.render(output.getContentStream());
+        }
     }
 }

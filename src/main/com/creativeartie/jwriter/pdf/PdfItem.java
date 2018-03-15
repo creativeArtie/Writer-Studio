@@ -93,8 +93,9 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
     private float divLeading;
     private float divTopSpacing;
     private boolean newPage;
-    private boolean noEdited;
+    private Margin divMargin;
     private TextAlignment divAlignment;
+    private boolean noEdited;
 
     public PdfItem(float width){
         this (width, TextAlignment.LEFT);

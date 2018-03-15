@@ -8,6 +8,8 @@ import com.creativeartie.jwriter.pdf.value.*;
 
 import org.apache.pdfbox.pdmodel.font.*;
 
+import com.google.common.collect.*;
+
 
 public final class InputWriting implements Input{
 
@@ -46,6 +48,10 @@ public final class InputWriting implements Input{
 
     public InputTitle getTitleData(){
         return new InputTitle(this);
+    }
+
+    public InputContent getContentData(){
+        return new InputContent(this);
     }
 
 }
