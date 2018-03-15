@@ -16,10 +16,10 @@ public enum WindowText {
     EMPTY_NA("CommonText.NA"),
     NO_ID("CommonText.NoId"),
 
-    MENU_FILE("MainMenu.File"),           MENU_FILE_NEW("MainMenu.FileCreate"),
-    MENU_FILE_SAVE("MainMenu.FileSave"),  MENU_FILE_OPEN("MainMenu.FileOpen"),
-    MENU_FILE_EXIT("MainMenu.FileExit"),  MENU_HELP("MainMenu.Help"),
-    MENU_HELP_ABOUT("MainMenu.HelpAbout"),
+    MENU_FILE("MainMenu.File"),            MENU_FILE_NEW("MainMenu.FileCreate"),
+    MENU_FILE_SAVE("MainMenu.FileSave"),   MENU_FILE_OPEN("MainMenu.FileOpen"),
+    MENU_FILE_EXIT("MainMenu.FileExit"),   MENU_HELP("MainMenu.Help"),
+    MENU_HELP_ABOUT("MainMenu.HelpAbout"), MENU_CHOOSER_TITLE("MainMenu.ChooserTitle"),
 
     MENU_STATS("MainMenu.Stats"), MENU_STATS_GOALS("MainMenu.StatsGoal"),
 

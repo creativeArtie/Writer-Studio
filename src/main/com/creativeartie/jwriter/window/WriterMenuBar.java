@@ -23,7 +23,7 @@ class WriterMenuBar extends MenuBar{
     private Stage aboutWindow;
     private Stage statWindow;
     private Stage mainWindow;
-    private FileChooser chooser;
+    private DirectoryChooser chooser;
     private SimpleObjectProperty<ManuscriptFile> manuscriptFile;
     private SimpleBooleanProperty agendaChecked;
     private SimpleBooleanProperty linkChecked;
@@ -35,7 +35,8 @@ class WriterMenuBar extends MenuBar{
         statWindow = SceneStatsView.createStage(statTable);
         aboutWindow = new WriterAboutWindow();
 
-        chooser = new FileChooser();
+        chooser = new DirectoryChooser();
+        chooser.setTitle(WindowText.MENU_CHOOSER_TITLE.getText());
         mainWindow = window;
 
         manuscriptFile = new SimpleObjectProperty<>(this, "manuscriptFile");
@@ -83,7 +84,7 @@ class WriterMenuBar extends MenuBar{
 
 
     private void openFile(){
-        File file = chooser.showOpenDialog(mainWindow);
+        File file = chooser.showDialog(mainWindow);
         if (file != null){
             try {
                 manuscriptFile.setValue(ManuscriptFile.open(file));
@@ -102,7 +103,7 @@ class WriterMenuBar extends MenuBar{
             ManuscriptFile data = getManuscriptFile();
             if (data != null){
                 if (! data.canSave()){
-                    File file = chooser.showSaveDialog(mainWindow);
+                    File file = chooser.showDialog(mainWindow);
                     if (file == null){
                         return;
                     }
