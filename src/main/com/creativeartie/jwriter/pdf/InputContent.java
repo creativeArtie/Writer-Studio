@@ -23,7 +23,8 @@ public final class InputContent implements Input{
         return baseData;
     }
 
-    public List<InputContentLine> getContentLines(StreamData data) throws IOException{
+    public List<InputContentLine> getContentLines(StreamData data)
+            throws IOException{
         ImmutableList.Builder<InputContentLine> builder = ImmutableList.builder();
         float width = data.getWidth();
         for (LinedSpan child: listLines()){
@@ -50,6 +51,12 @@ public final class InputContent implements Input{
                 builder.addAll(listLines((SectionSpan) child));
             }
         }
+        return builder.build();
+    }
+
+    public List<PdfItem> getHeader(StreamData data){
+        ImmutableList.Builder<PdfItem> builder = ImmutableList.builder();
+
         return builder.build();
     }
 }
