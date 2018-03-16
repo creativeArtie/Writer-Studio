@@ -20,7 +20,6 @@ import com.creativeartie.jwriter.resource.*;
 public class WriterAboutWindow extends Stage{
     protected static int WIDTH = 650;
     protected static int HEIGHT = 500;
-    private static String AGPL = getResource("/data/agpl-3.0.txt");
     private static String APACHE = getResource("/data/apache.txt");
     private static String BSD = getResource("/data/bsd.txt");
 
@@ -65,7 +64,7 @@ public class WriterAboutWindow extends Stage{
         FlowPane libs = new FlowPane(
             addLicenseLink(WindowText.ABOUT_GUAVA, APACHE),
             addLicenseLink(WindowText.ABOUT_RICH_TEXT, BSD),
-            addLicenseLink(WindowText.ABOUT_ITEXT, AGPL)
+            addLicenseLink(WindowText.ABOUT_PDF_BOX, APACHE)
         );
         FlowPane top = new FlowPane(Orientation.VERTICAL, name, license, libs);
         top.setAlignment(Pos.CENTER);

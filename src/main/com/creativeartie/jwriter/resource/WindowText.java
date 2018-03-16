@@ -78,7 +78,7 @@ public enum WindowText {
     PARSED_MODE("WriteScene.ParsedMode"),
 
     ABOUT_TITLE("AboutWindow.Title"), ABOUT_LICENSE("AboutWindow.License"),
-    ABOUT_ITEXT("AboutWindow.IText"), ABOUT_RICH_TEXT("AboutWindow.RichText"),
+    ABOUT_PDF_BOX("AboutWindow.PdfBox"), ABOUT_RICH_TEXT("AboutWindow.RichText"),
     ABOUT_GUAVA("AboutWindow.Guava"), ABOUT_LIBRARIES("AboutWindow.ThirdParty"),
 
     WORK_CITED("ExportText.WorkCited");
