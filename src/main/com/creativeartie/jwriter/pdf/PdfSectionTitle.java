@@ -23,11 +23,12 @@ class PdfSectionTitle extends PdfSection{
         titleBottom = new PdfMatterTitleBottom();
     }
 
-    public void loadData(InputWriting data, StreamPdfFile output) throws
+    public void loadData(InputWriting data, StreamData output) throws
             IOException{
         titleTop.setData(data.getTitleData(), output);
         titleCenter.setData(data.getTitleData(), output);
         titleBottom.setData(data.getTitleData(), output);
+        output.resetPageNumber();
     }
 
     public void render(StreamPdfFile output) throws IOException{

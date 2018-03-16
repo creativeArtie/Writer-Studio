@@ -169,6 +169,7 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
         /// Append text to the previous line
         appendText(line.appendText(text, font));
         noEdited = true;
+        if (text.startsWith("> Line 12")) System.out.println(this);
         return this;
     }
 

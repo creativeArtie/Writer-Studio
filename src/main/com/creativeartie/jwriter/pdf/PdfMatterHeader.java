@@ -13,25 +13,62 @@ import com.creativeartie.jwriter.pdf.value.*;
  * Prints the page header.
  */
 class PdfMatterHeader extends PdfMatter{
-
     private Margin baseMargins;
     private ArrayList<PdfItem> outputLines;
     private PdfItem currentLine;
-    private float height;
+
+    private boolean baisicUnprepared;
+    private float divWidth;
+    private float divHeight;
+    private float startY;
+    private float startX;
+    private float pageNumber;
+
+    private PdfMatterHeader(){
+        baseMargins = null;
+        outputLines = new ArrayList<>();
+        currentLine = null;
+        divWidth = 0;
+        divHeight = 0;
+        baisicUnprepared = false;
+    }
+
+    public PdfMatterHeader setBasics(Input content, StreamData output){
+        baseMargins = content.getMargin();
+        startY = output.getHeight() - baseMargins.getTop();
+        startX = baseMargins.getLeft();
+        divWidth = output.getRenderWidth(baseMargins);
+
+        baisicUnprepared = true;
+        return this;
+    }
+
+    public Optional<PdfItem> addContentLine(){
+        return Optional.empty();
+    }
+
+    private void isReady(){
+        if (baisicUnprepared){
+            throw new IllegalStateException("addBasics(...) had not be called");
+        }
+    }
 
     @Override
     float getWidth(){
-        return 0f;
+        isReady();
+        return divWidth;
     }
 
     @Override
     public float getXLocation(){
-        return 0f;
+        isReady();
+        return startX;
     }
 
     @Override
     public float getYLocation(){
-        return 0f;
+        isReady();
+        return startY;
     }
 
     @Override

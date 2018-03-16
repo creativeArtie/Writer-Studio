@@ -14,8 +14,8 @@ public final class InputContentNote implements Input{
     private InputWriting baseData;
     private SpanBranch targetRef;
 
-    public InputContentNote(InputWriting data, SpanBranch ref, float width){
-        baseData = data;
+    public InputContentNote(InputWriting input, SpanBranch ref, StreamData data){
+        baseData = input;
         targetRef = ref;
     }
 

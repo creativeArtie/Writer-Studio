@@ -49,13 +49,4 @@ public class Margin{
     public float getBottom(){
         return bottomMargin;
     }
-
-    public float calcluateWidth(PDPage page){
-        return page.getMediaBox().getWidth() - leftMargin - rightMargin;
-    }
-
-    public float calcluateHeight(PDPage page){
-        return page.getMediaBox().getHeight() - topMargin - bottomMargin;
-    }
-
 }

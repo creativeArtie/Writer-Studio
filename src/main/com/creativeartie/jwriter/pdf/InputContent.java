@@ -23,10 +23,11 @@ public final class InputContent implements Input{
         return baseData;
     }
 
-    public List<InputContentLine> getContentLines(float width) throws IOException{
+    public List<InputContentLine> getContentLines(StreamData data) throws IOException{
         ImmutableList.Builder<InputContentLine> builder = ImmutableList.builder();
+        float width = data.getWidth();
         for (LinedSpan child: listLines()){
-            InputContentLine line = new InputContentLine(baseData, child, width);
+            InputContentLine line = new InputContentLine(baseData, child, data);
             line.getContentItem().ifPresent(item -> builder.add(line));
         }
         return builder.build();

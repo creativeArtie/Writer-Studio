@@ -17,11 +17,9 @@ abstract class PdfMatterTitle extends PdfMatter{
 
     private Optional<Float> divWidth;
     private Optional<InputTitle> inputData;
-    private Optional<StreamPdfFile> outputDoc;
 
     public PdfMatterTitle(){
         inputData = Optional.empty();
-        outputDoc = Optional.empty();
         divWidth = Optional.empty();
     }
 
@@ -35,16 +33,15 @@ abstract class PdfMatterTitle extends PdfMatter{
         return divWidth.get();
     }
 
-    public PdfMatterTitle setData(InputTitle data, StreamPdfFile output)
+    public PdfMatterTitle setData(InputTitle data, StreamData output)
             throws IOException{
-        divWidth = Optional.of(data.getMargin().calcluateWidth(output.getPage()));
+        divWidth = Optional.of(output.getRenderWidth(data.getMargin()));
         inputData = Optional.of(data);
-        outputDoc = Optional.of(output);
         parseData(data, output);
         return this;
     }
 
-    protected abstract void parseData(InputTitle data, StreamPdfFile output)
+    protected abstract void parseData(InputTitle data, StreamData output)
         throws IOException;
 
 }

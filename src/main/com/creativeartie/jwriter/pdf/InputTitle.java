@@ -23,9 +23,10 @@ public final class InputTitle implements Input{
         return baseData;
     }
 
-    public ArrayList<PdfItem> getTitleTopText(float width)
+    public ArrayList<PdfItem> getTitleTopText(StreamData data)
              throws IOException{
         ArrayList<PdfItem> ans = new ArrayList<>();
+        float width = data.getWidth();
         ans.add(newBlock(MetaData.AGENT_NAME, TextAlignment.LEFT, width));
         ans.add(newBlock(MetaData.AGENT_ADDRESS, TextAlignment.LEFT, width));
         ans.add(newBlock(MetaData.AGENT_EMAIL, TextAlignment.LEFT, width));
@@ -33,18 +34,20 @@ public final class InputTitle implements Input{
         return ans;
     }
 
-    public ArrayList<PdfItem> getTitleCenterText(float width)
+    public ArrayList<PdfItem> getTitleCenterText(StreamData data)
              throws IOException{
         ArrayList<PdfItem> ans = new ArrayList<>();
+        float width = data.getWidth();
         ans.add(newBlock(MetaData.TITLE, TextAlignment.CENTER, width, 2));
         ans.add(newBlock("By", TextAlignment.CENTER, width, 2));
         ans.add(newBlock(MetaData.AUTHOR, TextAlignment.CENTER, width, 2));
         return ans;
     }
 
-    public ArrayList<PdfItem> getTitleBottomText(float width)
+    public ArrayList<PdfItem> getTitleBottomText(StreamData data)
              throws IOException{
         ArrayList<PdfItem> ans = new ArrayList<>();
+        float width = data.getWidth();
         ans.add(newBlock(MetaData.AUTHOR, TextAlignment.RIGHT, width));
         ans.add(newBlock(MetaData.ADDRESS, TextAlignment.RIGHT, width));
         ans.add(newBlock(MetaData.PHONE, TextAlignment.RIGHT, width));

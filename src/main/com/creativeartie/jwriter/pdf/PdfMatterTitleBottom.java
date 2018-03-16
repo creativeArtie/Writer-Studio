@@ -21,13 +21,13 @@ class PdfMatterTitleBottom extends PdfMatterTitle{
     private float startY;
 
     @Override
-    protected void parseData(InputTitle data, StreamPdfFile output)
+    protected void parseData(InputTitle data, StreamData output)
             throws IOException{
         baseMargins = data.getMargin();
         startY = baseMargins.getBottom();
         startX = baseMargins.getLeft();
 
-        outputLines = data.getTitleBottomText(getWidth());
+        outputLines = data.getTitleBottomText(output);
         for (PdfItem line: outputLines){
             startY += line.getHeight();
         }

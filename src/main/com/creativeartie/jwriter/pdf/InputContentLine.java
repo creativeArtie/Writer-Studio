@@ -17,11 +17,11 @@ public final class InputContentLine implements Input{
     private ArrayList<ArrayList<InputContentNote>> pointerNotes;
     private Optional<PdfItem> contentItem;
 
-    public InputContentLine(InputWriting data, LinedSpan line, float width)
+    public InputContentLine(InputWriting input, LinedSpan line, StreamData data)
             throws IOException{
-        baseData = data;
+        baseData = input;
         pointerNotes = new ArrayList<>();
-        System.out.println(line);
+        float width = data.getRenderWidth(input.getMargin());
         /*
         PdfItem item = null;
         switch (line.getLinedType()){

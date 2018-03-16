@@ -35,21 +35,34 @@ class PdfSectionContent extends PdfSection{
     }
 
     @Override
-    public void loadData(InputWriting data, StreamPdfFile output)
+    public void loadData(InputWriting data, StreamData output)
             throws IOException{
-        PdfMatterContent content = new PdfMatterContent();
-        content.setBasics(data, output);
-        PdfMatterFootnote footnote = new PdfMatterFootnote();
-        footnote.setBasics(data, output);
-        for (InputContentLine line : data.getContentData().getContentLines(content.getWidth())){
-            content.addContentLine(line.getPdfItem());
+        PdfMatterContent content = new PdfMatterContent()
+            .setBasics(data, output);
+        PdfMatterFootnote footnote = new PdfMatterFootnote()
+            .setBasics(data, output);
+        for (InputContentLine line : data.getContentData().getContentLines(
+                output)){
+            Optional<PdfItem> item = content.addContentLine(line.getPdfItem());
+            if (item.isPresent()){
+                contentPages.add(new Page(content, footnote));
+                content = new PdfMatterContent().setBasics(data, output);
+                footnote = new PdfMatterFootnote().setBasics(data, output);
+                output.toNextPage();
+            }
         }
         contentPages.add(new Page(content, footnote));
     }
 
     @Override
     public void render(StreamPdfFile output) throws IOException{
+        boolean isFirst = true;
         for (Page page: contentPages){
+            if (isFirst){
+                isFirst = false;
+            } else {
+                output.addPage();
+            }
             page.pageContent.render(output.getContentStream());
             page.pageFootnote.render(output.getContentStream());
         }

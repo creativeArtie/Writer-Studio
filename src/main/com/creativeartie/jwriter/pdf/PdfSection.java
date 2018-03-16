@@ -27,7 +27,7 @@ public abstract class PdfSection{
         return this;
     }
 
-    protected abstract void loadData(InputWriting data, StreamPdfFile output)
+    protected abstract void loadData(InputWriting data, StreamData output)
         throws IOException;
 
     public final PdfSection render() throws IOException{

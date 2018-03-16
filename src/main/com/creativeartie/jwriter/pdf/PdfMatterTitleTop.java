@@ -21,15 +21,14 @@ class PdfMatterTitleTop extends PdfMatterTitle{
     private float startY;
 
     @Override
-    protected void parseData(InputTitle data, StreamPdfFile output)
+    protected void parseData(InputTitle data, StreamData output)
             throws IOException{
         baseMargins = data.getMargin();
 
-        startY = output.getPage().getMediaBox().getHeight() - baseMargins
-            .getBottom();
+        startY = output.getHeight() - baseMargins.getTop();
         startX = baseMargins.getLeft();
 
-        outputLines = data.getTitleTopText(getWidth());
+        outputLines = data.getTitleTopText(output);
     }
 
 

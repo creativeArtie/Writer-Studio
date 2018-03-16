@@ -32,12 +32,11 @@ class PdfMatterFootnote extends PdfMatter{
         baisicUnprepared = true;
     }
 
-    public PdfMatterFootnote setBasics(Input content, StreamPdfFile output){
+    public PdfMatterFootnote setBasics(Input content, StreamData output){
         baseMargins = content.getMargin();
-        startY = output.getPage().getMediaBox().getHeight() - baseMargins
-            .getBottom();
+        startY = output.getHeight() - baseMargins.getBottom();
         startX = baseMargins.getLeft();
-        divWidth = content.getMargin().calcluateWidth(output.getPage());
+        divWidth = output.getRenderWidth(baseMargins);
         baisicUnprepared = false;
         return this;
     }

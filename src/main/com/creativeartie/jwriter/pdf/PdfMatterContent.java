@@ -18,6 +18,7 @@ class PdfMatterContent extends PdfMatter{
     private PdfItem currentLine;
 
     private boolean baisicUnprepared;
+    private float fillHeight;
     private float divWidth;
     private float divHeight;
     private float startY;
@@ -30,21 +31,27 @@ class PdfMatterContent extends PdfMatter{
         divWidth = 0;
         divHeight = 0;
         baisicUnprepared = true;
+        fillHeight = 0;
     }
 
-    public PdfMatterContent setBasics(Input content, StreamPdfFile output){
+    public PdfMatterContent setBasics(Input content, StreamData output){
         baseMargins = content.getMargin();
-        startY = output.getPage().getMediaBox().getHeight() - baseMargins
-            .getBottom();
+        startY = output.getHeight() - baseMargins.getTop();
         startX = baseMargins.getLeft();
-        divWidth = content.getMargin().calcluateWidth(output.getPage());
+        divWidth = output.getRenderWidth(baseMargins);
+        divHeight = output.getRenderHeight(content.getMargin());
         baisicUnprepared = false;
         return this;
     }
 
     public Optional<PdfItem> addContentLine(PdfItem item){
-        outputLines.add(item);
-        return Optional.empty();
+        if (item.getHeight() + fillHeight < divHeight){
+            System.out.println(item.getHeight());
+            outputLines.add(item);
+            fillHeight += item.getHeight();
+            return Optional.empty();
+        }
+        return Optional.of(item);
     }
 
     private void isReady(){
