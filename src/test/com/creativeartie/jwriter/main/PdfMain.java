@@ -20,7 +20,7 @@ import com.itextpdf.layout.element.Paragraph;
 public class PdfMain {
 
     public static void main(String args[]) throws IOException {
-        File file = new File("data/pdf-base.txt");
+        File file = new File("data/pdf-long.txt");
         WritingText doc = new WritingText(file);
         ManuscriptFile use = ManuscriptFile.withManuscript(doc);
 

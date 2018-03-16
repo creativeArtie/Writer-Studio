@@ -28,7 +28,6 @@ class PdfSectionTitle extends PdfSection{
         titleTop.setData(data.getTitleData(), output);
         titleCenter.setData(data.getTitleData(), output);
         titleBottom.setData(data.getTitleData(), output);
-        output.resetPageNumber();
     }
 
     public void render(StreamPdfFile output) throws IOException{

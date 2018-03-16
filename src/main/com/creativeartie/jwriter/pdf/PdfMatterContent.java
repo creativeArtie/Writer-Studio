@@ -46,18 +46,38 @@ class PdfMatterContent extends PdfMatter{
 
     public Optional<PdfItem> addContentLine(PdfItem item){
         if (item.getHeight() + fillHeight < divHeight){
-            System.out.println(item.getHeight());
             outputLines.add(item);
             fillHeight += item.getHeight();
             return Optional.empty();
         }
-        return Optional.of(item);
+        PdfItem last = new PdfItem(item.getWidth());
+        Optional<PdfItem> ans = Optional.empty();
+        for (PdfItem.Line line: item){
+            if (ans.isPresent()){
+                ans.get().addLine(line);
+            } else {
+                if (line.getHeight() + fillHeight < divHeight){
+                    last.addLine(line);
+                    fillHeight += line.getHeight();
+                } else {
+                    ans = Optional.of(new PdfItem(item.getWidth()));
+                    ans.get().addLine(line);
+                }
+            }
+        }
+        outputLines.add(last);
+        return ans;
     }
 
     private void isReady(){
         if (baisicUnprepared){
             throw new IllegalStateException("addBasics(...) had not be called");
         }
+    }
+
+    @Override
+    public float getHeight(){
+        return divHeight;
     }
 
     @Override

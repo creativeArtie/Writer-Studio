@@ -16,6 +16,7 @@ import com.google.common.collect.*;
 class PdfMatterTitleBottom extends PdfMatterTitle{
     private Margin baseMargins;
     private PDPage outputPage;
+    private float divHeight;
     private ArrayList<PdfItem> outputLines;
     private float startX;
     private float startY;
@@ -28,9 +29,16 @@ class PdfMatterTitleBottom extends PdfMatterTitle{
         startX = baseMargins.getLeft();
 
         outputLines = data.getTitleBottomText(output);
+        divHeight = 0;
         for (PdfItem line: outputLines){
             startY += line.getHeight();
+            divHeight += line.getHeight();
         }
+    }
+
+    @Override
+    public float getHeight(){
+        return divHeight;
     }
 
     @Override

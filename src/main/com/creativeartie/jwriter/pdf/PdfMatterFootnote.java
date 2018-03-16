@@ -41,6 +41,11 @@ class PdfMatterFootnote extends PdfMatter{
         return this;
     }
 
+    @Override
+    public float getHeight(){
+        return divHeight;
+    }
+
     public Optional<PdfItem> addContentLine(){
         return Optional.empty();
     }

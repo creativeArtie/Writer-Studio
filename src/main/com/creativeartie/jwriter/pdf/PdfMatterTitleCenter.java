@@ -17,6 +17,7 @@ class PdfMatterTitleCenter extends PdfMatterTitle{
     private Margin baseMargins;
     private PDPage outputPage;
     private ArrayList<PdfItem> outputLines;
+    private float divHeight;
     private float startX;
     private float startY;
 
@@ -29,9 +30,16 @@ class PdfMatterTitleCenter extends PdfMatterTitle{
         startX = baseMargins.getLeft();
 
         outputLines = data.getTitleCenterText(output);
+        divHeight = 0;
         for (PdfItem block: outputLines){
             startY += block.getHeight() / 2 ;
+            divHeight += block.getHeight();
         }
+    }
+
+    @Override
+    public float getHeight(){
+        return divHeight;
     }
 
 

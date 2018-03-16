@@ -54,9 +54,16 @@ public final class InputContent implements Input{
         return builder.build();
     }
 
-    public List<PdfItem> getHeader(StreamData data){
+    public List<PdfItem> getHeader(StreamData data) throws IOException{
         ImmutableList.Builder<PdfItem> builder = ImmutableList.builder();
-
+        builder.add(new PdfItem(data.getRenderWidth(getMargin()),
+            TextAlignment.RIGHT)
+            .setLeading(1)
+            .appendText(getOutputDoc().getText(MetaData.LAST_NAME) + "/" +
+                getOutputDoc().getText(MetaData.TITLE) + "/" +
+                data.getPageNumber(), getBaseFont()
+            )
+        );
         return builder.build();
     }
 }

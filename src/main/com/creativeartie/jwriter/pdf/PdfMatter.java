@@ -32,4 +32,5 @@ abstract class PdfMatter extends ForwardingList<PdfItem>{
     abstract float getXLocation();
     abstract float getYLocation();
     abstract float getWidth();
+    abstract float getHeight();
 }

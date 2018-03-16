@@ -28,6 +28,7 @@ abstract class PdfMatterTitle extends PdfMatter{
             "addData(...) had not be called"));
     }
 
+    @Override
     public float getWidth(){
         checkReady();
         return divWidth.get();

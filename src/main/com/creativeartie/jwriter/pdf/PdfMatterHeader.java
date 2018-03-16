@@ -24,23 +24,35 @@ class PdfMatterHeader extends PdfMatter{
     private float startX;
     private float pageNumber;
 
-    private PdfMatterHeader(){
+    public PdfMatterHeader(){
         baseMargins = null;
         outputLines = new ArrayList<>();
         currentLine = null;
         divWidth = 0;
         divHeight = 0;
-        baisicUnprepared = false;
+        baisicUnprepared = true;
     }
 
-    public PdfMatterHeader setBasics(Input content, StreamData output){
+    public PdfMatterHeader setBasics(InputContent content, StreamData output)
+            throws IOException{
         baseMargins = content.getMargin();
         startY = output.getHeight() - baseMargins.getTop();
         startX = baseMargins.getLeft();
         divWidth = output.getRenderWidth(baseMargins);
 
-        baisicUnprepared = true;
+        outputLines.addAll(content.getHeader(output));
+        divHeight = 0;
+        for (PdfItem item : outputLines){
+            divHeight += item.getHeight();
+        }
+
+        baisicUnprepared = false;
         return this;
+    }
+
+    @Override
+    public float getHeight(){
+        return divHeight;
     }
 
     public Optional<PdfItem> addContentLine(){

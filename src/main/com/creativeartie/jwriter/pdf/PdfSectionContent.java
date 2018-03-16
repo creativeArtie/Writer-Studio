@@ -16,12 +16,19 @@ class PdfSectionContent extends PdfSection{
     private class Page{
         private PdfMatterContent pageContent;
         private PdfMatterFootnote pageFootnote;
-        private Page(PdfMatterContent content, PdfMatterFootnote footnote){
-            pageContent = content;
-            pageFootnote = footnote;
+        private PdfMatterHeader pageHeader;
+        private Page(InputWriting data, StreamData output) throws IOException{
+            pageContent = new PdfMatterContent().setBasics(data, output);
+            pageFootnote = new PdfMatterFootnote().setBasics(data, output);
+            pageHeader = new PdfMatterHeader().setBasics(data.getContentData(),
+                output);
+        }
+
+        private Optional<PdfItem> addContentLine(PdfItem item){
+            return pageContent.addContentLine(item);
         }
     }
-    private PdfMatterHeader pageHeader;
+
     private int pageTotal;
 
     private ArrayList<Page> contentPages;
@@ -37,21 +44,19 @@ class PdfSectionContent extends PdfSection{
     @Override
     public void loadData(InputWriting data, StreamData output)
             throws IOException{
-        PdfMatterContent content = new PdfMatterContent()
-            .setBasics(data, output);
-        PdfMatterFootnote footnote = new PdfMatterFootnote()
-            .setBasics(data, output);
+        Page cur = new Page(data, output);
+        Optional<PdfItem> item = Optional.empty();
         for (InputContentLine line : data.getContentData().getContentLines(
                 output)){
-            Optional<PdfItem> item = content.addContentLine(line.getPdfItem());
-            if (item.isPresent()){
-                contentPages.add(new Page(content, footnote));
-                content = new PdfMatterContent().setBasics(data, output);
-                footnote = new PdfMatterFootnote().setBasics(data, output);
+            item = cur.addContentLine(line.getPdfItem());
+            while (item.isPresent()){
+                contentPages.add(cur);
                 output.toNextPage();
+                cur = new Page(data, output);
+                item = cur.addContentLine(item.get());
             }
         }
-        contentPages.add(new Page(content, footnote));
+        contentPages.add(cur);
     }
 
     @Override
@@ -63,6 +68,7 @@ class PdfSectionContent extends PdfSection{
             } else {
                 output.addPage();
             }
+            page.pageHeader.render(output.getContentStream());
             page.pageContent.render(output.getContentStream());
             page.pageFootnote.render(output.getContentStream());
         }

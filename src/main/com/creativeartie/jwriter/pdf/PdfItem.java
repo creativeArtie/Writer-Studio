@@ -149,12 +149,26 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
         return ans;
     }
 
+    public float getHeight(int line){
+        return get(line).getHeight();
+    }
+
+    public float getWidth(){
+        return divWidth;
+    }
+
     TextAlignment getTextAlignment(){
         return divAlignment;
     }
 
     public PdfItem setTextAlignment(TextAlignment alignment){
         divAlignment = alignment;
+        return this;
+    }
+
+    public PdfItem addLine(Line line){
+        divLines.add(line);
+        formatChanged();
         return this;
     }
 
@@ -169,7 +183,6 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
         /// Append text to the previous line
         appendText(line.appendText(text, font));
         noEdited = true;
-        if (text.startsWith("> Line 12")) System.out.println(this);
         return this;
     }
 

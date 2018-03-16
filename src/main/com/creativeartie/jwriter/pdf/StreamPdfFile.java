@@ -48,6 +48,7 @@ public class StreamPdfFile implements AutoCloseable{
             @Override
             public StreamData toNextPage(){
                 pageNumber++;
+
                 return this;
             }
         };
