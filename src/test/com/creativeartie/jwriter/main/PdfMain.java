@@ -5,7 +5,6 @@ import java.io.*;
 import java.io.File;
 import java.io.IOException;
 
-import com.creativeartie.jwriter.output.*;
 import com.creativeartie.jwriter.pdf.*;
 import com.creativeartie.jwriter.file.*;
 import com.creativeartie.jwriter.lang.markup.*;
@@ -20,7 +19,7 @@ import com.itextpdf.layout.element.Paragraph;
 public class PdfMain {
 
     public static void main(String args[]) throws IOException {
-        File file = new File("data/pdf-long.txt");
+        File file = new File("data/pdf-base.txt");
         WritingText doc = new WritingText(file);
         ManuscriptFile use = ManuscriptFile.withManuscript(doc);
 

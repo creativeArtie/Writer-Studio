@@ -44,6 +44,12 @@ class PdfMatterContent extends PdfMatter{
         return this;
     }
 
+    public PdfMatterContent addHeaderSpacing(float height){
+        startY -= height;
+        divHeight -= height;
+        return this;
+    }
+
     public Optional<PdfItem> addContentLine(PdfItem item){
         if (item.getHeight() + fillHeight < divHeight){
             outputLines.add(item);

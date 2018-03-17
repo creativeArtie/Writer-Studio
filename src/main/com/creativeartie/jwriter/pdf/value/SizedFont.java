@@ -6,6 +6,7 @@ import java.util.*;
 import org.apache.pdfbox.pdmodel.font.*;
 
 public class SizedFont{
+
     private PDFont textFont;
     private int textSize;
 

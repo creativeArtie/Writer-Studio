@@ -40,8 +40,6 @@ public class WindowMain extends Application{
         WritingText doc = new WritingText(file);
         ManuscriptFile use = ManuscriptFile.withManuscript(doc);
 
-        File out = new File("test.pdf");
-        FileExporter.PDF_MANUSCRIPT.exportFile(use, out);
         setupWindow(use);
     }
 

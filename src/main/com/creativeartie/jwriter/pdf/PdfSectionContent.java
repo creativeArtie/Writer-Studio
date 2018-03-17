@@ -18,10 +18,12 @@ class PdfSectionContent extends PdfSection{
         private PdfMatterFootnote pageFootnote;
         private PdfMatterHeader pageHeader;
         private Page(InputWriting data, StreamData output) throws IOException{
-            pageContent = new PdfMatterContent().setBasics(data, output);
-            pageFootnote = new PdfMatterFootnote().setBasics(data, output);
             pageHeader = new PdfMatterHeader().setBasics(data.getContentData(),
                 output);
+            float height = pageHeader.getHeight();
+            pageContent = new PdfMatterContent().setBasics(data, output)
+                .addHeaderSpacing(height);
+            pageFootnote = new PdfMatterFootnote().setBasics(data, output);
         }
 
         private Optional<PdfItem> addContentLine(PdfItem item){

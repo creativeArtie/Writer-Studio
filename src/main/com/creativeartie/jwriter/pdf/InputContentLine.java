@@ -39,6 +39,10 @@ public final class InputContentLine implements Input{
         return null;
     }
 
+    private PdfItem parseLine(FormatSpanMain input, PdfItem output){
+        return output;
+    }
+
     public Optional<PdfItem> getContentItem(){
         return contentItem;
     }
