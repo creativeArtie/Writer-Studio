@@ -28,4 +28,8 @@ public final class DataContentNote implements Data{
     public int hashCode(){
         return targetRef.getStart();
     }
+
+    public boolean matchTarget(DataContentNote compare){
+        return targetRef == compare.targetRef;
+    }
 }

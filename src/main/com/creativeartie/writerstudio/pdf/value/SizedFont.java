@@ -19,7 +19,7 @@ public final class SizedFont{
     }
 
     public static SizedFont newTimesRoman(int size, Style style){
-        return new SizedFont(getTimesRoman(style), size, TIMES_ROMAN);
+        return new SizedFont(getTimesRoman(style), size, TIMES_ROMAN, style);
     }
 
     private static PDFont getTimesRoman(Style style){
@@ -40,7 +40,7 @@ public final class SizedFont{
     }
 
     public static SizedFont newCourier(int size, Style style){
-        return new SizedFont(getCourier(style), size, COURIER);
+        return new SizedFont(getCourier(style), size, COURIER, style);
     }
 
     private static PDFont getCourier(Style style){
@@ -59,11 +59,13 @@ public final class SizedFont{
     private final PDFont textFont;
     private final int textSize;
     private final String fontName;
+    private final Style fontStyle;
 
-    private SizedFont(PDFont font, int size, String name){
+    private SizedFont(PDFont font, int size, String name, Style style){
         textFont = font;
         textSize = size;
         fontName = name;
+        fontStyle = style;
     }
 
     public PDFont getFont(){
@@ -95,7 +97,15 @@ public final class SizedFont{
     }
 
     public SizedFont changeSize(int size){
-        return new SizedFont(textFont, size, fontName);
+        return new SizedFont(textFont, size, fontName, fontStyle);
+    }
+
+    public SizedFont changeToTime(){
+        return newTimesRoman(textSize, fontStyle);
+    }
+
+    public SizedFont changeToCourier(){
+        return newTimesRoman(textSize, fontStyle);
     }
 
     @Override

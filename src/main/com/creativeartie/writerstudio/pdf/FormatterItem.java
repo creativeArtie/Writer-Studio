@@ -16,9 +16,11 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
         private float maxWidth;
         private float curWidth;
         private float textHeight;
+        private float lineIndent;
 
-        private Line(float width){
+        private Line(float width, float indent){
             this(width, new ArrayList<>());
+            lineIndent = indent;
         }
 
         private Line(float width, ArrayList<FormatterData> text){
@@ -26,6 +28,10 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
             maxWidth = width;
             textHeight = 0;
             curWidth = 0;
+        }
+
+        public float getIndent(){
+            return lineIndent;
         }
 
         private ArrayList<FormatterData> appendText(String string, SizedFont font)
@@ -84,6 +90,8 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
     }
 
     private ArrayList<Line> divLines;
+    private Optional<String> divPrefix;
+    private float divPrefixDistance;
     private float divWidth;
     private float divFirstIndent;
     private float divIndent;
@@ -106,6 +114,8 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
         divWidth = width;
         divAlignment = alignment;
         divTopSpacing = 0;
+        divPrefix = Optional.empty();
+        divPrefixDistance = 0f;
         newPage = false;
         noEdited = false;
     }
@@ -189,10 +199,24 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
         return this;
     }
 
+    public FormatterItem setPrefix(String prefix, float distance){
+        divPrefix = Optional.of(prefix);
+        divPrefixDistance = distance;
+        return this;
+    }
+
+    public float getPrefixDistance(){
+        return divPrefixDistance;
+    }
+
+    public Optional<String> getPrefix(){
+        return divPrefix;
+    }
+
     public FormatterItem appendText(String text, SizedFont font) throws IOException{
         Line line;
         if (divLines.isEmpty()){
-            line = new Line(divWidth - divFirstIndent);
+            line = new Line(divWidth - divFirstIndent, divFirstIndent);
             divLines.add(line);
         } else {
             line = divLines.get(divLines.size() - 1);
@@ -205,7 +229,7 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
 
     private FormatterItem appendText(ArrayList<FormatterData> overflow){
         if (overflow.isEmpty()) return this;
-        Line line = new Line(divWidth - divIndent);
+        Line line = new Line(divWidth - divIndent, divIndent);
         divLines.add(line);
         /// recursively call children
         appendText(line.appendText(overflow));

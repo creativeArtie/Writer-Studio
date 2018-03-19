@@ -1,31 +1,45 @@
 package com.creativeartie.writerstudio.pdf.value;
 
-public class TextNumbering{
-    private static String ONE = "i";
-    private static String FIVE = "v";
-    private static String TEN = "x";
-    private static String FIFTY = "l";
-    private static String HUNDRED = "c";
-    private static String FIVE_HUNDRED = "d";
-    private static String THOUSANDS = "m";
+public enum RomanNumbering{
+    LOWER("i", "v", "x", "l", "c", "d", "m"),
+    SUPER("ⁱ", "ᵛ", "ˣ", "ˡ", "ᶜ", "ᵈ", "ᵐ");
 
-    public static String toRomanLower(int num){
+    private RomanNumbering(String one, String five, String ten, String fifty,
+            String hundred, String fiveHundred, String thousands){
+        roman1 = one;
+        roman5 = five;
+        roman10 = ten;
+        roman50 = fifty;
+        roman100 = hundred;
+        roman500 = fiveHundred;
+        roman1000 = thousands;
+    }
+
+    private final String roman1;
+    private final String roman5;
+    private final String roman10;
+    private final String roman50;
+    private final String roman100;
+    private final String roman500;
+    private final String roman1000;
+
+    public String toRoman(int num){
         StringBuilder ans = new StringBuilder();
         if (num > 1000){
             while (num > 1000){
-                ans.append("m");
+                ans.append(roman1000);
                 num -= 1000;
             }
         }
         if (num > 100){
-            ans.append(getText(num / 100, THOUSANDS, FIVE_HUNDRED, HUNDRED));
+            ans.append(getText(num / 100, roman1000, roman500, roman100));
             num %= 100;
         }
         if (num > 10){
-            ans.append(getText(num / 10, HUNDRED, FIFTY, TEN));
+            ans.append(getText(num / 10, roman100, roman50, roman10));
             num %= 10;
         }
-        ans.append(getText(num, TEN, FIVE, ONE));
+        ans.append(getText(num, roman10, roman5, roman1));
         return ans.toString();
     }
 

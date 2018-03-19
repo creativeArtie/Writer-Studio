@@ -14,22 +14,33 @@ public class TextNumberingDebug {
     @Parameter
     public int input;
     @Parameter(value = 1)
-    public String expect;
+    public String roman;
+    @Parameter(value = 2)
+    public String superscript;
 
     @Parameters
     public static Collection<Object[]> data() throws Exception{
         return Arrays.asList(new Object[][]{
-            {1, "i"}, {2, "ii"}, {3, "iii"}, {4, "iv"}, {5, "v"},
-            {6, "vi"}, {7, "vii"}, {8, "viii"}, {9, "ix"}, {10, "x"},
-            {11, "xi"}, {12, "xii"}, {14, "xiv"}, {15, "xv"},
-            {18, "xviii"}, {19, "xix"}, {20, "xx"},
-            {50, "l"}, {99, "xcix"}, {100, "c"}, {451, "cdli"}, {900, "cm"},
-            {1000, "m"}, {5000, "mmmmm"}, {2111, "mmcxi"}
+            {1, "i", "¹"}, {2, "ii", "²"}, {3, "iii", "³"}, {4, "iv", "⁴"},
+            {5, "v", "⁵"}, {6, "vi", "⁶"}, {7, "vii", "⁷"}, {8, "viii", "⁸"},
+            {9, "ix", "⁹"}, {10, "x", "¹⁰"}, {11, "xi", "¹¹"},
+            {12, "xii", "¹²"}, {14, "xiv", "¹⁴"}, {15, "xv","¹⁵"},
+            {18, "xviii", "¹⁸"}, {19, "xix", "¹⁹"}, {20, "xx", "²⁰"},
+            {50, "l","⁵⁰"}, {99, "xcix", "⁹⁹"}, {100, "c", "¹⁰⁰"},
+            {451, "cdli", "⁴⁵¹"}, {900, "cm", "⁹⁰⁰"}, {1000, "m", "¹⁰⁰⁰"},
+            {5000, "mmmmm", "⁵⁰⁰⁰"}, {2111, "mmcxi", "²¹¹¹"}
         });
     }
 
     @Test
-    public void test(){
-        assertEquals(expect, TextNumbering.toRomanLower(input));
+    public void testRoman(){
+        assertEquals(roman, RomanNumbering.LOWER.toRoman(input));
     }
+
+    @Test
+    public void testSuperscript(){
+        assertEquals(superscript, SuperscriptNumbering.toSuperscript(input));
+    }
+
+
 }

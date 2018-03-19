@@ -40,10 +40,16 @@ final class StreamTextRender{
         textAlignment = TextAlignment.LEFT;
         for (FormatterItem block: renderMatter){
             changeAlign(block.getTextAlignment());
+            if (block.getPrefix().isPresent()){
+                contentStream.newLineAtOffset(block.getPrefixDistance(), 0);
+                contentStream.showText(block.getPrefix().get());
+                contentStream.newLineAtOffset(-block.getPrefixDistance(), 0);
+            }
             for (FormatterItem.Line line: block){
-                // TODO change indent
+                contentStream.newLineAtOffset(line.getIndent(), 0);
                 printText(line);
                 nextLine(line.getHeight());
+                contentStream.newLineAtOffset(-line.getIndent(), 0);
             }
         }
         contentStream.endText();

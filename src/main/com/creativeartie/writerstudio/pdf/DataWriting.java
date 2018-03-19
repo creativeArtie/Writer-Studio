@@ -15,7 +15,7 @@ public final class DataWriting implements Data{
     private ManuscriptFile outputDoc;
 
     public DataWriting(ManuscriptFile doc){
-        pageMargin = Margin.marginFromInch(1);
+        pageMargin = new Margin(Data.cmToPoint(3f));
         outputDoc = doc;
     }
 

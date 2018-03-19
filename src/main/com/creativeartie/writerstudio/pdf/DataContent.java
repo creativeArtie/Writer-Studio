@@ -13,9 +13,13 @@ import com.google.common.collect.*;
 
 public final class DataContent implements Data{
     private DataWriting baseData;
+    private boolean paraFirst;
+    private LinkedList<Integer> listNumbering;
 
     public DataContent(DataWriting data){
         baseData = data;
+        paraFirst = true;
+        listNumbering = new LinkedList<>();
     }
 
     @Override
@@ -27,10 +31,100 @@ public final class DataContent implements Data{
             throws IOException{
         ImmutableList.Builder<DataContentLine> builder = ImmutableList.builder();
         for (LinedSpan child: listLines()){
-            DataContentLine line = new DataContentLine(baseData, child, data);
-            line.getFormatter().ifPresent(item -> builder.add(line));
-}
+            FormatterItem item = new FormatterItem(data.getRenderWidth(
+                getMargin()));
+            DataContentLine line = null;
+            switch(child.getLinedType()){
+            case PARAGRAPH:
+                line = parse((LinedSpanParagraph) child, item);
+                break;
+            case BULLET:
+                line = parseBullet((LinedSpanLevelList) child, item);
+                break;
+            case NUMBERED:
+                line = parseNumber((LinedSpanLevelList) child, item);
+                break;
+            case HEADING:
+                line = parse((LinedSpanLevelSection) child, item);
+                break;
+            case BREAK:
+                item.setTextAlignment(TextAlignment.CENTER);
+                item.appendText("#", getBaseFont());
+                line = new DataContentLine(getBaseData(), item);
+                paraFirst = true;
+            }
+            if (line != null && line.getFormatter().isPresent()){
+                builder.add(line);
+            }
+        }
+        builder.add(new DataContentLine(getBaseData(),
+            new FormatterItem(
+                data.getRenderWidth(getMargin()), TextAlignment.CENTER
+            ).appendText("THE END", getBaseFont())
+        ));
         return builder.build();
+    }
+
+    private DataContentLine parse(LinedSpanParagraph line, FormatterItem item)
+            throws IOException{
+        Optional<FormatSpanMain> span = line.getFormattedSpan();
+        if (! span.isPresent()){
+            return null;
+        }
+        if (! paraFirst) {
+            item.setFirstIndent(Data.cmToPoint(1.25f));
+        }
+        DataContentLine ans = new DataContentLine(getBaseData(), item, span
+            .get());
+        ans.getFormatter().ifPresent(f -> paraFirst = false);
+        return ans;
+    }
+
+    private DataContentLine parseBullet(LinedSpanLevelList line,
+            FormatterItem item) throws IOException{
+        return parse(line, item, "•");
+    }
+
+    private DataContentLine parseNumber(LinedSpanLevelList line,
+            FormatterItem item) throws IOException{
+        int level = line.getLevel();
+        while (listNumbering.size() > level){
+            listNumbering.pop();
+        }
+        while (listNumbering.size() < level){
+            listNumbering.push(1);
+        }
+        int count = listNumbering.pop();
+        DataContentLine ans = parse(line, item, count + ".");
+        listNumbering.push(++count);
+        return ans;
+    }
+
+    private DataContentLine parse(LinedSpanLevelList line, FormatterItem item,
+            String prefix) throws IOException{
+        float indent = Data.cmToPoint(.5f) + Data.cmToPoint(.5f) *
+            line.getLevel();
+        item.setFirstIndent(indent);
+        item.setIndent(indent * line.getLevel());
+        item.setIndent(indent * line.getLevel());
+        item.setPrefix(prefix, indent - Data.cmToPoint(.75f));
+        Optional<FormatSpanMain> span = line.getFormattedSpan();
+        if (! span.isPresent()){
+            return null;
+        }
+
+        return new DataContentLine(getBaseData(), item, span.get());
+    }
+
+
+    private DataContentLine parse(LinedSpanLevelSection line,
+            FormatterItem item) throws IOException{
+        Optional<FormatSpanMain> span = line.getFormattedSpan();
+        if (! span.isPresent()){
+            return null;
+        }
+        item.setTextAlignment(TextAlignment.CENTER);
+        return new DataContentLine(getBaseData(), item, span.get());
     }
 
     private List<LinedSpan> listLines(){

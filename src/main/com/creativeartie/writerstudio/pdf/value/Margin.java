@@ -1,25 +1,17 @@
 package com.creativeartie.writerstudio.pdf.value;
 
-import com.creativeartie.writerstudio.pdf.*;
-
 public class Margin{
-
-    public static Margin marginFromInch(float inches){
-        float pt = Data.inchToPoint(inches);
-        return new Margin(pt, pt, pt, pt);
-    }
-
-    public static Margin marginFromCentimeters(float cm){
-        float pt = Data.inchToPoint(cm);
-        return new Margin(pt, pt, pt, pt);
-    }
 
     private float leftMargin;
     private float rightMargin;
     private float topMargin;
     private float bottomMargin;
 
-    private Margin(float left, float right, float top, float bottom){
+    public Margin(float all){
+        this(all, all, all, all);
+    }
+
+    public Margin(float left, float right, float top, float bottom){
         leftMargin = left;
         rightMargin = right;
         topMargin = top;

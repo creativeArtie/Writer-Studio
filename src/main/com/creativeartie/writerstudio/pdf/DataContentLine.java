@@ -17,34 +17,54 @@ public class DataContentLine implements Data{
     private ArrayList<ArrayList<DataContentNote>> pointerNotes;
     private Optional<FormatterItem> itemFormatter;
 
-    public DataContentLine(DataWriting input, LinedSpan line, StreamData data)
-            throws IOException{
+    public DataContentLine(DataWriting input, FormatterItem item) {
         baseData = input;
         pointerNotes = new ArrayList<>();
-        float width = data.getRenderWidth(input.getMargin());
-        /*
-        FormatterItem item = null;
-        switch (line.getLinedType()){
-        case HEADING:
-            LinedSpanLevelSection found = (LinedSpanLevelSection) line;
-            break;
+
+        itemFormatter = Optional.of(item);
+    }
+
+    public DataContentLine(DataWriting input, FormatterItem item,
+            FormatSpanMain span) throws IOException{
+        baseData = input;
+        pointerNotes = new ArrayList<>();
+
+        itemFormatter = parseItem(span, item, input.getBaseFont());
+    }
+
+    private Optional<FormatterItem> parseItem(FormatSpanMain span,
+            FormatterItem item, SizedFont font) throws IOException{
+        for (Span child: span){
+            if (child instanceof FormatSpan){
+                FormatSpan format = (FormatSpan) child;
+                String text = format.getRaw();
+                boolean bold = format.isBold();
+                boolean italics = format.isItalics();
+                boolean coded = format.isCoded();
+                SizedFont add = font;
+                if (coded){
+                    add = add.changeToCourier();
+                }
+                add = bold?
+                    (add.changeStyle(
+                        italics? SizedFont.Style.BOTH: SizedFont.Style.BOLD
+                    )): (italics? add.changeStyle(SizedFont.Style.ITALICS): add);
+                item.appendText(text, add);
+            }
         }
-        itemFormatter = Optional.ofNullable(item);
-        */
-        itemFormatter = Optional.of(new FormatterItem(width).appendText(
-            line.getRaw(), getBaseFont()));
-    }
-
-    private LinedSpanLevelSection getSectionLine(){
-        return null;
-    }
-
-    private FormatterItem parseLine(FormatSpanMain input, FormatterItem output){
-        return output;
+        if (item.isEmpty()){
+            return Optional.empty();
+        } else {
+            return Optional.of(item);
+        }
     }
 
     public Optional<FormatterItem> getFormatter(){
         return itemFormatter;
+    }
+
+    public ArrayList<DataContentNote> listNotes(int line){
+        return pointerNotes.get(line);
     }
 
     @Override
