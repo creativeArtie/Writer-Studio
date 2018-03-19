@@ -35,8 +35,11 @@ public final class DataContent implements Data{
                 getMargin()));
             DataContentLine line = null;
             switch(child.getLinedType()){
-            case PARAGRAPH:
-                line = parse((LinedSpanParagraph) child, item);
+            case BREAK:
+                item.setTextAlignment(TextAlignment.CENTER);
+                item.appendText("#", getBaseFont());
+                line = new DataContentLine(getBaseData(), item);
+                paraFirst = true;
                 break;
             case BULLET:
                 line = parseBullet((LinedSpanLevelList) child, item);
@@ -47,11 +50,11 @@ public final class DataContent implements Data{
             case HEADING:
                 line = parse((LinedSpanLevelSection) child, item);
                 break;
-            case BREAK:
-                item.setTextAlignment(TextAlignment.CENTER);
-                item.appendText("#", getBaseFont());
-                line = new DataContentLine(getBaseData(), item);
-                paraFirst = true;
+            case PARAGRAPH:
+                line = parse((LinedSpanParagraph) child, item);
+                break;
+            case QUOTE:
+                line = parse((LinedSpanQuote) child, item);
             }
             if (line != null && line.getFormatter().isPresent()){
                 builder.add(line);
@@ -63,21 +66,6 @@ public final class DataContent implements Data{
             ).appendText("THE END", getBaseFont())
         ));
         return builder.build();
-    }
-
-    private DataContentLine parse(LinedSpanParagraph line, FormatterItem item)
-            throws IOException{
-        Optional<FormatSpanMain> span = line.getFormattedSpan();
-        if (! span.isPresent()){
-            return null;
-        }
-        if (! paraFirst) {
-            item.setFirstIndent(Data.cmToPoint(1.25f));
-        }
-        DataContentLine ans = new DataContentLine(getBaseData(), item, span
-            .get());
-        ans.getFormatter().ifPresent(f -> paraFirst = false);
-        return ans;
     }
 
     private DataContentLine parseBullet(LinedSpanLevelList line,
@@ -112,8 +100,11 @@ public final class DataContent implements Data{
         if (! span.isPresent()){
             return null;
         }
-
-        return new DataContentLine(getBaseData(), item, span.get());
+        paraFirst = false;
+        DataContentLine ans = new DataContentLine(getBaseData(), item, span
+            .get());
+        ans.getFormatter().ifPresent(f -> paraFirst = false);
+        return ans;
     }
 
 
@@ -125,6 +116,37 @@ public final class DataContent implements Data{
         }
         item.setTextAlignment(TextAlignment.CENTER);
         return new DataContentLine(getBaseData(), item, span.get());
+    }
+
+    private DataContentLine parse(LinedSpanParagraph line, FormatterItem item)
+            throws IOException{
+        Optional<FormatSpanMain> span = line.getFormattedSpan();
+        if (! span.isPresent()){
+            return null;
+        }
+        if (! paraFirst) {
+            item.setFirstIndent(Data.cmToPoint(1.25f));
+        }
+        DataContentLine ans = new DataContentLine(getBaseData(), item, span
+            .get());
+        ans.getFormatter().ifPresent(f -> paraFirst = false);
+        return ans;
+    }
+
+    private DataContentLine parse(LinedSpanQuote quote, FormatterItem item)
+            throws IOException{
+        item = new FormatterItem(item.getWidth() - Data.cmToPoint(2f));
+        item.setFirstIndent(Data.cmToPoint(2f));
+        item.setIndent(Data.cmToPoint(2f));
+
+        Optional<FormatSpanMain> span = quote.getFormattedSpan();
+        if (! span.isPresent()){
+            return null;
+        }
+        DataContentLine ans = new DataContentLine(getBaseData(), item, span
+            .get());
+        ans.getFormatter().ifPresent(f -> paraFirst = false);
+        return ans;
     }
 
     private List<LinedSpan> listLines(){
