@@ -1,4 +1,4 @@
 theme: jekyll-theme-merlot
-show_downloads: true
-title: JWriter
-description: A simple note taking word processor 
+show_downloads: false
+title: Writer Studio
+description: A word processor with note taking tools
