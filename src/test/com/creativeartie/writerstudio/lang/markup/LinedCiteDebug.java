@@ -250,7 +250,7 @@ public class LinedCiteDebug {
             .setDataSpan(doc, 0, 3).setNoteTotal(1);
         FieldTest field = new FieldTest()
             .setType(InfoFieldType.FOOTNOTE);
-        ContentDataTest data = new ContentDataTest()
+        FormatDataTest data = new FormatDataTest()
             .setData(doc, 0, 3, 0);
 
         cite.test(        doc,  4, raw,        0);
@@ -259,11 +259,12 @@ public class LinedCiteDebug {
         doc.assertFieldLeaf(2, 10, "footnote", 0, 1, 0);
         doc.assertKeyLeaf( 10, 11, ":",        0, 2);
         data.test(        doc,  1, "abc\\\n",  0, 3);
-        doc.assertChild(        2, "abc\\\n",  0, 3, 0);
-        doc.assertDataLeaf(11, 14, "abc",      0, 3, 0, 0);
-        doc.assertChild(        2, "\\\n",     0, 3, 0, 1);
-        doc.assertKeyLeaf( 14, 15, "\\",       0, 3, 0, 1, 0);
-        doc.assertDataLeaf(15, 16, "\n",       0, 3, 0, 1, 1);
+        doc.assertChild(        1, "abc\\\n",  0, 3, 0);
+        doc.assertChild(        2, "abc\\\n",  0, 3, 0, 0);
+        doc.assertDataLeaf(11, 14, "abc",      0, 3, 0, 0, 0);
+        doc.assertChild(        2, "\\\n",     0, 3, 0, 0, 1);
+        doc.assertKeyLeaf( 14, 15, "\\",       0, 3, 0, 0, 1, 0);
+        doc.assertDataLeaf(15, 16, "\n",       0, 3, 0, 0, 1, 1);
         doc.assertLast();
         doc.assertIds();
     }

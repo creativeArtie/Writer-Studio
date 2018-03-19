@@ -7,6 +7,14 @@ import com.creativeartie.writerstudio.pdf.value.*;
 
 public interface Data{
 
+    public static float inchToPoint(float inches){
+        return inches * 72;
+    }
+
+    public static float cmToPoint(float cm){
+        return cm * 28.3465f;
+    }
+
     public DataWriting getBaseData();
 
     public default SizedFont getBaseFont(){

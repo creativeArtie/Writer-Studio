@@ -1,25 +1,17 @@
 package com.creativeartie.writerstudio.pdf.value;
 
-import org.apache.pdfbox.pdmodel.*;
+import com.creativeartie.writerstudio.pdf.*;
 
 public class Margin{
 
     public static Margin marginFromInch(float inches){
-        float pt = inchToPoint(inches);
+        float pt = Data.inchToPoint(inches);
         return new Margin(pt, pt, pt, pt);
     }
 
     public static Margin marginFromCentimeters(float cm){
-        float pt = inchToPoint(cm);
+        float pt = Data.inchToPoint(cm);
         return new Margin(pt, pt, pt, pt);
-    }
-
-    private static float inchToPoint(float inches){
-        return inches * 72;
-    }
-
-    private static float cmToPoint(float cm){
-        return cm * 28.3465f;
     }
 
     private float leftMargin;

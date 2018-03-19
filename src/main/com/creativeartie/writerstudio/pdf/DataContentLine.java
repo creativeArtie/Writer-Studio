@@ -15,7 +15,7 @@ public class DataContentLine implements Data{
     private DataWriting baseData;
     private LinedSpan mainNote;
     private ArrayList<ArrayList<DataContentNote>> pointerNotes;
-    private Optional<FormatterItem> contentItem;
+    private Optional<FormatterItem> itemFormatter;
 
     public DataContentLine(DataWriting input, LinedSpan line, StreamData data)
             throws IOException{
@@ -29,9 +29,9 @@ public class DataContentLine implements Data{
             LinedSpanLevelSection found = (LinedSpanLevelSection) line;
             break;
         }
-        contentItem = Optional.ofNullable(item);
+        itemFormatter = Optional.ofNullable(item);
         */
-        contentItem = Optional.of(new FormatterItem(width).appendText(
+        itemFormatter = Optional.of(new FormatterItem(width).appendText(
             line.getRaw(), getBaseFont()));
     }
 
@@ -43,12 +43,8 @@ public class DataContentLine implements Data{
         return output;
     }
 
-    public Optional<FormatterItem> getContentItem(){
-        return contentItem;
-    }
-
-    public FormatterItem getFormatterItem(){
-        return contentItem.get();
+    public Optional<FormatterItem> getFormatter(){
+        return itemFormatter;
     }
 
     @Override

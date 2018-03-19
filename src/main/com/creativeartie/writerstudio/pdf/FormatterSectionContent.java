@@ -44,7 +44,7 @@ class FormatterSectionContent extends FormatterSection{
         Optional<FormatterItem> item = Optional.empty();
         for (DataContentLine line : data.getContentData().getContentLines(
                 output)){
-            item = splitItem(line.getContentItem().get(), cur);
+            item = splitItem(line.getFormatter().get(), cur);
             while (item.isPresent()){
                 contentPages.add(cur);
                 output.toNextPage();

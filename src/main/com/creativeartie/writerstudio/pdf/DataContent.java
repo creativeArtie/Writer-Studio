@@ -28,7 +28,7 @@ public final class DataContent implements Data{
         ImmutableList.Builder<DataContentLine> builder = ImmutableList.builder();
         for (LinedSpan child: listLines()){
             DataContentLine line = new DataContentLine(baseData, child, data);
-            line.getContentItem().ifPresent(item -> builder.add(line));
+            line.getFormatter().ifPresent(item -> builder.add(line));
 }
         return builder.build();
     }
