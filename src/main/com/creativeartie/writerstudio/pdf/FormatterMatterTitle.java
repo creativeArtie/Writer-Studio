@@ -3,9 +3,6 @@ package com.creativeartie.writerstudio.pdf;
 import java.io.*;
 import java.util.*;
 
-import org.apache.pdfbox.pdmodel.*;
-import org.apache.pdfbox.pdmodel.font.*;
-
 import com.creativeartie.writerstudio.pdf.value.*;
 
 import com.google.common.collect.*;
@@ -13,12 +10,12 @@ import com.google.common.collect.*;
 /**
  * Prints the title page footer
  */
-abstract class PdfMatterTitle extends PdfMatter{
+abstract class FormatterMatterTitle extends FormatterMatter{
 
     private Optional<Float> divWidth;
-    private Optional<InputTitle> inputData;
+    private Optional<DataTitle> inputData;
 
-    public PdfMatterTitle(){
+    public FormatterMatterTitle(){
         inputData = Optional.empty();
         divWidth = Optional.empty();
     }
@@ -34,7 +31,7 @@ abstract class PdfMatterTitle extends PdfMatter{
         return divWidth.get();
     }
 
-    public PdfMatterTitle setData(InputTitle data, StreamData output)
+    public FormatterMatterTitle setData(DataTitle data, StreamData output)
             throws IOException{
         divWidth = Optional.of(output.getRenderWidth(data.getMargin()));
         inputData = Optional.of(data);
@@ -42,7 +39,7 @@ abstract class PdfMatterTitle extends PdfMatter{
         return this;
     }
 
-    protected abstract void parseData(InputTitle data, StreamData output)
+    protected abstract void parseData(DataTitle data, StreamData output)
         throws IOException;
 
 }

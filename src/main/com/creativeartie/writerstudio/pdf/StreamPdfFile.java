@@ -10,8 +10,8 @@ public class StreamPdfFile implements AutoCloseable{
     private final String saveFile;
     private final PDDocument pdfDocument;
     private PDPageContentStream contentStream;
-    private PdfSectionTitle titlePage;
-    private PdfSectionContent writtenContent;
+    private FormatterSectionTitle titlePage;
+    private FormatterSectionContent writtenContent;
 
     private PDPage currentPage;
 
@@ -69,6 +69,13 @@ public class StreamPdfFile implements AutoCloseable{
 
     PDPageContentStream getContentStream(){
         return contentStream;
+    }
+
+    StreamPdfFile renderText(FormatterMatter matter) throws IOException{
+        if (! matter.isEmpty()){
+            new StreamTextRender(contentStream, matter).render();
+        }
+        return this;
     }
 
     PDPage getPage(){

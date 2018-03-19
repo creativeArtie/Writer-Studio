@@ -14,18 +14,18 @@ import org.apache.pdfbox.pdmodel.font.*;
 import com.creativeartie.writerstudio.pdf.value.*;
 
 @RunWith(JUnit4.class)
-public class PdfDataTest{
+public class FormatterDataTest{
     private static final SizedFont baseFont = SizedFont.newTimesRoman(12);
 
     private static void test(String test, String ... expects)
             throws IOException{
-        test(PdfData.createWords(test, baseFont), expects);
+        test(FormatterData.createWords(test, baseFont), expects);
     }
 
-    public static void test(List<PdfData> test, String ... expects){
+    public static void test(List<FormatterData> test, String ... expects){
         assertEquals(expects.length, test.size());
         int i = 0;
-        for(PdfData text: test){
+        for(FormatterData text: test){
             assertEquals("Positional:" + i, expects[i], text.getText());
             i++;
         }

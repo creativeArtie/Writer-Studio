@@ -3,8 +3,6 @@ package com.creativeartie.writerstudio.pdf;
 import java.io.*;
 import java.util.*;
 
-import org.apache.pdfbox.pdmodel.*;
-
 import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.pdf.value.*;
@@ -12,10 +10,10 @@ import com.creativeartie.writerstudio.pdf.value.*;
 /**
  * Prints text on a page with ability to change height and detect overflow.
  */
-class PdfMatterContent extends PdfMatter{
+class FormatterMatterContent extends FormatterMatter{
     private Margin baseMargins;
-    private ArrayList<PdfItem> outputLines;
-    private PdfItem currentLine;
+    private ArrayList<FormatterItem> outputLines;
+    private FormatterItem currentLine;
 
     private boolean baisicUnprepared;
     private float fillHeight;
@@ -24,7 +22,7 @@ class PdfMatterContent extends PdfMatter{
     private float startY;
     private float startX;
 
-    public PdfMatterContent(){
+    public FormatterMatterContent(){
         baseMargins = null;
         outputLines = new ArrayList<>();
         currentLine = null;
@@ -34,7 +32,7 @@ class PdfMatterContent extends PdfMatter{
         fillHeight = 0;
     }
 
-    public PdfMatterContent setBasics(Input content, StreamData output){
+    public FormatterMatterContent setBasics(Data content, StreamData output){
         baseMargins = content.getMargin();
         startY = output.getHeight() - baseMargins.getTop();
         startX = baseMargins.getLeft();
@@ -44,41 +42,23 @@ class PdfMatterContent extends PdfMatter{
         return this;
     }
 
-    public PdfMatterContent addHeaderSpacing(float height){
+    public FormatterMatterContent addHeaderSpacing(float height){
         startY -= height;
         divHeight -= height;
         return this;
     }
 
-    public boolean canFit(PdfItem item){
+    public boolean canFit(FormatterItem item){
         return item.getHeight() + fillHeight < divHeight;
     }
 
-    public boolean addContentLine(PdfItem item){
+    public boolean addContentLine(FormatterItem item){
         if (item.getHeight() + fillHeight < divHeight){
             outputLines.add(item);
             fillHeight += item.getHeight();
             return true;
         }
         return false;
-        /*
-        PdfItem last = new PdfItem(item.getWidth());
-        Optional<PdfItem> ans = Optional.empty();
-        for (PdfItem.Line line: item){
-            if (ans.isPresent()){
-                ans.get().addLine(line);
-            } else {
-                if (line.getHeight() + fillHeight < divHeight){
-                    last.addLine(line);
-                    fillHeight += line.getHeight();
-                } else {
-                    ans = Optional.of(new PdfItem(item.getWidth()));
-                    ans.get().addLine(line);
-                }
-            }
-        }
-        outputLines.add(last);
-        return ans;*/
     }
 
     private void isReady(){
@@ -111,7 +91,7 @@ class PdfMatterContent extends PdfMatter{
     }
 
     @Override
-    protected List<PdfItem> delegate(){
+    protected List<FormatterItem> delegate(){
         return ImmutableList.copyOf(outputLines);
     }
 

@@ -13,22 +13,40 @@ import com.creativeartie.writerstudio.pdf.value.*;
 /**
  * Defines the placement of the text on the page.
  */
-final class StreamRender{
+final class StreamTextRender{
     private PDPageContentStream contentStream;
     private TextAlignment textAlignment;
     private SizedFont textFont;
     private float sectionWidth;
+    private FormatterMatter renderMatter;
 
-    public StreamRender(PDPageContentStream output, float x, float y, float w)
+    public StreamTextRender(PDPageContentStream output, FormatterMatter matter)
             throws IOException{
         contentStream = output;
-        sectionWidth = w;
+        sectionWidth = matter.getWidth();
+        renderMatter = matter;
 
+        textAlignment = matter.get(0).getTextAlignment();
+        textFont = matter.get(0).get(0).get(0).getFont();
+    }
+
+
+    void render() throws IOException{
+        contentStream.beginText();
+        contentStream.newLineAtOffset(renderMatter.getXLocation(),
+            renderMatter.getYLocation());
+        contentStream.setFont(textFont.getFont(), textFont.getSize());
+        sectionWidth = renderMatter.getWidth();
         textAlignment = TextAlignment.LEFT;
-        textFont = SizedFont.newTimesRoman(12);
-
-        output.newLineAtOffset(x, y);
-        output.setFont(textFont.getFont(), textFont.getSize());
+        for (FormatterItem block: renderMatter){
+            changeAlign(block.getTextAlignment());
+            for (FormatterItem.Line line: block){
+                // TODO change indent
+                printText(line);
+                nextLine(line.getHeight());
+            }
+        }
+        contentStream.endText();
     }
 
     void changeAlign(TextAlignment next) throws IOException{
@@ -88,13 +106,13 @@ final class StreamRender{
         contentStream.newLineAtOffset(0, -y);
     }
 
-    void printText(PdfItem.Line line) throws IOException{
+    void printText(FormatterItem.Line line) throws IOException{
         if (textAlignment == TextAlignment.RIGHT){
             contentStream.newLineAtOffset(-line.getWidth(), 0);
         } else if (textAlignment == TextAlignment.CENTER){
             contentStream.newLineAtOffset(-(line.getWidth() / 2), 0);
         }
-        for (PdfData text: line){
+        for (FormatterData text: line){
             changeFont(text.getFont());
             contentStream.showText(text.getText());
         }

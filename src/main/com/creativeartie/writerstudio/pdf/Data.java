@@ -1,14 +1,13 @@
 package com.creativeartie.writerstudio.pdf;
 
-import java.util.*;
 import com.creativeartie.writerstudio.file.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 
 import com.creativeartie.writerstudio.pdf.value.*;
 
-public interface Input{
+public interface Data{
 
-    public InputWriting getBaseData();
+    public DataWriting getBaseData();
 
     public default SizedFont getBaseFont(){
         return getBaseData().getBaseFont();

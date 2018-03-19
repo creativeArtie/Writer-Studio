@@ -3,37 +3,32 @@ package com.creativeartie.writerstudio.pdf;
 import java.io.*;
 import java.util.*;
 
-import org.apache.pdfbox.pdmodel.*;
-import org.apache.pdfbox.pdmodel.font.*;
-
 import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.pdf.value.*;
 
 /**
- * Prints the title page center text
+ * Prints the title page header
  */
-class PdfMatterTitleCenter extends PdfMatterTitle{
+class FormatterMatterTitleTop extends FormatterMatterTitle{
     private Margin baseMargins;
-    private PDPage outputPage;
-    private ArrayList<PdfItem> outputLines;
+    private List<FormatterItem> outputLines;
     private float divHeight;
     private float startX;
     private float startY;
 
     @Override
-    protected void parseData(InputTitle data, StreamData output)
+    protected void parseData(DataTitle data, StreamData output)
             throws IOException{
         baseMargins = data.getMargin();
 
-        startY = output.getHeight() / 2 ;
+        startY = output.getHeight() - baseMargins.getTop();
         startX = baseMargins.getLeft();
 
-        outputLines = data.getTitleCenterText(output);
+        outputLines = data.getTitleTopText(output);
         divHeight = 0;
-        for (PdfItem block: outputLines){
-            startY += block.getHeight() / 2 ;
-            divHeight += block.getHeight();
+        for (FormatterItem line: outputLines){
+            divHeight += line.getHeight();
         }
     }
 
@@ -54,7 +49,7 @@ class PdfMatterTitleCenter extends PdfMatterTitle{
     }
 
     @Override
-    public List<PdfItem> delegate(){
+    public List<FormatterItem> delegate(){
         return outputLines;
     }
 

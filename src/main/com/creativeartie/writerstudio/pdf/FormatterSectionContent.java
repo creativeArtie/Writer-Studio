@@ -3,8 +3,6 @@ package com.creativeartie.writerstudio.pdf;
 import java.io.*;
 import java.util.*;
 
-import org.apache.pdfbox.pdmodel.*;
-import org.apache.pdfbox.pdmodel.font.*;
 import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.pdf.value.*;
@@ -12,18 +10,18 @@ import com.creativeartie.writerstudio.pdf.value.*;
 /**
  * Represent a title page.
  */
-class PdfSectionContent extends PdfSection{
+class FormatterSectionContent extends FormatterSection{
     private class Page{
-        private PdfMatterContent pageContent;
-        private PdfMatterFootnote pageFootnote;
-        private PdfMatterHeader pageHeader;
-        private Page(InputWriting data, StreamData output) throws IOException{
-            pageHeader = new PdfMatterHeader().setBasics(data.getContentData(),
+        private FormatterMatterContent pageContent;
+        private FormatterMatterFootnote pageFootnote;
+        private FormatterMatterHeader pageHeader;
+        private Page(DataWriting data, StreamData output) throws IOException{
+            pageHeader = new FormatterMatterHeader().setBasics(data.getContentData(),
                 output);
             float height = pageHeader.getHeight();
-            pageContent = new PdfMatterContent().setBasics(data, output)
+            pageContent = new FormatterMatterContent().setBasics(data, output)
                 .addHeaderSpacing(height);
-            pageFootnote = new PdfMatterFootnote().setBasics(data, output);
+            pageFootnote = new FormatterMatterFootnote().setBasics(data, output);
         }
     }
 
@@ -33,20 +31,20 @@ class PdfSectionContent extends PdfSection{
     private ArrayList<Page> contentEndnotes;
     private ArrayList<Page> contentCitations;
 
-    public PdfSectionContent() {
+    public FormatterSectionContent() {
         contentCitations = new ArrayList<>();
         contentEndnotes = new ArrayList<>();
         contentPages = new ArrayList<>();
     }
 
     @Override
-    public void loadData(InputWriting data, StreamData output)
+    public void loadData(DataWriting data, StreamData output)
             throws IOException{
         Page cur = new Page(data, output);
-        Optional<PdfItem> item = Optional.empty();
-        for (InputContentLine line : data.getContentData().getContentLines(
+        Optional<FormatterItem> item = Optional.empty();
+        for (DataContentLine line : data.getContentData().getContentLines(
                 output)){
-            item = splitItem(line.getPdfItem(), cur);
+            item = splitItem(line.getContentItem().get(), cur);
             while (item.isPresent()){
                 contentPages.add(cur);
                 output.toNextPage();
@@ -57,14 +55,14 @@ class PdfSectionContent extends PdfSection{
         contentPages.add(cur);
     }
 
-    private Optional<PdfItem> splitItem(PdfItem item, Page page){
+    private Optional<FormatterItem> splitItem(FormatterItem item, Page page){
         if (page.pageContent.addContentLine(item)){
             return Optional.empty();
         }
-        Optional<PdfItem> adding = Optional.of(PdfItem.copySplitItem(item));
-        PdfItem check = PdfItem.copyFormat(item);
-        Optional<PdfItem> ans = Optional.of(PdfItem.copySplitItem(item));
-        for (PdfItem.Line line: item){
+        Optional<FormatterItem> adding = Optional.of(FormatterItem.copySplitItem(item));
+        FormatterItem check = FormatterItem.copyFormat(item);
+        Optional<FormatterItem> ans = Optional.of(FormatterItem.copySplitItem(item));
+        for (FormatterItem.Line line: item){
             check.addLine(line);
             if (page.pageContent.canFit(check)){
                 adding.get().addLine(line);
@@ -86,9 +84,9 @@ class PdfSectionContent extends PdfSection{
             } else {
                 output.addPage();
             }
-            page.pageHeader.render(output.getContentStream());
-            page.pageContent.render(output.getContentStream());
-            page.pageFootnote.render(output.getContentStream());
+            output.renderText(page.pageHeader);
+            output.renderText(page.pageContent);
+            output.renderText(page.pageFootnote);
         }
     }
 }

@@ -7,14 +7,14 @@ import com.creativeartie.writerstudio.lang.markup.*;
 
 import com.creativeartie.writerstudio.pdf.value.*;
 
-public final class InputBackPages implements Input{
-    private InputWriting baseData;
+public final class DataBackPages implements Data{
+    private DataWriting baseData;
 
-    public InputBackPages(InputWriting InputWriting){
-        baseData = InputWriting;
+    public DataBackPages(DataWriting DataWriting){
+        baseData = DataWriting;
     }
 
-    public InputWriting getBaseData(){
+    public DataWriting getBaseData(){
         return baseData;
     }
 }

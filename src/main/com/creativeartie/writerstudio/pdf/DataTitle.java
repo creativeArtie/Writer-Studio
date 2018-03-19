@@ -8,22 +8,22 @@ import com.creativeartie.writerstudio.lang.markup.*;
 
 import com.creativeartie.writerstudio.pdf.value.*;
 
-public final class InputTitle implements Input{
-    private InputWriting baseData;
+public final class DataTitle implements Data{
+    private DataWriting baseData;
     private ManuscriptFile outputDoc;
 
-    public InputTitle(InputWriting data){
+    public DataTitle(DataWriting data){
         baseData = data;
         outputDoc = data.getOutputDoc();
     }
 
-    public InputWriting getBaseData(){
+    public DataWriting getBaseData(){
         return baseData;
     }
 
-    public ArrayList<PdfItem> getTitleTopText(StreamData data)
+    public ArrayList<FormatterItem> getTitleTopText(StreamData data)
              throws IOException{
-        ArrayList<PdfItem> ans = new ArrayList<>();
+        ArrayList<FormatterItem> ans = new ArrayList<>();
         float width = data.getWidth();
         ans.add(newBlock(MetaData.AGENT_NAME, TextAlignment.LEFT, width));
         ans.add(newBlock(MetaData.AGENT_ADDRESS, TextAlignment.LEFT, width));
@@ -32,9 +32,9 @@ public final class InputTitle implements Input{
         return ans;
     }
 
-    public ArrayList<PdfItem> getTitleCenterText(StreamData data)
+    public ArrayList<FormatterItem> getTitleCenterText(StreamData data)
              throws IOException{
-        ArrayList<PdfItem> ans = new ArrayList<>();
+        ArrayList<FormatterItem> ans = new ArrayList<>();
         float width = data.getWidth();
         ans.add(newBlock(MetaData.TITLE, TextAlignment.CENTER, width, 2));
         ans.add(newBlock("By", TextAlignment.CENTER, width, 2));
@@ -42,9 +42,9 @@ public final class InputTitle implements Input{
         return ans;
     }
 
-    public ArrayList<PdfItem> getTitleBottomText(StreamData data)
+    public ArrayList<FormatterItem> getTitleBottomText(StreamData data)
              throws IOException{
-        ArrayList<PdfItem> ans = new ArrayList<>();
+        ArrayList<FormatterItem> ans = new ArrayList<>();
         float width = data.getWidth();
         ans.add(newBlock(MetaData.AUTHOR, TextAlignment.RIGHT, width));
         ans.add(newBlock(MetaData.ADDRESS, TextAlignment.RIGHT, width));
@@ -59,19 +59,19 @@ public final class InputTitle implements Input{
         return ans;
     }
 
-    private PdfItem newBlock(MetaData data, TextAlignment alignment,
+    private FormatterItem newBlock(MetaData data, TextAlignment alignment,
             float width) throws IOException{
         return newBlock(data, alignment, width, 1);
     }
 
-    private PdfItem newBlock(MetaData data, TextAlignment alignment,
+    private FormatterItem newBlock(MetaData data, TextAlignment alignment,
             float width, float leading) throws IOException{
         return newBlock(outputDoc.getText(data), alignment, width, leading);
     }
 
-    private PdfItem newBlock(String text, TextAlignment alignment,
+    private FormatterItem newBlock(String text, TextAlignment alignment,
             float width, float leading) throws IOException{
-        return new PdfItem(width, alignment).setLeading(leading)
+        return new FormatterItem(width, alignment).setLeading(leading)
             .appendText(text, getBaseFont());
     }
 }

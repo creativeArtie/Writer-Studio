@@ -3,8 +3,6 @@ package com.creativeartie.writerstudio.pdf;
 import java.io.*;
 import java.util.*;
 
-import org.apache.pdfbox.pdmodel.*;
-
 import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.pdf.value.*;
@@ -12,10 +10,10 @@ import com.creativeartie.writerstudio.pdf.value.*;
 /**
  * Prints the page header.
  */
-class PdfMatterHeader extends PdfMatter{
+class FormatterMatterHeader extends FormatterMatter{
     private Margin baseMargins;
-    private ArrayList<PdfItem> outputLines;
-    private PdfItem currentLine;
+    private ArrayList<FormatterItem> outputLines;
+    private FormatterItem currentLine;
 
     private boolean baisicUnprepared;
     private float divWidth;
@@ -24,7 +22,7 @@ class PdfMatterHeader extends PdfMatter{
     private float startX;
     private float pageNumber;
 
-    public PdfMatterHeader(){
+    public FormatterMatterHeader(){
         baseMargins = null;
         outputLines = new ArrayList<>();
         currentLine = null;
@@ -33,7 +31,7 @@ class PdfMatterHeader extends PdfMatter{
         baisicUnprepared = true;
     }
 
-    public PdfMatterHeader setBasics(InputContent content, StreamData output)
+    public FormatterMatterHeader setBasics(DataContent content, StreamData output)
             throws IOException{
         baseMargins = content.getMargin();
         startY = output.getHeight() - baseMargins.getTop();
@@ -42,7 +40,7 @@ class PdfMatterHeader extends PdfMatter{
 
         outputLines.addAll(content.getHeader(output));
         divHeight = 0;
-        for (PdfItem item : outputLines){
+        for (FormatterItem item : outputLines){
             divHeight += item.getHeight();
         }
 
@@ -55,7 +53,7 @@ class PdfMatterHeader extends PdfMatter{
         return divHeight;
     }
 
-    public Optional<PdfItem> addContentLine(){
+    public Optional<FormatterItem> addContentLine(){
         return Optional.empty();
     }
 
@@ -84,7 +82,7 @@ class PdfMatterHeader extends PdfMatter{
     }
 
     @Override
-    protected List<PdfItem> delegate(){
+    protected List<FormatterItem> delegate(){
         return ImmutableList.copyOf(outputLines);
     }
 }

@@ -11,26 +11,25 @@ import com.creativeartie.writerstudio.pdf.value.*;
 
 import com.google.common.collect.*;
 
-public final class InputContent implements Input{
-    private InputWriting baseData;
+public final class DataContent implements Data{
+    private DataWriting baseData;
 
-    public InputContent(InputWriting data){
+    public DataContent(DataWriting data){
         baseData = data;
     }
 
     @Override
-    public InputWriting getBaseData(){
+    public DataWriting getBaseData(){
         return baseData;
     }
 
-    public List<InputContentLine> getContentLines(StreamData data)
+    public List<DataContentLine> getContentLines(StreamData data)
             throws IOException{
-        ImmutableList.Builder<InputContentLine> builder = ImmutableList.builder();
-        float width = data.getWidth();
+        ImmutableList.Builder<DataContentLine> builder = ImmutableList.builder();
         for (LinedSpan child: listLines()){
-            InputContentLine line = new InputContentLine(baseData, child, data);
+            DataContentLine line = new DataContentLine(baseData, child, data);
             line.getContentItem().ifPresent(item -> builder.add(line));
-        }
+}
         return builder.build();
     }
 
@@ -54,9 +53,9 @@ public final class InputContent implements Input{
         return builder.build();
     }
 
-    public List<PdfItem> getHeader(StreamData data) throws IOException{
-        ImmutableList.Builder<PdfItem> builder = ImmutableList.builder();
-        builder.add(new PdfItem(data.getRenderWidth(getMargin()),
+    public List<FormatterItem> getHeader(StreamData data) throws IOException{
+        ImmutableList.Builder<FormatterItem> builder = ImmutableList.builder();
+        builder.add(new FormatterItem(data.getRenderWidth(getMargin()),
             TextAlignment.RIGHT)
             .setLeading(1)
             .appendText(getOutputDoc().getText(MetaData.LAST_NAME) + "/" +

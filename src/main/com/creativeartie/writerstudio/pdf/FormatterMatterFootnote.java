@@ -3,8 +3,6 @@ package com.creativeartie.writerstudio.pdf;
 import java.io.*;
 import java.util.*;
 
-import org.apache.pdfbox.pdmodel.*;
-
 import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.pdf.value.*;
@@ -12,10 +10,10 @@ import com.creativeartie.writerstudio.pdf.value.*;
 /**
  * Prints the footnotes and do some preview of changes.
  */
-class PdfMatterFootnote extends PdfMatter{
+class FormatterMatterFootnote extends FormatterMatter{
     private Margin baseMargins;
-    private ArrayList<PdfItem> outputLines;
-    private PdfItem currentLine;
+    private ArrayList<FormatterItem> outputLines;
+    private FormatterItem currentLine;
 
     private boolean baisicUnprepared;
     private float divWidth;
@@ -23,7 +21,7 @@ class PdfMatterFootnote extends PdfMatter{
     private float startY;
     private float startX;
 
-    public PdfMatterFootnote(){
+    public FormatterMatterFootnote(){
         baseMargins = null;
         outputLines = new ArrayList<>();
         currentLine = null;
@@ -32,7 +30,7 @@ class PdfMatterFootnote extends PdfMatter{
         baisicUnprepared = true;
     }
 
-    public PdfMatterFootnote setBasics(Input content, StreamData output){
+    public FormatterMatterFootnote setBasics(Data content, StreamData output){
         baseMargins = content.getMargin();
         startY = output.getHeight() - baseMargins.getBottom();
         startX = baseMargins.getLeft();
@@ -46,7 +44,7 @@ class PdfMatterFootnote extends PdfMatter{
         return divHeight;
     }
 
-    public Optional<PdfItem> addContentLine(){
+    public Optional<FormatterItem> addContentLine(){
         return Optional.empty();
     }
 
@@ -75,7 +73,7 @@ class PdfMatterFootnote extends PdfMatter{
     }
 
     @Override
-    protected List<PdfItem> delegate(){
+    protected List<FormatterItem> delegate(){
         return ImmutableList.copyOf(outputLines);
     }
 }

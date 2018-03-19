@@ -10,17 +10,17 @@ import com.creativeartie.writerstudio.pdf.value.*;
 
 import com.google.common.collect.*;
 
-public final class InputContentNote implements Input{
-    private InputWriting baseData;
+public final class DataContentNote implements Data{
+    private DataWriting baseData;
     private SpanBranch targetRef;
 
-    public InputContentNote(InputWriting input, SpanBranch ref, StreamData data){
+    public DataContentNote(DataWriting input, SpanBranch ref, StreamData data){
         baseData = input;
         targetRef = ref;
     }
 
     @Override
-    public InputWriting getBaseData(){
+    public DataWriting getBaseData(){
         return baseData;
     }
 

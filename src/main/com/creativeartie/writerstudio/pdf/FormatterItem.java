@@ -3,19 +3,16 @@ package com.creativeartie.writerstudio.pdf;
 import java.io.*;
 import java.util.*;
 
-import org.apache.pdfbox.pdmodel.*;
-import org.apache.pdfbox.pdmodel.font.*;
 import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.pdf.value.*;
 
 /**
- * Represent a single line of writing text, like paragraph, list item, text box,
- * etc.
+ * Defines the number of lines needed to allow text to fit into a region
  */
-class PdfItem extends ForwardingList<PdfItem.Line>{
-    public class Line extends ForwardingList<PdfData>{
-        private ArrayList<PdfData> inputText;
+class FormatterItem extends ForwardingList<FormatterItem.Line>{
+    public class Line extends ForwardingList<FormatterData>{
+        private ArrayList<FormatterData> inputText;
         private float maxWidth;
         private float curWidth;
         private float textHeight;
@@ -24,21 +21,21 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
             this(width, new ArrayList<>());
         }
 
-        private Line(float width, ArrayList<PdfData> text){
+        private Line(float width, ArrayList<FormatterData> text){
             inputText = text;
             maxWidth = width;
             textHeight = 0;
             curWidth = 0;
         }
 
-        private ArrayList<PdfData> appendText(String string, SizedFont font)
+        private ArrayList<FormatterData> appendText(String string, SizedFont font)
                 throws IOException{
-            return appendText(PdfData.createWords(string, font));
+            return appendText(FormatterData.createWords(string, font));
         }
 
-        private ArrayList<PdfData> appendText(ArrayList<PdfData> texts){
-            ArrayList<PdfData> overflow = null;
-            for (PdfData text: texts){
+        private ArrayList<FormatterData> appendText(ArrayList<FormatterData> texts){
+            ArrayList<FormatterData> overflow = null;
+            for (FormatterData text: texts){
                 if (inputText.isEmpty() && text.isSpaceText()){
                     continue;
                 }
@@ -81,7 +78,7 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
         }
 
         @Override
-        protected List<PdfData> delegate(){
+        protected List<FormatterData> delegate(){
             return ImmutableList.copyOf(inputText);
         }
     }
@@ -97,11 +94,11 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
     private TextAlignment divAlignment;
     private boolean noEdited;
 
-    public PdfItem(float width){
+    public FormatterItem(float width){
         this (width, TextAlignment.LEFT);
     }
 
-    public PdfItem(float width, TextAlignment alignment){
+    public FormatterItem(float width, TextAlignment alignment){
         divLines = new ArrayList<>();
         divLeading = 2;
         divFirstIndent = 0;
@@ -113,8 +110,8 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
         noEdited = false;
     }
 
-    public static PdfItem copySplitItem(PdfItem item){
-        PdfItem ans = new PdfItem(item.divWidth, item.divAlignment);
+    public static FormatterItem copySplitItem(FormatterItem item){
+        FormatterItem ans = new FormatterItem(item.divWidth, item.divAlignment);
         ans.divLeading = item.divLeading;
         ans.divFirstIndent = item.divIndent;
         ans.divIndent = item.divIndent;
@@ -123,8 +120,8 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
         return ans;
     }
 
-    public static PdfItem copyFormat(PdfItem item){
-        PdfItem ans = new PdfItem(item.divWidth, item.divAlignment);
+    public static FormatterItem copyFormat(FormatterItem item){
+        FormatterItem ans = new FormatterItem(item.divWidth, item.divAlignment);
         ans.divLeading = item.divLeading;
         ans.divFirstIndent = item.divFirstIndent;
         ans.divIndent = item.divIndent;
@@ -133,30 +130,30 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
         return ans;
     }
 
-    public PdfItem setLeading(float leading){
+    public FormatterItem setLeading(float leading){
         formatChanged();
         divLeading = leading;
         return this;
     }
 
-    public PdfItem setFirstIndent(float indent){
+    public FormatterItem setFirstIndent(float indent){
         formatChanged();
         divFirstIndent = indent;
         return this;
     }
 
-    public PdfItem setIndent(float indent){
+    public FormatterItem setIndent(float indent){
         formatChanged();
         divIndent = indent;
         return this;
     }
 
-    public PdfItem setNewPage(boolean b){
+    public FormatterItem setNewPage(boolean b){
         newPage = b;
         return this;
     }
 
-    public PdfItem setTopSpacing(float padding){
+    public FormatterItem setTopSpacing(float padding){
         divTopSpacing = padding;
         return this;
     }
@@ -181,18 +178,18 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
         return divAlignment;
     }
 
-    public PdfItem setTextAlignment(TextAlignment alignment){
+    public FormatterItem setTextAlignment(TextAlignment alignment){
         divAlignment = alignment;
         return this;
     }
 
-    public PdfItem addLine(Line line){
+    public FormatterItem addLine(Line line){
         divLines.add(line);
         formatChanged();
         return this;
     }
 
-    public PdfItem appendText(String text, SizedFont font) throws IOException{
+    public FormatterItem appendText(String text, SizedFont font) throws IOException{
         Line line;
         if (divLines.isEmpty()){
             line = new Line(divWidth - divFirstIndent);
@@ -206,7 +203,7 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
         return this;
     }
 
-    private PdfItem appendText(ArrayList<PdfData> overflow){
+    private FormatterItem appendText(ArrayList<FormatterData> overflow){
         if (overflow.isEmpty()) return this;
         Line line = new Line(divWidth - divIndent);
         divLines.add(line);

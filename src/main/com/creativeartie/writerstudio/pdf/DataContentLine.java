@@ -11,19 +11,19 @@ import com.creativeartie.writerstudio.pdf.value.*;
 
 import com.google.common.collect.*;
 
-public final class InputContentLine implements Input{
-    private InputWriting baseData;
+public class DataContentLine implements Data{
+    private DataWriting baseData;
     private LinedSpan mainNote;
-    private ArrayList<ArrayList<InputContentNote>> pointerNotes;
-    private Optional<PdfItem> contentItem;
+    private ArrayList<ArrayList<DataContentNote>> pointerNotes;
+    private Optional<FormatterItem> contentItem;
 
-    public InputContentLine(InputWriting input, LinedSpan line, StreamData data)
+    public DataContentLine(DataWriting input, LinedSpan line, StreamData data)
             throws IOException{
         baseData = input;
         pointerNotes = new ArrayList<>();
         float width = data.getRenderWidth(input.getMargin());
         /*
-        PdfItem item = null;
+        FormatterItem item = null;
         switch (line.getLinedType()){
         case HEADING:
             LinedSpanLevelSection found = (LinedSpanLevelSection) line;
@@ -31,7 +31,7 @@ public final class InputContentLine implements Input{
         }
         contentItem = Optional.ofNullable(item);
         */
-        contentItem = Optional.of(new PdfItem(width).appendText(
+        contentItem = Optional.of(new FormatterItem(width).appendText(
             line.getRaw(), getBaseFont()));
     }
 
@@ -39,20 +39,20 @@ public final class InputContentLine implements Input{
         return null;
     }
 
-    private PdfItem parseLine(FormatSpanMain input, PdfItem output){
+    private FormatterItem parseLine(FormatSpanMain input, FormatterItem output){
         return output;
     }
 
-    public Optional<PdfItem> getContentItem(){
+    public Optional<FormatterItem> getContentItem(){
         return contentItem;
     }
 
-    public PdfItem getPdfItem(){
+    public FormatterItem getFormatterItem(){
         return contentItem.get();
     }
 
     @Override
-    public InputWriting getBaseData(){
+    public DataWriting getBaseData(){
         return baseData;
     }
 }

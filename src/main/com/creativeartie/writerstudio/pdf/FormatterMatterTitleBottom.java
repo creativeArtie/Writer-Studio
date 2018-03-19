@@ -3,35 +3,31 @@ package com.creativeartie.writerstudio.pdf;
 import java.io.*;
 import java.util.*;
 
-import org.apache.pdfbox.pdmodel.*;
-import org.apache.pdfbox.pdmodel.font.*;
+import com.creativeartie.writerstudio.pdf.value.*;
 
 import com.google.common.collect.*;
 
-import com.creativeartie.writerstudio.pdf.value.*;
-
 /**
- * Prints the title page header
+ * Prints the title page footer
  */
-class PdfMatterTitleTop extends PdfMatterTitle{
+class FormatterMatterTitleBottom extends FormatterMatterTitle{
     private Margin baseMargins;
-    private PDPage outputPage;
-    private ArrayList<PdfItem> outputLines;
     private float divHeight;
+    private ArrayList<FormatterItem> outputLines;
     private float startX;
     private float startY;
 
     @Override
-    protected void parseData(InputTitle data, StreamData output)
+    protected void parseData(DataTitle data, StreamData output)
             throws IOException{
         baseMargins = data.getMargin();
-
-        startY = output.getHeight() - baseMargins.getTop();
+        startY = baseMargins.getBottom();
         startX = baseMargins.getLeft();
 
-        outputLines = data.getTitleTopText(output);
+        outputLines = data.getTitleBottomText(output);
         divHeight = 0;
-        for (PdfItem line: outputLines){
+        for (FormatterItem line: outputLines){
+            startY += line.getHeight();
             divHeight += line.getHeight();
         }
     }
@@ -40,7 +36,6 @@ class PdfMatterTitleTop extends PdfMatterTitle{
     public float getHeight(){
         return divHeight;
     }
-
 
     @Override
     public float getXLocation(){
@@ -53,8 +48,7 @@ class PdfMatterTitleTop extends PdfMatterTitle{
     }
 
     @Override
-    public List<PdfItem> delegate(){
-        return outputLines;
+    protected List<FormatterItem> delegate(){
+        return ImmutableList.copyOf(outputLines);
     }
-
 }

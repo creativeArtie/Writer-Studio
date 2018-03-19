@@ -9,18 +9,18 @@ import com.creativeartie.writerstudio.pdf.value.*;
 import com.google.common.collect.*;
 
 
-public final class InputWriting implements Input{
+public final class DataWriting implements Data{
 
     private Margin pageMargin;
     private ManuscriptFile outputDoc;
 
-    public InputWriting(ManuscriptFile doc){
+    public DataWriting(ManuscriptFile doc){
         pageMargin = Margin.marginFromInch(1);
         outputDoc = doc;
     }
 
     @Override
-    public InputWriting getBaseData(){
+    public DataWriting getBaseData(){
         return this;
     }
 
@@ -44,12 +44,12 @@ public final class InputWriting implements Input{
         return outputDoc.getDocument();
     }
 
-    public InputTitle getTitleData(){
-        return new InputTitle(this);
+    public DataTitle getTitleData(){
+        return new DataTitle(this);
     }
 
-    public InputContent getContentData(){
-        return new InputContent(this);
+    public DataContent getContentData(){
+        return new DataContent(this);
     }
 
 }

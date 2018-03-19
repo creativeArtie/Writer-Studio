@@ -1,4 +1,4 @@
-package com.creativeartie.writerstudio.export;
+package com.creativeartie.writerstudio.pdf.value;
 
 import static org.junit.Assert.*;
 
@@ -10,7 +10,7 @@ import org.junit.runners.Parameterized.*;
 import java.util.*;
 
 @RunWith(Parameterized.class)
-public class RomanNumberingDebug {
+public class TextNumberingDebug {
     @Parameter
     public int input;
     @Parameter(value = 1)
@@ -30,6 +30,6 @@ public class RomanNumberingDebug {
 
     @Test
     public void test(){
-        // assertEquals(expect, RomanNumbering.toRomanLower(input));
+        assertEquals(expect, TextNumbering.toRomanLower(input));
     }
 }
