@@ -113,6 +113,26 @@ class PdfItem extends ForwardingList<PdfItem.Line>{
         noEdited = false;
     }
 
+    public static PdfItem copySplitItem(PdfItem item){
+        PdfItem ans = new PdfItem(item.divWidth, item.divAlignment);
+        ans.divLeading = item.divLeading;
+        ans.divFirstIndent = item.divIndent;
+        ans.divIndent = item.divIndent;
+        ans.divTopSpacing = item.divTopSpacing;
+        ans.newPage = false;
+        return ans;
+    }
+
+    public static PdfItem copyFormat(PdfItem item){
+        PdfItem ans = new PdfItem(item.divWidth, item.divAlignment);
+        ans.divLeading = item.divLeading;
+        ans.divFirstIndent = item.divFirstIndent;
+        ans.divIndent = item.divIndent;
+        ans.divTopSpacing = item.divTopSpacing;
+        ans.newPage = item.newPage;
+        return ans;
+    }
+
     public PdfItem setLeading(float leading){
         formatChanged();
         divLeading = leading;

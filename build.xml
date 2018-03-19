@@ -6,8 +6,8 @@
     <!-- ** Edit these ones!!! ** -->
     <!-- ..................... Manifest/Running data .................... -->
     <!-- main(String[]) Location -->
-    <property name="usr.main-run" value="com.creativeartie.jwriter.main.Main" />
-    <property name="usr.main-trial" value="com.creativeartie.jwriter.main.PdfMain" />
+    <property name="usr.main-run" value="com.creativeartie.writerstudio.main.Main" />
+    <property name="usr.main-trial" value="com.creativeartie.writerstudio.main.PdfMain" />
     <!-- archive file postfix -->
     <property name="usr.version" value="0.3.1" />
     <!-- ......................... Javadoc Data ......................... -->

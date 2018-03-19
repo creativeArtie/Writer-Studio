@@ -15,8 +15,7 @@ import com.creativeartie.writerstudio.pdf.value.*;
 
 @RunWith(JUnit4.class)
 public class PdfDataTest{
-    private static final SizedFont baseFont = new SizedFont(PDType1Font
-        .TIMES_ROMAN, 12);
+    private static final SizedFont baseFont = SizedFont.newTimesRoman(12);
 
     private static void test(String test, String ... expects)
             throws IOException{

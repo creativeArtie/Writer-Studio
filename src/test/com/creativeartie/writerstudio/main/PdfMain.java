@@ -10,16 +10,11 @@ import com.creativeartie.writerstudio.file.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 
 import com.creativeartie.writerstudio.export.*;
-/*
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
-*/
+
 public class PdfMain {
 
     public static void main(String args[]) throws IOException {
-        File file = new File("data/pdf-base.txt");
+        File file = new File("data/pdf-long.txt");
         WritingText doc = new WritingText(file);
         ManuscriptFile use = ManuscriptFile.withManuscript(doc);
 
@@ -27,14 +22,5 @@ public class PdfMain {
             new PdfWriting().setData(new InputWriting(use), output).render();
         }
 
-        /*File out = new File("test.pdf");
-        try (PdfFileOutput output = new PdfFileOutput(out)){
-            output.render(new OutputInfo(use));
-        }
-        // FileExporter.PDF_MANUSCRIPT.exportFile(use, out);
-        /*
-        Paragraph para = new Paragraph("Hello World!");
-        createPdf(para, "test1.pdf");
-        createPdf(para, "test2.pdf");*/
     }
 }

@@ -25,10 +25,6 @@ class PdfSectionContent extends PdfSection{
                 .addHeaderSpacing(height);
             pageFootnote = new PdfMatterFootnote().setBasics(data, output);
         }
-
-        private Optional<PdfItem> addContentLine(PdfItem item){
-            return pageContent.addContentLine(item);
-        }
     }
 
     private int pageTotal;
@@ -50,15 +46,35 @@ class PdfSectionContent extends PdfSection{
         Optional<PdfItem> item = Optional.empty();
         for (InputContentLine line : data.getContentData().getContentLines(
                 output)){
-            item = cur.addContentLine(line.getPdfItem());
+            item = splitItem(line.getPdfItem(), cur);
             while (item.isPresent()){
                 contentPages.add(cur);
                 output.toNextPage();
                 cur = new Page(data, output);
-                item = cur.addContentLine(item.get());
+                item = splitItem(item.get(), cur);
             }
         }
         contentPages.add(cur);
+    }
+
+    private Optional<PdfItem> splitItem(PdfItem item, Page page){
+        if (page.pageContent.addContentLine(item)){
+            return Optional.empty();
+        }
+        Optional<PdfItem> adding = Optional.of(PdfItem.copySplitItem(item));
+        PdfItem check = PdfItem.copyFormat(item);
+        Optional<PdfItem> ans = Optional.of(PdfItem.copySplitItem(item));
+        for (PdfItem.Line line: item){
+            check.addLine(line);
+            if (page.pageContent.canFit(check)){
+                adding.get().addLine(line);
+            } else {
+                ans.get().addLine(line);
+                adding.ifPresent(add -> page.pageContent.addContentLine(add));
+                adding = Optional.empty();
+            }
+        }
+        return ans;
     }
 
     @Override

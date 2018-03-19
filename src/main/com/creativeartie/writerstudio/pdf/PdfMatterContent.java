@@ -50,12 +50,18 @@ class PdfMatterContent extends PdfMatter{
         return this;
     }
 
-    public Optional<PdfItem> addContentLine(PdfItem item){
+    public boolean canFit(PdfItem item){
+        return item.getHeight() + fillHeight < divHeight;
+    }
+
+    public boolean addContentLine(PdfItem item){
         if (item.getHeight() + fillHeight < divHeight){
             outputLines.add(item);
             fillHeight += item.getHeight();
-            return Optional.empty();
+            return true;
         }
+        return false;
+        /*
         PdfItem last = new PdfItem(item.getWidth());
         Optional<PdfItem> ans = Optional.empty();
         for (PdfItem.Line line: item){
@@ -72,7 +78,7 @@ class PdfMatterContent extends PdfMatter{
             }
         }
         outputLines.add(last);
-        return ans;
+        return ans;*/
     }
 
     private void isReady(){

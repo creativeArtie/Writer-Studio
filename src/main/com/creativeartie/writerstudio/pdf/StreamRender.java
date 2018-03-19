@@ -25,7 +25,7 @@ final class StreamRender{
         sectionWidth = w;
 
         textAlignment = TextAlignment.LEFT;
-        textFont = new SizedFont(PDType1Font.TIMES_ROMAN, 12);
+        textFont = SizedFont.newTimesRoman(12);
 
         output.newLineAtOffset(x, y);
         output.setFont(textFont.getFont(), textFont.getSize());

@@ -5,14 +5,65 @@ import java.util.*;
 
 import org.apache.pdfbox.pdmodel.font.*;
 
-public class SizedFont{
+public final class SizedFont{
 
-    private PDFont textFont;
-    private int textSize;
+    private static final String TIMES_ROMAN = "times";
+    private static final String COURIER = "courier";
 
-    public SizedFont(PDFont font, int size){
+    public enum Style {
+        BOLD, ITALICS, BOTH, NONE;
+    }
+
+    public static SizedFont newTimesRoman(int size){
+        return newTimesRoman(size, Style.NONE);
+    }
+
+    public static SizedFont newTimesRoman(int size, Style style){
+        return new SizedFont(getTimesRoman(style), size, TIMES_ROMAN);
+    }
+
+    private static PDFont getTimesRoman(Style style){
+        switch (style){
+        case BOLD:
+            return PDType1Font.TIMES_BOLD;
+        case BOTH:
+            return PDType1Font.TIMES_BOLD_ITALIC;
+        case ITALICS:
+            return PDType1Font.TIMES_ITALIC;
+        default:
+            return PDType1Font.TIMES_ROMAN;
+        }
+    }
+
+    public static SizedFont newCourier(int size){
+        return newCourier(size, Style.NONE);
+    }
+
+    public static SizedFont newCourier(int size, Style style){
+        return new SizedFont(getCourier(style), size, COURIER);
+    }
+
+    private static PDFont getCourier(Style style){
+        switch (style){
+        case BOLD:
+            return PDType1Font.COURIER_BOLD;
+        case BOTH:
+            return PDType1Font.COURIER_BOLD_OBLIQUE;
+        case ITALICS:
+            return PDType1Font.COURIER_OBLIQUE;
+        default:
+            return PDType1Font.COURIER;
+        }
+    }
+
+    private final PDFont textFont;
+    private final int textSize;
+    private final String fontName;
+
+    private SizedFont(PDFont font, int size, String name){
         textFont = font;
         textSize = size;
+        fontName = name;
     }
 
     public PDFont getFont(){
@@ -32,6 +83,19 @@ public class SizedFont{
         PDFontDescriptor descipter = textFont.getFontDescriptor();
         return (descipter.getCapHeight() + descipter.getXHeight()) / 1000 *
             textSize;
+    }
+
+    public SizedFont changeStyle(Style style){
+        switch (fontName){
+        case TIMES_ROMAN:
+            return newTimesRoman(textSize, style);
+        default:
+            return newCourier(textSize, style);
+        }
+    }
+
+    public SizedFont changeSize(int size){
+        return new SizedFont(textFont, size, fontName);
     }
 
     @Override

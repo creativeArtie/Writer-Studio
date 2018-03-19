@@ -6,8 +6,6 @@ import com.creativeartie.writerstudio.resource.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.pdf.value.*;
 
-import org.apache.pdfbox.pdmodel.font.*;
-
 import com.google.common.collect.*;
 
 
@@ -28,7 +26,7 @@ public final class InputWriting implements Input{
 
     @Override
     public SizedFont getBaseFont(){
-        return new SizedFont(PDType1Font.TIMES_ROMAN, 12);
+        return SizedFont.newTimesRoman(12);
     }
 
     @Override
