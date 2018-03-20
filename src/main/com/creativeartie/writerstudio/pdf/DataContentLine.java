@@ -12,14 +12,16 @@ import com.creativeartie.writerstudio.pdf.value.*;
 import com.google.common.collect.*;
 
 public class DataContentLine implements Data{
-    private DataWriting baseData;
+    private final DataWriting baseData;
     private LinedSpan mainNote;
     private ArrayList<ArrayList<DataContentNote>> pointerNotes;
     private Optional<FormatterItem> itemFormatter;
+    private PageBreak pageBreak;
 
     public DataContentLine(DataWriting input, FormatterItem item) {
         baseData = input;
         pointerNotes = new ArrayList<>();
+        pageBreak = PageBreak.NONE;
 
         itemFormatter = Optional.of(item);
     }
@@ -28,6 +30,7 @@ public class DataContentLine implements Data{
             FormatSpanMain span) throws IOException{
         baseData = input;
         pointerNotes = new ArrayList<>();
+        pageBreak = PageBreak.NONE;
 
         itemFormatter = parseItem(span, item, input.getBaseFont());
     }
@@ -70,5 +73,14 @@ public class DataContentLine implements Data{
     @Override
     public DataWriting getBaseData(){
         return baseData;
+    }
+
+    public PageBreak getPageBreak(){
+        return pageBreak;
+    }
+
+    public DataContentLine setPageBreak(PageBreak style){
+        pageBreak = style;
+        return this;
     }
 }

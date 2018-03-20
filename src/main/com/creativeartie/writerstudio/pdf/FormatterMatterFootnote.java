@@ -12,7 +12,7 @@ import com.creativeartie.writerstudio.pdf.value.*;
  */
 class FormatterMatterFootnote extends FormatterMatter{
     private Margin baseMargins;
-    private ArrayList<FormatterItem> outputLines;
+    private ArrayList<DataContentNote> outputLines;
     private FormatterItem currentLine;
 
     private boolean baisicUnprepared;
@@ -30,7 +30,7 @@ class FormatterMatterFootnote extends FormatterMatter{
         baisicUnprepared = true;
     }
 
-    public FormatterMatterFootnote setBasics(Data content, StreamData output){
+    public FormatterMatterFootnote setBasics(DataContent content, StreamData output){
         baseMargins = content.getMargin();
         startY = output.getHeight() - baseMargins.getBottom();
         startX = baseMargins.getLeft();
@@ -44,8 +44,24 @@ class FormatterMatterFootnote extends FormatterMatter{
         return divHeight;
     }
 
-    public Optional<FormatterItem> addContentLine(){
-        return Optional.empty();
+    private boolean isFound(DataContentNote test){
+        for(DataContentNote note: outputLines){
+            if (note.matchTarget(test)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public float checkNoteInsert(DataContentNote item){
+        return isFound(item)? divHeight: divHeight + item.getItem().getHeight();
+    }
+
+    public float insertNote(DataContentNote item){
+        if (isFound(item)){
+            divHeight += item.getItem().getHeight();
+        }
+        return divHeight;
     }
 
     private void isReady(){
@@ -74,6 +90,8 @@ class FormatterMatterFootnote extends FormatterMatter{
 
     @Override
     protected List<FormatterItem> delegate(){
-        return ImmutableList.copyOf(outputLines);
+        ImmutableList.Builder<FormatterItem> ans = ImmutableList.builder();
+        outputLines.forEach(data -> ans.add(data.getItem()));
+        return ans.build();
     }
 }

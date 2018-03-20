@@ -18,6 +18,26 @@ public class Margin{
         bottomMargin = bottom;
     }
 
+    public Margin getLeft(float margin){
+        leftMargin = margin;
+        return this;
+    }
+
+    public Margin getRight(float margin){
+        rightMargin = margin;
+        return this;
+    }
+
+    public Margin getTop(float margin){
+        topMargin = margin;
+        return this;
+    }
+
+    public Margin setBottom(float margin){
+        bottomMargin = margin;
+        return this;
+    }
+
     public float getLeft(){
         return leftMargin;
     }

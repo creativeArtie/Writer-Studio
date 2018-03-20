@@ -76,7 +76,9 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
         }
 
         public float getHeight(){
-            return textHeight * divLeading;
+            return (divLines.get(divLines.size() - 1) == this?
+                    divBottomSpacing: 0f
+                ) + textHeight * divLeading;
         }
 
         public float getWidth(){
@@ -96,9 +98,8 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
     private float divFirstIndent;
     private float divIndent;
     private float divLeading;
-    private float divTopSpacing;
+    private float divBottomSpacing;
     private boolean newPage;
-    private Margin divMargin;
     private TextAlignment divAlignment;
     private boolean noEdited;
 
@@ -113,7 +114,7 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
         divIndent = 0;
         divWidth = width;
         divAlignment = alignment;
-        divTopSpacing = 0;
+        divBottomSpacing = 0;
         divPrefix = Optional.empty();
         divPrefixDistance = 0f;
         newPage = false;
@@ -125,7 +126,7 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
         ans.divLeading = item.divLeading;
         ans.divFirstIndent = item.divIndent;
         ans.divIndent = item.divIndent;
-        ans.divTopSpacing = item.divTopSpacing;
+        ans.divBottomSpacing = item.divBottomSpacing;
         ans.newPage = false;
         return ans;
     }
@@ -135,7 +136,7 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
         ans.divLeading = item.divLeading;
         ans.divFirstIndent = item.divFirstIndent;
         ans.divIndent = item.divIndent;
-        ans.divTopSpacing = item.divTopSpacing;
+        ans.divBottomSpacing = item.divBottomSpacing;
         ans.newPage = item.newPage;
         return ans;
     }
@@ -163,8 +164,8 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
         return this;
     }
 
-    public FormatterItem setTopSpacing(float padding){
-        divTopSpacing = padding;
+    public FormatterItem setBottomSpacing(float padding){
+        divBottomSpacing = padding;
         return this;
     }
 

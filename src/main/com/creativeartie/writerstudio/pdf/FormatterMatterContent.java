@@ -32,7 +32,7 @@ class FormatterMatterContent extends FormatterMatter{
         fillHeight = 0;
     }
 
-    public FormatterMatterContent setBasics(Data content, StreamData output){
+    public FormatterMatterContent setBasics(DataContent content, StreamData output){
         baseMargins = content.getMargin();
         startY = output.getHeight() - baseMargins.getTop();
         startX = baseMargins.getLeft();
@@ -45,6 +45,18 @@ class FormatterMatterContent extends FormatterMatter{
     public FormatterMatterContent addHeaderSpacing(float height){
         startY -= height;
         divHeight -= height;
+        return this;
+    }
+
+    public FormatterMatterContent setStartY(float height){
+        float diff = divHeight - height;
+        startY = height;
+        divHeight -= diff;
+        return this;
+    }
+
+    public FormatterMatterContent setHeight(float height){
+        divHeight = height;
         return this;
     }
 

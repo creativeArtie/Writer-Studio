@@ -32,4 +32,8 @@ public final class DataContentNote implements Data{
     public boolean matchTarget(DataContentNote compare){
         return targetRef == compare.targetRef;
     }
+
+    public FormatterItem getItem(){
+        return new FormatterItem(12); // TODO STUB
+    }
 }

@@ -115,7 +115,13 @@ public final class DataContent implements Data{
             return null;
         }
         item.setTextAlignment(TextAlignment.CENTER);
-        return new DataContentLine(getBaseData(), item, span.get());
+        DataContentLine content = new DataContentLine(getBaseData(), item, span
+            .get());
+        if (line.getLevel() == 1){
+            item.setBottomSpacing(Data.cmToPoint(1f));
+            content.setPageBreak(PageBreak.THIRD_WAY);
+        }
+        return content;
     }
 
     private DataContentLine parse(LinedSpanParagraph line, FormatterItem item)
