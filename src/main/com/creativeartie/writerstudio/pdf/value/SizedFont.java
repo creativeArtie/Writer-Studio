@@ -1,126 +1,168 @@
 package com.creativeartie.writerstudio.pdf.value;
 
 import java.io.*;
-import java.util.*;
+import java.util.Objects;
+import java.awt.*;
 
 import org.apache.pdfbox.pdmodel.font.*;
 
+import static com.creativeartie.writerstudio.main.Checker.*;
+
+import com.google.common.base.*;
+
 public final class SizedFont{
 
-    private static final String TIMES_ROMAN = "times";
-    private static final String COURIER = "courier";
-
-    public enum Style {
-        BOLD, ITALICS, BOTH, NONE;
-    }
-
     public static SizedFont newTimesRoman(int size){
-        return newTimesRoman(size, Style.NONE);
+        return new SizedFont(getTimesRoman(false, false), size, Color.BLACK,
+            false, false, false);
     }
 
-    public static SizedFont newTimesRoman(int size, Style style){
-        return new SizedFont(getTimesRoman(style), size, TIMES_ROMAN, style);
-    }
-
-    private static PDFont getTimesRoman(Style style){
-        switch (style){
-        case BOLD:
-            return PDType1Font.TIMES_BOLD;
-        case BOTH:
-            return PDType1Font.TIMES_BOLD_ITALIC;
-        case ITALICS:
-            return PDType1Font.TIMES_ITALIC;
-        default:
-            return PDType1Font.TIMES_ROMAN;
-        }
+    private static PDFont getTimesRoman(boolean bold, boolean italics){
+        return bold?
+            (italics? PDType1Font.TIMES_BOLD_ITALIC: PDType1Font.TIMES_BOLD):
+            (italics? PDType1Font.TIMES_ITALIC: PDType1Font.TIMES_ROMAN);
     }
 
     public static SizedFont newCourier(int size){
-        return newCourier(size, Style.NONE);
+        return new SizedFont(getCourier(false, false), size, Color.BLACK, false,
+            false, false);
     }
 
-    public static SizedFont newCourier(int size, Style style){
-        return new SizedFont(getCourier(style), size, COURIER, style);
+    private static PDFont getCourier(boolean bold, boolean italics){
+        return bold?
+            (italics? PDType1Font.COURIER_BOLD_OBLIQUE: PDType1Font.COURIER_BOLD):
+            (italics? PDType1Font.COURIER_OBLIQUE: PDType1Font.COURIER);
     }
 
-    private static PDFont getCourier(Style style){
-        switch (style){
-        case BOLD:
-            return PDType1Font.COURIER_BOLD;
-        case BOTH:
-            return PDType1Font.COURIER_BOLD_OBLIQUE;
-        case ITALICS:
-            return PDType1Font.COURIER_OBLIQUE;
-        default:
-            return PDType1Font.COURIER;
-        }
-    }
+    private final PDFont fontName;
+    private final int fontSize;
+    private final Color fontColor;
+    private final boolean fontBold;
+    private final boolean fontItalics;
+    private final boolean fontUnderline;
 
-    private final PDFont textFont;
-    private final int textSize;
-    private final String fontName;
-    private final Style fontStyle;
-
-    private SizedFont(PDFont font, int size, String name, Style style){
-        textFont = font;
-        textSize = size;
-        fontName = name;
-        fontStyle = style;
+    private SizedFont(PDFont font, int size, Color color,
+            boolean bold, boolean italics, boolean underline){
+        assert font != null: "Null font.";
+        fontName = font;
+        fontSize = size;
+        fontColor = color;
+        fontBold = bold;
+        fontItalics = italics;
+        fontUnderline = underline;
     }
 
     public PDFont getFont(){
-        return textFont;
+        return fontName;
     }
 
     public int getSize(){
-        return textSize;
+        return fontSize;
+    }
+
+    public Color getColor(){
+        return fontColor;
     }
 
     public float getWidth(String text) throws IOException{
         /// From https://stackoverflow.com/questions/13701017/calculation-string-width-in-pdfbox-seems-only-to-count-characters
-        return textFont.getStringWidth(text) / 1000 * textSize;
+        return fontName.getStringWidth(text) / 1000 * fontSize;
     }
 
     public float getHeight(){
-        PDFontDescriptor descipter = textFont.getFontDescriptor();
+        PDFontDescriptor descipter = fontName.getFontDescriptor();
         return (descipter.getCapHeight() + descipter.getXHeight()) / 1000 *
-            textSize;
-    }
-
-    public SizedFont changeStyle(Style style){
-        switch (fontName){
-        case TIMES_ROMAN:
-            return newTimesRoman(textSize, style);
-        default:
-            return newCourier(textSize, style);
-        }
+            fontSize;
     }
 
     public SizedFont changeSize(int size){
-        return new SizedFont(textFont, size, fontName, fontStyle);
+        if (size == fontSize){
+            return this;
+        }
+        return new SizedFont(fontName, size, fontColor, fontBold,
+            fontItalics, fontUnderline);
     }
 
     public SizedFont changeToTime(){
-        return newTimesRoman(textSize, fontStyle);
+        PDFont font = getTimesRoman(fontBold, fontItalics);
+        if (font == fontName){
+            return this;
+        }
+        return new SizedFont(font, fontSize, fontColor, fontBold, fontItalics,
+            fontUnderline);
     }
 
     public SizedFont changeToCourier(){
-        return newTimesRoman(textSize, fontStyle);
+        PDFont font = getCourier(fontBold, fontItalics);
+        if (font == fontName){
+            return this;
+        }
+        return new SizedFont(font, fontSize, fontColor, fontBold, fontItalics,
+            fontUnderline);
     }
+
+    public SizedFont changeFontColor(Color color){
+        checkNotNull(color, "color");
+        if (color == fontColor){
+            return this;
+        }
+        return new SizedFont(fontName, fontSize, color, fontBold, fontItalics,
+            fontUnderline);
+    }
+
+    public SizedFont changeBold(boolean b){
+        return new SizedFont(getFont(fontBold, fontItalics), fontSize,
+            fontColor, b, fontItalics, fontUnderline);
+    }
+
+    public SizedFont changeItalics(boolean b){
+        return new SizedFont(getFont(fontBold, fontItalics), fontSize,
+            fontColor, fontBold, b, fontUnderline);
+    }
+
+    private PDFont getFont(boolean bold, boolean italics){
+        if (fontName.getName().equals("Times-Roman")){
+            return getTimesRoman(fontBold, fontItalics);
+        }
+        return getCourier(fontBold, fontItalics);
+    }
+
+    public SizedFont changeUnderline(boolean b){
+        if (fontUnderline == b){
+            return this;
+        }
+        return new SizedFont(fontName, fontSize, fontColor, fontBold,
+            fontItalics, b);
+    }
+
+    public boolean isUnderline(){
+        return fontUnderline;
+    }
+
+    @Override
+    public String toString(){
+        return MoreObjects.toStringHelper(this)
+            .add("font", fontName)
+            .add("size", fontSize)
+            .add("color", fontColor)
+            .toString();
+    }
+
 
     @Override
     public boolean equals(Object obj){
         if (obj != null && obj instanceof SizedFont){
             SizedFont other = (SizedFont) obj;
-            return textFont.equals(other.textFont) &&
-                textSize == other.textSize;
+            return Objects.equals(fontName, other.fontName) &&
+                fontSize == other.fontSize &&
+                Objects.equals(fontColor, other.fontColor);
         }
         return false;
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(textFont, textSize);
+        return Objects.hash(fontName, fontSize, fontColor);
     }
 
 }

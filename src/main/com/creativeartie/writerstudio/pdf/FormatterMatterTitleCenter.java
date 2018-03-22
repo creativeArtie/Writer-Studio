@@ -45,7 +45,7 @@ class FormatterMatterTitleCenter extends FormatterMatterTitle{
     }
 
     @Override
-    public float getYLocation(){
+    public float getStartY(){
         return startY;
     }
 

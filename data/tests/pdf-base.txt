@@ -6,10 +6,10 @@
 !% Line 6 start to end
 Line 7 is a paragraph ends
 <@bookmark>
-=Chapter 2: *italics*, **bold**, _underline_, `code` ***bold + italics*** ends
+=Chapter 2: *italics*, **bold**, _underline_, `code **bold + code**` ends
 ==Chaptee 2.2: abc ends
 > Line 11 *italics*, **bold**, _underline_, `code` ***bold + italics*** ends
-> Line 12 _<@ref|link with reference> <www.google.com|direct link>{@note}, {^footnote}_, blah{*endnote} ends
+> Line 12 _<@ref|link with reference> <www.yahoo.com|direct link>{@note}, {^footnote}_, blah{*endnote} ends
 Some text{@footed}, Some text{@text} ends
 !%@footed: abbb ends
 !> footnote: [to end]
@@ -20,6 +20,7 @@ Some text{@footed}, Some text{@text} ends
 !> in-text: [see see see ends]
 !> source: ***bold + italics*** ends
 {!todo}
+<www.apple.com|apple>
 !! Todo line
 !% @text1:full footnote ends
 !% <@ref|link with reference> <www.google.com|direct link> {@up}, {^footnote}, {*endnote} ends
@@ -50,5 +51,6 @@ Text
 Some more text ends
 =Chapter 3<@ref|link with reference> <www.google.com|direct link> {@note}, {^footnote}, {*endnote} ends
 !@ref:www.facebook.com
+_abc_
 
-- last bullet ends
+- last _bullet_ ends

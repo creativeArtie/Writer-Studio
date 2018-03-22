@@ -76,7 +76,7 @@ class FormatterMatterHeader extends FormatterMatter{
     }
 
     @Override
-    public float getYLocation(){
+    public float getStartY(){
         isReady();
         return startY;
     }

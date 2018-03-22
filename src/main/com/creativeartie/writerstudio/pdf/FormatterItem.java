@@ -11,6 +11,7 @@ import com.creativeartie.writerstudio.pdf.value.*;
  * Defines the number of lines needed to allow text to fit into a region
  */
 class FormatterItem extends ForwardingList<FormatterItem.Line>{
+
     public class Line extends ForwardingList<FormatterData>{
         private ArrayList<FormatterData> inputText;
         private float maxWidth;
@@ -34,11 +35,6 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
             return lineIndent;
         }
 
-        private ArrayList<FormatterData> appendText(String string, SizedFont font)
-                throws IOException{
-            return appendText(FormatterData.createWords(string, font));
-        }
-
         private ArrayList<FormatterData> appendText(ArrayList<FormatterData> texts){
             ArrayList<FormatterData> overflow = null;
             for (FormatterData text: texts){
@@ -52,6 +48,7 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
                         if (inputText.isEmpty()){
                             /// Text can not fit line
                             inputText.add(text);
+                            text.setListener(data -> reflowText());
                             curWidth = text.getWidth();
                             continue;
                         }
@@ -81,6 +78,10 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
                 ) + textHeight * divLeading;
         }
 
+        public float getTextHeight(){
+            return textHeight;
+        }
+
         public float getWidth(){
             return curWidth;
         }
@@ -101,7 +102,6 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
     private float divBottomSpacing;
     private boolean newPage;
     private TextAlignment divAlignment;
-    private boolean noEdited;
 
     public FormatterItem(float width){
         this (width, TextAlignment.LEFT);
@@ -118,7 +118,6 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
         divPrefix = Optional.empty();
         divPrefixDistance = 0f;
         newPage = false;
-        noEdited = false;
     }
 
     public static FormatterItem copySplitItem(FormatterItem item){
@@ -142,19 +141,23 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
     }
 
     public FormatterItem setLeading(float leading){
-        formatChanged();
+        reflowText();
         divLeading = leading;
         return this;
     }
 
+    public float getLeading(){
+        return divLeading;
+    }
+
     public FormatterItem setFirstIndent(float indent){
-        formatChanged();
+        reflowText();
         divFirstIndent = indent;
         return this;
     }
 
     public FormatterItem setIndent(float indent){
-        formatChanged();
+        reflowText();
         divIndent = indent;
         return this;
     }
@@ -196,7 +199,7 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
 
     public FormatterItem addLine(Line line){
         divLines.add(line);
-        formatChanged();
+        reflowText();
         return this;
     }
 
@@ -214,7 +217,14 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
         return divPrefix;
     }
 
-    public FormatterItem appendText(String text, SizedFont font) throws IOException{
+    public FormatterItem appendSimpleText(String text, SizedFont font)
+            throws IOException{
+        appendText(text, font);
+        return this;
+    }
+
+    public ArrayList<FormatterData> appendText(String text, SizedFont font)
+            throws IOException{
         Line line;
         if (divLines.isEmpty()){
             line = new Line(divWidth - divFirstIndent, divFirstIndent);
@@ -223,9 +233,9 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
             line = divLines.get(divLines.size() - 1);
         }
         /// Append text to the previous line
-        appendText(line.appendText(text, font));
-        noEdited = true;
-        return this;
+        ArrayList<FormatterData> data = FormatterData.createWords(text, font);
+        appendText(line.appendText(data));
+        return data;
     }
 
     private FormatterItem appendText(ArrayList<FormatterData> overflow){
@@ -242,10 +252,15 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
         return ImmutableList.copyOf(divLines);
     }
 
-    private void formatChanged(){
-        // TODO redo adding text
-        if (noEdited){
-            throw new IllegalStateException("Format can not be change after text added.");
+    private void reflowText(){
+        /// Load the data
+        ArrayList<FormatterData> data = new ArrayList<>();
+        for (Line line: divLines){
+            data.addAll(line);
         }
+        /// Clear lines and redo all
+        divLines.clear();
+        divLines.add(new Line(divWidth - divFirstIndent, divFirstIndent));
+        appendText(data);
     }
 }

@@ -48,9 +48,9 @@ class FormatterMatterContent extends FormatterMatter{
         return this;
     }
 
-    public FormatterMatterContent setStartY(float height){
-        float diff = divHeight - height;
-        startY = height;
+    public FormatterMatterContent setStartY(float start){
+        float diff = startY - start;
+        startY = start;
         divHeight -= diff;
         return this;
     }
@@ -97,7 +97,7 @@ class FormatterMatterContent extends FormatterMatter{
     }
 
     @Override
-    public float getYLocation(){
+    public float getStartY(){
         isReady();
         return startY;
     }

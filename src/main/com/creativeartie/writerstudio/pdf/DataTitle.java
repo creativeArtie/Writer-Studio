@@ -10,11 +10,9 @@ import com.creativeartie.writerstudio.pdf.value.*;
 
 public final class DataTitle implements Data{
     private DataWriting baseData;
-    private ManuscriptFile outputDoc;
 
     public DataTitle(DataWriting data){
         baseData = data;
-        outputDoc = data.getOutputDoc();
     }
 
     public DataWriting getBaseData(){
@@ -52,8 +50,7 @@ public final class DataTitle implements Data{
         ans.add(newBlock(MetaData.EMAIL, TextAlignment.RIGHT, width));
         ans.add(newBlock(MetaData.WEBSITE,TextAlignment.RIGHT, width));
         ans.add(newBlock(
-            outputDoc.getText(MetaData.AUTHOR) + " © " + outputDoc.getText(
-                MetaData.COPYRIGHT),
+            getData(MetaData.AUTHOR) + " © " + getData(MetaData.COPYRIGHT),
             TextAlignment.CENTER, width, 3
         ));
         return ans;
@@ -66,12 +63,12 @@ public final class DataTitle implements Data{
 
     private FormatterItem newBlock(MetaData data, TextAlignment alignment,
             float width, float leading) throws IOException{
-        return newBlock(outputDoc.getText(data), alignment, width, leading);
+        return newBlock(getData(data), alignment, width, leading);
     }
 
     private FormatterItem newBlock(String text, TextAlignment alignment,
             float width, float leading) throws IOException{
         return new FormatterItem(width, alignment).setLeading(leading)
-            .appendText(text, getBaseFont());
+            .appendSimpleText(text, getBaseFont());
     }
 }

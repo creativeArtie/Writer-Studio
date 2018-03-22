@@ -1,6 +1,7 @@
 package com.creativeartie.writerstudio.pdf;
 
 import java.io.*;
+import java.awt.*;
 import java.util.*;
 import com.creativeartie.writerstudio.file.*;
 import com.creativeartie.writerstudio.resource.*;
@@ -13,7 +14,6 @@ import com.google.common.collect.*;
 
 public class DataContentLine implements Data{
     private final DataWriting baseData;
-    private LinedSpan mainNote;
     private ArrayList<ArrayList<DataContentNote>> pointerNotes;
     private Optional<FormatterItem> itemFormatter;
     private PageBreak pageBreak;
@@ -40,25 +40,51 @@ public class DataContentLine implements Data{
         for (Span child: span){
             if (child instanceof FormatSpan){
                 FormatSpan format = (FormatSpan) child;
-                String text = format.getRaw();
-                boolean bold = format.isBold();
-                boolean italics = format.isItalics();
-                boolean coded = format.isCoded();
+                String text = getText(format);
                 SizedFont add = font;
-                if (coded){
+                if (format.isCoded()){
                     add = add.changeToCourier();
                 }
-                add = bold?
-                    (add.changeStyle(
-                        italics? SizedFont.Style.BOTH: SizedFont.Style.BOLD
-                    )): (italics? add.changeStyle(SizedFont.Style.ITALICS): add);
-                item.appendText(text, add);
+                add = add.changeBold(format.isBold());
+                add = add.changeItalics(format.isItalics());
+                add = add.changeUnderline(format.isUnderline());
+                if (child instanceof FormatSpanLink){
+                    add = add.changeFontColor(Color.BLUE);
+                }
+                setAddition(item.appendText(text, add), format);
             }
         }
         if (item.isEmpty()){
             return Optional.empty();
         } else {
             return Optional.of(item);
+        }
+    }
+
+    private String getText(FormatSpan span){
+        if (span instanceof FormatSpanContent){
+            return ((FormatSpanContent) span).getText();
+        } else if (span instanceof FormatSpanLink){
+            return ((FormatSpanLink)span).getText();
+        }
+        return span.getRaw();
+    }
+
+    private void setAddition(ArrayList<FormatterData> formatter,
+            FormatSpan span){
+        if (span instanceof FormatSpanLinkDirect){
+            String path = ((FormatSpanLinkDirect)span).getPath();
+            for (FormatterData data: formatter){
+                data.setLinkPath(path);
+            }
+        } else if (span instanceof FormatSpanLinkRef){
+            Optional<SpanBranch> target = ((FormatSpanLinkRef) span)
+                .getPathSpan();
+            target.filter(f -> f instanceof LinedSpanPointLink)
+                .map(s -> (LinedSpanPointLink) s)
+                .ifPresent(s ->
+                    formatter.forEach(c -> c.setLinkPath(s.getPath()))
+                );
         }
     }
 

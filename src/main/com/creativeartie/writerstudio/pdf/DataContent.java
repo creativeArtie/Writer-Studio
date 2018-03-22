@@ -63,7 +63,7 @@ public final class DataContent implements Data{
         builder.add(new DataContentLine(getBaseData(),
             new FormatterItem(
                 data.getRenderWidth(getMargin()), TextAlignment.CENTER
-            ).appendText("THE END", getBaseFont())
+            ).appendSimpleText("THE END", getBaseFont())
         ));
         return builder.build();
     }
@@ -178,9 +178,9 @@ public final class DataContent implements Data{
     public List<FormatterItem> getHeader(StreamData data) throws IOException{
         ImmutableList.Builder<FormatterItem> builder = ImmutableList.builder();
         builder.add(new FormatterItem(data.getRenderWidth(getMargin()),
-            TextAlignment.RIGHT)
+                TextAlignment.RIGHT)
             .setLeading(1)
-            .appendText(getOutputDoc().getText(MetaData.LAST_NAME) + "/" +
+            .appendSimpleText(getOutputDoc().getText(MetaData.LAST_NAME) + "/" +
                 getOutputDoc().getText(MetaData.TITLE) + "/" +
                 data.getPageNumber(), getBaseFont()
             )

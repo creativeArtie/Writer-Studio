@@ -5,6 +5,8 @@ import java.util.*;
 
 import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.*;
+import org.apache.pdfbox.pdmodel.common.*;
+import org.apache.pdfbox.pdmodel.interactive.annotation.*;
 
 import com.google.common.collect.*;
 
@@ -15,41 +17,42 @@ import com.creativeartie.writerstudio.pdf.value.*;
  */
 final class StreamTextRender{
     private PDPageContentStream contentStream;
+    private PDPage contentPage;
     private TextAlignment textAlignment;
     private SizedFont textFont;
     private float sectionWidth;
     private FormatterMatter renderMatter;
+    private float localX;
+    private float localY;
 
-    public StreamTextRender(PDPageContentStream output, FormatterMatter matter)
+    public StreamTextRender(StreamPdfFile file, FormatterMatter matter)
             throws IOException{
-        contentStream = output;
+        contentPage = file.getPage();
+        contentStream = file.getContentStream();
         sectionWidth = matter.getWidth();
         renderMatter = matter;
 
-        textAlignment = matter.get(0).getTextAlignment();
-        textFont = matter.get(0).get(0).get(0).getFont();
+        textAlignment = null;
+        textFont = null;
     }
-
 
     void render() throws IOException{
         contentStream.beginText();
-        contentStream.newLineAtOffset(renderMatter.getXLocation(),
-            renderMatter.getYLocation());
-        contentStream.setFont(textFont.getFont(), textFont.getSize());
+        moveText(renderMatter.getXLocation(), renderMatter.getYLocation());
         sectionWidth = renderMatter.getWidth();
         textAlignment = TextAlignment.LEFT;
         for (FormatterItem block: renderMatter){
             changeAlign(block.getTextAlignment());
             if (block.getPrefix().isPresent()){
-                contentStream.newLineAtOffset(block.getPrefixDistance(), 0);
+                moveText(block.getPrefixDistance(), 0);
                 contentStream.showText(block.getPrefix().get());
-                contentStream.newLineAtOffset(-block.getPrefixDistance(), 0);
+                moveText(-block.getPrefixDistance(), 0);
             }
             for (FormatterItem.Line line: block){
-                contentStream.newLineAtOffset(line.getIndent(), 0);
+                moveText(line.getIndent(), 0);
                 printText(line);
                 nextLine(line.getHeight());
-                contentStream.newLineAtOffset(-line.getIndent(), 0);
+                moveText(-line.getIndent(), 0);
             }
         }
         contentStream.endText();
@@ -63,13 +66,13 @@ final class StreamTextRender{
         case CENTER:
             switch(next){
             case RIGHT:
-                contentStream.newLineAtOffset((sectionWidth / 2), 0);
+                moveText((sectionWidth / 2), 0);
                 break;
             case CENTER:
                 assert false;
                 break;
             default:
-                contentStream.newLineAtOffset(-(sectionWidth / 2), 0);
+                moveText(-(sectionWidth / 2), 0);
             }
             break;
         case RIGHT:
@@ -78,22 +81,22 @@ final class StreamTextRender{
                 assert false;
                 break;
             case CENTER:
-                contentStream.newLineAtOffset(-(sectionWidth / 2), 0);
+                moveText(-(sectionWidth / 2), 0);
                 break;
             default:
-                contentStream.newLineAtOffset(-sectionWidth, 0);
+                moveText(-sectionWidth, 0);
             }
             break;
         default:
             switch (next){
             case RIGHT:
-                contentStream.newLineAtOffset(sectionWidth, 0);
+                moveText(sectionWidth, 0);
                 break;
             case CENTER:
-                contentStream.newLineAtOffset(sectionWidth / 2, 0);
+                moveText(sectionWidth / 2, 0);
                 break;
             default:
-                assert false;
+                moveText(0, 0);
             }
 
         }
@@ -109,30 +112,44 @@ final class StreamTextRender{
         default:
             x = 0;
         }
-        contentStream.newLineAtOffset(0, -y);
+        moveText(0, -y);
     }
 
     void printText(FormatterItem.Line line) throws IOException{
         if (textAlignment == TextAlignment.RIGHT){
-            contentStream.newLineAtOffset(-line.getWidth(), 0);
+            moveText(-line.getWidth(), 0);
         } else if (textAlignment == TextAlignment.CENTER){
-            contentStream.newLineAtOffset(-(line.getWidth() / 2), 0);
+            moveText(-(line.getWidth() / 2), 0);
         }
+        float textLocalX = localX;
         for (FormatterData text: line){
+            PDRectangle rect = new PDRectangle(textLocalX, localY,
+                text.getWidth(), text.getHeight());
             changeFont(text.getFont());
             contentStream.showText(text.getText());
+            ArrayList<PDAnnotation> annos = text.getAnnotation(rect);
+            contentPage.getAnnotations().addAll(annos);
+            textLocalX += text.getWidth();
         }
         if (textAlignment == TextAlignment.RIGHT){
-            contentStream.newLineAtOffset(line.getWidth(), 0);
+            moveText(line.getWidth(), 0);
         } else if (textAlignment == TextAlignment.CENTER){
-            contentStream.newLineAtOffset(line.getWidth() / 2, 0);
+            moveText(line.getWidth() / 2, 0);
         }
     }
 
-    void changeFont(SizedFont font) throws IOException{
-        if (! textFont.equals(font)){
+    private void changeFont(SizedFont font) throws IOException{
+        if (textFont == null || ! textFont.equals(font)){
             textFont = font;
+            contentStream.setNonStrokingColor(font.getColor());
             contentStream.setFont(font.getFont(), font.getSize());
         }
     }
+
+    private void moveText(float x, float y) throws IOException{
+        localX += x;
+        localY += y;
+        contentStream.newLineAtOffset(x, y);
+    }
+
 }

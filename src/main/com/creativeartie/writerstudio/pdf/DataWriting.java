@@ -44,6 +44,11 @@ public final class DataWriting implements Data{
         return outputDoc.getDocument();
     }
 
+    @Override
+    public String getData(MetaData key){
+        return outputDoc.getText(key);
+    }
+
     public DataTitle getTitleData(){
         return new DataTitle(this);
     }

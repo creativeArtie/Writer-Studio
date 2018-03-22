@@ -73,7 +73,7 @@ public class StreamPdfFile implements AutoCloseable{
 
     StreamPdfFile renderText(FormatterMatter matter) throws IOException{
         if (! matter.isEmpty()){
-            new StreamTextRender(contentStream, matter).render();
+            new StreamTextRender(this, matter).render();
         }
         return this;
     }
