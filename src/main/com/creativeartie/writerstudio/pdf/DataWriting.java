@@ -26,7 +26,7 @@ public final class DataWriting implements Data{
 
     @Override
     public SizedFont getBaseFont(){
-        return SizedFont.newTimesRoman(12);
+        return SizedFont.newSerif(12);
     }
 
     @Override

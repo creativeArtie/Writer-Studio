@@ -7,9 +7,11 @@ import java.io.*;
 import com.google.common.base.*;
 
 import com.creativeartie.writerstudio.pdf.value.*;
+import com.creativeartie.writerstudio.main.*;
 import org.apache.pdfbox.pdmodel.interactive.action.*;
 import org.apache.pdfbox.pdmodel.interactive.annotation.*;
 
+import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.common.*;
 
 /**
@@ -104,48 +106,30 @@ final class FormatterData{
         return textFont;
     }
 
-    public ArrayList<PDAnnotation> getAnnotation(PDRectangle rectangle){
-        ArrayList<PDAnnotation> ans = new ArrayList<>();
+    public ArrayList<IOExceptionBiConsumer<PDPage, PDPageContentStream>>
+            getPostTextConsumers(PDRectangle rect){
+        ArrayList<IOExceptionBiConsumer<PDPage, PDPageContentStream>> ans = new
+            ArrayList<>();
         if (textFont.isUnderline()){
-            PDAnnotationTextMarkup markup = new PDAnnotationTextMarkup(
-                PDAnnotationTextMarkup.SUB_TYPE_UNDERLINE);
-            markup.setRectangle(rectangle);
-            markup.setQuadPoints(getQuads(rectangle));
-            ans.add(markup);
+            ans.add((page, stream) ->{
+                stream.setStrokingColor(textFont.getColor());
+                stream.moveTo(rect.getLowerLeftX(), rect.getLowerLeftY() - 2);
+                stream.lineTo(rect.getUpperRightX(), rect.getLowerLeftY() - 2);
+                stream.stroke();
+            });
         }
-        if (linkPath.isPresent()){
+        linkPath.ifPresent(path -> ans.add((page, stream) ->{
             PDAnnotationLink link = new PDAnnotationLink();
 
             // add an action
             PDActionURI action = new PDActionURI();
-            action.setURI(linkPath.get());
+            action.setURI(path);
             link.setAction(action);
-            link.setRectangle(rectangle);
-            ans.add(link);
-        }
+            link.setRectangle(rect);
+            page.getAnnotations().add(link);
+        }));
         return ans;
     }
-
-    /**
-     * Computes a float array of size eight with all the vertices of the PDRectangle
-     * From https://gist.github.com/joelkuiper/331a399961941989fec8
-     */
-    public float[] getQuads(final PDRectangle rect){
-        final float[] quads = new float[8];
-        // top left
-        quads[0] = rect.getLowerLeftX(); // x1
-        quads[1] = rect.getUpperRightY(); // y1
-        // top right
-        quads[2] = quads[0]; // x3
-        quads[3] = rect.getLowerLeftY(); // y3
-        // bottom left
-        quads[4] = rect.getUpperRightX(); // x2
-        quads[5] = quads[1]; // y2
-        // bottom right
-        quads[6] = quads[4]; // x4
-        quads[7] = quads[3]; // y5
-        return quads;
-}
 
     @Override
     public String toString(){

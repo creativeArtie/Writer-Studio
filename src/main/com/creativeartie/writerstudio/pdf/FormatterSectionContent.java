@@ -115,7 +115,6 @@ class FormatterSectionContent extends FormatterSection{
         // System.out.println("FormatSectionContent#render(StreamPdfFile)");
         boolean isFirst = true;
         for (Page page: contentPages){
-            System.out.println("New Page------------");
             if (isFirst){
                 isFirst = false;
             } else {
@@ -124,7 +123,6 @@ class FormatterSectionContent extends FormatterSection{
             output.renderText(page.pageHeader);
             output.renderText(page.pageContent);
             output.renderText(page.pageFootnote);
-            System.out.println(output.getPage().getAnnotations().size());
             // float p = output.newStreamData().getHeight();
             // float div = page.pageContent.getHeight();
             // float head = page.pageHeader.getHeight();

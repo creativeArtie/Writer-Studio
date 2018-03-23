@@ -66,6 +66,17 @@ public class DataContentLine implements Data{
             return ((FormatSpanContent) span).getText();
         } else if (span instanceof FormatSpanLink){
             return ((FormatSpanLink)span).getText();
+        } else if (span instanceof FormatSpanDirectory){
+            FormatSpanDirectory ref = (FormatSpanDirectory) span;
+            Optional<SpanBranch> base = ref.getTarget();
+            Optional<LinedSpanPointNote> note = base
+                .filter(t -> t instanceof LinedSpanPointNote)
+                .map(t -> (LinedSpanPointNote) t);
+            Optional<String> text = note
+                .filter(t -> t.getDirectoryType() == DirectoryType.ENDNOTE)
+                .map(t -> baseData.getContentData().addEndnote(t));
+
+            return text.orElse(span.getRaw());
         }
         return span.getRaw();
     }

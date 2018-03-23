@@ -15,7 +15,7 @@ import com.creativeartie.writerstudio.pdf.value.*;
 
 @RunWith(JUnit4.class)
 public class FormatterItemTest{
-    private static final SizedFont baseFont = SizedFont.newTimesRoman(12);
+    private static final SizedFont baseFont = SizedFont.newSerif(12);
 
 
     private void append(FormatterItem item, String text) throws IOException{

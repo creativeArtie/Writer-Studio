@@ -15,16 +15,27 @@ public final class DataContent implements Data{
     private DataWriting baseData;
     private boolean paraFirst;
     private LinkedList<Integer> listNumbering;
+    private ArrayList<LinedSpanPointNote> endnoteList;
 
     public DataContent(DataWriting data){
         baseData = data;
         paraFirst = true;
         listNumbering = new LinkedList<>();
+        endnoteList = new ArrayList<>();
     }
 
     @Override
     public DataWriting getBaseData(){
         return baseData;
+    }
+
+    String addEndnote(LinedSpanPointNote note){
+        int index = endnoteList.indexOf(note);
+        if (index == -1){
+            index = endnoteList.size();
+            endnoteList.add(note);
+        }
+        return RomanNumbering.LOWER.toRoman(index + 1);
     }
 
     public List<DataContentLine> getContentLines(StreamData data)

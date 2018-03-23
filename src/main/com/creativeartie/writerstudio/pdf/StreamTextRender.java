@@ -2,6 +2,7 @@ package com.creativeartie.writerstudio.pdf;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.*;
 
 import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.*;
@@ -11,6 +12,7 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.*;
 import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.pdf.value.*;
+import com.creativeartie.writerstudio.main.*;
 
 /**
  * Defines the placement of the text on the page.
@@ -24,6 +26,7 @@ final class StreamTextRender{
     private FormatterMatter renderMatter;
     private float localX;
     private float localY;
+    private ArrayList<IOExceptionBiConsumer<PDPage, PDPageContentStream>> postText;
 
     public StreamTextRender(StreamPdfFile file, FormatterMatter matter)
             throws IOException{
@@ -34,6 +37,7 @@ final class StreamTextRender{
 
         textAlignment = null;
         textFont = null;
+        postText = new ArrayList<>();
     }
 
     void render() throws IOException{
@@ -56,6 +60,9 @@ final class StreamTextRender{
             }
         }
         contentStream.endText();
+        for (IOExceptionBiConsumer<PDPage, PDPageContentStream> consumer: postText){
+            consumer.acceptThrows(contentPage, contentStream);
+        }
     }
 
     void changeAlign(TextAlignment next) throws IOException{
@@ -127,8 +134,7 @@ final class StreamTextRender{
                 text.getWidth(), text.getHeight());
             changeFont(text.getFont());
             contentStream.showText(text.getText());
-            ArrayList<PDAnnotation> annos = text.getAnnotation(rect);
-            contentPage.getAnnotations().addAll(annos);
+            postText.addAll(text.getPostTextConsumers(rect));
             textLocalX += text.getWidth();
         }
         if (textAlignment == TextAlignment.RIGHT){
@@ -140,9 +146,9 @@ final class StreamTextRender{
 
     private void changeFont(SizedFont font) throws IOException{
         if (textFont == null || ! textFont.equals(font)){
+            contentStream.setNonStrokingColor(textfont.getColor());
+            contentStream.setFont(textfont.getFont(), textfont.getSize());
             textFont = font;
-            contentStream.setNonStrokingColor(font.getColor());
-            contentStream.setFont(font.getFont(), font.getSize());
         }
     }
 

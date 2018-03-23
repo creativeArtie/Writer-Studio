@@ -23,6 +23,7 @@
     <property name="args.src-javac" value="-Xlint" />
     <property name="args.test-src-javac" value="-Xlint" />
     <property name="args.test-junit-javac" value="-Xlint:deprecation" />
+    <property name="args.trial-run" value="" />
 <!-- =========================== Program Folders =========================== -->
     <!-- ........................ Root Folders .......................... -->
     <property name="loc.src" value="main/" />
@@ -289,6 +290,7 @@
         </jar>
         <java jar="${dir.trial-file}" fork="true" dir="${dir.trial}">
              <assertions><enable/></assertions>
+             <arg line="${args.trial-run}" />
         </java>
     </target>
 

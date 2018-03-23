@@ -12,11 +12,14 @@ public class StreamPdfFile implements AutoCloseable{
     private PDPageContentStream contentStream;
     private FormatterSectionTitle titlePage;
     private FormatterSectionContent writtenContent;
+    private PDFont serifFont;
+    private PDFont monoFont;
 
     private PDPage currentPage;
 
     public StreamPdfFile(String file) throws IOException{
         pdfDocument = new PDDocument();
+        // TODO load font
         saveFile = file;
         newPage();
     }
