@@ -27,12 +27,12 @@ public class DataContentLine implements Data{
     }
 
     public DataContentLine(DataWriting input, FormatterItem item,
-            FormatSpanMain span) throws IOException{
+            FormatSpanMain span, SizedFont font) throws IOException{
         baseData = input;
         pointerNotes = new ArrayList<>();
         pageBreak = PageBreak.NONE;
 
-        itemFormatter = parseItem(span, item, input.getBaseFont());
+        itemFormatter = parseItem(span, item, font);
     }
 
     private Optional<FormatterItem> parseItem(FormatSpanMain span,
@@ -43,13 +43,16 @@ public class DataContentLine implements Data{
                 String text = getText(format);
                 SizedFont add = font;
                 if (format.isCoded()){
-                    add = add.changeToCourier();
+                    add = add.changeToMono();
                 }
                 add = add.changeBold(format.isBold());
                 add = add.changeItalics(format.isItalics());
                 add = add.changeUnderline(format.isUnderline());
                 if (child instanceof FormatSpanLink){
                     add = add.changeFontColor(Color.BLUE);
+                }
+                if (child instanceof FormatSpanDirectory){
+                    add = add.changeToSuperscript();
                 }
                 setAddition(item.appendText(text, add), format);
             }
@@ -75,7 +78,7 @@ public class DataContentLine implements Data{
             Optional<String> text = note
                 .filter(t -> t.getDirectoryType() == DirectoryType.ENDNOTE)
                 .map(t -> baseData.getContentData().addEndnote(t));
-
+            System.out.println(text);
             return text.orElse(span.getRaw());
         }
         return span.getRaw();

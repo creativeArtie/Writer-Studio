@@ -145,9 +145,9 @@ final class StreamTextRender{
     }
 
     private void changeFont(SizedFont font) throws IOException{
-        if (textFont == null || ! textFont.equals(font)){
-            contentStream.setNonStrokingColor(textfont.getColor());
-            contentStream.setFont(textfont.getFont(), textfont.getSize());
+        if (textFont == null || ! font.equals(textFont)){
+            contentStream.setNonStrokingColor(font.getColor());
+            contentStream.setFont(font.getFont(), font.getSize());
             textFont = font;
         }
     }

@@ -19,6 +19,7 @@ public class FormatterWriting {
             IOException{
         titlePage.setData(input, data);
         contentPages.setData(input, data);
+        data.setMetaData(input);
         return this;
     }
 

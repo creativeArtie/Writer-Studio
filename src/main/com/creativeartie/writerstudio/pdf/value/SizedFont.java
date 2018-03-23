@@ -1,7 +1,9 @@
 package com.creativeartie.writerstudio.pdf.value;
 
 import java.io.*;
+import java.util.Optional;
 import java.util.Objects;
+import java.util.function.Function;
 import java.awt.*;
 
 import org.apache.pdfbox.pdmodel.font.*;
@@ -12,46 +14,66 @@ import com.google.common.base.*;
 
 public final class SizedFont{
 
-    public static SizedFont newSerif(int size){
-        return new SizedFont(getSerif(false, false), size, Color.BLACK,
-            false, false, false, false);
+    public interface FontChanger{
+        public PDFont getFont(boolean mono, boolean bold, boolean italics,
+            boolean superscript);
     }
 
-    private static PDFont getSerif(boolean bold, boolean italics){
-        return bold?
-            (italics? PDType1Font.TIMES_BOLD_ITALIC: PDType1Font.TIMES_BOLD):
-            (italics? PDType1Font.TIMES_ITALIC: PDType1Font.TIMES_ROMAN);
-    }
-
-    public static SizedFont newCourier(int size){
-        return new SizedFont(getCourier(false, false), size, Color.BLACK, false,
-            false, false, false);
-    }
-
-    private static PDFont getCourier(boolean bold, boolean italics){
-        return bold?
-            (italics? PDType1Font.COURIER_BOLD_OBLIQUE: PDType1Font.COURIER_BOLD):
-            (italics? PDType1Font.COURIER_OBLIQUE: PDType1Font.COURIER);
+    /** Describes what field is changed. Using constructor the normal way was
+     * to long and prone to mistakes. Making builder class is too much work. */
+    private enum Key {
+        FONT, SIZE, COLOR, BOLD, ITALICS, LINED, SUPER;
     }
 
     private final PDFont textFont;
+    private final boolean textMono;
     private final int textSize;
     private final Color textColor;
     private final boolean textBold;
     private final boolean textItalics;
-    private final boolean textUnderline;
-    private final boolean textSuperscript;
+    private final boolean textLined;
+    private final boolean textSuper;
+    private final FontChanger fontChanger;
 
-    private SizedFont(PDFont font, int size, Color color,
+    public SizedFont(FontChanger changer){
+        this(changer, false, 12, Color.BLACK, false, false, false, false);
+    }
+
+    private SizedFont(SizedFont res, Key edit, Object replace){
+        textColor   = edit == Key.COLOR?   (Color)   replace: res.textColor;
+        textSize    = edit == Key.SIZE?    (Integer) replace: res.textSize;
+        textBold    = edit == Key.BOLD?    (Boolean) replace: res.textBold;
+        textItalics = edit == Key.ITALICS? (Boolean) replace: res.textItalics;
+        textLined   = edit == Key.LINED?   (Boolean) replace: res.textLined;
+        textSuper   = edit == Key.SUPER?   (Boolean) replace: res.textSuper;
+        fontChanger = res.fontChanger;
+        if (Key.FONT == edit){
+            /// Replaces font families
+            textMono = (Boolean)replace;
+            textFont = fontChanger.getFont(textMono, textBold, textItalics,
+                textMono);
+        } else if (Key.ITALICS == edit || Key.BOLD == edit || Key.SUPER == edit){
+            /// Replaces font due to bold or italics, etc.
+            textMono = res.textMono;
+            textFont = fontChanger.getFont(textMono, textBold, textItalics,
+                textSuper);
+        } else {
+            textMono = res.textMono;
+            textFont = res.textFont;
+        }
+    }
+
+    private SizedFont(FontChanger changer, boolean mono, int size, Color color,
             boolean bold, boolean italics, boolean underline, boolean superscript){
-        assert font != null: "Null font.";
-        textFont = font;
+        textFont = changer.getFont(mono, bold, italics, superscript);
+        textMono = mono;
         textSize = size;
         textColor = color;
         textBold = bold;
         textItalics = italics;
-        textUnderline = underline;
-        textSuperscript = superscript;
+        textLined = underline;
+        textSuper = superscript;
+        fontChanger = changer;
     }
 
     public PDFont getFont(){
@@ -81,78 +103,49 @@ public final class SizedFont{
         if (size == textSize){
             return this;
         }
-        return new SizedFont(textFont, size, textColor, textBold,
-            textItalics, textUnderline, textSuperscript);
+        Object key = new Object();
+        return new SizedFont(this, Key.SIZE, 12);
     }
 
-    public SizedFont changeToTime(){
-        PDFont font = getSerif(textBold, textItalics);
-        if (font == textFont){
-            return this;
-        }
-        return new SizedFont(font, textSize, textColor, textBold, textItalics,
-            textUnderline, textSuperscript);
+    public SizedFont changeToSerif(){
+        return new SizedFont(this, Key.FONT, false);
     }
 
-    public SizedFont changeToCourier(){
-        PDFont font = getCourier(textBold, textItalics);
-        if (font == textFont){
-            return this;
-        }
-        return new SizedFont(font, textSize, textColor, textBold, textItalics,
-            textUnderline, textSuperscript);
+    public SizedFont changeToMono(){
+        return new SizedFont(this, Key.FONT, true);
     }
 
     public SizedFont changeFontColor(Color color){
         checkNotNull(color, "color");
-        if (color == textColor){
-            return this;
-        }
-        return new SizedFont(textFont, textSize, color, textBold, textItalics,
-            textUnderline, textSuperscript);
+        return new SizedFont(this, Key.COLOR, color);
     }
 
     public SizedFont changeBold(boolean b){
-        return new SizedFont(getFont(textBold, textItalics), textSize,
-            textColor, b, textItalics, textUnderline, textSuperscript);
+        return new SizedFont(this, Key.BOLD, b);
     }
 
     public SizedFont changeItalics(boolean b){
-        return new SizedFont(getFont(textBold, textItalics), textSize,
-            textColor, textBold, b, textUnderline, textSuperscript);
-    }
-
-    private PDFont getFont(boolean bold, boolean italics){
-        if (textFont.getName().equals("Times-Roman")){
-            return getSerif(textBold, textItalics);
-        }
-        return getCourier(textBold, textItalics);
+        return new SizedFont(this, Key.ITALICS, b);
     }
 
     public SizedFont changeUnderline(boolean b){
-        if (textUnderline == b){
-            return this;
-        }
-        return new SizedFont(textFont, textSize, textColor, textBold,
-            textItalics, b, textSuperscript);
+        return new SizedFont(this, Key.LINED, b);
     }
 
-    public SizedFont asSuperscript(){
-        return new SizedFont(textFont, textSize, textColor, textBold,
-            textItalics, textUnderline, true);
+    public SizedFont changeToSuperscript(){
+        return new SizedFont(this, Key.SUPER, true);
     }
 
-    public SizedFont asNormal(){
-        return new SizedFont(textFont, textSize, textColor, textBold,
-            textItalics, textUnderline, false);
+    public SizedFont changeToNoramlScript(){
+        return new SizedFont(this, Key.SUPER, false);
     }
 
     public boolean isSuperscript(){
-        return textSuperscript;
+        return textSuper;
     }
 
     public boolean isUnderline(){
-        return textUnderline;
+        return textLined;
     }
 
     @Override
@@ -171,7 +164,7 @@ public final class SizedFont{
             SizedFont other = (SizedFont) obj;
             return Objects.equals(textFont, other.textFont) &&
                 textSize == other.textSize &&
-                textSuperscript == other.textSuperscript &&
+                textSuper == other.textSuper &&
                 Objects.equals(textColor, other.textColor);
         }
         return false;
@@ -179,7 +172,7 @@ public final class SizedFont{
 
     @Override
     public int hashCode(){
-        return Objects.hash(textFont, textSize, textSuperscript, textColor);
+        return Objects.hash(textFont, textSize, textSuper, textColor);
     }
 
 }

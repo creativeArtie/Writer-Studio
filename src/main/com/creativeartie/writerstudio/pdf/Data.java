@@ -18,10 +18,6 @@ public interface Data{
 
     public DataWriting getBaseData();
 
-    public default SizedFont getBaseFont(){
-        return getBaseData().getBaseFont();
-    }
-
     public default Margin getMargin(){
         return getBaseData().getMargin();
     }

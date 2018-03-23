@@ -18,6 +18,8 @@ public interface StreamData {
 
     public StreamData toNextPage();
 
+    public SizedFont getBaseFont();
+
     public default float getRenderWidth(Margin margin){
         return getWidth() - margin.getLeft() - margin.getRight();
     }
@@ -25,4 +27,6 @@ public interface StreamData {
     public default float getRenderHeight(Margin margin){
         return getHeight() - margin.getTop() - margin.getBottom();
     }
+
+    public StreamData setMetaData(DataWriting data);
 }

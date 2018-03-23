@@ -13,20 +13,19 @@ public final class DataWriting implements Data{
 
     private Margin pageMargin;
     private ManuscriptFile outputDoc;
+    private DataTitle dataTitle;
+    private DataContent dataContent;
 
     public DataWriting(ManuscriptFile doc){
         pageMargin = new Margin(Data.cmToPoint(3f));
         outputDoc = doc;
+        dataTitle = new DataTitle(this);
+        dataContent = new DataContent(this);
     }
 
     @Override
     public DataWriting getBaseData(){
         return this;
-    }
-
-    @Override
-    public SizedFont getBaseFont(){
-        return SizedFont.newSerif(12);
     }
 
     @Override
@@ -50,11 +49,11 @@ public final class DataWriting implements Data{
     }
 
     public DataTitle getTitleData(){
-        return new DataTitle(this);
+        return dataTitle;
     }
 
     public DataContent getContentData(){
-        return new DataContent(this);
+        return dataContent;
     }
 
 }
