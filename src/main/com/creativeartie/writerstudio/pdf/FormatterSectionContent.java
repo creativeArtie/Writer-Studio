@@ -2,6 +2,7 @@ package com.creativeartie.writerstudio.pdf;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.*;
 
 import com.google.common.collect.*;
 
@@ -15,9 +16,9 @@ class FormatterSectionContent extends FormatterSection{
         private FormatterMatterContent pageContent;
         private FormatterMatterFootnote pageFootnote;
         private FormatterMatterHeader pageHeader;
-        private Page(DataWriting data, StreamData output) throws IOException{
-            pageHeader = new FormatterMatterHeader().setBasics(data.getContentData(),
-                output);
+        private Page(DataWriting data, StreamData output,
+                FormatterMatterHeader header) throws IOException{
+            pageHeader = header.setBasics(data.getContentData(), output);
             float height = pageHeader.getHeight();
             pageContent = new FormatterMatterContent().setBasics(data
                 .getContentData(), output).addHeaderSpacing(height);
@@ -41,24 +42,30 @@ class FormatterSectionContent extends FormatterSection{
     @Override
     public void loadData(DataWriting data, StreamData output)
             throws IOException{
-        Page cur = new Page(data, output);
+        loadData(data, output, data.getContentData().getContentLines(output),
+            () -> new FormatterMatterHeader());
+    }
+
+    private void loadData(DataWriting data, StreamData output,
+        List<DataContentLine> lines,
+        Supplier<? extends FormatterMatterHeader> header) throws IOException{
+        Page cur = new Page(data, output, header.get());
         Optional<FormatterItem> item = Optional.empty();
         boolean first = true;
         float height = output.getHeight();
-        for (DataContentLine line : data.getContentData().getContentLines(
-                output)){
+        for (DataContentLine line : lines){
             if (first){
                 first = false;
                 setContentStartY(height, line.getPageBreak(), cur);
             } else {
                 if (line.getPageBreak() != PageBreak.NONE){
-                    cur = nextPage(data, output, cur);
+                    cur = nextPage(data, output, cur, header);
                     setContentStartY(height, line.getPageBreak(), cur);
                 }
             }
             item = splitItem(line.getFormatter().get(), cur);
             while (item.isPresent()){
-                cur = nextPage(data, output, cur);
+                cur = nextPage(data, output, cur, header);
                 item = splitItem(item.get(), cur);
             }
         }
@@ -80,11 +87,11 @@ class FormatterSectionContent extends FormatterSection{
         cur.pageContent.setStartY(set);
     }
 
-    private Page nextPage(DataWriting data, StreamData output, Page cur)
-            throws IOException{
+    private Page nextPage(DataWriting data, StreamData output, Page cur,
+            Supplier<? extends FormatterMatterHeader> header) throws IOException{
         contentPages.add(cur);
         output.toNextPage();
-        return new Page(data, output);
+        return new Page(data, output, header.get());
     }
 
     private Optional<FormatterItem> splitItem(FormatterItem item, Page page){
@@ -131,6 +138,26 @@ class FormatterSectionContent extends FormatterSection{
             // float rd = div + (p / 3) + margin;
             // System.out.printf("%5.3f %5.3f %5.3f %5.3f %5.3f %5.3f \n",
             //                   div,  p,  margin, head, est,  rd);
+        }
+        for (Page page: contentEndnotes){
+            if (isFirst){
+                isFirst = false;
+            } else {
+                output.addPage();
+            }
+            output.renderText(page.pageHeader);
+            output.renderText(page.pageContent);
+            output.renderText(page.pageFootnote);
+        }
+        for (Page page: contentCitations){
+            if (isFirst){
+                isFirst = false;
+            } else {
+                output.addPage();
+            }
+            output.renderText(page.pageHeader);
+            output.renderText(page.pageContent);
+            output.renderText(page.pageFootnote);
         }
     }
 }

@@ -199,4 +199,26 @@ public final class DataContent implements Data{
         );
         return builder.build();
     }
+
+    public List<FormatterItem> getEndnotes(StreamData data) throws IOException{
+        ImmutableList.Builder<FormatterItem> builder = ImmutableList.builder();
+        float indent = data.getBaseFont().getWidth(RomanNumbering.SUPER
+            .toRoman(endnoteList.size()) + " ");
+        int i = 1;
+        for (LinedSpanPointNote span: endnoteList){
+            Optional<FormatSpanMain> main = span.getFormattedSpan();
+            FormatterItem item = new FormatterItem(data.getRenderWidth(
+                getMargin()));
+            item.setPrefix(RomanNumbering.SUPER.toRoman(i++) + " ", 0);
+            item.setFirstIndent(indent);
+            item.setIndent(indent);
+            if (main.isPresent()){
+                new DataContentLine(baseData, item).getFormatter()
+                    .ifPresent(f -> builder.add(f));
+            } else {
+                builder.add(item);
+            }
+        }
+        return builder.build();
+    }
 }

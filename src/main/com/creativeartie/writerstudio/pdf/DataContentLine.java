@@ -78,7 +78,6 @@ public class DataContentLine implements Data{
             Optional<String> text = note
                 .filter(t -> t.getDirectoryType() == DirectoryType.ENDNOTE)
                 .map(t -> baseData.getContentData().addEndnote(t));
-            System.out.println(text);
             return text.orElse(span.getRaw());
         }
         return span.getRaw();
