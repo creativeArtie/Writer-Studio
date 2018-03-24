@@ -2,11 +2,11 @@ package com.creativeartie.writerstudio.pdf;
 
 import java.io.*;
 import java.util.*;
-import java.util.function.*;
 
 import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.pdf.value.*;
+import com.creativeartie.writerstudio.main.*;
 
 /**
  * Represent main content pages.
@@ -17,8 +17,9 @@ class FormatterSectionContent extends FormatterSection{
         private FormatterMatterFootnote pageFootnote;
         private FormatterMatterHeader pageHeader;
         private Page(DataWriting data, StreamData output,
-                FormatterMatterHeader header) throws IOException{
-            pageHeader = header.setBasics(data.getContentData(), output);
+                IOExceptionSupplier<List<FormatterItem>> header) throws IOException{
+            pageHeader = new FormatterMatterHeader()
+                .setBasics(data.getContentData(), output, header);
             float height = pageHeader.getHeight();
             pageContent = new FormatterMatterContent().setBasics(data
                 .getContentData(), output).addHeaderSpacing(height);
@@ -42,14 +43,17 @@ class FormatterSectionContent extends FormatterSection{
     @Override
     public void loadData(DataWriting data, StreamData output)
             throws IOException{
-        loadData(data, output, data.getContentData().getContentLines(output),
-            () -> new FormatterMatterHeader());
+        DataContent content = data.getContentData();
+        loadData(data, output, content.getContentLines(output),
+            () -> content.getHeader(output));
+        // loadData(data, output, content.getEndnotes(output),
+        //    () -> new ArrayList<>()); // TODO failed to render endnotes
     }
 
     private void loadData(DataWriting data, StreamData output,
-        List<DataContentLine> lines,
-        Supplier<? extends FormatterMatterHeader> header) throws IOException{
-        Page cur = new Page(data, output, header.get());
+            List<DataContentLine> lines, IOExceptionSupplier<List<FormatterItem>> header)
+            throws IOException{
+        Page cur = new Page(data, output, header);
         Optional<FormatterItem> item = Optional.empty();
         boolean first = true;
         float height = output.getHeight();
@@ -88,10 +92,10 @@ class FormatterSectionContent extends FormatterSection{
     }
 
     private Page nextPage(DataWriting data, StreamData output, Page cur,
-            Supplier<? extends FormatterMatterHeader> header) throws IOException{
+            IOExceptionSupplier<List<FormatterItem>> header) throws IOException{
         contentPages.add(cur);
         output.toNextPage();
-        return new Page(data, output, header.get());
+        return new Page(data, output, header);
     }
 
     private Optional<FormatterItem> splitItem(FormatterItem item, Page page){
@@ -138,26 +142,6 @@ class FormatterSectionContent extends FormatterSection{
             // float rd = div + (p / 3) + margin;
             // System.out.printf("%5.3f %5.3f %5.3f %5.3f %5.3f %5.3f \n",
             //                   div,  p,  margin, head, est,  rd);
-        }
-        for (Page page: contentEndnotes){
-            if (isFirst){
-                isFirst = false;
-            } else {
-                output.addPage();
-            }
-            output.renderText(page.pageHeader);
-            output.renderText(page.pageContent);
-            output.renderText(page.pageFootnote);
-        }
-        for (Page page: contentCitations){
-            if (isFirst){
-                isFirst = false;
-            } else {
-                output.addPage();
-            }
-            output.renderText(page.pageHeader);
-            output.renderText(page.pageContent);
-            output.renderText(page.pageFootnote);
         }
     }
 }

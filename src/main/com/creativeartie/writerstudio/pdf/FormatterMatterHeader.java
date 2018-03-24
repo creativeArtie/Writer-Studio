@@ -6,6 +6,7 @@ import java.util.*;
 import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.pdf.value.*;
+import com.creativeartie.writerstudio.main.*;
 
 /**
  * Prints the page header.
@@ -31,14 +32,15 @@ class FormatterMatterHeader extends FormatterMatter{
         baisicUnprepared = true;
     }
 
-    public FormatterMatterHeader setBasics(DataContent content, StreamData output)
+    public FormatterMatterHeader setBasics(DataContent content, StreamData output,
+            IOExceptionSupplier<List<FormatterItem>> lines)
             throws IOException{
         baseMargins = content.getMargin();
         startY = output.getHeight() - baseMargins.getTop();
         startX = baseMargins.getLeft();
         divWidth = output.getRenderWidth(baseMargins);
 
-        outputLines.addAll(content.getHeader(output));
+        outputLines.addAll(lines.getThrows());
         divHeight = 0;
         for (FormatterItem item : outputLines){
             divHeight += item.getHeight();
@@ -51,10 +53,6 @@ class FormatterMatterHeader extends FormatterMatter{
     @Override
     public float getHeight(){
         return divHeight;
-    }
-
-    public Optional<FormatterItem> addContentLine(){
-        return Optional.empty();
     }
 
     private void isReady(){

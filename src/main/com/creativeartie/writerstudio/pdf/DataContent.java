@@ -200,8 +200,8 @@ public final class DataContent implements Data{
         return builder.build();
     }
 
-    public List<FormatterItem> getEndnotes(StreamData data) throws IOException{
-        ImmutableList.Builder<FormatterItem> builder = ImmutableList.builder();
+    public List<DataContentLine> getEndnotes(StreamData data) throws IOException{
+        ImmutableList.Builder<DataContentLine> builder = ImmutableList.builder();
         float indent = data.getBaseFont().getWidth(RomanNumbering.SUPER
             .toRoman(endnoteList.size()) + " ");
         int i = 1;
@@ -213,10 +213,10 @@ public final class DataContent implements Data{
             item.setFirstIndent(indent);
             item.setIndent(indent);
             if (main.isPresent()){
-                new DataContentLine(baseData, item).getFormatter()
-                    .ifPresent(f -> builder.add(f));
+                builder.add(new DataContentLine(baseData, item, main.get(),
+                    data.getBaseFont()));
             } else {
-                builder.add(item);
+                builder.add(new DataContentLine(baseData, item));
             }
         }
         return builder.build();
