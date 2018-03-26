@@ -181,13 +181,23 @@ public final class DataContent extends Data{
         return builder.build();
     }
 
-    public List<FormatterItem> getHeader(StreamData data) throws IOException{
+    public List<FormatterItem> getHeader(StreamData data, SectionType type)
+            throws IOException{
+        switch (type){
+        case CONTENT:
+            return getContentHeader(data);
+        default:
+            return new ArrayList<>();
+        }
+    }
+    private List<FormatterItem> getContentHeader(StreamData data)
+            throws IOException{
         ImmutableList.Builder<FormatterItem> builder = ImmutableList.builder();
         builder.add(new FormatterItem(data.getRenderWidth(getMargin()),
                 TextAlignment.RIGHT)
             .setLeading(1)
-            .appendSimpleText(getOutputDoc().getText(MetaData.LAST_NAME) + "/" +
-                getOutputDoc().getText(MetaData.TITLE) + "/" +
+            .appendSimpleText(getData(MetaData.LAST_NAME) + "/" +
+                getData(MetaData.TITLE) + "/" +
                 data.getPageNumber(), data.getBaseFont()
             )
         );

@@ -12,113 +12,33 @@ import com.creativeartie.writerstudio.main.*;
  * Represent main content pages.
  */
 class FormatterSectionContent extends FormatterSection{
-    private class Page{
-        private FormatterMatterContent pageContent;
-        private FormatterMatterFootnote pageFootnote;
-        private FormatterMatterHeader pageHeader;
-        private Page(Data data, StreamData output,
-                List<FormatterItem> header) throws IOException{
-            pageHeader = new FormatterMatterHeader()
-                .setBasics(data.getContentData(), output, header);
-            float height = pageHeader.getHeight();
-            pageContent = new FormatterMatterContent().setBasics(data
-                .getContentData(), output).addHeaderSpacing(height);
-            pageFootnote = new FormatterMatterFootnote().setBasics(data
-                .getContentData(), output);
-        }
-    }
-
     private int pageTotal;
 
-    private ArrayList<Page> contentPages;
-    private ArrayList<Page> contentEndnotes;
-    private ArrayList<Page> contentCitations;
+    private FormatterPage contentPage;
 
-    public FormatterSectionContent() {
-        contentCitations = new ArrayList<>();
-        contentEndnotes = new ArrayList<>();
-        contentPages = new ArrayList<>();
+    FormatterSectionContent() {
+        contentPage = new FormatterPage(SectionType.CONTENT);
     }
 
     @Override
     public void loadData(Data data, StreamData output) throws IOException{
         DataContent content = data.getContentData();
 
-        loadData(data, output, content.getContentLines(output),
-            content.getHeader(output));
-        List<DataContentLine> items = content.getEndnotes(output);
-        if (! items.isEmpty()){
-            output.toNextPage();
-            // loadData(data, output, items, new ArrayList<>());
-        }
-    }
-
-    private void loadData(Data data, StreamData output,
-            List<DataContentLine> lines, List<FormatterItem> header)
-            throws IOException{
-        Page cur = new Page(data, output, header);
-        Optional<FormatterItem> item = Optional.empty();
-        boolean first = true;
+        contentPage.setBasics(data, output);
+        FormatterPage ptr = contentPage;
         float height = output.getHeight();
-        for (DataContentLine line : lines){
-            if (first){
-                first = false;
-                setContentStartY(height, line.getPageBreak(), cur);
+        for (DataContentLine line : content.getContentLines(output)){
+            if (contentPage == ptr){
+                ptr.setContentStartY(height, line.getPageBreak());
             } else {
                 if (line.getPageBreak() != PageBreak.NONE){
-                    cur = nextPage(data, output, cur, header);
-                    setContentStartY(height, line.getPageBreak(), cur);
+                    ptr = ptr.nextPage();
+                    ptr.setContentStartY(height, line.getPageBreak());
                 }
             }
-            item = splitItem(line.getFormatter().get(), cur);
-            while (item.isPresent()){
-                cur = nextPage(data, output, cur, header);
-                item = splitItem(item.get(), cur);
-            }
-        }
-        contentPages.add(cur);
-    }
+            ptr = ptr.addContent(line.getFormatter().get());
 
-    private void setContentStartY(float height, PageBreak breaker, Page cur){
-        float set = height;
-        switch (breaker){
-        case HALF_WAY:
-            set -= height / 2;
-            break;
-        case THIRD_WAY:
-            set -= height / 3;
-            break;
-        default:
-            return;
         }
-        cur.pageContent.setStartY(set);
-    }
-
-    private Page nextPage(Data data, StreamData output, Page cur,
-            List<FormatterItem> header) throws IOException{
-        contentPages.add(cur);
-        output.toNextPage();
-        return new Page(data, output, header);
-    }
-
-    private Optional<FormatterItem> splitItem(FormatterItem item, Page page){
-        if (page.pageContent.addContentLine(item)){
-            return Optional.empty();
-        }
-        Optional<FormatterItem> adding = Optional.of(FormatterItem.copySplitItem(item));
-        FormatterItem check = FormatterItem.copyFormat(item);
-        Optional<FormatterItem> ans = Optional.of(FormatterItem.copySplitItem(item));
-        for (FormatterItem.Line line: item){
-            check.addLine(line);
-            if (page.pageContent.canFit(check)){
-                adding.get().addLine(line);
-            } else {
-                ans.get().addLine(line);
-                adding.ifPresent(add -> page.pageContent.addContentLine(add));
-                adding = Optional.empty();
-            }
-        }
-        return ans;
     }
 
     @Override
@@ -127,16 +47,7 @@ class FormatterSectionContent extends FormatterSection{
         /// variable `est` or `rd` needs to be the same as `div`
         // TODO make unit test
         // System.out.println("FormatSectionContent#render(StreamPdfFile)");
-        boolean isFirst = true;
-        for (Page page: contentPages){
-            if (isFirst){
-                isFirst = false;
-            } else {
-                output.addPage();
-            }
-            output.renderText(page.pageHeader);
-            output.renderText(page.pageContent);
-            output.renderText(page.pageFootnote);
+        contentPage.render(output);
             // float p = output.newStreamData().getHeight();
             // float div = page.pageContent.getHeight();
             // float head = page.pageHeader.getHeight();
@@ -145,6 +56,5 @@ class FormatterSectionContent extends FormatterSection{
             // float rd = div + (p / 3) + margin;
             // System.out.printf("%5.3f %5.3f %5.3f %5.3f %5.3f %5.3f \n",
             //                   div,  p,  margin, head, est,  rd);
-        }
     }
 }
