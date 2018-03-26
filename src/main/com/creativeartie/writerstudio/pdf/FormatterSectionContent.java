@@ -17,7 +17,7 @@ class FormatterSectionContent extends FormatterSection{
         private FormatterMatterFootnote pageFootnote;
         private FormatterMatterHeader pageHeader;
         private Page(DataWriting data, StreamData output,
-                IOExceptionSupplier<List<FormatterItem>> header) throws IOException{
+                List<FormatterItem> header) throws IOException{
             pageHeader = new FormatterMatterHeader()
                 .setBasics(data.getContentData(), output, header);
             float height = pageHeader.getHeight();
@@ -44,14 +44,18 @@ class FormatterSectionContent extends FormatterSection{
     public void loadData(DataWriting data, StreamData output)
             throws IOException{
         DataContent content = data.getContentData();
+        
         loadData(data, output, content.getContentLines(output),
-            () -> content.getHeader(output));
-        // loadData(data, output, content.getEndnotes(output),
-        //    () -> new ArrayList<>()); // TODO failed to render endnotes
+            content.getHeader(output));
+        List<DataContentLine> items = content.getEndnotes(output);
+        if (! items.isEmpty()){
+            output.toNextPage();
+            // loadData(data, output, items, new ArrayList<>());
+        }
     }
 
     private void loadData(DataWriting data, StreamData output,
-            List<DataContentLine> lines, IOExceptionSupplier<List<FormatterItem>> header)
+            List<DataContentLine> lines, List<FormatterItem> header)
             throws IOException{
         Page cur = new Page(data, output, header);
         Optional<FormatterItem> item = Optional.empty();
@@ -92,7 +96,7 @@ class FormatterSectionContent extends FormatterSection{
     }
 
     private Page nextPage(DataWriting data, StreamData output, Page cur,
-            IOExceptionSupplier<List<FormatterItem>> header) throws IOException{
+            List<FormatterItem> header) throws IOException{
         contentPages.add(cur);
         output.toNextPage();
         return new Page(data, output, header);

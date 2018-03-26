@@ -32,15 +32,14 @@ class FormatterMatterHeader extends FormatterMatter{
         baisicUnprepared = true;
     }
 
-    public FormatterMatterHeader setBasics(DataContent content, StreamData output,
-            IOExceptionSupplier<List<FormatterItem>> lines)
-            throws IOException{
+    public FormatterMatterHeader setBasics(DataContent content, 
+            StreamData output, List<FormatterItem> lines) throws IOException{
         baseMargins = content.getMargin();
         startY = output.getHeight() - baseMargins.getTop();
         startX = baseMargins.getLeft();
         divWidth = output.getRenderWidth(baseMargins);
 
-        outputLines.addAll(lines.getThrows());
+        outputLines.addAll(lines);
         divHeight = 0;
         for (FormatterItem item : outputLines){
             divHeight += item.getHeight();

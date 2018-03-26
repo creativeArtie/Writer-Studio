@@ -60,6 +60,7 @@ final class StreamTextRender{
             }
         }
         contentStream.endText();
+        textFont = null;
         for (IOExceptionBiConsumer<PDPage, PDPageContentStream> consumer: postText){
             consumer.acceptThrows(contentPage, contentStream);
         }
