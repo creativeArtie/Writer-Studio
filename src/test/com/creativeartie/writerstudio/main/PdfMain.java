@@ -5,7 +5,6 @@ import java.io.*;
 import java.io.File;
 import java.io.IOException;
 
-// import com.creativeartie.writerstudio.export.*;
 import com.creativeartie.writerstudio.pdf.*;
 import com.creativeartie.writerstudio.file.*;
 import com.creativeartie.writerstudio.lang.markup.*;
@@ -25,6 +24,10 @@ public class PdfMain {
         WritingText doc = new WritingText(file);
         ManuscriptFile use = ManuscriptFile.withManuscript(doc);
 
+        try (StreamPdfFile output = new StreamPdfFile("test.pdf")){
+            new FormatterWriting().setData(new Data(use),
+                output.newStreamData()).render(output);
+        }
     }
 
     private static void superscriptSupportTest() throws IOException{

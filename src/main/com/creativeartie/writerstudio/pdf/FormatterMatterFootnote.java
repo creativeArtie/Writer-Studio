@@ -69,7 +69,7 @@ class FormatterMatterFootnote extends FormatterMatter{
         if (isFound(item)){
             return divHeight;
         }
-        return divHeight + item.getHeight();
+        return divHeight;  //+ item.getHeight();
     }
 
     private void isReady(){
