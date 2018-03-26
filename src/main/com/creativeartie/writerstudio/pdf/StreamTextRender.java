@@ -26,7 +26,7 @@ final class StreamTextRender{
     private FormatterMatter renderMatter;
     private float localX;
     private float localY;
-    private ArrayList<IOExceptionBiConsumer<PDPage, PDPageContentStream>> postText;
+    private ArrayList<PostTextEditor> postText;
 
     public StreamTextRender(StreamPdfFile file, FormatterMatter matter)
             throws IOException{
@@ -61,8 +61,8 @@ final class StreamTextRender{
         }
         contentStream.endText();
         textFont = null;
-        for (IOExceptionBiConsumer<PDPage, PDPageContentStream> consumer: postText){
-            consumer.acceptThrows(contentPage, contentStream);
+        for (PostTextEditor consumer: postText){
+            consumer.edit(contentPage, contentStream);
         }
     }
 

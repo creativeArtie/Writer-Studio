@@ -106,10 +106,8 @@ final class FormatterData{
         return textFont;
     }
 
-    public ArrayList<IOExceptionBiConsumer<PDPage, PDPageContentStream>>
-            getPostTextConsumers(PDRectangle rect){
-        ArrayList<IOExceptionBiConsumer<PDPage, PDPageContentStream>> ans = new
-            ArrayList<>();
+    public ArrayList<PostTextEditor> getPostTextConsumers(PDRectangle rect){
+        ArrayList<PostTextEditor> ans = new ArrayList<>();
         if (textFont.isUnderline()){
             ans.add((page, stream) ->{
                 stream.setStrokingColor(textFont.getColor());
