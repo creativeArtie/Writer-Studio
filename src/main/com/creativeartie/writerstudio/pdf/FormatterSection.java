@@ -14,13 +14,13 @@ public abstract class FormatterSection{
 
     FormatterSection(){}
 
-    public FormatterSection setData(DataWriting data, StreamData output)
+    public FormatterSection setData(Data data, StreamData output)
             throws IOException{
         loadData(data, output);
         return this;
     }
 
-    protected abstract void loadData(DataWriting data, StreamData output)
+    protected abstract void loadData(Data data, StreamData output)
         throws IOException;
 
     protected abstract void render(StreamPdfFile output) throws IOException;

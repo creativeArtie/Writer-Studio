@@ -25,7 +25,7 @@ public class PdfMain {
         ManuscriptFile use = ManuscriptFile.withManuscript(doc);
 
         try (StreamPdfFile output = new StreamPdfFile("test.pdf")){
-            new FormatterWriting().setData(new DataWriting(use),
+            new FormatterWriting().setData(new Data(use),
                 output.newStreamData()).render(output);
         }
     }

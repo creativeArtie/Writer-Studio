@@ -11,22 +11,16 @@ import com.creativeartie.writerstudio.pdf.value.*;
 
 import com.google.common.collect.*;
 
-public final class DataContent implements Data{
-    private DataWriting baseData;
+public final class DataContent extends Data{
     private boolean paraFirst;
     private LinkedList<Integer> listNumbering;
     private ArrayList<LinedSpanPointNote> endnoteList;
 
-    public DataContent(DataWriting data){
-        baseData = data;
+    public DataContent(Data data){
+        super(data);
         paraFirst = true;
         listNumbering = new LinkedList<>();
         endnoteList = new ArrayList<>();
-    }
-
-    @Override
-    public DataWriting getBaseData(){
-        return baseData;
     }
 
     String addEndnote(LinedSpanPointNote note){
@@ -50,7 +44,7 @@ public final class DataContent implements Data{
             case BREAK:
                 item.setTextAlignment(TextAlignment.CENTER);
                 item.appendText("#", data.getBaseFont());
-                line = new DataContentLine(getBaseData(), item);
+                line = new DataContentLine(this, item);
                 paraFirst = true;
                 break;
             case BULLET:
@@ -72,7 +66,7 @@ public final class DataContent implements Data{
                 builder.add(line);
             }
         }
-        builder.add(new DataContentLine(getBaseData(),
+        builder.add(new DataContentLine(this,
             new FormatterItem(
                 data.getRenderWidth(getMargin()), TextAlignment.CENTER
             ).appendSimpleText("THE END", data.getBaseFont())
@@ -113,7 +107,7 @@ public final class DataContent implements Data{
             return null;
         }
         paraFirst = false;
-        DataContentLine ans = new DataContentLine(getBaseData(), item, span
+        DataContentLine ans = new DataContentLine(this, item, span
             .get(), font);
         ans.getFormatter().ifPresent(f -> paraFirst = false);
         return ans;
@@ -127,7 +121,7 @@ public final class DataContent implements Data{
             return null;
         }
         item.setTextAlignment(TextAlignment.CENTER);
-        DataContentLine content = new DataContentLine(getBaseData(), item, span
+        DataContentLine content = new DataContentLine(this, item, span
             .get(), font);
         if (line.getLevel() == 1){
             item.setBottomSpacing(Data.cmToPoint(1f));
@@ -145,7 +139,7 @@ public final class DataContent implements Data{
         if (! paraFirst) {
             item.setFirstIndent(Data.cmToPoint(1.25f));
         }
-        DataContentLine ans = new DataContentLine(getBaseData(), item, span
+        DataContentLine ans = new DataContentLine(this, item, span
             .get(), font);
         ans.getFormatter().ifPresent(f -> paraFirst = false);
         return ans;
@@ -161,7 +155,7 @@ public final class DataContent implements Data{
         if (! span.isPresent()){
             return null;
         }
-        DataContentLine ans = new DataContentLine(getBaseData(), item, span
+        DataContentLine ans = new DataContentLine(this, item, span
             .get(), font);
         ans.getFormatter().ifPresent(f -> paraFirst = false);
         return ans;
@@ -213,10 +207,10 @@ public final class DataContent implements Data{
             item.setFirstIndent(indent);
             item.setIndent(indent);
             if (main.isPresent()){
-                builder.add(new DataContentLine(baseData, item, main.get(),
+                builder.add(new DataContentLine(this, item, main.get(),
                     data.getBaseFont()));
             } else {
-                builder.add(new DataContentLine(baseData, item));
+                builder.add(new DataContentLine(this, item));
             }
         }
         return builder.build();

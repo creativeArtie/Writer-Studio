@@ -6,7 +6,7 @@ import com.creativeartie.writerstudio.lang.markup.*;
 
 import com.creativeartie.writerstudio.pdf.value.*;
 
-public interface Data{
+public class Data{
 
     public static float inchToPoint(float inches){
         return inches * 72;
@@ -16,21 +16,46 @@ public interface Data{
         return cm * 28.3465f;
     }
 
-    public DataWriting getBaseData();
+    private Margin pageMargin;
+    private ManuscriptFile outputDoc;
+    private DataTitle dataTitle;
+    private DataContent dataContent;
 
-    public default Margin getMargin(){
-        return getBaseData().getMargin();
+    public Data(ManuscriptFile doc){
+        pageMargin = new Margin(cmToPoint(3f));
+        outputDoc = doc;
+        dataTitle = new DataTitle(this);
+        dataContent = new DataContent(this);
     }
 
-    public default ManuscriptFile getOutputDoc(){
-        return getBaseData().getOutputDoc();
+    public Data(Data data){
+        pageMargin = data.pageMargin;
+        outputDoc = data.outputDoc;
+        dataTitle = data.dataTitle;
+        dataContent = data.dataContent;
     }
 
-    public default WritingText getWritingText(){
-        return getBaseData().getWritingText();
+    public Margin getMargin(){
+        return pageMargin;
     }
 
-    public default String getData(MetaData key){
-        return getBaseData().getData(key);
+    public ManuscriptFile getOutputDoc(){
+        return outputDoc;
+    }
+
+    public WritingText getWritingText(){
+        return outputDoc.getDocument();
+    }
+
+    public String getData(MetaData key){
+        return outputDoc.getText(key);
+    }
+
+    public DataTitle getTitleData(){
+        return dataTitle;
+    }
+
+    public DataContent getContentData(){
+        return dataContent;
     }
 }

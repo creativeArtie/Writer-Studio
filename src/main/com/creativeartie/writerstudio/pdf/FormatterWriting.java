@@ -15,7 +15,7 @@ public class FormatterWriting {
         contentPages = new FormatterSectionContent();
     }
 
-    public FormatterWriting setData(DataWriting input, StreamData data) throws
+    public FormatterWriting setData(Data input, StreamData data) throws
             IOException{
         titlePage.setData(input, data);
         contentPages.setData(input, data);

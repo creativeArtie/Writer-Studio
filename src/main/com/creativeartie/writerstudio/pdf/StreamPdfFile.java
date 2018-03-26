@@ -93,7 +93,7 @@ public class StreamPdfFile implements AutoCloseable{
             }
 
             @Override
-            public StreamData setMetaData(DataWriting data){
+            public StreamData setMetaData(Data data){
                 PDDocumentInformation info = pdfDocument.getDocumentInformation();
                 info.setAuthor(data.getData(MetaData.AUTHOR));
                 info.setCreationDate(new GregorianCalendar());
@@ -101,7 +101,7 @@ public class StreamPdfFile implements AutoCloseable{
                 /// info.setKeywords(keywords);
                 info.setModificationDate(new GregorianCalendar());
                 info.setProducer(WindowText.PROGRAM_NAME.getText());
-                /// void setSubject(String subject)
+                /// info.setSubject(subject)
                 info.setTitle(data.getData(MetaData.TITLE));
                 return this;
             }

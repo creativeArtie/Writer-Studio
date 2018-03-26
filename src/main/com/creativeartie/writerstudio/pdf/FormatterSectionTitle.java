@@ -21,8 +21,7 @@ class FormatterSectionTitle extends FormatterSection{
         titleBottom = new FormatterMatterTitleBottom();
     }
 
-    public void loadData(DataWriting data, StreamData output) throws
-            IOException{
+    public void loadData(Data data, StreamData output) throws IOException{
         titleTop.setData(data.getTitleData(), output);
         titleCenter.setData(data.getTitleData(), output);
         titleBottom.setData(data.getTitleData(), output);

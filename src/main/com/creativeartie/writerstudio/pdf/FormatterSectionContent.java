@@ -16,7 +16,7 @@ class FormatterSectionContent extends FormatterSection{
         private FormatterMatterContent pageContent;
         private FormatterMatterFootnote pageFootnote;
         private FormatterMatterHeader pageHeader;
-        private Page(DataWriting data, StreamData output,
+        private Page(Data data, StreamData output,
                 List<FormatterItem> header) throws IOException{
             pageHeader = new FormatterMatterHeader()
                 .setBasics(data.getContentData(), output, header);
@@ -41,10 +41,9 @@ class FormatterSectionContent extends FormatterSection{
     }
 
     @Override
-    public void loadData(DataWriting data, StreamData output)
-            throws IOException{
+    public void loadData(Data data, StreamData output) throws IOException{
         DataContent content = data.getContentData();
-        
+
         loadData(data, output, content.getContentLines(output),
             content.getHeader(output));
         List<DataContentLine> items = content.getEndnotes(output);
@@ -54,7 +53,7 @@ class FormatterSectionContent extends FormatterSection{
         }
     }
 
-    private void loadData(DataWriting data, StreamData output,
+    private void loadData(Data data, StreamData output,
             List<DataContentLine> lines, List<FormatterItem> header)
             throws IOException{
         Page cur = new Page(data, output, header);
@@ -95,7 +94,7 @@ class FormatterSectionContent extends FormatterSection{
         cur.pageContent.setStartY(set);
     }
 
-    private Page nextPage(DataWriting data, StreamData output, Page cur,
+    private Page nextPage(Data data, StreamData output, Page cur,
             List<FormatterItem> header) throws IOException{
         contentPages.add(cur);
         output.toNextPage();

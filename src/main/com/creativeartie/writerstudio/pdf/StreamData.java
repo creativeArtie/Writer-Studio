@@ -28,5 +28,5 @@ public interface StreamData {
         return getHeight() - margin.getTop() - margin.getBottom();
     }
 
-    public StreamData setMetaData(DataWriting data);
+    public StreamData setMetaData(Data data);
 }

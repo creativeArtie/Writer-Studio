@@ -8,16 +8,12 @@ import com.creativeartie.writerstudio.lang.markup.*;
 
 import com.creativeartie.writerstudio.pdf.value.*;
 
-public final class DataTitle implements Data{
-    private DataWriting baseData;
+public final class DataTitle extends Data{
 
-    public DataTitle(DataWriting data){
-        baseData = data;
+    public DataTitle(Data data){
+        super(data);
     }
 
-    public DataWriting getBaseData(){
-        return baseData;
-    }
 
     public ArrayList<FormatterItem> getTitleTopText(StreamData data)
              throws IOException{

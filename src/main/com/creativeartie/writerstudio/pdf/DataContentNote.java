@@ -10,18 +10,12 @@ import com.creativeartie.writerstudio.pdf.value.*;
 
 import com.google.common.collect.*;
 
-public final class DataContentNote implements Data{
-    private DataWriting baseData;
+public final class DataContentNote extends Data{
     private SpanBranch targetRef;
 
-    public DataContentNote(DataWriting input, SpanBranch ref, StreamData data){
-        baseData = input;
+    public DataContentNote(Data input, SpanBranch ref, StreamData data){
+        super(input);
         targetRef = ref;
-    }
-
-    @Override
-    public DataWriting getBaseData(){
-        return baseData;
     }
 
     @Override
