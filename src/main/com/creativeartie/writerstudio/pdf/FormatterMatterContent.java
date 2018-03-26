@@ -55,22 +55,17 @@ class FormatterMatterContent extends FormatterMatter{
         return this;
     }
 
-    public FormatterMatterContent setHeight(float height){
-        divHeight = height;
-        return this;
-    }
-
     public boolean canFit(FormatterItem item){
         return item.getHeight() + fillHeight < divHeight;
     }
 
-    public boolean addContentLine(FormatterItem item){
-        if (item.getHeight() + fillHeight < divHeight){
-            outputLines.add(item);
-            fillHeight += item.getHeight();
-            return true;
-        }
-        return false;
+    public boolean canFit(FormatterItem item, float footnote){
+        return item.getHeight() + footnote + fillHeight < divHeight;
+    }
+
+    public void addContentLine(FormatterItem item){
+        outputLines.add(item);
+        fillHeight += item.getHeight();
     }
 
     private void isReady(){

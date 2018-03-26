@@ -96,11 +96,10 @@ public final class DataContent extends Data{
 
     private DataContentLine parse(LinedSpanLevelList line, FormatterItem item,
             String prefix, SizedFont font) throws IOException{
-        float indent = Data.cmToPoint(.5f) + Data.cmToPoint(.5f) *
-            line.getLevel();
+        float indent = Data.cmToPoint(.5f) + (Data.cmToPoint(.5f) *
+            line.getLevel());
         item.setFirstIndent(indent);
-        item.setIndent(indent * line.getLevel());
-        item.setIndent(indent * line.getLevel());
+        item.setIndent(indent);
         item.setPrefix(prefix, indent - Data.cmToPoint(.75f));
         Optional<FormatSpanMain> span = line.getFormattedSpan();
         if (! span.isPresent()){

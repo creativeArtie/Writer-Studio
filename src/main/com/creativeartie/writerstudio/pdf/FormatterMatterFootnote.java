@@ -58,10 +58,18 @@ class FormatterMatterFootnote extends FormatterMatter{
     }
 
     public float insertNote(DataContentNote item){
-        if (isFound(item)){
+        if (! isFound(item)){
             divHeight += item.getItem().getHeight();
+            outputLines.add(item);
         }
         return divHeight;
+    }
+
+    public float checkHeight(DataContentNote item){
+        if (isFound(item)){
+            return divHeight;
+        }
+        return divHeight + item.getHeight();
     }
 
     private void isReady(){

@@ -100,7 +100,6 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
     private float divIndent;
     private float divLeading;
     private float divBottomSpacing;
-    private boolean newPage;
     private TextAlignment divAlignment;
 
     public FormatterItem(float width){
@@ -117,16 +116,13 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
         divBottomSpacing = 0;
         divPrefix = Optional.empty();
         divPrefixDistance = 0f;
-        newPage = false;
     }
 
-    public static FormatterItem copySplitItem(FormatterItem item){
-        FormatterItem ans = new FormatterItem(item.divWidth, item.divAlignment);
-        ans.divLeading = item.divLeading;
-        ans.divFirstIndent = item.divIndent;
-        ans.divIndent = item.divIndent;
-        ans.divBottomSpacing = item.divBottomSpacing;
-        ans.newPage = false;
+    public static FormatterItem splitItem(FormatterItem item){
+        FormatterItem ans = copyFormat(item);
+        ans.divFirstIndent = ans.divIndent;
+        ans.divPrefix = Optional.empty();
+        ans.divPrefixDistance = 0f;
         return ans;
     }
 
@@ -136,7 +132,8 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
         ans.divFirstIndent = item.divFirstIndent;
         ans.divIndent = item.divIndent;
         ans.divBottomSpacing = item.divBottomSpacing;
-        ans.newPage = item.newPage;
+        ans.divPrefix = item.divPrefix;
+        ans.divPrefixDistance = item.divPrefixDistance;
         return ans;
     }
 
@@ -159,11 +156,6 @@ class FormatterItem extends ForwardingList<FormatterItem.Line>{
     public FormatterItem setIndent(float indent){
         reflowText();
         divIndent = indent;
-        return this;
-    }
-
-    public FormatterItem setNewPage(boolean b){
-        newPage = b;
         return this;
     }
 

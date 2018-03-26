@@ -61,16 +61,24 @@ public class FormatterPage{
         }
         FormatterItem allows = FormatterItem.copyFormat(item);
         FormatterItem checker = FormatterItem.copyFormat(item);
-        FormatterItem overflow = FormatterItem.copySplitItem(item);
+        FormatterItem overflow = null;
         for (FormatterItem.Line line: item){
             checker.addLine(line);
             if (pageContent.canFit(checker)){
                 allows.addLine(line);
             } else {
+                if (overflow == null){
+                    if(allows.isEmpty()){
+                        return nextPage().addContent(item);
+                    }
+                    overflow = FormatterItem.splitItem(item);
+                }
                 overflow.addLine(line);
             }
         }
-        pageContent.addContentLine(allows);
+        if (! allows.isEmpty()){
+            pageContent.addContentLine(allows);
+        }
         return nextPage().addContent(overflow);
     }
 
