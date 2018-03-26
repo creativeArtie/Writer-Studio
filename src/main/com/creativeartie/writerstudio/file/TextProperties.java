@@ -30,6 +30,7 @@ public final class TextProperties {
         metaData.setProperty(key.getKey(), text);
     }
 
-    public void save(OutputStream out){
+    public void save(OutputStream out) throws IOException{
+        metaData.store(out, "Meta Data");
     }
 }

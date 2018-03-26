@@ -7,8 +7,10 @@ import java.util.zip.*;
 import java.util.*;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Charsets;
 import static com.creativeartie.writerstudio.main.Checker.*;
 import com.creativeartie.writerstudio.resource.*;
+import com.google.common.io.*;
 
 /**
  * Stores the {@link WritingText} and {@link RecordList} in a zip file.
@@ -27,7 +29,7 @@ public final class ManuscriptFile {
      * Extract text from a zip input stream. Helper method of
      * {@link #open(file)}.
      */
-    private static String extractText(ZipInputStream input) throws IOException{
+    private static String extractText(InputStream input) throws IOException{
         assert input != null: "Null input.";
 
         StringBuilder builder = new StringBuilder();
@@ -50,13 +52,13 @@ public final class ManuscriptFile {
         RecordList record = null;
         TextProperties prop = null;
 
-        try (ZipInputStream input = new ZipInputStream(
-            new FileInputStream(file))
-        ) {
-            ZipEntry entry = input.getNextEntry();
-            while (entry != null){
+        try (ZipFile input = new ZipFile(file)) {
+            Enumeration<? extends ZipEntry> it = input.entries();
+            if (it.hasMoreElements()){
+                ZipEntry entry = it.nextElement();
                 /// For each file extracted in the zip file:
-                String text = extractText(input);
+                String text = CharStreams.toString(new InputStreamReader(
+                    input.getInputStream(entry)));
 
                 if (entry.getName().equals(TEXT + EXTENSION)){
                     doc = new WritingText(text);
@@ -67,10 +69,9 @@ public final class ManuscriptFile {
                 }
 
                 if (entry.getName().equals(META)){
-                    // prop = new TextProperties(input);
+                    prop = new TextProperties(input.getInputStream(entry));
                 }
 
-                entry = input.getNextEntry();
             }
         }
 
@@ -198,7 +199,13 @@ public final class ManuscriptFile {
                 (zipFile.get()))){
             save(writeTo, TEXT + EXTENSION, documentText.getRaw());
             save(writeTo, RECORDS + EXTENSION, recordsFile.getSaveText());
-            ///TODO
+            File tmp = File.createTempFile("meta", ".properties");
+            try (FileOutputStream out = new FileOutputStream(tmp)){
+                textData.save(out);
+            }
+            save(writeTo, META, Files.asCharSource(tmp, Charsets.UTF_8).read());
+            tmp.delete();
+
         }
     }
 
