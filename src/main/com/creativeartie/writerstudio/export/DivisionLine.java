@@ -1,15 +1,16 @@
 package com.creativeartie.writerstudio.export;
 
 import java.io.*;
+import java.util.*;
 
-import org.apache.pdfbox.pdmodel.*;
-import org.apache.pdfbox.pdmodel.font.*;
+import com.google.common.collect.*;
 
-public class DivisionLine{
-    /*
+import com.creativeartie.writerstudio.export.value.*;
 
-    public class Line extends ForwardingList<FormatterData>{
-        private ArrayList<FormatterData> inputText;
+public class DivisionLine extends ForwardingList<DivisionLine.Line>{
+
+    public class Line extends ForwardingList<ContentText>{
+        private ArrayList<ContentText> inputText;
         private float maxWidth;
         private float curWidth;
         private float textHeight;
@@ -20,7 +21,7 @@ public class DivisionLine{
             lineIndent = indent;
         }
 
-        private Line(float width, ArrayList<FormatterData> text){
+        private Line(float width, ArrayList<ContentText> text){
             inputText = text;
             maxWidth = width;
             textHeight = 0;
@@ -31,9 +32,9 @@ public class DivisionLine{
             return lineIndent;
         }
 
-        private ArrayList<FormatterData> appendText(ArrayList<FormatterData> texts){
-            ArrayList<FormatterData> overflow = null;
-            for (FormatterData text: texts){
+        private ArrayList<ContentText> appendText(ArrayList<ContentText> texts){
+            ArrayList<ContentText> overflow = null;
+            for (ContentText text: texts){
                 if (inputText.isEmpty() && text.isSpaceText()){
                     continue;
                 }
@@ -83,7 +84,7 @@ public class DivisionLine{
         }
 
         @Override
-        protected List<FormatterData> delegate(){
+        protected List<ContentText> delegate(){
             return ImmutableList.copyOf(inputText);
         }
     }
@@ -96,13 +97,13 @@ public class DivisionLine{
     private float divIndent;
     private float divLeading;
     private float divBottomSpacing;
-    private TextAlignment divAlignment;
+    private LineAlignment divAlignment;
 
-    public FormatterItem(float width){
-        this (width, TextAlignment.LEFT);
+    public DivisionLine(float width){
+        this (width, LineAlignment.LEFT);
     }
 
-    public FormatterItem(float width, TextAlignment alignment){
+    public DivisionLine(float width, LineAlignment alignment){
         divLines = new ArrayList<>();
         divLeading = 2;
         divFirstIndent = 0;
@@ -114,16 +115,16 @@ public class DivisionLine{
         divPrefixDistance = 0f;
     }
 
-    public static FormatterItem splitItem(FormatterItem item){
-        FormatterItem ans = copyFormat(item);
+    public static DivisionLine splitItem(DivisionLine item){
+        DivisionLine ans = copyFormat(item);
         ans.divFirstIndent = ans.divIndent;
         ans.divPrefix = Optional.empty();
         ans.divPrefixDistance = 0f;
         return ans;
     }
 
-    public static FormatterItem copyFormat(FormatterItem item){
-        FormatterItem ans = new FormatterItem(item.divWidth, item.divAlignment);
+    public static DivisionLine copyFormat(DivisionLine item){
+        DivisionLine ans = new DivisionLine(item.divWidth, item.divAlignment);
         ans.divLeading = item.divLeading;
         ans.divFirstIndent = item.divFirstIndent;
         ans.divIndent = item.divIndent;
@@ -133,7 +134,7 @@ public class DivisionLine{
         return ans;
     }
 
-    public FormatterItem setLeading(float leading){
+    public DivisionLine setLeading(float leading){
         reflowText();
         divLeading = leading;
         return this;
@@ -143,19 +144,19 @@ public class DivisionLine{
         return divLeading;
     }
 
-    public FormatterItem setFirstIndent(float indent){
+    public DivisionLine setFirstIndent(float indent){
         reflowText();
         divFirstIndent = indent;
         return this;
     }
 
-    public FormatterItem setIndent(float indent){
+    public DivisionLine setIndent(float indent){
         reflowText();
         divIndent = indent;
         return this;
     }
 
-    public FormatterItem setBottomSpacing(float padding){
+    public DivisionLine setBottomSpacing(float padding){
         divBottomSpacing = padding;
         return this;
     }
@@ -176,22 +177,22 @@ public class DivisionLine{
         return divWidth;
     }
 
-    TextAlignment getTextAlignment(){
+    LineAlignment getLineAlignment(){
         return divAlignment;
     }
 
-    public FormatterItem setTextAlignment(TextAlignment alignment){
+    public DivisionLine setLineAlignment(LineAlignment alignment){
         divAlignment = alignment;
         return this;
     }
 
-    public FormatterItem addLine(Line line){
+    public DivisionLine addLine(Line line){
         divLines.add(line);
         reflowText();
         return this;
     }
 
-    public FormatterItem setPrefix(String prefix, float distance){
+    public DivisionLine setPrefix(String prefix, float distance){
         divPrefix = Optional.of(prefix);
         divPrefixDistance = distance;
         return this;
@@ -205,13 +206,13 @@ public class DivisionLine{
         return divPrefix;
     }
 
-    public FormatterItem appendSimpleText(String text, SizedFont font)
+    public DivisionLine appendSimpleText(String text, ContentFont font)
             throws IOException{
         appendText(text, font);
         return this;
     }
 
-    public ArrayList<FormatterData> appendText(String text, SizedFont font)
+    public ArrayList<ContentText> appendText(String text, ContentFont font)
             throws IOException{
         Line line;
         if (divLines.isEmpty()){
@@ -221,12 +222,12 @@ public class DivisionLine{
             line = divLines.get(divLines.size() - 1);
         }
         /// Append text to the previous line
-        ArrayList<FormatterData> data = FormatterData.createWords(text, font);
+        ArrayList<ContentText> data = ContentText.createWords(text, font);
         appendText(line.appendText(data));
         return data;
     }
 
-    private FormatterItem appendText(ArrayList<FormatterData> overflow){
+    private DivisionLine appendText(ArrayList<ContentText> overflow){
         if (overflow.isEmpty()) return this;
         Line line = new Line(divWidth - divIndent, divIndent);
         divLines.add(line);
@@ -242,7 +243,7 @@ public class DivisionLine{
 
     private void reflowText(){
         /// Load the data
-        ArrayList<FormatterData> data = new ArrayList<>();
+        ArrayList<ContentText> data = new ArrayList<>();
         for (Line line: divLines){
             data.addAll(line);
         }
@@ -251,5 +252,4 @@ public class DivisionLine{
         divLines.add(new Line(divWidth - divFirstIndent, divFirstIndent));
         appendText(data);
     }
-    */
 }
