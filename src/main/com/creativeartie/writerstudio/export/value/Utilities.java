@@ -11,4 +11,8 @@ public class Utilities{
     public static float cmToPoint(float cm){
         return cm * 28.3465f;
     }
+
+    public static String toRomanSuperscript(int num){
+        return RomanNumbering.SUPER.toRoman(num);
+    }
 }

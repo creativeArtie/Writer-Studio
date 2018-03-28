@@ -42,6 +42,10 @@ public class MatterArea extends ForwardingList<DivisionLine> {
         lineAlignment = LineAlignment.LEFT;
     }
 
+    public float getHeight(){
+        return fillHeight;
+    }
+
     public boolean checkHeight(DivisionLine item){
         return item.getHeight() + fillHeight < maxHeight;
     }

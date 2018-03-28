@@ -94,6 +94,18 @@ public abstract class Span{
         }
     }
 
+
+    /**
+     * Finds the index of this span in the parent or return -1.
+     */
+    public final int getPosition(){
+        if (this instanceof Document){
+            return -1;
+        }
+        SpanNode<?> parent = getParent();
+        return parent != null? parent.indexOf(this): -1;
+    }
+
     protected final void clearCache(){
         ((SpanNode<?>)this).childEdited();
         if (! (this instanceof Document)){

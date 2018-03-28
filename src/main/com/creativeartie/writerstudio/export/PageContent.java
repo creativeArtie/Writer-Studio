@@ -1,5 +1,6 @@
 package com.creativeartie.writerstudio.export;
 
+import java.util.*;
 import java.io.*;
 
 import org.apache.pdfbox.pdmodel.*;
@@ -11,6 +12,7 @@ public class PageContent implements AutoCloseable{
 
     private final PDPage contentPage;
     private final PDPageContentStream contentStream;
+    private Optional<MatterArea> pageHeader;
     private PageMargin pageMargin;
 
     PageContent(Section section) throws IOException{
@@ -19,6 +21,7 @@ public class PageContent implements AutoCloseable{
         doc.addPage(contentPage);
         contentStream = new PDPageContentStream(doc, contentPage);
         pageMargin = new PageMargin(Utilities.cmToPoint(3f));
+        pageHeader = Optional.empty();
     }
 
     public PDPage getPage(){
@@ -39,6 +42,11 @@ public class PageContent implements AutoCloseable{
 
     public float getHeight(){
         return contentPage.getMediaBox().getHeight();
+    }
+
+    public PageContent setHeader(MatterArea header){
+        pageHeader = Optional.of(header);
+        return this;
     }
 
     public float getStartX(){
@@ -62,6 +70,9 @@ public class PageContent implements AutoCloseable{
                     height += line.getHeight();
                 }
                 return height;
+            case CONTENT:
+                return height - pageMargin.getTop() -
+                    pageHeader.map(h -> h.getHeight()).orElse(0f);
         }
         return 0;
     }
