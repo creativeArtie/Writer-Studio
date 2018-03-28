@@ -12,6 +12,7 @@ import org.apache.pdfbox.pdmodel.common.*;
 import com.creativeartie.writerstudio.export.value.*;
 
 public class MatterArea extends ForwardingList<DivisionLine> {
+    private PageContent outputPage;
     private PDPageContentStream contentStream;
     private ArrayList<DivisionLine> divisionLines;
     private final float maxHeight;
@@ -22,16 +23,23 @@ public class MatterArea extends ForwardingList<DivisionLine> {
     private boolean hasStarted;
     private float localX;
     private float localY;
-    private float pageWidth;
+    private float areaWidth;
     private ContentFont textFont;
     private ArrayList<ContentPostEditor> postEditors;
     private LineAlignment lineAlignment;
 
-    MatterArea(float height, PageAlignment alignment){
+    MatterArea(PageContent page, PageAlignment alignment){
+        outputPage = page;
         hasStarted = false;
+        contentStream = page.getContentStream();
         pageAlignment = alignment;
-        maxHeight = height;
+        textFont = null;
+        areaWidth = page.getRenderWidth();
+        maxHeight = page.getHeight();
         fillHeight = localX = localY = 0;
+        divisionLines = new ArrayList<>();
+        postEditors = new ArrayList<>();
+        lineAlignment = LineAlignment.LEFT;
     }
 
     public boolean checkHeight(DivisionLine item){
@@ -42,31 +50,22 @@ public class MatterArea extends ForwardingList<DivisionLine> {
         return item.getHeight() + footnote + fillHeight < maxHeight;
     }
 
-    public void addLine(DivisionLine item){
-        divisionLines.add(item);
-        fillHeight += item.getHeight();
-    }
 
-    MatterArea render(PageContent page) throws IOException{
+    MatterArea render() throws IOException{
         hasStarted = true;
-        contentStream = page.getContentStream();
-        textFont = null;
-        localX = 0;
-        localY = 0;
-        pageWidth = page.getWidth();
-        postEditors = new ArrayList<>();
-        lineAlignment = LineAlignment.LEFT;
+
+        contentStream.beginText();
 
         /// Initital placement
         float leading = 0;
-        float x = page.getStartX();
+        float x = outputPage.getStartX();
         if (! isEmpty()){
             DivisionLine child = get(0);
             if (! child.isEmpty()){
                 leading = child.get(0).getTextHeight() * (child.getLeading() - 1);
             }
         }
-        float y = page.getStartY(pageAlignment, this) + leading;
+        float y = outputPage.getStartY(pageAlignment, this) + leading;
         moveText(x, y);
 
         /// show text
@@ -84,14 +83,14 @@ public class MatterArea extends ForwardingList<DivisionLine> {
                 moveText(line.getIndent(), 0);
                 printText(line);
                 /// move to next line
-                moveText(0, line.getHeight());
+                moveText(0, -line.getHeight());
                 /// move to remove indent
                 moveText(-line.getIndent(), 0);
             }
         }
         contentStream.endText();
         for (ContentPostEditor consumer: postEditors){
-            consumer.edit(page.getPage(), page.getContentStream());
+            consumer.edit(outputPage.getPage(), contentStream);
         }
         return this;
     }
@@ -103,19 +102,19 @@ public class MatterArea extends ForwardingList<DivisionLine> {
         switch (lineAlignment){
         case CENTER:
             switch(next){
-            case RIGHT:  moveText((pageWidth / 2), 0); break;
+            case RIGHT:  moveText((areaWidth / 2), 0); break;
             case CENTER: assert false;                    break;
-            default:     moveText(-(pageWidth / 2), 0);
+            default:     moveText(-(areaWidth / 2), 0);
             } break;
         case RIGHT:
             switch(next){
-            case RIGHT:  assert false;                     break;
-            case CENTER: moveText(-(pageWidth / 2), 0); break;
-            default:     moveText(-pageWidth, 0);
+            case RIGHT:  assert false;                  break;
+            case CENTER: moveText(-(areaWidth / 2), 0); break;
+            default:     moveText(-areaWidth, 0);
             } break;
         default: switch (next){
-            case RIGHT:  moveText(pageWidth, 0);     break;
-            case CENTER: moveText(pageWidth / 2, 0); break;
+            case RIGHT:  moveText(areaWidth, 0);     break;
+            case CENTER: moveText(areaWidth / 2, 0); break;
             default:     moveText(0, 0);
             }
         }
@@ -127,7 +126,7 @@ public class MatterArea extends ForwardingList<DivisionLine> {
         if (lineAlignment == LineAlignment.RIGHT){
             moveText(-line.getWidth(), 0);
         } else if (lineAlignment == LineAlignment.CENTER){
-            moveText(-(line.getWidth() / 2), 0);
+           moveText(-(line.getWidth() / 2), 0);
         }
         float textLocalX = localX;
         for (ContentText text: line){
@@ -160,7 +159,23 @@ public class MatterArea extends ForwardingList<DivisionLine> {
     }
 
     @Override
+    public void add(int index, DivisionLine item){
+        divisionLines.add(index, item);
+        fillHeight += item.getHeight();
+    }
+
+    @Override
+    public boolean add(DivisionLine line){
+        return standardAdd(line);
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends DivisionLine> c) {
+        return standardAddAll(c);
+    }
+
+    @Override
     protected List<DivisionLine> delegate(){
-        return ImmutableList.copyOf(divisionLines);
+        return divisionLines;
     }
 }

@@ -75,17 +75,18 @@ public class WritingExporter implements AutoCloseable{
     public WritingExporter(String path) throws IOException{
         savePath = path;
         pdfDocument = new PDDocument();
-        frontMatter = new SectionTitle();
         embedFonts = new PDFont[FONT_FILES.length];
         int i = 0;
         for (String font: FONT_FILES){
             embedFonts[i++] = PDType0Font.load(pdfDocument, getClass()
                 .getResourceAsStream(FONT_FOLDER + font));
         }
+        frontMatter = new SectionTitle(this);
     }
 
     public void export(ManuscriptFile data) throws IOException{
-        frontMatter.export(this, data);
+        frontMatter.export(data);
+
     }
 
     public PDDocument getPdfDocument(){

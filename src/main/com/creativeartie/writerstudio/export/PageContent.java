@@ -13,7 +13,8 @@ public class PageContent implements AutoCloseable{
     private final PDPageContentStream contentStream;
     private PageMargin pageMargin;
 
-    PageContent(PDDocument doc) throws IOException{
+    PageContent(Section section) throws IOException{
+        PDDocument doc = section.getPdfDocument();
         contentPage = new PDPage();
         doc.addPage(contentPage);
         contentStream = new PDPageContentStream(doc, contentPage);
@@ -26,6 +27,10 @@ public class PageContent implements AutoCloseable{
 
     public PDPageContentStream getContentStream(){
         return contentStream;
+    }
+
+    public float getRenderWidth(){
+        return getWidth() - pageMargin.getLeft() - pageMargin.getRight();
     }
 
     public float getWidth(){
@@ -45,6 +50,18 @@ public class PageContent implements AutoCloseable{
         switch (aligment){
             case TOP:
                 return height - pageMargin.getTop();
+            case MIDDLE:
+                height /= 2;
+                for (DivisionLine line: area){
+                    height += line.getHeight() / 2;
+                }
+                return height;
+            case BOTTOM:
+                height = pageMargin.getBottom();
+                for (DivisionLine line : area){
+                    height += line.getHeight();
+                }
+                return height;
         }
         return 0;
     }

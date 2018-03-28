@@ -9,28 +9,30 @@ import com.creativeartie.writerstudio.file.*;
 import com.creativeartie.writerstudio.resource.*;
 import com.creativeartie.writerstudio.export.value.*;
 
-public class SectionTitle implements AutoCloseable{
+public class SectionTitle extends Section {
 
-    private PDDocument pdfDocument;
-    private WritingExporter writingExporter;
+    private WritingExporter parentDoc;
     private ManuscriptFile exportData;
-    private Optional<PageContent> outputPage;
+    private PageContent outputPage;
+    private ContentFont contentFont;
+    private float areaWidth;
 
-    SectionTitle(){
-        outputPage = Optional.empty();
+    SectionTitle(WritingExporter parent) throws IOException{
+        super(parent);
+        parentDoc = parent;
+        outputPage = new PageContent(this);
+        contentFont = parent. new PdfFont();
+        areaWidth = outputPage.getRenderWidth();
     }
 
-    void export(WritingExporter doc, ManuscriptFile data) throws IOException{
-        pdfDocument = doc.getPdfDocument();
-        writingExporter = doc;
+    void export(ManuscriptFile data) throws IOException{
         exportData = data;
-        outputPage = Optional.of(new PageContent(pdfDocument));
         writeMeta();
         writeTitlePage();
     }
 
     private void writeMeta(){
-        PDDocumentInformation info = pdfDocument.getDocumentInformation();
+        PDDocumentInformation info = getPdfDocument().getDocumentInformation();
         info.setAuthor(exportData.getText(MetaData.AUTHOR));
         info.setCreationDate(new GregorianCalendar());
         info.setCreator(WindowText.PROGRAM_NAME.getText());
@@ -42,65 +44,56 @@ public class SectionTitle implements AutoCloseable{
     }
 
     private void writeTitlePage() throws IOException{
-        outputPage = Optional.of(new PageContent(pdfDocument));
         writeTop();
         writeMiddle();
         writeBottom();
     }
 
     private void writeTop() throws IOException{
-        PageContent page = outputPage.get();
-        MatterArea top = new MatterArea(page.getHeight(), PageAlignment.TOP);
-        ContentFont font = writingExporter. new PdfFont();
-        ArrayList<DivisionLine> ans = new ArrayList<>();
-        float width = page.getWidth();
-        ans.add(newBlock(MetaData.AGENT_NAME, LineAlignment.LEFT, width, font));
-        ans.add(newBlock(MetaData.AGENT_ADDRESS, LineAlignment.LEFT, width, font));
-        ans.add(newBlock(MetaData.AGENT_EMAIL, LineAlignment.LEFT, width, font));
-        ans.add(newBlock(MetaData.AGENT_PHONE, LineAlignment.LEFT, width, font));
-
+        MatterArea top = new MatterArea(outputPage, PageAlignment.TOP);
+        top.add(newLine(MetaData.AGENT_NAME, LineAlignment.LEFT));
+        top.add(newLine(MetaData.AGENT_ADDRESS, LineAlignment.LEFT));
+        top.add(newLine(MetaData.AGENT_EMAIL, LineAlignment.LEFT));
+        top.add(newLine(MetaData.AGENT_PHONE, LineAlignment.LEFT));
+        top.render();
     }
 
     public void writeMiddle() throws IOException{
-        PageContent page = outputPage.get();
-        ContentFont font = writingExporter.new PdfFont();
-        ArrayList<DivisionLine> ans = new ArrayList<>();
-        float width = page.getWidth();
-        ans.add(newBlock(MetaData.TITLE, LineAlignment.CENTER, width, 2, font));
-        ans.add(newBlock("By", LineAlignment.CENTER, width, 2, font));
-        ans.add(newBlock(MetaData.AUTHOR, LineAlignment.CENTER, width, 2, font));
+        MatterArea mid = new MatterArea(outputPage, PageAlignment.MIDDLE);
+        mid.add(newLine(MetaData.TITLE, LineAlignment.CENTER, 2));
+        mid.add(newLine("By", LineAlignment.CENTER, 2));
+        mid.add(newLine(MetaData.AUTHOR, LineAlignment.CENTER, 2));
+        mid.render();
     }
 
     public void writeBottom() throws IOException{
-        PageContent page = outputPage.get();
-        ContentFont font = writingExporter.new PdfFont();
-        ArrayList<DivisionLine> ans = new ArrayList<>();
-        float width = page.getWidth();
-        ans.add(newBlock(MetaData.AUTHOR, LineAlignment.RIGHT, width, font));
-        ans.add(newBlock(MetaData.ADDRESS, LineAlignment.RIGHT, width, font));
-        ans.add(newBlock(MetaData.PHONE, LineAlignment.RIGHT, width, font));
-        ans.add(newBlock(MetaData.EMAIL, LineAlignment.RIGHT, width, font));
-        ans.add(newBlock(MetaData.WEBSITE,LineAlignment.RIGHT, width, font));
-        ans.add(newBlock(
+        MatterArea bot = new MatterArea(outputPage, PageAlignment.BOTTOM);
+        bot.add(newLine(MetaData.AUTHOR, LineAlignment.RIGHT));
+        bot.add(newLine(MetaData.ADDRESS, LineAlignment.RIGHT));
+        bot.add(newLine(MetaData.PHONE, LineAlignment.RIGHT));
+        bot.add(newLine(MetaData.EMAIL, LineAlignment.RIGHT));
+        bot.add(newLine(MetaData.WEBSITE,LineAlignment.RIGHT));
+        bot.add(newLine(
             getData(MetaData.AUTHOR) + " © " + getData(MetaData.COPYRIGHT),
-            LineAlignment.CENTER, width, 3, font
+            LineAlignment.CENTER, 3
         ));
+        bot.render();
     }
 
-    private DivisionLine newBlock(MetaData data, LineAlignment alignment,
-            float width, ContentFont font) throws IOException{
-        return newBlock(data, alignment, width, 1, font);
+    private DivisionLine newLine(MetaData data, LineAlignment alignment)
+            throws IOException{
+        return newLine(data, alignment, 1);
     }
 
-    private DivisionLine newBlock(MetaData data, LineAlignment alignment,
-            float width, float leading, ContentFont font) throws IOException{
-        return newBlock(getData(data), alignment, width, leading, font);
+    private DivisionLine newLine(MetaData data, LineAlignment alignment,
+            float leading) throws IOException{
+        return newLine(getData(data), alignment, leading);
     }
 
-    private DivisionLine newBlock(String text, LineAlignment alignment,
-            float width, float leading, ContentFont font) throws IOException{
-        return new DivisionLine(width, alignment).setLeading(leading)
-            .appendSimpleText(text, font);
+    private DivisionLine newLine(String text, LineAlignment alignment,
+            float leading) throws IOException{
+        return new DivisionLine(areaWidth, alignment).setLeading(leading)
+            .appendSimpleText(text, contentFont);
     }
 
     private String getData(MetaData key){
@@ -109,9 +102,7 @@ public class SectionTitle implements AutoCloseable{
 
     @Override
     public void close() throws IOException{
-        if (outputPage.isPresent()){
-            outputPage.get().close();
-        }
+        outputPage.close();
     }
 
 }
