@@ -20,7 +20,7 @@ public class PdfMain {
 
     private static void exportTest() throws IOException {
 
-        File file = new File("data/pdf-long.txt");
+        File file = new File("data/pdf-base.txt");
         WritingText doc = new WritingText(file);
         ManuscriptFile use = ManuscriptFile.withManuscript(doc);
         /**
