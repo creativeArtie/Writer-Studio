@@ -1,10 +1,10 @@
-# JWriter
+# Writer Studios
 
 ## About
-JWriter a word processor with note taking and goal setting ablities. It is
-foused for authors to write fiction and non-fiction alike.  Notes can be put
+Writer Studios a word processor with note taking and goal setting abilities. It is
+focused for authors to write fiction and non-fiction alike.  Notes can be put
 into to the file anywhere yet allow easy to navigate to them. The goal settings
-can be adjest as the document written.
+can be adjust as the document written.
 
 Even though the markup language is made for this program, is very forgiving and
 will highlight the syntax. In the future, there will be more support and will
@@ -13,7 +13,7 @@ the language as just a faster way to format and insert notes and agendas.
 
 This project is currently in alpha version, and will be optimized and will have
 more features. The most up-to-date stable version is located 
-[here](https://github.com/creativeArtie/JWriter/releases/latest).
+[here](https://github.com/creativeArtie/Writer-Studios/releases/latest).
 
 ## Markup
 
@@ -30,7 +30,7 @@ to one line.
 
 There are also [footnote (syntax `{^footnote}`), endnote (syntax `{*endnote}`)](#note-styles),
 [links (syntax `<@reference id|link text>` or `<link path|link text>`)](#hyperlink),
-[agenda (syntax `{! todo}`)](#agenda), and [citation (sytnax `{@id}`)](#notes).
+[agenda (syntax `{! todo}`)](#agenda), and [citation (syntax `{@id}`)](#notes).
 
 ## Sections
 Each section had a heading or an outline point at the top of the section. This
@@ -49,7 +49,7 @@ style. Refers to the section by using [`<@id>`](#hyperlink).
 There are six level for both headings and outlines.
 
 A heading or an outline can also have a status with details, A status is
-optional, and can be `#STUB`, `#DRAFT`, `#FINAL`, `#` (custom) and none. after
+optional, and can be `#STUB`, `#DRAFT`, `#FINAL`, `#` (custom) and none. After
 the status, there are details to go with the status. It will be at the end of
 the line.
 
@@ -71,11 +71,11 @@ There are several types of line styles.
 
 |Line styles  |Syntax    |Notes                                                |
 |-------------|----------|-----------------------------------------------------|
-|Numbered     | `# text` |Add tabs before `#` to increse level (up to six)     |
-|Bullet       | `- text` |Add tabs before `-` to increse level (up to six)     |
+|Numbered     | `# text` |Add tabs before `#` to increase level (up to six)    |
+|Bullet       | `- text` |Add tabs before `-` to increase level (up to six)    |
 |Quote        | `> text` |                                                     |
 |Section Break| `***`    |It has no text after the `*` or allow spaces anywhere|
-|Paragaph     | `text`   |There is no symbol used at the beginning of the line |
+|Paragraph    | `text`   |There is no symbol used at the beginning of the line |
 
 ### Note Styles
 In addition there are footnote, and endnote, that can be referred to even
@@ -90,23 +90,22 @@ in the printed document.
 |Footnote   | `!^id:text `| `{^id}`      |
 |Endnote    | `!*id:text `| `{*id}`      |
 
-Footnote will count by numbers, while endnot count by letters.
+Footnote will count by numbers, while endnote count by letters.
 
 ### Hyperlink
 
-Hyperlinks can be link to a section or a webpage. If the referred link points to
-
-A referred link needs a line somewhere with the following syntax:
+Hyperlinks can be link to a section or a web page. If the referred link points
+to a referred link needs a line somewhere with the following syntax:
 
     !@id:webpage path
 
 A referred link needs to have an [id](#id) and text before it can appears in the
 printed document.
 
-Both referred link and section links has the following sytnax: `<@id|text>` while
-direct links has the following syntax: `<web page path| text>`. Text (include the
-symbol `|` are optional, and will be replace by the web page path or the section
-title if none is found.
+Both referred link and section links has the following syntax: `<@id|text>`
+while direct links has the following syntax: `<web page path| text>`. Text
+(include the symbol `|` are optional, and will be replace by the web page path
+or the section title if none is found.
 
 ### Agenda
 Agenda marks parts of the document to be work on later. There are two types of
@@ -139,9 +138,9 @@ Sources has requires two things:
 ## Id
 
 Ids have an category and title. There are unlimited number of categories and
-unlimited of nested subcategories avaiable. the categories and titles are sorted
-in the alphabethical order and are not case sensitive. The syntax of an id is
-`category-subcategory-...-title`.
+unlimited of nested subcategories available. The categories and titles are
+sorted in the alphabetical order and are not case sensitive. The syntax of an
+id is `category-subcategory-...-title`.
 
 ## Screen shots
 ![Main Window](design/main.png)
