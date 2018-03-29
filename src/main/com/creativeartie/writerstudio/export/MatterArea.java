@@ -35,7 +35,7 @@ public class MatterArea extends ForwardingList<DivisionLine> {
         pageAlignment = alignment;
         textFont = null;
         areaWidth = page.getRenderWidth();
-        maxHeight = page.getHeight();
+        maxHeight = page.getRenderHeight(alignment);
         fillHeight = localX = localY = 0;
         divisionLines = new ArrayList<>();
         postEditors = new ArrayList<>();
@@ -66,10 +66,10 @@ public class MatterArea extends ForwardingList<DivisionLine> {
         if (! isEmpty()){
             DivisionLine child = get(0);
             if (! child.isEmpty()){
-                leading = child.get(0).getTextHeight() * (child.getLeading() - 1);
+                leading = child.get(0).getTextHeight() * (child.getLeading());
             }
         }
-        float y = outputPage.getStartY(pageAlignment, this) + leading;
+        float y = outputPage.getStartY(pageAlignment, this) - leading;
         moveText(x, y);
 
         /// show text

@@ -40,6 +40,17 @@ public class PageContent implements AutoCloseable{
         return contentPage.getMediaBox().getWidth();
     }
 
+    public float getRenderHeight(PageAlignment alignment){
+        float base = getHeight() - pageMargin.getTop() - pageMargin.getBottom();
+        switch (alignment){
+        case CONTENT:
+            return base - pageHeader.map(h -> h.getHeight()).orElse(0f);
+        case THIRD:
+            return getHeight() / 3;
+        default:
+            return base;
+        }
+    }
     public float getHeight(){
         return contentPage.getMediaBox().getHeight();
     }
@@ -53,9 +64,9 @@ public class PageContent implements AutoCloseable{
         return pageMargin.getLeft();
     }
 
-    public float getStartY(PageAlignment aligment, MatterArea area){
+    public float getStartY(PageAlignment alignment, MatterArea area){
         float height = contentPage.getMediaBox().getHeight();
-        switch (aligment){
+        switch (alignment){
             case TOP:
                 return height - pageMargin.getTop();
             case MIDDLE:

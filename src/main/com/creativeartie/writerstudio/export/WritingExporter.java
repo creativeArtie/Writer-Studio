@@ -94,7 +94,6 @@ public class WritingExporter implements AutoCloseable{
             front.export(data);
         }
         try (SectionContent content = new SectionContent(this)){
-
             content.addHeader(data);
             Optional<LinedSpan> first = data.getDocument().locateSpan(0,
                 LinedSpan.class);

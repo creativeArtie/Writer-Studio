@@ -99,6 +99,8 @@ public class DivisionLine extends ForwardingList<DivisionLine.Line>{
     private float divBottomSpacing;
     private LineAlignment divAlignment;
 
+    private boolean noFormatting;
+
     public DivisionLine(float width){
         this (width, LineAlignment.LEFT);
     }
@@ -113,6 +115,7 @@ public class DivisionLine extends ForwardingList<DivisionLine.Line>{
         divBottomSpacing = 0;
         divPrefix = Optional.empty();
         divPrefixDistance = 0f;
+        noFormatting = false;
     }
 
     public static DivisionLine splitItem(DivisionLine item){
@@ -157,6 +160,7 @@ public class DivisionLine extends ForwardingList<DivisionLine.Line>{
     }
 
     public DivisionLine setBottomSpacing(float padding){
+        reflowText();
         divBottomSpacing = padding;
         return this;
     }
@@ -188,7 +192,7 @@ public class DivisionLine extends ForwardingList<DivisionLine.Line>{
 
     public DivisionLine addLine(Line line){
         divLines.add(line);
-        reflowText();
+        // reflowText();
         return this;
     }
 
@@ -227,13 +231,13 @@ public class DivisionLine extends ForwardingList<DivisionLine.Line>{
         return data;
     }
 
-    private DivisionLine appendText(ArrayList<ContentText> overflow){
-        if (overflow.isEmpty()) return this;
+    private void appendText(ArrayList<ContentText> overflow){
+        if (overflow.isEmpty()) return;
         Line line = new Line(divWidth - divIndent, divIndent);
         divLines.add(line);
         /// recursively call children
         appendText(line.appendText(overflow));
-        return this;
+        noFormatting = true;
     }
 
     @Override
@@ -242,6 +246,10 @@ public class DivisionLine extends ForwardingList<DivisionLine.Line>{
     }
 
     private void reflowText(){
+        if (noFormatting){
+            throw new IllegalStateException("No formatting allowed");
+        }
+        /* it is bugged
         /// Load the data
         ArrayList<ContentText> data = new ArrayList<>();
         for (Line line: divLines){
@@ -250,6 +258,6 @@ public class DivisionLine extends ForwardingList<DivisionLine.Line>{
         /// Clear lines and redo all
         divLines.clear();
         divLines.add(new Line(divWidth - divFirstIndent, divFirstIndent));
-        appendText(data);
+        appendText(data);*/
     }
 }
