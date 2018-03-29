@@ -12,7 +12,7 @@ import com.creativeartie.writerstudio.file.*;
 import com.creativeartie.writerstudio.resource.*;
 import com.creativeartie.writerstudio.export.value.*;
 
-public abstract class SectionContent extends Section {
+public abstract class SectionContent<T extends SpanBranch> extends Section {
     private PageContent currentPage;
     private ManuscriptFile outputData;
     private MatterArea contentArea;
@@ -40,22 +40,23 @@ public abstract class SectionContent extends Section {
 
     private void addHeader() throws IOException{
         MatterArea header = parseHeader(outputData);
-
-        currentPage.setHeader(header);
-        header.render();
+        if (header != null){
+            currentPage.setHeader(header);
+            header.render();
+        }
     }
 
     protected abstract MatterArea parseHeader(ManuscriptFile data)
         throws IOException;
 
-    void addLine(LinedSpan span) throws IOException{
-        DivisionLine found = parseLine(span);
+    void addLine(T span) throws IOException{
+        DivisionLine found = parseSpan(span);
         if (found != null){
             addLine(found);
         }
     }
 
-    protected abstract DivisionLine parseLine(LinedSpan span) throws IOException;
+    protected abstract DivisionLine parseSpan(T span) throws IOException;
 
     private void addLine(DivisionLine div) throws IOException{
         if (contentArea == null){
@@ -104,6 +105,11 @@ public abstract class SectionContent extends Section {
         currentPage = new PageContent(this);
         addHeader();
         contentArea = new MatterArea(currentPage, alignment);
+    }
+
+    protected DivisionLineFormatted newFormatDivision(){
+        return new DivisionLineFormatted(getPage().getRenderWidth(),
+            getParent());
     }
 
     @Override

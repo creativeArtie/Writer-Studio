@@ -12,17 +12,16 @@ import com.creativeartie.writerstudio.file.*;
 import com.creativeartie.writerstudio.resource.*;
 import com.creativeartie.writerstudio.export.value.*;
 
-public class SectionContentMain extends SectionContent {
+public class SectionContentMain extends SectionContent<LinedSpan> {
     private boolean paraFirst;
     private LinkedList<Integer> listNumbering;
-    private ArrayList<LinedSpanPointNote> endnoteList;
+    private LinkedHashSet<LinedSpanPointNote> footnoteList;
 
     public SectionContentMain(WritingExporter parent) throws IOException{
         super(parent);
         paraFirst = true;
         listNumbering = new LinkedList<>();
-        endnoteList = new ArrayList<>();
-        paraFirst = true;
+        footnoteList = new LinkedHashSet<>();
     }
 
     @Override
@@ -39,7 +38,7 @@ public class SectionContentMain extends SectionContent {
         return header;
     }
 
-    protected DivisionLine parseLine(LinedSpan span) throws IOException{
+    protected DivisionLine parseSpan(LinedSpan span) throws IOException{
         boolean clear = true;
         DivisionLine line = null;
         switch(span.getLinedType()){
@@ -173,8 +172,4 @@ public class SectionContentMain extends SectionContent {
         return null;
     }
 
-    private DivisionLineFormatted newFormatDivision(){
-        return new DivisionLineFormatted(getPage().getRenderWidth(),
-            getParent());
-    }
 }

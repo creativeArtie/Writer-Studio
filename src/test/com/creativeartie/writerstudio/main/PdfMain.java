@@ -23,11 +23,6 @@ public class PdfMain {
         File file = new File("data/pdf-base.txt");
         WritingText doc = new WritingText(file);
         ManuscriptFile use = ManuscriptFile.withManuscript(doc);
-        /**
-        try (StreamPdfFile output = new StreamPdfFile("test.pdf")){
-            new FormatterWriting().setData(new Data(use),
-                output.newStreamData()).render(output);
-        }*/
         try (WritingExporter out = new WritingExporter("test.pdf")){
             out.export(use);
         }
