@@ -159,6 +159,12 @@ public class DivisionLine extends ForwardingList<DivisionLine.Line>{
         return this;
     }
 
+    public DivisionLine setWidth(float width){
+        reflowText();
+        divWidth = width;
+        return this;
+    }
+
     public DivisionLine setBottomSpacing(float padding){
         reflowText();
         divBottomSpacing = padding;
@@ -192,7 +198,7 @@ public class DivisionLine extends ForwardingList<DivisionLine.Line>{
 
     public DivisionLine addLine(Line line){
         divLines.add(line);
-        // reflowText();
+        // appendText(line); /// slower but more correct
         return this;
     }
 

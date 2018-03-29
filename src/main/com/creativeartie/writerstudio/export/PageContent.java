@@ -46,7 +46,7 @@ public class PageContent implements AutoCloseable{
         case CONTENT:
             return base - pageHeader.map(h -> h.getHeight()).orElse(0f);
         case THIRD:
-            return getHeight() / 3;
+            return base / 3 * 2;
         default:
             return base;
         }
@@ -84,6 +84,8 @@ public class PageContent implements AutoCloseable{
             case CONTENT:
                 return height - pageMargin.getTop() -
                     pageHeader.map(h -> h.getHeight()).orElse(0f);
+            case THIRD:
+                return height - ( height / 3);
         }
         return 0;
     }

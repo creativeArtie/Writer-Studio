@@ -52,23 +52,39 @@ public class SectionContent extends Section {
     }
 
     void addLine(LinedSpan span) throws IOException{
+        boolean clear = true;
         DivisionLine line = null;
         switch(span.getLinedType()){
+        case BREAK:
+            line = addBreak();
+            break;
+        case BULLET:
+            line = parseBullet((LinedSpanLevelList) span);
+            break;
+        case NUMBERED:
+            line = parseNumber((LinedSpanLevelList) span);
+            clear = false;
+            break;
         case HEADING:
             line = parse((LinedSpanLevelSection) span);
             break;
         case PARAGRAPH:
             line = parse((LinedSpanParagraph) span);
             break;
+        case QUOTE:
+            line = parse((LinedSpanQuote) span);
         }
         if (line != null){
             addLine(line);
+            if (clear){
+                listNumbering.clear();
+            }
         }
     }
 
     private void addLine(DivisionLine div) throws IOException{
         if (contentArea == null){
-            contentArea = new MatterArea(currentPage, PageAlignment.CONTENT);
+            nextPage(PageAlignment.CONTENT);
         }
         if (contentArea.checkHeight(div)){
             contentArea.add(div);
@@ -101,6 +117,10 @@ public class SectionContent extends Section {
     }
 
     private void nextPage(PageAlignment alignment) throws IOException{
+        if (contentArea == null){
+            contentArea = new MatterArea(currentPage, alignment);
+            return;
+        }
         contentArea.render();
         currentPage.close();
 
@@ -111,12 +131,79 @@ public class SectionContent extends Section {
         contentArea = new MatterArea(currentPage, alignment);
     }
 
+    private DivisionLine addBreak() throws IOException{
+        DivisionLine ans = newFormatDivision();
+        ans.setLineAlignment(LineAlignment.CENTER);
+        ans.appendText("#", newFont());
+        paraFirst = true;
+        return ans;
+    }
+
+    private DivisionLine parseBullet(LinedSpanLevelList span)
+            throws IOException{
+        return parse(span, "•");
+    }
+
+    private DivisionLine parseNumber(LinedSpanLevelList span)
+            throws IOException{
+        int level = span.getLevel();
+        while (listNumbering.size() > level){
+            listNumbering.pop();
+        }
+        while (listNumbering.size() < level){
+            listNumbering.push(1);
+        }
+        int count = listNumbering.pop();
+        DivisionLine ans = parse(span, count + ".");
+        listNumbering.push(++count);
+        return ans;
+    }
+
+    private DivisionLineFormatted parse(LinedSpanLevelList span, String prefix)
+            throws IOException{
+        Optional<FormatSpanMain> format = span.getFormattedSpan();
+        if (format.isPresent() && ! format.get().isEmpty()){
+            DivisionLineFormatted line = newFormatDivision();
+            float indent = Utilities.cmToPoint(.5f) +
+                (Utilities.cmToPoint(.5f) * span.getLevel());
+            line.setFirstIndent(indent);
+            line.setIndent(indent);
+            line.setPrefix(prefix, indent - Utilities.cmToPoint(.75f));
+            paraFirst = false;
+            return line.addContent(format.get());
+        }
+        return null;
+    }
+
+    @SuppressWarnings("fallthrough")
     private DivisionLine parse(LinedSpanLevelSection span) throws IOException{
         Optional<FormatSpanMain> format = span.getFormattedSpan();
         if (format.isPresent() && ! format.get().isEmpty()){
             paraFirst = true;
-            return new DivisionLineFormatted(currentPage.getRenderWidth(),
-                getParent()).addContent(format.get());
+            DivisionLineFormatted ans = newFormatDivision();
+            switch (span.getLevel()){
+            case 1:
+                nextPage(PageAlignment.THIRD);
+            case 2:
+                ans.setLineAlignment(LineAlignment.CENTER);
+                ans.setBottomSpacing(Utilities.cmToPoint(1f));
+                break;
+            case 3:
+                ans.setBottomSpacing(Utilities.cmToPoint(.8f));
+                ans.setLineAlignment(LineAlignment.CENTER);
+                break;
+            case 4:
+                ans.setBottomSpacing(Utilities.cmToPoint(.6f));
+                ans.setLineAlignment(LineAlignment.CENTER);
+                break;
+            case 5:
+                ans.setBottomSpacing(Utilities.cmToPoint(.4f));
+            default:
+                assert span.getLevel() == 6;
+                ans.setLineAlignment(LineAlignment.CENTER);
+
+            }
+            return ans.addContent(format.get());
         }
         return null;
     }
@@ -124,9 +211,7 @@ public class SectionContent extends Section {
     private DivisionLine parse(LinedSpanParagraph span) throws IOException{
         Optional<FormatSpanMain> format = span.getFormattedSpan();
         if (format.isPresent() && ! format.get().isEmpty()){
-            DivisionLineFormatted ans = new DivisionLineFormatted(
-                    currentPage.getRenderWidth(), getParent()
-                );
+            DivisionLineFormatted ans = newFormatDivision();
             if (! paraFirst){
                 ans.setFirstIndent(Utilities.cmToPoint(1.25f));
             } else {
@@ -135,6 +220,25 @@ public class SectionContent extends Section {
             return ans.addContent(format.get());
         }
         return null;
+    }
+
+    private DivisionLineFormatted parse(LinedSpanQuote span)
+            throws IOException{
+        Optional<FormatSpanMain> format = span.getFormattedSpan();
+        if (format.isPresent() && ! format.get().isEmpty()){
+            DivisionLineFormatted ans = newFormatDivision();
+            ans.setWidth(ans.getWidth() - Utilities.cmToPoint(2f));
+            ans.setFirstIndent(Utilities.cmToPoint(2f));
+            ans.setIndent(Utilities.cmToPoint(2f));
+            paraFirst = false;
+            return ans.addContent(format.get());
+        }
+        return null;
+    }
+
+    private DivisionLineFormatted newFormatDivision(){
+        return new DivisionLineFormatted(currentPage.getRenderWidth(),
+            getParent());
     }
 
 

@@ -14,14 +14,12 @@ public class SectionTitle extends Section {
     private WritingExporter parentDoc;
     private ManuscriptFile exportData;
     private PageContent outputPage;
-    private ContentFont contentFont;
     private float areaWidth;
 
     SectionTitle(WritingExporter parent) throws IOException{
         super(parent);
         parentDoc = parent;
         outputPage = new PageContent(this);
-        contentFont = parent. new PdfFont();
         areaWidth = outputPage.getRenderWidth();
     }
 
@@ -93,7 +91,7 @@ public class SectionTitle extends Section {
     private DivisionLine newLine(String text, LineAlignment alignment,
             float leading) throws IOException{
         return new DivisionLine(areaWidth, alignment).setLeading(leading)
-            .appendSimpleText(text, contentFont);
+            .appendSimpleText(text, newFont());
     }
 
     private String getData(MetaData key){
