@@ -1,6 +1,6 @@
-<project name="JWriter">
+<project name="Writer Studio">
     <description>
-    This is an ant build file JWriter, a note take and writing program.
+    This is an ant build file Writer Studio, a note take and writing program.
     </description>
 <!-- ==================== Program Environment Variables ==================== -->
     <!-- ** Edit these ones!!! ** -->
