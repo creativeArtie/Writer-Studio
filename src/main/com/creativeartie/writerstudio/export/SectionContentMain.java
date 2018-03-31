@@ -15,13 +15,11 @@ import com.creativeartie.writerstudio.export.value.*;
 public class SectionContentMain extends SectionContent<LinedSpan> {
     private boolean paraFirst;
     private LinkedList<Integer> listNumbering;
-    private LinkedHashSet<LinedSpanPointNote> footnoteList;
 
     public SectionContentMain(WritingExporter parent) throws IOException{
         super(parent);
         paraFirst = true;
         listNumbering = new LinkedList<>();
-        footnoteList = new LinkedHashSet<>();
     }
 
     @Override
@@ -38,6 +36,7 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
         return header;
     }
 
+    @Override
     protected DivisionLine parseSpan(LinedSpan span) throws IOException{
         boolean clear = true;
         DivisionLine line = null;
@@ -91,7 +90,7 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
         }
         int count = listNumbering.pop();
         DivisionLine ans = parse(span, count + ".");
-        listNumbering.push(++count);
+        listNumbering.push(count + (ans == null? 0: 1));
         return ans;
     }
 
@@ -146,6 +145,7 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
 
     private DivisionLine parse(LinedSpanParagraph span) throws IOException{
         Optional<FormatSpanMain> format = span.getFormattedSpan();
+        
         if (format.isPresent() && ! format.get().isEmpty()){
             DivisionLineFormatted ans = newFormatDivision();
             if (! paraFirst){

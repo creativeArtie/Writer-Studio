@@ -103,10 +103,19 @@ public class WritingExporter implements AutoCloseable{
                 content.addLine(spans.next());
             }
         }
+        
+        if (! endnoteList.isEmpty()){
+            try (SectionContentEndnote endnote = new SectionContentEndnote(
+                    this)){
+                for (LinedSpanPointNote note: endnoteList){
+                    endnote.addLine(note);
+                }
+            }
+        }
     }
 
     private Iterator<LinedSpan> listChildren(LinedSpan first){
-        return new AbstractSequentialIterator<>(first){
+        return new AbstractSequentialIterator<LinedSpan>(first){
               protected LinedSpan computeNext(LinedSpan previous) {
                   return computeChild(previous);
               }

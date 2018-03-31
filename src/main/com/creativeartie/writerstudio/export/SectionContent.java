@@ -17,12 +17,18 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
     private ManuscriptFile outputData;
     private MatterArea contentArea;
     private int pageNumber;
+    private FootnoteItem footnoteAdding;
+    private ArrayList<FootnoteItem> footnoteList;
+    private MatterArea footnoteArea;
 
     public SectionContent(WritingExporter parent) throws IOException{
         super(parent);
         currentPage = new PageContent(this);
         pageNumber = 1;
         contentArea = null;
+        footnoteArea = null;
+        footnoteList = new ArrayList<>();
+        footnoteAdding = null;
     }
 
     public int getPageNumber(){
@@ -57,6 +63,43 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
     }
 
     protected abstract DivisionLine parseSpan(T span) throws IOException;
+    
+    String addFootnote(LinedSpan note) throws IOException{
+        int index = FootnoteItem.getSpanIndex(note, footnoteList);
+        
+        if (index == -1){
+            index = footnoteList.size();
+        }
+        DivisionLineFormatted item = newFormatDivision();
+        item.appendSimpleText(
+            Utilities.toNumberSuperscript(index),
+            newFont().changeToSuperscript()
+        );
+        
+        if (note instanceof LinedSpanPointNote){
+            Optional<FormatSpanMain> format = ((LinedSpanPointNote)note)
+                .getFormattedSpan();
+            if (format.isPresent()){
+                item.addContent(format.get());
+            }
+        }
+        
+        if (footnoteArea != null) {
+            item.setLeading(1);
+        }
+        
+        if (index == -1){
+            footnoteList.add(footnoteAdding);
+        }
+        footnoteAdding = new FootnoteItem(note, item);
+        return Utilities.toNumberSuperscript(index + 1);
+    }
+    
+    Optional<FootnoteItem> popFootnote(){
+        Optional<FootnoteItem> ans = Optional.ofNullable(footnoteAdding);
+        footnoteAdding = null;
+        return ans;
+    }
 
     private void addLine(DivisionLine div) throws IOException{
         if (contentArea == null){
@@ -64,15 +107,22 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
         }
         if (contentArea.checkHeight(div)){
             contentArea.add(div);
+            if (footnoteArea == null){
+                footnoteArea = new MatterArea(currentPage, PageAlignment
+                    .BOTTOM);
+            }
+            div.addFootnote(footnoteArea);
             return;
         }
         DivisionLine allows = DivisionLine.copyFormat(div);
         DivisionLine checker = DivisionLine.copyFormat(div);
         DivisionLine overflow = null;
+        int i = 0;
         for (DivisionLine.Line line: div){
             checker.addLine(line);
-            if (contentArea.checkHeight(checker)){
+            if (contentArea.checkHeight(checker, footnoteArea.getHeight())){
                 allows.addLine(line);
+                i++;
             } else {
                 if (overflow == null){
                     if(allows.isEmpty()){
@@ -88,6 +138,8 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
         if (! allows.isEmpty()){
             contentArea.add(allows);
         }
+        // footnoteArea.render();
+        footnoteArea = null;
         nextPage(PageAlignment.CONTENT);
         addLine(overflow);
     }
@@ -108,8 +160,7 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
     }
 
     protected DivisionLineFormatted newFormatDivision(){
-        return new DivisionLineFormatted(getPage().getRenderWidth(),
-            getParent());
+        return new DivisionLineFormatted(this, getParent());
     }
 
     @Override

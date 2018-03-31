@@ -34,7 +34,7 @@ public class WindowMain extends Application{
     @Deprecated
     private void testMainWindow() throws Exception{
         // File file = new File("data/sectionDebug7.txt");
-        File file = new File("data/pdf-base.txt");
+        File file = new File("data/pdf-long.txt");
         WritingText doc = new WritingText(file);
         ManuscriptFile use = ManuscriptFile.withManuscript(doc);
 

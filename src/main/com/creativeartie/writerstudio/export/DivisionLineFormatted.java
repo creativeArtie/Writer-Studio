@@ -12,10 +12,13 @@ import com.creativeartie.writerstudio.export.value.*;
 
 public class DivisionLineFormatted extends DivisionLine{
 
+    private SectionContent<?> contentData;
     private WritingExporter parentDoc;
 
-    public DivisionLineFormatted(float width, WritingExporter doc){
-        super(width);
+    public DivisionLineFormatted(SectionContent<?> content, 
+            WritingExporter doc){
+        super(content.getPage().getRenderWidth());
+        contentData = content;
         parentDoc = doc;
     }
 
@@ -36,15 +39,22 @@ public class DivisionLineFormatted extends DivisionLine{
                     font = font.changeFontColor(Color.BLUE);
                 }
                 if (child instanceof FormatSpanDirectory){
-                    font = font.changeToSuperscript();
+                    font = getFont((FormatSpanDirectory) child, font);
                 }
                 setAddition(appendText(text, font), format);
             }
         }
         return this;
     }
+    
+    private ContentFont getFont(FormatSpanDirectory span, ContentFont font){
+        if (span.getIdType() != DirectoryType.NOTE){
+            return font.changeToSuperscript();
+        }
+        return font;
+    }
 
-    private String getText(FormatSpan span){
+    private String getText(FormatSpan span) throws IOException{
         if (span instanceof FormatSpanContent){
             return ((FormatSpanContent) span).getText();
         } else if (span instanceof FormatSpanLink){
@@ -58,7 +68,14 @@ public class DivisionLineFormatted extends DivisionLine{
             Optional<String> text = note
                 .filter(t -> t.getDirectoryType() == DirectoryType.ENDNOTE)
                 .map(t -> parentDoc.addEndnote(t));
-            return text.orElse(span.getRaw());
+            if (text.isPresent()){
+                return text.get();
+            }
+            note = note.filter(t -> t.getDirectoryType() == DirectoryType
+                .FOOTNOTE);
+            if (note.isPresent()){
+                return contentData.addFootnote(note.get());
+            }
         }
         return span.getRaw();
     }
@@ -79,5 +96,7 @@ public class DivisionLineFormatted extends DivisionLine{
                     formatter.forEach(c -> c.setLinkPath(s.getPath()))
                 );
         }
+        Optional<FootnoteItem> line = contentData.popFootnote();
+        line.ifPresent(l -> formatter.forEach(c -> c.setFootnote(line)));
     }
 }

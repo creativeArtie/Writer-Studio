@@ -54,6 +54,7 @@ public class ContentText{
     private boolean spaceText;
     private Optional<Consumer<ContentText>> textChange;
     private Optional<String> linkPath;
+    private Optional<FootnoteItem> footnoteLine;
 
     private ContentText(String word, ContentFont font, boolean space)
             throws IOException{
@@ -64,6 +65,7 @@ public class ContentText{
         spaceText = space;
         textChange = Optional.empty();
         linkPath = Optional.empty();
+        footnoteLine = Optional.empty();
     }
 
     public ContentText setListener(Consumer<ContentText> consumer){
@@ -100,6 +102,19 @@ public class ContentText{
 
     public ContentFont getFont(){
         return textFont;
+    }
+    
+    public ContentText setFootnote(Optional<FootnoteItem> footnote){
+        footnoteLine = footnote;
+        return this;
+    }
+    
+    public float getFootnoteHeight(){
+        return footnoteLine.map(l -> l.getHeight()).orElse(0f);
+    }
+    
+    public Optional<FootnoteItem> getFootnoteLine(){
+        return footnoteLine;
     }
 
     public ArrayList<ContentPostEditor> getPostTextConsumers(PDRectangle rect){

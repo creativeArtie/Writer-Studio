@@ -82,6 +82,14 @@ public class DivisionLine extends ForwardingList<DivisionLine.Line>{
         public float getWidth(){
             return curWidth;
         }
+        
+        public float getFootnoteHeight(){
+            float max = 0;
+            for (ContentText text: this){
+                max += text.getFootnoteHeight();
+            }
+            return max;
+        }
 
         @Override
         protected List<ContentText> delegate(){
@@ -138,8 +146,8 @@ public class DivisionLine extends ForwardingList<DivisionLine.Line>{
     }
 
     public DivisionLine setLeading(float leading){
-        reflowText();
         divLeading = leading;
+        reflowText();
         return this;
     }
 
@@ -148,26 +156,26 @@ public class DivisionLine extends ForwardingList<DivisionLine.Line>{
     }
 
     public DivisionLine setFirstIndent(float indent){
-        reflowText();
         divFirstIndent = indent;
+        reflowText();
         return this;
     }
 
     public DivisionLine setIndent(float indent){
-        reflowText();
         divIndent = indent;
+        reflowText();
         return this;
     }
 
     public DivisionLine setWidth(float width){
-        reflowText();
         divWidth = width;
+        reflowText();
         return this;
     }
 
     public DivisionLine setBottomSpacing(float padding){
-        reflowText();
         divBottomSpacing = padding;
+        reflowText();
         return this;
     }
 
@@ -233,29 +241,43 @@ public class DivisionLine extends ForwardingList<DivisionLine.Line>{
         }
         /// Append text to the previous line
         ArrayList<ContentText> data = ContentText.createWords(text, font);
-        appendText(line.appendText(data));
+        appendText(data, line);
         return data;
     }
-
+    
     private void appendText(ArrayList<ContentText> overflow){
         if (overflow.isEmpty()) return;
         Line line = new Line(divWidth - divIndent, divIndent);
         divLines.add(line);
+        appendText(overflow, line);
+    }
+    
+    private void appendText(ArrayList<ContentText> overflow, Line line){
         /// recursively call children
         appendText(line.appendText(overflow));
-        noFormatting = true;
     }
 
     @Override
     protected List<Line> delegate(){
         return ImmutableList.copyOf(divLines);
     }
+    
+    public DivisionLine addFootnote(MatterArea area){
+        for (Line line: this){
+            for(ContentText text: line){
+                text.getFootnoteLine().ifPresent(f -> 
+                    area.add(f.getPrintLine())
+                );
+            }
+        }
+        return this;
+    }
 
     private void reflowText(){
         if (noFormatting){
-            throw new IllegalStateException("No formatting allowed");
+            return;
         }
-        /* it is bugged
+        
         /// Load the data
         ArrayList<ContentText> data = new ArrayList<>();
         for (Line line: divLines){
@@ -263,7 +285,8 @@ public class DivisionLine extends ForwardingList<DivisionLine.Line>{
         }
         /// Clear lines and redo all
         divLines.clear();
-        divLines.add(new Line(divWidth - divFirstIndent, divFirstIndent));
-        appendText(data);*/
+        Line first = new Line(divWidth - divFirstIndent, divFirstIndent);
+        divLines.add(first);
+        appendText(data, first);
     }
 }
