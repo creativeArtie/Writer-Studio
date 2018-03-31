@@ -19,14 +19,14 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
     private int pageNumber;
     private FootnoteItem footnoteAdding;
     private ArrayList<FootnoteItem> footnoteList;
-    private MatterArea footnoteArea;
+    private Optional<MatterArea> footnoteArea;
 
     public SectionContent(WritingExporter parent) throws IOException{
         super(parent);
         currentPage = new PageContent(this);
         pageNumber = 1;
         contentArea = null;
-        footnoteArea = null;
+        footnoteArea = Optional.empty();
         footnoteList = new ArrayList<>();
         footnoteAdding = null;
     }
@@ -72,7 +72,7 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
         }
         DivisionLineFormatted item = newFormatDivision();
         item.appendSimpleText(
-            Utilities.toNumberSuperscript(index),
+            Utilities.toNumberSuperscript(index + 1),
             newFont().changeToSuperscript()
         );
         
@@ -84,7 +84,7 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
             }
         }
         
-        if (footnoteArea != null) {
+        if (footnoteArea.isPresent()) {
             item.setLeading(1);
         }
         
@@ -105,24 +105,19 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
         if (contentArea == null){
             nextPage(PageAlignment.CONTENT);
         }
+        float footnotes = footnoteArea.map(f -> f.getHeight()).orElse(0f);
         if (contentArea.checkHeight(div)){
             contentArea.add(div);
-            if (footnoteArea == null){
-                footnoteArea = new MatterArea(currentPage, PageAlignment
-                    .BOTTOM);
-            }
-            div.addFootnote(footnoteArea);
+            footnoteArea = div.addFootnote(footnoteArea, getPage());
             return;
         }
         DivisionLine allows = DivisionLine.copyFormat(div);
         DivisionLine checker = DivisionLine.copyFormat(div);
         DivisionLine overflow = null;
-        int i = 0;
         for (DivisionLine.Line line: div){
             checker.addLine(line);
-            if (contentArea.checkHeight(checker, footnoteArea.getHeight())){
+            if (contentArea.checkHeight(checker)){
                 allows.addLine(line);
-                i++;
             } else {
                 if (overflow == null){
                     if(allows.isEmpty()){
@@ -138,8 +133,10 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
         if (! allows.isEmpty()){
             contentArea.add(allows);
         }
-        // footnoteArea.render();
-        footnoteArea = null;
+        if (footnoteArea.isPresent()){
+            footnoteArea.get().render();
+            footnoteArea = Optional.empty();
+        }
         nextPage(PageAlignment.CONTENT);
         addLine(overflow);
     }

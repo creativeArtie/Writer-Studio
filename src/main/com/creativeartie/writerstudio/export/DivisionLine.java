@@ -262,7 +262,10 @@ public class DivisionLine extends ForwardingList<DivisionLine.Line>{
         return ImmutableList.copyOf(divLines);
     }
     
-    public DivisionLine addFootnote(MatterArea area){
+    public Optional<MatterArea> addFootnote(Optional<MatterArea> footnote,
+            PageContent page){
+        MatterArea area = footnote.isPresent()? footnote.get(): 
+            new MatterArea(page, PageAlignment.BOTTOM);
         for (Line line: this){
             for(ContentText text: line){
                 text.getFootnoteLine().ifPresent(f -> 
@@ -270,7 +273,7 @@ public class DivisionLine extends ForwardingList<DivisionLine.Line>{
                 );
             }
         }
-        return this;
+        return Optional.of(area);
     }
 
     private void reflowText(){
