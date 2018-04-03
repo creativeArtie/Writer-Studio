@@ -6,6 +6,7 @@ import java.util.function.*;
 import java.io.*;
 import com.google.common.base.*;
 
+import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.export.value.*;
 import com.creativeartie.writerstudio.main.*;
 import org.apache.pdfbox.pdmodel.interactive.action.*;
@@ -54,7 +55,7 @@ public class ContentText{
     private boolean spaceText;
     private Optional<Consumer<ContentText>> textChange;
     private Optional<String> linkPath;
-    private Optional<FootnoteItem> footnoteLine;
+    private Optional<SpanBranch> targetSpan;
 
     private ContentText(String word, ContentFont font, boolean space)
             throws IOException{
@@ -65,7 +66,7 @@ public class ContentText{
         spaceText = space;
         textChange = Optional.empty();
         linkPath = Optional.empty();
-        footnoteLine = Optional.empty();
+        targetSpan = Optional.empty();
     }
 
     public ContentText setListener(Consumer<ContentText> consumer){
@@ -104,11 +105,16 @@ public class ContentText{
         return textFont;
     }
 
-    
-    public float getFootnoteHeight(){
-        return footnoteLine.map(l -> l.getHeight()).orElse(0f);
+
+    public ContentText setTarget(Optional<SpanBranch> span){
+        targetSpan = span;
+        return this;
     }
-    
+
+    public Optional<SpanBranch> getTarget(){
+        return targetSpan;
+    }
+
 
     public ArrayList<ContentPostEditor> getPostTextConsumers(PDRectangle rect){
         ArrayList<ContentPostEditor> ans = new ArrayList<>();

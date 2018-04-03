@@ -2,9 +2,15 @@
 abc{^1}
 !^1:Chapter 1 footnote
 =Chapter 2
-abc{^2.1}
+abc{^2-1}
 
-abababaafjasfoiasjf akf a awfjasf{^2.2}
-abded{2.1}
-!^2.1:Chapter 2 footnote item 1
-!^2.2:Chapter 2 footnote item 2
+abababaafjasfoiasjf akf a awfjasf{^2-2}
+abded{^2-1}
+!^2-1:Chapter 2 footnote item 1
+!^2-2:Chapter 2 footnote item 2
+
+=Chapter 3
+
+ddfasfsad{^3}
+
+!^3: Chapter 3 footnote item 1

@@ -14,6 +14,7 @@ import com.creativeartie.writerstudio.export.value.*;
 
 public abstract class SectionContent<T extends SpanBranch> extends Section {
     private PageContent currentPage;
+    private PageFootnote pageFootnote;
     private ManuscriptFile outputData;
     private MatterArea contentArea;
     private int pageNumber;
@@ -21,6 +22,7 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
     public SectionContent(WritingExporter parent) throws IOException{
         super(parent);
         currentPage = new PageContent(this);
+        pageFootnote = new PageFootnote(this);
         pageNumber = 1;
         contentArea = null;
     }
@@ -31,6 +33,10 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
 
     public PageContent getPage(){
         return currentPage;
+    }
+
+    public PageFootnote getFootnote(){
+        return pageFootnote;
     }
 
     public void addHeader(ManuscriptFile data) throws IOException{
@@ -57,7 +63,7 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
     }
 
     protected abstract DivisionLine parseSpan(T span) throws IOException;
-    
+
     String addFootnote(LinedSpan note) throws IOException{
         return Utilities.toNumberSuperscript(1);
     }
@@ -66,16 +72,19 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
         if (contentArea == null){
             nextPage(PageAlignment.CONTENT);
         }
-        if (contentArea.checkHeight(div)){
+        float footnote = pageFootnote.getHeight();
+        if (contentArea.checkHeight(div, footnote)){
             contentArea.add(div);
+            pageFootnote.insertAll();
             return;
         }
         DivisionLine allows = DivisionLine.copyFormat(div);
         DivisionLine checker = DivisionLine.copyFormat(div);
         DivisionLine overflow = null;
         for (DivisionLine.Line line: div){
+            footnote = pageFootnote.getHeight(line);
             checker.addLine(line);
-            if (contentArea.checkHeight(checker)){
+            if (contentArea.checkHeight(checker, footnote)){
                 allows.addLine(line);
             } else {
                 if (overflow == null){
@@ -102,6 +111,7 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
             return;
         }
         contentArea.render();
+        pageFootnote.nextPage().render();
         currentPage.close();
 
         pageNumber++;
@@ -118,6 +128,7 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
     @Override
     public void close() throws IOException{
         if (contentArea != null) contentArea.render();
+        pageFootnote.nextPage().render();
         currentPage.close();
     }
 }
