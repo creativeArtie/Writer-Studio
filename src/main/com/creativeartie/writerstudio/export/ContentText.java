@@ -103,19 +103,12 @@ public class ContentText{
     public ContentFont getFont(){
         return textFont;
     }
-    
-    public ContentText setFootnote(Optional<FootnoteItem> footnote){
-        footnoteLine = footnote;
-        return this;
-    }
+
     
     public float getFootnoteHeight(){
         return footnoteLine.map(l -> l.getHeight()).orElse(0f);
     }
     
-    public Optional<FootnoteItem> getFootnoteLine(){
-        return footnoteLine;
-    }
 
     public ArrayList<ContentPostEditor> getPostTextConsumers(PDRectangle rect){
         ArrayList<ContentPostEditor> ans = new ArrayList<>();

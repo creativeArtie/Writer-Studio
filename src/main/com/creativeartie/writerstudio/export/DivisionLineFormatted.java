@@ -96,7 +96,5 @@ public class DivisionLineFormatted extends DivisionLine{
                     formatter.forEach(c -> c.setLinkPath(s.getPath()))
                 );
         }
-        Optional<FootnoteItem> line = contentData.popFootnote();
-        line.ifPresent(l -> formatter.forEach(c -> c.setFootnote(line)));
     }
 }

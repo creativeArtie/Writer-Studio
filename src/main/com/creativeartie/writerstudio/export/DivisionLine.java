@@ -82,14 +82,6 @@ public class DivisionLine extends ForwardingList<DivisionLine.Line>{
         public float getWidth(){
             return curWidth;
         }
-        
-        public float getFootnoteHeight(){
-            float max = 0;
-            for (ContentText text: this){
-                max += text.getFootnoteHeight();
-            }
-            return max;
-        }
 
         @Override
         protected List<ContentText> delegate(){
@@ -260,20 +252,6 @@ public class DivisionLine extends ForwardingList<DivisionLine.Line>{
     @Override
     protected List<Line> delegate(){
         return ImmutableList.copyOf(divLines);
-    }
-    
-    public Optional<MatterArea> addFootnote(Optional<MatterArea> footnote,
-            PageContent page){
-        MatterArea area = footnote.isPresent()? footnote.get(): 
-            new MatterArea(page, PageAlignment.BOTTOM);
-        for (Line line: this){
-            for(ContentText text: line){
-                text.getFootnoteLine().ifPresent(f -> 
-                    area.add(f.getPrintLine())
-                );
-            }
-        }
-        return Optional.of(area);
     }
 
     private void reflowText(){
