@@ -56,19 +56,19 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
         throws IOException;
 
     void addLine(T span) throws IOException{
-        DivisionLine found = parseSpan(span);
+        DivisionText found = parseSpan(span);
         if (found != null){
             addLine(found);
         }
     }
 
-    protected abstract DivisionLine parseSpan(T span) throws IOException;
+    protected abstract DivisionText parseSpan(T span) throws IOException;
 
     String addFootnote(LinedSpan note) throws IOException{
         return Utilities.toNumberSuperscript(1);
     }
 
-    private void addLine(DivisionLine div) throws IOException{
+    private void addLine(DivisionText div) throws IOException{
         if (contentArea == null){
             nextPage(PageAlignment.CONTENT);
         }
@@ -78,14 +78,15 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
             pageFootnote.insertAll();
             return;
         }
-        DivisionLine allows = DivisionLine.copyFormat(div);
-        DivisionLine checker = DivisionLine.copyFormat(div);
-        DivisionLine overflow = null;
-        for (DivisionLine.Line line: div){
+        DivisionText allows = DivisionText.copyFormat(div);
+        DivisionText checker = DivisionText.copyFormat(div);
+        DivisionText overflow = null;
+        for (DivisionText.Line line: div){
             footnote = pageFootnote.getHeight(line);
             checker.addLine(line);
             if (contentArea.checkHeight(checker, footnote)){
                 allows.addLine(line);
+                pageFootnote.insertPending(line);
             } else {
                 if (overflow == null){
                     if(allows.isEmpty()){
@@ -93,9 +94,11 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
                         addLine(div);
                         return;
                     }
-                    overflow = DivisionLine.splitItem(div);
+                    overflow = DivisionText.splitItem(div);
                 }
-                overflow.addLine(line);
+                for (ContentText content: overflow.addLine(line)){
+                    pageFootnote.resetFootnote(content);
+                }
             }
         }
         if (! allows.isEmpty()){
@@ -121,8 +124,8 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
         contentArea = new MatterArea(currentPage, alignment);
     }
 
-    protected DivisionLineFormatted newFormatDivision(){
-        return new DivisionLineFormatted(this, getParent());
+    protected DivisionTextFormatted newFormatDivision(){
+        return new DivisionTextFormatted(this);
     }
 
     @Override

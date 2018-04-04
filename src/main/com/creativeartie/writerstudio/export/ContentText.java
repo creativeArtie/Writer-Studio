@@ -57,6 +57,17 @@ public class ContentText{
     private Optional<String> linkPath;
     private Optional<SpanBranch> targetSpan;
 
+    ContentText(ContentText orgi){
+        textFont = orgi.textFont;
+        outputText = orgi.outputText;
+        textWidth = orgi.textWidth;
+        textHeight = orgi.textHeight;
+        spaceText = orgi.spaceText;
+        textChange = Optional.empty();
+        linkPath = orgi.linkPath;
+        targetSpan = orgi.targetSpan;
+    }
+
     private ContentText(String word, ContentFont font, boolean space)
             throws IOException{
         outputText = word;
@@ -116,7 +127,7 @@ public class ContentText{
     }
 
 
-    public ArrayList<ContentPostEditor> getPostTextConsumers(PDRectangle rect){
+    public List<ContentPostEditor> getPostTextConsumers(PDRectangle rect){
         ArrayList<ContentPostEditor> ans = new ArrayList<>();
         if (textFont.isUnderline()){
             ans.add((page, stream) ->{

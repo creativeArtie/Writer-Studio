@@ -25,7 +25,7 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
     @Override
     protected MatterArea parseHeader(ManuscriptFile data) throws IOException{
         MatterArea header = new MatterArea(getPage(), PageAlignment.TOP);
-        header.add(new DivisionLine(
+        header.add(new DivisionText(
                 getPage().getRenderWidth(), LineAlignment.RIGHT
             ).setLeading(1)
             .appendSimpleText(data.getText(MetaData.LAST_NAME) + "/" +
@@ -37,9 +37,9 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
     }
 
     @Override
-    protected DivisionLine parseSpan(LinedSpan span) throws IOException{
+    protected DivisionText parseSpan(LinedSpan span) throws IOException{
         boolean clear = true;
-        DivisionLine line = null;
+        DivisionText line = null;
         switch(span.getLinedType()){
         case BREAK:
             line = addBreak();
@@ -66,20 +66,20 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
         return line;
     }
 
-    private DivisionLine addBreak() throws IOException{
-        DivisionLine ans = newFormatDivision();
+    private DivisionText addBreak() throws IOException{
+        DivisionText ans = newFormatDivision();
         ans.setLineAlignment(LineAlignment.CENTER);
         ans.appendText("#", newFont());
         paraFirst = true;
         return ans;
     }
 
-    private DivisionLine parseBullet(LinedSpanLevelList span)
+    private DivisionText parseBullet(LinedSpanLevelList span)
             throws IOException{
         return parse(span, "•");
     }
 
-    private DivisionLine parseNumber(LinedSpanLevelList span)
+    private DivisionText parseNumber(LinedSpanLevelList span)
             throws IOException{
         int level = span.getLevel();
         while (listNumbering.size() > level){
@@ -89,16 +89,16 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
             listNumbering.push(1);
         }
         int count = listNumbering.pop();
-        DivisionLine ans = parse(span, count + ".");
+        DivisionText ans = parse(span, count + ".");
         listNumbering.push(count + (ans == null? 0: 1));
         return ans;
     }
 
-    private DivisionLineFormatted parse(LinedSpanLevelList span, String prefix)
+    private DivisionTextFormatted parse(LinedSpanLevelList span, String prefix)
             throws IOException{
         Optional<FormatSpanMain> format = span.getFormattedSpan();
         if (format.isPresent() && ! format.get().isEmpty()){
-            DivisionLineFormatted line = newFormatDivision();
+            DivisionTextFormatted line = newFormatDivision();
             float indent = Utilities.cmToPoint(.5f) +
                 (Utilities.cmToPoint(.5f) * span.getLevel());
             line.setFirstIndent(indent);
@@ -111,11 +111,11 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
     }
 
     @SuppressWarnings("fallthrough")
-    private DivisionLine parse(LinedSpanLevelSection span) throws IOException{
+    private DivisionText parse(LinedSpanLevelSection span) throws IOException{
         Optional<FormatSpanMain> format = span.getFormattedSpan();
         if (format.isPresent() && ! format.get().isEmpty()){
             paraFirst = true;
-            DivisionLineFormatted ans = newFormatDivision();
+            DivisionTextFormatted ans = newFormatDivision();
             switch (span.getLevel()){
             case 1:
                 nextPage(PageAlignment.THIRD);
@@ -143,11 +143,11 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
         return null;
     }
 
-    private DivisionLine parse(LinedSpanParagraph span) throws IOException{
+    private DivisionText parse(LinedSpanParagraph span) throws IOException{
         Optional<FormatSpanMain> format = span.getFormattedSpan();
-        
+
         if (format.isPresent() && ! format.get().isEmpty()){
-            DivisionLineFormatted ans = newFormatDivision();
+            DivisionTextFormatted ans = newFormatDivision();
             if (! paraFirst){
                 ans.setFirstIndent(Utilities.cmToPoint(1.25f));
             } else {
@@ -158,11 +158,11 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
         return null;
     }
 
-    private DivisionLineFormatted parse(LinedSpanQuote span)
+    private DivisionTextFormatted parse(LinedSpanQuote span)
             throws IOException{
         Optional<FormatSpanMain> format = span.getFormattedSpan();
         if (format.isPresent() && ! format.get().isEmpty()){
-            DivisionLineFormatted ans = newFormatDivision();
+            DivisionTextFormatted ans = newFormatDivision();
             ans.setWidth(ans.getWidth() - Utilities.cmToPoint(2f));
             ans.setFirstIndent(Utilities.cmToPoint(2f));
             ans.setIndent(Utilities.cmToPoint(2f));

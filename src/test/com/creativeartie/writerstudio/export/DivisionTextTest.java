@@ -14,15 +14,15 @@ import org.apache.pdfbox.pdmodel.font.*;
 import com.creativeartie.writerstudio.export.value.*;
 
 @RunWith(JUnit4.class)
-public class DivisionLineTest{
+public class DivisionTextTest{
 
-    private void append(DivisionLine item, String text) throws IOException{
+    private void append(DivisionText item, String text) throws IOException{
         item.appendText(text, new DefaultFont());
     }
 
     @Test
     public void BasicTest() throws IOException{
-        DivisionLine item = new DivisionLine(5000).setLeading(1);
+        DivisionText item = new DivisionText(5000).setLeading(1);
         append(item, "Hello World! Testing Joey.");
         assertEquals(131.31f, item.get(0).getWidth(), 0.1);
         ContentTextTest.test(item.get(0), "Hello", " ", "World!", " ",
@@ -31,7 +31,7 @@ public class DivisionLineTest{
 
     @Test
     public void spaceStart() throws IOException{
-        DivisionLine item = new DivisionLine(5000).setLeading(1);
+        DivisionText item = new DivisionText(5000).setLeading(1);
         append(item, " Hello World! Testing Joey.");
         assertEquals(131.31f, item.get(0).getWidth(), 0.1);
         ContentTextTest.test(item.get(0), "Hello", " ", "World!", " ",
@@ -40,7 +40,7 @@ public class DivisionLineTest{
 
     @Test
     public void spaceEnd() throws IOException{
-        DivisionLine item = new DivisionLine(5000).setLeading(1);
+        DivisionText item = new DivisionText(5000).setLeading(1);
         append(item, "Hello World! Testing Joey. ");
         assertEquals(134.31f, item.get(0).getWidth(), 0.1);
         ContentTextTest.test(item.get(0), "Hello", " ", "World!", " ",
@@ -49,7 +49,7 @@ public class DivisionLineTest{
 
     @Test
     public void TewoLines() throws IOException{
-        DivisionLine item = new DivisionLine(70).setLeading(1);
+        DivisionText item = new DivisionText(70).setLeading(1);
         append(item, "Hello World! Testing Joey.");
 
         assertEquals(67.22f, item.get(0).getWidth(), 0.1);
@@ -61,7 +61,7 @@ public class DivisionLineTest{
 
     @Test
     public void WordPreLine() throws IOException{
-        DivisionLine item = new DivisionLine(50).setLeading(1);
+        DivisionText item = new DivisionText(50).setLeading(1);
         append(item, "Hello World! Testing Joey.");
 
         assertEquals(29.66f, item.get(0).getWidth(), 0.1);
@@ -81,7 +81,7 @@ public class DivisionLineTest{
 
     @Test
     public void spaceAppend() throws IOException{
-        DivisionLine item = new DivisionLine(70).setLeading(1);
+        DivisionText item = new DivisionText(70).setLeading(1);
         append(item, "Hello ");
         append(item, "World!");
 
@@ -91,7 +91,7 @@ public class DivisionLineTest{
 
     @Test
     public void textAppend() throws IOException{
-        DivisionLine item = new DivisionLine(70).setLeading(1);
+        DivisionText item = new DivisionText(70).setLeading(1);
         append(item, "Hello Wor");
         append(item, "ld!");
 
@@ -101,7 +101,7 @@ public class DivisionLineTest{
 
     @Test
     public void wordTooLong() throws IOException{
-        DivisionLine item = new DivisionLine(30).setLeading(1);
+        DivisionText item = new DivisionText(30).setLeading(1);
         append(item, "Hello ");
         append(item, "World!");
 
@@ -114,7 +114,7 @@ public class DivisionLineTest{
 
     @Test
     public void appendFromSpace() throws IOException{
-        DivisionLine item = new DivisionLine(35).setLeading(1);
+        DivisionText item = new DivisionText(35).setLeading(1);
         append(item, "Hello ");
         append(item, "World!");
 
@@ -127,7 +127,7 @@ public class DivisionLineTest{
 
     @Test
     public void appendToWord() throws IOException{
-        DivisionLine item = new DivisionLine(35).setLeading(1);
+        DivisionText item = new DivisionText(35).setLeading(1);
         append(item, "Hello Wor");
         append(item, "ld!");
 
@@ -140,7 +140,7 @@ public class DivisionLineTest{
 
     @Test
     public void longText() throws IOException{
-        DivisionLine item = new DivisionLine(12).setLeading(1);
+        DivisionText item = new DivisionText(12).setLeading(1);
         append(item, "Hello");
 
         assertEquals(26.66, item.get(0).getWidth(), 0.1);

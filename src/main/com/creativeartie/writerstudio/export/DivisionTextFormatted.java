@@ -10,19 +10,18 @@ import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.export.value.*;
 
-public class DivisionLineFormatted extends DivisionLine{
+public class DivisionTextFormatted extends DivisionText{
 
     private SectionContent<?> contentData;
     private WritingExporter parentDoc;
 
-    public DivisionLineFormatted(SectionContent<?> content,
-            WritingExporter doc){
+    public DivisionTextFormatted(SectionContent<?> content){
         super(content.getPage().getRenderWidth());
         contentData = content;
-        parentDoc = doc;
+        parentDoc = content.getParent();
     }
 
-    public DivisionLineFormatted addContent(FormatSpanMain span)
+    public DivisionTextFormatted addContent(FormatSpanMain span)
             throws IOException{
         for(Span child: span){
             if (child instanceof FormatSpan){
@@ -106,7 +105,7 @@ public class DivisionLineFormatted extends DivisionLine{
             .FOOTNOTE);
         if (note.isPresent()){
             for (ContentText content: appendText(
-                contentData.getFootnote().prepFootnote(note.get()), font
+                contentData.getFootnote().addFootnote(note.get()), font
             )){
                 content.setTarget(Optional.of((SpanBranch)note.get()));
             }

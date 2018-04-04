@@ -13,7 +13,7 @@ import com.creativeartie.writerstudio.export.value.*;
 public class PageFootnote {
     private ArrayList<SpanBranch> insertedItems;
     private ArrayList<SpanBranch> pendingItems;
-    private ArrayList<DivisionLine> pendingLines;
+    private ArrayList<DivisionTextNote> pendingLines;
     private Optional<MatterArea> footnoteArea;
     private SectionContent<?> insertPage;
 
@@ -30,20 +30,19 @@ public class PageFootnote {
             (float) pendingLines.stream().mapToDouble(l -> l.getHeight()).sum();
     }
 
-    public float getHeight(DivisionLine.Line line){
-        float ans = getHeight();
+    public float getHeight(DivisionText.Line line){
+        float ans = footnoteArea.map(a -> a.getHeight()).orElse(0f);
         for (ContentText text: line){
             ans += text.getTarget().map(s -> getHeight(s)).orElse(0f);
         }
         return ans;
     }
 
-    private float getHeight(SpanBranch checking){
-        if (! insertedItems.contains(checking)){
-            int index = pendingItems.indexOf(checking);
+    private float getHeight(SpanBranch span){
+        if (! insertedItems.contains(span)){
+            int index = pendingItems.indexOf(span);
             if (index == -1){
-                throw new IllegalArgumentException("Span not found:" +
-                    checking);
+                throw new IllegalArgumentException("Span not found: " + span);
             }
             return pendingLines.get(index).getHeight();
         }
@@ -51,45 +50,55 @@ public class PageFootnote {
     }
 
     public MatterArea nextPage(){
-        insertedItems.clear();
         MatterArea area = footnoteArea.orElse(new MatterArea(insertPage.getPage(),
             PageAlignment.BOTTOM));
+        insertedItems.clear();
         footnoteArea = Optional.empty();
         return area;
     }
 
-    public String prepFootnote(SpanBranch target)
-            throws IOException{
-        System.out.println(target);
-        int index = insertedItems.indexOf(target);
-        boolean adding;
-        System.out.println(index);
+    public void resetFootnote(ContentText text) throws IOException{
+        Optional<SpanBranch> span = text.getTarget();
+        if (span.isPresent()){
+            text.setText(resetFootnote(span.get()));
+        }
+    }
+
+    public String resetFootnote(SpanBranch span) throws IOException{
+        int index = pendingItems.indexOf(span);
         if (index == -1){
-            index = pendingItems.indexOf(target);
+            throw new IllegalArgumentException("Span not found: " + span);
+        }
+        String ans = Utilities.toNumberSuperscript(index + 1);
+        pendingLines.get(index).setNumbering(ans);
+        return ans;
+    }
+
+    public String addFootnote(SpanBranch span)
+            throws IOException{
+        int index = insertedItems.indexOf(span);
+        boolean adding;
+        if (index == -1){
+            index = pendingItems.indexOf(span);
             if (index != -1){
                 index += insertedItems.size();
             }
         }
-        System.out.println(index);
         if (index == -1){
-            pendingItems.add(target);
+            pendingItems.add(span);
             index = insertedItems.size() + pendingItems.size();
             adding = true;
         } else {
             index++;
             adding = false;
         }
-        System.out.println(index);
         String ans = Utilities.toNumberSuperscript(index);
         if (adding){
-            if (target instanceof LinedSpanPointNote){
-                LinedSpanPointNote note = (LinedSpanPointNote) target;
-                DivisionLineFormatted insert = insertPage.newFormatDivision();
-                if (footnoteArea.isPresent()){
-                    insert.setLeading(1);
-                }
-                insert.appendSimpleText(ans, insertPage.newFont()
-                    .changeToSuperscript());
+            if (span instanceof LinedSpanPointNote){
+                LinedSpanPointNote note = (LinedSpanPointNote) span;
+                DivisionTextNote insert = new DivisionTextNote(insertPage);
+                insert.setLeading(1);
+                insert.setNumbering(ans);
                 Optional<FormatSpanMain> content = note.getFormattedSpan();
                 if (content.isPresent()){
                     insert.addContent(content.get());
@@ -97,30 +106,39 @@ public class PageFootnote {
                 pendingLines.add(insert);
             }
         }
+
+        assert pendingItems.size() == pendingLines.size();
         return ans;
     }
 
     public PageFootnote insertAll(){
-        insertedItems.addAll(pendingItems);
+        if (! pendingItems.isEmpty()){
+            insertedItems.addAll(pendingItems);
+            getFootnoteArea().addAll(pendingLines);
+        }
         pendingItems.clear();
         pendingLines.clear();
-        getFootnoteArea().addAll(pendingLines);
         return this;
     }
 
-    public PageFootnote insertPending(SpanBranch span){
+    public PageFootnote insertPending(DivisionText.Line line){
+        for (ContentText content: line){
+            content.getTarget().ifPresent(s -> insertPending(s));
+        }
+        return this;
+    }
+
+    private void insertPending(SpanBranch span){
         if (insertedItems.contains(span)){
-            return this;
+            return;
         }
         if (pendingItems.contains(span)){
-            if (pendingItems.indexOf(span) == 0){
-                insertedItems.add(pendingItems.remove(0));
-                getFootnoteArea().add(pendingLines.remove(0));
-            } else {
-                throw new IllegalArgumentException("Span is not the first: " +
-                    span);
+            int index = pendingItems.indexOf(span);
+             if (index != -1){
+                insertedItems.add(pendingItems.remove(index));
+                getFootnoteArea().add(pendingLines.remove(index));
+                return;
             }
-            return this;
         }
         throw new IllegalArgumentException("Span not found: " + span);
     }
@@ -129,6 +147,8 @@ public class PageFootnote {
         if (!footnoteArea.isPresent()){
             footnoteArea = Optional.of(new MatterArea(insertPage.getPage(),
                 PageAlignment.BOTTOM));
+            footnoteArea.get().add(new DivisionLine(insertPage.getPage()
+                .getRenderWidth()));
         }
         return footnoteArea.get();
     }

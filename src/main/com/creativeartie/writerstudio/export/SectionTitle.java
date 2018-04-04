@@ -78,19 +78,19 @@ public class SectionTitle extends Section {
         bot.render();
     }
 
-    private DivisionLine newLine(MetaData data, LineAlignment alignment)
+    private DivisionText newLine(MetaData data, LineAlignment alignment)
             throws IOException{
         return newLine(data, alignment, 1);
     }
 
-    private DivisionLine newLine(MetaData data, LineAlignment alignment,
+    private DivisionText newLine(MetaData data, LineAlignment alignment,
             float leading) throws IOException{
         return newLine(getData(data), alignment, leading);
     }
 
-    private DivisionLine newLine(String text, LineAlignment alignment,
+    private DivisionText newLine(String text, LineAlignment alignment,
             float leading) throws IOException{
-        return new DivisionLine(areaWidth, alignment).setLeading(leading)
+        return new DivisionText(areaWidth, alignment).setLeading(leading)
             .appendSimpleText(text, newFont());
     }
 

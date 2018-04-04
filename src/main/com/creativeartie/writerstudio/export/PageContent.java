@@ -71,13 +71,13 @@ public class PageContent implements AutoCloseable{
                 return height - pageMargin.getTop();
             case MIDDLE:
                 height /= 2;
-                for (DivisionLine line: area){
+                for (Division line: area){
                     height += line.getHeight() / 2;
                 }
                 return height;
             case BOTTOM:
                 height = pageMargin.getBottom();
-                for (DivisionLine line : area){
+                for (Division line : area){
                     height += line.getHeight();
                 }
                 return height;

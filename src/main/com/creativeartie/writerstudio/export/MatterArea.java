@@ -11,10 +11,10 @@ import org.apache.pdfbox.pdmodel.common.*;
 
 import com.creativeartie.writerstudio.export.value.*;
 
-public class MatterArea extends ForwardingList<DivisionLine> {
+public class MatterArea extends ForwardingList<Division> {
     private PageContent outputPage;
     private PDPageContentStream contentStream;
-    private ArrayList<DivisionLine> divisionLines;
+    private ArrayList<Division> divisionLines;
     private final float maxHeight;
     private PageAlignment pageAlignment;
 
@@ -46,11 +46,11 @@ public class MatterArea extends ForwardingList<DivisionLine> {
         return fillHeight;
     }
 
-    public boolean checkHeight(DivisionLine item){
+    public boolean checkHeight(DivisionText item){
         return item.getHeight() + fillHeight < maxHeight;
     }
 
-    public boolean checkHeight(DivisionLine item, float footnote){
+    public boolean checkHeight(DivisionText item, float footnote){
         return item.getHeight() + footnote + fillHeight < maxHeight;
     }
 
@@ -64,39 +64,47 @@ public class MatterArea extends ForwardingList<DivisionLine> {
         float leading = 0;
         float x = outputPage.getStartX();
         if (! isEmpty()){
-            DivisionLine child = get(0);
-            if (! child.isEmpty()){
-                leading = child.get(0).getTextHeight() * (child.getLeading());
-            }
+            leading = get(0).getStartY();
         }
         float y = outputPage.getStartY(pageAlignment, this) - leading;
         moveText(x, y);
 
         /// show text
-        for (DivisionLine block: this){
-            changeAlign(block.getLineAlignment());
-            if (block.getPrefix().isPresent()){
-                /// move back to print prefix
-                moveText(block.getPrefixDistance(), 0);
-                contentStream.showText(block.getPrefix().get());
-                /// move forward to print text
-                moveText(-block.getPrefixDistance(), 0);
+        for (Division block: this){
+            x = localX;
+            y = localY;
+            if (block instanceof DivisionText){
+                render((DivisionText) block);
             }
-            for (DivisionLine.Line line: block){
-                /// move to indent
-                moveText(line.getIndent(), 0);
-                printText(line);
-                /// move to next line
-                moveText(0, -line.getHeight());
-                /// move to remove indent
-                moveText(-line.getIndent(), 0);
-            }
+            PDRectangle rect = new PDRectangle(x, y,
+                block.getWidth(), block.getHeight());
+            postEditors.addAll(block.getPostTextConsumers(rect));
         }
         contentStream.endText();
         for (ContentPostEditor consumer: postEditors){
             consumer.edit(outputPage.getPage(), contentStream);
         }
         return this;
+    }
+
+    private void render(DivisionText block) throws IOException{
+        changeAlign(block.getLineAlignment());
+        if (block.getPrefix().isPresent()){
+            /// move back to print prefix
+            moveText(block.getPrefixDistance(), 0);
+            contentStream.showText(block.getPrefix().get());
+            /// move forward to print text
+            moveText(-block.getPrefixDistance(), 0);
+        }
+        for (DivisionText.Line line: block){
+            /// move to indent
+            moveText(line.getIndent(), 0);
+            printText(line);
+            /// move to next line
+            moveText(0, -line.getHeight());
+            /// move to remove indent
+            moveText(-line.getIndent(), 0);
+        }
     }
 
     private void changeAlign(LineAlignment next) throws IOException{
@@ -125,7 +133,7 @@ public class MatterArea extends ForwardingList<DivisionLine> {
         lineAlignment = next;
     }
 
-    private void printText(DivisionLine.Line line) throws IOException{
+    private void printText(DivisionText.Line line) throws IOException{
         /// Center and set right
         if (lineAlignment == LineAlignment.RIGHT){
             moveText(-line.getWidth(), 0);
@@ -163,23 +171,23 @@ public class MatterArea extends ForwardingList<DivisionLine> {
     }
 
     @Override
-    public void add(int index, DivisionLine item){
+    public void add(int index, Division item){
         divisionLines.add(index, item);
         fillHeight += item.getHeight();
     }
 
     @Override
-    public boolean add(DivisionLine line){
+    public boolean add(Division line){
         return standardAdd(line);
     }
 
     @Override
-    public boolean addAll(Collection<? extends DivisionLine> c) {
+    public boolean addAll(Collection<? extends Division> c) {
         return standardAddAll(c);
     }
 
     @Override
-    protected List<DivisionLine> delegate(){
+    protected List<Division> delegate(){
         return divisionLines;
     }
 }
