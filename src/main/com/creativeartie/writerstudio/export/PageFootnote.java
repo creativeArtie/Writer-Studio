@@ -94,17 +94,24 @@ public class PageFootnote {
         }
         String ans = Utilities.toNumberSuperscript(index);
         if (adding){
+            DivisionTextNote insert = new DivisionTextNote(insertPage);
+            insert.setLeading(1);
+            insert.setNumbering(ans);
             if (span instanceof LinedSpanPointNote){
                 LinedSpanPointNote note = (LinedSpanPointNote) span;
-                DivisionTextNote insert = new DivisionTextNote(insertPage);
-                insert.setLeading(1);
-                insert.setNumbering(ans);
                 Optional<FormatSpanMain> content = note.getFormattedSpan();
                 if (content.isPresent()){
                     insert.addContent(content.get());
                 }
-                pendingLines.add(insert);
+            } else if (span instanceof LinedSpanCite){
+                Optional<FormatSpanMain> data = ((LinedSpanCite)span).getData()
+                    .filter(s -> s instanceof InfoDataSpanFormatted)
+                    .map(s -> ((InfoDataSpanFormatted)s).getData());
+                if (data.isPresent()){
+                    insert.addContent(data.get());
+                }
             }
+            pendingLines.add(insert);
         }
 
         assert pendingItems.size() == pendingLines.size();

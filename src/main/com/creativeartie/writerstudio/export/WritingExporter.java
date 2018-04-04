@@ -75,6 +75,7 @@ public class WritingExporter implements AutoCloseable{
     private final PDDocument pdfDocument;
     private final PDFont[] embedFonts;
     private final ArrayList<LinedSpanPointNote> endnoteList;
+    private final TreeSet<FormatSpanMain> citationList;
 
     public WritingExporter(String path) throws IOException{
         savePath = path;
@@ -86,6 +87,7 @@ public class WritingExporter implements AutoCloseable{
                 .getResourceAsStream(FONT_FOLDER + font));
         }
         endnoteList = new ArrayList<>();
+        citationList = new TreeSet<>(Comparator.comparing(s -> s.getParsedText()));
     }
 
     public void export(ManuscriptFile data) throws IOException{
@@ -103,12 +105,19 @@ public class WritingExporter implements AutoCloseable{
                 content.addLine(spans.next());
             }
         }
-        
+
         if (! endnoteList.isEmpty()){
             try (SectionContentEndnote endnote = new SectionContentEndnote(
                     this)){
                 for (LinedSpanPointNote note: endnoteList){
                     endnote.addLine(note);
+                }
+            }
+        }
+        if (! citationList.isEmpty()){
+            try (SectionContentCite citation = new SectionContentCite(this)){
+                for (FormatSpanMain cite: citationList){
+                    citation.addLine(cite);
                 }
             }
         }
@@ -153,6 +162,15 @@ public class WritingExporter implements AutoCloseable{
             endnoteList.add(note);
         }
         return Utilities.toRomanSuperscript(index + 1);
+    }
+
+    Optional<LinedSpanCite> addCitation(NoteCardSpan note){
+        Optional<FormatSpanMain> cite = note.getSource();
+        Optional<LinedSpanCite> inText = note.getInTextLine();
+        if (cite.isPresent() && inText.isPresent()){
+            citationList.add(cite.get());
+        }
+        return inText;
     }
 
     public PDDocument getPdfDocument(){

@@ -12,6 +12,8 @@ import com.creativeartie.writerstudio.lang.markup.*;
 import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.*;
 
+import com.google.common.base.CharMatcher;
+
 public class PdfMain {
 
     public static void main(String args[]) throws IOException {
@@ -20,7 +22,7 @@ public class PdfMain {
 
     private static void exportTest() throws IOException {
 
-        File file = new File("data/pdf-long.txt");
+        File file = new File("data/pdf-base.txt");
         WritingText doc = new WritingText(file);
         ManuscriptFile use = ManuscriptFile.withManuscript(doc);
         try (WritingExporter out = new WritingExporter("test.pdf")){

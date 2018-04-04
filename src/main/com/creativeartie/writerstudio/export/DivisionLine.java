@@ -31,16 +31,13 @@ public class DivisionLine implements Division{
 
     public List<ContentPostEditor> getPostTextConsumers(PDRectangle rect){
 
-        return Arrays.asList(new ContentPostEditor[]{
-            (page, stream) -> {
-                float x = rect.getLowerLeftX();
-                float y = rect.getUpperRightY() + (rect.getHeight() / 2);
-                float x1 = rect.getUpperRightX() / 2;
-                stream.moveTo(x, y);
-                stream.lineTo(x1, y);
-                stream.stroke();
-                System.out.println(x + " " + y);
-            }
-        });
+        return Arrays.asList(new ContentPostEditor[]{ (page, stream) -> {
+            float x = rect.getLowerLeftX();
+            float y = rect.getUpperRightY() + (rect.getHeight() / 2);
+            float x1 = rect.getUpperRightX() / 2;
+            stream.moveTo(x, y);
+            stream.lineTo(x1, y);
+            stream.stroke();
+        }});
     }
 }

@@ -104,11 +104,35 @@ public class DivisionTextFormatted extends DivisionText{
         note = note.filter(t -> t.getDirectoryType() == DirectoryType
             .FOOTNOTE);
         if (note.isPresent()){
-            for (ContentText content: appendText(
-                contentData.getFootnote().addFootnote(note.get()), font
-            )){
-                content.setTarget(Optional.of((SpanBranch)note.get()));
+            addFootnote(note.get(), font);
+            return;
+        }
+        Optional<LinedSpanCite> citation = base
+            .filter(s -> s instanceof NoteCardSpan)
+            .map(s -> (NoteCardSpan) s)
+            .flatMap(s -> parentDoc.addCitation(s));
+        if (citation.isPresent()){
+            LinedSpanCite cite = citation.get();
+            if (cite.getFieldType() == InfoFieldType.FOOTNOTE){
+                font = font.changeToSuperscript();
+                addFootnote(cite, font);
+            } else {
+                appendSimpleText(cite.getData()
+                    .filter(s -> s instanceof InfoDataSpanText)
+                    .map(s -> ((InfoDataSpanText)s).getData())
+                    .map(s -> s.getText()).orElse("")
+                , font);
+
             }
+        }
+    }
+
+    private void addFootnote(SpanBranch span, ContentFont font)
+        throws IOException{
+        for (ContentText content: appendText(
+            contentData.getFootnote().addFootnote(span), font
+        )){
+            content.setTarget(Optional.of(span));
         }
     }
 

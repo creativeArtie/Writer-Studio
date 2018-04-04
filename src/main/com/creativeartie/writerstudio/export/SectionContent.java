@@ -64,11 +64,7 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
 
     protected abstract DivisionText parseSpan(T span) throws IOException;
 
-    String addFootnote(LinedSpan note) throws IOException{
-        return Utilities.toNumberSuperscript(1);
-    }
-
-    private void addLine(DivisionText div) throws IOException{
+    void addLine(DivisionText div) throws IOException{
         if (contentArea == null){
             nextPage(PageAlignment.CONTENT);
         }
