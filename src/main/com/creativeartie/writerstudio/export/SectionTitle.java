@@ -91,7 +91,7 @@ public class SectionTitle extends Section {
     private DivisionText newLine(String text, LineAlignment alignment,
             float leading) throws IOException{
         return new DivisionText(areaWidth, alignment).setLeading(leading)
-            .appendSimpleText(text, newFont());
+            .appendText(text, newFont());
     }
 
     private String getData(MetaData key){

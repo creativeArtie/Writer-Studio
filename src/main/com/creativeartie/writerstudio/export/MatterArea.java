@@ -1,63 +1,74 @@
 package com.creativeartie.writerstudio.export;
 
-import java.io.*;
-import java.util.*;
+import java.io.*; // IOException
+import java.util.*; // ArrayList, Collection, List
 
-import com.google.common.collect.*;
+import com.google.common.collect.*; // FowardingList
 
-import org.apache.pdfbox.pdmodel.*;
-import org.apache.pdfbox.pdmodel.font.*;
-import org.apache.pdfbox.pdmodel.common.*;
+import org.apache.pdfbox.pdmodel.*; //PDPageContentStream
+import org.apache.pdfbox.pdmodel.common.*; //PDRectangle
 
-import com.creativeartie.writerstudio.export.value.*;
+import com.creativeartie.writerstudio.export.value.*; // (many)
 
-public class MatterArea extends ForwardingList<Division> {
-    private PageContent outputPage;
-    private PDPageContentStream contentStream;
-    private ArrayList<Division> divisionLines;
+/**
+ * Insert text and graphics into a section of a page.
+ * Purpose
+ * <ul>
+ * <li> Render text</li>
+ * <li> Calculate height</li>
+ * <li> Decide when to render other things</li>
+ * <li> Calculate rectangle for text and line positions</li>
+ * </ul>
+ */
+class MatterArea extends ForwardingList<Division> {
+    private final PageContent outputPage;
+    private final PDPageContentStream contentStream;
+    private final PageAlignment pageAlignment;
     private final float maxHeight;
-    private PageAlignment pageAlignment;
+    private final float areaWidth;
 
+    private final ArrayList<Division> divisionLines;
     private float fillHeight;
-
-    private boolean hasStarted;
     private float localX;
     private float localY;
-    private float areaWidth;
     private ContentFont textFont;
-    private ArrayList<ContentPostEditor> postEditors;
     private LineAlignment lineAlignment;
+    private final ArrayList<ContentPostEditor> postEditors;
 
+    /** Only constructor.
+     * @param page
+     *      the page where this section is location
+     * @param alignment
+     *      the alignment on the page
+     */
     MatterArea(PageContent page, PageAlignment alignment){
         outputPage = page;
-        hasStarted = false;
         contentStream = page.getContentStream();
         pageAlignment = alignment;
-        textFont = null;
-        areaWidth = page.getRenderWidth();
         maxHeight = page.getRenderHeight(alignment);
-        fillHeight = localX = localY = 0;
+        areaWidth = page.getRenderWidth();
+
         divisionLines = new ArrayList<>();
+        fillHeight = localX = localY = 0;
         postEditors = new ArrayList<>();
+        textFont = null;
         lineAlignment = LineAlignment.LEFT;
     }
 
-    public float getHeight(){
+    float getHeight(){
         return fillHeight;
     }
 
-    public boolean checkHeight(DivisionText item){
+    boolean checkHeight(DivisionText item){
         return item.getHeight() + fillHeight < maxHeight;
     }
 
-    public boolean checkHeight(DivisionText item, float footnote){
+    boolean checkHeight(DivisionText item, float footnote){
         return item.getHeight() + footnote + fillHeight < maxHeight;
     }
 
 
     MatterArea render() throws IOException{
-        hasStarted = true;
-
         contentStream.beginText();
 
         /// Initital placement

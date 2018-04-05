@@ -30,7 +30,7 @@ public class SectionContentEndnote extends SectionContent<LinedSpanPointNote> {
         Optional<FormatSpanMain> text = span.getFormattedSpan();
         if (text.isPresent() && ! text.get().isEmpty()){
             DivisionTextFormatted ans = newFormatDivision();
-            ans.appendSimpleText(Utilities.toRomanSuperscript(noteNumber),
+            ans.appendText(Utilities.toRomanSuperscript(noteNumber),
                 newFont().changeToSuperscript());
             return ans.addContent(text.get());
         }

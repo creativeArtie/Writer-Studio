@@ -18,7 +18,7 @@ public class SectionContentCite extends SectionContent<FormatSpanMain> {
         super(parent);
         ContentFont font = newFont().changeBold(true).changeSize(16);
         addLine(new DivisionText(getPage().getRenderWidth(),
-            LineAlignment.CENTER).appendSimpleText("Work(s) Cited", font));
+            LineAlignment.CENTER).appendText("Work(s) Cited", font));
     }
 
     @Override

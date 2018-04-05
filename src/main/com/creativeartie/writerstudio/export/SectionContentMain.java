@@ -28,7 +28,7 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
         header.add(new DivisionText(
                 getPage().getRenderWidth(), LineAlignment.RIGHT
             ).setLeading(1)
-            .appendSimpleText(data.getText(MetaData.LAST_NAME) + "/" +
+            .appendText(data.getText(MetaData.LAST_NAME) + "/" +
                 data.getText(MetaData.TITLE) + "/" +
                 getPageNumber(), getParent().new PdfFont()
             )

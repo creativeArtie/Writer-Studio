@@ -1,27 +1,40 @@
 package com.creativeartie.writerstudio.export;
 
-import java.io.*;
-import java.util.*;
-import java.awt.*;
+import java.io.*; // IOException
 
-import com.google.common.collect.*;
+import com.creativeartie.writerstudio.export.value.*; // ContentFont
 
-import com.creativeartie.writerstudio.lang.*;
-import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.export.value.*;
+/**
+ * A {@link Division} of text for {@link PageFootnote}.
+ */
+class DivisionTextNote extends DivisionTextFormatted{
 
-public class DivisionTextNote extends DivisionTextFormatted{
+    private final ContentFont superFont;
 
-    private ContentFont superFont;
-
-    public DivisionTextNote(SectionContent<?> content){
+    /** Only constructor
+     * @param content
+     *  the parent content
+     */
+    DivisionTextNote(SectionContent<?> content){
         super(content);
         superFont = content.newFont().changeToSuperscript();
     }
 
-    public DivisionTextNote setNumbering(String text) throws IOException{
+    /** Set or change the numbering text.
+     * If the first text is not a superscript do not set it.
+     *
+     * @param text
+     *      the text to set
+     * @return self
+     * @throws IOException
+     *      from {@link DivisionText#appendText(String, ContentFont)
+     */
+    DivisionTextNote setNumbering(String text) throws IOException{
+        /// get(0) = DivisionLine.Line
+        /// get(0).get(0) = ContentText
+
         if (isEmpty() || get(0).isEmpty()){
-            appendSimpleText(text, superFont);
+            appendText(text, superFont);
             return this;
         }
         if (get(0).get(0).getFont().equals(superFont)){

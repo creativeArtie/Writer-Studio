@@ -1,36 +1,45 @@
 package com.creativeartie.writerstudio.export;
 
-import java.io.*;
-import java.util.*;
+import java.util.*; // List, Arrays
 
-import com.google.common.collect.*;
+import org.apache.pdfbox.pdmodel.common.*; // PDRectangle
 
-import org.apache.pdfbox.pdmodel.common.*;
+import com.creativeartie.writerstudio.export.value.*; // ContentPostEditor
 
-import com.creativeartie.writerstudio.export.value.*;
+/**
+ * A {@link Division} for line drawing.
+ */
+class DivisionLine implements Division{
 
-public class DivisionLine implements Division{
+    private final float divWidth;
 
-    private float divWidth;
-
-    public DivisionLine(float width){
+    /**
+     * Only constructor
+     * @param width
+     *      the width of the line
+     */
+    DivisionLine(float width){
         divWidth = width;
     }
 
+    @Override
     public float getHeight(){
         return 10f;
     }
 
+    @Override
     public float getStartY(){
         return 0;
     }
 
+    @Override
     public float getWidth(){
         return divWidth;
     }
 
+    @Override
     public List<ContentPostEditor> getPostTextConsumers(PDRectangle rect){
-
+        /// Draws a line
         return Arrays.asList(new ContentPostEditor[]{ (page, stream) -> {
             float x = rect.getLowerLeftX();
             float y = rect.getUpperRightY() + (rect.getHeight() / 2);

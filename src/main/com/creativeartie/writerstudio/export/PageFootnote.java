@@ -33,7 +33,7 @@ public class PageFootnote {
     public float getHeight(DivisionText.Line line){
         float ans = footnoteArea.map(a -> a.getHeight()).orElse(0f);
         for (ContentText text: line){
-            ans += text.getTarget().map(s -> getHeight(s)).orElse(0f);
+            ans += text.getFootnote().map(s -> getHeight(s)).orElse(0f);
         }
         return ans;
     }
@@ -58,7 +58,7 @@ public class PageFootnote {
     }
 
     public void resetFootnote(ContentText text) throws IOException{
-        Optional<SpanBranch> span = text.getTarget();
+        Optional<SpanBranch> span = text.getFootnote();
         if (span.isPresent()){
             text.setText(resetFootnote(span.get()));
         }
@@ -130,7 +130,7 @@ public class PageFootnote {
 
     public PageFootnote insertPending(DivisionText.Line line){
         for (ContentText content: line){
-            content.getTarget().ifPresent(s -> insertPending(s));
+            content.getFootnote().ifPresent(s -> insertPending(s));
         }
         return this;
     }
