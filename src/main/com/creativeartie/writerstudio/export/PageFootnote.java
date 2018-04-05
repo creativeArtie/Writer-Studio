@@ -10,7 +10,7 @@ import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.export.value.*;
 
-public class PageFootnote {
+public final class PageFootnote {
     private ArrayList<SpanBranch> insertedItems;
     private ArrayList<SpanBranch> pendingItems;
     private ArrayList<DivisionTextNote> pendingLines;

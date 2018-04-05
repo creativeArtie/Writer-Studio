@@ -15,8 +15,7 @@ import org.apache.pdfbox.pdmodel.common.*; // PDRectangle
 import org.apache.pdfbox.pdmodel.interactive.action.*; // PDActionURI
 import org.apache.pdfbox.pdmodel.interactive.annotation.*; // PDAnnotationLink
 
-/**
- * Stores a text and its properties.
+/** Stores a text and its properties.
  *
  * Purposes:
  *
@@ -26,12 +25,12 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.*; // PDAnnotationLink
  * <li>render text related things</li>
  * <ul>
  */
-class ContentText {
+final class ContentText {
 
     /** for adding new ContentText with a space. */
     private static final String SPACE = " ";
 
-    /** create {@linkplain ContentText} by splitting up the text.
+    /** Create {@linkplain ContentText} by splitting up the text.
      *
      * This is use to create {@link ContentText}.
      *
@@ -92,7 +91,7 @@ class ContentText {
     private final float textHeight;
     private float textWidth;
 
-    /** Copy construtor
+    /** Copy construtor.
      * @param original
      *      The original object to copy from; not null
      */
@@ -108,8 +107,7 @@ class ContentText {
         textWidth = original.textWidth;
     }
 
-    /**
-     * private constructor.
+    /** Private constructor.
      * @param word
      *      the word to add; not null or empty
      * @param font
@@ -133,8 +131,7 @@ class ContentText {
         textWidth = textFont.getWidth(word);
     }
 
-    /**
-     * Get the text.
+    /** Get the text.
      * @return answer
      * @see #setText(String)
      */
@@ -159,8 +156,7 @@ class ContentText {
         return this;
     }
 
-    /**
-     * Sets the listener.
+    /** Sets the listener.
      *
      * @param
      *      the consumer to set
@@ -172,8 +168,7 @@ class ContentText {
         return this;
     }
 
-    /**
-     * Get the width of the text.
+    /** Get the width of the text.
      * @return answer
      * @see #getHeight()
      */
@@ -181,8 +176,7 @@ class ContentText {
         return textWidth;
     }
 
-    /**
-     * Get the height of the text.
+    /** Get the height of the text.
      * @return answer
      * @see #getWidth()
      */
@@ -190,8 +184,7 @@ class ContentText {
         return textHeight;
     }
 
-    /**
-     * Get the width of the text.
+    /** Get the width of the text.
      * @return answer
      */
     ContentText setLinkPath(String path){
@@ -199,8 +192,7 @@ class ContentText {
         return this;
     }
 
-    /**
-     * Is the text is a space
+    /** Is the text is a space
      * @return answer
      * @see #getText()
      */
@@ -208,16 +200,14 @@ class ContentText {
         return spaceText;
     }
 
-    /**
-     * Get the font of the text
+    /** Get the font of the text
      * @return answer
      */
     ContentFont getFont(){
         return textFont;
     }
 
-    /**
-     * Get the footnote.
+    /** Get the footnote.
      * @return answer
      * @see setFootnote(Optional)
      */
@@ -225,8 +215,7 @@ class ContentText {
         return targetSpan;
     }
 
-    /**
-     * Set the text target
+    /** Set the text target
      * @param span
      *      the span to set
      * @return self
@@ -238,8 +227,7 @@ class ContentText {
         return this;
     }
 
-    /**
-     * Add rendering that is not related to printing of text
+    /** Add rendering that is not related to printing of text
      *
      * @param rect
      *      the location of the text

@@ -9,17 +9,16 @@ import com.creativeartie.writerstudio.lang.*; // Span, SpanBranch
 import com.creativeartie.writerstudio.lang.markup.*; // (many)
 import com.creativeartie.writerstudio.main.*; // Checker
 
-/**
- * A {@link Division} of {@link FormatSpanMain}
+/** A {@link Division} of {@link FormatSpanMain}.
  */
 class DivisionTextFormatted extends DivisionText{
 
     private final SectionContent<?> contentData;
     private final WritingExporter parentDoc;
 
-    /** Only constructor
+    /** Only constructor.
      * @param content
-     *      the parent content
+     *      the parent content; not null
      */
     DivisionTextFormatted(SectionContent<?> content){
         super(Checker.checkNotNull(content, "content").getPage()
@@ -28,14 +27,15 @@ class DivisionTextFormatted extends DivisionText{
         parentDoc = content.getParent();
     }
 
-    /** Add Content
+    /** Add Content.
      * @param span
-     *      the content to add
+     *      the content to add; not null or empty
      * @return self
      * @throws IOException
      *         exception with content parsing
      */
-    DivisionTextFormatted addContent(FormatSpanMain span) throws IOException{
+    final DivisionTextFormatted addContent(FormatSpanMain span)
+            throws IOException{
         Checker.checkNotEmpty(span, "span");
         for(Span child: span){
             if (child instanceof FormatSpan){
@@ -51,10 +51,10 @@ class DivisionTextFormatted extends DivisionText{
      *
      * It does not work with the subclass of {@linkplain FormatSpan}
      * @param span
-     *      the span to extract the font
+     *      the span to extract the font; not null
      * @see addContent(FormatSpanMain)
      */
-    private ContentFont addFont(FormatSpan span){
+    private final ContentFont addFont(FormatSpan span){
         assert span != null;
         ContentFont font = parentDoc.new PdfFont();
         if (span.isCoded()){
@@ -69,15 +69,17 @@ class DivisionTextFormatted extends DivisionText{
     /** Sort and parse the {@link FormatSpan}.
      *
      * @param span
-     *      the span to sort
+     *      the span to sort; not null
      * @param font
-     *      the font of the span
+     *      the font of the span; not null
      * @throws IOException
      *         exception with content parsing
      * @see addContent(FormatSpanMain)
      */
-    private void parseContent(FormatSpan span, ContentFont font)
+    private final void parseContent(FormatSpan span, ContentFont font)
             throws IOException{
+        assert span != null: "null span";
+        assert font != null: "null font";
         if (span instanceof FormatSpanContent){
             parseContent((FormatSpanContent) span, font);
         } else if (span instanceof FormatSpanLink){
@@ -90,15 +92,17 @@ class DivisionTextFormatted extends DivisionText{
     /** Parse a {@link FormatSpanContent}.
      *
      * @param span
-     *      the span to parse
+     *      the span to parse; not null
      * @param font
-     *      the font of the span
+     *      the font of the span; not null
      * @throws IOException
      *         exception with content parsing
      * @see parseContent(FormatSpan, ContentFont)
      */
-    private void parseContent(FormatSpanContent span, ContentFont font)
+    private final void parseContent(FormatSpanContent span, ContentFont font)
             throws IOException{
+        assert span != null: "null span";
+        assert font != null: "null font";
         String text = span.getText();
         appendText(text, font);
     }
@@ -106,15 +110,17 @@ class DivisionTextFormatted extends DivisionText{
     /** Parse a {@link FormatSpanLink}.
      *
      * @param span
-     *      the span to parse
+     *      the span to parse; not null
      * @param font
-     *      the font of the span
+     *      the font of the span; not null
      * @throws IOException
      *         exception with content parsing
      * @see parseContent(FormatSpan, ContentFont)
      */
-    private void parseContent(FormatSpanLink span, ContentFont font)
+    private final void parseContent(FormatSpanLink span, ContentFont font)
             throws IOException{
+        assert span != null: "null span";
+        assert font != null: "null font";
         /// Edit the font
         font = font.changeFontColor(Color.BLUE);
 
@@ -149,15 +155,17 @@ class DivisionTextFormatted extends DivisionText{
     /** Parse a {@link FormatSpanDirectory}.
      *
      * @param span
-     *      the span to parse
+     *      the span to parse; not null
      * @param font
-     *      the font of the span
+     *      the font of the span; not null
      * @throws IOException
      *         exception with content parsing
      * @see parseContent(FormatSpan, ContentFont)
      */
-    private void parseContent(FormatSpanDirectory span, ContentFont font)
+    private final void parseContent(FormatSpanDirectory span, ContentFont font)
             throws IOException{
+        assert span != null: "null span";
+        assert font != null: "null font";
         /// This is not a note
         if (span.getIdType() != DirectoryType.NOTE){
             font = font.changeToSuperscript();
@@ -213,17 +221,19 @@ class DivisionTextFormatted extends DivisionText{
         }
     }
 
-    /** Add span as footnote
+    /** Add span as footnote.
      * @param span
-     *      the span to parse
+     *      the span to parse; not null
      * @param font
-     *      the font of the span
+     *      the font of the span; not null
      * @throws IOException
      *         exception with content parsing
      * @see parseContent(FormatSpanDirectory, ContentFont)
      */
-    private void addFootnote(SpanBranch span, ContentFont font)
-        throws IOException{
+    private final void addFootnote(SpanBranch span, ContentFont font)
+            throws IOException{
+        assert span != null: "null span";
+        assert font != null: "null font";
         for (ContentText content: appendTextList(
             contentData.getFootnote().addFootnote(span), font
         )){

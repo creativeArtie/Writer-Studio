@@ -6,15 +6,13 @@ import org.apache.pdfbox.pdmodel.common.*; // PDRectangle
 
 import com.creativeartie.writerstudio.export.value.*; // ContentPostEditor
 
-/**
- * A {@link Division} for line drawing.
+/** A {@link Division} for line drawing.
  */
-class DivisionLine implements Division{
+final class DivisionLine implements Division{
 
     private final float divWidth;
 
-    /**
-     * Only constructor
+    /** Only constructor
      * @param width
      *      the width of the line
      */
