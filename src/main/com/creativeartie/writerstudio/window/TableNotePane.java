@@ -48,7 +48,7 @@ public class TableNotePane extends TableDataControl<TableNoteData>{
                 d.noteLookupTextProperty(), WindowText.EMPTY_NA);
         TableViewHelper.setPrecentWidth(lookup, this, 20.0);
 
-        TableColumn<TableNoteData, Optional<FormatSpanMain>> data =
+        TableColumn<TableNoteData, Optional<FormattedSpan>> data =
             TableViewHelper.getFormatColumn(WindowText.NOTES_DATA, d ->
                 d.noteDataProperty());
         TableViewHelper.setPrecentWidth(data, this, 40.0);
@@ -65,7 +65,7 @@ public class TableNotePane extends TableDataControl<TableNoteData>{
 
     @Override
      protected String getCategory(){
-         return targetType == DirectoryType.FOOTNOTE? 
+         return targetType == DirectoryType.FOOTNOTE?
             AuxiliaryData.TYPE_FOOTNOTE:
             AuxiliaryData.TYPE_ENDNOTE;
      }

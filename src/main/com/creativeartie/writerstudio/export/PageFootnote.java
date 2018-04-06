@@ -99,12 +99,12 @@ public final class PageFootnote {
             insert.setNumbering(ans);
             if (span instanceof LinedSpanPointNote){
                 LinedSpanPointNote note = (LinedSpanPointNote) span;
-                Optional<FormatSpanMain> content = note.getFormattedSpan();
+                Optional<FormattedSpan> content = note.getFormattedSpan();
                 if (content.isPresent()){
                     insert.addContent(content.get());
                 }
             } else if (span instanceof LinedSpanCite){
-                Optional<FormatSpanMain> data = ((LinedSpanCite)span).getData()
+                Optional<FormattedSpan> data = ((LinedSpanCite)span).getData()
                     .filter(s -> s instanceof InfoDataSpanFormatted)
                     .map(s -> ((InfoDataSpanFormatted)s).getData());
                 if (data.isPresent()){

@@ -113,7 +113,7 @@ public class BranchLineTest {
     public abstract static class LevelLineTest<T extends SimpleStyleTest<T>>
             extends SimpleStyleTest<T>{
         private int lineLevel;
-        private Optional<FormatSpanMain> lineText;
+        private Optional<FormattedSpan> lineText;
 
         public LevelLineTest(Class<T> clazz){
             super(clazz, null);
@@ -126,7 +126,7 @@ public class BranchLineTest {
         }
 
         public T setFormattedSpan(DocumentAssert doc, int ... idx){
-            lineText = Optional.of(doc.getChild(FormatSpanMain.class, idx));
+            lineText = Optional.of(doc.getChild(FormattedSpan.class, idx));
             return cast();
         }
 
@@ -235,7 +235,7 @@ public class BranchLineTest {
     public static class ParagraphLineTest
             extends SimpleStyleTest<ParagraphLineTest>{
 
-        private Optional<FormatSpanMain> lineText;
+        private Optional<FormattedSpan> lineText;
 
         public ParagraphLineTest(){
             super(ParagraphLineTest.class, LinedType.PARAGRAPH);
@@ -243,7 +243,7 @@ public class BranchLineTest {
         }
 
         public ParagraphLineTest setFormattedSpan(DocumentAssert doc, int ... idx){
-            lineText = Optional.of(doc.getChild(FormatSpanMain.class, idx));
+            lineText = Optional.of(doc.getChild(FormattedSpan.class, idx));
             return this;
         }
 
@@ -258,7 +258,7 @@ public class BranchLineTest {
     public static class NoteLineTest extends SimpleStyleTest<NoteLineTest>{
 
         private Optional<CatalogueIdentity> buildId;
-        private Optional<FormatSpanMain> lineText;
+        private Optional<FormattedSpan> lineText;
         private boolean isFirst;
 
         public NoteLineTest(){
@@ -279,7 +279,7 @@ public class BranchLineTest {
         }
 
         public NoteLineTest setFormattedSpan(DocumentAssert doc, int ... idx){
-            lineText = Optional.of(doc.getChild(FormatSpanMain.class, idx));
+            lineText = Optional.of(doc.getChild(FormattedSpan.class, idx));
             return this;
         }
 
@@ -294,7 +294,7 @@ public class BranchLineTest {
     }
 
     public static class PointerNoteTest extends SimpleStyleTest<PointerNoteTest>{
-        private Optional<FormatSpanMain> lineText;
+        private Optional<FormattedSpan> lineText;
 
         public PointerNoteTest(){
             super(PointerNoteTest.class, null);
@@ -302,7 +302,7 @@ public class BranchLineTest {
         }
 
         public PointerNoteTest setFormattedSpan(DocumentAssert doc, int ... idx){
-            lineText = Optional.of(doc.getChild(FormatSpanMain.class, idx));
+            lineText = Optional.of(doc.getChild(FormattedSpan.class, idx));
             return this;
         }
 
@@ -320,7 +320,7 @@ public class BranchLineTest {
     }
 
     public static class QuoteLineTest extends SimpleStyleTest<QuoteLineTest>{
-        private Optional<FormatSpanMain> lineText;
+        private Optional<FormattedSpan> lineText;
 
         public QuoteLineTest(){
             super(QuoteLineTest.class, LinedType.QUOTE);
@@ -328,7 +328,7 @@ public class BranchLineTest {
         }
 
         public QuoteLineTest setFormattedSpan(DocumentAssert doc, int ... idx){
-            lineText = Optional.of(doc.getChild(FormatSpanMain.class, idx));
+            lineText = Optional.of(doc.getChild(FormattedSpan.class, idx));
             return this;
         }
 

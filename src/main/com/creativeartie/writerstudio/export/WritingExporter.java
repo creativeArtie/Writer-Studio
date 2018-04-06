@@ -75,7 +75,7 @@ public class WritingExporter implements AutoCloseable{
     private final PDDocument pdfDocument;
     private final PDFont[] embedFonts;
     private final ArrayList<LinedSpanPointNote> endnoteList;
-    private final TreeSet<FormatSpanMain> citationList;
+    private final TreeSet<FormattedSpan> citationList;
 
     public WritingExporter(String path) throws IOException{
         savePath = path;
@@ -116,7 +116,7 @@ public class WritingExporter implements AutoCloseable{
         }
         if (! citationList.isEmpty()){
             try (SectionContentCite citation = new SectionContentCite(this)){
-                for (FormatSpanMain cite: citationList){
+                for (FormattedSpan cite: citationList){
                     citation.addLine(cite);
                 }
             }
@@ -165,7 +165,7 @@ public class WritingExporter implements AutoCloseable{
     }
 
     Optional<LinedSpanCite> addCitation(NoteCardSpan note){
-        Optional<FormatSpanMain> cite = note.getSource();
+        Optional<FormattedSpan> cite = note.getSource();
         Optional<LinedSpanCite> inText = note.getInTextLine();
         if (cite.isPresent() && inText.isPresent()){
             citationList.add(cite.get());

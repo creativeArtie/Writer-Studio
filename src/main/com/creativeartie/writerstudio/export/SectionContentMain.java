@@ -96,7 +96,7 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
 
     private DivisionTextFormatted parse(LinedSpanLevelList span, String prefix)
             throws IOException{
-        Optional<FormatSpanMain> format = span.getFormattedSpan();
+        Optional<FormattedSpan> format = span.getFormattedSpan();
         if (format.isPresent() && ! format.get().isEmpty()){
             DivisionTextFormatted line = newFormatDivision();
             float indent = Utilities.cmToPoint(.5f) +
@@ -112,7 +112,7 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
 
     @SuppressWarnings("fallthrough")
     private DivisionText parse(LinedSpanLevelSection span) throws IOException{
-        Optional<FormatSpanMain> format = span.getFormattedSpan();
+        Optional<FormattedSpan> format = span.getFormattedSpan();
         if (format.isPresent() && ! format.get().isEmpty()){
             paraFirst = true;
             DivisionTextFormatted ans = newFormatDivision();
@@ -144,7 +144,7 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
     }
 
     private DivisionText parse(LinedSpanParagraph span) throws IOException{
-        Optional<FormatSpanMain> format = span.getFormattedSpan();
+        Optional<FormattedSpan> format = span.getFormattedSpan();
 
         if (format.isPresent() && ! format.get().isEmpty()){
             DivisionTextFormatted ans = newFormatDivision();
@@ -160,7 +160,7 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
 
     private DivisionTextFormatted parse(LinedSpanQuote span)
             throws IOException{
-        Optional<FormatSpanMain> format = span.getFormattedSpan();
+        Optional<FormattedSpan> format = span.getFormattedSpan();
         if (format.isPresent() && ! format.get().isEmpty()){
             DivisionTextFormatted ans = newFormatDivision();
             ans.setWidth(ans.getWidth() - Utilities.cmToPoint(2f));

@@ -302,6 +302,32 @@ public class LinedCiteDebug {
     }
 
     @Test
+    public void sourceWithNote(){
+        String find = "{@abc}";
+        String raw = "!>source:" + find + "\n";
+        DocumentAssert doc = assertDoc(1, raw, parsers);
+
+        CiteLineTest cite = new CiteLineTest()
+            .setInfoType(InfoFieldType.SOURCE)
+            .setDataSpan(doc, 0, 3).setNoteTotal(1);
+        FieldTest field = new FieldTest()
+            .setType(InfoFieldType.SOURCE);
+        FormatDataTest data = new FormatDataTest()
+            .setData(doc, 0, 3, 0);
+
+        cite.test(        doc,  5, raw,      0);
+        doc.assertKeyLeaf(  0,  2, "!>",     0, 0);
+        field.test(       doc,  1, "source", 0, 1);
+        doc.assertFieldLeaf(2,  8, "source", 0, 1, 0);
+        doc.assertKeyLeaf(  8,  9, ":",      0, 2);
+        data.test(        doc,  1, find,     0, 3);
+        doc.assertChild(        1, find,     0, 3, 0);
+        doc.assertDataLeaf( 9, 15, find,     0, 3, 0, 0, 0);
+        doc.assertKeyLeaf( 15, 16, "\n",     0, 4);
+        doc.assertLast();
+    }
+
+    @Test
     public void editAddField(){
         String before = "!>:abc";
         DocumentAssert doc = assertDoc(1, before, parsers);

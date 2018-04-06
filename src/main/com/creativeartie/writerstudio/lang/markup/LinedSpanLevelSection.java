@@ -88,7 +88,7 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
 
     public String getTitle(){
         cacheTitle = getCache(cacheTitle, () ->{
-            Optional<FormatSpanMain> main = spanFromLast(FormatSpanMain.class);
+            Optional<FormattedSpan> main = spanFromLast(FormattedSpan.class);
             return main.isPresent()? main.get().getParsedText(): "";
         });
         return cacheTitle.get();

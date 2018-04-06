@@ -71,7 +71,7 @@ public class BranchFormatTest {
 
         @Override
         public void test(SpanBranch span){
-            FormatSpanDirectory test = assertClass(span, FormatSpanDirectory
+            FormatSpanPointId test = assertClass(span, FormatSpanPointId
                 .class);
 
             assertEquals(getError("type", test), directory, test.getIdType());
@@ -187,7 +187,7 @@ public class BranchFormatTest {
 
         @Override
         protected void test(SpanBranch span) {
-            FormatSpanMain test = assertClass(span, FormatSpanMain.class);
+            FormattedSpan test = assertClass(span, FormattedSpan.class);
 
             assertEquals(getError("publish", test), publishTotal,
                 test.getPublishTotal());

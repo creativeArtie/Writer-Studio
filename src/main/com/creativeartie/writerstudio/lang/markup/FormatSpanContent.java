@@ -7,7 +7,7 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import com.creativeartie.writerstudio.main.Checker;
 
 /**
- * {@link BasicText} with {@link FormatSpan format} for {@link FormatSpanMain}.
+ * {@link BasicText} with {@link FormatSpan format} for {@link FormattedSpan}.
  * Represented in design/ebnf.txt as {@code FormatContent}.
  */
 public final class FormatSpanContent extends FormatSpan implements BasicText{

@@ -12,7 +12,7 @@ import com.creativeartie.writerstudio.file.*;
 import com.creativeartie.writerstudio.resource.*;
 import com.creativeartie.writerstudio.export.value.*;
 
-public class SectionContentCite extends SectionContent<FormatSpanMain> {
+public class SectionContentCite extends SectionContent<FormattedSpan> {
 
     public SectionContentCite(WritingExporter parent) throws IOException{
         super(parent);
@@ -27,7 +27,7 @@ public class SectionContentCite extends SectionContent<FormatSpanMain> {
     }
 
     @Override
-    protected DivisionText parseSpan(FormatSpanMain span) throws IOException{
+    protected DivisionText parseSpan(FormattedSpan span) throws IOException{
         DivisionTextFormatted line = newFormatDivision();
         line.setIndent(Utilities.inchToPoint(0.5f));
         return line.addContent(span);

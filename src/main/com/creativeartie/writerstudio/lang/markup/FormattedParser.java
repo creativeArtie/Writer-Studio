@@ -7,18 +7,18 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.writerstudio.main.Checker.*;
 
 /**
- * Parser for {@link FormatSpanMain}
+ * Parser for {@link FormattedSpan}
  */
-final class FormatParser implements SetupParser {
+final class FormattedParser implements SetupParser {
 
     private final String[] spanEnders;
     private final StyleInfoLeaf leafStyle;
     private final boolean withNote;
 
-    public FormatParser(StyleInfoLeaf style, boolean note, String ... enders){
+    public FormattedParser(StyleInfoLeaf style, boolean note, String ... enders){
         /// Combine the list of span enders and formatting enders
         checkNotNull(enders, "enders");
-        spanEnders = SetupParser.combine(listFormatEnderTokens(), enders);
+        spanEnders = SetupParser.combine(listFormatEnderTokens(note), enders);
         leafStyle = checkNotNull(style, "style");
         withNote = note;
     }
@@ -30,14 +30,14 @@ final class FormatParser implements SetupParser {
         /// Setup format style: bold, italics, underline, coded
         boolean[] formats = new boolean[]{false, false, false, false};
 
-        /// Setup for FormatSpanMain
+        /// Setup for FormattedSpan
         ArrayList<Span> children = new ArrayList<>();
 
         /// check where the loop ends
         boolean more;
 
         do {
-            more = false; /// Assume FormatSpanMain has ended
+            more = false; /// Assume FormattedSpan has ended
 
             /// try to find text first
             if (new FormatParseContent(leafStyle, formats, spanEnders)
@@ -85,9 +85,9 @@ final class FormatParser implements SetupParser {
             }
         } while(more);
 
-        /// Add the FormatParser with its children spans if there are children.
+        /// Add the FormattedParser with its children spans if there are children.
         if (children.size() > 0){
-            return Optional.of(new FormatSpanMain(children));
+            return Optional.of(new FormattedSpan(children));
         }
         return Optional.empty();
     }

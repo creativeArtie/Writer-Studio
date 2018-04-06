@@ -11,7 +11,7 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  */
 public class LinedSpanNote extends LinedSpan{
 
-    private Optional<Optional<FormatSpanMain>> cacheFormatted;
+    private Optional<Optional<FormattedSpan>> cacheFormatted;
     private Optional<Optional<CatalogueIdentity>> cacheId;
     private Optional<String> cacheLookup;
     private Optional<Integer> cacheNote;
@@ -21,9 +21,9 @@ public class LinedSpanNote extends LinedSpan{
         super(children);
     }
 
-    public Optional<FormatSpanMain> getFormattedSpan(){
+    public Optional<FormattedSpan> getFormattedSpan(){
         cacheFormatted = getCache(cacheFormatted, () -> spanFromLast(
-            FormatSpanMain.class));
+            FormattedSpan.class));
         return cacheFormatted.get();
     }
 

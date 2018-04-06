@@ -13,7 +13,6 @@ abstract class FormatParsePoint implements SetupParser {
 
     private final String spanStart;
     private final boolean[] formatList;
-    private final DirectoryParser idParser;
 
     protected FormatParsePoint(String start, boolean[] formats){
         Checker.checkNotNull(start, "start");

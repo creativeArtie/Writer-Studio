@@ -34,11 +34,11 @@ public class NoteCardDetail extends TitledPane{
         locationChoosen = new ReadOnlyIntegerWrapper(this, "locationChoosen");
         clearContent();
     }
-    
+
     public ReadOnlyIntegerProperty locationChoosenProperty(){
         return locationChoosen.getReadOnlyProperty();
     }
-    
+
     public int getLocationChoose(){
         return locationChoosen.getValue();
     }
@@ -60,7 +60,7 @@ public class NoteCardDetail extends TitledPane{
             return;
         }
         /// Add the title
-        Optional<FormatSpanMain> title = span.getTitle();
+        Optional<FormattedSpan> title = span.getTitle();
         if (title.isPresent()){
             setGraphic(TextFlowBuilder.loadFormatText(span.getTitle()));
         } else {
@@ -71,12 +71,12 @@ public class NoteCardDetail extends TitledPane{
 
         /// Add the content
         Node content;
-        Collection<Optional<FormatSpanMain>> lines = span.getContent();
+        Collection<Optional<FormattedSpan>> lines = span.getContent();
         if (lines.isEmpty()){
             content = new Label(WindowText.NOTE_CARD_EMTPY_DETAIL.getText());
         } else {
             TextFlow text = new TextFlow();
-            for (Optional<FormatSpanMain> line: lines){
+            for (Optional<FormattedSpan> line: lines){
                 TextFlowBuilder.loadFormatText(text, line);
                 text.getChildren().add(new Text("\n"));
             }

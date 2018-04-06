@@ -26,11 +26,11 @@ public class TableNoteData implements TableData{
     private ReadOnlyStringWrapper noteLookupText;
     private ReadOnlyIntegerWrapper noteLocation;
     private ReadOnlyBooleanWrapper noteBookmark;
-    private ReadOnlyObjectWrapper<Optional<FormatSpanMain>> noteData;
+    private ReadOnlyObjectWrapper<Optional<FormattedSpan>> noteData;
     private LinedSpanPointNote targetNote;
 
     TableNoteData(LinedSpanPointNote span){
-        
+
         noteId = new ReadOnlyObjectWrapper<>(span.getSpanIdentity());
         noteLookupText = new ReadOnlyStringWrapper(span.getLookupText());
         noteLocation = new ReadOnlyIntegerWrapper(span.getStartLine());
@@ -62,11 +62,11 @@ public class TableNoteData implements TableData{
         return noteLocation.getValue();
     }
 
-    public ReadOnlyObjectProperty<Optional<FormatSpanMain>> noteDataProperty(){
+    public ReadOnlyObjectProperty<Optional<FormattedSpan>> noteDataProperty(){
         return noteData.getReadOnlyProperty();
     }
 
-    public Optional<FormatSpanMain> getnoteData(){
+    public Optional<FormattedSpan> getnoteData(){
         return noteData.getValue();
     }
 

@@ -11,7 +11,7 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  */
 public class LinedSpanPointNote extends LinedSpanPoint {
     private Optional<DirectoryType> cacheType;
-    private Optional<Optional<FormatSpanMain>> cacheFormatted;
+    private Optional<Optional<FormattedSpan>> cacheFormatted;
 
     LinedSpanPointNote(List<Span> children){
         super(children);
@@ -24,9 +24,9 @@ public class LinedSpanPointNote extends LinedSpanPoint {
         return cacheType.get();
     }
 
-    public Optional<FormatSpanMain> getFormattedSpan(){
+    public Optional<FormattedSpan> getFormattedSpan(){
         cacheFormatted = getCache(cacheFormatted, () -> spanFromLast(
-            FormatSpanMain.class));
+            FormattedSpan.class));
         return cacheFormatted.get();
     }
 

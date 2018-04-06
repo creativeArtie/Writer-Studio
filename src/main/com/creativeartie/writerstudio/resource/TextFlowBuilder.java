@@ -33,14 +33,14 @@ public final class TextFlowBuilder {
         }
     }
 
-    public static TextFlow loadFormatText(Optional<FormatSpanMain> span){
+    public static TextFlow loadFormatText(Optional<FormattedSpan> span){
         TextFlow ans = new TextFlow();
         loadFormatText(ans, span);
         return ans;
     }
 
     public static void loadFormatText(TextFlow node,
-            Optional<FormatSpanMain> span){
+            Optional<FormattedSpan> span){
         span.ifPresent(format -> {
             for (Span child: format){
                 createFormatSpan(child).ifPresent(found ->

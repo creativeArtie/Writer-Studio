@@ -5,16 +5,16 @@ import java.util.*;
 import com.creativeartie.writerstudio.lang.*;
 
 /**
- * Data that stores a {@link FormatSpanMain}. Represented in design/ebnf.txt as
+ * Data that stores a {@link FormattedSpan}. Represented in design/ebnf.txt as
  * {@code InfoDataFormatted}.
  */
 public final class InfoDataSpanFormatted extends InfoDataSpan{
 
-    private Optional<FormatSpanMain> cacheData;
+    private Optional<FormattedSpan> cacheData;
 
     @Override
-    public FormatSpanMain getData(){
-        cacheData = getCache(cacheData, () -> (FormatSpanMain)get(0));
+    public FormattedSpan getData(){
+        cacheData = getCache(cacheData, () -> (FormattedSpan)get(0));
         return cacheData.get();
     }
 

@@ -78,7 +78,7 @@ public class SupplementLinkDebug extends IDParamTest{
         String target = "!" + token + id + ":_Random text_";
         String pointer = "{" + token + id + "}";
         WritingText doc = buildDoc(target, pointer);
-        noteTest(findSpan(doc, FormatSpanDirectory.class),
+        noteTest(findSpan(doc, FormatSpanPointId.class),
             findSpan(doc, LinedSpanPointNote.class));
     }
 
@@ -88,11 +88,11 @@ public class SupplementLinkDebug extends IDParamTest{
         String target = "!%@" + id + ":_Random text_";
         String pointer = "{@" + id + "}";
         WritingText doc = buildDoc(target, pointer);
-        noteTest(findSpan(doc, FormatSpanDirectory.class),
+        noteTest(findSpan(doc, FormatSpanPointId.class),
             findSpan(doc, NoteCardSpan.class));
     }
 
-    private void noteTest(FormatSpanDirectory test, SpanBranch expect){
+    private void noteTest(FormatSpanPointId test, SpanBranch expect){
         switch(expected){
         case NOT_FOUND:
             assertFalse(test.getTarget().isPresent());

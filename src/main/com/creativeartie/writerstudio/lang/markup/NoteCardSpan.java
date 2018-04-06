@@ -20,10 +20,10 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
     private Optional<List<StyleInfo>> cacheStyles;
     private Optional<Optional<SectionSpanHead>> cacheSection;
     private Optional<Optional<CatalogueIdentity>> cacheId;
-    private Optional<Optional<FormatSpanMain>> cacheHead;
-    private Optional<List<Optional<FormatSpanMain>>> cacheContent;
+    private Optional<Optional<FormattedSpan>> cacheHead;
+    private Optional<List<Optional<FormattedSpan>>> cacheContent;
     private Optional<Optional<LinedSpanCite>> cacheInText;
-    private Optional<Optional<FormatSpanMain>> cacheSource;
+    private Optional<Optional<FormattedSpan>> cacheSource;
     private Optional<String> cacheLookup;
     private Optional<Integer> cacheNote;
 
@@ -38,15 +38,15 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
         return cacheStyles.get();
     }
 
-    public Optional<FormatSpanMain> getTitle(){
+    public Optional<FormattedSpan> getTitle(){
         cacheHead = getCache(cacheHead, () -> spanFromFirst(LinedSpanNote.class)
             .flatMap(span -> span.getFormattedSpan()));
         return cacheHead.get();
     }
 
-    public List<Optional<FormatSpanMain>> getContent(){
+    public List<Optional<FormattedSpan>> getContent(){
         cacheContent = getCache(cacheContent, () -> {
-            ArrayList<Optional<FormatSpanMain>> ans = new ArrayList<>();
+            ArrayList<Optional<FormattedSpan>> ans = new ArrayList<>();
             boolean first = true;
             for (Span child: this){
                 if (child instanceof LinedSpanNote){
@@ -76,12 +76,12 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
         return cacheInText.get();
     }
 
-    public Optional<FormatSpanMain> getSource(){
+    public Optional<FormattedSpan> getSource(){
         cacheSource = getCache(cacheSource, () -> getSource(this, false));
         return cacheSource.get();
     }
 
-    private Optional<FormatSpanMain> getSource(NoteCardSpan start, boolean loop){
+    private Optional<FormattedSpan> getSource(NoteCardSpan start, boolean loop){
         if (this == start && loop){
             return Optional.empty();
         }
@@ -89,7 +89,7 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
             if (isType(child, type -> type == InfoFieldType.SOURCE)){
                 LinedSpanCite cite = (LinedSpanCite) child;
                 InfoDataSpan data = cite.getData().get();
-                return Optional.of((FormatSpanMain)data.getData());
+                return Optional.of((FormattedSpan)data.getData());
 
             } else if (isType(child, t -> t == InfoFieldType.REF)){
                 LinedSpanCite cite = (LinedSpanCite) child;

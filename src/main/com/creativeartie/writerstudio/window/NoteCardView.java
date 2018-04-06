@@ -37,15 +37,15 @@ public abstract class NoteCardView extends GridPane{
                 .orElse(null)
             )
         );
-        
+
         locationChoosen = new ReadOnlyIntegerWrapper(this, "locationChoosen");
         locationChoosen.bind(noteDetail.locationChoosenProperty());
     }
-    
+
     public ReadOnlyIntegerProperty locationChoosenProperty(){
         return locationChoosen.getReadOnlyProperty();
     }
-    
+
     public int getLocationChoose(){
         return locationChoosen.getValue();
     }
@@ -64,7 +64,7 @@ public abstract class NoteCardView extends GridPane{
                 d.noteSectionProperty());
         TableViewHelper.setPrecentWidth(section, ans, 40.0);
 
-        TableColumn<NoteCardData, Optional<FormatSpanMain>> format =
+        TableColumn<NoteCardData, Optional<FormattedSpan>> format =
             TableViewHelper.getFormatColumn(WindowText.NOTE_CARDS_TITLE, d ->
                 d.noteTitleProperty());
         TableViewHelper.setPrecentWidth(format, ans, 40.0);

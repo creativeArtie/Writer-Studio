@@ -63,7 +63,7 @@ public class LinedSpanCite extends LinedSpan {
 
     private int getCount(InfoDataSpan span){
         if (span instanceof InfoDataSpanFormatted){
-            FormatSpanMain data = ((InfoDataSpanFormatted)span).getData();
+            FormattedSpan data = ((InfoDataSpanFormatted)span).getData();
             return data.getPublishTotal() + data.getNoteTotal();
         } else if (span instanceof InfoDataSpanText){
             return ((InfoDataSpanText)span).getData().wordCount();

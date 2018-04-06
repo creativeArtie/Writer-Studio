@@ -159,18 +159,18 @@ public final class ManuscriptFile {
         return recordsFile;
     }
 
-    public String getText(MetaData data){
-        if (data == MetaData.BY){
+    public String getText(MetaData key){
+        if (key == MetaData.BY){
             return "By";
         }
-        if (data == MetaData.PAGE){
+        if (key == MetaData.PAGE){
             return "Page";
         }
-        if (data == MetaData.AUTHOR){
+        if (key == MetaData.AUTHOR){
             return getText(MetaData.FIRST_NAME) + " " + getText(MetaData
                 .LAST_NAME);
         }
-        return textData.getText(data);
+        return textData.getText(key);
     }
 
     public String getText(MetaData ... keys){

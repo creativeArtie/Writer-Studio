@@ -156,7 +156,7 @@ public final class AuxiliaryData{
     private static final String CURLY_BEGIN   = "{";
     /// Curly format begins tokens part 2
     public static final String CURLY_AGENDA   = CURLY_BEGIN + "!"; /// aka: {!
-    public static final String CURLY_KEY      = CURLY_BEGIN;
+    public static final String CURLY_KEY      = CURLY_BEGIN + ">"; /// aka: {>
     public static final String CURLY_FOOTNOTE = CURLY_BEGIN + "^"; /// aka: {^
     public static final String CURLY_ENDNOTE  = CURLY_BEGIN + "*"; /// aka: {*
     public static final String CURLY_CITE     = CURLY_BEGIN + DIRECTORY_BEGIN;
@@ -166,7 +166,7 @@ public final class AuxiliaryData{
     public static final String CURLY_END      = "}";
 
     /// @Part-1-7: Format Modifiers --------------------------------------------
-    /// For FormatParser, listFormatEnderTokens()
+    /// For FormattedParser, listFormatEnderTokens()
 
     /// list of possible formats
     private static final String FORMAT_ITALICS   = "*" ;
@@ -194,14 +194,20 @@ public final class AuxiliaryData{
     public static final String CHAR_ESCAPE = "\\";
 
     /// @Part-1-9: Format Part Separators --------------------------------------
-    /// For FormatParsers
+    /// For FormattedParsers
 
     /** Create the list of how children spans of format can end.
      * @return the list of term, without {@linkplain FORMAT_BOLD}
      */
-    public static String[] listFormatEnderTokens(){
+    public static String[] listFormatEnderTokens(boolean note){
+        if (! note){
+            return new String[]{
+                CURLY_AGENDA, LINK_BEGIN, LINK_REF, CURLY_KEY,
+                FORMAT_ITALICS, FORMAT_UNDERLINE, FORMAT_CODED
+            };
+        }
         return new String[]{
-            CURLY_AGENDA, CURLY_FOOTNOTE, CURLY_ENDNOTE, CURLY_CITE,
+            CURLY_AGENDA, CURLY_FOOTNOTE, CURLY_ENDNOTE, CURLY_CITE, CURLY_KEY,
             LINK_BEGIN, LINK_REF,
             /* FORMAT_BOLD, */ FORMAT_ITALICS, FORMAT_UNDERLINE, FORMAT_CODED
         };
@@ -250,11 +256,11 @@ public final class AuxiliaryData{
         StyleInfoLeaf.PATH, LINK_TEXT, LINK_END);
 
     /// Part-3-2: Formatted Span Parsers ---------------------------------------
-    static final SetupParser FORMATTED_TEXT = new FormatParser(
+    static final SetupParser FORMATTED_TEXT = new FormattedParser(
         StyleInfoLeaf.TEXT, true);
-    static final SetupParser FORMATTED_DATA = new FormatParser(
+    static final SetupParser FORMATTED_DATA = new FormattedParser(
         StyleInfoLeaf.DATA, false);
-    static final SetupParser FORMATTED_HEADER = new FormatParser(
+    static final SetupParser FORMATTED_HEADER = new FormattedParser(
         StyleInfoLeaf.TEXT, true, EDITION_BEGIN);
 
     static final SetupParser ID_DATA = DirectoryParser
@@ -270,6 +276,29 @@ public final class AuxiliaryData{
         builder.add(LinedParseRest.getSectionList());
         return builder.build();
     }
+
+    private static final String TITLE        = "head-";
+    public static final String TITLE_TOP     = TITLE  + "top     |";
+    public static final String TITLE_CENTER  = TITLE  + "centre  |";
+    public static final String TITLE_BOTTOM  = TITLE  + "bottom  |";
+    private static final String TEXT         = "text-";
+    public static final String TEXT_HEADER   = TEXT   + "header  |";
+    public static final String TEXT_ENDER    = TEXT   + "ender   |";
+    private static final String CITE         = "cite-";
+    public static final String CITE_TITLE    = CITE   + "header  |";
+    private static final String META         = "meta-";
+    public static final String META_AUTHOR   = META   + "author  |";
+    public static final String META_KEYWORDS = META   + "keywords|";
+    public static final String META_SUBJECT  = META   + "subject |";
+    public static final String META_TITLE    = META   + "title   |";
+
+    public static final int ALIGN_START = TITLE_TOP.length();
+    public static final String ALIGN_RIGHT  = "right |";
+    public static final String ALIGN_LEFT   = "left  |";
+    public static final String ALIGN_CENTER = "center|";
+    public static final String ALIGN_TEXT   = "text  |";
+
+
     /// ========================================================================
     /// @Part-4: Private Constructor -------------------------------------------
     private AuxiliaryData(){}

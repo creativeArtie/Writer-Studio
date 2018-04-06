@@ -10,11 +10,11 @@ import com.creativeartie.writerstudio.lang.*;
  * Represented in design/ebnf.txt as {@code FormatKey}.
  */
 public final class FormatSpanPointKey extends FormatSpan{
-    private final FormatParsePointId spanReparser;
+    private final FormatParsePointKey spanReparser;
     private Optional<String> cacheField;
     private Optional<String> cacheValue;
 
-    FormatSpanPointKey(List<Span> children, FormatParsePointId reparser){
+    FormatSpanPointKey(List<Span> children, FormatParsePointKey reparser){
         super(children, reparser.getFormats());
         spanReparser = reparser;
     }

@@ -11,19 +11,19 @@ import static com.creativeartie.writerstudio.main.Checker.*;
 
 /**
  * {@link Span} to store all other {@link FormatSpan*} classes. Represented in
- * design/ebnf.txt as {@code Format}.
+ * design/ebnf.txt as {@code Format1} or {@code Foramt2}.
  *
  * Dec 29,2017: it was decided that this class will <b>not</b> do any local
  * reparsing, because it is deem to be too much work.
  */
-public final class FormatSpanMain extends SpanBranch {
+public final class FormattedSpan extends SpanBranch {
 
     private Optional<Integer> cachePublish;
     private Optional<Integer> cacheNote;
     private Optional<Integer> cacheTotal;
     private Optional<String> cacheText;
 
-    FormatSpanMain(List<Span> spanChildren){
+    FormattedSpan(List<Span> spanChildren){
         super(spanChildren);
     }
 

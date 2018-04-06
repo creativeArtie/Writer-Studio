@@ -27,7 +27,7 @@ public class SectionContentEndnote extends SectionContent<LinedSpanPointNote> {
 
     @Override
     protected DivisionText parseSpan(LinedSpanPointNote span) throws IOException{
-        Optional<FormatSpanMain> text = span.getFormattedSpan();
+        Optional<FormattedSpan> text = span.getFormattedSpan();
         if (text.isPresent() && ! text.get().isEmpty()){
             DivisionTextFormatted ans = newFormatDivision();
             ans.appendText(Utilities.toRomanSuperscript(noteNumber),

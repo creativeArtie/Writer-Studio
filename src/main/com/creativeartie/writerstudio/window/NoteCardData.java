@@ -21,7 +21,7 @@ import com.google.common.collect.*;
 public class NoteCardData{
     private final ReadOnlyObjectWrapper<Optional<CatalogueIdentity>> noteId;
     private final ReadOnlyObjectWrapper<SectionSpan> noteSection;
-    private final ReadOnlyObjectWrapper<Optional<FormatSpanMain>> noteTitle;
+    private final ReadOnlyObjectWrapper<Optional<FormattedSpan>> noteTitle;
     private final NoteCardSpan targetNote;
 
     NoteCardData(NoteCardSpan span){
@@ -51,11 +51,11 @@ public class NoteCardData{
         return noteSection.getValue();
     }
 
-    public ReadOnlyObjectProperty<Optional<FormatSpanMain>> noteTitleProperty(){
+    public ReadOnlyObjectProperty<Optional<FormattedSpan>> noteTitleProperty(){
         return noteTitle.getReadOnlyProperty();
     }
 
-    public Optional<FormatSpanMain> getNoteTitle(){
+    public Optional<FormattedSpan> getNoteTitle(){
         return noteTitle.getValue();
     }
 

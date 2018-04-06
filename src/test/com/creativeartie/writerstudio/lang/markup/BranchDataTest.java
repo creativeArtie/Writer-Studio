@@ -37,7 +37,7 @@ public class BranchDataTest {
     }
 
     public static class FormatDataTest extends DataTest<FormatDataTest>{
-        private FormatSpanMain spanData;
+        private FormattedSpan spanData;
 
         public FormatDataTest(){
             super(FormatDataTest.class);
@@ -45,7 +45,7 @@ public class BranchDataTest {
         }
 
         public FormatDataTest setData(DocumentAssert doc, int ... idx){
-            spanData = doc.getChild(FormatSpanMain.class, idx);
+            spanData = doc.getChild(FormattedSpan.class, idx);
             return this;
         }
 

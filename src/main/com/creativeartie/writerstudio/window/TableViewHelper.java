@@ -131,10 +131,10 @@ final class TableViewHelper{
 
     /** TableCell for strings */
     private static class FormatCell<T> extends TableCell<T,
-            Optional<FormatSpanMain>> {
+            Optional<FormattedSpan>> {
 
         @Override
-        public void updateItem(Optional<FormatSpanMain> item, boolean empty){
+        public void updateItem(Optional<FormattedSpan> item, boolean empty){
             /// Required by JavaFX API:
             super.updateItem(item, empty);
             if (empty || item == null) {
@@ -151,11 +151,11 @@ final class TableViewHelper{
         }
     }
 
-    public static <T> TableColumn<T, Optional<FormatSpanMain>> getFormatColumn(
+    public static <T> TableColumn<T, Optional<FormattedSpan>> getFormatColumn(
             WindowText title,
-            Function<T, ObservableObjectValue<Optional<FormatSpanMain>>>
+            Function<T, ObservableObjectValue<Optional<FormattedSpan>>>
                 property){
-        TableColumn<T, Optional<FormatSpanMain>> ans = new TableColumn<>(title
+        TableColumn<T, Optional<FormattedSpan>> ans = new TableColumn<>(title
             .getText());
         ans.setCellFactory(list -> new TableViewHelper.FormatCell<>());
         ans.setCellValueFactory(c -> new SimpleObjectProperty<>(

@@ -10,7 +10,7 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  * {@code LinedQuote}.
  */
 public class LinedSpanQuote extends LinedSpan {
-    private Optional<Optional<FormatSpanMain>> cacheFormatted;
+    private Optional<Optional<FormattedSpan>> cacheFormatted;
     private Optional<Integer> cachePublish;
     private Optional<Integer> cacheNote;
 
@@ -18,9 +18,9 @@ public class LinedSpanQuote extends LinedSpan {
         super(children);
     }
 
-    public Optional<FormatSpanMain> getFormattedSpan(){
+    public Optional<FormattedSpan> getFormattedSpan(){
         cacheFormatted = getCache(cacheFormatted, () -> spanFromLast(
-            FormatSpanMain.class));
+            FormattedSpan.class));
         return cacheFormatted.get();
     }
 

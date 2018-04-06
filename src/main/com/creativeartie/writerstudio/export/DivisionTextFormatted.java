@@ -9,7 +9,7 @@ import com.creativeartie.writerstudio.lang.*; // Span, SpanBranch
 import com.creativeartie.writerstudio.lang.markup.*; // (many)
 import com.creativeartie.writerstudio.main.*; // Checker
 
-/** A {@link Division} of {@link FormatSpanMain}.
+/** A {@link Division} of {@link FormattedSpan}.
  */
 class DivisionTextFormatted extends DivisionText{
 
@@ -34,7 +34,7 @@ class DivisionTextFormatted extends DivisionText{
      * @throws IOException
      *         exception with content parsing
      */
-    final DivisionTextFormatted addContent(FormatSpanMain span)
+    final DivisionTextFormatted addContent(FormattedSpan span)
             throws IOException{
         Checker.checkNotEmpty(span, "span");
         for(Span child: span){
@@ -52,7 +52,7 @@ class DivisionTextFormatted extends DivisionText{
      * It does not work with the subclass of {@linkplain FormatSpan}
      * @param span
      *      the span to extract the font; not null
-     * @see addContent(FormatSpanMain)
+     * @see addContent(FormattedSpan)
      */
     private final ContentFont addFont(FormatSpan span){
         assert span != null;
@@ -74,7 +74,7 @@ class DivisionTextFormatted extends DivisionText{
      *      the font of the span; not null
      * @throws IOException
      *         exception with content parsing
-     * @see addContent(FormatSpanMain)
+     * @see addContent(FormattedSpan)
      */
     private final void parseContent(FormatSpan span, ContentFont font)
             throws IOException{
@@ -152,7 +152,7 @@ class DivisionTextFormatted extends DivisionText{
         }
     }
 
-    /** Parse a {@link FormatSpanDirectory}.
+    /** Parse a {@link FormatSpanPointId}.
      *
      * @param span
      *      the span to parse; not null
@@ -228,7 +228,7 @@ class DivisionTextFormatted extends DivisionText{
      *      the font of the span; not null
      * @throws IOException
      *         exception with content parsing
-     * @see parseContent(FormatSpanDirectory, ContentFont)
+     * @see parseContent(FormatSpanPointId, ContentFont)
      */
     private final void addFootnote(SpanBranch span, ContentFont font)
             throws IOException{

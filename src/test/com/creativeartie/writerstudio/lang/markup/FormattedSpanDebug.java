@@ -14,10 +14,10 @@ import java.io.File;
 import com.creativeartie.writerstudio.lang.*;
 
 @RunWith(JUnit4.class)
-public class FormatSpanDebug {
+public class FormattedSpanDebug {
 
     private static final SetupParser[] parsers = new SetupParser[]{
-        AuxiliaryData.FORMATTED_BASIC};
+        AuxiliaryData.FORMATTED_TEXT};
 
     @Test
     public void basic(){

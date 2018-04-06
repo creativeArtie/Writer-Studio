@@ -29,7 +29,7 @@ public class FormatCurlyDebug {
     }
 
     private static final SetupParser[] parsers =
-        FormatParseDirectory.getParsers(new boolean[4]);
+        FormatParsePointId.getParsers(new boolean[4]);
 
     @Test
     public void basicCite(){
