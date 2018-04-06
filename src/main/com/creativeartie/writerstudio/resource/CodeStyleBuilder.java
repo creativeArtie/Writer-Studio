@@ -60,7 +60,7 @@ public class CodeStyleBuilder {
             styles.add("Link");
         }
 
-        if (hasParent(leaf, FormatSpanDirectory.class)){
+        if (hasParent(leaf, FormatSpanPointId.class)){
             styles.add("Directory");
         }
 

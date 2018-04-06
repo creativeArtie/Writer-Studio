@@ -42,7 +42,7 @@ enum LinedParseLevel implements SetupParser {
             pointer.startsWith(children, DIRECTORY_END);
         }
 
-        FORMATTED_HEAD.parse(children, pointer);
+        FORMATTED_HEADER.parse(children, pointer);
 
         EditionParser.INSTANCE.parse(children, pointer);
 
@@ -56,7 +56,7 @@ enum LinedParseLevel implements SetupParser {
             SetupPointer pointer){
         assert children != null: "Null children.";
         assert pointer != null: "Null pointer.";;
-        FORMATTED_BASIC.parse(children, pointer);
+        FORMATTED_TEXT.parse(children, pointer);
 
         pointer.startsWith(children, LINED_END);
         return Optional.of(new LinedSpanLevelList(children));

@@ -77,18 +77,33 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
     }
 
     public Optional<FormatSpanMain> getSource(){
-        cacheSource = getCache(cacheSource, () ->{
-            for (Span child: this){
-                if (isType(child, type -> type == InfoFieldType.SOURCE)){
-                    LinedSpanCite cite = (LinedSpanCite) child;
-                    InfoDataSpan data = cite.getData().get();
+        cacheSource = getCache(cacheSource, () -> getSource(this, false));
+        return cacheSource.get();
+    }
 
-                    return Optional.of((FormatSpanMain)data.getData());
+    private Optional<FormatSpanMain> getSource(NoteCardSpan start, boolean loop){
+        if (this == start && loop){
+            return Optional.empty();
+        }
+        for (Span child: this){
+            if (isType(child, type -> type == InfoFieldType.SOURCE)){
+                LinedSpanCite cite = (LinedSpanCite) child;
+                InfoDataSpan data = cite.getData().get();
+                return Optional.of((FormatSpanMain)data.getData());
+
+            } else if (isType(child, t -> t == InfoFieldType.REF)){
+                LinedSpanCite cite = (LinedSpanCite) child;
+                InfoDataSpan found = cite.getData().get();
+                DirectorySpan id = (DirectorySpan)found.getData();
+                CatalogueData data = getDocument().getCatalogue().get(id);
+                if (data.isReady()){
+                    Span span = data.getTarget();
+                    assert span instanceof NoteCardSpan;
+                    return ((NoteCardSpan)span).getSource(start, true);
                 }
             }
-            return Optional.empty();
-        });
-        return cacheSource.get();
+        }
+        return Optional.empty();
     }
 
     private boolean isType(Span child, Predicate<InfoFieldType> filter){
@@ -140,7 +155,7 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
 
     @Override
     public String toString(){
-        StringBuilder output = new StringBuilder("NOTE:{\n\t");
+        StringBuilder output = new StringBuilder("CARD:{\n\t");
         boolean isFirst = true;
         for(Span span: this){
             if(isFirst){

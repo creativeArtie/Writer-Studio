@@ -53,7 +53,7 @@ enum LinedParsePointer implements SetupParser {
             parseCommon(children, pointer);
 
             if (pointer.startsWith(children, LINED_DATA)){
-                FORMATTED_BASIC.parse(children, pointer);
+                FORMATTED_TEXT.parse(children, pointer);
             }
             pointer.startsWith(children, LINED_END);
 

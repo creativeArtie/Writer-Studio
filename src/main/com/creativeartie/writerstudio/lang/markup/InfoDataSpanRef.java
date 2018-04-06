@@ -5,20 +5,20 @@ import java.util.*;
 import com.creativeartie.writerstudio.lang.*;
 
 /**
- * Data that stores a {@link ContentSpan}. Represented in design/ebnf.txt as
- * {@code InfoDataText}.
+ * Data that stores a {@link DirectorySpan} for notes. Represented in
+ * design/ebnf.txt as {@code InfoDataRef}.
  */
-public final class InfoDataSpanText extends InfoDataSpan{
+public final class InfoDataSpanRef extends InfoDataSpan{
 
-    private Optional<ContentSpan> cacheData;
+    private Optional<DirectorySpan> cacheData;
 
-    InfoDataSpanText(List<Span> children){
-        super(children, InfoDataType.TEXT);
+    protected InfoDataSpanRef(List<Span> children){
+        super(children, InfoDataType.NOTE_REF);
     }
 
     @Override
-    public ContentSpan getData(){
-        cacheData = getCache(cacheData, () -> (ContentSpan)get(0));
+    public DirectorySpan getData(){
+        cacheData = getCache(cacheData, () -> (DirectorySpan)get(0));
         return cacheData.get();
     }
 

@@ -84,8 +84,8 @@ class DivisionTextFormatted extends DivisionText{
             parseContent((FormatSpanContent) span, font);
         } else if (span instanceof FormatSpanLink){
             parseContent((FormatSpanLink) span, font);
-        } else if (span instanceof FormatSpanDirectory){
-            parseContent((FormatSpanDirectory) span, font);
+        } else if (span instanceof FormatSpanPointId){
+            parseContent((FormatSpanPointId) span, font);
         }
     }
 
@@ -162,7 +162,7 @@ class DivisionTextFormatted extends DivisionText{
      *         exception with content parsing
      * @see parseContent(FormatSpan, ContentFont)
      */
-    private final void parseContent(FormatSpanDirectory span, ContentFont font)
+    private final void parseContent(FormatSpanPointId span, ContentFont font)
             throws IOException{
         assert span != null: "null span";
         assert font != null: "null font";

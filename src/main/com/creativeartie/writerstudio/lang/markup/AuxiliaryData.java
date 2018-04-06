@@ -150,12 +150,13 @@ public final class AuxiliaryData{
     public static final String LINK_END   = ">";
 
     /// @Part-1-6: Curly Formats -----------------------------------------------
-    /// For FormatParseAgenda, FormatParseDirectory, listFormatEnderTokens()
+    /// For FormatParseAgenda, FormatParsePointId, listFormatEnderTokens()
 
     /// Curly format begins token  part 1
     private static final String CURLY_BEGIN   = "{";
     /// Curly format begins tokens part 2
     public static final String CURLY_AGENDA   = CURLY_BEGIN + "!"; /// aka: {!
+    public static final String CURLY_KEY      = CURLY_BEGIN;
     public static final String CURLY_FOOTNOTE = CURLY_BEGIN + "^"; /// aka: {^
     public static final String CURLY_ENDNOTE  = CURLY_BEGIN + "*"; /// aka: {*
     public static final String CURLY_CITE     = CURLY_BEGIN + DIRECTORY_BEGIN;
@@ -237,6 +238,8 @@ public final class AuxiliaryData{
         StyleInfoLeaf.TEXT);
     static final SetupParser CONTENT_AGENDA = new ContentParser(
         StyleInfoLeaf.TEXT, CURLY_END);
+    static final SetupParser CONTENT_KEY = new ContentParser(
+        StyleInfoLeaf.FIELD, CURLY_END);
     static final SetupParser CONTENT_LINK = new ContentParser(
         StyleInfoLeaf.TEXT, LINK_END);
     static final SetupParser CONTENT_DATA = new ContentParser(
@@ -247,12 +250,15 @@ public final class AuxiliaryData{
         StyleInfoLeaf.PATH, LINK_TEXT, LINK_END);
 
     /// Part-3-2: Formatted Span Parsers ---------------------------------------
-    static final SetupParser FORMATTED_BASIC = new FormatParser(
-        StyleInfoLeaf.TEXT);
+    static final SetupParser FORMATTED_TEXT = new FormatParser(
+        StyleInfoLeaf.TEXT, true);
     static final SetupParser FORMATTED_DATA = new FormatParser(
-        StyleInfoLeaf.DATA);
-    static final SetupParser FORMATTED_HEAD = new FormatParser(
-        StyleInfoLeaf.TEXT, EDITION_BEGIN);
+        StyleInfoLeaf.DATA, false);
+    static final SetupParser FORMATTED_HEADER = new FormatParser(
+        StyleInfoLeaf.TEXT, true, EDITION_BEGIN);
+
+    static final SetupParser ID_DATA = DirectoryParser
+        .getRefParser(DirectoryType.NOTE);
 
     /// Part-3-3: Main Section Line Parsers
     public static final List<SetupParser> SECTION_PARSERS = getSectionParsers();

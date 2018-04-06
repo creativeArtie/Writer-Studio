@@ -13,7 +13,6 @@ import com.creativeartie.writerstudio.lang.*;
  */
 public final class InfoFieldSpan extends SpanBranch{
 
-
     private Optional<List<StyleInfo>> cacheStyles;
     private Optional<InfoFieldType> cacheField;
 

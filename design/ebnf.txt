@@ -30,11 +30,11 @@ LinedEndnote  = "!*", Directory, [[":"], Content];
 LinedLink     = "!@", Directory, [[":"], Content];
 LinedHeading  = HeadingStart, [LineId];
 LinedOutline  = OutlineStart, [LineId];
-LinedQuote    = QuoteStart, [Format];
-LinedNumbered = NumberedStart, [Format];
-LinedBullet   = BulletStart, Format;
-LineId = (Spaces, "@", Directory, [":", [Format], [Edition]]) |
-        ([Format], [Edition]);
+LinedQuote    = QuoteStart, [Format1];
+LinedNumbered = NumberedStart, [Format1];
+LinedBullet   = BulletStart, Format1;
+LineId = (Spaces, "@", Directory, [":", [Format1], [Edition]]) |
+        ([Format1], [Edition]);
 
 HeadingStart  = "=", [ "=", ["=", ["=", ["=", ["="] ] ] ] ];
 OutlineStart  = "!", \t, [ \t, [\t, [\t, [\t, [\t] ] ] ] ];
@@ -46,19 +46,27 @@ BulletStart   = \t, [ \t, [\t, [\t, [\t, [\t] ] ] ] ], -;
 Note     = (LinedNoteHead, [{\n LinedNoteLine}]) |
            (LinedNoteLine, [{\n LinedNoteLine}];
 NoteLine = LinedNote | LinedCite;
-LinedNoteHead = "!%", Spaces, "@", Directory, [":", [Format]];
-LinedNoteLine = "!%", Format;
+LinedNoteHead = "!%", Spaces, "@", Directory, [":", [Format1]];
+LinedNoteLine = "!%", Format1;
 
-LinedCite = "!>", ((InfoFieldFootnote| InfoFieldIntext), [[Spaces, [":"]] InfoDataText]) |
-            (InfoFieldSource, [[Spaces, [":"], InfoDataFormatted]) | InfoieldError;
+
+LinedCite = "!>",
+    ((InfoFieldFootnote | InfoFieldIntext), [[Spaces, [":"]] InfoDataText]) |
+    (InfoFieldSource, [[Spaces, [":"], InfoDataFormatted]) |
+    (InfoFieldRef, [Spaces, [":"], InfoDataRef) |
+    InfoFieldError;
 InfoFieldFootnote = Spaces, "footnote";
 InfoFieldInText   = Spaces, "in-text";
 InfoFieldSource   = Spaces, "source";
-InfoFieldError     = Content, -\n;
+InfoFieldRef      = Spaces, "ref";
+InfoFieldError    = Content, -\n;
 InfoDataText      = Content, -\n;
-InfoDataFormatted = Format, -\n;
+InfoDataFormatted = Format2, -\n;
+InfoDataRef       = Directory
 
-Format = {FormatAgenda | FormatFootnote | FormatEndnote | FormatNote |
+Format1 = {FormatAgenda | FormatDirectLink | FormatRefLink | "**" | "*" | "_" |
+          "`" | FormatContent}, (-\? | -\n);
+Format2 = {FormatAgenda | FormatFootnote | FormatEndnote | FormatNote |
           FormatDirectLink | FormatRefLink | "**" | "*" | "_" | "`" |
           FormatContent}, (-\? | -\n);
 FormatRefLink    =  "<@", Content, (">" | -\n);
@@ -66,6 +74,7 @@ FormatDirectLink =  "<", Content, (">" | -\n);
 FormatNote       = "{@", Directory, ("}" | -\n );
 FormatEndnote    = "{^", [Directory], ("}" | -\n );
 FormatFootnote   = "{*", [Directory], ("}" | -\n );
+FormatData       = "{", [Contetnt], "}"
 FormatContent    = Basic
 FormatAgenda     = "{!", [ Content],  ("}" | -\n );
 

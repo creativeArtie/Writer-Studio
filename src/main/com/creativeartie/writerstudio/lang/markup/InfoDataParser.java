@@ -29,6 +29,13 @@ enum InfoDataParser implements SetupParser{
             return Optional.of(new InfoDataSpanText(children));
         }
         return Optional.empty();
+    }), NOTE_REF(pointer -> {
+        assert pointer != null: "Null pointer";
+        ArrayList<Span> children = new ArrayList<>();
+        if (ID_DATA.parse(children, pointer)){
+            return Optional.of(new InfoDataSpanRef(children));
+        }
+        return Optional.empty();
     }), ERROR (pointer -> Optional.empty());
 
     private final SetupParser parser;

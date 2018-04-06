@@ -78,7 +78,7 @@ class CheatsheetLabel extends Label{
             throw new IllegalArgumentException("Unsupported type: " + type);
         }
         return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
-            (doc, point) -> doc.locateSpan(point, FormatSpanDirectory.class)
+            (doc, point) -> doc.locateSpan(point, FormatSpanPointId.class)
                 .map(span -> span.getIdType() == type)
                 .orElse(false),
             CheatsheetLabel::findContent
@@ -110,7 +110,7 @@ class CheatsheetLabel extends Label{
                 .isPresent(),
             (doc, point) ->
                 doc.locateSpan(point, FormatSpanLinkRef.class).isPresent() ||
-                doc.locateSpan(point, FormatSpanDirectory.class).isPresent() ||
+                doc.locateSpan(point, FormatSpanPointId.class).isPresent() ||
                 doc.locateSpan(point, LinedSpanLevelSection.class).isPresent() ||
                 doc.locateSpan(point, LinedSpanPoint.class).isPresent() ||
                 doc.locateSpan(point, LinedSpanNote.class).isPresent()

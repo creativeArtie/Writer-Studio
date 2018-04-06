@@ -13,12 +13,14 @@ final class FormatParser implements SetupParser {
 
     private final String[] spanEnders;
     private final StyleInfoLeaf leafStyle;
+    private final boolean withNote;
 
-    public FormatParser(StyleInfoLeaf style, String ... enders){
+    public FormatParser(StyleInfoLeaf style, boolean note, String ... enders){
         /// Combine the list of span enders and formatting enders
         checkNotNull(enders, "enders");
         spanEnders = SetupParser.combine(listFormatEnderTokens(), enders);
         leafStyle = checkNotNull(style, "style");
+        withNote = note;
     }
 
     @Override
@@ -48,7 +50,7 @@ final class FormatParser implements SetupParser {
                 more = true;
             }
 
-            /// Keeps FomratContentParser parsing alone b/c of needs to edit 
+            /// Keeps FomratContentParser parsing alone b/c of needs to edit
             /// format
             int i = 0;
             for (String type : listFormatTextTokens()){
@@ -62,9 +64,18 @@ final class FormatParser implements SetupParser {
                 i++;
             }
 
+            if (! withNote){
+                for (SetupParser parser: FormatParseLink.getParsers(formats)){
+                    if (parser.parse(children, pointer)){
+                        more = true;
+                    }
+                }
+                continue;
+            }
+
             /// Lastly deal with FormatParseCurly and FormatParseLink together
             for (SetupParser parser: SetupParser.combine(
-                FormatParseDirectory.getParsers(formats),
+                FormatParsePointId.getParsers(formats),
                 FormatParseLink.getParsers(formats)
             )){
                 if(parser.parse(children, pointer)){

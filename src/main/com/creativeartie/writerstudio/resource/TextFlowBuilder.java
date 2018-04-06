@@ -66,8 +66,8 @@ public final class TextFlowBuilder {
             }
             ans = newText(text);
 
-        } else if (child instanceof FormatSpanDirectory){
-            FormatSpanDirectory span = (FormatSpanDirectory) child;
+        } else if (child instanceof FormatSpanPointId){
+            FormatSpanPointId span = (FormatSpanPointId) child;
             String found = span.getSpanIdentity()
                 .map(id -> id.getFullIdentity()).orElse("");
             DirectoryType type = span.getIdType();

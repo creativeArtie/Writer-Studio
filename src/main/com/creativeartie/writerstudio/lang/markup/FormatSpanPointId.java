@@ -10,15 +10,15 @@ import com.creativeartie.writerstudio.lang.*;
  * Represented in design/ebnf.txt as {@code FormatNote}, {@code FormatEndnote}
  * and {@code FormatFootnote}.
  */
-public final class FormatSpanDirectory extends FormatSpan implements Catalogued{
-    private final FormatParseDirectory spanReparser;
+public final class FormatSpanPointId extends FormatSpan implements Catalogued{
+    private final FormatParsePointId spanReparser;
     private final DirectoryType spanType;
     private Optional<Optional<SpanBranch>> cacheTarget;
     private Optional<Optional<CatalogueIdentity>> cacheId;
     private Optional<List<StyleInfo>> cacheStyles;
     private Optional<String> cacheOutput;
 
-    FormatSpanDirectory(List<Span> children, FormatParseDirectory reparser){
+    FormatSpanPointId(List<Span> children, FormatParsePointId reparser){
         super(children, reparser.getFormats());
         spanType = reparser.getDirectoryType();
         spanReparser = reparser;

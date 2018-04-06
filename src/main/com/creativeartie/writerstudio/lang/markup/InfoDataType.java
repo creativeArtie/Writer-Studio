@@ -7,5 +7,5 @@ import com.creativeartie.writerstudio.lang.*;
  * Style describing the type of data.
  */
 public enum InfoDataType implements StyleInfo{
-    FORMATTED, TEXT;
+    FORMATTED, TEXT, NOTE_REF;
 }

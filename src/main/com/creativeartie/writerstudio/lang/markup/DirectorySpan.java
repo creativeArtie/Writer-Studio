@@ -49,7 +49,7 @@ public final class DirectorySpan extends SpanBranch {
         return cacheId.get();
     }
 
-    /** Get the display for {@link FormatSpanDirectory#getOutput()}*/
+    /** Get the display for {@link FormatSpanPointId#getOutput()}*/
     public String getLookupText(){
         cacheText = getCache(cacheText, () -> {
             StringBuilder builder = new StringBuilder();
