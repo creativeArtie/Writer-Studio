@@ -1,10 +1,9 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*;
-import java.util.Optional;
-import java.util.function.*;
+import java.util.*; // (many)
+import java.util.function.*; // UnaryOperator
 
-import com.google.common.collect.*;
+import com.google.common.collect.*; // Range
 
 import static com.creativeartie.writerstudio.main.Checker.*;
 

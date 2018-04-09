@@ -1,9 +1,10 @@
 package com.creativeartie.writerstudio.file;
 
-import java.util.*;
-import java.time.*;
+import java.util.Optional; // Optional
+import java.time.*; // Duration, LocalDate, LocalDateTime
 
-import com.google.common.base.MoreObjects;
+import com.google.common.base.*; // MoreObjects
+
 import static com.creativeartie.writerstudio.main.Checker.*;
 
 /**

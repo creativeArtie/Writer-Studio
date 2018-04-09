@@ -1,13 +1,13 @@
 package com.creativeartie.writerstudio.export;
 
-import java.io.*;
-import java.util.*;
+import java.io.*; // IOException
+import java.util.*; // GregorianCalendar
 
-import org.apache.pdfbox.pdmodel.*;
+import org.apache.pdfbox.pdmodel.*; // PDDocumentInformation
 
-import com.creativeartie.writerstudio.file.*;
-import com.creativeartie.writerstudio.resource.*;
-import com.creativeartie.writerstudio.export.value.*;
+import com.creativeartie.writerstudio.file.*; // ManuscriptFile
+import com.creativeartie.writerstudio.export.value.*; // LineAlignment, PageAlignment
+import com.creativeartie.writerstudio.resource.*; // MetaData, WindowText
 
 public class SectionTitle extends Section {
 

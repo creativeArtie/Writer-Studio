@@ -1,11 +1,13 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*;
-import com.google.common.base.*;
+import java.util.*; // Arrays
+
+import com.google.common.base.*; // CaseFormat
+
+import com.creativeartie.writerstudio.lang.*; // StyleInfo
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
-import com.creativeartie.writerstudio.lang.StyleInfo;
 /**
  * Styles showing the current status of section in the document.
  */

@@ -1,9 +1,10 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*;
-import com.google.common.base.*;
+import java.util.*; // List
 
-import com.creativeartie.writerstudio.lang.*;
+import com.google.common.base.*; // CharMatcher
+
+import com.creativeartie.writerstudio.lang.*; // Span, SpanLeaf
 
 /**
  * Text with {@link AuxiliaryData#CHAR_ESCAPE escape character}.

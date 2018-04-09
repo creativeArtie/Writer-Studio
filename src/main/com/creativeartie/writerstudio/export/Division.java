@@ -2,9 +2,9 @@ package com.creativeartie.writerstudio.export;
 
 import java.util.*; // List
 
-import com.creativeartie.writerstudio.export.value.*; // ContentPostEditor
-
 import org.apache.pdfbox.pdmodel.common.*; // PDRectangle
+
+import com.creativeartie.writerstudio.export.value.*; // ContentPostEditor
 
 /**  A lines of text of a single drawing.
  * Purposes

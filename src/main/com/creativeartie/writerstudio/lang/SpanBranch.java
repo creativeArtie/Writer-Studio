@@ -1,8 +1,9 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*;
-import java.util.function.*;
-import com.google.common.collect.*;
+import java.util.*; // ArrayList, List, Optional
+import java.util.function.*; // Supplier
+
+import com.google.common.collect.*; // ImmuableList
 
 import static com.creativeartie.writerstudio.main.Checker.*;
 

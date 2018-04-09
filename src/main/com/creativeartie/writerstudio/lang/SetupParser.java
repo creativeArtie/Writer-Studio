@@ -1,6 +1,6 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*;
+import java.util.*; // List, Optional
 
 import static com.creativeartie.writerstudio.main.Checker.*;
 

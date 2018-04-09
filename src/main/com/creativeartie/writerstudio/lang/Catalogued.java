@@ -1,6 +1,6 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.Optional;
+import java.util.*; // Optional
 
 /** An {@link Span} that has an {@link CatalogueIdentity}.*/
 public interface Catalogued{

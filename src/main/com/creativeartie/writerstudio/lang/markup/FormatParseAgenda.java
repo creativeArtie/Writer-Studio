@@ -1,8 +1,9 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*;
+import java.util.*; // ArrayList, Optional
 
-import com.creativeartie.writerstudio.lang.*;
+import com.creativeartie.writerstudio.lang.*; // (many)
+
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.writerstudio.main.Checker.*;
 

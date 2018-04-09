@@ -5,11 +5,11 @@ import java.util.*; // ArrayList, Collection, List
 
 import com.google.common.collect.*; // FowardingList
 
-import com.creativeartie.writerstudio.export.value.*; // (many)
-import com.creativeartie.writerstudio.main.*; // Checker
-
 import org.apache.pdfbox.pdmodel.*; //PDPageContentStream
 import org.apache.pdfbox.pdmodel.common.*; //PDRectangle
+
+import com.creativeartie.writerstudio.export.value.*; // (many)
+import com.creativeartie.writerstudio.main.*; // Checker
 
 /** Insert text and graphics into a section of a page.
  * Purpose

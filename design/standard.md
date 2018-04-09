@@ -11,11 +11,12 @@
         2. Java standard library
         3. Google Guava library
         4. JavaFX and RichTextFX (and only in window and stat package).
-        5. project libraries
-        6. Apache PDFBox (and only in export package).
+        5. Apache PDFBox (and only in export package).
+        6. project libraries
     - use wildcard if possible
-    - put the requested classs in comment at the end of each wildcard statement
-    - no static import except for JUnit
+    - put the import classes in comment at the end of each wildcard statement, or
+        `// (many)` for 4 or more classes
+    - no static import except for JUnit, Checker, and AuxiliaryData
     - no line wrapping
 - Class comment
     - short describing on the first line, and a noun phrase.
@@ -50,6 +51,7 @@
 - maintain order in the order of use
 ### Methods
 - comments
+    - no comments for overeided
     - one short description
     - for `@link`: only for project library class, and don't repeat
     - for `@linkplain`: for all other classes

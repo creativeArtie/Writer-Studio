@@ -1,16 +1,17 @@
 package com.creativeartie.writerstudio.export;
 
-import java.io.*;
-import java.util.*;
+import java.io.*; // AutoCloseable, IOException
+import java.util.*; // ArrayList, Iterator, Optional
 
-import org.apache.pdfbox.pdmodel.*;
-import org.apache.pdfbox.pdmodel.font.*;
-
-import com.creativeartie.writerstudio.file.*;
-import com.creativeartie.writerstudio.export.value.*;
-import com.creativeartie.writerstudio.lang.*;
-import com.creativeartie.writerstudio.lang.markup.*;
 import com.google.common.collect.*;
+
+import org.apache.pdfbox.pdmodel.*; // PDDocument
+import org.apache.pdfbox.pdmodel.font.*; // PDFont, PDFontDescriptor, PDType0Font
+
+import com.creativeartie.writerstudio.export.value.*; // ContentFont, Utilities
+import com.creativeartie.writerstudio.file.*; // ManuscriptFile
+import com.creativeartie.writerstudio.lang.*; // Span, SpanNode
+import com.creativeartie.writerstudio.lang.markup.*; // (many)
 
 public class WritingExporter implements AutoCloseable{
 

@@ -5,10 +5,10 @@ import java.util.*; // ArrayList, List, Optional
 
 import com.google.common.collect.*; // ForwardingList, ImmuableList
 
+import org.apache.pdfbox.pdmodel.common.*; // PDRectangle
+
 import com.creativeartie.writerstudio.export.value.*; // ContentFont, ContentPostEditor, LineAlignment
 import com.creativeartie.writerstudio.main.*; // Checker
-
-import org.apache.pdfbox.pdmodel.common.*; // PDRectangle
 
 /** A {@link Division} for text.
  */

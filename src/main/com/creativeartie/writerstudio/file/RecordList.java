@@ -1,11 +1,13 @@
 package com.creativeartie.writerstudio.file;
 
-import java.util.*;
-import java.time.*;
+import java.time.*; // LocalDate, YearMonth
+import java.util.*; // (many)
 
-import com.google.common.collect.*;
+import com.google.common.collect.*; // AbstractIterator, ForwardingList, ImmuableList
+
+import com.creativeartie.writerstudio.lang.markup.*; // WritingText
+
 import static com.creativeartie.writerstudio.main.Checker.*;
-import com.creativeartie.writerstudio.lang.markup.*;
 
 /**
  * A list of {@link Record} and methods to save and edit today's {@link Record}.

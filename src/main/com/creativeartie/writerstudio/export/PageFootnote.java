@@ -1,14 +1,11 @@
 package com.creativeartie.writerstudio.export;
 
-import java.util.*;
-import java.io.*;
+import java.io.*; // IOException
+import java.util.*; // ArrayList, Optional
 
-import org.apache.pdfbox.pdmodel.*;
-import org.apache.pdfbox.pdmodel.font.*;
-
-import com.creativeartie.writerstudio.lang.*;
-import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.export.value.*;
+import com.creativeartie.writerstudio.export.value.*; // (many)
+import com.creativeartie.writerstudio.lang.*; // SpanBranch
+import com.creativeartie.writerstudio.lang.markup.*; // FormattedSpan, LinedSpanPointNote, LinedSpanCite
 
 public final class PageFootnote {
     private ArrayList<SpanBranch> insertedItems;

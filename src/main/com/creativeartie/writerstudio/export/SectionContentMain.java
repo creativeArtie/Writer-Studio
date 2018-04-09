@@ -1,16 +1,12 @@
 package com.creativeartie.writerstudio.export;
 
-import java.io.*;
-import java.util.*;
-import java.awt.*;
+import java.io.*; // IOException
+import java.util.*; // LinkedList, Optional
 
-import org.apache.pdfbox.pdmodel.*;
-
-import com.creativeartie.writerstudio.lang.*;
-import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.file.*;
-import com.creativeartie.writerstudio.resource.*;
-import com.creativeartie.writerstudio.export.value.*;
+import com.creativeartie.writerstudio.file.*; // ManuscriptFile
+import com.creativeartie.writerstudio.lang.markup.*; // (many)
+import com.creativeartie.writerstudio.resource.*; // MetaData
+import com.creativeartie.writerstudio.export.value.*; // LineAlginment, PageAignment, Utitlies
 
 public class SectionContentMain extends SectionContent<LinedSpan> {
     private boolean paraFirst;

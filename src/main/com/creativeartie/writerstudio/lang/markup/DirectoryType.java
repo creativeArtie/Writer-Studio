@@ -1,8 +1,8 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*;
+import java.util.*; // Arrays
 
-import com.creativeartie.writerstudio.lang.*;
+import com.creativeartie.writerstudio.lang.*; // StyleInfo
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 

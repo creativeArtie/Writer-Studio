@@ -7,13 +7,13 @@ import java.util.function.*;// Consumer
 
 import com.google.common.base.*; // CharMatcher, Splitter
 
-import com.creativeartie.writerstudio.export.value.*; // ContentFont, ContentPostEditor
-import com.creativeartie.writerstudio.lang.*; // SpanBranch
-import com.creativeartie.writerstudio.main.*; // Checker
-
 import org.apache.pdfbox.pdmodel.common.*; // PDRectangle
 import org.apache.pdfbox.pdmodel.interactive.action.*; // PDActionURI
 import org.apache.pdfbox.pdmodel.interactive.annotation.*; // PDAnnotationLink
+
+import com.creativeartie.writerstudio.export.value.*; // ContentFont, ContentPostEditor
+import com.creativeartie.writerstudio.lang.*; // SpanBranch
+import com.creativeartie.writerstudio.main.*; // Checker
 
 /** Stores a text and its properties.
  *
@@ -141,6 +141,7 @@ final class ContentText {
 
     // TODO text isn't suitable to deal with whitespaces
     /** Change the text.
+     *
      * @param text
      *      the new text; not null
      * @return self

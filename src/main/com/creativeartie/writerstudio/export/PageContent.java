@@ -3,10 +3,10 @@ package com.creativeartie.writerstudio.export;
 import java.util.*; // Optional
 import java.io.*; //AutoCloseable, IOException
 
+import org.apache.pdfbox.pdmodel.*; // PDPage, PDPageContentStream
+
 import com.creativeartie.writerstudio.export.value.*; // PageAlignment, PageMargin, Utilities
 import com.creativeartie.writerstudio.main.*; // Checker
-
-import org.apache.pdfbox.pdmodel.*; // PDPage, PDPageContentStream
 
 /** Render a single page in the document.
  * Purpose:

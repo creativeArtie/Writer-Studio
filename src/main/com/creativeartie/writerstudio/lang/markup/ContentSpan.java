@@ -1,13 +1,15 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*;
+import java.util.*; // List
 import java.util.Optional;
 
-import com.creativeartie.writerstudio.lang.*;
+import com.google.common.collect.*; // ImmutableList
+import com.google.common.base.*; // CharMatcher, Spliter
+
+import com.creativeartie.writerstudio.lang.*; // (many)
+
 import static com.creativeartie.writerstudio.main.Checker.*;
 
-import com.google.common.collect.*;
-import com.google.common.base.*;
 
 /**
  * Text implementing {@link BasicText} for non-formatted text. Represented in

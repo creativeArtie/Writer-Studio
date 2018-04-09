@@ -1,14 +1,11 @@
 package com.creativeartie.writerstudio.file;
 
-import com.creativeartie.writerstudio.lang.markup.*;
+import java.io.*; // InputStream, IOException, OutputStream
+import java.util.*;  // Properties
 
-import java.io.*;
-import java.util.zip.*;
-import java.util.*;
+import com.creativeartie.writerstudio.resource.*;  // MetaData
 
-import com.google.common.base.MoreObjects;
 import static com.creativeartie.writerstudio.main.Checker.*;
-import com.creativeartie.writerstudio.resource.*;
 
 public final class TextProperties {
     private Properties metaData;

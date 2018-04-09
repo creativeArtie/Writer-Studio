@@ -1,7 +1,9 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*;
-import com.google.common.collect.*;
+import java.util.*; // HashSet, SortedMap, TreeMap
+
+import com.google.common.collect.*; // ImmutableList, ImmutableSortedMap
+
 import static com.creativeartie.writerstudio.main.Checker.*;
 
 /**

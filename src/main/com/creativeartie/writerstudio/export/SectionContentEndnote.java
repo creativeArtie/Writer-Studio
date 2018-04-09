@@ -1,16 +1,11 @@
 package com.creativeartie.writerstudio.export;
 
-import java.io.*;
-import java.util.*;
-import java.awt.*;
+import java.io.*; // IOException
+import java.util.*; // Optional
 
-import org.apache.pdfbox.pdmodel.*;
-
-import com.creativeartie.writerstudio.lang.*;
-import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.file.*;
-import com.creativeartie.writerstudio.resource.*;
-import com.creativeartie.writerstudio.export.value.*;
+import com.creativeartie.writerstudio.export.value.*; // Utilities
+import com.creativeartie.writerstudio.file.*; // ManuscriptFile
+import com.creativeartie.writerstudio.lang.markup.*; // LinedSpanPointNote
 
 public class SectionContentEndnote extends SectionContent<LinedSpanPointNote> {
     private int noteNumber;

@@ -1,7 +1,8 @@
 package com.creativeartie.writerstudio.export.value;
 
-import java.io.*;
-import org.apache.pdfbox.pdmodel.*;
+import java.io.*; // IOException
+
+import org.apache.pdfbox.pdmodel.*; // PDPage, PDPageContentStream
 
 public interface ContentPostEditor{
     public void edit(PDPage page, PDPageContentStream stream) throws IOException;

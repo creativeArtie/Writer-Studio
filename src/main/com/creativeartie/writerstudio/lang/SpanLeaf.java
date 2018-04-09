@@ -1,11 +1,5 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*;
-
-import com.google.common.collect.*;
-
-import com.creativeartie.writerstudio.main.*;
-
 import static com.creativeartie.writerstudio.main.Checker.*;
 
 /**

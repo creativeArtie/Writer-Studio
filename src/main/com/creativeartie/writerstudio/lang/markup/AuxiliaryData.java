@@ -1,10 +1,12 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*;
+import java.util.*; // List
+
+import com.google.common.collect.*;  // ImmutableList
+
+import com.creativeartie.writerstudio.lang.*; // SetupParser, StyleInfoLeaf
 
 import static com.creativeartie.writerstudio.main.Checker.*;
-import com.creativeartie.writerstudio.lang.*;
-import com.google.common.collect.*;
 
 /**
  * All strings used in this package. Each field (private and public) has its own
@@ -87,7 +89,7 @@ public final class AuxiliaryData{
     }
 
     public static List<String> getLinedTokens(){
-        ArrayList<String> list = new ArrayList<>();
+        ImmutableList.Builder<String> list = ImmutableList.builder();
         for (LinedParseLevel parser: LinedParseLevel.values()){
             for (String token: getLevelTokens(parser)){
                 list.add(token);
@@ -101,7 +103,7 @@ public final class AuxiliaryData{
         list.add(LINED_ENDNOTE);
         list.add(LINED_QUOTE);
         list.add(LINED_BREAK);
-        return list;
+        return list.build();
     }
 
     /// @Part-1-2: Other Lined Details -----------------------------------------
@@ -228,12 +230,12 @@ public final class AuxiliaryData{
 
     /// @Part-2-1: Document automatic bookmarks --------------------------------
     /// For DirectoryType
-    public static final List<String> TYPE_SECTION = Arrays.asList("head");
+    public static final List<String> TYPE_SECTION = ImmutableList.of("head");
 
     public static final String TYPE_AGENDA = "agenda";
-    public static final List<String> TYPE_AGENDA_INLINE = Arrays.asList(
+    public static final List<String> TYPE_AGENDA_INLINE = ImmutableList.of(
         TYPE_AGENDA);
-    public static final List<String> TYPE_AGENDA_LINED = Arrays.asList(
+    public static final List<String> TYPE_AGENDA_LINED = ImmutableList.of(
         TYPE_AGENDA);
 
     /// ========================================================================

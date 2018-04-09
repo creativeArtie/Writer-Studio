@@ -1,12 +1,13 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*;
+import java.util.*; // ArrayList, List, Optional
 
-import com.google.common.collect.*;
+import com.google.common.collect.*; // ImmuableList
 
-import com.creativeartie.writerstudio.lang.*;
-import static com.creativeartie.writerstudio.main.Checker.*;
+import com.creativeartie.writerstudio.lang.*; // (many)
+
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
+import static com.creativeartie.writerstudio.main.Checker.*;
 
 /**
  * Parser for {@link BasicText} with {@link BasicTextEscape}.

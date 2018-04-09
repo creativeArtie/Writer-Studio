@@ -1,7 +1,8 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*;
-import com.google.common.collect.*;
+import java.util.*; // List
+
+import com.google.common.collect.*; // ComparisonChain ImmutableList
 
 import static com.creativeartie.writerstudio.main.Checker.*;
 

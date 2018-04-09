@@ -1,13 +1,10 @@
 package com.creativeartie.writerstudio.export;
 
-import java.io.*;
-import java.util.*;
+import java.io.*; // AutoClosable, IOException
 
-import org.apache.pdfbox.pdmodel.*;
+import org.apache.pdfbox.pdmodel.*; // PDDocument
 
-import com.creativeartie.writerstudio.file.*;
-import com.creativeartie.writerstudio.resource.*;
-import com.creativeartie.writerstudio.export.value.*;
+import com.creativeartie.writerstudio.export.value.*; // ContentFont
 
 public abstract class Section implements AutoCloseable{
 

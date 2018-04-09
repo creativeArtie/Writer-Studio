@@ -2,15 +2,17 @@ package com.creativeartie.writerstudio.file;
 
 import com.creativeartie.writerstudio.lang.markup.*;
 
-import java.io.*;
-import java.util.zip.*;
-import java.util.*;
+import java.io.*; // File, IOException, InputStreamReader
+import java.util.*; // Enumeration, Optional
+import java.util.Optional;
+import java.util.zip.*; // ZipEntry, ZipFile, ZipOutputStream
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Charsets;
+import com.google.common.io.*; // CharStream, Files
+import com.google.common.base.*;// MoreObjects, Charsets
+
+import com.creativeartie.writerstudio.resource.*; // MetaData
+
 import static com.creativeartie.writerstudio.main.Checker.*;
-import com.creativeartie.writerstudio.resource.*;
-import com.google.common.io.*;
 
 /**
  * Stores the {@link WritingText} and {@link RecordList} in a zip file.

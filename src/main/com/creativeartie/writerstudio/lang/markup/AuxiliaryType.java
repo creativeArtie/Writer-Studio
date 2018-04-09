@@ -1,7 +1,8 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*;
-import com.creativeartie.writerstudio.lang.*;
+import java.util.*; // Arrays
+
+import com.creativeartie.writerstudio.lang.*; //StyleInfo
 
 /**
  * All styles that are not really part of any group of styles.

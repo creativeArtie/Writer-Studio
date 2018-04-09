@@ -1,10 +1,11 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*;
+import java.util.*; // List, Optional
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.*; // ImmutableList;
 
-import com.creativeartie.writerstudio.lang.*;
+import com.creativeartie.writerstudio.lang.*; // (many)
+
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
 /**

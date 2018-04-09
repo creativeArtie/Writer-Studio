@@ -1,16 +1,17 @@
 package com.creativeartie.writerstudio.export.value;
 
-import java.io.*;
+import java.awt.*; // Color
+import java.io.*; // IOException
 import java.util.Optional;
 import java.util.Objects;
 import java.util.function.Function;
-import java.awt.*;
 
-import org.apache.pdfbox.pdmodel.font.*;
+import com.google.common.base.*; // MoreObjects
+
+import org.apache.pdfbox.pdmodel.font.*; // PDFont
 
 import static com.creativeartie.writerstudio.main.Checker.*;
 
-import com.google.common.base.*;
 
 public abstract class ContentFont{
 

@@ -1,11 +1,11 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*;
+import java.util.*; // Arrays, List
 
-import static com.creativeartie.writerstudio.main.Checker.*;
+import com.creativeartie.writerstudio.lang.*; // SetupParser
+
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.lang.SetupParser.*;
-import com.creativeartie.writerstudio.lang.*;
+import static com.creativeartie.writerstudio.main.Checker.*;
 
 /**
  * All methods meant to check if a string can be reparsed locally in a single
@@ -48,7 +48,7 @@ public final class AuxiliaryChecker{
         checkNotNull(ender, "ender");
         return text.endsWith(ender)?
             canParse(text.substring(0, text.length() - ender.length()),
-                combine(endings, ender)): false;
+                SetupParser.combine(endings, ender)): false;
     }
 
     static boolean canParse(String text, List<String> endings){
@@ -60,7 +60,9 @@ public final class AuxiliaryChecker{
     static boolean canParse(String text, String ... endings){
         checkNotNull(text, "text");
         checkNotNull(endings, "endings");
-        return checkParse(text, Arrays.asList(combine(endings, LINED_END)));
+        return checkParse(text, Arrays.asList(
+            SetupParser.combine(endings, LINED_END)
+        ));
     }
 
     private static boolean checkParse(String text, List<String> endings){

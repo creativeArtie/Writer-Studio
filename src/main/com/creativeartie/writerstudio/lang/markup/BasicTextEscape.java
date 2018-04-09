@@ -1,9 +1,10 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*;
+import java.util.*; // List, Optional
 
-import com.creativeartie.writerstudio.lang.*;
-import com.google.common.collect.*;
+import com.creativeartie.writerstudio.lang.*; // Span, SpanBranch, StyleInfo
+
+import com.google.common.collect.*; // ImmutableList
 
 /**
  * Escaped character with the {@link AuxiliaryData#CHAR_ESCAPE}. Represented in
