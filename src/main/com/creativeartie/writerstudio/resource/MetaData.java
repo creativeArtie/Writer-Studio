@@ -1,5 +1,6 @@
 package com.creativeartie.writerstudio.resource;
 
+@Deprecated
 public enum MetaData {
     AGENT_NAME("MetaData.AgentName"), AGENT_ADDRESS("MetaData.AgentAddress"),
     AGENT_EMAIL("MetaData.AgentEmail"), AGENT_PHONE("MetaData.AgentPhone"),

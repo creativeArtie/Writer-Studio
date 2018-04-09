@@ -44,16 +44,47 @@ public class WritingData extends Document{
         return ans;
     }
 
-    public Optional<TextDataSpanMeta> getMeta(TextDataType.Meta meta){
+    public void newPrintText(TextDataType.Area area, String raw,
+            TextDataType.Format format){
+        if (! format.isAlignType()){
+            throw new IllegalArgumentException("Unknown alignment: " + format);
+        }
+
+        runCommand(() -> getRaw() + area.getKeyName() + format.getKeyName() +
+            "\n");
+    }
+
+    public void removePrintText(TextDataSpanPrint span){
+        runCommand(span, () -> "");
+    }
+
+    public String getMetaText(TextDataType.Meta meta){
+        TextDataSpanMeta span = getWritingData(meta);
+        if (span != null){
+            return span.getData().map(s -> s.getTrimmed()).orElse("");
+        }
+        return "";
+    }
+
+    public void setMetaText(TextDataType.Meta meta, String raw){
+        TextDataSpanMeta span = getWritingData(meta);
+        if (span == null){
+            runCommand(() -> getRaw() + meta.getKeyName() +
+                TextDataType.Format.TEXT.getKeyName() + "\n");
+            span = getWritingData(meta);
+        }
+        span.editText(raw);
+
+    }
+
+    private TextDataSpanMeta getWritingData(TextDataType.Meta meta){
         for (SpanBranch span: this){
-            if (span instanceof TextDataSpanMeta){
-                TextDataSpanMeta ans = (TextDataSpanMeta) span;
-                if (ans.getType() == meta){
-                    return Optional.of(ans);
-                }
+            if (span instanceof TextDataSpanMeta &&
+                    ((TextDataSpan) span).getType() == meta){
+                return (TextDataSpanMeta) span;
             }
         }
-        return Optional.empty();
+        return null;
     }
 
     @Override

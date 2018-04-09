@@ -7,6 +7,7 @@ import com.creativeartie.writerstudio.resource.*;  // MetaData
 
 import static com.creativeartie.writerstudio.main.Checker.*;
 
+@Deprecated
 public final class TextProperties {
     private Properties metaData;
 

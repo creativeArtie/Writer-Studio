@@ -3,7 +3,7 @@ package com.creativeartie.writerstudio.file;
 import com.creativeartie.writerstudio.lang.markup.*;
 
 import java.io.*; // File, IOException, InputStreamReader
-import java.util.*; // Enumeration, Optional
+import java.util.*; // Enumeration, Optional, Arrays
 import java.util.Optional;
 import java.util.zip.*; // ZipEntry, ZipFile, ZipOutputStream
 
@@ -24,7 +24,8 @@ public final class ManuscriptFile {
     /// file name and extension for {@link #open(File)} and {@link #save()}
     private static final String TEXT = "manuscript";
     private static final String RECORDS = "records";
-    private static final String META = "meta.properties";
+    private static final String META = "meta";
+    private static final String OTHER = "meta.properties";
     private static final String EXTENSION = ".txt";
 
     /**
@@ -53,6 +54,7 @@ public final class ManuscriptFile {
         WritingText doc = null;
         RecordList record = null;
         TextProperties prop = null;
+        WritingData data = null;
 
         try (ZipFile input = new ZipFile(file)) {
             Enumeration<? extends ZipEntry> it = input.entries();
@@ -70,8 +72,12 @@ public final class ManuscriptFile {
                     record = new RecordList(text);
                 }
 
-                if (entry.getName().equals(META)){
+                if (entry.getName().equals(OTHER)){
                     prop = new TextProperties(input.getInputStream(entry));
+                }
+
+                if (entry.getName().equals(META + EXTENSION)){
+                    data = new WritingData(text);
                 }
 
             }
@@ -79,7 +85,7 @@ public final class ManuscriptFile {
 
         /// Create Object or throw exception
         if (doc != null && record != null && prop != null){
-            return new ManuscriptFile(file, doc, record, prop);
+            return new ManuscriptFile(file, doc, record, prop, data);
         }
         throw new IOException("Corrupted file: document -> " + doc +
             "; records -> " + record + "; data -> " + prop);
@@ -88,7 +94,7 @@ public final class ManuscriptFile {
     /** Create a {@linkplain ManuscriptFile} with no data. */
     public static ManuscriptFile newFile() {
         return new ManuscriptFile(null, new WritingText(),
-            new RecordList(), new TextProperties());
+            new RecordList(), new TextProperties(), new WritingData());
     }
 
     /**
@@ -112,8 +118,31 @@ public final class ManuscriptFile {
         props.setText(MetaData.PHONE, "(556)765-4321");
         props.setText(MetaData.COPYRIGHT, "1900");
         props.setText(MetaData.WEBSITE, "www.exmaple.com");
+        String data = String.join("\n", Arrays.asList(
+            "head-top     |left  |John Smith",
+            "head-top     |left  |555 Main Street",
+            "head-top     |left  |Vancouver",
+            "head-top     |left  |agent@example.com",
+            "head-centre  |center|Some Novel Title",
+            "head-centre  |center|",
+            "head-centre  |center|by",
+            "head-centre  |center|",
+            "head-centre  |center|Mary Sue",
+            "head-bottom  |right |Jane Smith",
+            "head-bottom  |right |123 Nowhere",
+            "head-bottom  |right |(555)765-4321",
+            "text-header  |right |Smith/Novel/{Stat.PageNumber}",
+            "text-header  |center|Copyright 1900 (c) Jane Smit",
+            "text-break   |center|#",
+            "text-ender   |center|The End",
+            "cite-header  |center|Word Cited",
+            "meta-author  |text  |Jane Smith",
+            "meta-keywords|text  |example text",
+            "meta-subject |text  |exmaple, novel",
+            "meta-title   |text  |Some Novel Title"
+        ));
         ManuscriptFile ans = new ManuscriptFile(null, doc, new RecordList(),
-            props);
+            props, new WritingData(data));
         return ans;
     }
 
@@ -121,10 +150,11 @@ public final class ManuscriptFile {
     private final RecordList recordsFile;
     private final TextProperties textData;
     private Optional<File> zipFile;
+    private final WritingData metaData;
 
     /** {@linkplain ManuscriptFile}'s constructor.*/
     private ManuscriptFile(File file, WritingText doc,
-            RecordList table, TextProperties prop) {
+            RecordList table, TextProperties prop, WritingData data) {
         assert doc != null: "Null doc";
         assert table != null: "Null table";
         /// nullable file
@@ -133,6 +163,7 @@ public final class ManuscriptFile {
         documentText = doc;
         recordsFile = table;
         textData = prop;
+        metaData = data;
     }
 
     public File dumpFile() throws IOException{
@@ -161,6 +192,11 @@ public final class ManuscriptFile {
         return recordsFile;
     }
 
+    public WritingData getMetaData(){
+        return metaData;
+    }
+
+    @Deprecated
     public String getText(MetaData key){
         if (key == MetaData.BY){
             return "By";
@@ -175,6 +211,7 @@ public final class ManuscriptFile {
         return textData.getText(key);
     }
 
+    @Deprecated
     public String getText(MetaData ... keys){
         for (MetaData key: keys){
             String ans = getText(key);
@@ -185,6 +222,7 @@ public final class ManuscriptFile {
         return "";
     }
 
+    @Deprecated
     public void setText(MetaData data, String text){
         textData.setText(data, text);
     }
@@ -205,7 +243,7 @@ public final class ManuscriptFile {
             try (FileOutputStream out = new FileOutputStream(tmp)){
                 textData.save(out);
             }
-            save(writeTo, META, Files.asCharSource(tmp, Charsets.UTF_8).read());
+            save(writeTo, OTHER, Files.asCharSource(tmp, Charsets.UTF_8).read());
             tmp.delete();
 
         }

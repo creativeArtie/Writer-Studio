@@ -14,6 +14,16 @@
  * exception        -
  *)
 
+Meta = {Data};
+Data = DataSpan, [{\n, DataSpan}], [\n];
+
+DataSpan = (DataArea, DataType, Format1) | (DataMeta, DataType, Content)
+DataArea = ("head-", ("top     |" | "centre  |" | "bottom  |") ) |
+           ("text-", ("header  |" | "ender   |" ) ) |
+           ("cite-",  "header  |" );
+DataMeta =  "meta-", ("author  |" | "keywords|" | "subject |" | "title   |";
+DataType = "right |" | "left  |" | "center|" | "text  |";
+
 Manuscript = (Section | Note), [{\n, (Section | Note)}], [\n];
 
 Section     = ((LinedHeading | LinedOutline), [{\n, SectionContent}]) |

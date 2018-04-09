@@ -14,8 +14,12 @@ public class TextDataType{
 
     public enum Area implements Type, StyleInfo{
         FRONT_TOP(TITLE_TOP), FRONT_CENTER(TITLE_CENTER),
-        FRONT_BOTTOM(TITLE_BOTTOM), MAIN_HEADER(TEXT_HEADER),
-        MAIN_ENDER(TEXT_ENDER), SOURCE_TITLE(CITE_TITLE);
+        FRONT_BOTTOM(TITLE_BOTTOM),
+
+        MAIN_HEADER(TEXT_HEADER), MAIN_BREAK(TEXT_BREAK),
+        MAIN_ENDER(TEXT_ENDER),
+
+        SOURCE_TITLE(CITE_TITLE);
 
         private String keyName;
         private Area(String key){
@@ -52,6 +56,10 @@ public class TextDataType{
 
         String getKeyName(){
             return keyName;
+        }
+
+        public boolean isAlignType(){
+            return ordinal() <= RIGHT.ordinal();
         }
     }
 

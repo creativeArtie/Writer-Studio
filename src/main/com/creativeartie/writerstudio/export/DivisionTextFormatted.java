@@ -27,12 +27,41 @@ class DivisionTextFormatted extends DivisionText{
         parentDoc = content.getParent();
     }
 
-    /** Add Content.
+
+    /** Add Content with {@link TextDataSpanPrint}
      * @param span
      *      the content to add; not null or empty
      * @return self
      * @throws IOException
      *         exception with content parsing
+     * @see addContent(FormattedSpan)
+     */
+    final DivisionTextFormatted addContent(TextDataSpanPrint span)
+            throws IOException{
+        Checker.checkNotEmpty(span, "span");
+        switch (span.getFormat()){
+        case RIGHT:
+            setLineAlignment(LineAlignment.RIGHT);
+            break;
+        case CENTER:
+            setLineAlignment(LineAlignment.CENTER);
+            break;
+        case LEFT:
+        default:
+        }
+        if (span.getData().isPresent()){
+            addContent(span.getData().get());
+        }
+        return this;
+    }
+
+    /** Add Content with {@link FormattedSpan}
+     * @param span
+     *      the content to add; not null or empty
+     * @return self
+     * @throws IOException
+     *         exception with content parsing
+     * @see addContent(TextDataSpanPrint)
      */
     final DivisionTextFormatted addContent(FormattedSpan span)
             throws IOException{

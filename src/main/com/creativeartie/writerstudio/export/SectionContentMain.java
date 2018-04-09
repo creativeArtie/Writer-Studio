@@ -63,9 +63,12 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
     }
 
     private DivisionText addBreak() throws IOException{
-        DivisionText ans = newFormatDivision();
-        ans.setLineAlignment(LineAlignment.CENTER);
-        ans.appendText("#", newFont());
+        DivisionTextFormatted ans = newFormatDivision();
+        List<TextDataSpanPrint> data = getOutputData().getMetaData()
+            .getPrint(TextDataType.Area.MAIN_BREAK);
+        if (! data.isEmpty()){
+            ans.addContent(data.get(0));
+        }
         paraFirst = true;
         return ans;
     }

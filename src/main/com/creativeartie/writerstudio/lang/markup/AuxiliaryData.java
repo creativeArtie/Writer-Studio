@@ -286,6 +286,7 @@ public final class AuxiliaryData{
     private static final String TEXT         = "text-";
     public static final String TEXT_HEADER   = TEXT   + "header  |";
     public static final String TEXT_ENDER    = TEXT   + "ender   |";
+    public static final String TEXT_BREAK    = TEXT   + "break   |";
     private static final String CITE         = "cite-";
     public static final String CITE_TITLE    = CITE   + "header  |";
     private static final String META         = "meta-";

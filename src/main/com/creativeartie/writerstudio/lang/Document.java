@@ -387,4 +387,12 @@ public abstract class Document extends SpanNode<SpanBranch>{
         updated.setUpdated();
         setDocEdited();
     }
+
+    protected final void runCommand(Command command){
+        parseDocument(command.getResult());
+    }
+
+    protected final void runCommand(SpanBranch span, Command command){
+        span.runCommand(command);
+    }
 }

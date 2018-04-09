@@ -9,8 +9,8 @@ import static com.creativeartie.writerstudio.main.Checker.*;
 import com.google.common.collect.*;
 import com.google.common.base.*;
 
-/**
- * A single line in {@link WritingData}.
+/** A line of text in the {@link WritingData}. Represented in design/ebnf.txt as
+ * {@code DataSpan}.
  */
 public abstract class TextDataSpan<T extends SpanBranch> extends SpanBranch{
 
@@ -32,7 +32,7 @@ public abstract class TextDataSpan<T extends SpanBranch> extends SpanBranch{
         cacheType = getCache(cacheType, () -> {
             String raw = getRaw();
             for (TextDataType.Type type: listTypes()){
-                if (type.getKeyName().equals(raw)){
+                if (raw.startsWith(type.getKeyName())){
                     return type;
                 }
             }
@@ -45,10 +45,19 @@ public abstract class TextDataSpan<T extends SpanBranch> extends SpanBranch{
 
     public abstract TextDataType.Format getFormat();
 
+    public void editText(String text){
+        runCommand(() -> getType().getKeyName() + getFormat().getKeyName() +
+            replaceText(text) + "\n");
+    }
+
+    protected String replaceText(String text){
+        return text;
+    }
 
     @Override
     protected SetupParser getParser(String text){
-        return null;
+        return AuxiliaryChecker.checkLineEnd(text, isLast())?
+            TextDataParser.PARSER: null;
     }
 
     @Override

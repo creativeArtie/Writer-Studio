@@ -38,6 +38,11 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
         addHeader();
     }
 
+    protected ManuscriptFile getOutputData(){
+        return outputData;
+    }
+
+
     private void addHeader() throws IOException{
         MatterArea header = parseHeader(outputData);
         if (header != null){

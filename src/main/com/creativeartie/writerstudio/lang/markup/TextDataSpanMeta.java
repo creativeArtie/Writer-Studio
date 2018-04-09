@@ -1,16 +1,13 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*;
-import java.util.Optional;
+import java.util.*; // List
 
-import com.creativeartie.writerstudio.lang.*;
+import com.google.common.base.*; // CharMatcher
+
+import com.creativeartie.writerstudio.lang.*; // List
 import static com.creativeartie.writerstudio.main.Checker.*;
 
-import com.google.common.collect.*;
-import com.google.common.base.*;
-
-/**
- * A {@link TextDataSpan} for meta data in the PDF properties.
+/**  A {@link TextDataSpan} for meta data in the PDF properties.
  */
 public class TextDataSpanMeta extends TextDataSpan<ContentSpan>{
 
@@ -31,5 +28,10 @@ public class TextDataSpanMeta extends TextDataSpan<ContentSpan>{
     @Override
     public TextDataType.Format getFormat(){
         return TextDataType.Format.TEXT;
+    }
+
+    @Override
+    public String replaceText(String text){
+        return CharMatcher.whitespace().trimAndCollapseFrom(text, ' ');
     }
 }
