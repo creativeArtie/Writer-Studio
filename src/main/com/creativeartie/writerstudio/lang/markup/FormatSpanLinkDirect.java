@@ -60,8 +60,9 @@ public final class FormatSpanLinkDirect extends FormatSpanLink {
 
     @Override
     protected SetupParser getParser(String text){
-        return text.startsWith(LINK_BEGIN) && AuxiliaryChecker.willEndWith(text,
-            LINK_END)? spanReparser : null;
+        return (text.startsWith(LINK_BEGIN) &&
+            AuxiliaryChecker.willEndWith(text, LINK_END)
+        )? spanReparser : null;
     }
 
     @Override

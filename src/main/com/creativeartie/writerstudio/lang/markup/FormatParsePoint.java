@@ -48,7 +48,7 @@ abstract class FormatParsePoint implements SetupParser {
 
     boolean canParse(String text){
         Checker.checkNotNull(text, "text");
-        return text.startsWith(spanStart) && AuxiliaryChecker.willEndWith(text,
-            CURLY_END);
+        return text.startsWith(spanStart) &&
+            AuxiliaryChecker.willEndWith(text, CURLY_END);
     }
 }

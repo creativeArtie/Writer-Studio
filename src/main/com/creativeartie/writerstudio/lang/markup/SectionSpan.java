@@ -1,11 +1,12 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*;
+import java.util.*; // List
 import java.util.Optional;
-import com.google.common.base.*;
-import com.google.common.collect.*;
+import com.google.common.base.*; // Splitter
+import com.google.common.collect.*; // ImmtableList
 
-import com.creativeartie.writerstudio.lang.*;
+import com.creativeartie.writerstudio.lang.*; // (many)
+
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.writerstudio.main.Checker.*;
 
@@ -14,18 +15,31 @@ import static com.creativeartie.writerstudio.main.Checker.*;
  */
 public abstract class SectionSpan extends SpanBranch {
 
-    static boolean allowChild(String text, int parent, boolean heading){
+    /** Check if the edit can become a child of the current {@link Span}.
+     *
+     * @param text
+     *      the new text
+     * @param allowed
+     *      the high allowed level
+     * @param heading
+     *      heading or not (aka outline)
+     * @return answer
+     */
+    static boolean allowChild(String text, int allowed, boolean heading){
         for (int i = LEVEL_MAX; i > 0; i--){
             if (text.startsWith(getLevelToken(LinedParseLevel.OUTLINE, i))){
-                return heading || parent < i;
+                /// if (text == outline)
+                return heading? true : allowed < i;
             }
         }
 
         for (int i = LEVEL_MAX; i > 0; i--){
             if (text.startsWith(getLevelToken(LinedParseLevel.HEADING, i))){
-                return heading? parent < i: false;
+                /// if (text == heading)
+                return heading? allowed < i: false;
             }
         }
+        /// if (text == others)
         return true;
     }
 
@@ -85,25 +99,43 @@ public abstract class SectionSpan extends SpanBranch {
     @Override
     protected final SetupParser getParser(String text){
         checkNotNull(text, "text");
-        if (AuxiliaryChecker.checkSectionEnd(isLast(), text) &&
+        if (AuxiliaryChecker.checkSectionEnd(text, isLast()) &&
                 checkStart(text)){
-            boolean isFirst = true;
+
+            /// Line per line checking
+            boolean checking = true;
             for (String str: Splitter.on(LINED_END).split(text)){
-                if (isFirst){
-                    isFirst = false;
+                if (checking){
+                    /// already checked or last line ends with escape
+                    checking = false;
                     continue;
                 }
-                if (! allowChild(str, getLevel(),
-                        this instanceof SectionSpanHead)){
+                if (! allowChild(str, getLevel(), this instanceof
+                        SectionSpanHead)){
+                    /// not descendant
                     return null;
                 }
+                if (str.endsWith(CHAR_ESCAPE)){
+                    checking = true;
+                }
             }
+
+        /// returns
         } else {
             return null;
         }
         return spanReparser;
     }
 
+    /** Check if span is parseable locally with information in the child class.
+     *
+     * The child classes will call {@link #allowChild(String, int, boolean)}
+     * accept for heading 1.
+     *
+     * @param text
+     *      new text
+     * @return anwser
+     */
     protected abstract boolean checkStart(String text);
 
     public abstract List<LinedSpan> getLines();

@@ -41,12 +41,14 @@ public class LinedSpanParagraph extends LinedSpan {
 
     @Override
     protected SetupParser getParser(String text){
+        /// Make sure it turn into a different line type
         for (String token: getLinedTokens()){
             if (text.startsWith(token)){
                 return null;
             }
         }
-        return AuxiliaryChecker.checkLineEnd(isLast(), text)?
+
+        return AuxiliaryChecker.checkLineEnd(text, isLast())?
             LinedParseRest.PARAGRAPH: null;
     }
 

@@ -55,9 +55,9 @@ public final class FormatSpanAgenda extends SpanBranch implements Catalogued{
 
     @Override
     protected SetupParser getParser(String text){
-        return text.startsWith(CURLY_AGENDA) &&
-            AuxiliaryChecker.willEndWith(text, CURLY_END)?
-            FormatParseAgenda.PARSER: null;
+        return (text.startsWith(CURLY_AGENDA) &&
+            AuxiliaryChecker.willEndWith(text, CURLY_END)
+        )? FormatParseAgenda.PARSER: null;
     }
 
     @Override

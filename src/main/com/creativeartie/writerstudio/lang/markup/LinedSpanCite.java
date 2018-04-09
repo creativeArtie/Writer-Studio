@@ -12,6 +12,16 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  */
 public class LinedSpanCite extends LinedSpan {
 
+    /** Check if the line start with {@link LINED_CITE}.
+     *
+     * @param text
+     *      new text
+     * @return answer
+     */
+    static boolean checkLine(String text){
+        return text.startsWith(LINED_CITE);
+    }
+
     private Optional<InfoFieldType> cacheFieldType;
     private Optional<Optional<InfoDataSpan>> cacheData;
     private Optional<List<StyleInfo>> cacheStyles;
@@ -73,12 +83,8 @@ public class LinedSpanCite extends LinedSpan {
 
     @Override
     protected SetupParser getParser(String text){
-        return canParse(text) && AuxiliaryChecker.checkLineEnd(isLast(), text)?
+        return checkLine(text) && AuxiliaryChecker.checkLineEnd(text, isLast())?
             LinedParseCite.INSTANCE: null;
-    }
-
-    static boolean canParse(String text){
-        return text.startsWith(LINED_CITE);
     }
 
     @Override

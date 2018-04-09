@@ -62,7 +62,7 @@ enum DirectoryParser implements SetupParser{
     /** Check if the text can be parse at Directory level. */
     boolean canParse(String text){
         checkNotNull(text, "text");
-        return AuxiliaryChecker.canParse(text, Arrays.asList(reparseEnders));
+        return AuxiliaryChecker.notCutoff(text, Arrays.asList(reparseEnders));
     }
 
     @Override

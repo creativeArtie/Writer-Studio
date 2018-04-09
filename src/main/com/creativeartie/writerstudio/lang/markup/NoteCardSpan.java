@@ -172,28 +172,39 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
     @Override
     protected SetupParser getParser(String text){
         checkNotNull(text, "text");
-        if (! AuxiliaryChecker.checkSectionEnd(isLast(), text)){
+
+        /// check if ending merge with next
+        if (! AuxiliaryChecker.checkSectionEnd(text, isLast())){
             return null;
         }
-        boolean isFirst = true;
+
+        /// remove the line end
         if (text.endsWith(LINED_END)){
             text = text.substring(0, text.length() - LINED_END.length());
         }
+
+        /// Check line (with escaped line end removed.
+        boolean isFirst = true;
         for (String str : Splitter.on(LINED_END)
                 .split(text.replace(CHAR_ESCAPE + LINED_END, ""))){
             if (isFirst){
-                if (LinedSpanNote.canParse(str) || LinedSpanCite.canParse(str)){
+                /// First line
+                if (LinedSpanNote.checkFirstLine(str) || LinedSpanCite
+                        .checkLine(str)){
                     isFirst = false;
                 } else {
                     return null;
                 }
             } else {
-                if (!LinedSpanNote.canParseWithoutId(str) &&
-                        ! LinedSpanCite.canParse(str)){
+                /// Middle line
+                if (! LinedSpanNote.checkMiddleLine(str) && ! LinedSpanCite
+                        .checkLine(str)){
                     return null;
                 }
             }
         }
+
+        /// return answer
         return NoteCardParser.PARSER;
     }
 

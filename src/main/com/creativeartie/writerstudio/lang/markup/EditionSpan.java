@@ -61,7 +61,7 @@ public final class EditionSpan extends SpanBranch{
 
     @Override
     protected SetupParser getParser(String text){
-        return text.startsWith(EDITION_BEGIN) && AuxiliaryChecker.canParse(text,
+        return text.startsWith(EDITION_BEGIN) && AuxiliaryChecker.notCutoff(text,
             LINED_END)? EditionParser.INSTANCE: null;
     }
 

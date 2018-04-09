@@ -36,7 +36,7 @@ public class LinedSpanLevelList extends LinedSpanLevel {
 
     @Override
     protected SetupParser getParser(String text){
-        if (AuxiliaryChecker.checkLineEnd(isLast(), text)){
+        if (AuxiliaryChecker.checkLineEnd(text, isLast())){
             if (getParser(text, LinedParseLevel.BULLET)){
                 return LinedParseLevel.BULLET;
             } else if (getParser(text, LinedParseLevel.NUMBERED)){
@@ -46,9 +46,13 @@ public class LinedSpanLevelList extends LinedSpanLevel {
         return null;
     }
 
-    /**
-     * Check if text is parseable by a parser. Helper method of
-     * {@link #getParser(String)}
+    /** Check if the line is a bullet or a numbered line.
+     *
+     * @param text
+     *      new text
+     * @param parser
+     *      the line type
+     * @return answer
      */
     private boolean getParser(String text, LinedParseLevel parser){
         for (String token: getLevelTokens(parser)){

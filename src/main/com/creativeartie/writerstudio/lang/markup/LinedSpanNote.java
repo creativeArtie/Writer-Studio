@@ -11,6 +11,36 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  */
 public class LinedSpanNote extends LinedSpan{
 
+    /** Check line as a first line in a {@link NoteCard}.
+     *
+     * @param text
+     *      new text
+     * @param answer
+     */
+    static boolean checkFirstLine(String text){
+        return text.startsWith(LINED_NOTE);
+    }
+
+    /** Check line as a middle line in a {@link NoteCard}.
+     *
+     * @param text
+     *      new text
+     * @param answer
+     */
+    static boolean checkMiddleLine(String text){
+        if (checkFirstLine(text)){
+            for (int i = 2; i < text.length(); i++){
+                if (text.startsWith(DIRECTORY_BEGIN, i)){
+                    return false;
+                }
+                if (! Character.isWhitespace(text.charAt(i))){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private Optional<Optional<FormattedSpan>> cacheFormatted;
     private Optional<Optional<CatalogueIdentity>> cacheId;
     private Optional<String> cacheLookup;
@@ -59,27 +89,10 @@ public class LinedSpanNote extends LinedSpan{
 
     @Override
     protected SetupParser getParser(String text){
-        return (isFirst()? canParse(text) : canParseWithoutId(text)) &&
-            AuxiliaryChecker.checkLineEnd(isLast(), text)?
-            LinedParseRest.NOTE: null;
-    }
-
-    static boolean canParse(String text){
-        return text.startsWith(LINED_NOTE);
-    }
-
-    static boolean canParseWithoutId(String text){
-        if (canParse(text)){
-            for (int i = 2; i < text.length(); i++){
-                if (text.startsWith(DIRECTORY_BEGIN, i)){
-                    return false;
-                }
-                if (! Character.isWhitespace(text.charAt(i))){
-                    return true;
-                }
-            }
-        }
-        return false;
+        return (
+            (isFirst()? checkFirstLine(text) : checkMiddleLine(text)) &&
+            AuxiliaryChecker.checkLineEnd(text, isLast())
+        )? LinedParseRest.NOTE: null;
     }
 
     @Override

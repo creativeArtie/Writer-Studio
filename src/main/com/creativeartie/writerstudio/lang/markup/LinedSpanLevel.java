@@ -32,19 +32,6 @@ public abstract class LinedSpanLevel extends LinedSpan {
         return cacheLevel.get();
     }
 
-    protected final SetupParser checkLine(LinedParseLevel reparser,
-            String text){
-        for (String token: getLevelTokens(reparser)){
-            if (text.startsWith(token) && AuxiliaryChecker
-                .checkLineEnd(isLast(), text))
-            {
-                return reparser;
-            }
-        }
-        return null;
-    }
-
-
     @Override
     protected void childEdited(){
         cacheFormatted = Optional.empty();

@@ -96,9 +96,11 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
 
     @Override
     protected SetupParser getParser(String text){
-        if (! AuxiliaryChecker.checkLineEnd(isLast(), text)){
+        if (! AuxiliaryChecker.checkLineEnd(text, isLast())){
             return null;
         }
+
+        /// Gets the starting token and check it
         LinedParseLevel parser = getLinedType() == LinedType.HEADING?
             LinedParseLevel.HEADING: LinedParseLevel.OUTLINE;
         return text.startsWith(getLevelToken(parser, getLevel()))? parser: null;
