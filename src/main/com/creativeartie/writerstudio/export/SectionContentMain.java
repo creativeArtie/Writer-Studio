@@ -1,11 +1,10 @@
 package com.creativeartie.writerstudio.export;
 
 import java.io.*; // IOException
-import java.util.*; // LinkedList, Optional
+import java.util.*; // ArrayList, LinkedList, Optional
 
 import com.creativeartie.writerstudio.file.*; // ManuscriptFile
 import com.creativeartie.writerstudio.lang.markup.*; // (many)
-import com.creativeartie.writerstudio.resource.*; // MetaData
 import com.creativeartie.writerstudio.export.value.*; // LineAlginment, PageAignment, Utitlies
 
 public class SectionContentMain extends SectionContent<LinedSpan> {
@@ -21,14 +20,12 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
     @Override
     protected MatterArea parseHeader(ManuscriptFile data) throws IOException{
         MatterArea header = new MatterArea(getPage(), PageAlignment.TOP);
-        header.add(new DivisionText(
-                getPage().getRenderWidth(), LineAlignment.RIGHT
-            ).setLeading(1)
-            .appendText(data.getText(MetaData.LAST_NAME) + "/" +
-                data.getText(MetaData.TITLE) + "/" +
-                getPageNumber(), getParent().new PdfFont()
-            )
-        );
+        ArrayList<DivisionTextFormatted> lines = new ArrayList<>();
+        for (TextDataSpanPrint print: data.getMetaData()
+                .getPrint(TextDataType.Area.MAIN_HEADER)){
+            lines.add(new DivisionTextFormatted(this).addContent(print));
+        }
+        header.addAll(lines);
         return header;
     }
 

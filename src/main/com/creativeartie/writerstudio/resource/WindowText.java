@@ -83,10 +83,6 @@ public enum WindowText {
 
     WORK_CITED("ExportText.WorkCited");
 
-    static String getText(MetaData data){
-        return getDisplay(data.getKey());
-    }
-
     public static String getText(DirectoryType type){
         return getDisplay(getText("UserLists.", type.name()) + "ListName");
     }

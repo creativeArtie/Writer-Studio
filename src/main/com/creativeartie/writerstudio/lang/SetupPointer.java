@@ -398,7 +398,7 @@ public final class SetupPointer{
     @Override
     public String toString(){
         return "(" + pointerHelper(lastMarker) + "-" + pointerHelper(matchMarker) + "-" +
-            pointerHelper(nextMarker) + "): " + rawText;
+            pointerHelper(nextMarker) + "): " + rawText.substring(matchMarker);
     }
 
     /**

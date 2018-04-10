@@ -1,18 +1,19 @@
 package com.creativeartie.writerstudio.export;
 
 import java.io.*; // IOException
-import java.util.*; // GregorianCalendar
+import java.util.*; // ArrayList, GregorianCalendar, List
 
 import org.apache.pdfbox.pdmodel.*; // PDDocumentInformation
 
 import com.creativeartie.writerstudio.file.*; // ManuscriptFile
+import com.creativeartie.writerstudio.lang.markup.*; // WritingData
 import com.creativeartie.writerstudio.export.value.*; // LineAlignment, PageAlignment
-import com.creativeartie.writerstudio.resource.*; // MetaData, WindowText
+import com.creativeartie.writerstudio.resource.*; // WindowText
 
 public class SectionTitle extends Section {
 
     private WritingExporter parentDoc;
-    private ManuscriptFile exportData;
+    private WritingData exportData;
     private PageContent outputPage;
     private float areaWidth;
 
@@ -24,21 +25,21 @@ public class SectionTitle extends Section {
     }
 
     void export(ManuscriptFile data) throws IOException{
-        exportData = data;
+        exportData = data.getMetaData();
         writeMeta();
         writeTitlePage();
     }
 
     private void writeMeta(){
         PDDocumentInformation info = getPdfDocument().getDocumentInformation();
-        info.setAuthor(exportData.getText(MetaData.AUTHOR));
+        info.setAuthor(exportData.getMetaText(TextDataType.Meta.AUTHOR));
         info.setCreationDate(new GregorianCalendar());
         info.setCreator(WindowText.PROGRAM_NAME.getText());
-        /// info.setKeywords(keywords);
+        info.setKeywords(exportData.getMetaText(TextDataType.Meta.KEYWORDS));
         info.setModificationDate(new GregorianCalendar());
         info.setProducer(WindowText.PROGRAM_NAME.getText());
-        /// info.setSubject(subject)
-        info.setTitle(exportData.getText(MetaData.TITLE));
+        info.setSubject(exportData.getMetaText(TextDataType.Meta.SUBJECT));
+        info.setTitle(exportData.getMetaText(TextDataType.Meta.TITLE));
     }
 
     private void writeTitlePage() throws IOException{
@@ -49,53 +50,31 @@ public class SectionTitle extends Section {
 
     private void writeTop() throws IOException{
         MatterArea top = new MatterArea(outputPage, PageAlignment.TOP);
-        top.add(newLine(MetaData.AGENT_NAME, LineAlignment.LEFT));
-        top.add(newLine(MetaData.AGENT_ADDRESS, LineAlignment.LEFT));
-        top.add(newLine(MetaData.AGENT_EMAIL, LineAlignment.LEFT));
-        top.add(newLine(MetaData.AGENT_PHONE, LineAlignment.LEFT));
+        top.addAll(newLines(exportData.getPrint(TextDataType.Area.FRONT_TOP)));
         top.render();
     }
 
     public void writeMiddle() throws IOException{
         MatterArea mid = new MatterArea(outputPage, PageAlignment.MIDDLE);
-        mid.add(newLine(MetaData.TITLE, LineAlignment.CENTER, 2));
-        mid.add(newLine("By", LineAlignment.CENTER, 2));
-        mid.add(newLine(MetaData.AUTHOR, LineAlignment.CENTER, 2));
+        mid.addAll(newLines(exportData.getPrint(TextDataType.Area.FRONT_CENTER)));
         mid.render();
     }
 
     public void writeBottom() throws IOException{
         MatterArea bot = new MatterArea(outputPage, PageAlignment.BOTTOM);
-        bot.add(newLine(MetaData.AUTHOR, LineAlignment.RIGHT));
-        bot.add(newLine(MetaData.ADDRESS, LineAlignment.RIGHT));
-        bot.add(newLine(MetaData.PHONE, LineAlignment.RIGHT));
-        bot.add(newLine(MetaData.EMAIL, LineAlignment.RIGHT));
-        bot.add(newLine(MetaData.WEBSITE,LineAlignment.RIGHT));
-        bot.add(newLine(
-            getData(MetaData.AUTHOR) + " © " + getData(MetaData.COPYRIGHT),
-            LineAlignment.CENTER, 3
-        ));
+        bot.addAll(newLines(exportData.getPrint(TextDataType.Area.FRONT_BOTTOM)));
         bot.render();
     }
 
-    private DivisionText newLine(MetaData data, LineAlignment alignment)
+    private List<DivisionTextFormatted> newLines(List<TextDataSpanPrint> spans)
             throws IOException{
-        return newLine(data, alignment, 1);
-    }
-
-    private DivisionText newLine(MetaData data, LineAlignment alignment,
-            float leading) throws IOException{
-        return newLine(getData(data), alignment, leading);
-    }
-
-    private DivisionText newLine(String text, LineAlignment alignment,
-            float leading) throws IOException{
-        return new DivisionText(areaWidth, alignment).setLeading(leading)
-            .appendText(text, newFont());
-    }
-
-    private String getData(MetaData key){
-        return exportData.getText(key);
+        ArrayList<DivisionTextFormatted> ans = new ArrayList<>();
+        float width = outputPage.getRenderWidth();
+        for(TextDataSpanPrint span: spans){
+            ans.add(new DivisionTextFormatted(width, parentDoc)
+                .addContent(span));
+        }
+        return ans;
     }
 
     @Override

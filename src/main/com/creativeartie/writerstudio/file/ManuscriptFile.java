@@ -25,7 +25,6 @@ public final class ManuscriptFile {
     private static final String TEXT = "manuscript";
     private static final String RECORDS = "records";
     private static final String META = "meta";
-    private static final String OTHER = "meta.properties";
     private static final String EXTENSION = ".txt";
 
     /**
@@ -53,7 +52,6 @@ public final class ManuscriptFile {
         /// {@link #ManuscriptFile(File,WritingText, RecordList} params:
         WritingText doc = null;
         RecordList record = null;
-        TextProperties prop = null;
         WritingData data = null;
 
         try (ZipFile input = new ZipFile(file)) {
@@ -72,10 +70,6 @@ public final class ManuscriptFile {
                     record = new RecordList(text);
                 }
 
-                if (entry.getName().equals(OTHER)){
-                    prop = new TextProperties(input.getInputStream(entry));
-                }
-
                 if (entry.getName().equals(META + EXTENSION)){
                     data = new WritingData(text);
                 }
@@ -84,17 +78,17 @@ public final class ManuscriptFile {
         }
 
         /// Create Object or throw exception
-        if (doc != null && record != null && prop != null){
-            return new ManuscriptFile(file, doc, record, prop, data);
+        if (doc != null && record != null && data != null){
+            return new ManuscriptFile(file, doc, record, data);
         }
         throw new IOException("Corrupted file: document -> " + doc +
-            "; records -> " + record + "; data -> " + prop);
+            "; records -> " + record + "; data -> " + data);
     }
 
     /** Create a {@linkplain ManuscriptFile} with no data. */
     public static ManuscriptFile newFile() {
-        return new ManuscriptFile(null, new WritingText(),
-            new RecordList(), new TextProperties(), new WritingData());
+        return new ManuscriptFile(null, new WritingText(), new RecordList(),
+            new WritingData());
     }
 
     /**
@@ -104,20 +98,6 @@ public final class ManuscriptFile {
     @Deprecated
     public static ManuscriptFile withManuscript(WritingText doc){
         checkNotNull(doc, "doc");
-        TextProperties props = new TextProperties();
-        props.setText(MetaData.AGENT_NAME, "John Smith");
-        props.setText(MetaData.AGENT_ADDRESS, "555 Main Street\nVancouver");
-        props.setText(MetaData.AGENT_EMAIL, "agent@example.com");
-        props.setText(MetaData.AGENT_PHONE, "(555)123-4567");
-        props.setText(MetaData.TITLE, "Some Novel Title");
-        props.setText(MetaData.PEN_NAME, "Mary Sue");
-        props.setText(MetaData.FIRST_NAME, "Jane");
-        props.setText(MetaData.LAST_NAME, "Smith");
-        props.setText(MetaData.ADDRESS, "123 Nowhere");
-        props.setText(MetaData.EMAIL, "author@example.com");
-        props.setText(MetaData.PHONE, "(556)765-4321");
-        props.setText(MetaData.COPYRIGHT, "1900");
-        props.setText(MetaData.WEBSITE, "www.exmaple.com");
         String data = String.join("\n", Arrays.asList(
             "head-top     |left  |John Smith",
             "head-top     |left  |555 Main Street",
@@ -131,10 +111,10 @@ public final class ManuscriptFile {
             "head-bottom  |right |Jane Smith",
             "head-bottom  |right |123 Nowhere",
             "head-bottom  |right |(555)765-4321",
+            "head-bottom  |center|Copyright 1900 (c) Jane Smith",
             "text-header  |right |Smith/Novel/{Stat.PageNumber}",
-            "text-header  |center|Copyright 1900 (c) Jane Smit",
             "text-break   |center|#",
-            "text-ender   |center|The End",
+            "text-after   |center|The End",
             "cite-header  |center|Word Cited",
             "meta-author  |text  |Jane Smith",
             "meta-keywords|text  |example text",
@@ -142,19 +122,18 @@ public final class ManuscriptFile {
             "meta-title   |text  |Some Novel Title"
         ));
         ManuscriptFile ans = new ManuscriptFile(null, doc, new RecordList(),
-            props, new WritingData(data));
+            new WritingData(data));
         return ans;
     }
 
     private final WritingText documentText;
     private final RecordList recordsFile;
-    private final TextProperties textData;
     private Optional<File> zipFile;
     private final WritingData metaData;
 
     /** {@linkplain ManuscriptFile}'s constructor.*/
     private ManuscriptFile(File file, WritingText doc,
-            RecordList table, TextProperties prop, WritingData data) {
+            RecordList table, WritingData data) {
         assert doc != null: "Null doc";
         assert table != null: "Null table";
         /// nullable file
@@ -162,7 +141,6 @@ public final class ManuscriptFile {
         zipFile = Optional.ofNullable(file);
         documentText = doc;
         recordsFile = table;
-        textData = prop;
         metaData = data;
     }
 
@@ -196,37 +174,6 @@ public final class ManuscriptFile {
         return metaData;
     }
 
-    @Deprecated
-    public String getText(MetaData key){
-        if (key == MetaData.BY){
-            return "By";
-        }
-        if (key == MetaData.PAGE){
-            return "Page";
-        }
-        if (key == MetaData.AUTHOR){
-            return getText(MetaData.FIRST_NAME) + " " + getText(MetaData
-                .LAST_NAME);
-        }
-        return textData.getText(key);
-    }
-
-    @Deprecated
-    public String getText(MetaData ... keys){
-        for (MetaData key: keys){
-            String ans = getText(key);
-            if (ans != null && ans.length() > 0){
-                return ans;
-            }
-        }
-        return "";
-    }
-
-    @Deprecated
-    public void setText(MetaData data, String text){
-        textData.setText(data, text);
-    }
-
     public boolean canSave(){
         return zipFile.isPresent();
     }
@@ -239,13 +186,7 @@ public final class ManuscriptFile {
                 (zipFile.get()))){
             save(writeTo, TEXT + EXTENSION, documentText.getRaw());
             save(writeTo, RECORDS + EXTENSION, recordsFile.getSaveText());
-            File tmp = File.createTempFile("meta", ".properties");
-            try (FileOutputStream out = new FileOutputStream(tmp)){
-                textData.save(out);
-            }
-            save(writeTo, OTHER, Files.asCharSource(tmp, Charsets.UTF_8).read());
-            tmp.delete();
-
+            save(writeTo, META + EXTENSION, metaData.getRaw());
         }
     }
 

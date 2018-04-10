@@ -13,17 +13,32 @@ import com.creativeartie.writerstudio.main.*; // Checker
  */
 class DivisionTextFormatted extends DivisionText{
 
-    private final SectionContent<?> contentData;
+    private final Optional<SectionContent<?>> contentData;
     private final WritingExporter parentDoc;
 
-    /** Only constructor.
+    /** Constructor without a {@link SectionContent}.
+     *
+     * This will not add footnote
+     *
+     * @param width
+     *      rendering width
+     */
+    DivisionTextFormatted(float width, WritingExporter parent){
+        super(width);
+        contentData = Optional.empty();
+        parentDoc = parent;
+    }
+
+    /** Constructor with a {@link SectionContent}.
+     *
+     * This is required to add footnotes.
      * @param content
      *      the parent content; not null
      */
     DivisionTextFormatted(SectionContent<?> content){
         super(Checker.checkNotNull(content, "content").getPage()
             .getRenderWidth());
-        contentData = content;
+        contentData = Optional.of(content);
         parentDoc = content.getParent();
     }
 
@@ -39,6 +54,7 @@ class DivisionTextFormatted extends DivisionText{
     final DivisionTextFormatted addContent(TextDataSpanPrint span)
             throws IOException{
         Checker.checkNotEmpty(span, "span");
+        setLeading(1f);
         switch (span.getFormat()){
         case RIGHT:
             setLineAlignment(LineAlignment.RIGHT);
@@ -51,6 +67,8 @@ class DivisionTextFormatted extends DivisionText{
         }
         if (span.getData().isPresent()){
             addContent(span.getData().get());
+        } else {
+            appendText(" ", parentDoc.new PdfFont());
         }
         return this;
     }
@@ -263,10 +281,13 @@ class DivisionTextFormatted extends DivisionText{
             throws IOException{
         assert span != null: "null span";
         assert font != null: "null font";
-        for (ContentText content: appendTextList(
-            contentData.getFootnote().addFootnote(span), font
-        )){
-            content.setFootnote(Optional.of(span));
+        if (contentData.isPresent()){
+            SectionContent<?> page = contentData.get();
+            for (ContentText content: appendTextList(
+                page.getFootnote().addFootnote(span), font
+            )){
+                content.setFootnote(Optional.of(span));
+            }
         }
     }
 

@@ -279,13 +279,16 @@ public final class AuxiliaryData{
         return builder.build();
     }
 
+    /// ========================================================================
+    /// @Part 4: Writing Data
+
     private static final String TITLE        = "head-";
     public static final String TITLE_TOP     = TITLE  + "top     |";
     public static final String TITLE_CENTER  = TITLE  + "centre  |";
     public static final String TITLE_BOTTOM  = TITLE  + "bottom  |";
     private static final String TEXT         = "text-";
     public static final String TEXT_HEADER   = TEXT   + "header  |";
-    public static final String TEXT_ENDER    = TEXT   + "ender   |";
+    public static final String TEXT_AFTER    = TEXT   + "after   |";
     public static final String TEXT_BREAK    = TEXT   + "break   |";
     private static final String CITE         = "cite-";
     public static final String CITE_TITLE    = CITE   + "header  |";

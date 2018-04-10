@@ -32,7 +32,7 @@ enum TextDataParser implements SetupParser {
             }
         }
         if (type == null){
-            throw new IllegalArgumentException("Corrupted meta file.");
+            throw new IllegalArgumentException("Corrupted meta file:" + pointer);
         }
         for (TextDataType.Format format: TextDataType.Format.values()){
             if (pointer.startsWith(children, format.getKeyName())){
