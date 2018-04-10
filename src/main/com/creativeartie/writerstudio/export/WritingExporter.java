@@ -3,7 +3,7 @@ package com.creativeartie.writerstudio.export;
 import java.io.*; // AutoCloseable, IOException
 import java.util.*; // ArrayList, Iterator, Optional
 
-import com.google.common.collect.*;
+import com.google.common.collect.*; // AbstractSequentialIterator
 
 import org.apache.pdfbox.pdmodel.*; // PDDocument
 import org.apache.pdfbox.pdmodel.font.*; // PDFont, PDFontDescriptor, PDType0Font
@@ -104,6 +104,11 @@ public class WritingExporter implements AutoCloseable{
                 .orElse(new ArrayList<LinedSpan>().iterator());
             while (spans.hasNext()){
                 content.addLine(spans.next());
+            }
+            for (TextDataSpanPrint span: data.getMetaData()
+                    .getPrint(TextDataType.Area.MAIN_ENDER)){
+                content.addLine(new DivisionTextFormatted(content)
+                    .addContent(span));
             }
         }
 

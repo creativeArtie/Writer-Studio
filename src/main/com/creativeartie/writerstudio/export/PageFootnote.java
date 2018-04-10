@@ -125,9 +125,12 @@ public final class PageFootnote {
         return this;
     }
 
-    public PageFootnote insertPending(DivisionText.Line line){
+    public PageFootnote insertPending(DivisionText.Line line, boolean p){
+        int i = 0;
         for (ContentText content: line){
+            if (p) System.out.println(i + " " + content + " " + content.getFootnote());
             content.getFootnote().ifPresent(s -> insertPending(s));
+            i++;
         }
         return this;
     }

@@ -53,6 +53,10 @@ public final class PageContent implements AutoCloseable{
         return contentStream;
     }
 
+    public PageMargin getMargin(){
+        return pageMargin;
+    }
+
     /** Gets the rendering width
      * @return answer
      * @see #getWidth()

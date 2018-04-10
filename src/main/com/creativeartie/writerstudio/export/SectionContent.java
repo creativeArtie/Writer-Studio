@@ -76,12 +76,20 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
         DivisionText allows = DivisionText.copyFormat(div);
         DivisionText checker = DivisionText.copyFormat(div);
         DivisionText overflow = null;
+        if (pageNumber == 8){
+            for (DivisionText.Line text: div){
+                for(ContentText qw: text){
+                   qw.getFootnote().ifPresent(a -> System.out.println(a));
+                }
+            }
+        }
         for (DivisionText.Line line: div){
+            if (pageNumber == 8) System.out.println(line);
             footnote = pageFootnote.getHeight(line);
             checker.addLine(line);
             if (contentArea.checkHeight(checker, footnote)){
                 allows.addLine(line);
-                pageFootnote.insertPending(line);
+                pageFootnote.insertPending(line, pageNumber == 9);
             } else {
                 if (overflow == null){
                     if(allows.isEmpty()){
@@ -91,6 +99,7 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
                     }
                     overflow = DivisionText.splitItem(div);
                 }
+
                 for (ContentText content: overflow.addLine(line)){
                     pageFootnote.resetFootnote(content);
                 }
