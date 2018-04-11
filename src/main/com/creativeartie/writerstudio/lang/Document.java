@@ -21,7 +21,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     private final Cache<Span, String> spanTexts;
 
     private ArrayList<SpanBranch> documentChildren;
-    private CatalogueMap catalogueMap;
+    private final CatalogueMap catalogueMap;
     private SetupParser[] documentParsers;
 
     protected Document(String raw, SetupParser ... parsers){
@@ -48,6 +48,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
                 return new Integer[]{column, line};
             }));
 
+        catalogueMap = new CatalogueMap();
         /// Setup for building the doc and a pointer to use
         parseDocument(raw);
     }
@@ -91,7 +92,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         }
 
         /// Finalize the parse loop
-        catalogueMap = new CatalogueMap();
+        catalogueMap.clear();
         updateSpan(documentChildren, new HashSet<>());
     }
 
@@ -380,7 +381,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         }
 
         /// refill catalogue map
-        catalogueMap = new CatalogueMap();
+        catalogueMap.clear();
         updateSpan(this, edited);
 
         /// fire listeners

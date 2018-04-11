@@ -1,6 +1,6 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*; // ArrayList
+import java.util.*; // ArrayList, Optional
 
 import com.google.common.collect.*; // ImmutableList
 
@@ -8,6 +8,8 @@ import static com.creativeartie.writerstudio.main.Checker.*;
 
 /** A list of {@link SpanBranch} with the same {@link CatalogueIdentity}. */
 public final class CatalogueData{
+    private Optional<List<SpanBranch>> cacheIds;
+    private final ArrayList<SpanBranch> externalIds;
     private final ArrayList<SpanBranch> idSpans;
     private final ArrayList<SpanBranch> refSpans;
     private final CatalogueMap catalogueParent;
@@ -19,14 +21,30 @@ public final class CatalogueData{
         catelogueKey = checkNotNull(id, "id");
         idSpans = new ArrayList<>();
         refSpans = new ArrayList<>();
+        externalIds = new ArrayList<>();
+        cacheIds = Optional.empty();
     }
 
     void add(Catalogued span){
         checkNotNull(span, "Span");
         checkArgument(span instanceof SpanBranch,
             "Parameter \"span\" is not of type SpanBranch.");
-
         (span.isId()? idSpans: refSpans).add((SpanBranch)span);
+    }
+
+    void addExternal(Catalogued span){
+        checkNotNull(span, "Span");
+        checkArgument(span instanceof SpanBranch,
+            "Parameter \"span\" is not of type SpanBranch.");
+
+        (span.isId()? externalIds: refSpans).add((SpanBranch)span);
+        cacheIds = Optional.empty();
+    }
+
+    void clearExternals(){
+        refSpans.clear();
+        externalIds.clear();
+        cacheIds = Optional.empty();
     }
 
     public CatalogueMap getParent(){
@@ -39,13 +57,13 @@ public final class CatalogueData{
 
     /** Get the {@link CatalogueStatus} based on the Span stored. */
     public CatalogueStatus getState(){
-        if (idSpans.size() > 1){
+        if (getIds().size() > 1){
             return CatalogueStatus.MULTIPLE;
-        } else if (idSpans.isEmpty()){
+        } else if (getIds().isEmpty()){
             assert !refSpans.isEmpty();
             return CatalogueStatus.NOT_FOUND;
         } else if (refSpans.isEmpty()){
-            assert !idSpans.isEmpty();
+            assert !getIds().isEmpty();
             return CatalogueStatus.UNUSED;
         }
         return CatalogueStatus.READY;
@@ -59,14 +77,19 @@ public final class CatalogueData{
     }
 
     public SpanBranch getTarget(){
-        checkState(idSpans.size() == 1,
+        checkState(getIds().size() == 1,
             "Id (" + catelogueKey + ") is in the wrong state.");
 
-        return idSpans.get(0);
+        return getIds().get(0);
     }
 
-    public ImmutableList<SpanBranch> getIds(){
-        return ImmutableList.copyOf(idSpans);
+    public List<SpanBranch> getIds(){
+        if (! cacheIds.isPresent()){
+            ImmutableList.Builder<SpanBranch> builder = ImmutableList.builder();
+            builder.addAll(idSpans).addAll(externalIds);
+            cacheIds = Optional.of(builder.build());
+        }
+        return cacheIds.get();
     }
 
     public ImmutableList<SpanBranch> getRefs(){
