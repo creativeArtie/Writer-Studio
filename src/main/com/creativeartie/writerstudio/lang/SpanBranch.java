@@ -145,6 +145,7 @@ public abstract class SpanBranch extends SpanNode<Span> {
 
     /** A simple cache method that make use of {@link Optional}.*/
     protected <T> Optional<T> getCache(Optional<T> found, Supplier<T> maker){
+        // TODO needs a better system
         checkNotNull(found, "found");
         checkNotNull(maker, "maker");
         if (found.isPresent()){

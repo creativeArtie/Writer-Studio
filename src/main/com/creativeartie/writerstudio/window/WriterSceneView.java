@@ -22,7 +22,9 @@ abstract class WriterSceneView extends BorderPane{
     private TextPaneControl textArea;
     private WriterMenuBar menuBar;
     private HeadingPaneControl tableOfContent;
-    private WriterTabControl tabsPane;
+    private List<TableDataControl<?>> tableTabs;
+    private NoteCardControl noteCards;
+    private TabPane tabsPane;
     private CheatsheetPaneControl langCheatsheet;
     private SimpleObjectProperty<ManuscriptFile> manuscriptFile;
     private double[] verDividerPos;
@@ -43,16 +45,21 @@ abstract class WriterSceneView extends BorderPane{
 
         /// Upper split pane
         tabsPane = initTabPane();
-        tabsPane.getTableTabs().forEach(pane -> {
+        noteCards = initNoteCardPane(tabsPane);
+        noteCards.locationChoosenProperty().addListener(
+            (data, oldValue, newValue) -> moveCursor(newValue.intValue())
+        );
+        tableTabs = Arrays.asList(
+            initAgendaPane(tabsPane), initLinksPane(tabsPane),
+            initFootnotePane(tabsPane), initEndnotePane(tabsPane)
+        );
+        tableTabs.forEach(pane -> {
             pane.focusedProperty().addListener((data, oldValue, newValue) ->
                 returnFocus());
             pane.itemSelectedProperty().addListener(
                 (data, oldValue, newValue) -> selectionChanged(newValue)
             );
         });
-        tabsPane.getNoteCardsPane().locationChoosenProperty().addListener(
-            (data, oldValue, newValue) -> moveCursor(newValue.intValue())
-        );
 
         /// Inner SplitPane - Right
         textArea = initTextPane();
@@ -103,8 +110,44 @@ abstract class WriterSceneView extends BorderPane{
         return ans;
     }
 
-    private WriterTabControl initTabPane(){
-        WriterTabControl ans = new WriterTabControl();
+    private TabPane initTabPane(){
+        TabPane ans = new TabPane();
+        ans.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        return ans;
+    }
+
+    private TableAgendaPane initAgendaPane(TabPane parent){
+        TableAgendaPane ans = new TableAgendaPane();
+        Tab tab = new Tab(WindowText.TAB_AGENDA.getText(), ans);
+        parent.getTabs().add(tab);
+        return ans;
+    }
+
+    private TableLinkPane initLinksPane(TabPane parent){
+        TableLinkPane ans = new TableLinkPane();
+        Tab tab = new Tab(WindowText.TAB_LINK.getText(), ans);
+        parent.getTabs().add(tab);
+        return ans;
+    }
+
+    private TableNotePane initFootnotePane(TabPane parent){
+        TableNotePane ans = new TableNotePane(DirectoryType.FOOTNOTE);
+        Tab tab = new Tab(WindowText.TAB_FOOTNOTE.getText(), ans);
+        parent.getTabs().add(tab);
+        return ans;
+    }
+
+    private TableNotePane initEndnotePane(TabPane parent){
+        TableNotePane ans = new TableNotePane(DirectoryType.ENDNOTE);
+        Tab tab = new Tab(WindowText.TAB_ENDNOTE.getText(), ans);
+        parent.getTabs().add(tab);
+        return ans;
+    }
+
+    private NoteCardControl initNoteCardPane(TabPane parent){
+        NoteCardControl ans = new NoteCardControl();
+        Tab tab = new Tab(WindowText.TAB_NOTE_CARD.getText(), ans);
+        parent.getTabs().add(tab);
         return ans;
     }
 
@@ -128,11 +171,11 @@ abstract class WriterSceneView extends BorderPane{
     }
 
     protected List<TableDataControl<?>> getTableTabs(){
-        return tabsPane.getTableTabs();
+        return tableTabs;
     }
 
     protected NoteCardControl getNoteCardsPane(){
-        return tabsPane.getNoteCardsPane();
+        return noteCards;
     }
 
     protected CheatsheetPaneControl getCheatsheet(){

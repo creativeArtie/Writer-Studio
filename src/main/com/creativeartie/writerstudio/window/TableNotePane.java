@@ -51,7 +51,7 @@ public class TableNotePane extends TableDataControl<TableNoteData>{
         TableColumn<TableNoteData, Optional<FormattedSpan>> data =
             TableViewHelper.getFormatColumn(WindowText.NOTES_DATA, d ->
                 d.noteDataProperty());
-        TableViewHelper.setPrecentWidth(data, this, 40.0);
+        TableViewHelper.setPrecentWidth(data, this, 50.0);
 
         getColumns().addAll(location, id, lookup, data);
     }

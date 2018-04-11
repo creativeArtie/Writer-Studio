@@ -53,6 +53,15 @@ public abstract class Document extends SpanNode<SpanBranch>{
         parseDocument(raw);
     }
 
+    public void addReferences(Document ... docs){
+        for (Document doc: docs){
+            CatalogueMap map = doc.catalogueMap;
+            // TODO work on span branches (no more editing will be doen to them)
+            // TODO remove id references (not applicable)
+            catalogueMap.add(map);
+        }
+    }
+
     /**
      * Parses the document. Helper method of
      * {@link #Document(String, SetupParsers...)}, {@link #insert(int, String},
