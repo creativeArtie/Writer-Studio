@@ -166,6 +166,18 @@ class DivisionText extends ForwardingList<DivisionText.Line>
         protected List<ContentText> delegate(){
             return ImmutableList.copyOf(inputText);
         }
+
+        @Override
+        public String toString(){
+            StringBuilder builder = new StringBuilder();
+            builder.append("width-height: " + curWidth + " - " + getHeight());
+            builder.append("[");
+            for (ContentText text: this){
+                builder.append(text.getText());
+            }
+            builder.append("]");
+            return builder.toString();
+        }
     }
 
     private final ArrayList<Line> divLines;

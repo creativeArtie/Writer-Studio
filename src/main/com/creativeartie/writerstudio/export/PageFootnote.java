@@ -13,22 +13,20 @@ public final class PageFootnote {
     private ArrayList<DivisionTextNote> pendingLines;
     private Optional<MatterArea> footnoteArea;
     private SectionContent<?> insertPage;
+    private DivisionLine firstLine;
 
     public PageFootnote(SectionContent<?> parent){
         insertPage = parent;
         footnoteArea = Optional.empty();
+        firstLine = new DivisionLine(parent.getPage().getRenderWidth());
         insertedItems = new ArrayList<>();
         pendingItems = new ArrayList<>();
         pendingLines = new ArrayList<>();
     }
 
-    public float getHeight(){
-        return footnoteArea.map(a -> a.getHeight()).orElse(0f) +
-            (float) pendingLines.stream().mapToDouble(l -> l.getHeight()).sum();
-    }
-
     public float getHeight(DivisionText.Line line){
-        float ans = footnoteArea.map(a -> a.getHeight()).orElse(0f);
+        float ans = footnoteArea.map(a -> a.getHeight())
+            .orElse(firstLine.getHeight());
         for (ContentText text: line){
             ans += text.getFootnote().map(s -> getHeight(s)).orElse(0f);
         }
@@ -125,10 +123,9 @@ public final class PageFootnote {
         return this;
     }
 
-    public PageFootnote insertPending(DivisionText.Line line, boolean p){
+    public PageFootnote insertPending(DivisionText.Line line){
         int i = 0;
         for (ContentText content: line){
-            if (p) System.out.println(i + " " + content + " " + content.getFootnote());
             content.getFootnote().ifPresent(s -> insertPending(s));
             i++;
         }
@@ -154,8 +151,7 @@ public final class PageFootnote {
         if (!footnoteArea.isPresent()){
             footnoteArea = Optional.of(new MatterArea(insertPage.getPage(),
                 PageAlignment.BOTTOM));
-            footnoteArea.get().add(new DivisionLine(insertPage.getPage()
-                .getRenderWidth()));
+            footnoteArea.get().add(firstLine);
         }
         return footnoteArea.get();
     }

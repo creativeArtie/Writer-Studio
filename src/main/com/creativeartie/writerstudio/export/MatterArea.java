@@ -25,7 +25,7 @@ final class MatterArea extends ForwardingList<Division> {
     private final PageContent outputPage;
     private final PDPageContentStream contentStream;
     private final PageAlignment pageAlignment;
-    private final float maxHeight;
+    private float maxHeight;
     private final float areaWidth;
 
     private final ArrayList<Division> divisionLines;
@@ -54,6 +54,19 @@ final class MatterArea extends ForwardingList<Division> {
         textFont = null;
         lineAlignment = LineAlignment.LEFT;
         postEditors = new ArrayList<>();
+    }
+
+    /** Reduce the height.
+     *
+     * Negative number will increase height instead.
+     *
+     * @param height
+     *      subtracting height
+     * @return self
+     */
+    MatterArea reduceHeight(float height){
+        maxHeight -= height;
+        return this;
     }
 
     /** Gets the page alignment

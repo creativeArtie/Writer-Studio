@@ -12,6 +12,7 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
     private ManuscriptFile outputData;
     private MatterArea contentArea;
     private int pageNumber;
+    private float footnoteHeight;
 
     public SectionContent(WritingExporter parent) throws IOException{
         super(parent);
@@ -19,6 +20,7 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
         pageFootnote = new PageFootnote(this);
         pageNumber = 1;
         contentArea = null;
+        footnoteHeight = 0f;
     }
 
     public int getPageNumber(){
@@ -48,6 +50,7 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
         if (header != null){
             currentPage.setHeader(header);
             header.render();
+            footnoteHeight = header.getHeight();
         }
     }
 
@@ -67,29 +70,15 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
         if (contentArea == null){
             nextPage(PageAlignment.CONTENT);
         }
-        float footnote = pageFootnote.getHeight();
-        if (contentArea.checkHeight(div, footnote)){
-            contentArea.add(div);
-            pageFootnote.insertAll();
-            return;
-        }
         DivisionText allows = DivisionText.copyFormat(div);
         DivisionText checker = DivisionText.copyFormat(div);
         DivisionText overflow = null;
-        if (pageNumber == 8){
-            for (DivisionText.Line text: div){
-                for(ContentText qw: text){
-                   qw.getFootnote().ifPresent(a -> System.out.println(a));
-                }
-            }
-        }
         for (DivisionText.Line line: div){
-            if (pageNumber == 8) System.out.println(line);
-            footnote = pageFootnote.getHeight(line);
+            float footnote = pageFootnote.getHeight(line);
             checker.addLine(line);
             if (contentArea.checkHeight(checker, footnote)){
                 allows.addLine(line);
-                pageFootnote.insertPending(line, pageNumber == 9);
+                pageFootnote.insertPending(line);
             } else {
                 if (overflow == null){
                     if(allows.isEmpty()){
@@ -108,13 +97,19 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
         if (! allows.isEmpty()){
             contentArea.add(allows);
         }
-        nextPage(PageAlignment.CONTENT);
-        addLine(overflow);
+        if (overflow != null && ! overflow.isEmpty()){
+            nextPage(PageAlignment.CONTENT);
+            addLine(overflow);
+        } else {
+        }
     }
 
     protected void nextPage(PageAlignment alignment) throws IOException{
         if (contentArea == null){
             contentArea = new MatterArea(currentPage, alignment);
+            if (alignment == PageAlignment.CONTENT) {
+                contentArea.reduceHeight(footnoteHeight);
+            }
             return;
         }
         contentArea.render();
@@ -126,6 +121,9 @@ public abstract class SectionContent<T extends SpanBranch> extends Section {
         currentPage = new PageContent(this);
         addHeader();
         contentArea = new MatterArea(currentPage, alignment);
+        if (alignment == PageAlignment.CONTENT) {
+            contentArea.reduceHeight(footnoteHeight);
+        }
     }
 
     protected DivisionTextFormatted newFormatDivision(){

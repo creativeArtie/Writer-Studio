@@ -89,6 +89,8 @@ public final class PageContent implements AutoCloseable{
         float base = getHeight() - pageMargin.getTop() - pageMargin.getBottom();
         switch (alignment){
         case CONTENT:
+            // TODO somehow pageHeader didn't reduce the height properly
+            // work around had been made in SectionContent#footnoteHeight
             return base - pageHeader.map(h -> h.getHeight()).orElse(0f);
         case THIRD:
             return base / 3 * 2;
