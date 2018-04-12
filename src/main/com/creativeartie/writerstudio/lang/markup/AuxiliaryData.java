@@ -158,7 +158,7 @@ public final class AuxiliaryData{
     private static final String CURLY_BEGIN   = "{";
     /// Curly format begins tokens part 2
     public static final String CURLY_AGENDA   = CURLY_BEGIN + "!"; /// aka: {!
-    public static final String CURLY_KEY      = CURLY_BEGIN + ">"; /// aka: {>
+    public static final String CURLY_KEY      = CURLY_BEGIN + "%"; /// aka: {%
     public static final String CURLY_FOOTNOTE = CURLY_BEGIN + "^"; /// aka: {^
     public static final String CURLY_ENDNOTE  = CURLY_BEGIN + "*"; /// aka: {*
     public static final String CURLY_CITE     = CURLY_BEGIN + DIRECTORY_BEGIN;

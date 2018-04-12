@@ -31,6 +31,9 @@ public class WriterSceneControl extends WriterSceneView {
 
     @Override
     protected void changeDoc(ManuscriptFile file){
+
+        getMetaDataPane().setMetaData(file.getMetaData());
+
         currentDoc = file.getDocument();
         currentRecords = file.getRecords();
 
@@ -167,7 +170,7 @@ public class WriterSceneControl extends WriterSceneView {
         getTextArea().setReady(false);
         return false;
     }
-    
+
     @Override
     protected void moveCursor(int position){
         getTextArea().moveTo(position);

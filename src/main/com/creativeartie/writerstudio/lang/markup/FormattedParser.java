@@ -87,7 +87,7 @@ final class FormattedParser implements SetupParser {
 
         /// Add the FormattedParser with its children spans if there are children.
         if (children.size() > 0){
-            return Optional.of(new FormattedSpan(children));
+            return Optional.of(new FormattedSpan(children, withNote));
         }
         return Optional.empty();
     }

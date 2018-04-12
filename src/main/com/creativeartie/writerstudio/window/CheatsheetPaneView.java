@@ -50,6 +50,7 @@ abstract class CheatsheetPaneView extends GridPane{
         addLabel(ans, CheatsheetLabel.getLabel(LinedType.QUOTE),      3, 0);
         addLabel(ans, CheatsheetLabel.getLabel(LinedType.SOURCE),     3, 1, 2, 1);
         addLabel(ans, CheatsheetLabel.getLabel(InfoFieldType.SOURCE), 3, 2);
+        addLabel(ans, CheatsheetLabel.getLabel(InfoFieldType.REF),    3, 3);
         setPrecentWidth(6); /// fills to: 37
         addLabel(ans, CheatsheetLabel.getLabel(LinedType.AGENDA),       4, 0);
         addLabel(ans, CheatsheetLabel.getLabel(InfoFieldType.IN_TEXT),  4, 2);

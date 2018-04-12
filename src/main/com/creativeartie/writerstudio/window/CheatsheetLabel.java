@@ -30,7 +30,7 @@ class CheatsheetLabel extends Label{
      * getLabel(AuxiliaryType).
      */
     private static boolean findContent(WritingText doc, Integer point){
-        return doc.locateSpan(point, FormatSpanContent.class).isPresent();
+        return doc.locateSpan(point, FormattedSpan.class).isPresent();
     }
 
     /**
@@ -81,7 +81,8 @@ class CheatsheetLabel extends Label{
             (doc, point) -> doc.locateSpan(point, FormatSpanPointId.class)
                 .map(span -> span.getIdType() == type)
                 .orElse(false),
-            CheatsheetLabel::findContent
+            (doc, point) -> doc.locateSpan(point, FormattedSpan.class)
+                .map(s -> s.allowNotes()).orElse(false)
         );
     }
 

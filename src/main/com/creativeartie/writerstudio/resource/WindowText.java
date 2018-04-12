@@ -29,6 +29,10 @@ public enum WindowText {
     TAB_ENDNOTE("NoteTabs.TitleEndnote"),
     TAB_NOTE_CARD("NoteTabs.TitleNoteCard"),
 
+    TAB_CONTENT("LeftTabs.TableOfContents"),
+    TAB_META("LeftTabs.MetaData"),
+    // TAB_RELATIVE("LeftTabs.Files"),
+
     AGENDA_LINE("AgendaTable.LineColumn"),
     AGENDA_TYPE("AgendaTable.TypeColumn"),
     AGENDA_SECTION("AgendaTable.SectionColumn"),
@@ -63,6 +67,10 @@ public enum WindowText {
     NOTE_CARD_SOURCE("NoteDetail.SourceLabel"),
     NOTE_CARD_EDIT("NoteDetail.GotoEdit"),
 
+    DATA_META("DocData.MetaDataTitle"),
+    DATA_AREA("DocData.MattersTitle"),
+    DATA_EDIT("DocData.EditButton"),
+
     CALENDAR_NO_RECORD("Calendar.NoRecord"),
 
     HEADING_TITLE("HeadingTree.HeadingTitle"),
@@ -82,6 +90,14 @@ public enum WindowText {
     ABOUT_GUAVA("AboutWindow.Guava"), ABOUT_LIBRARIES("AboutWindow.ThirdParty"),
 
     WORK_CITED("ExportText.WorkCited");
+
+    public static String getString(TextDataType.Meta meta){
+        return getDisplay(getText("DocData.Field", meta.name()));
+    }
+
+    public static String getString(TextDataType.Area area){
+        return getDisplay(getText("DocData.Matter", area.name()));
+    }
 
     public static String getText(DirectoryType type){
         return getDisplay(getText("UserLists.", type.name()) + "ListName");

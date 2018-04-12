@@ -22,9 +22,9 @@ abstract class WriterSceneView extends BorderPane{
     private TextPaneControl textArea;
     private WriterMenuBar menuBar;
     private HeadingPaneControl tableOfContent;
+    private MetaDataPaneControl metaDatas;
     private List<TableDataControl<?>> tableTabs;
     private NoteCardControl noteCards;
-    private TabPane tabsPane;
     private CheatsheetPaneControl langCheatsheet;
     private SimpleObjectProperty<ManuscriptFile> manuscriptFile;
     private double[] verDividerPos;
@@ -44,14 +44,14 @@ abstract class WriterSceneView extends BorderPane{
         setTop(menuBar);
 
         /// Upper split pane
-        tabsPane = initTabPane();
-        noteCards = initNoteCardPane(tabsPane);
+        TabPane top = initTabPane();
+        noteCards = initNoteCardPane(top);
         noteCards.locationChoosenProperty().addListener(
             (data, oldValue, newValue) -> moveCursor(newValue.intValue())
         );
         tableTabs = Arrays.asList(
-            initAgendaPane(tabsPane), initLinksPane(tabsPane),
-            initFootnotePane(tabsPane), initEndnotePane(tabsPane)
+            initAgendaPane(top), initLinksPane(top),
+            initFootnotePane(top), initEndnotePane(top)
         );
         tableTabs.forEach(pane -> {
             pane.focusedProperty().addListener((data, oldValue, newValue) ->
@@ -68,7 +68,8 @@ abstract class WriterSceneView extends BorderPane{
         textArea.caretPlacedProperty().addListener((data, oldValue, newValue) ->
             caretChanged(newValue.intValue()));
         /// Inner SplitPane - Left
-        tableOfContent = initTableOfContent();
+        TabPane left = initTabPane();
+        tableOfContent = initTableOfContent(left);
         tableOfContent.treeFocusedProperty().addListener((data, oldValue,
             newValue) -> returnFocus());
         tableOfContent.headingSelectedProperty().addListener(
@@ -77,17 +78,19 @@ abstract class WriterSceneView extends BorderPane{
         tableOfContent.outlineSelectedProperty().addListener(
             (data, oldValue, newValue) -> selectionChanged(newValue)
         );
+        metaDatas = initMetaTable(left);
 
         /// bottom
         langCheatsheet = initCheatsheetPane();
 
-        SplitPane center = new SplitPane(tableOfContent, textArea);
+        SplitPane center = new SplitPane(left, textArea);
         center.setDividerPositions(hozDividerPos);
         BorderPane bottom = new BorderPane();
         bottom.setCenter(center);
+
         bottom.setBottom(langCheatsheet);
 
-        SplitPane full = new SplitPane(tabsPane, bottom);
+        SplitPane full = new SplitPane(top, bottom);
         full.setOrientation(Orientation.VERTICAL);
         full.setDividerPositions(verDividerPos);
         setCenter(full);
@@ -156,14 +159,27 @@ abstract class WriterSceneView extends BorderPane{
         return ans;
     }
 
-    private HeadingPaneControl initTableOfContent(){
+    private HeadingPaneControl initTableOfContent(TabPane parent){
         HeadingPaneControl ans = new HeadingPaneControl();
+        Tab tab = new Tab(WindowText.TAB_CONTENT.getText(), ans);
+        parent.getTabs().add(tab);
+        return ans;
+    }
+
+    private MetaDataPaneControl initMetaTable(TabPane parent){
+        MetaDataPaneControl ans = new MetaDataPaneControl();
+        Tab tab = new Tab(WindowText.TAB_META.getText(), ans);
+        parent.getTabs().add(tab);
         return ans;
     }
 
     /// Getters
     protected TextPaneControl getTextArea(){
         return textArea;
+    }
+
+    protected MetaDataPaneControl getMetaDataPane(){
+        return metaDatas;
     }
 
     protected HeadingPaneControl getTableOfContent(){

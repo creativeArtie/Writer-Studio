@@ -66,6 +66,15 @@ public class WritingData extends Document{
         return "";
     }
 
+    public String getMetaRaw(TextDataType.Meta meta){
+        TextDataSpanMeta span = getWritingData(meta);
+        if (span != null){
+            return span.getData().map(s -> s.getRaw()).orElse("");
+        }
+        return "";
+
+    }
+
     public void setMetaText(TextDataType.Meta meta, String raw){
         TextDataSpanMeta span = getWritingData(meta);
         if (span == null){
@@ -74,7 +83,6 @@ public class WritingData extends Document{
             span = getWritingData(meta);
         }
         span.editText(raw);
-
     }
 
     private TextDataSpanMeta getWritingData(TextDataType.Meta meta){

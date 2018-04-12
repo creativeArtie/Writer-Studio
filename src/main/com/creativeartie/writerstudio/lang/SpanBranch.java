@@ -107,8 +107,7 @@ public abstract class SpanBranch extends SpanNode<Span> {
         reparseText(text, parser);
 
         // fire listeners
-        setUpdated();
-        getDocument().setDocEdited();
+        getDocument().updateEdit(this);
     }
 
     private void reparseText(String text, SetupParser parser){

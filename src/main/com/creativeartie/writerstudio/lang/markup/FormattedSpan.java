@@ -22,9 +22,11 @@ public final class FormattedSpan extends SpanBranch {
     private Optional<Integer> cacheNote;
     private Optional<Integer> cacheTotal;
     private Optional<String> cacheText;
+    private boolean allowNotes;
 
-    FormattedSpan(List<Span> spanChildren){
+    FormattedSpan(List<Span> spanChildren, boolean notes){
         super(spanChildren);
+        allowNotes = notes;
     }
 
     @Override
@@ -88,6 +90,10 @@ public final class FormattedSpan extends SpanBranch {
             return text.toString();
         });
         return cacheText.get();
+    }
+
+    public boolean allowNotes(){
+        return allowNotes;
     }
 
     @Override

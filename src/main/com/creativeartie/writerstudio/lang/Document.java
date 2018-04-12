@@ -373,7 +373,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     /** Update the document after editing. Helper method of
      * {@link #insert(int, String)}, and {@link #edit(Function, int)}.
      */
-    private final void updateEdit(SpanNode<?> updated){
+    final void updateEdit(SpanNode<?> updated){
         /// clear caches and data
         spanRanges.invalidateAll();
         spanLeaves.invalidateAll();
