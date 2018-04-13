@@ -3,7 +3,7 @@ package com.creativeartie.writerstudio.export;
 import java.io.*; // IOException
 
 import com.creativeartie.writerstudio.export.value.*; // ContentFont
-import com.creativeartie.writerstudio.main.*; // Checker
+import static com.creativeartie.writerstudio.main.Checker.*;
 
 /** A {@link Division} of text for {@link PageFootnote}.
  */
@@ -30,10 +30,11 @@ final class DivisionTextNote extends DivisionTextFormatted{
      *      from {@link DivisionText#appendText(String, ContentFont)
      */
     DivisionTextNote setNumbering(String text) throws IOException{
-        Checker.checkNotNull(text, "text");
+        checkNotNull(text, "text");
+
+        /// Find the text to add
         /// get(0) = DivisionLine.Line
         /// get(0).get(0) = ContentText
-
         if (isEmpty() || get(0).isEmpty()){
             appendText(text, superFont);
             return this;

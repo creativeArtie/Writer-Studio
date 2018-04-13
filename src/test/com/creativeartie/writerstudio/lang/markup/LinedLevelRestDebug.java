@@ -30,7 +30,7 @@ public class LinedLevelRestDebug {
             .setLinedType(LinedType.NUMBERED).setLevel(5)
             .setFormattedSpan(doc, 0, 1).setPublishTotal(2)
             .setNoteTotal(0);
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(2).setNoteTotal(0);
 
         numbered.test(   doc,  3,  raw,           0);
@@ -70,7 +70,7 @@ public class LinedLevelRestDebug {
             .setLinedType(LinedType.BULLET).setLevel(5)
             .setFormattedSpan(doc, 0, 1).setPublishTotal(2)
             .setNoteTotal(0);
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(2).setNoteTotal(0);
 
         bullet.test(      doc, 3, raw,            0);
@@ -97,7 +97,7 @@ public class LinedLevelRestDebug {
             .setLinedType(LinedType.BULLET).setLevel(1)
             .setFormattedSpan(doc, 0, 1).setPublishTotal(0)
             .setNoteTotal(1);
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(0).setNoteTotal(1);
 
         bullet.test(      doc, 3, raw,         0);
@@ -128,7 +128,7 @@ public class LinedLevelRestDebug {
             .setLinedType(LinedType.BULLET).setLevel(6)
             .setFormattedSpan(doc, 0, 1).setPublishTotal(2)
             .setNoteTotal(0);
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(2).setNoteTotal(0);
 
         bullet.test(      doc,  2, raw,          0);
@@ -157,7 +157,7 @@ public class LinedLevelRestDebug {
             .setLinedType(LinedType.NUMBERED).setLevel(6)
             .setFormattedSpan(doc, 0, 1).setPublishTotal(1)
             .setNoteTotal(0);
-        FormatMainTest format = new FormatMainTest()
+        FormattedSpanTest format = new FormattedSpanTest()
             .setPublishTotal(1).setNoteTotal(0);
 
         numbered.test(    doc,  3, raw,       0);
@@ -211,7 +211,7 @@ public class LinedLevelRestDebug {
             .setLinedType(type).setLevel(3)
             .setFormattedSpan(doc, 0, 1).setPublishTotal(1)
             .setNoteTotal(0);
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(1).setNoteTotal(0);
 
         bullet.test(      doc, 2, after, 0);

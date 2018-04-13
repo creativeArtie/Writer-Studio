@@ -6,13 +6,38 @@ import com.creativeartie.writerstudio.export.value.*; // Utilities
 import com.creativeartie.writerstudio.file.*; // ManuscriptFile
 import com.creativeartie.writerstudio.lang.markup.*; // FormattedSpan
 
-public class SectionContentCite extends SectionContent<FormattedSpan> {
+import static com.creativeartie.writerstudio.main.Checker.*;
 
-    public SectionContentCite(WritingExporter parent) throws IOException{
+/** A {@link SectionContent} for citations
+ */
+final class SectionContentCite extends SectionContent<FormattedSpan> {
+
+    /** Only construcutor.
+     *
+     * @param parent
+     *      input parent data
+     * @throws IOException
+     *      exceptions thrown from uses of other classes
+     */
+    SectionContentCite(WritingExporter parent) throws IOException{
         super(parent);
-        ContentFont font = newFont().changeBold(true).changeSize(16);
-        addLine(new DivisionText(getPage().getRenderWidth(),
-            LineAlignment.CENTER).appendText("Work(s) Cited", font));
+    }
+
+    /** Add a title to the section.
+     *
+     * @param data
+     *      rendering data
+     * @throws IOException
+     *      exceptions thrown from uses of other classes
+     */
+    void addTitle(WritingData data) throws IOException{
+        checkNotNull(data, "data");
+        for (TextDataSpanPrint print: data.getPrint(TextDataType.Area
+                .SOURCE_TITLE)) {
+            DivisionTextFormatted line = newFormatDivision();
+            line.addContent(print);
+            addLine(line);
+        }
     }
 
     @Override
@@ -22,6 +47,7 @@ public class SectionContentCite extends SectionContent<FormattedSpan> {
 
     @Override
     protected DivisionText parseSpan(FormattedSpan span) throws IOException{
+        checkNotNull(span, "span");
         DivisionTextFormatted line = newFormatDivision();
         line.setIndent(Utilities.inchToPoint(0.5f));
         return line.addContent(span);

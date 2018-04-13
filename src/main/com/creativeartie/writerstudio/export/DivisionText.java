@@ -8,45 +8,54 @@ import com.google.common.collect.*; // ForwardingList, ImmuableList
 import org.apache.pdfbox.pdmodel.common.*; // PDRectangle
 
 import com.creativeartie.writerstudio.export.value.*; // ContentFont, ContentPostEditor, LineAlignment
-import com.creativeartie.writerstudio.main.*; // Checker
+
+import static com.creativeartie.writerstudio.main.Checker.*;
 
 /** A {@link Division} for text.
  */
 class DivisionText extends ForwardingList<DivisionText.Line>
     implements Division{
+    /** Create {@link DivisionText} with copied format, kept line empty.
+     *
+     * @param item
+     *      copying item; not null
+     * @return answer
+     * @see #splitItem(DivisionText)
+     */
+    static final DivisionText copyFormat(DivisionText item){
+        checkNotNull(item, "item");
+
+        DivisionText ans = new DivisionText(item.divWidth, item.divAlignment);
+
+        ans.divLeading = item.divLeading;
+        ans.divBottomSpacing = item.divBottomSpacing;
+
+        ans.divFirstIndent = item.divFirstIndent;
+        ans.divIndent = item.divIndent;
+
+        ans.divPrefix = item.divPrefix;
+        ans.divPrefixDistance = item.divPrefixDistance;
+
+        return ans;
+    }
 
     /** Split {@link DivisionText} across the page, kept line empty.
      *
      * @param item
-     *      item to copy format; not null
+     *      copyting item; not null
      * @return answer
+     * @see #copyFormat(DivisionText)
      */
     static final DivisionText splitItem(DivisionText item){
-        Checker.checkNotNull(item, "item");
+        checkNotNull(item, "item");
         DivisionText ans = copyFormat(item);
         ans.divFirstIndent = ans.divIndent;
+
         ans.divPrefix = Optional.empty();
         ans.divPrefixDistance = 0f;
         return ans;
     }
 
-    /** Create {@link DivisionText} with copied format, kept line empty.
-     *
-     * @param item
-     *      item to copy format; not null
-     * @return answer
-     */
-    static final DivisionText copyFormat(DivisionText item){
-        Checker.checkNotNull(item, "item");
-        DivisionText ans = new DivisionText(item.divWidth, item.divAlignment);
-        ans.divLeading = item.divLeading;
-        ans.divFirstIndent = item.divFirstIndent;
-        ans.divIndent = item.divIndent;
-        ans.divPrefix = item.divPrefix;
-        ans.divPrefixDistance = item.divPrefixDistance;
-        ans.divBottomSpacing = item.divBottomSpacing;
-        return ans;
-    }
 
     /** A single line in the division.
      * Purpose:
@@ -58,9 +67,10 @@ class DivisionText extends ForwardingList<DivisionText.Line>
      */
     final class Line extends ForwardingList<ContentText>{
         private final ArrayList<ContentText> inputText;
+        private float textHeight;
+
         private float curWidth;
         private final float maxWidth;
-        private float textHeight;
         private final float lineIndent;
 
         /** Private constrcutor.
@@ -74,17 +84,11 @@ class DivisionText extends ForwardingList<DivisionText.Line>
          */
         private Line(float width, float indent){
             inputText = new ArrayList<>();
+            textHeight = 0;
+
             curWidth = 0;
             maxWidth = width;
-            textHeight = 0;
             lineIndent = indent;
-        }
-
-        /** Get line indent.
-         * @return answer
-         */
-        float getIndent(){
-            return lineIndent;
         }
 
         /** Append text unless the line is too full.
@@ -134,13 +138,14 @@ class DivisionText extends ForwardingList<DivisionText.Line>
                     overflow.add(text);
                 }
             }
-
             /// don't return null array list
             return overflow == null? new ArrayList<>(): overflow;
         }
 
         /** Calculate line height
          * @return answer
+         * @see #getTextHeight()
+         * @see $getWidth()
          */
         float getHeight(){
             return (divLines.get(divLines.size() - 1) == this?
@@ -150,6 +155,8 @@ class DivisionText extends ForwardingList<DivisionText.Line>
 
         /** Calculate text height
          * @return answer
+         * @see #getHeight()
+         * @see $getWidth()
          */
         float getTextHeight(){
             return textHeight;
@@ -157,9 +164,18 @@ class DivisionText extends ForwardingList<DivisionText.Line>
 
         /** Calculate current line height
          * @return answer
+         * @see #getHeight()
+         * @see #getTextHeight()
          */
         float getWidth(){
             return curWidth;
+        }
+
+        /** Get line indent.
+         * @return answer
+         */
+        float getIndent(){
+            return lineIndent;
         }
 
         @Override
@@ -181,14 +197,18 @@ class DivisionText extends ForwardingList<DivisionText.Line>
     }
 
     private final ArrayList<Line> divLines;
-    private float divWidth;
-    private LineAlignment divAlignment;
+
     private float divLeading;
+    private float divBottomSpacing;
+
+    private float divWidth;
     private float divFirstIndent;
     private float divIndent;
+
     private Optional<String> divPrefix;
     private float divPrefixDistance;
-    private float divBottomSpacing;
+
+    private LineAlignment divAlignment;
 
     /** Construtor with a user defined width
      *
@@ -204,19 +224,140 @@ class DivisionText extends ForwardingList<DivisionText.Line>
      * @param width
      *      the width of the line
      * @param alignment
-     *      the user defined alginment; not null
+     *      line alignment; not null
      */
     DivisionText(float width, LineAlignment alignment){
-        Checker.checkNotNull(alignment, "alignment");
+        checkNotNull(alignment, "alignment");
+
         divLines = new ArrayList<>();
-        divWidth = width;
-        divAlignment = alignment;
+
         divLeading = 2;
+        divBottomSpacing = 0;
+
+        divWidth = width;
         divFirstIndent = 0;
         divIndent = 0;
+
         divPrefix = Optional.empty();
         divPrefixDistance = 0f;
-        divBottomSpacing = 0;
+
+        divAlignment = alignment;
+    }
+
+    /** Append taken from a {@linkplain String}
+     * @param text
+     *      the text to extract {@link ContentText}
+     * @param font
+     *      the font of the text
+     * @return the actual text added
+     * @throws IOException
+     *         exception with content adding
+     * @see #addLine(Line)
+     */
+    final ArrayList<ContentText> appendText(String text, ContentFont font)
+            throws IOException{
+        checkNotNull(text, "text");
+        checkNotNull(font, "font");
+
+        /// Append text to the previous line
+        ArrayList<ContentText> data = ContentText.createWords(text, font);
+        appendText(data, getLine());
+        return data;
+    }
+
+    /** Append taken from a line.
+     * @param line
+     *      the list of {@linkplain ContentText} to add
+     * @return the actual text added
+     * @see #appendText(String, ContentFont)
+     */
+    final List<ContentText> addLine(Line line){
+        /// Create copy
+        ArrayList<ContentText> add = new ArrayList<>();
+        for (ContentText text: line){
+            add.add(new ContentText(text));
+        }
+
+        /// add and return
+        appendText(add, getLine());
+        return add;
+    }
+
+    /** Get or create the first line.
+     * @return answer
+     * @see #appendText(String, ContentFont)
+     * @see #addLine(Line)
+     */
+    private final Line getLine(){
+        if (divLines.isEmpty()){
+            Line line = new Line(divWidth - divFirstIndent, divFirstIndent);
+            divLines.add(line);
+            return line;
+        }
+        return divLines.get(divLines.size() - 1);
+    }
+
+    /** Append text recusively
+     * @param overflow
+     *      the text to add
+     * @param line
+     *      the line to append the text to
+     * @see #appendText(List)
+     * @see #addLine(Line)
+     * @see #appendText(String, ContentFont)
+     * @see #reflowText()
+     */
+    private final void appendText(List<ContentText> overflow, Line line){
+        assert overflow != null;
+        assert line != null;
+        /// recursively call children
+        appendText(line.appendText(overflow));
+    }
+
+    /** Create a new a line append text
+     * Had the base case of the recusive method.
+     *
+     * @param overflow
+     *      parameter for {@linkplain #appendText(List, Line)
+     * @see #appendText(List, Line)
+     */
+    private final void appendText(List<ContentText> overflow){
+        if (overflow.isEmpty()) return;
+        Line line = new Line(divWidth - divIndent, divIndent);
+        divLines.add(line);
+        appendText(overflow, line);
+    }
+
+    /** Get text leading.
+     * @return answer
+     * @see #setLeading(float)
+     * @see #getHeight()
+     */
+    final float getLeading(){
+        return divLeading;
+    }
+
+    /** Set text leading.
+     * @return self
+     * @see #getLeading()
+     * @see #getHeight()
+     */
+    final DivisionText setLeading(float leading){
+        divLeading = leading;
+        reflowText();
+        return this;
+    }
+
+    /**  Set bottom spacing.
+     * @param padding
+     *      the value
+     * @return self
+     * @see #getHeight()
+     */
+    final DivisionText setBottomSpacing(float padding){
+        divBottomSpacing = padding;
+        reflowText();
+        return this;
     }
 
     /** Set line width
@@ -227,41 +368,6 @@ class DivisionText extends ForwardingList<DivisionText.Line>
         reflowText();
         return this;
     }
-
-    /** Get line alignment.
-     * @return answer
-     */
-    final LineAlignment getLineAlignment(){
-        return divAlignment;
-    }
-
-    /** Set line alignment.
-     * @param alignment
-     *      the value; not null
-     * @return self
-     */
-    final DivisionText setLineAlignment(LineAlignment alignment){
-        Checker.checkNotNull(alignment, "alignment");
-        divAlignment = alignment;
-        return this;
-    }
-
-    /** Get text leading.
-     * @return answer
-     */
-    final float getLeading(){
-        return divLeading;
-    }
-
-    /** Set text leading.
-     * @return self
-     */
-    final DivisionText setLeading(float leading){
-        divLeading = leading;
-        reflowText();
-        return this;
-    }
-
 
     /** Set first line indent.
      * @param indent
@@ -312,143 +418,22 @@ class DivisionText extends ForwardingList<DivisionText.Line>
         return this;
     }
 
-    /**  Set bottom spacing.
-     * @param padding
-     *      the value
-     * @return self
-     */
-    final DivisionText setBottomSpacing(float padding){
-        divBottomSpacing = padding;
-        reflowText();
-        return this;
-    }
-
-    @Override
-    public final float getHeight(){
-        float ans = 0;
-        for (Line line: divLines){
-            ans += line.getHeight();
-        }
-        return ans;
-    }
-
-    @Override
-    public final float getStartY(){
-        return isEmpty()? 0: get(0).getTextHeight() * (getLeading());
-    }
-
-    @Override
-    public final float getWidth(){
-        return divWidth;
-    }
-
-    @Override
-    public final List<ContentPostEditor> getPostTextConsumers(PDRectangle rect){
-        return new ArrayList<>();
-    }
-
-    /** Append taken from a line.
-     * @param line
-     *      the list of {@linkplain ContentText} to add
-     * @return the actual text added
-     * @see #appendText(String, ContentFont)
-     * @see #appendTextList(String, ContentFont)
-     */
-    final List<ContentText> addLine(Line line){
-        /// Create copy
-        ArrayList<ContentText> add = new ArrayList<>();
-        for (ContentText text: line){
-            add.add(new ContentText(text));
-        }
-
-        /// add and return
-        appendText(add, getLine());
-        return add;
-    }
-
-    /** Append taken from a {@linkplain String}
-     * @param text
-     *      the text to extract {@link ContentText}
-     * @param font
-     *      the font of the text
-     * @return self
-     * @see #addLine(Line)
-     * @see #appendTextList(String, ContentFont)
-     */
-    final DivisionText appendText(String text, ContentFont font)
-            throws IOException{
-        /// Append text to the previous line
-        appendTextList(text, font);
-        return this;
-    }
-
-    /** Append taken from a {@linkplain String}
-     * @param text
-     *      the text to extract {@link ContentText}
-     * @param font
-     *      the font of the text
-     * @return the actual text added
-     * @throws IOException
-     *         exception with content adding
-     * @see #appendText(String, ContentFont)
-     * @see #addLine(Line)
-     */
-    final ArrayList<ContentText> appendTextList(String text, ContentFont font)
-            throws IOException{
-        /// Append text to the previous line
-        ArrayList<ContentText> data = ContentText.createWords(text, font);
-        appendText(data, getLine());
-        return data;
-    }
-
-    /** Get or create the first line.
+    /** Get line alignment.
      * @return answer
-     * @see #addLine(Line)
-     * @see #appendTextList(String, ContentFont)
      */
-    private final Line getLine(){
-        if (divLines.isEmpty()){
-            Line line = new Line(divWidth - divFirstIndent, divFirstIndent);
-            divLines.add(line);
-            return line;
-        }
-        return divLines.get(divLines.size() - 1);
+    final LineAlignment getLineAlignment(){
+        return divAlignment;
     }
 
-    /** Append text recusively
-     * @param overflow
-     *      the text to add
-     * @param line
-     *      the line to append the text to
-     * @see #appendText(List)
-     * @see #addLine(Line)
-     * @see #appendTextList(String, ContentFont)
-     * @see #reflowText()
+    /** Set line alignment.
+     * @param alignment
+     *      the value; not null
+     * @return self
      */
-    private final void appendText(List<ContentText> overflow, Line line){
-        assert overflow != null;
-        assert line != null;
-        /// recursively call children
-        appendText(line.appendText(overflow));
-    }
-
-    /** Create a new a line append text
-     * Had the base case of the recusive method.
-     *
-     * @param overflow
-     *      parameter for {@linkplain #appendText(List, Line)
-     * @see #appendText(List, Line)
-     */
-    private final void appendText(List<ContentText> overflow){
-        if (overflow.isEmpty()) return;
-        Line line = new Line(divWidth - divIndent, divIndent);
-        divLines.add(line);
-        appendText(overflow, line);
-    }
-
-    @Override
-    protected final List<Line> delegate(){
-        return ImmutableList.copyOf(divLines);
+    final DivisionText setLineAlignment(LineAlignment alignment){
+        checkNotNull(alignment, "alignment");
+        divAlignment = alignment;
+        return this;
     }
 
     /** Reflow the text.
@@ -470,5 +455,34 @@ class DivisionText extends ForwardingList<DivisionText.Line>
 
         /// re-enter text
         appendText(data, first);
+    }
+
+    @Override
+    public final float getStartY(){
+        return isEmpty()? 0: get(0).getTextHeight() * (getLeading());
+    }
+
+    @Override
+    public final float getHeight(){
+        float ans = 0;
+        for (Line line: divLines){
+            ans += line.getHeight();
+        }
+        return ans;
+    }
+
+    @Override
+    public final float getWidth(){
+        return divWidth;
+    }
+
+    @Override
+    public final List<ContentPostEditor> getPostTextConsumers(PDRectangle rect){
+        return new ArrayList<>();
+    }
+
+    @Override
+    protected final List<Line> delegate(){
+        return ImmutableList.copyOf(divLines);
     }
 }

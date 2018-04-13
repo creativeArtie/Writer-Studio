@@ -9,7 +9,8 @@ import org.apache.pdfbox.pdmodel.*; //PDPageContentStream
 import org.apache.pdfbox.pdmodel.common.*; //PDRectangle
 
 import com.creativeartie.writerstudio.export.value.*; // (many)
-import com.creativeartie.writerstudio.main.*; // Checker
+
+import static com.creativeartie.writerstudio.main.Checker.*; // Checker
 
 /** Insert text and graphics into a section of a page.
  * Purpose
@@ -22,18 +23,22 @@ import com.creativeartie.writerstudio.main.*; // Checker
  * </ul>
  */
 final class MatterArea extends ForwardingList<Division> {
+    /// PDF output
     private final PageContent outputPage;
     private final PDPageContentStream contentStream;
-    private final PageAlignment pageAlignment;
-    private float maxHeight;
-    private final float areaWidth;
-
+    /// division lines
     private final ArrayList<Division> divisionLines;
+    /// sizes
+    private float maxHeight;
     private float fillHeight;
-    private float localX;
     private float localY;
+    private final float areaWidth;
+    private float localX;
+    /// font + alignment
     private ContentFont textFont;
+    private final PageAlignment pageAlignment;
     private LineAlignment lineAlignment;
+    /// post editing
     private final ArrayList<ContentPostEditor> postEditors;
 
     /** Only constructor.
@@ -43,67 +48,20 @@ final class MatterArea extends ForwardingList<Division> {
      *      the alignment on the page; not null
      */
     MatterArea(PageContent page, PageAlignment alignment){
-        outputPage = Checker.checkNotNull(page, "page");
+        outputPage = checkNotNull(page, "page");
         contentStream = page.getContentStream();
-        pageAlignment = Checker.checkNotNull(alignment, "alignment");
-        maxHeight = page.getRenderHeight(alignment);
-        areaWidth = page.getRenderWidth();
 
         divisionLines = new ArrayList<>();
+
+        maxHeight = page.getRenderHeight(alignment);
+        areaWidth = page.getRenderWidth();
         fillHeight = localX = localY = 0;
+
         textFont = null;
         lineAlignment = LineAlignment.LEFT;
+        pageAlignment = checkNotNull(alignment, "alignment");
+
         postEditors = new ArrayList<>();
-    }
-
-    /** Reduce the height.
-     *
-     * Negative number will increase height instead.
-     *
-     * @param height
-     *      subtracting height
-     * @return self
-     */
-    MatterArea reduceHeight(float height){
-        maxHeight -= height;
-        return this;
-    }
-
-    /** Gets the page alignment
-     * @return answer
-     */
-    PageAlignment getPageAlignment(){
-        return pageAlignment;
-    }
-
-    /** Gets the height that this section needs.
-     * @return answer
-     * @see checkHeight(DivisionText)
-     * @see chechHeight(DivisionText, float)
-     */
-    float getHeight(){
-        return fillHeight;
-    }
-
-    /** Check the height that this section + this item needs
-     * @return answer
-     * @see checkHeight()
-     * @see chechHeight(DivisionText, float)
-     */
-    boolean checkHeight(DivisionText item){
-        Checker.checkNotNull(item, "item");
-        return item.getHeight() + fillHeight < maxHeight;
-    }
-
-    /** Check the height that this section + this item needs, along with the
-     * footnote height.
-     * @return answer
-     * @see checkHeight()
-     * @see chechHeight(DivisionText)
-     */
-    boolean checkHeight(DivisionText item, float footnote){
-        Checker.checkNotNull(item, "item");
-        return item.getHeight() + footnote + fillHeight < maxHeight;
     }
 
     /** Render the text and graphics.
@@ -144,13 +102,12 @@ final class MatterArea extends ForwardingList<Division> {
         return this;
     }
 
-
     /** Render the text and graphics.
      * @param block
      *      the text to render; not null
      * @throws IOException
      *      exception with content rendering
-     * @see #render
+     * @see #render()
      */
     private void render(DivisionText block) throws IOException{
         assert block != null: "null block";
@@ -171,40 +128,6 @@ final class MatterArea extends ForwardingList<Division> {
             /// move to remove indent
             moveText(-line.getIndent(), 0);
         }
-    }
-
-    /** Change the alignment of text lines
-     * @param next
-     *      the alignment to set; not null
-     * @throws IOException
-     *      exception with content rendering
-     * @see #render(DivisionBlock)
-     */
-    private void changeAlign(LineAlignment next) throws IOException{
-        assert next != null: "null next";
-        if (lineAlignment == next){
-            return;
-        }
-        switch (lineAlignment){
-        case CENTER:
-            switch(next){
-            case RIGHT:  moveText((areaWidth / 2), 0); break;
-            case CENTER: assert false;                 break;
-            default:     moveText(-(areaWidth / 2), 0);
-            } break;
-        case RIGHT:
-            switch(next){
-            case RIGHT:  assert false;                  break;
-            case CENTER: moveText(-(areaWidth / 2), 0); break;
-            default:     moveText(-areaWidth, 0);
-            } break;
-        default: switch (next){
-            case RIGHT:  moveText(areaWidth, 0);     break;
-            case CENTER: moveText(areaWidth / 2, 0); break;
-            default:     moveText(0, 0);
-            }
-        }
-        lineAlignment = next;
     }
 
     /** Print the text in the line
@@ -246,6 +169,40 @@ final class MatterArea extends ForwardingList<Division> {
         }
     }
 
+    /** Change the alignment of text lines
+     * @param next
+     *      the alignment to set; not null
+     * @throws IOException
+     *      exception with content rendering
+     * @see #render(DivisionBlock)
+     */
+    private void changeAlign(LineAlignment next) throws IOException{
+        assert next != null: "null next";
+        if (lineAlignment == next){
+            return;
+        }
+        switch (lineAlignment){
+        case CENTER:
+            switch(next){
+            case RIGHT:  moveText((areaWidth / 2), 0); break;
+            case CENTER: assert false;                 break;
+            default:     moveText(-(areaWidth / 2), 0);
+            } break;
+        case RIGHT:
+            switch(next){
+            case RIGHT:  assert false;                  break;
+            case CENTER: moveText(-(areaWidth / 2), 0); break;
+            default:     moveText(-areaWidth, 0);
+            } break;
+        default: switch (next){
+            case RIGHT:  moveText(areaWidth, 0);     break;
+            case CENTER: moveText(areaWidth / 2, 0); break;
+            default:     moveText(0, 0);
+            }
+        }
+        lineAlignment = next;
+    }
+
     /**Change the font of the text.
      * @param font
      *      the font to set; not null
@@ -279,9 +236,68 @@ final class MatterArea extends ForwardingList<Division> {
         contentStream.newLineAtOffset(x, y);
     }
 
+    /** Gets the height that this section needs.
+     * @return answer
+     * @see #checkHeight(DivisionText)
+     * @see #checkHeight(DivisionText, float)
+     * @see #reduceHeight(float)
+     */
+    float getHeight(){
+        return fillHeight;
+    }
+
+    /** Check the height that this section + this item needs
+     * @return answer
+     * @see #getHeight()
+     * @see #checkHeight(DivisionText, float)
+     * @see #reduceHeight(float)
+     */
+    boolean checkHeight(DivisionText item){
+        checkNotNull(item, "item");
+
+        return item.getHeight() + fillHeight < maxHeight;
+    }
+
+    /** Check the height that this section + this item needs, along with the
+     * footnote height.
+     * @return answer
+     * @see #getHeight()
+     * @see #checkHeight(DivisionText)
+     * @see #reduceHeight(float)
+     */
+    boolean checkHeight(DivisionText item, float footnote){
+        checkNotNull(item, "item");
+
+        return item.getHeight() + footnote + fillHeight < maxHeight;
+    }
+
+    /** Reduce the height.
+     *
+     * Negative number will increase height instead.
+     *
+     * @param height
+     *      subtracting height
+     * @return self
+     * @see #getHeight()
+     * @see #checkHeight()
+     * @see #checkHeight(DivisionText)
+     */
+    MatterArea reduceHeight(float height){
+        maxHeight -= height;
+        return this;
+    }
+
+
+    /** Gets the page alignment
+     * @return answer
+     */
+    PageAlignment getPageAlignment(){
+        return pageAlignment;
+    }
+
     @Override
     public void add(int index, Division item){
-        Checker.checkNotNull(item, "item");
+        checkNotNull(item, "item");
         divisionLines.add(index, item);
         fillHeight += item.getHeight();
     }

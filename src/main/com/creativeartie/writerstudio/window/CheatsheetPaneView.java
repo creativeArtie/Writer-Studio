@@ -36,13 +36,13 @@ abstract class CheatsheetPaneView extends GridPane{
         setPrecentWidth(10);
         addLabel(ans, CheatsheetLabel.getLabel(EditionType.OTHER), 1, 2);
         addLabel(ans, CheatsheetLabel.getLabel(EditionType.FINAL), 1, 3);
-        setPrecentWidth(10); /// fills to: 20
+        setPrecentWidth(5); /// fills to: 15
 
         addLabel(ans, CheatsheetLabel.getLabel(LinedType.PARAGRAPH), 2, 0);
         addLabel(ans, CheatsheetLabel.getLabel(LinedType.NUMBERED),  2, 1);
         addLabel(ans, CheatsheetLabel.getLabel(LinedType.BULLET),    2, 2);
         addLabel(ans, CheatsheetLabel.getLabel(LinedType.BREAK),     2, 3);
-        setPrecentWidth(11); /// fills to: 31
+        setPrecentWidth(11); /// fills to: 26
 
         /// Future:
         ///     column 3     = quote, agenda, graphs (pie, line, etc.), picture
@@ -51,35 +51,37 @@ abstract class CheatsheetPaneView extends GridPane{
         addLabel(ans, CheatsheetLabel.getLabel(LinedType.SOURCE),     3, 1, 2, 1);
         addLabel(ans, CheatsheetLabel.getLabel(InfoFieldType.SOURCE), 3, 2);
         addLabel(ans, CheatsheetLabel.getLabel(InfoFieldType.REF),    3, 3);
-        setPrecentWidth(6); /// fills to: 37
+        setPrecentWidth(6); /// fills to: 32
         addLabel(ans, CheatsheetLabel.getLabel(LinedType.AGENDA),       4, 0);
         addLabel(ans, CheatsheetLabel.getLabel(InfoFieldType.IN_TEXT),  4, 2);
         addLabel(ans, CheatsheetLabel.getLabel(InfoFieldType.FOOTNOTE), 4, 3);
-        setPrecentWidth(6); /// fills to: 43
+        setPrecentWidth(6); /// fills to: 38
 
         addLabel(ans, CheatsheetLabel.getLabel(LinedType.NOTE),      5, 0);
         addLabel(ans, CheatsheetLabel.getLabel(LinedType.FOOTNOTE),  5, 1);
         addLabel(ans, CheatsheetLabel.getLabel(LinedType.ENDNOTE),   5, 2);
         addLabel(ans, CheatsheetLabel.getLabel(LinedType.HYPERLINK), 5, 3);
-        setPrecentWidth(12); /// fills to: 55
+        setPrecentWidth(12); /// fills to: 50
 
         addLabel(ans, CheatsheetLabel.getLabel(DirectoryType.NOTE),     6, 0);
         addLabel(ans, CheatsheetLabel.getLabel(DirectoryType.FOOTNOTE), 6, 1);
         addLabel(ans, CheatsheetLabel.getLabel(DirectoryType.ENDNOTE),  6, 2);
         addLabel(ans, CheatsheetLabel.getLabel(AuxiliaryType.REF_LINK), 6, 3);
-        setPrecentWidth(17); /// fills to: 72
+        setPrecentWidth(17); /// fills to: 67
 
         addLabel(ans, CheatsheetLabel.getLabel(AuxiliaryType.AGENDA),      7, 0);
         addLabel(ans, CheatsheetLabel.getLabel(AuxiliaryType.ESCAPE),      7, 1);
         addLabel(ans, CheatsheetLabel.getLabel(AuxiliaryType.DIRECT_LINK), 7, 2);
         addLabel(ans, CheatsheetLabel.getIdentityLabel(),                  7, 3);
-        setPrecentWidth(17); /// fills to: 89
+        setPrecentWidth(17); /// fills to: 84
+
+        // addLabel(ans, CheatsheetLabel.getKeyLabel()
 
         addLabel(ans, CheatsheetLabel.getLabel(FormatType.BOLD),      8, 0);
         addLabel(ans, CheatsheetLabel.getLabel(FormatType.CODED),     8, 1);
         addLabel(ans, CheatsheetLabel.getLabel(FormatType.ITALICS),   8, 2);
         addLabel(ans, CheatsheetLabel.getLabel(FormatType.UNDERLINE), 8, 3);
-        setPrecentWidth(11); /// fills to: 100
+        setPrecentWidth(11); /// fills to: 95
         return ans;
     }
 

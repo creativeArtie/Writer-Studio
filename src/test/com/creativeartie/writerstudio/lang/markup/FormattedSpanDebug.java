@@ -24,7 +24,7 @@ public class FormattedSpanDebug {
         String raw = "abc";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(1).setNoteTotal(0);
         FormatContentTest content = new FormatContentTest()
             .setBegin(false).setEnd(false)
@@ -43,7 +43,7 @@ public class FormattedSpanDebug {
         String raw = "or**an**ge";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(1).setNoteTotal(0);
         FormatContentTest content1 = new FormatContentTest()
             .setBegin(false).setEnd(false)
@@ -73,7 +73,7 @@ public class FormattedSpanDebug {
         ///           0123456
         String raw = "g*ee*n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(1).setNoteTotal(0);
         FormatContentTest content1 = new FormatContentTest()
             .setBegin(false).setEnd(false)
@@ -104,7 +104,7 @@ public class FormattedSpanDebug {
         String raw = "g_e\\_e`dd_";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(1).setNoteTotal(0);
         FormatContentTest content1 = new FormatContentTest()
             .setBegin(false).setEnd(false)
@@ -141,7 +141,7 @@ public class FormattedSpanDebug {
         String raw = "_abc  ab";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(2).setNoteTotal(0);
         FormatContentTest content = new FormatContentTest()
             .setBegin(false)  .setEnd(false)
@@ -164,7 +164,7 @@ public class FormattedSpanDebug {
         IDBuilder builder = doc.addRef(
             FormatCurlyDebug.buildEndnoteId("abc"),
             CatalogueStatus.NOT_FOUND, 0);
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(1).setNoteTotal(0);
         FormatNoteTest cite = new FormatNoteTest()
             .setDirectoryType(DirectoryType.ENDNOTE)
@@ -200,7 +200,7 @@ public class FormattedSpanDebug {
         String raw = "{!todo}" + text + "{!abc}";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(2).setNoteTotal(2);
         /// "{!todo}"
         IDBuilder builder = doc.addId(FormatAgendaDebug.buildId("00"), 0);
@@ -245,7 +245,7 @@ public class FormattedSpanDebug {
             "<@link><a.ca| web>{!todo} see";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(6).setNoteTotal(1);
         /// "Begin\\\\"
         FormatContentTest text1 = new FormatContentTest()
@@ -391,7 +391,7 @@ public class FormattedSpanDebug {
         String after = "before **bold";
         doc.assertDoc(1, after);
 
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(2).setNoteTotal(0);
         FormatContentTest content1 = new FormatContentTest()
             .setBegin(false).setEnd(true)

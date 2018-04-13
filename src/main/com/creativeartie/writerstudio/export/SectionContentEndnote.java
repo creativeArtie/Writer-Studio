@@ -7,9 +7,20 @@ import com.creativeartie.writerstudio.export.value.*; // Utilities
 import com.creativeartie.writerstudio.file.*; // ManuscriptFile
 import com.creativeartie.writerstudio.lang.markup.*; // LinedSpanPointNote
 
+import static com.creativeartie.writerstudio.main.Checker.*;
+
+/** A {@link SectionContent} for endnotes
+ */
 public class SectionContentEndnote extends SectionContent<LinedSpanPointNote> {
     private int noteNumber;
 
+    /** Only construcutor.
+     *
+     * @param parent
+     *      input parent data
+     * @throws IOException
+     *      exceptions thrown from uses of other classes
+     */
     public SectionContentEndnote(WritingExporter parent) throws IOException{
         super(parent);
         noteNumber = 1;
@@ -22,6 +33,7 @@ public class SectionContentEndnote extends SectionContent<LinedSpanPointNote> {
 
     @Override
     protected DivisionText parseSpan(LinedSpanPointNote span) throws IOException{
+        checkNotNull(span, "span");
         Optional<FormattedSpan> text = span.getFormattedSpan();
         if (text.isPresent() && ! text.get().isEmpty()){
             DivisionTextFormatted ans = newFormatDivision();

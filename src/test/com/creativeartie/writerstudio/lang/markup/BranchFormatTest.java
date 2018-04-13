@@ -167,20 +167,20 @@ public class BranchFormatTest {
         }
     }
 
-    public static class FormatMainTest extends SpanBranchAssert<FormatMainTest>
+    public static class FormattedSpanTest extends SpanBranchAssert<FormattedSpanTest>
     {
         private int publishTotal;
         private int noteTotal;
-        public FormatMainTest(){
-            super(FormatMainTest.class);
+        public FormattedSpanTest(){
+            super(FormattedSpanTest.class);
         }
 
-        public FormatMainTest setPublishTotal(int count){
+        public FormattedSpanTest setPublishTotal(int count){
             publishTotal = count;
             return this;
         }
 
-        public FormatMainTest setNoteTotal(int count){
+        public FormattedSpanTest setNoteTotal(int count){
             noteTotal = count;
             return this;
         }

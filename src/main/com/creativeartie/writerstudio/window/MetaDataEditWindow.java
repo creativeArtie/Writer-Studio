@@ -19,7 +19,7 @@ import com.creativeartie.writerstudio.resource.*;
 
 class MetaDataEditWindow extends Stage{
     private class Line{
-        private ComboBox box;
+        private ComboBox<String> box;
         private TextField text;
     }
 

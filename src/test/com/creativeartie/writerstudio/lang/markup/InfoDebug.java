@@ -28,7 +28,7 @@ public class InfoDebug {
 
         FormatDataTest data = new FormatDataTest()
             .setData(doc, 0, 0);
-        FormatMainTest format = new FormatMainTest()
+        FormattedSpanTest format = new FormattedSpanTest()
             .setPublishTotal(1).setNoteTotal(0);
         FormatContentTest text1 = new FormatContentTest()
             .setText("abcd")   .setBegin(false)

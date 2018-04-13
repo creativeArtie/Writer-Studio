@@ -145,10 +145,10 @@ public class DocumentAssert {
 
         assertEquals(getError("leaf text",  test), rawText, test.getRaw());
         assertEquals(getError("leaf style", test), info,    test.getLeafStyle());
-        assertSame  (getError("document",   test), doc,     test.getDocument());
-        assertSame  (getError("parent",     test), prep[1], test.getParent());
         assertEquals(getError("leaf start", test), start,   test.getStart());
         assertEquals(getError("leaf end",   test), end,     test.getEnd());
+        assertSame  (getError("parent",     test), prep[1], test.getParent());
+        assertSame  (getError("document",   test), doc,     test.getDocument());
     }
 
 

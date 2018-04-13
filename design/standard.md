@@ -22,14 +22,10 @@
     - short describing on the first line, and a noun phrase.
     - if the class is the head of the group of classes add purpose undered list
 - order of class elements:
-    - static variable
-    - static classes
-    - nested classes
-    - class field
-    - constuctor
-    - get and set methods (with get method first)
-    - other methods
-    - overriding methods
+    - initalization methods first
+    - the major and complex methods second, group by feature / method relations
+    - getters before setters and after the the major methods
+    - overriding methods last, order from direct parent class to `Object` class
 - the order can be change when grouping is involved.
 - no new line after the last brace
 
@@ -51,7 +47,7 @@
 - maintain order in the order of use
 ### Methods
 - comments
-    - no comments for overeided
+    - no comments for overrided
     - one short description
     - for `@link`: only for project library class, and don't repeat
     - for `@linkplain`: for all other classes
@@ -77,6 +73,7 @@
             - allows mix between class field initalization and checking
             - don't check for variables for the super method, unless it is being
               used
+    - new line, unless the rest of the code is 1 line
     - group statements by groups with a comments at their top
     - method variables are a 1 word, lowercase
 - llambda

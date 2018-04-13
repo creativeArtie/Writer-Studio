@@ -7,7 +7,8 @@ import java.util.*; // Optional
 import com.creativeartie.writerstudio.export.value.*; // ContentFont
 import com.creativeartie.writerstudio.lang.*; // Span, SpanBranch
 import com.creativeartie.writerstudio.lang.markup.*; // (many)
-import com.creativeartie.writerstudio.main.*; // Checker
+
+import static com.creativeartie.writerstudio.main.Checker.*;
 
 /** A {@link Division} of {@link FormattedSpan}.
  */
@@ -25,6 +26,7 @@ class DivisionTextFormatted extends DivisionText{
      */
     DivisionTextFormatted(float width, WritingExporter parent){
         super(width);
+        checkNotNull(parent, "parent");
         contentData = Optional.empty();
         parentDoc = parent;
     }
@@ -36,8 +38,7 @@ class DivisionTextFormatted extends DivisionText{
      *      the parent content; not null
      */
     DivisionTextFormatted(SectionContent<?> content){
-        super(Checker.checkNotNull(content, "content").getPage()
-            .getRenderWidth());
+        super(checkNotNull(content, "content").getPage().getRenderWidth());
         contentData = Optional.of(content);
         parentDoc = content.getParent();
     }
@@ -53,8 +54,11 @@ class DivisionTextFormatted extends DivisionText{
      */
     final DivisionTextFormatted addContent(TextDataSpanPrint span)
             throws IOException{
-        Checker.checkNotEmpty(span, "span");
+        checkNotEmpty(span, "span");
+
         setLeading(1f);
+
+        // set LineAlignment
         switch (span.getFormat()){
         case RIGHT:
             setLineAlignment(LineAlignment.RIGHT);
@@ -65,6 +69,8 @@ class DivisionTextFormatted extends DivisionText{
         case LEFT:
         default:
         }
+
+        // append text
         if (span.getData().isPresent()){
             addContent(span.getData().get());
         } else {
@@ -83,7 +89,8 @@ class DivisionTextFormatted extends DivisionText{
      */
     final DivisionTextFormatted addContent(FormattedSpan span)
             throws IOException{
-        Checker.checkNotEmpty(span, "span");
+        checkNotEmpty(span, "span");
+
         for(Span child: span){
             if (child instanceof FormatSpan){
                 FormatSpan format = (FormatSpan) child;
@@ -103,6 +110,7 @@ class DivisionTextFormatted extends DivisionText{
      */
     private final ContentFont addFont(FormatSpan span){
         assert span != null;
+
         ContentFont font = parentDoc.new PdfFont();
         if (span.isCoded()){
             font = font.changeToMono();
@@ -127,6 +135,7 @@ class DivisionTextFormatted extends DivisionText{
             throws IOException{
         assert span != null: "null span";
         assert font != null: "null font";
+
         if (span instanceof FormatSpanContent){
             parseContent((FormatSpanContent) span, font);
         } else if (span instanceof FormatSpanLink){
@@ -150,6 +159,7 @@ class DivisionTextFormatted extends DivisionText{
             throws IOException{
         assert span != null: "null span";
         assert font != null: "null font";
+
         String text = span.getText();
         appendText(text, font);
     }
@@ -191,7 +201,7 @@ class DivisionTextFormatted extends DivisionText{
 
         /// Add the path
         if (path.isPresent()){
-            for (ContentText content: appendTextList(text, font)) {
+            for (ContentText content: appendText(text, font)) {
                 content.setLinkPath(path.get());
             }
         } else {
@@ -213,6 +223,7 @@ class DivisionTextFormatted extends DivisionText{
             throws IOException{
         assert span != null: "null span";
         assert font != null: "null font";
+
         /// This is not a note
         if (span.getIdType() != DirectoryType.NOTE){
             font = font.changeToSuperscript();
@@ -281,9 +292,10 @@ class DivisionTextFormatted extends DivisionText{
             throws IOException{
         assert span != null: "null span";
         assert font != null: "null font";
+
         if (contentData.isPresent()){
             SectionContent<?> page = contentData.get();
-            for (ContentText content: appendTextList(
+            for (ContentText content: appendText(
                 page.getFootnote().addFootnote(span), font
             )){
                 content.setFootnote(Optional.of(span));

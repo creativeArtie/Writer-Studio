@@ -61,7 +61,7 @@ public class LinedRestDebug {
         ParagraphLineTest paragraph = new ParagraphLineTest()
             .setPublishTotal(0).setNoteTotal(0)
             .setFormattedSpan(doc, 0, 0);
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(0).setNoteTotal(0);
 
         paragraph.test( doc, 2, after,  0);
@@ -84,7 +84,7 @@ public class LinedRestDebug {
         ParagraphLineTest paragraph = new ParagraphLineTest()
             .setPublishTotal(0).setNoteTotal(0)
             .setFormattedSpan(doc, 0, 0);
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(0).setNoteTotal(0);
 
         paragraph.test( doc, 2, after, 0);
@@ -277,7 +277,7 @@ public class LinedRestDebug {
         QuoteLineTest quote = new QuoteLineTest()
             .setFormattedSpan(doc, 0, 1)
             .setPublishTotal(2).setNoteTotal(0);
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(2).setNoteTotal(0);
 
         quote.test(     doc,   3, raw,  0);
@@ -309,7 +309,7 @@ public class LinedRestDebug {
         ParagraphLineTest paragraph = new ParagraphLineTest()
             .setPublishTotal(1).setNoteTotal(0)
             .setFormattedSpan(doc, 0, 0);
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(1).setNoteTotal(0);
 
         paragraph.test(  doc, 2, raw,    0);
@@ -346,7 +346,7 @@ public class LinedRestDebug {
         ParagraphLineTest paragraph = new ParagraphLineTest()
             .setPublishTotal(1).setNoteTotal(0)
             .setFormattedSpan(doc, 0, 0);
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(1).setNoteTotal(0);
 
         paragraph.test(  doc, 1, raw,   0);

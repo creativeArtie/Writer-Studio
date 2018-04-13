@@ -37,7 +37,7 @@ public class LinedNoteDebug {
         DirectoryTest id = new DirectoryTest()
             .setPurpose(DirectoryType.NOTE)
             .setIdentity(createId);
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(1).setNoteTotal(0);
 
         line.test(        doc, 6, raw,        0);
@@ -129,7 +129,7 @@ public class LinedNoteDebug {
         DirectoryTest id = new DirectoryTest()
             .setPurpose(DirectoryType.NOTE)
             .setIdentity(createId);
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(1).setNoteTotal(0);
 
         line.test(        doc, 5, raw,    0);
@@ -199,7 +199,7 @@ public class LinedNoteDebug {
 
         NoteLineTest line = new NoteLineTest()
             .setFormattedSpan(doc, 0, 3).setNoteTotal(1);
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(1).setNoteTotal(0);
 
         line.test(       doc, 4, raw,    0);
@@ -221,7 +221,7 @@ public class LinedNoteDebug {
 
         NoteLineTest line = new NoteLineTest()
             .setFormattedSpan(doc, 0, 1).setNoteTotal(1);
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(1).setNoteTotal(0);
 
         line.test(       doc, 2, raw,    0);

@@ -1,10 +1,11 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*;
+import java.util.*; // (many)
 
-import com.google.common.collect.*;
+import com.google.common.collect.*; // ImmutableList
 
-import com.creativeartie.writerstudio.lang.*;
+import com.creativeartie.writerstudio.lang.*; // Span, SpanBranch, StyleInfo
+
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.writerstudio.main.Checker.*;
 

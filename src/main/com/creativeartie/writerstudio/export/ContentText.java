@@ -13,7 +13,7 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.*; // PDAnnotationLink
 
 import com.creativeartie.writerstudio.export.value.*; // ContentFont, ContentPostEditor
 import com.creativeartie.writerstudio.lang.*; // SpanBranch
-import com.creativeartie.writerstudio.main.*; // Checker
+import static com.creativeartie.writerstudio.main.Checker.*;
 
 /** Stores a text and its properties.
  *
@@ -45,8 +45,8 @@ final class ContentText {
      */
     static ArrayList<ContentText> createWords(String text, ContentFont font)
             throws IOException{
-        Checker.checkNotNull(text, "text");
-        Checker.checkNotNull(font, "font");
+        checkNotNull(text, "text");
+        checkNotNull(font, "font");
 
         /// Setup for repeating uses
         ContentText space = new ContentText(SPACE, font, true);
@@ -84,56 +84,65 @@ final class ContentText {
 
     private String outputText;
     private boolean spaceText;
-    private Optional<String> targetPath;
-    private Optional<SpanBranch> targetSpan;
     private Optional<Consumer<ContentText>> textChange;
-    private final ContentFont textFont;
+
     private final float textHeight;
     private float textWidth;
 
+    private final ContentFont textFont;
+    private Optional<String> targetPath;
+    private Optional<SpanBranch> footnoteSpan;
+
     /** Copy construtor.
      * @param original
-     *      The original object to copy from; not null
+     *      original object; not null
      */
     ContentText(ContentText original){
-        Checker.checkNotNull(original, "original");
+        checkNotNull(original, "original");
+
         outputText = original.outputText;
         spaceText = original.spaceText;
-        targetPath = original.targetPath;
-        targetSpan = original.targetSpan;
         textChange = Optional.empty(); /// stop updating it's previous parent
-        textFont = original.textFont;
+
         textHeight = original.textHeight;
         textWidth = original.textWidth;
+
+        textFont = original.textFont;
+        targetPath = original.targetPath;
+        footnoteSpan = original.footnoteSpan;
     }
 
     /** Private constructor.
-     * @param word
-     *      the word to add; not null or empty
+     * @param text
+     *      content text; not null or empty
      * @param font
-     *      the font of the text; not null
+     *      text font; not null
      * @param space
-     *      is this a space character; must describe param word.
+     *      is space?; must describe param text.
      * @see #createWords(String, ContentFont)
      */
-    private ContentText(String word, ContentFont font, boolean space)
+    private ContentText(String text, ContentFont font, boolean space)
             throws IOException{
-        assert word != null && !word.isEmpty();
+        assert text != null && !text.isEmpty();
         assert font != null;
-        assert word == SPACE? space: !space;
-        outputText = word;
+        assert text == SPACE? space: !space;
+
+        outputText = text;
         spaceText = space;
-        targetPath = Optional.empty();
-        targetSpan = Optional.empty();
-        textFont = font;
         textChange = Optional.empty();
-        textHeight = textFont.getHeight();
-        textWidth = textFont.getWidth(word);
+
+        textHeight = font.getHeight();
+        textWidth = font.getWidth(text);
+
+        textFont = font;
+        targetPath = Optional.empty();
+        footnoteSpan = Optional.empty();
     }
 
     /** Get the text.
      * @return answer
      * @see #setText(String)
+     * @see #isSpaceText()
      */
     String getText(){
         return outputText;
@@ -141,7 +150,6 @@ final class ContentText {
 
     // TODO text isn't suitable to deal with whitespaces
     /** Change the text.
-     *
      * @param text
      *      the new text; not null
      * @return self
@@ -151,14 +159,25 @@ final class ContentText {
      * @see #isSpaceText()
      */
     ContentText setText(String text) throws IOException{
-        outputText = Checker.checkNotEmpty(text, "text");
+        checkNotEmpty(text, "text");
+        CharMatcher whitespace = CharMatcher.whitespace();
+        outputText = whitespace.matchesAllOf(text)? SPACE:
+            whitespace.trimAndCollapseFrom(text, ' ');
         textWidth = textFont.getWidth(text);
         textChange.ifPresent(consume -> consume.accept(this));
         return this;
     }
 
+    /** Is the text is a space
+     * @return answer
+     * @see #getText()
+     * @see #setText(String)
+     */
+    boolean isSpaceText(){
+        return spaceText;
+    }
+
     /** Sets the listener.
-     *
      * @param
      *      the consumer to set
      * @return self
@@ -167,14 +186,6 @@ final class ContentText {
     ContentText setListener(Consumer<ContentText> consumer){
         textChange = Optional.ofNullable(consumer);
         return this;
-    }
-
-    /** Get the width of the text.
-     * @return answer
-     * @see #getHeight()
-     */
-    float getWidth() {
-        return textWidth;
     }
 
     /** Get the height of the text.
@@ -187,18 +198,10 @@ final class ContentText {
 
     /** Get the width of the text.
      * @return answer
+     * @see #getHeight()
      */
-    ContentText setLinkPath(String path){
-        targetPath = Optional.ofNullable(path);
-        return this;
-    }
-
-    /** Is the text is a space
-     * @return answer
-     * @see #getText()
-     */
-    boolean isSpaceText(){
-        return spaceText;
+    float getWidth() {
+        return textWidth;
     }
 
     /** Get the font of the text
@@ -208,12 +211,20 @@ final class ContentText {
         return textFont;
     }
 
+    /** Get the width of the text.
+     * @return answer
+     */
+    ContentText setLinkPath(String path){
+        targetPath = Optional.ofNullable(path);
+        return this;
+    }
+
     /** Get the footnote.
      * @return answer
      * @see setFootnote(Optional)
      */
     Optional<SpanBranch> getFootnote(){
-        return targetSpan;
+        return footnoteSpan;
     }
 
     /** Set the text target
@@ -223,8 +234,8 @@ final class ContentText {
      * @see getFootnote()
      */
     ContentText setFootnote(Optional<SpanBranch> span){
-        Checker.checkNotNull(span, "span");
-        targetSpan = span;
+        checkNotNull(span, "span");
+        footnoteSpan = span;
         return this;
     }
 
@@ -236,6 +247,8 @@ final class ContentText {
      * @see Division#getPostConsumer(PDRectangle)
      */
     List<ContentPostEditor> getPostTextConsumers(PDRectangle rect){
+        checkNotNull(rect, "rect");
+
         ArrayList<ContentPostEditor> ans = new ArrayList<>();
 
         /// For underlining

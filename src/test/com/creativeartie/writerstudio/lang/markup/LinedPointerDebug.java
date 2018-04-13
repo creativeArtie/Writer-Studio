@@ -202,7 +202,7 @@ public class LinedPointerDebug{
         DirectoryTest idSpan = new DirectoryTest()
             .setPurpose(DirectoryType.ENDNOTE)
             .setIdentity(id);
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(1).setNoteTotal(0);
 
         note.test(       doc,   5, raw,      0);
@@ -277,7 +277,7 @@ public class LinedPointerDebug{
         PointerNoteTest note = new PointerNoteTest()
             .setLinedType(LinedType.ENDNOTE)
             .setFormattedSpan(doc, 0, 2);
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(1).setNoteTotal(0);
 
         note.test(       doc, 3, raw,    0);
@@ -305,7 +305,7 @@ public class LinedPointerDebug{
         DirectoryTest idSpan = new DirectoryTest()
             .setPurpose(DirectoryType.FOOTNOTE)
             .setIdentity(id);
-        FormatMainTest main = new FormatMainTest()
+        FormattedSpanTest main = new FormattedSpanTest()
             .setPublishTotal(1).setNoteTotal(0);
 
         note.test(       doc,   5, raw,      0);

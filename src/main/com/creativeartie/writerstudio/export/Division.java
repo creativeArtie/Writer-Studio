@@ -15,22 +15,26 @@ import com.creativeartie.writerstudio.export.value.*; // ContentPostEditor
  */
 interface Division{
 
+    /** Get the starting point to print the text.
+     * @return answer
+     * @see #getHeight()
+     * @see #getWidth()
+     */
+    public float getStartY();
+
     /** Get the height of the all the whole division.
      * @return answer
      * @see #getWidth()
+     * @see #getStartY()
      */
     public float getHeight();
 
     /** Get the width of the all the whole division.
      * @return answer
      * @see #getHeight()
+     * @see #getStartY()
      */
     public float getWidth();
-
-    /** Get the starting point to print the text.
-     * @return answer
-     */
-    public float getStartY();
 
     /** Add rendering that is not related to printing of text
      *

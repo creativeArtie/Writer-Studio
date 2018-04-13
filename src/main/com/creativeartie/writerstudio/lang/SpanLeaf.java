@@ -49,10 +49,6 @@ public class SpanLeaf extends Span{
         return escapeText(leafText);
     }
 
-    @Override
-    public Document getDocument(){
-        return spanDoc;
-    }
 
     @Override
     public SpanBranch getParent(){
@@ -62,6 +58,11 @@ public class SpanLeaf extends Span{
     @Override
     public int getLocalEnd(){
         return leafText.length();
+    }
+
+    @Override
+    public Document getDocument(){
+        return spanDoc;
     }
 
     @Override

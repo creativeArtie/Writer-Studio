@@ -21,14 +21,15 @@ final class DivisionLine implements Division{
     }
 
     @Override
+    public float getStartY(){
+        return 0;
+    }
+
+    @Override
     public float getHeight(){
         return 10f;
     }
 
-    @Override
-    public float getStartY(){
-        return 0;
-    }
 
     @Override
     public float getWidth(){
