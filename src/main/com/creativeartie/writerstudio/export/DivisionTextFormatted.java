@@ -320,7 +320,12 @@ class DivisionTextFormatted extends DivisionText{
         assert span != null: "null span";
         assert font != null: "null font";
 
-        switch (FieldType.findField(span.getField())){
+        FieldType type = FieldType.findField(span.getField());
+        if (type == null){
+            appendText(" ", font);
+        }
+
+        switch (type){
         case PAGE_NUMBER:
             if(contentData.isPresent()){
                 appendText(contentData.get().getPageNumber() + "", font);
@@ -329,7 +334,7 @@ class DivisionTextFormatted extends DivisionText{
             }
             break;
         case WORD_COUNT:
-            int count = ((WritingText)span.getDocument()).getPublishTotal();
+            int count = parentDoc.getDataFile().getDocument().getPublishTotal();
             if (count < 999){
                 appendText("< 1000", font);
             } else {

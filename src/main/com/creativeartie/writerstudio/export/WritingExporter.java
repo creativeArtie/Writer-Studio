@@ -106,6 +106,7 @@ public final class WritingExporter implements AutoCloseable{
     private final PDDocument pdfDocument;
     private final PDFont[] embedFonts;
 
+    private ManuscriptFile exportingFile;
     private final ArrayList<LinedSpanPointNote> endnoteList;
     private final TreeSet<FormattedSpan> citationList;
 
@@ -145,6 +146,8 @@ public final class WritingExporter implements AutoCloseable{
      */
     public void export(ManuscriptFile data) throws IOException{
         checkNotNull(data, "data");
+
+        exportingFile = data;
 
         /// Prep the file
         endnoteList.clear();
@@ -299,8 +302,18 @@ public final class WritingExporter implements AutoCloseable{
         return inText;
     }
 
+    /** Gets the output document
+     * @return answer
+     */
     public PDDocument getPdfDocument(){
         return pdfDocument;
+    }
+
+    /** Gets the output data file
+     * @return answer
+     */
+    ManuscriptFile getDataFile(){
+        return exportingFile;
     }
 
     @Override

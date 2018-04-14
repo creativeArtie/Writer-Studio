@@ -1,5 +1,7 @@
 package com.creativeartie.writerstudio.export.value;
 
+import java.text.*; // DecimalFormat
+
 public class Utilities{
 
     /** Converts inches to points. */
@@ -29,10 +31,24 @@ public class Utilities{
     }
 
     public static String round(int number){
-        if (number % 100 >= 50){
-            number += 99;
+        return round(number, (int)Math.log10(number));
+    }
+
+    public static String round(int number, int digits){
+        int min = (int) Math.pow(10, digits);
+        if (number < min / 2){
+            return "< " + addCommas(min);
         }
-        number = (number / 100) * 100;
-        return number + "";
+        if (number % min >= (min / 2)){
+            number += (min - 1);
+        }
+        number = (number / min) * min;
+        return addCommas(number);
+
+    }
+
+    private static String addCommas(int number){
+        return new DecimalFormat("#,###").format(number);
+
     }
 }
