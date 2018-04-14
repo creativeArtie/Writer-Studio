@@ -15,7 +15,7 @@ import com.creativeartie.writerstudio.resource.*;
 import com.creativeartie.writerstudio.window.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 
-public class WindowMain extends Application{
+public class WindowMain extends Main{
     private static Stage mainStage;
     private static ManuscriptFile writeFile;
 
@@ -25,32 +25,18 @@ public class WindowMain extends Application{
 
     @Override
     public void start(Stage stage) throws Exception{
-        stage.setTitle(WindowText.PROGRAM_NAME.getText());
-        mainStage = stage;
+        super.start(stage);
         // testChildWindows();
-        testMainWindow();
     }
 
-    @Deprecated
-    private void testMainWindow() throws Exception{
+    @Override
+    protected ManuscriptFile getStartFile() throws IOException{
         // File file = new File("data/sectionDebug7.txt");
         File file = new File("data/help-text.txt");
         WritingText doc = new WritingText(file);
         ManuscriptFile use = ManuscriptFile.withManuscript(doc);
 
-        setupWindow(use);
-    }
-
-    private void setupWindow(ManuscriptFile file) {
-        writeFile = file;
-        WriterSceneControl writer = new WriterSceneControl(mainStage);
-        Scene scene = new Scene(writer, 800, 600);
-        writer.setManuscriptFile(file);
-        writer.manuscriptFileProperty().addListener((data, oldValue, newValue)
-            -> writeFile = newValue);
-        mainStage.setScene(scene);
-        mainStage.setMaximized(true);
-        mainStage.show();
+        return use;
     }
 
     @Deprecated

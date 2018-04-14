@@ -64,6 +64,10 @@ public class CodeStyleBuilder {
             styles.add("Directory");
         }
 
+        if (hasParent(leaf, FormatSpanPointKey.class)){
+            styles.add("Reference");
+        }
+
         leaf.getParent(EditionSpan.class).ifPresent(span ->{
             String style = "";
             switch (span.getEdition()){

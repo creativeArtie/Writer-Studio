@@ -84,7 +84,9 @@ public final class TextFlowBuilder {
                 default:
                     assert false: "Span with incorrect Directory Type:" + type;
             }
-
+        } else if (child instanceof FormatSpanPointKey){
+            String found = ((FormatSpanPointKey)child).getField();
+            ans = newText(found, "display-reference");
         } else if (child instanceof FormatSpanLink){
             FormatSpanLink span = (FormatSpanLink) child;
             ans = newText(span.getText(), "display-link");

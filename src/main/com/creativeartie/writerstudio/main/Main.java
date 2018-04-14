@@ -41,18 +41,18 @@ public class Main extends Application{
         Thread.setDefaultUncaughtExceptionHandler(Main::killProgram);
         stage.setTitle(WindowText.PROGRAM_NAME.getText());
         mainStage = stage;
-        setupWindow(ManuscriptFile.newFile());
-    }
-
-    private void setupWindow(ManuscriptFile file) {
-        writeFile = file;
+        writeFile = getStartFile();
         WriterSceneControl writer = new WriterSceneControl(mainStage);
         Scene scene = new Scene(writer, 800, 600);
-        writer.setManuscriptFile(file);
+        writer.setManuscriptFile(writeFile);
         writer.manuscriptFileProperty().addListener((data, oldValue, newValue)
             -> writeFile = newValue);
         mainStage.setScene(scene);
         mainStage.setMaximized(true);
         mainStage.show();
+    }
+
+    protected ManuscriptFile getStartFile() throws IOException{
+        return ManuscriptFile.newFile();
     }
 }

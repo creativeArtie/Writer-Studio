@@ -136,6 +136,30 @@ public class FormattedSpanDebug {
     }
 
     @Test
+    public void basicPointKey(){
+        ///         0123456
+        String raw = "{%abc}";
+        DocumentAssert doc = assertDoc(1, raw, parsers);
+
+        FormattedSpanTest main = new FormattedSpanTest()
+            .setPublishTotal(0).setNoteTotal(0);
+        FormatKeyTest key = new FormatKeyTest()
+            .setField("abc");
+        ContentTest data = new ContentTest()
+            .setBegin(false).setText("abc")
+            .setEnd(false)  .setCount(1);
+
+        main.test(        doc, 1, raw,   0);
+        key.test(         doc, 3, raw,   0, 0);
+        doc.assertKeyLeaf(  0, 2, "{%",  0, 0, 0);
+        data.test(        doc, 1, "abc", 0, 0, 1);
+        doc.assertFieldLeaf(2, 5, "abc", 0, 0, 1, 0);
+        doc.assertKeyLeaf ( 5, 6, "}",   0, 0, 2);
+        doc.assertLast();
+        doc.assertIds();
+    }
+
+    @Test
     public void startedUnderline(){
         ///           01234
         String raw = "_abc  ab";

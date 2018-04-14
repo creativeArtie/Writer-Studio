@@ -14,8 +14,8 @@ public class Utilities{
 
     public static String toRomanSuperscript(int num){
         return RomanNumbering.SUPER.toRoman(num);
-    }    
-    
+    }
+
     private final static String[] NUMBERS = new String[]{
         "⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"};
 
@@ -26,5 +26,13 @@ public class Utilities{
             builder.append(NUMBERS[Integer.parseInt(text.charAt(i) + "")]);
         }
         return builder.toString();
-}
+    }
+
+    public static String round(int number){
+        if (number % 100 >= 50){
+            number += 99;
+        }
+        number = (number / 100) * 100;
+        return number + "";
+    }
 }

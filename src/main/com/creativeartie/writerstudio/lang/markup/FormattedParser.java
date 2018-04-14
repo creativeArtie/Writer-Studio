@@ -64,6 +64,8 @@ final class FormattedParser implements SetupParser {
                 i++;
             }
 
+            new FormatParsePointKey(formats).parse(children, pointer);
+
             if (! withNote){
                 for (SetupParser parser: FormatParseLink.getParsers(formats)){
                     if (parser.parse(children, pointer)){

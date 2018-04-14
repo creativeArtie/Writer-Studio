@@ -16,6 +16,8 @@ public enum AuxiliaryType implements StyleInfo{
     DIRECT_LINK,
     /** {@linkplain StyleInfo} for {@link FormatSpanLinkRef}. */
     REF_LINK,
+    /** {@linkplain StyleInfo} for {@link FormatSpanPointKey}. */
+    REF_KEY,
     /**
      * {@linkplain StyleInfo} when there is no {@link DirectorySpan} is found.
      * Used in {@link LinedSpanPoint}, {@link MainSpanNote}.

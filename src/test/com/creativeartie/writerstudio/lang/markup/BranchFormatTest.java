@@ -79,7 +79,48 @@ public class BranchFormatTest {
         }
     }
 
-    public static class FormatLinkTest extends SpanBranchAssert<FormatLinkTest> {
+    public static class FormatKeyTest extends SpanBranchAssert<FormatKeyTest>{
+
+        private FormatType[] formats;
+        private String field;
+
+        public FormatKeyTest(){
+            super(FormatKeyTest.class);
+            formats = new FormatType[0];
+        }
+
+        public FormatKeyTest setField(String str){
+            field = str;
+            return this;
+        }
+
+        public FormatKeyTest setFormats(FormatType ... types){
+            formats = types;
+            return this;
+        }
+
+        public FormatType[] getFormats(){
+            return formats;
+        }
+
+
+        @Override
+        public void setup(){
+            setStyles(AuxiliaryType.REF_KEY);
+            addStyles(formats);
+        }
+
+        @Override
+        public void test(SpanBranch span){
+            FormatSpanPointKey test = assertClass(span,
+                FormatSpanPointKey.class);
+
+            assertEquals(getError("field", test), field, test.getField());
+            testFormats(test, formats);
+        }
+    }
+
+    public static class FormatLinkTest extends SpanBranchAssert<FormatLinkTest>{
 
         private FormatType[] formats;
         private Optional<SpanBranch> path;

@@ -262,16 +262,20 @@ public class DocumentAssert {
             if (span == target){
                 span.addEditor(out -> editPass = true);
                 doc.addUpdater(out -> editedSpans++);
-                doc.addRemover(out -> fail("Edited span got removed:" + out));
+                doc.addRemover(out -> fail("Edited span(" + out.getClass() +
+                    ") got removed:" + out));
                 isChild = false;
             } else {
-                span.addEditor(out -> fail("Wrong span edited:" + out));
+                span.addEditor(out -> fail("Wrong span(" + out.getClass() +
+                    ") edited:" + out));
                 if (isChild){
-                    doc.addUpdater(out -> fail("Wrong child updated:" + out));
+                    doc.addUpdater(out -> fail("Wrong child(" + out.getClass() +
+                    ") updated:" + out));
                     doc.addRemover(out -> editedSpans++);
                 } else {
                     doc.addUpdater(out -> editedSpans++);
-                    doc.addRemover(out -> fail("Wrong span removed:" + out));
+                    doc.addRemover(out -> fail("Wrong span(" + out.getClass() +
+                    ")removed:" + out));
                 }
 
             }

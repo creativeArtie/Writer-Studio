@@ -11,6 +11,7 @@ import com.creativeartie.writerstudio.lang.*;
  */
 public final class FormatSpanPointKey extends FormatSpan{
     private final FormatParsePointKey spanReparser;
+    private Optional<List<StyleInfo>> cacheStyles;
     private Optional<String> cacheField;
     private Optional<String> cacheValue;
 
@@ -25,6 +26,17 @@ public final class FormatSpanPointKey extends FormatSpan{
         return cacheField.get();
     }
 
+    @Override
+    public List<StyleInfo> getBranchStyles(){
+        cacheStyles = getCache(cacheStyles, () -> {
+            ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
+            return builder.add(AuxiliaryType.REF_KEY)
+                .addAll(super.getBranchStyles()).build();
+        });
+        return cacheStyles.get();
+    }
+
+    @Override
     public String getOutput(){
         return "";
     }
@@ -38,6 +50,7 @@ public final class FormatSpanPointKey extends FormatSpan{
     protected void childEdited(){
         super.childEdited();
         cacheField = Optional.empty();
+        cacheStyles = Optional.empty();
     }
 
     @Override

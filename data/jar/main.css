@@ -19,7 +19,7 @@
     -fx-text-fill:"gray"
 }
 
-.display-edition, .no-text, .no-span{
+.display-edition, .no-text, .no-span, .display-reference{
     -fx-fill:"gray";
     -fx-font-family:'monospace';
 }

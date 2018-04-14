@@ -5,6 +5,7 @@ import java.io.*; // IOException
 import java.util.*; // Optional
 
 import com.creativeartie.writerstudio.export.value.*; // ContentFont
+import com.creativeartie.writerstudio.file.*; // FieldType
 import com.creativeartie.writerstudio.lang.*; // Span, SpanBranch
 import com.creativeartie.writerstudio.lang.markup.*; // (many)
 
@@ -142,6 +143,8 @@ class DivisionTextFormatted extends DivisionText{
             parseContent((FormatSpanLink) span, font);
         } else if (span instanceof FormatSpanPointId){
             parseContent((FormatSpanPointId) span, font);
+        } else if (span instanceof FormatSpanPointKey){
+            parseContent((FormatSpanPointKey) span, font);
         }
     }
 
@@ -303,4 +306,35 @@ class DivisionTextFormatted extends DivisionText{
         }
     }
 
+    /** Add span as field text.
+     * @param span
+     *      the span to parse; not null
+     * @param font
+     *      the font of the span; not null
+     * @throws IOException
+     *         exception with content parsing
+     * @see parseContent(FormatSpanPointId, ContentFont)
+     */
+    private final void parseContent(FormatSpanPointKey span, ContentFont font)
+            throws IOException{
+        assert span != null: "null span";
+        assert font != null: "null font";
+
+        switch (FieldType.findField(span.getField())){
+        case PAGE_NUMBER:
+            if(contentData.isPresent()){
+                appendText(contentData.get().getPageNumber() + "", font);
+            } else {
+                appendText("1", font);
+            }
+            break;
+        case WORD_COUNT:
+            int count = ((WritingText)span.getDocument()).getPublishTotal();
+            if (count < 999){
+                appendText("< 1000", font);
+            } else {
+                appendText(Utilities.round(count), font);
+            }
+        }
+    }
 }
