@@ -127,6 +127,10 @@ final class PageFootnote {
         return ans;
     }
 
+    public float getHeight(){
+        return footnoteArea.map(a -> a.getHeight()).orElse(0f);
+    }
+
     /** Finds the assoicated line and return its height
      *
      * @param span; not null

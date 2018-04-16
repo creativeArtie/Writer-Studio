@@ -27,7 +27,7 @@ final class DivisionLine implements Division{
 
     @Override
     public float getHeight(){
-        return 10f;
+        return 20f;
     }
 
 
@@ -41,7 +41,7 @@ final class DivisionLine implements Division{
         /// Draws a line
         return Arrays.asList(new ContentPostEditor[]{ (page, stream) -> {
             float x = rect.getLowerLeftX();
-            float y = rect.getUpperRightY() + (rect.getHeight() / 2);
+            float y = rect.getUpperRightY() - (rect.getHeight() / 2);
             float x1 = rect.getUpperRightX() / 2;
             stream.moveTo(x, y);
             stream.lineTo(x1, y);

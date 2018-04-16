@@ -59,6 +59,7 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
             }
             return;
         }
+        System.out.println("Next Page");
 
         /// render and close the current page
         contentArea.render();
@@ -168,14 +169,31 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
         DivisionText allows = DivisionText.copyFormat(div);
         DivisionText checker = DivisionText.copyFormat(div);
         DivisionText overflow = null;
+        DivisionText.Line last = null;
         for (DivisionText.Line line: div){
             float footnote = pageFootnote.getHeight(line);
             checker.addLine(line);
 
+            System.out.println(line);
+            float tm = getPage().getMargin().getTop();
+            float hA = getPage().getHeader().map(s -> s.getHeight()).orElse(0f);
+            float cA = contentArea.getHeight();
+            float fA = footnote;
+            float bm = getPage().getMargin().getBottom();
+            float ac = tm + hA + cA + fA + bm;
+            float h = getPage().getHeight();
+            ///                 123456   123456   123456   123456 + 123456
+            System.out.println("  Top  +  Head  +  cont. +  foot  + bottom");
+            System.out.printf("%6.2f + %6.2f + %6.2f + %6.2f + %6.2f ", tm, hA, cA, fA, bm);
+            System.out.printf("= %6.2f < %6.2f\n", ac, h);
+
             if (contentArea.checkHeight(checker, footnote)){
                 /// content + footnote fits size
-                allows.addLine(line);
-                pageFootnote.insertPending(line);
+                if (last != null){
+                    allows.addLine(last);
+                    pageFootnote.insertPending(last);
+                }
+                last = line;
             } else {
                 if (overflow == null){
                     if(allows.isEmpty()){
@@ -194,12 +212,26 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
                 }
             }
         }
+        if (last != null){
+            allows.addLine(last);
+            pageFootnote.insertPending(last);
+        }
 
         /// add the allowed content
         if (! allows.isEmpty()){
             contentArea.add(allows);
         }
-
+        /*
+        float tm = getPage().getMargin().getTop();
+        float hA = getPage().getHeader().map(s -> s.getHeight()).orElse(0f);
+        float cA = contentArea.getHeight();
+        float fA = pageFootnote.getHeight();
+        float bm = getPage().getMargin().getBottom();
+        float ac = tm + hA + cA + fA + bm;
+        float h = getPage().getHeight();
+        System.out.printf("%6.2f + %6.2f + %6.2f + %6.2f + %6.2f ", tm, hA, cA, fA, bm);
+        System.out.printf("= %6.2f < %6.2f\n", ac, h);
+        */
         /// recursive call for the overflow content
         if (overflow != null && ! overflow.isEmpty()){
             nextPage(PageAlignment.CONTENT);

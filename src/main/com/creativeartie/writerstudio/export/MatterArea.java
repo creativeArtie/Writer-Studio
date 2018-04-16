@@ -77,7 +77,7 @@ final class MatterArea extends ForwardingList<Division> {
         if (! isEmpty()){
             leading = get(0).getStartY();
         }
-        float y = outputPage.getStartY(this) - leading;
+        float y = outputPage.getStartY(this); // - leading;
         moveText(x, y);
 
         /// show text and graphics
@@ -112,6 +112,7 @@ final class MatterArea extends ForwardingList<Division> {
     private void render(DivisionText block) throws IOException{
         assert block != null: "null block";
         changeAlign(block.getLineAlignment());
+
         if (block.hasPrefix()){
             /// move back to print prefix
             moveText(block.getPrefixDistance(), 0);
@@ -120,11 +121,13 @@ final class MatterArea extends ForwardingList<Division> {
             moveText(-block.getPrefixDistance(), 0);
         }
         for (DivisionText.Line line: block){
-            /// move to indent
-            moveText(line.getIndent(), 0);
-            printLine(line);
             /// move to next line
             moveText(0, -line.getHeight());
+
+            /// move to indent
+            moveText(line.getIndent(), 0);
+
+            printLine(line);
             /// move to remove indent
             moveText(-line.getIndent(), 0);
         }
@@ -272,6 +275,12 @@ final class MatterArea extends ForwardingList<Division> {
      */
     boolean checkHeight(DivisionText item, float footnote){
         checkNotNull(item, "item");
+
+        ///                 123456   123456   123456
+        System.out.println(" line  +  foot  + filled");
+        System.out.printf("%6.2f + %6.2f + %6.2f = %6.2f < %6.2f\n",
+            item.getHeight(), footnote, fillHeight,
+            item.getHeight() + footnote + fillHeight, maxHeight);
 
         return item.getHeight() + footnote + fillHeight < maxHeight;
     }
