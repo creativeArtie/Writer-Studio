@@ -1,4 +1,4 @@
-package com.creativeartie.writerstudio.export.value;
+package com.creativeartie.writerstudio.pdf.value;
 
 import static org.junit.Assert.*;
 

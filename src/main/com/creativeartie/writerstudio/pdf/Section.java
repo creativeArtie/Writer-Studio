@@ -1,10 +1,10 @@
-package com.creativeartie.writerstudio.export;
+package com.creativeartie.writerstudio.pdf;
 
 import java.io.*; // AutoClosable, IOException
 
 import org.apache.pdfbox.pdmodel.*; // PDDocument
 
-import com.creativeartie.writerstudio.export.value.*; // ContentFont
+import com.creativeartie.writerstudio.pdf.value.*; // ContentFont
 
 import static com.creativeartie.writerstudio.main.Checker.*;
 

@@ -1,9 +1,9 @@
-package com.creativeartie.writerstudio.export;
+package com.creativeartie.writerstudio.pdf;
 
 import java.io.*; // IOException
 import java.util.*; // List
 
-import com.creativeartie.writerstudio.export.value.*; // PageAlignment
+import com.creativeartie.writerstudio.pdf.value.*; // PageAlignment
 import com.creativeartie.writerstudio.file.*; // ManuscriptFile
 import com.creativeartie.writerstudio.lang.*; // SpanBranch
 import com.creativeartie.writerstudio.lang.markup.*; // SpanBranch, TextDataSpanPrint

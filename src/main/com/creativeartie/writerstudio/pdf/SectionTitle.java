@@ -1,4 +1,4 @@
-package com.creativeartie.writerstudio.export;
+package com.creativeartie.writerstudio.pdf;
 
 import java.io.*; // IOException
 import java.util.*; // ArrayList, GregorianCalendar, List
@@ -7,7 +7,7 @@ import org.apache.pdfbox.pdmodel.*; // PDDocumentInformation
 
 import com.creativeartie.writerstudio.file.*; // ManuscriptFile
 import com.creativeartie.writerstudio.lang.markup.*; // WritingData
-import com.creativeartie.writerstudio.export.value.*; // LineAlignment, PageAlignment
+import com.creativeartie.writerstudio.pdf.value.*; // LineAlignment, PageAlignment
 import com.creativeartie.writerstudio.resource.*; // WindowText
 
 import static com.creativeartie.writerstudio.main.Checker.*;

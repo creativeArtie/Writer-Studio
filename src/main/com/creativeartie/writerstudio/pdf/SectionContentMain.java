@@ -1,11 +1,11 @@
-package com.creativeartie.writerstudio.export;
+package com.creativeartie.writerstudio.pdf;
 
 import java.io.*; // IOException
 import java.util.*; // ArrayList, LinkedList, Optional
 
 import com.creativeartie.writerstudio.file.*; // ManuscriptFile
 import com.creativeartie.writerstudio.lang.markup.*; // (many)
-import com.creativeartie.writerstudio.export.value.*; // LineAlginment, PageAignment, Utitlies
+import com.creativeartie.writerstudio.pdf.value.*; // LineAlginment, PageAignment, Utitlies
 
 import static com.creativeartie.writerstudio.main.Checker.*;
 

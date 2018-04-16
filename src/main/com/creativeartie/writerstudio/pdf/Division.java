@@ -1,10 +1,10 @@
-package com.creativeartie.writerstudio.export;
+package com.creativeartie.writerstudio.pdf;
 
 import java.util.*; // List
 
 import org.apache.pdfbox.pdmodel.common.*; // PDRectangle
 
-import com.creativeartie.writerstudio.export.value.*; // ContentPostEditor
+import com.creativeartie.writerstudio.pdf.value.*; // ContentPostEditor
 
 /**  A lines of text of a single drawing.
  * Purposes

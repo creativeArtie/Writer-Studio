@@ -1,4 +1,4 @@
-package com.creativeartie.writerstudio.export;
+package com.creativeartie.writerstudio.pdf;
 
 import java.io.*; // AutoCloseable, IOException
 import java.util.*; // ArrayList, Iterator, Optional
@@ -8,7 +8,7 @@ import com.google.common.collect.*; // AbstractSequentialIterator
 import org.apache.pdfbox.pdmodel.*; // PDDocument
 import org.apache.pdfbox.pdmodel.font.*; // PDFont, PDFontDescriptor, PDType0Font
 
-import com.creativeartie.writerstudio.export.value.*; // ContentFont, Utilities
+import com.creativeartie.writerstudio.pdf.value.*; // ContentFont, Utilities
 import com.creativeartie.writerstudio.file.*; // ManuscriptFile
 import com.creativeartie.writerstudio.lang.*; // Span, SpanNode
 import com.creativeartie.writerstudio.lang.markup.*; // (many)

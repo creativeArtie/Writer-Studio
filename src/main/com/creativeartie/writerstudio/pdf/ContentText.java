@@ -1,4 +1,4 @@
-package com.creativeartie.writerstudio.export;
+package com.creativeartie.writerstudio.pdf;
 
 import java.io.*; // IOException
 import java.util.*; // ArrayList, List
@@ -11,7 +11,7 @@ import org.apache.pdfbox.pdmodel.common.*; // PDRectangle
 import org.apache.pdfbox.pdmodel.interactive.action.*; // PDActionURI
 import org.apache.pdfbox.pdmodel.interactive.annotation.*; // PDAnnotationLink
 
-import com.creativeartie.writerstudio.export.value.*; // ContentFont, ContentPostEditor
+import com.creativeartie.writerstudio.pdf.value.*; // ContentFont, ContentPostEditor
 import com.creativeartie.writerstudio.lang.*; // SpanBranch
 import static com.creativeartie.writerstudio.main.Checker.*;
 

@@ -1,8 +1,8 @@
-package com.creativeartie.writerstudio.export;
+package com.creativeartie.writerstudio.pdf;
 
 import java.io.*; // IOException
 
-import com.creativeartie.writerstudio.export.value.*; // ContentFont
+import com.creativeartie.writerstudio.pdf.value.*; // ContentFont
 import static com.creativeartie.writerstudio.main.Checker.*;
 
 /** A {@link Division} of text for {@link PageFootnote}.

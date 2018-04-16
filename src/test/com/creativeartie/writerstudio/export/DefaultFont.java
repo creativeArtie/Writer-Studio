@@ -1,9 +1,9 @@
-package com.creativeartie.writerstudio.export;
+package com.creativeartie.writerstudio.pdf;
 
 import java.io.*;
 import org.apache.pdfbox.pdmodel.font.*;
 
-import com.creativeartie.writerstudio.export.value.*;
+import com.creativeartie.writerstudio.pdf.value.*;
 
 public class DefaultFont extends ContentFont{
 

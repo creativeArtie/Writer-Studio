@@ -1,4 +1,4 @@
-package com.creativeartie.writerstudio.export;
+package com.creativeartie.writerstudio.pdf;
 
 import java.io.*; // IOException
 import java.util.*; // ArrayList, Collection, List
@@ -8,7 +8,7 @@ import com.google.common.collect.*; // FowardingList
 import org.apache.pdfbox.pdmodel.*; //PDPageContentStream
 import org.apache.pdfbox.pdmodel.common.*; //PDRectangle
 
-import com.creativeartie.writerstudio.export.value.*; // (many)
+import com.creativeartie.writerstudio.pdf.value.*; // (many)
 
 import static com.creativeartie.writerstudio.main.Checker.*; // Checker
 

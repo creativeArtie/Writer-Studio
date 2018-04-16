@@ -1,4 +1,4 @@
-package com.creativeartie.writerstudio.export.value;
+package com.creativeartie.writerstudio.pdf.value;
 
 public enum LineAlignment{
     LEFT, CENTER, RIGHT, JUSTIFY;

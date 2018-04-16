@@ -1,4 +1,4 @@
-package com.creativeartie.writerstudio.export;
+package com.creativeartie.writerstudio.pdf;
 
 import java.io.*;
 import java.util.*;
@@ -11,7 +11,7 @@ import org.junit.runners.*;
 
 import org.apache.pdfbox.pdmodel.font.*;
 
-import com.creativeartie.writerstudio.export.value.*;
+import com.creativeartie.writerstudio.pdf.value.*;
 
 @RunWith(JUnit4.class)
 public class ContentTextTest{

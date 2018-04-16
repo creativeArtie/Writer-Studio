@@ -1,9 +1,9 @@
-package com.creativeartie.writerstudio.export;
+package com.creativeartie.writerstudio.pdf;
 
 import java.io.*; // IOException
 import java.util.*; // ArrayList, Optional
 
-import com.creativeartie.writerstudio.export.value.*; // (many)
+import com.creativeartie.writerstudio.pdf.value.*; // (many)
 import com.creativeartie.writerstudio.lang.*; // SpanBranch
 import com.creativeartie.writerstudio.lang.markup.*; // FormattedSpan, LinedSpanPointNote, LinedSpanCite
 

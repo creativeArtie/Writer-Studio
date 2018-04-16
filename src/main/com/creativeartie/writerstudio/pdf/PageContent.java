@@ -1,11 +1,11 @@
-package com.creativeartie.writerstudio.export;
+package com.creativeartie.writerstudio.pdf;
 
 import java.util.*; // Optional
 import java.io.*; //AutoCloseable, IOException
 
 import org.apache.pdfbox.pdmodel.*; // PDPage, PDPageContentStream
 
-import com.creativeartie.writerstudio.export.value.*; // PageAlignment, PageMargin, Utilities
+import com.creativeartie.writerstudio.pdf.value.*; // PageAlignment, PageMargin, Utilities
 
 import static com.creativeartie.writerstudio.main.Checker.*;
 
