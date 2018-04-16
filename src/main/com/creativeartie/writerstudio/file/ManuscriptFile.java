@@ -108,6 +108,7 @@ public final class ManuscriptFile {
             "head-centre  |center|by",
             "head-centre  |center|",
             "head-centre  |center|Mary Sue",
+            "head-centre  |center|",
             "head-centre  |center|Approx {%Stats.WordCountEst} words",
             "head-bottom  |right |Jane Smith",
             "head-bottom  |right |123 Nowhere",

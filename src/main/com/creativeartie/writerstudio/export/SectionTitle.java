@@ -125,13 +125,8 @@ final class SectionTitle extends Section {
      */
     private List<DivisionTextFormatted> newLines(List<TextDataSpanPrint> spans)
             throws IOException{
-        ArrayList<DivisionTextFormatted> ans = new ArrayList<>();
-        float width = outputPage.getRenderWidth();
-        for(TextDataSpanPrint span: spans){
-            ans.add(new DivisionTextFormatted(width, parentDoc)
-                .addContent(span));
-        }
-        return ans;
+        return DivisionTextFormatted.newPrintLines(outputPage.getRenderWidth(),
+            parentDoc, spans);
     }
 
     @Override

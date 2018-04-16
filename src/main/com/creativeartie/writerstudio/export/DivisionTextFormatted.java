@@ -2,7 +2,9 @@ package com.creativeartie.writerstudio.export;
 
 import java.awt.*; // Color
 import java.io.*; // IOException
-import java.util.*; // Optional
+import java.util.*; // ArrayList Optional
+import java.util.List;
+import java.util.function.*; // Supplier
 
 import com.creativeartie.writerstudio.export.value.*; // ContentFont
 import com.creativeartie.writerstudio.file.*; // FieldType
@@ -14,6 +16,102 @@ import static com.creativeartie.writerstudio.main.Checker.*;
 /** A {@link Division} of {@link FormattedSpan}.
  */
 class DivisionTextFormatted extends DivisionText{
+
+    /** Create new lines with a list of {@link TextDataSpanPrint} with a
+     * {@link SectionContennt}.
+     * @param section
+     *      for section
+     * @param spans
+     *      adding spans; not null or empty
+     * @return self
+     * @throws IOException
+     *         exception with content parsing
+     * @see newPrintLines(float, writing, List)
+     */
+    static List<DivisionTextFormatted> newPrintLines(SectionContent<?> section,
+            List<TextDataSpanPrint> spans) throws IOException{
+        checkNotNull(section, "section");
+        checkNotEmpty(spans, "spans");
+        return newPrintLines(() -> new DivisionTextFormatted(section), spans);
+    }
+
+    /** Create new lines with a list of {@link TextDataSpanPrint} without a
+     * {@link SectionContent)
+     * @param width
+     *      page width
+     * @param writing
+     *      export writing; not null
+     * @param spans
+     *      adding spans; not null or empty
+     * @return self
+     * @throws IOException
+     *         exception with content parsing
+     * @see newPrintLines(SectionContent, List)
+     */
+    static List<DivisionTextFormatted> newPrintLines(float width,
+            WritingExporter writing, List<TextDataSpanPrint> spans)
+            throws IOException{
+        checkNotNull(writing, "writing");
+        checkNotEmpty(spans, "spans");
+        return newPrintLines(() -> new DivisionTextFormatted(width, writing),
+            spans);
+    }
+
+    /** Create new lines with a list of {@link TextDataSpanPrint}
+     * @param width
+     *      page width
+     * @param writing
+     *      export writing; not null
+     * @param spans
+     *      adding spans; not null or empty
+     * @return self
+     * @throws IOException
+     *         exception with content parsing
+     * @see newPrintLines(SectionContent, List)
+     * @see newPrintLines(float, writing, List)
+     */
+    private static final List<DivisionTextFormatted> newPrintLines(
+            Supplier<DivisionTextFormatted> supplier,
+            List<TextDataSpanPrint> spans) throws IOException{
+        checkNotNull(supplier, "supplier");
+        checkNotEmpty(spans, "spans");
+
+        /// Setup list and create first line
+        ArrayList<DivisionTextFormatted> ans = new ArrayList<>();
+        DivisionTextFormatted line = supplier.get();
+        float leading = 1f;
+        line.setLeading(1f);
+
+        for (TextDataSpanPrint span: spans){
+
+            /// set LineAlignment
+            switch (span.getFormat()){
+            case RIGHT:
+                line.setLineAlignment(LineAlignment.RIGHT);
+                break;
+            case CENTER:
+                line.setLineAlignment(LineAlignment.CENTER);
+                break;
+            case LEFT:
+            default:
+            }
+
+            Optional<FormattedSpan> text = span.getData()
+                .filter(t -> t.getPublishTotal() > 0);
+
+            /// append text
+            if (text.isPresent()){
+                ans.add(line.addContent(text.get()));
+                line = supplier.get();
+                leading = 1f;
+                line.setLeading(leading);
+            } else {
+                leading += 1f;
+                line.setLeading(leading);
+            }
+        }
+        return ans;
+    }
 
     private final Optional<SectionContent<?>> contentData;
     private final WritingExporter parentDoc;
@@ -45,48 +143,12 @@ class DivisionTextFormatted extends DivisionText{
     }
 
 
-    /** Add Content with {@link TextDataSpanPrint}
-     * @param span
-     *      the content to add; not null or empty
-     * @return self
-     * @throws IOException
-     *         exception with content parsing
-     * @see addContent(FormattedSpan)
-     */
-    final DivisionTextFormatted addContent(TextDataSpanPrint span)
-            throws IOException{
-        checkNotEmpty(span, "span");
-
-        setLeading(1f);
-
-        // set LineAlignment
-        switch (span.getFormat()){
-        case RIGHT:
-            setLineAlignment(LineAlignment.RIGHT);
-            break;
-        case CENTER:
-            setLineAlignment(LineAlignment.CENTER);
-            break;
-        case LEFT:
-        default:
-        }
-
-        // append text
-        if (span.getData().isPresent()){
-            addContent(span.getData().get());
-        } else {
-            appendText(" ", parentDoc.new PdfFont());
-        }
-        return this;
-    }
-
     /** Add Content with {@link FormattedSpan}
      * @param span
      *      the content to add; not null or empty
      * @return self
      * @throws IOException
      *         exception with content parsing
-     * @see addContent(TextDataSpanPrint)
      */
     final DivisionTextFormatted addContent(FormattedSpan span)
             throws IOException{

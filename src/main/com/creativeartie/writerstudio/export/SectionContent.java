@@ -1,10 +1,12 @@
 package com.creativeartie.writerstudio.export;
 
 import java.io.*; // IOException
+import java.util.*; // List
 
 import com.creativeartie.writerstudio.export.value.*; // PageAlignment
 import com.creativeartie.writerstudio.file.*; // ManuscriptFile
 import com.creativeartie.writerstudio.lang.*; // SpanBranch
+import com.creativeartie.writerstudio.lang.markup.*; // SpanBranch, TextDataSpanPrint
 
 import static com.creativeartie.writerstudio.main.Checker.*;
 
@@ -59,7 +61,7 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
             }
             return;
         }
-        System.out.println("Next Page");
+        /// System.out.println("Next Page"); // More dubug code printing
 
         /// render and close the current page
         contentArea.render();
@@ -151,6 +153,13 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
      */
     protected abstract DivisionText parseSpan(T span) throws IOException;
 
+    void addLines(List<TextDataSpanPrint> lines) throws IOException{
+        for (DivisionTextFormatted line: DivisionTextFormatted.newPrintLines(
+                this, lines)){
+            addLine(line);
+        }
+    }
+
     /** Adds a line of text.
      *
      * @param div
@@ -173,7 +182,7 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
         for (DivisionText.Line line: div){
             float footnote = pageFootnote.getHeight(line);
             checker.addLine(line);
-
+            /* /// debug code by printing the sizes
             System.out.println(line);
             float tm = getPage().getMargin().getTop();
             float hA = getPage().getHeader().map(s -> s.getHeight()).orElse(0f);
@@ -183,10 +192,10 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
             float ac = tm + hA + cA + fA + bm;
             float h = getPage().getHeight();
             ///                 123456   123456   123456   123456 + 123456
-            System.out.println("  Top  +  Head  +  cont. +  foot  + bottom");
+            System.out.println("   Top +   Head +   cont. +  foot + bottom");
             System.out.printf("%6.2f + %6.2f + %6.2f + %6.2f + %6.2f ", tm, hA, cA, fA, bm);
             System.out.printf("= %6.2f < %6.2f\n", ac, h);
-
+            */
             if (contentArea.checkHeight(checker, footnote)){
                 /// content + footnote fits size
                 if (last != null){

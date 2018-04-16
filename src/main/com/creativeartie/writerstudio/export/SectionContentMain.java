@@ -32,10 +32,9 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
     protected MatterArea parseHeader(ManuscriptFile data) throws IOException{
         checkNotNull(data, "data");
         MatterArea header = new MatterArea(getPage(), PageAlignment.TOP);
-        for (TextDataSpanPrint print: data.getMetaData()
-                .getPrint(TextDataType.Area.MAIN_HEADER)){
-            header.add(new DivisionTextFormatted(this).addContent(print));
-        }
+        header.addAll(DivisionTextFormatted.newPrintLines(this,
+            data.getMetaData().getPrint(TextDataType.Area.MAIN_HEADER)
+        ));
         return header;
     }
 
@@ -46,8 +45,8 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
         DivisionText line = null;
         switch(span.getLinedType()){
         case BREAK:
-            line = addBreak();
-            break;
+            addBreak();
+            return null;
         case BULLET:
             line = parseBullet((LinedSpanLevelList) span);
             break;
@@ -78,15 +77,10 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
      *      content fail to render
      * @see #parseSpan(LinedSpan)
      */
-    private DivisionText addBreak() throws IOException{
-        DivisionTextFormatted ans = newFormatDivision();
-        List<TextDataSpanPrint> data = getOutputData().getMetaData()
-            .getPrint(TextDataType.Area.MAIN_BREAK);
-        if (! data.isEmpty()){
-            ans.addContent(data.get(0));
-        }
+    private void addBreak() throws IOException{
+        addLines(getOutputData().getMetaData().getPrint(TextDataType.Area.
+            MAIN_BREAK));
         paraFirst = true;
-        return ans;
     }
 
     /** Parse a bullet list line
