@@ -112,17 +112,17 @@ final class MatterArea extends ForwardingList<Division> {
     private void render(DivisionText block) throws IOException{
         assert block != null: "null block";
         changeAlign(block.getLineAlignment());
-        if (block.getPrefix().isPresent()){
+        if (block.hasPrefix()){
             /// move back to print prefix
             moveText(block.getPrefixDistance(), 0);
-            contentStream.showText(block.getPrefix().get());
+            printText(block.getPrefix());
             /// move forward to print text
             moveText(-block.getPrefixDistance(), 0);
         }
         for (DivisionText.Line line: block){
             /// move to indent
             moveText(line.getIndent(), 0);
-            printText(line);
+            printLine(line);
             /// move to next line
             moveText(0, -line.getHeight());
             /// move to remove indent
@@ -137,7 +137,7 @@ final class MatterArea extends ForwardingList<Division> {
      *      exception with content rendering
      * @see #render(DivisionBlock)
      */
-    private void printText(DivisionText.Line line) throws IOException{
+    private void printLine(DivisionText.Line line) throws IOException{
         assert line != null: "null line";
         /// move the text base on width and LineAlignment
         if (lineAlignment == LineAlignment.RIGHT){
@@ -146,6 +146,17 @@ final class MatterArea extends ForwardingList<Division> {
            moveText(-(line.getWidth() / 2), 0);
         }
 
+        printText(line);
+
+        /// move the alignment back
+        if (lineAlignment == LineAlignment.RIGHT){
+            moveText(line.getWidth(), 0);
+        } else if (lineAlignment == LineAlignment.CENTER){
+            moveText(line.getWidth() / 2, 0);
+        }
+    }
+
+    private void printText(List<ContentText> line) throws IOException{
         /// more setup
         float textLocalX = localX;
         for (ContentText text: line){
@@ -160,14 +171,8 @@ final class MatterArea extends ForwardingList<Division> {
             /// update the x for the start x rectangle
             textLocalX += text.getWidth();
         }
-
-        /// move the alignment back
-        if (lineAlignment == LineAlignment.RIGHT){
-            moveText(line.getWidth(), 0);
-        } else if (lineAlignment == LineAlignment.CENTER){
-            moveText(line.getWidth() / 2, 0);
-        }
     }
+
 
     /** Change the alignment of text lines
      * @param next
@@ -208,7 +213,7 @@ final class MatterArea extends ForwardingList<Division> {
      *      the font to set; not null
      * @throws IOException
      *      exception with content rendering
-     * @see #printText(DivisionText.Line)
+     * @see #printLine(DivisionText.Line)
      */
     private void changeFont(ContentFont font) throws IOException{
         assert font != null: "null font";

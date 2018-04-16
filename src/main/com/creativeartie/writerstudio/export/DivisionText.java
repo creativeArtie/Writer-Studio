@@ -1,7 +1,7 @@
 package com.creativeartie.writerstudio.export;
 
 import java.io.*; // IOException
-import java.util.*; // ArrayList, List, Optional
+import java.util.*; // ArrayList, List
 
 import com.google.common.collect.*; // ForwardingList, ImmuableList
 
@@ -51,7 +51,7 @@ class DivisionText extends ForwardingList<DivisionText.Line>
         DivisionText ans = copyFormat(item);
         ans.divFirstIndent = ans.divIndent;
 
-        ans.divPrefix = Optional.empty();
+        ans.divPrefix = new ArrayList<>();
         ans.divPrefixDistance = 0f;
         return ans;
     }
@@ -150,7 +150,7 @@ class DivisionText extends ForwardingList<DivisionText.Line>
         float getHeight(){
             return (divLines.get(divLines.size() - 1) == this?
                     divBottomSpacing: 0f /// bottom spacing for last text
-                ) + textHeight * divLeading;
+                ) + (textHeight * divLeading);
         }
 
         /** Calculate text height
@@ -205,7 +205,7 @@ class DivisionText extends ForwardingList<DivisionText.Line>
     private float divFirstIndent;
     private float divIndent;
 
-    private Optional<String> divPrefix;
+    private List<ContentText> divPrefix;
     private float divPrefixDistance;
 
     private LineAlignment divAlignment;
@@ -238,7 +238,7 @@ class DivisionText extends ForwardingList<DivisionText.Line>
         divFirstIndent = 0;
         divIndent = 0;
 
-        divPrefix = Optional.empty();
+        divPrefix = new ArrayList<>();
         divPrefixDistance = 0f;
 
         divAlignment = alignment;
@@ -391,15 +391,32 @@ class DivisionText extends ForwardingList<DivisionText.Line>
         return this;
     }
 
+    /** Check if there is a line prefix
+     *
+     * @return answer
+     * @see #getPrefix()
+     * @see #getPrefixDistance()
+     * @see #setPrefix(List, ContentFont, float)
+     */
+    final boolean hasPrefix(){
+        return ! divPrefix.isEmpty();
+    }
+
     /** Get line prefix.
      * @return answer
+     * @see #hasPrefix()
+     * @see #getPrefixDistance()
+     * @see #setPrefix(List, ContentFont, float)
      */
-    final Optional<String> getPrefix(){
+    final List<ContentText> getPrefix(){
         return divPrefix;
     }
 
     /** Get line prefix distance.
      * @return answer
+     * @see #hasPrefix()
+     * @see #getPrefix()
+     * @see #setPrefix(List, ContentFont, float)
      */
     final float getPrefixDistance(){
         return divPrefixDistance;
@@ -411,9 +428,12 @@ class DivisionText extends ForwardingList<DivisionText.Line>
      * @param distance
      *      the indent to print
      * @return self
+     * @see #hasPrefix()
+     * @see #getPrefix()
+     * @see #getPrefixDistance()
      */
-    final DivisionText setPrefix(String prefix, float distance){
-        divPrefix = Optional.ofNullable(prefix);
+    final DivisionText setPrefix(List<ContentText> prefix, float distance) {
+        divPrefix = prefix;
         divPrefixDistance = distance;
         return this;
     }

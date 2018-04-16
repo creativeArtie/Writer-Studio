@@ -162,7 +162,8 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
             line.setIndent(indent);
 
             /// set nested list
-            line.setPrefix(prefix, indent - Utilities.cmToPoint(.75f));
+            line.setPrefix(ContentText.createWords(prefix, newFont()),
+                indent - Utilities.cmToPoint(.75f));
 
             /// next paragraph will be indented
             paraFirst = false;
