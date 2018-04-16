@@ -85,17 +85,17 @@ class TextPaneControl extends TextPaneView {
     void updatePosition(ReadOnlyIntegerWrapper caret){
         if (isReady()){
             caret.setValue(getTextArea().getCaretPosition());
+            writingText.flatMap(w -> w.getLeaf(caret.getValue()))
+                /// s = SpanLeaf
+                .flatMap(s -> s.getParent(LinedSpan.class))
+                /// s = LinedType
+                .ifPresent(s -> {
+                    String print = WindowText.getString(s.getLinedType());
+                    if (s instanceof LinedSpanLevel){
+                        print += ((LinedSpanLevel) s).getLevel();
+                    }
+                    getLineTypeLabel().setText(print);
+                });
         }
-        writingText.flatMap(w -> w.getLeaf(caret.getValue()))
-            /// s = SpanLeaf
-            .flatMap(s -> s.getParent(LinedSpan.class))
-            /// s = LinedType
-            .ifPresent(s -> {
-                String print = WindowText.getString(s.getLinedType());
-                if (s instanceof LinedSpanLevel){
-                    print += ((LinedSpanLevel) s).getLevel();
-                }
-                getLineTypeLabel().setText(print);
-            });
     }
 }
