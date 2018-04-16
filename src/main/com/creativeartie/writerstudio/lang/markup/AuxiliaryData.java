@@ -193,7 +193,7 @@ public final class AuxiliaryData{
     /// For BasicParseText
 
     /** Char escape token. */
-    public static final String CHAR_ESCAPE = "\\";
+    public static char CHAR_ESCAPE = '\\';
 
     /// @Part-1-9: Format Part Separators --------------------------------------
     /// For FormattedParsers

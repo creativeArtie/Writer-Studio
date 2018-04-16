@@ -29,14 +29,14 @@ abstract class BasicParseText implements SetupParser{
         builder.add(LINED_END);
 
         for (String ender: enders){
-            if (! ender.equals(LINED_END) && ! ender.equals(CHAR_ESCAPE)){
+            if (! ender.equals(LINED_END) && ! ender.equals(CHAR_ESCAPE + "")){
                 /// Ignores argument LINED_END and CHAR_ESCAPE
                 builder.add(ender);
             }
         }
 
         // For setup parser.
-        builder.add(CHAR_ESCAPE);
+        builder.add(CHAR_ESCAPE + "");
         setupEnders = builder.build();
         leafStyle = style;
     }
@@ -75,7 +75,7 @@ abstract class BasicParseText implements SetupParser{
         ArrayList<Span> children = new ArrayList<>();
 
         /// build Span if found
-        if (pointer.startsWith(children, CHAR_ESCAPE)){
+        if (pointer.startsWith(children, CHAR_ESCAPE + "")){
             pointer.nextChars(children, leafStyle, 1);
             parent.add(new BasicTextEscape(children));
             return true;

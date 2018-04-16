@@ -45,11 +45,6 @@ public abstract class TextDataSpan<T extends SpanBranch> extends SpanBranch{
 
     public abstract TextDataType.Format getFormat();
 
-    public void editText(String text){
-        runCommand(() -> getType().getKeyName() + getFormat().getKeyName() +
-            replaceText(text) + "\n");
-    }
-
     protected String replaceText(String text){
         return text;
     }
