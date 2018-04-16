@@ -18,8 +18,9 @@ public enum WindowText {
 
     MENU_FILE("MainMenu.File"),            MENU_FILE_NEW("MainMenu.FileCreate"),
     MENU_FILE_SAVE("MainMenu.FileSave"),   MENU_FILE_OPEN("MainMenu.FileOpen"),
-    MENU_FILE_EXIT("MainMenu.FileExit"),   MENU_HELP("MainMenu.Help"),
-    MENU_HELP_ABOUT("MainMenu.HelpAbout"), MENU_CHOOSER_TITLE("MainMenu.ChooserTitle"),
+    MENU_FILE_EXORT("MainMenu.ExportPdf"), MENU_FILE_EXIT("MainMenu.FileExit"),
+    MENU_HELP("MainMenu.Help"), MENU_HELP_ABOUT("MainMenu.HelpAbout"),
+    MENU_CHOOSER_TITLE("MainMenu.ChooserTitle"),
 
     MENU_STATS("MainMenu.Stats"), MENU_STATS_GOALS("MainMenu.StatsGoal"),
 
@@ -90,6 +91,10 @@ public enum WindowText {
     ABOUT_GUAVA("AboutWindow.Guava"), ABOUT_LIBRARIES("AboutWindow.ThirdParty"),
 
     WORK_CITED("ExportText.WorkCited");
+
+    public static String getString(LinedType type){
+        return getDisplay(getText("LineType.", type.name()));
+    }
 
     public static String getString(TextDataType.Meta meta){
         return getDisplay(getText("DocData.Field", meta.name()));

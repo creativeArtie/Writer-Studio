@@ -1,6 +1,7 @@
 package com.creativeartie.writerstudio.window;
 
 import java.util.*;
+import java.util.Optional;
 import java.time.*;
 import java.time.format.*;
 import javafx.scene.control.*;
@@ -22,6 +23,12 @@ import com.creativeartie.writerstudio.resource.*;
  * @see TextPaneView
  */
 class TextPaneControl extends TextPaneView {
+
+    private Optional<WritingText> writingText;
+
+    TextPaneControl(){
+        writingText = Optional.empty();
+    }
 
     @Override
     void updateTime(Label show){
@@ -47,6 +54,7 @@ class TextPaneControl extends TextPaneView {
     }
 
     void loadDocumentText(WritingText writing){
+        writingText = Optional.of(writing);
         getTextArea().replaceText(0, getTextArea().getLength(),
             writing.getRaw());
         setStyle(writing.getLeaves());
@@ -74,28 +82,20 @@ class TextPaneControl extends TextPaneView {
     }
 
     @Override
-    public WindowText setNextMode(WindowText last){
-        WindowText ans = null;
-        if (last == null){
-            ans = WindowText.SYNTAX_MODE;
-        } else {
-            switch (last){
-                case SYNTAX_MODE:
-                    ans = WindowText.PARSED_MODE;
-                    break;
-                case PARSED_MODE:
-                    ans = WindowText.SYNTAX_MODE;
-                    break;
-            }
-        }
-        getViewModeButton().setText(ans.getText());
-        return ans;
-    }
-
-    @Override
     void updatePosition(ReadOnlyIntegerWrapper caret){
         if (isReady()){
             caret.setValue(getTextArea().getCaretPosition());
         }
+        writingText.flatMap(w -> w.getLeaf(caret.getValue()))
+            /// s = SpanLeaf
+            .flatMap(s -> s.getParent(LinedSpan.class))
+            /// s = LinedType
+            .ifPresent(s -> {
+                String print = WindowText.getString(s.getLinedType());
+                if (s instanceof LinedSpanLevel){
+                    print += ((LinedSpanLevel) s).getLevel();
+                }
+                getLineTypeLabel().setText(print);
+            });
     }
 }

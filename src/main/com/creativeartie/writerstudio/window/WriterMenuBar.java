@@ -17,6 +17,7 @@ import com.creativeartie.writerstudio.stats.*;
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.resource.*;
+import com.creativeartie.writerstudio.pdf.*;
 
 class WriterMenuBar extends MenuBar{
 
@@ -50,12 +51,15 @@ class WriterMenuBar extends MenuBar{
         create.setOnAction(evt -> newFile());
         MenuItem open = new MenuItem(WindowText.MENU_FILE_OPEN.getText());
         open.setOnAction(evt -> openFile());
+        MenuItem export = new MenuItem(WindowText.MENU_FILE_EXORT.getText());
+        export.setOnAction(evt -> exportPdf());
         MenuItem save = new MenuItem(WindowText.MENU_FILE_SAVE.getText());
         save.setOnAction(evt -> saveFile());
         MenuItem exit = new MenuItem(WindowText.MENU_FILE_EXIT.getText());
         exit.setOnAction(evt -> exit());
-        file.getItems().addAll(create, open, save, new SeparatorMenuItem(),
-            exit);
+        file.getItems().addAll(create, open,
+            new SeparatorMenuItem(), save, export,
+            new SeparatorMenuItem(), exit);
 
         Menu stats = new Menu(WindowText.MENU_STATS.getText());
         MenuItem goals = new MenuItem(WindowText.MENU_STATS_GOALS.getText());
@@ -115,6 +119,22 @@ class WriterMenuBar extends MenuBar{
             System.err.println("unhandled exception (WriterMenuBar#saveFile):");
             ex.printStackTrace();
             System.exit(-1);
+        }
+    }
+
+    private void exportPdf(){
+        ManuscriptFile writing = manuscriptFile.get();
+        if (writing != null){
+            File file = chooser.showSaveDialog(mainWindow);
+            try (WritingExporter out = new WritingExporter(file.getAbsolutePath())){
+                out.export(writing);
+            } catch (Exception ex){
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Undescriptive Error (Sorry)");
+                error.setHeaderText("This is a temperatory solution for invalid markup format.");
+                error.setContentText(ex.toString());
+                error.showAndWait();
+            }
         }
     }
 

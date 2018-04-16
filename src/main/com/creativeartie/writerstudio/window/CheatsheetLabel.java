@@ -136,6 +136,9 @@ class CheatsheetLabel extends Label{
             case REF_LINK:
                 setup = FormatSpanLinkRef.class;
                 break;
+            case REF_KEY:
+                setup = FormatSpanPointKey.class;
+                break;
             default:
                 throw new IllegalArgumentException("Unsupported type: " + type);
         }

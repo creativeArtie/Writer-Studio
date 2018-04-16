@@ -260,6 +260,8 @@ public final class AuxiliaryData{
     /// Part-3-2: Formatted Span Parsers ---------------------------------------
     static final SetupParser FORMATTED_TEXT = new FormattedParser(
         StyleInfoLeaf.TEXT, true);
+    static final SetupParser NOTE_TEXT = new FormattedParser(
+        StyleInfoLeaf.TEXT, false);
     static final SetupParser FORMATTED_DATA = new FormattedParser(
         StyleInfoLeaf.DATA, false);
     static final SetupParser FORMATTED_HEADER = new FormattedParser(

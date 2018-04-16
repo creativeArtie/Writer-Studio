@@ -5,6 +5,7 @@ import javafx.scene.layout.*;
 import javafx.scene.*;
 import javafx.beans.property.*;
 import javafx.animation.*;
+import javafx.geometry.*;
 
 import org.fxmisc.richtext.*;
 import org.fxmisc.richtext.model.*;
@@ -19,7 +20,7 @@ import com.creativeartie.writerstudio.resource.*;
 abstract class TextPaneView extends BorderPane {
 
     private final InlineCssTextArea textArea;
-    private final Button viewMode;
+    private final Label lineTypeLabel;
     private final Label currentStats;
     private final Label currentTime;
 
@@ -28,8 +29,6 @@ abstract class TextPaneView extends BorderPane {
 
     /** Property binded with textArea.plainTextChanges. */
     private final ReadOnlyObjectWrapper<PlainTextChange> textChanged;
-    /** Property edided by modeUsed.onAction */
-    private final ReadOnlyObjectWrapper<WindowText> modeUsed;
     /** Property edided by textArea.getText()*/
     private final ReadOnlyObjectWrapper<String> textProperty;
     /** Property binded with textArea.caretPosition. */
@@ -42,7 +41,7 @@ abstract class TextPaneView extends BorderPane {
     TextPaneView(){
         textArea = initTextArea();
         BorderPane pane = new BorderPane();
-        viewMode = initViewMode(pane);
+        lineTypeLabel = initLineTypeLabel(pane);
         currentStats = initStatsLabel(pane);
         currentTime = initTimeLabel(pane);
         setBottom(pane);
@@ -62,11 +61,6 @@ abstract class TextPaneView extends BorderPane {
         editorFocused = new ReadOnlyBooleanWrapper(this, "editorFocused");
         editorFocused.bind(textArea.focusedProperty());
 
-        modeUsed = new ReadOnlyObjectWrapper<>(this, "modeUsed");
-        modeUsed.setValue(setNextMode(null));
-        viewMode.setOnAction(evt -> modeUsed
-            .setValue(setNextMode(modeUsed.getValue())));
-
         readyProperty = new SimpleBooleanProperty(this, "ready", false);
         readyProperty.addListener((data, oldValue, newValue) ->
             updatePosition(caretPlaced));
@@ -80,22 +74,32 @@ abstract class TextPaneView extends BorderPane {
         return area;
     }
 
-    private Button initViewMode(BorderPane parent){
-        Button ans = new Button();
-        ans.setDisable(true);
-        parent.setLeft(ans);
+    private Label initLineTypeLabel(BorderPane parent){
+        Label ans = new Label();
+
+        FlowPane align = new FlowPane();
+        align.setColumnHalignment(HPos.LEFT);
+        align.getChildren().add(ans);
+
+        parent.setLeft(align);
         return ans;
     }
 
     private Label initStatsLabel(BorderPane parent){
         Label ans = new Label();
-        parent.setCenter(ans);
+
+        FlowPane align = new FlowPane();
+        align.getChildren().add(ans);
+
+        parent.setCenter(align);
         return ans;
     }
 
     private Label initTimeLabel(BorderPane parent){
         Label ans = new Label();
+
         parent.setRight(ans);
+
         markedTime = -1;
         new AnimationTimer(){
             @Override
@@ -112,13 +116,27 @@ abstract class TextPaneView extends BorderPane {
         return ans;
     }
 
+    /**
+     * Set the next column by percent width.
+     * @param value
+     *      percent width
+     * @see initLineTypeLabel(GridPane)
+     * @see initStatsLabel(GridPane)
+     * @see initTimeLabel(GridPane)
+     */
+    private void setPrecentWidth(GridPane pane, double value){
+        ColumnConstraints column = new ColumnConstraints();
+        column.setPercentWidth(value);
+        pane.getColumnConstraints().add(column);
+    }
+
     /// Getters
     protected InlineCssTextArea getTextArea(){
         return textArea;
     }
 
-    protected Button getViewModeButton(){
-        return viewMode;
+    protected Label getLineTypeLabel(){
+        return lineTypeLabel;
     }
 
     protected Label getCurrentStatsLabel(){
@@ -154,14 +172,6 @@ abstract class TextPaneView extends BorderPane {
         return editorFocused.getValue();
     }
 
-    public ReadOnlyObjectProperty<WindowText> modeUsedProperty(){
-        return modeUsed.getReadOnlyProperty();
-    }
-
-    public WindowText getModeUsed(){
-        return modeUsed.getValue();
-    }
-
     public ReadOnlyObjectProperty<String> textProperty(){
         return textProperty.getReadOnlyProperty();
     }
@@ -183,7 +193,6 @@ abstract class TextPaneView extends BorderPane {
     }
 
     /// Control Methods
-    public abstract WindowText setNextMode(WindowText lastMode);
 
     abstract void updateTime(Label show);
 

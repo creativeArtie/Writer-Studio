@@ -19,7 +19,7 @@ enum LinedParseRest implements SetupParser {
                 DirectoryParser.ID_NOTE.parse(children, pointer);
                 pointer.startsWith(children, DIRECTORY_END);
             }
-            FORMATTED_TEXT.parse(children, pointer);
+            NOTE_TEXT.parse(children, pointer);
             pointer.startsWith(children, LINED_END);
             LinedSpanNote ans = new LinedSpanNote(children);
             return Optional.of(ans);
