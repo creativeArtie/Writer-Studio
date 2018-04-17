@@ -40,7 +40,7 @@ abstract class TextPaneView extends BorderPane {
 
     TextPaneView(){
         textArea = initTextArea();
-        BorderPane pane = new BorderPane();
+        GridPane pane = new GridPane();
         lineTypeLabel = initLineTypeLabel(pane);
         currentStats = initStatsLabel(pane);
         currentTime = initTimeLabel(pane);
@@ -74,31 +74,39 @@ abstract class TextPaneView extends BorderPane {
         return area;
     }
 
-    private Label initLineTypeLabel(BorderPane parent){
+    private Label initLineTypeLabel(GridPane parent){
         Label ans = new Label();
 
-        FlowPane align = new FlowPane();
-        align.setColumnHalignment(HPos.LEFT);
+        HBox align = new HBox();
+        align.setAlignment(Pos.BASELINE_LEFT);
         align.getChildren().add(ans);
 
-        parent.setLeft(align);
+        parent.add(align, 0, 0);
+        setPrecentWidth(parent, 33.33333333);
         return ans;
     }
 
-    private Label initStatsLabel(BorderPane parent){
+    private Label initStatsLabel(GridPane parent){
         Label ans = new Label();
 
-        FlowPane align = new FlowPane();
+        HBox align = new HBox();
+        align.setAlignment(Pos.BASELINE_CENTER);
         align.getChildren().add(ans);
 
-        parent.setCenter(align);
+        parent.add(align, 1, 0);
+        setPrecentWidth(parent, 33.33333333);
         return ans;
     }
 
-    private Label initTimeLabel(BorderPane parent){
+    private Label initTimeLabel(GridPane parent){
         Label ans = new Label();
 
-        parent.setRight(ans);
+        HBox align = new HBox();
+        align.setAlignment(Pos.BASELINE_RIGHT);
+        align.getChildren().add(ans);
+
+        parent.add(align, 2, 0);
+        setPrecentWidth(parent, 33.33333333);
 
         markedTime = -1;
         new AnimationTimer(){
