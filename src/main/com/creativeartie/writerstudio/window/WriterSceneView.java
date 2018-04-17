@@ -60,6 +60,7 @@ abstract class WriterSceneView extends BorderPane{
                 (data, oldValue, newValue) -> selectionChanged(newValue)
             );
         });
+        initReferencePane(top);
 
         /// Inner SplitPane - Right
         textArea = initTextPane();
@@ -143,6 +144,13 @@ abstract class WriterSceneView extends BorderPane{
     private TableNotePane initEndnotePane(TabPane parent){
         TableNotePane ans = new TableNotePane(DirectoryType.ENDNOTE);
         Tab tab = new Tab(WindowText.TAB_ENDNOTE.getText(), ans);
+        parent.getTabs().add(tab);
+        return ans;
+    }
+
+    private ReferencePane initReferencePane(TabPane parent){
+        ReferencePane ans = new ReferencePane();
+        Tab tab = new Tab(WindowText.TAB_REFERENCE.getText(), ans);
         parent.getTabs().add(tab);
         return ans;
     }

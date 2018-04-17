@@ -110,7 +110,8 @@ public final class AuxiliaryData{
     /// For BasicTextParse, LinedParseCite, LinedParseLevel, LinedParsePointer,
     ///     LinedParseRest, getLevelToken(LinedParseLevel, int)
 
-    public static final String LINED_END = "\n";
+    public static final char CHAR_NEWLINE = '\n';
+    public static final String LINED_END = CHAR_NEWLINE + "";
 
     public static final String LINED_DATA = ":";
 
@@ -194,6 +195,7 @@ public final class AuxiliaryData{
 
     /** Char escape token. */
     public static char CHAR_ESCAPE = '\\';
+    public static String TOKEN_ESCAPE = CHAR_ESCAPE + "";
 
     /// @Part-1-9: Format Part Separators --------------------------------------
     /// For FormattedParsers

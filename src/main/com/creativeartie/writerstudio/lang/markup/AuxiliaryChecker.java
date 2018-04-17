@@ -23,11 +23,11 @@ public final class AuxiliaryChecker{
      */
     static boolean checkSectionEnd(String text, boolean isLast){
         checkNotNull(text, "text");
-        if (text.endsWith(CHAR_ESCAPE + "")){
+        if (text.endsWith(TOKEN_ESCAPE)){
             /// if (text == "text\\")
             return isLast;
         }
-        if (text.endsWith(CHAR_ESCAPE + LINED_END)){
+        if (text.endsWith(TOKEN_ESCAPE + LINED_END)){
             /// if (text == "text\\\n")
             return isLast;
         }
@@ -101,7 +101,7 @@ public final class AuxiliaryChecker{
         for(int i = 0; i < text.length(); i++){
             if (! escaped){
                 /// escape next character if escaped
-                if (text.startsWith(CHAR_ESCAPE + "", i)){
+                if (text.startsWith(TOKEN_ESCAPE, i)){
                     escaped = true;
                 } else {
 

@@ -50,6 +50,20 @@ public class TextDataSpanPrint extends TextDataSpan<FormattedSpan>{
         return cacheFormat.get();
     }
 
+    public void setFormat(TextDataType.Format format){
+        runCommand(() -> getType().getKeyName() + format.getKeyName() +
+            getData().map(s -> s.getRaw()).orElse(""));
+    }
+
+    void deleteLine(){
+        runCommand(() -> "");
+    }
+
+    void setData(String raw){
+        runCommand(() -> getType().getKeyName() + getFormat().getKeyName() +
+            raw + LINED_END);
+    }
+
     @Override
     protected void childEdited(){
         super.childEdited();

@@ -33,10 +33,10 @@ abstract class CheatsheetPaneView extends GridPane{
         addLabel(ans, CheatsheetLabel.getLabel(LinedType.OUTLINE), 0, 1, 2, 1);
         addLabel(ans, CheatsheetLabel.getLabel(EditionType.STUB),  0, 2);
         addLabel(ans, CheatsheetLabel.getLabel(EditionType.DRAFT), 0, 3);
-        setPrecentWidth(5);
+        setPrecentWidth(7);
         addLabel(ans, CheatsheetLabel.getLabel(EditionType.OTHER), 1, 2);
         addLabel(ans, CheatsheetLabel.getLabel(EditionType.FINAL), 1, 3);
-        setPrecentWidth(10); /// fills to: 15
+        setPrecentWidth(8); /// fills to: 15
 
         addLabel(ans, CheatsheetLabel.getLabel(LinedType.PARAGRAPH), 2, 0);
         addLabel(ans, CheatsheetLabel.getLabel(LinedType.NUMBERED),  2, 1);
@@ -75,7 +75,7 @@ abstract class CheatsheetPaneView extends GridPane{
         addLabel(ans, CheatsheetLabel.getIdentityLabel(),                  7, 3);
         setPrecentWidth(12); /// fills to: 74
 
-        addLabel(ans, CheatsheetLabel.getLabel(AuxiliaryType.REF_KEY),     8, 0);
+        addLabel(ans, CheatsheetLabel.getLabel(AuxiliaryType.REF_KEY), 8, 0);
         setPrecentWidth(12); /// fills to: 86
 
         addLabel(ans, CheatsheetLabel.getLabel(FormatType.BOLD),      9, 0);

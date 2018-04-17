@@ -51,7 +51,7 @@ class WriterMenuBar extends MenuBar{
         create.setOnAction(evt -> newFile());
         MenuItem open = new MenuItem(WindowText.MENU_FILE_OPEN.getText());
         open.setOnAction(evt -> openFile());
-        MenuItem export = new MenuItem(WindowText.MENU_FILE_EXORT.getText());
+        MenuItem export = new MenuItem(WindowText.MENU_FILE_EXPORT.getText());
         export.setOnAction(evt -> exportPdf());
         MenuItem save = new MenuItem(WindowText.MENU_FILE_SAVE.getText());
         save.setOnAction(evt -> saveFile());

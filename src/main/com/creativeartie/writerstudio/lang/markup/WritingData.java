@@ -44,18 +44,23 @@ public class WritingData extends Document{
         return ans;
     }
 
-    public void newPrintText(TextDataType.Area area, String raw,
-            TextDataType.Format format){
-        if (! format.isAlignType()){
-            throw new IllegalArgumentException("Unknown alignment: " + format);
+    public void changeText(TextDataType.Area area, String raw){
+        raw = raw.replace(TOKEN_ESCAPE + LINED_END, LINED_END);
+        List<TextDataSpanPrint> print = getPrint(area);
+        int i = 0;
+        for (String text: Splitter.on(CHAR_NEWLINE).split(raw)){
+            if (print.size() < i){
+                print.get(i).setData(text);
+            } else {
+                runCommand(() -> getRaw() + area.getKeyName() +
+                    TextDataType.Format.CENTER.getKeyName() + text + LINED_END);
+            }
+            i++;
         }
-
-        runCommand(() -> getRaw() + area.getKeyName() + format.getKeyName() +
-            "\n");
-    }
-
-    public void removePrintText(TextDataSpanPrint span){
-        runCommand(span, () -> "");
+        if (i < print.size()){
+            print.get(i).deleteLine();
+            i++;
+        }
     }
 
     public String getMetaText(TextDataType.Meta meta){

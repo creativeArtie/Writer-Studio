@@ -186,7 +186,7 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
         /// Check line (with escaped line end removed.
         boolean isFirst = true;
         for (String str : Splitter.on(LINED_END)
-                .split(text.replace(CHAR_ESCAPE + LINED_END, ""))){
+                .split(text.replace(TOKEN_ESCAPE + LINED_END, ""))){
             if (isFirst){
                 /// First line
                 if (LinedSpanNote.checkFirstLine(str) || LinedSpanCite

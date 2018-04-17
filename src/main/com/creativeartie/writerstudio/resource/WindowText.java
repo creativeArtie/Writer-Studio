@@ -9,6 +9,7 @@ import static com.google.common.base.Preconditions.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.lang.Span;
 import com.creativeartie.writerstudio.main.*;
+import com.creativeartie.writerstudio.file.*;
 
 public enum WindowText {
     PROGRAM_NAME("MainWindow.Title"),
@@ -16,9 +17,9 @@ public enum WindowText {
     EMPTY_NA("CommonText.NA"),
     NO_ID("CommonText.NoId"),
 
-    MENU_FILE("MainMenu.File"),            MENU_FILE_NEW("MainMenu.FileCreate"),
-    MENU_FILE_SAVE("MainMenu.FileSave"),   MENU_FILE_OPEN("MainMenu.FileOpen"),
-    MENU_FILE_EXORT("MainMenu.ExportPdf"), MENU_FILE_EXIT("MainMenu.FileExit"),
+    MENU_FILE("MainMenu.File"),             MENU_FILE_NEW("MainMenu.FileCreate"),
+    MENU_FILE_SAVE("MainMenu.FileSave"),    MENU_FILE_OPEN("MainMenu.FileOpen"),
+    MENU_FILE_EXPORT("MainMenu.ExportPdf"), MENU_FILE_EXIT("MainMenu.FileExit"),
     MENU_HELP("MainMenu.Help"), MENU_HELP_ABOUT("MainMenu.HelpAbout"),
     MENU_CHOOSER_TITLE("MainMenu.ChooserTitle"),
 
@@ -29,6 +30,7 @@ public enum WindowText {
     TAB_FOOTNOTE("NoteTabs.TitleFootnote"),
     TAB_ENDNOTE("NoteTabs.TitleEndnote"),
     TAB_NOTE_CARD("NoteTabs.TitleNoteCard"),
+    TAB_REFERENCE("NoteTabs.TitleReference"),
 
     TAB_CONTENT("LeftTabs.TableOfContents"),
     TAB_META("LeftTabs.MetaData"),
@@ -90,7 +92,24 @@ public enum WindowText {
     ABOUT_PDF_BOX("AboutWindow.PdfBox"), ABOUT_RICH_TEXT("AboutWindow.RichText"),
     ABOUT_GUAVA("AboutWindow.Guava"), ABOUT_LIBRARIES("AboutWindow.ThirdParty"),
 
+    REF_NAME("ReferenceData.ColumnName"),
+    REF_ID("ReferenceData.ColumnId"),
+    REF_LONG("ReferenceData.ColumnDescription"),
+    REF_EXAMPLE("ReferenceData.ColumnExample"),
+
     WORK_CITED("ExportText.WorkCited");
+
+    public static String getNameText(FieldType area){
+        return getDisplay(getText("RefereceData.Name", area.name()));
+    }
+
+    public static String getDescriptionText(FieldType area){
+        return getDisplay(getText("RefereceData.Description", area.name()));
+    }
+
+    public static String getExampleText(FieldType area){
+        return getDisplay(getText("RefereceData.Example", area.name()));
+    }
 
     public static String getString(LinedType type){
         return getDisplay(getText("LineType.", type.name()));

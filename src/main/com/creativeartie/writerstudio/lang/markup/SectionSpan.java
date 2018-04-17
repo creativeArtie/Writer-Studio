@@ -115,7 +115,7 @@ public abstract class SectionSpan extends SpanBranch {
                     /// not descendant
                     return null;
                 }
-                if (str.endsWith(CHAR_ESCAPE + "")){
+                if (str.endsWith(TOKEN_ESCAPE)){
                     checking = true;
                 }
             }

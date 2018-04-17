@@ -38,10 +38,11 @@ public class TextDataSpanMeta extends TextDataSpan<ContentSpan>{
 
     public void editText(String text){
         runCommand(() -> getType().getKeyName() + getFormat().getKeyName() +
-            escapeText(text) + "\n");
+            escapeText(text) + LINED_END);
     }
 
     private String escapeText(String text){
-        return CharMatcher.is(CHAR_ESCAPE).replaceFrom(replaceText(text), "\\\\");
+        return CharMatcher.is(CHAR_ESCAPE).replaceFrom(replaceText(text),
+            TOKEN_ESCAPE + CHAR_ESCAPE);
     }
 }

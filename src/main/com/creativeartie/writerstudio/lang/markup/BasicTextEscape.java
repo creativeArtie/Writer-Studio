@@ -7,7 +7,7 @@ import com.creativeartie.writerstudio.lang.*; // Span, SpanBranch, StyleInfo
 import com.google.common.collect.*; // ImmutableList
 
 /**
- * Escaped character with the {@link AuxiliaryData#CHAR_ESCAPE}. Represented in
+ * Escaped character with the {@link AuxiliaryData#TOKEN_ESCAPE}. Represented in
  * design/ebnf.txt as {@code Escape}.
  */
 public final class BasicTextEscape extends SpanBranch{
