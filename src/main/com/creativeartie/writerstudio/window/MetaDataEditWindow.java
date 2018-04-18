@@ -18,13 +18,17 @@ import com.creativeartie.writerstudio.main.*;
 import com.creativeartie.writerstudio.resource.*;
 
 class MetaDataEditWindow extends Stage{
+    private final WritingData writingData;
+
     private final InlineCssTextArea textArea;
     private final TextFlow previewText;
     protected static int WIDTH = 650;
     protected static int HEIGHT = 500;
     protected static int AREA_HEIGHT = (500 / 2) - 10;
 
-    MetaDataEditWindow(TextDataType.Area type){
+    MetaDataEditWindow(TextDataType.Area type, WritingData data){
+        writingData = data;
+
         setTitle(WindowText.getString(type));
         setResizable(false);
         initModality(Modality.APPLICATION_MODAL);

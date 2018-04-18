@@ -30,6 +30,7 @@ public class WindowMain extends Main{
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     protected ManuscriptFile getStartFile() throws IOException{
         // File file = new File("data/sectionDebug7.txt");
         File file = new File("data/help-text.txt");

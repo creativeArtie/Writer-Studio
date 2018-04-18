@@ -21,6 +21,7 @@ public class PdfMain {
         // superscriptSupportTest();
     }
 
+    @SuppressWarnings("deprecation")
     private static void exportTest() throws IOException {
 
         File file = new File("data/pdf-long.txt");

@@ -24,6 +24,6 @@ class MetaDataPaneControl extends MetaDataPaneView{
 
     @Override
     protected void updateArea(TextDataType.Area area){
-        new MetaDataEditWindow(area).show();
+        new MetaDataEditWindow(area, getMetaData()).show();
     }
 }
