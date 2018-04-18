@@ -18,8 +18,6 @@ public class SectionContentEndnote extends SectionContent<LinedSpanPointNote> {
      *
      * @param parent
      *      input parent data
-     * @throws IOException
-     *      exceptions thrown from uses of other classes
      */
     public SectionContentEndnote(WritingExporter parent) throws IOException{
         super(parent);

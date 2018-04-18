@@ -250,8 +250,6 @@ class DivisionText extends ForwardingList<DivisionText.Line>
      * @param font
      *      the font of the text
      * @return the actual text added
-     * @throws IOException
-     *         exception with content adding
      * @see #addLine(Line)
      */
     final ArrayList<ContentText> appendText(String text, ContentFont font)

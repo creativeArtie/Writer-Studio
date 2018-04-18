@@ -26,7 +26,8 @@
     - the major and complex methods second, group by feature / method relations
     - getters before setters and after the the major methods
     - overriding methods last, order from direct parent class to `Object` class
-- the order can be change when grouping is involved.
+- the order can be change when grouping is involved
+- separate the order by comments starting with `/// %Part`
 - no new line after the last brace
 
 ## Formattting and Comments
@@ -57,11 +58,8 @@
         - simicolon and requirements
     - for `@return`
         - use `self`, or `answer`
-    - for `@throws`
-        - try to be descriptive, but mostly copy and paste text
     - for `@see`
-        - for set and get methods, its counterpart
-        - for private methods, its callers
+        - for default, protected and private methods, its callers
 - declaration
     - keep throws in the same line
     - reduce the amount of parameters

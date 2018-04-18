@@ -51,8 +51,6 @@ final class PageFootnote {
      * @param span
      *      footnote span; not null
      * @return answer
-     * @throws IOException
-     *         exception with content parsing
      */
     String addFootnote(SpanBranch span) throws IOException{
         checkNotNull(span, "span");
@@ -220,8 +218,6 @@ final class PageFootnote {
     /** Reset the footnote number of a text.
      * @param text
      *      output text; not null
-     * @throws IOException
-     *         exception with content parsing
      */
     void resetFootnote(ContentText text) throws IOException{
         checkNotNull(text, "text");
@@ -236,8 +232,6 @@ final class PageFootnote {
      * @param span
      *      footnote span; not null
      * @return answer
-     * @throws IOException
-     *         exception with content parsing
      */
     private String resetFootnote(SpanBranch span) throws IOException{
         checkNotNull(span, "span");

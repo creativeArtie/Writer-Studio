@@ -29,8 +29,6 @@ final class PageContent implements AutoCloseable{
     /** Only constructor.
      * @param section
      *      the section that this page belong to
-     * @throws IOException
-     *         exception with page creation
      */
     PageContent(Section section) throws IOException{
         checkNotNull(section, "section");

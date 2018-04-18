@@ -16,8 +16,6 @@ final class SectionContentCite extends SectionContent<FormattedSpan> {
      *
      * @param parent
      *      input parent data
-     * @throws IOException
-     *      exceptions thrown from uses of other classes
      */
     SectionContentCite(WritingExporter parent) throws IOException{
         super(parent);
@@ -27,8 +25,6 @@ final class SectionContentCite extends SectionContent<FormattedSpan> {
      *
      * @param data
      *      rendering data
-     * @throws IOException
-     *      exceptions thrown from uses of other classes
      */
     void addTitle(WritingData data) throws IOException{
         checkNotNull(data, "data");

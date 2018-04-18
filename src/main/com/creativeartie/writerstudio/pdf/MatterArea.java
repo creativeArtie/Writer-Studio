@@ -65,8 +65,6 @@ final class MatterArea extends ForwardingList<Division> {
     }
 
     /** Render the text and graphics.
-     * @throws IOException
-     *         exception with content rendering
      */
     MatterArea render() throws IOException{
         contentStream.beginText();
@@ -105,8 +103,6 @@ final class MatterArea extends ForwardingList<Division> {
     /** Render the text and graphics.
      * @param block
      *      the text to render; not null
-     * @throws IOException
-     *      exception with content rendering
      * @see #render()
      */
     private void render(DivisionText block) throws IOException{
@@ -140,8 +136,6 @@ final class MatterArea extends ForwardingList<Division> {
     /** Print the text in the line
      * @param line
      *      the line to print; not null
-     * @throws IOException
-     *      exception with content rendering
      * @see #render(DivisionBlock)
      */
     private void printLine(DivisionText.Line line) throws IOException{
@@ -184,8 +178,6 @@ final class MatterArea extends ForwardingList<Division> {
     /** Change the alignment of text lines
      * @param next
      *      the alignment to set; not null
-     * @throws IOException
-     *      exception with content rendering
      * @see #render(DivisionBlock)
      */
     private void changeAlign(LineAlignment next) throws IOException{
@@ -218,8 +210,6 @@ final class MatterArea extends ForwardingList<Division> {
     /**Change the font of the text.
      * @param font
      *      the font to set; not null
-     * @throws IOException
-     *      exception with content rendering
      * @see #printLine(DivisionText.Line)
      */
     private void changeFont(ContentFont font) throws IOException{
@@ -239,8 +229,6 @@ final class MatterArea extends ForwardingList<Division> {
      * @param y
      *      the y parameter for
      *      {@linkplain PDPageContentStream#newLineAtOffset(float, float)}
-     * @throws IOException
-     *      exception with content rendering
      */
     private void moveText(float x, float y) throws IOException{
         localX += x;

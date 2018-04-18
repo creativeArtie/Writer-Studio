@@ -31,8 +31,6 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
      *
      * @param parent
      *      input parent data
-     * @throws IOException
-     *      exceptions thrown from uses of other classes
      */
     SectionContent(WritingExporter parent) throws IOException{
         super(parent);
@@ -49,8 +47,6 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
      *
      * @param alignment
      *      content pag alignment
-     * @throws IOException
-     *      exceptions thrown from uses of other classes
      */
     void nextPage(PageAlignment alignment) throws IOException{
         /// if the contentArea is null, then it is the new page
@@ -85,8 +81,6 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
      *
      * @param data
      *      the input data
-     * @throws IOException
-     *      exceptions thrown from uses of other classes
      * @see #parseHeader(ManuscriptData)
      */
     final void addHeader(ManuscriptFile data) throws IOException{
@@ -98,8 +92,6 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
      *
      * @param data
      *      the input data
-     * @throws IOException
-     *      exceptions thrown from uses of other classes
      * @see #addHeader(ManuscriptFile)
      * @see #nextPage(PageAlignment)
      */
@@ -117,8 +109,6 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
      *
      * @param data
      *      the input data
-     * @throws IOException
-     *      exceptions thrown from uses of other classes
      * @see #addHeader(ManuscriptFile)
      */
     protected abstract MatterArea parseHeader(ManuscriptFile data)
@@ -129,10 +119,6 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
      *
      * @param span
      *      the span to add
-     * @throws IOException
-     *      exceptions thrown from uses of other classes
-     * @see #parseSpan(T)
-     * @see #addLine(DivisionText)
      */
     void addLine(T span) throws IOException{
         DivisionText found = parseSpan(span);
@@ -147,8 +133,6 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
      *
      * @param span
      *      the span to add
-     * @throws IOException
-     *      exceptions thrown from uses of other classes
      * @see #addLine(T)
      */
     protected abstract DivisionText parseSpan(T span) throws IOException;
@@ -164,8 +148,6 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
      *
      * @param div
      *      the line to add
-     * @throws IOException
-     *      exceptions thrown from uses of other classes
      * @see #addLine(T)
      */
     void addLine(DivisionText div) throws IOException{

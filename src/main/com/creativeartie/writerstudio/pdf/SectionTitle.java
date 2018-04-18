@@ -26,8 +26,6 @@ final class SectionTitle extends Section {
      *
      * @param parent
      *      input parent data
-     * @throws IOException
-     *      exceptions thrown from uses of other classes
      */
     SectionTitle(WritingExporter parent) throws IOException{
         super(parent);
@@ -41,8 +39,6 @@ final class SectionTitle extends Section {
      *
      * @param data
      *      rendering data
-     * @throws IOException
-     *      exceptions thrown from uses of other classes
      */
     void export(ManuscriptFile data) throws IOException{
         exportData = data.getMetaData();
@@ -68,8 +64,6 @@ final class SectionTitle extends Section {
 
     /** Set the PDF file properties
      *
-     * @throws IOException
-     *      exceptions thrown from uses of other classes
      * @see #export(ManuscriptFile)
      */
     private void writeTitlePage() throws IOException{
@@ -80,8 +74,6 @@ final class SectionTitle extends Section {
 
     /** Set title page top section.
      *
-     * @throws IOException
-     *      exceptions thrown from uses of other classes
      * @see #writeTitlePage()
      */
     private void writeTop() throws IOException{
@@ -92,8 +84,6 @@ final class SectionTitle extends Section {
 
     /** Set title page center section.
      *
-     * @throws IOException
-     *      exceptions thrown from uses of other classes
      * @see #writeTitlePage()
      */
     private void writeMiddle() throws IOException{
@@ -104,8 +94,6 @@ final class SectionTitle extends Section {
 
     /** Set title page bottom section.
      *
-     * @throws IOException
-     *      exceptions thrown from uses of other classes
      * @see #writeTitlePage()
      */
     private void writeBottom() throws IOException{

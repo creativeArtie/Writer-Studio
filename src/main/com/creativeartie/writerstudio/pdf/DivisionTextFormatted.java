@@ -24,8 +24,6 @@ class DivisionTextFormatted extends DivisionText{
      * @param spans
      *      adding spans; not null or empty
      * @return self
-     * @throws IOException
-     *         exception with content parsing
      * @see newPrintLines(float, writing, List)
      */
     static List<DivisionTextFormatted> newPrintLines(SectionContent<?> section,
@@ -44,8 +42,6 @@ class DivisionTextFormatted extends DivisionText{
      * @param spans
      *      adding spans; not null or empty
      * @return self
-     * @throws IOException
-     *         exception with content parsing
      * @see newPrintLines(SectionContent, List)
      */
     static List<DivisionTextFormatted> newPrintLines(float width,
@@ -65,8 +61,6 @@ class DivisionTextFormatted extends DivisionText{
      * @param spans
      *      adding spans; not null or empty
      * @return self
-     * @throws IOException
-     *         exception with content parsing
      * @see newPrintLines(SectionContent, List)
      * @see newPrintLines(float, writing, List)
      */
@@ -147,8 +141,6 @@ class DivisionTextFormatted extends DivisionText{
      * @param span
      *      the content to add; not null or empty
      * @return self
-     * @throws IOException
-     *         exception with content parsing
      */
     final DivisionTextFormatted addContent(FormattedSpan span)
             throws IOException{
@@ -190,8 +182,6 @@ class DivisionTextFormatted extends DivisionText{
      *      the span to sort; not null
      * @param font
      *      the font of the span; not null
-     * @throws IOException
-     *         exception with content parsing
      * @see addContent(FormattedSpan)
      */
     private final void parseContent(FormatSpan span, ContentFont font)
@@ -216,8 +206,6 @@ class DivisionTextFormatted extends DivisionText{
      *      the span to parse; not null
      * @param font
      *      the font of the span; not null
-     * @throws IOException
-     *         exception with content parsing
      * @see parseContent(FormatSpan, ContentFont)
      */
     private final void parseContent(FormatSpanContent span, ContentFont font)
@@ -235,8 +223,6 @@ class DivisionTextFormatted extends DivisionText{
      *      the span to parse; not null
      * @param font
      *      the font of the span; not null
-     * @throws IOException
-     *         exception with content parsing
      * @see parseContent(FormatSpan, ContentFont)
      */
     private final void parseContent(FormatSpanLink span, ContentFont font)
@@ -280,8 +266,6 @@ class DivisionTextFormatted extends DivisionText{
      *      the span to parse; not null
      * @param font
      *      the font of the span; not null
-     * @throws IOException
-     *         exception with content parsing
      * @see parseContent(FormatSpan, ContentFont)
      */
     private final void parseContent(FormatSpanPointId span, ContentFont font)
@@ -349,8 +333,6 @@ class DivisionTextFormatted extends DivisionText{
      *      the span to parse; not null
      * @param font
      *      the font of the span; not null
-     * @throws IOException
-     *         exception with content parsing
      * @see parseContent(FormatSpanPointId, ContentFont)
      */
     private final void addFootnote(SpanBranch span, ContentFont font)
@@ -373,8 +355,6 @@ class DivisionTextFormatted extends DivisionText{
      *      the span to parse; not null
      * @param font
      *      the font of the span; not null
-     * @throws IOException
-     *         exception with content parsing
      * @see parseContent(FormatSpanPointId, ContentFont)
      */
     private final void parseContent(FormatSpanPointKey span, ContentFont font)

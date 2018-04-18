@@ -19,8 +19,6 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
      *
      * @param parent
      *      input parent data
-     * @throws IOException
-     *      exceptions thrown from uses of other classes
      */
     public SectionContentMain(WritingExporter parent) throws IOException{
         super(parent);
@@ -73,8 +71,6 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
     /** Adds a break line
      *
      * @return answer
-     * @throws IOException
-     *      content fail to render
      * @see #parseSpan(LinedSpan)
      */
     private void addBreak() throws IOException{
@@ -88,8 +84,6 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
      * @param span
      *      the span to parse
      * @return answer
-     * @throws IOException
-     *      content fail to render
      * @see #parseSpan(LinedSpan)
      */
     private DivisionText parseBullet(LinedSpanLevelList span)
@@ -103,8 +97,6 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
      * @param span
      *      the span to parse
      * @return answer
-     * @throws IOException
-     *      content fail to render
      * @see #parseSpan(LinedSpan)
      */
     private DivisionText parseNumber(LinedSpanLevelList span)
@@ -134,8 +126,6 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
      *      the span to parse
      * @param prefix
      *      the prefix to add
-     * @throws IOException
-     *      content fail to render
      * @return answer
      * @see #parseBullet(LinedSpanLevelList)
      * @see #parseNumber(LinedSpanLevelList)
@@ -171,8 +161,6 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
      *
      * @param span
      *      the span to parse
-     * @throws IOException
-     *      content fail to render
      * @return answer
      * @see #parseSpan(LinedSpan)
      */
@@ -220,8 +208,6 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
      *
      * @param span
      *      the span to parse
-     * @throws IOException
-     *      content fail to render
      * @return answer
      * @see #parseSpan(LinedSpan)
      */
@@ -248,8 +234,6 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
      *
      * @param span
      *      the span to parse
-     * @throws IOException
-     *      content fail to render
      * @return answer
      * @see #parseSpan(LinedSpan)
      */

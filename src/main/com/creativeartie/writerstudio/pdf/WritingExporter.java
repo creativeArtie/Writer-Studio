@@ -114,8 +114,6 @@ public final class WritingExporter implements AutoCloseable{
      *
      * @param path
      *      file path
-     * @throws IOException
-     *      from rendering file
      */
     public WritingExporter(String path) throws IOException{
         savePath = checkNotNull(path, "path");
@@ -141,8 +139,6 @@ public final class WritingExporter implements AutoCloseable{
      *
      * @param path
      *      file path
-     * @throws IOException
-     *      from rendering file
      */
     public void export(ManuscriptFile data) throws IOException{
         checkNotNull(data, "data");

@@ -27,7 +27,6 @@ import static com.creativeartie.writerstudio.main.Checker.*;
  */
 final class ContentText {
 
-    /** for adding new ContentText with a space. */
     private static final String SPACE = " ";
 
     /** Create {@linkplain ContentText} by splitting up the text.
@@ -40,8 +39,8 @@ final class ContentText {
      *      the font of the text; not null
      * @return
      *      a list of {@linkplain ContentText} splited by spaces.
-     * @throws IOException
-     *      exception with calcuatate text size
+     * @see DivisonText#appendText(String, ContentFont)
+     * @see SectionContentMain#parse(LinedSpanLevelList, String)
      */
     static ArrayList<ContentText> createWords(String text, ContentFont font)
             throws IOException{
@@ -93,9 +92,10 @@ final class ContentText {
     private Optional<String> targetPath;
     private Optional<SpanBranch> footnoteSpan;
 
-    /** Copy construtor.
+    /** Creates a {@linkplain ContentText} by copying.
      * @param original
-     *      original object; not null
+     *      original object
+     * @see DivisionText#addLine(DivisionText.Line)
      */
     ContentText(ContentText original){
         checkNotNull(original, "original");
@@ -112,13 +112,13 @@ final class ContentText {
         footnoteSpan = original.footnoteSpan;
     }
 
-    /** Private constructor.
+    /** Creates a {@linkplain ContentText}.
      * @param text
-     *      content text; not null or empty
+     *      content text
      * @param font
-     *      text font; not null
+     *      text font
      * @param space
-     *      is space?; must describe param text.
+     *      is space text
      * @see #createWords(String, ContentFont)
      */
     private ContentText(String text, ContentFont font, boolean space)
@@ -140,9 +140,9 @@ final class ContentText {
     }
 
     /** Get the text.
+     *
      * @return answer
-     * @see #setText(String)
-     * @see #isSpaceText()
+     * @see MatterArea#printText(List)
      */
     String getText(){
         return outputText;
@@ -153,8 +153,6 @@ final class ContentText {
      * @param text
      *      the new text; not null
      * @return self
-     * @throws IOException
-     *      exception with calculating sizes
      * @see #getText()
      * @see #isSpaceText()
      */

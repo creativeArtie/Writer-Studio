@@ -26,8 +26,6 @@ final class DivisionTextNote extends DivisionTextFormatted{
      * @param text
      *      the text to set; not null
      * @return self
-     * @throws IOException
-     *      from {@link DivisionText#appendText(String, ContentFont)
      */
     DivisionTextNote setNumbering(String text) throws IOException{
         checkNotNull(text, "text");
