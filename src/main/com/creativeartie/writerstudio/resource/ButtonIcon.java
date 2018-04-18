@@ -4,6 +4,7 @@ import javafx.scene.image.*;
 import javafx.geometry.*;
 
 import com.creativeartie.writerstudio.main.*;
+import com.creativeartie.writerstudio.resource.*;
 import com.google.common.base.*;
 
 public enum ButtonIcon{
@@ -29,8 +30,7 @@ public enum ButtonIcon{
 
     private static Image getImage(){
         if (map == null){
-            map = new Image(ButtonIcon.class.getClassLoader()
-                .getResourceAsStream("data/icons.png"));
+            map = new Image(FileResources.getButtonIcons());
         }
         return map;
     }

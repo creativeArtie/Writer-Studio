@@ -31,7 +31,7 @@ abstract class WriterSceneView extends BorderPane{
     private double[] hozDividerPos;
 
     WriterSceneView(Stage window){
-        getStylesheets().add("data/main.css");
+        getStylesheets().add(FileResources.getMainCss());
         verDividerPos = new double[]{.2, .8};
         hozDividerPos = new double[]{.0, 1.0};
 

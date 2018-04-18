@@ -19,59 +19,106 @@ import com.creativeartie.writerstudio.resource.*;
 
 class MetaDataEditWindow extends Stage{
     private final WritingData writingData;
+    private final TextDataType.Area showType;
 
     private final InlineCssTextArea textArea;
     private final TextFlow previewText;
+    private final CheatsheetLabel[] textHints;
     protected static int WIDTH = 650;
     protected static int HEIGHT = 500;
     protected static int AREA_HEIGHT = (500 / 2) - 10;
 
     MetaDataEditWindow(TextDataType.Area type, WritingData data){
         writingData = data;
+        showType = type;
 
         setTitle(WindowText.getString(type));
         setResizable(false);
         initModality(Modality.APPLICATION_MODAL);
 
         GridPane pane = new GridPane();
-        textArea = initTextArea();
-        textArea.setPrefWidth(WIDTH);
-        textArea.setPrefHeight(AREA_HEIGHT);
-        pane.add(createScrollBar(textArea), 0, 0);
+        textArea = initTextArea(pane);
+        previewText = initPreviewArea(pane);
+        textHints = initHintLabels(pane);
 
-        previewText = initPreviewArea();
-        previewText.setPrefWidth(WIDTH);
-        previewText.setPrefHeight(AREA_HEIGHT);
-        pane.add(createScrollBar(previewText), 0, 1);
+        updateTextHints();
 
-        Button cancel = new Button("Cancel");
-        Button apply = new Button("Apply");
-        Button ok = new Button("Okay");
-
-        HBox buttons = new HBox();
-        buttons.setSpacing(20.0);
-        buttons.setAlignment(Pos.BASELINE_RIGHT);
-        buttons.getChildren().addAll(apply, ok, cancel);
-        pane.add(buttons, 0, 2);
-
-        Scene scene = new Scene(pane, WIDTH, HEIGHT);
-        setScene(scene);
+        setScene(new Scene(pane, WIDTH, HEIGHT));
     }
 
-    private InlineCssTextArea initTextArea(){
+    private InlineCssTextArea initTextArea(GridPane pane){
         InlineCssTextArea area = new InlineCssTextArea();
+        String text = "";
+        for (TextDataSpanPrint print: writingData.getPrint(showType)){
+            if (! text.isEmpty()){
+                text += "\n";
+            }
+            text += print.getData().map(s -> s.getRaw()).orElse("");
+        }
+        area.replaceText(text);
+        pane.add(initScrollBar(area), 0, 0);
         return area;
     }
 
-    private TextFlow initPreviewArea(){
+    private TextFlow initPreviewArea(GridPane pane){
         TextFlow area = new TextFlow();
-        area.getChildren().add(new Text("abc"));
+        pane.add(initScrollBar(area), 0, 1);
         return area;
     }
 
-    private ScrollPane createScrollBar(Node node){
+    private CheatsheetLabel[] initHintLabels(GridPane parent){
+        CheatsheetLabel[] format = new CheatsheetLabel[4];
+        int i = 0;
+        for (FormatType type: FormatType.values()){
+            format[i++] = CheatsheetLabel.getLabel(type);
+        }
+        CheatsheetLabel[] labels = new CheatsheetLabel[]{
+            CheatsheetLabel.getLabel(AuxiliaryType.AGENDA),
+            CheatsheetLabel.getLabel(AuxiliaryType.ESCAPE),
+            CheatsheetLabel.getLabel(AuxiliaryType.REF_KEY),
+            CheatsheetLabel.getLabel(AuxiliaryType.DIRECT_LINK),
+            CheatsheetLabel.getLabel(AuxiliaryType.REF_LINK),
+            format[0], format[1], format[2], format[3]
+        };
+
+        GridPane pane = new GridPane();
+        i = 0;
+        for (int row = 0; row < 3; row++){
+            setPrecentWidth(pane, 33.333333);
+            for (int col = 0; col < 3; col++){
+                pane.add(labels[i++], row, col);
+            }
+        }
+        parent.add(pane, 0, 2);
+        return labels;
+    }
+
+    private ScrollPane initScrollBar(Region node){
         ScrollPane ans = new ScrollPane(node);
+        node.setMinWidth(WIDTH);
+        node.setMinHeight(WIDTH);
+
+        ans.setPrefWidth(WIDTH);
+        ans.setPrefHeight(AREA_HEIGHT);
+
         ans.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         return ans;
+    }
+
+    /**
+     * Set the next column by percent width. Helper method of
+     * {@link #initHintsLabels()}.
+     */
+    private void setPrecentWidth(GridPane pane, double value){
+        ColumnConstraints column = new ColumnConstraints();
+        column.setPercentWidth(value);
+        pane.getColumnConstraints().add(column);
+    }
+
+    private void updateTextHints(){
+        previewText.getChildren().clear();
+        for (TextDataSpanPrint print: writingData.getPrint(showType)){
+            TextFlowBuilder.loadFormatText(previewText, print.getData());
+        }
     }
 }

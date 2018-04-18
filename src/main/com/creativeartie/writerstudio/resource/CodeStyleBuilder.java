@@ -12,15 +12,15 @@ import static com.google.common.base.Preconditions.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.main.*;
+import com.creativeartie.writerstudio.resource.*;
 public class CodeStyleBuilder {
 
-    private static String baseFile = "/data/code-styles.properties";
     private static Properties properties = buildProperties();
 
     private static Properties buildProperties(){
         Properties ans = new Properties();
         try {
-            ans.load(CodeStyleBuilder.class.getResourceAsStream(baseFile));
+            ans.load(FileResources.getCodeStyleProperties());
         } catch (Exception ex){
             throw new RuntimeException(ex);
         }

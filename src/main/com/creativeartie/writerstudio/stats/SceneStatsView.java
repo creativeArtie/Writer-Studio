@@ -35,7 +35,7 @@ public abstract class SceneStatsView extends BorderPane{
     private Spinner<Integer> minuteGoal;
 
     public SceneStatsView(){
-        getStylesheets().add("data/stats.css");
+        getStylesheets().add(FileResources.getStatsCss());
 
         statTable = new SimpleObjectProperty<>(this, "statTable");
         wordGoal = new Spinner<>(0, 10000, 100);

@@ -29,7 +29,7 @@ class CheatsheetLabel extends Label{
      * getLabel(FormatType), getLabel(DirectoryType) and
      * getLabel(AuxiliaryType).
      */
-    private static boolean findContent(WritingText doc, Integer point){
+    private static boolean findContent(Document doc, Integer point){
         return doc.locateSpan(point, FormattedSpan.class).isPresent();
     }
 
@@ -149,12 +149,11 @@ class CheatsheetLabel extends Label{
         );
     }
 
-    private final BiPredicate<WritingText, Integer> testSetted;
-    private final BiPredicate<WritingText, Integer> testAllow;
+    private final BiPredicate<Document, Integer> testSetted;
+    private final BiPredicate<Document, Integer> testAllow;
 
-    private CheatsheetLabel(String text,
-            BiPredicate<WritingText, Integer> set,
-            BiPredicate<WritingText, Integer> allow){
+    private CheatsheetLabel(String text, BiPredicate<Document, Integer> set,
+            BiPredicate<Document, Integer> allow){
         super(text);
         testSetted = set;
         testAllow = allow;
@@ -165,7 +164,7 @@ class CheatsheetLabel extends Label{
      * Update Label status with the information gather from document and the
      * current position.
      */
-    void updateLabelStatus(WritingText doc, int point){
+    void updateLabelStatus(Document doc, int point){
         StyleClass.setHintClass(this, testSetted.test(doc, point),
             testAllow.test(doc, point));
     }

@@ -1,6 +1,6 @@
 package com.creativeartie.writerstudio.pdf;
 
-import java.io.*; // AutoCloseable, IOException
+import java.io.*; // AutoCloseable, InputStream, IOException
 import java.util.*; // ArrayList, Iterator, Optional
 
 import com.google.common.collect.*; // AbstractSequentialIterator
@@ -12,6 +12,7 @@ import com.creativeartie.writerstudio.pdf.value.*; // ContentFont, Utilities
 import com.creativeartie.writerstudio.file.*; // ManuscriptFile
 import com.creativeartie.writerstudio.lang.*; // Span, SpanNode
 import com.creativeartie.writerstudio.lang.markup.*; // (many)
+import com.creativeartie.writerstudio.resource.*; // FileResources
 
 import static com.creativeartie.writerstudio.main.Checker.*;
 
@@ -24,14 +25,6 @@ import static com.creativeartie.writerstudio.main.Checker.*;
  * </ul>
  */
 public final class WritingExporter implements AutoCloseable{
-
-    private static final String FONT_FOLDER = "/data/fonts/";
-    private static final String[] FONT_FILES = {
-        "FreeSerif.ttf", "FreeSerifBold.ttf", "FreeSerifItalic.ttf",
-        "FreeSerifBoldItalic.ttf",
-        "FreeMono.ttf", "FreeMonoBold.ttf", "FreeMonoOblique.ttf",
-        "FreeMonoBoldOblique.ttf"
-    };
 
     private static final int SUPERSCRIPT = 0;
     private static final int SERIF = 0;
@@ -120,11 +113,11 @@ public final class WritingExporter implements AutoCloseable{
         pdfDocument = new PDDocument();
 
         /// setup fonts
-        embedFonts = new PDFont[FONT_FILES.length];
+        InputStream[] fonts = FileResources.getFontFiles();
+        embedFonts = new PDFont[fonts.length];
         int i = 0;
-        for (String font: FONT_FILES){
-            embedFonts[i++] = PDType0Font.load(pdfDocument, getClass()
-                .getResourceAsStream(FONT_FOLDER + font));
+        for (InputStream font: fonts){
+            embedFonts[i++] = PDType0Font.load(pdfDocument, font);
         }
 
         /// initalize list and sets

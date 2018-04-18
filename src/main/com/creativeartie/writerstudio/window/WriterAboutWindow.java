@@ -9,6 +9,7 @@ import javafx.geometry.*;
 import javafx.stage.*;
 import javafx.scene.*;
 import java.io.*;
+import java.net.*;
 
 import com.google.common.io.*;
 import com.google.common.base.*;
@@ -20,13 +21,12 @@ import com.creativeartie.writerstudio.resource.*;
 public class WriterAboutWindow extends Stage{
     protected static int WIDTH = 650;
     protected static int HEIGHT = 500;
-    private static String APACHE = getResource("/data/apache.txt");
-    private static String BSD = getResource("/data/bsd.txt");
+    private static String APACHE = getResource(FileResources.getApacheLicense());
+    private static String BSD = getResource(FileResources.getBsdLicense());
 
-    private static String getResource(String file){
+    private static String getResource(URL stream){
         try {
-            return Resources.asCharSource(WriterAboutWindow.class
-                .getResource(file), Charsets.UTF_8).read();
+            return Resources.asCharSource(stream, Charsets.UTF_8).read();
         } catch (Exception ex){
             throw new RuntimeException(ex);
         }
@@ -37,12 +37,12 @@ public class WriterAboutWindow extends Stage{
     public WriterAboutWindow(){
         setTitle(WindowText.ABOUT_TITLE.getText());
         setResizable(false);
-        licenseText = createTextArea();
+        licenseText = initTextArea();
         setScene(createScene());
         initModality(Modality.APPLICATION_MODAL);
     }
 
-    private TextArea createTextArea(){
+    private TextArea initTextArea(){
         TextArea text = new TextArea();
         text.setEditable(false);
         text.setPrefColumnCount(80);
@@ -60,11 +60,11 @@ public class WriterAboutWindow extends Stage{
         /// Create top pane:
         Label name = new Label(WindowText.PROGRAM_NAME.getText());
         name.getStyleClass().add("title");
-        Hyperlink license = addLicenseLink(WindowText.ABOUT_LICENSE, APACHE);
+        Hyperlink license = initLicenseLink(WindowText.ABOUT_LICENSE, APACHE);
         FlowPane libs = new FlowPane(
-            addLicenseLink(WindowText.ABOUT_GUAVA, APACHE),
-            addLicenseLink(WindowText.ABOUT_RICH_TEXT, BSD),
-            addLicenseLink(WindowText.ABOUT_PDF_BOX, APACHE)
+            initLicenseLink(WindowText.ABOUT_GUAVA, APACHE),
+            initLicenseLink(WindowText.ABOUT_RICH_TEXT, BSD),
+            initLicenseLink(WindowText.ABOUT_PDF_BOX, APACHE)
         );
         FlowPane top = new FlowPane(Orientation.VERTICAL, name, license, libs);
         top.setAlignment(Pos.CENTER);
@@ -72,11 +72,11 @@ public class WriterAboutWindow extends Stage{
         pane.setTop(top);
 
         Scene ans = new Scene(pane, WIDTH, HEIGHT);
-        ans.getStylesheets().add("data/about.css");
+        ans.getStylesheets().add(FileResources.getAboutCss());
         return ans;
     }
 
-    private Hyperlink addLicenseLink(WindowText title, String text){
+    private Hyperlink initLicenseLink(WindowText title, String text){
         Hyperlink ans = new Hyperlink(title.getText());
         ans.setOnAction(evt -> licenseText.setText(text));
 
