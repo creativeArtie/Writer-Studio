@@ -98,6 +98,7 @@ public abstract class SpanBranch extends SpanNode<Span> {
         if (text == null || text.isEmpty()){
             StringBuilder builder = new StringBuilder();
             getDocument().delete(getStart(), getEnd());
+            return;
         }
         SetupParser parser = getParser(text);
         if (parser == null){

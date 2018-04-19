@@ -30,15 +30,19 @@ public class FileResources{
     }
 
     public static URL getBsdLicense(){
-        return FileResources.class.getResource("/data/bsd.txt");
+        return getResource("/data/bsd.txt");
     }
 
     public static URL getApacheLicense(){
-        return FileResources.class.getResource("/data/apache.txt");
+        return getResource("/data/apache.txt");
     }
 
     public static String getStatsCss(){
         return "data/stats.css";
+    }
+
+    public static String getPrintCss(){
+        return "data/print.css";
     }
 
     public static String getMainCss(){
@@ -47,6 +51,10 @@ public class FileResources{
 
     public static String getAboutCss(){
         return "data/about.css";
+    }
+
+    private static URL getResource(String path){
+        return FileResources.class.getResource(path);
     }
 
     private static InputStream getResourceStream(String path){

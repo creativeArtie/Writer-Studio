@@ -56,7 +56,7 @@ public class TextDataSpanPrint extends TextDataSpan<FormattedSpan>{
     }
 
     void deleteLine(){
-        runCommand(() -> "");
+        runCommand(() -> null);
     }
 
     void setData(String raw){

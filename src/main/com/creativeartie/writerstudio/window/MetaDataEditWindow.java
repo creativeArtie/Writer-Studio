@@ -22,7 +22,7 @@ class MetaDataEditWindow extends Stage{
     private final TextDataType.Area showType;
 
     private final InlineCssTextArea textArea;
-    private final TextFlow previewText;
+    private final VBox previewText;
     private final CheatsheetLabel[] textHints;
     protected static int WIDTH = 650;
     protected static int HEIGHT = 500;
@@ -37,12 +37,20 @@ class MetaDataEditWindow extends Stage{
         initModality(Modality.APPLICATION_MODAL);
 
         GridPane pane = new GridPane();
+        setPrecentWidth(pane, 100);
+
         textArea = initTextArea(pane);
         previewText = initPreviewArea(pane);
         textHints = initHintLabels(pane);
 
-        updateTextHints();
+        updatePreview();
 
+        textArea.plainTextChanges().subscribe(value -> {
+            writingData.setPrintText(showType, textArea.getText());
+            updatePreview();
+        });
+
+        pane.getStylesheets().add(FileResources.getPrintCss());
         setScene(new Scene(pane, WIDTH, HEIGHT));
     }
 
@@ -56,13 +64,17 @@ class MetaDataEditWindow extends Stage{
             text += print.getData().map(s -> s.getRaw()).orElse("");
         }
         area.replaceText(text);
-        pane.add(initScrollBar(area), 0, 0);
+        setPrecentHeight(pane, 45);
+        pane.add(area, 0, 0);
+        // area.setParagraphGraphicFactory();
         return area;
     }
 
-    private TextFlow initPreviewArea(GridPane pane){
-        TextFlow area = new TextFlow();
-        pane.add(initScrollBar(area), 0, 1);
+    private VBox initPreviewArea(GridPane pane){
+        VBox area = new VBox();
+        setPrecentHeight(pane, 45);
+        pane.add(area, 0, 1);
+        area.getStyleClass().add("border");
         return area;
     }
 
@@ -82,6 +94,7 @@ class MetaDataEditWindow extends Stage{
         };
 
         GridPane pane = new GridPane();
+        pane.getStyleClass().add("border");
         i = 0;
         for (int row = 0; row < 3; row++){
             setPrecentWidth(pane, 33.333333);
@@ -89,20 +102,9 @@ class MetaDataEditWindow extends Stage{
                 pane.add(labels[i++], row, col);
             }
         }
+        setPrecentHeight(pane, 10);
         parent.add(pane, 0, 2);
         return labels;
-    }
-
-    private ScrollPane initScrollBar(Region node){
-        ScrollPane ans = new ScrollPane(node);
-        node.setMinWidth(WIDTH);
-        node.setMinHeight(WIDTH);
-
-        ans.setPrefWidth(WIDTH);
-        ans.setPrefHeight(AREA_HEIGHT);
-
-        ans.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        return ans;
     }
 
     /**
@@ -115,10 +117,16 @@ class MetaDataEditWindow extends Stage{
         pane.getColumnConstraints().add(column);
     }
 
-    private void updateTextHints(){
+    private void setPrecentHeight(GridPane pane, double value){
+        RowConstraints row = new RowConstraints();
+        row.setPercentHeight(value);
+        pane.getRowConstraints().add(row);
+    }
+
+    private void updatePreview(){
         previewText.getChildren().clear();
         for (TextDataSpanPrint print: writingData.getPrint(showType)){
-            TextFlowBuilder.loadFormatText(previewText, print.getData());
+            previewText.getChildren().add(TextFlowBuilder.loadMetaText(print));
         }
     }
 }

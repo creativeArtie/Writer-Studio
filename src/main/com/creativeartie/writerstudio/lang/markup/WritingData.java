@@ -44,12 +44,13 @@ public class WritingData extends Document{
         return ans;
     }
 
-    public void changeText(TextDataType.Area area, String raw){
+    public void setPrintText(TextDataType.Area area, String raw){
         raw = raw.replace(TOKEN_ESCAPE + LINED_END, LINED_END);
         List<TextDataSpanPrint> print = getPrint(area);
         int i = 0;
         for (String text: Splitter.on(CHAR_NEWLINE).split(raw)){
-            if (print.size() < i){
+            System.out.println(text);
+            if (i < print.size()){
                 print.get(i).setData(text);
             } else {
                 runCommand(() -> getRaw() + area.getKeyName() +
@@ -57,7 +58,7 @@ public class WritingData extends Document{
             }
             i++;
         }
-        if (i < print.size()){
+        while (i < print.size()){
             print.get(i).deleteLine();
             i++;
         }

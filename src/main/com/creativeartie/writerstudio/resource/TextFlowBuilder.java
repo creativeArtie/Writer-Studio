@@ -49,6 +49,28 @@ public final class TextFlowBuilder {
         });
     }
 
+    public static TextFlow loadMetaText(TextDataSpanPrint print){
+        TextFlow node = new TextFlow();
+        String align;
+        switch(print.getFormat()){
+        case RIGHT:
+            node.getStyleClass().add("display-right");
+            break;
+        case CENTER:
+            node.getStyleClass().add("display-center");
+            break;
+        default: // LEFT, TEXT
+            node.getStyleClass().add("display-left");
+        }
+        Optional<FormattedSpan> span = print.getData();
+        if (span.isPresent()){
+            loadFormatText(node, span);
+        } else {
+            node.getChildren().add(new Text(" "));
+        }
+        return node;
+    }
+
     private static Optional<Text> createFormatSpan(Span child){
         Optional<Text> ans = Optional.empty();
         if (child instanceof FormatSpanAgenda){
