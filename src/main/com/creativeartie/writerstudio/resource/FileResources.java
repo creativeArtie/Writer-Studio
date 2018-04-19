@@ -20,7 +20,7 @@ public class FileResources{
         InputStream[] stream = new InputStream[FONT_FILES.length];
         int i = 0;
         for (String font: FONT_FILES){
-            stream[i++] = getResourceStream("data/fonts/" + font);
+            stream[i++] = getResourceStream("/data/fonts/" + font);
         }
         return stream;
     }

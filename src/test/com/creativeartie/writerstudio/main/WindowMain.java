@@ -23,8 +23,8 @@ public class WindowMain extends Main{
 
     @Override
     public void start(Stage stage) throws Exception{
-        // super.start(stage);
-        testChildWindows(stage);
+        super.start(stage);
+        // testChildWindows(stage);
     }
 
     @Override
