@@ -67,7 +67,6 @@ class TextPaneControl extends TextPaneView {
             );
     }
 
-
     public void moveTo(int position){
         if (position == getTextArea().getLength()){
             getTextArea().end(NavigationActions.SelectionPolicy.CLEAR);

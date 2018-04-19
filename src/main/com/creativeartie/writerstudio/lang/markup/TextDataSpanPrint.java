@@ -52,7 +52,7 @@ public class TextDataSpanPrint extends TextDataSpan<FormattedSpan>{
 
     public void setFormat(TextDataType.Format format){
         runCommand(() -> getType().getKeyName() + format.getKeyName() +
-            getData().map(s -> s.getRaw()).orElse(""));
+            getData().map(s -> s.getRaw()).orElse("") + LINED_END);
     }
 
     void deleteLine(){

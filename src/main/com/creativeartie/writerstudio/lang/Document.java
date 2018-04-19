@@ -206,7 +206,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     }
 
     /** Find column index. */
-    public final int getColumn(int index){
+    final int getColumn(int index){
         try {
             return spanLocation.get(index)[0];
         } catch (ExecutionException e) {
@@ -214,8 +214,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
         }
     }
 
-    /** Fine line index. */
-    public final int getLine(int index){
+    /** Find line index. */
+    final int getLine(int index){
         try {
             return spanLocation.get(index)[1];
         } catch (ExecutionException e) {

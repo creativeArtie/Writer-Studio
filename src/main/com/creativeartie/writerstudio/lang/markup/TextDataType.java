@@ -49,6 +49,10 @@ public class TextDataType{
         LEFT(ALIGN_LEFT), CENTER(ALIGN_CENTER), RIGHT(ALIGN_RIGHT),
         TEXT(ALIGN_TEXT);
 
+        public static Format[] listAligns(){
+            return Arrays.copyOf(values(), values().length - 1);
+        }
+
         private String keyName;
         private Format(String key){
             keyName = key;
@@ -61,6 +65,7 @@ public class TextDataType{
         public boolean isAlignType(){
             return ordinal() <= RIGHT.ordinal();
         }
+
     }
 
     private TextDataType(){}

@@ -49,7 +49,6 @@ public class WritingData extends Document{
         List<TextDataSpanPrint> print = getPrint(area);
         int i = 0;
         for (String text: Splitter.on(CHAR_NEWLINE).split(raw)){
-            System.out.println(text);
             if (i < print.size()){
                 print.get(i).setData(text);
             } else {

@@ -55,7 +55,7 @@ public final class Record{
      * @see RecordList#fillData(Scanner)
      */
     static Builder builder(Record last, LocalDate date){
-        argumentNotNull(last, "last");
+        // argumentNotNull(last, "last");
         argumentNotNull(date, "date");
         return new Record(date).new Builder(last);
     }

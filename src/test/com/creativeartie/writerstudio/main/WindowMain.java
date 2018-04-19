@@ -16,8 +16,6 @@ import com.creativeartie.writerstudio.window.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 
 public class WindowMain extends Main{
-    private static Stage mainStage;
-    private static ManuscriptFile writeFile;
 
     public static void main(String[] args) {
         launch(args);
@@ -25,8 +23,8 @@ public class WindowMain extends Main{
 
     @Override
     public void start(Stage stage) throws Exception{
-        super.start(stage);
-        // testChildWindows();
+        // super.start(stage);
+        testChildWindows(stage);
     }
 
     @Override
@@ -41,7 +39,7 @@ public class WindowMain extends Main{
     }
 
     @Deprecated
-    private void testChildWindows() throws Exception{
+    private void testChildWindows(Stage stage) throws Exception{
         Button button1 = new Button("Stats");
         SceneStatsControl pane = new SceneStatsControl();
         pane.setStatTable(RecordList.build(new File("data/record3.txt")));
@@ -51,10 +49,15 @@ public class WindowMain extends Main{
         Button button2 = new Button("copyright");
         Stage about = new WriterAboutWindow();
         button2.setOnAction(event -> about.show());
-        button2.setDefaultButton(true);
 
-        Scene scene = new Scene(new FlowPane(button1, button2), 800, 600);
-        mainStage.setScene(scene);
-        mainStage.show();
+        Button button3 = new Button("Meta Area");
+        Stage meta = new MetaDataEditWindow(TextDataType.Area.FRONT_BOTTOM,
+            getStartFile().getMetaData());
+        button3.setOnAction(event -> meta.show());
+        button3.setDefaultButton(true);
+
+        Scene scene = new Scene(new FlowPane(button1, button2, button3), 800, 600);
+        stage.setScene(scene);
+        stage.show();
     }
 }

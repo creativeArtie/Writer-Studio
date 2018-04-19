@@ -127,8 +127,8 @@ public class DocumentAccessDebug{
     }
 
     private static String docText;
-    private static WritingText filledDoc;
-    private static WritingText emptyDoc;
+    private static Document filledDoc;
+    private static Document emptyDoc;
 
     @Parameter
     public int ptr;

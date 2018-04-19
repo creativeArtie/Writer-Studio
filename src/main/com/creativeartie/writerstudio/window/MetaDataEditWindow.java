@@ -17,20 +17,21 @@ import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.main.*;
 import com.creativeartie.writerstudio.resource.*;
 
-class MetaDataEditWindow extends Stage{
+public class MetaDataEditWindow extends Stage{
     private final WritingData writingData;
     private final TextDataType.Area showType;
 
     private final InlineCssTextArea textArea;
     private final VBox previewText;
-    private final CheatsheetLabel[] textHints;
+    private final TreeMap<Integer, ComboBox<TextDataType.Format>> alignChoices;
     protected static int WIDTH = 650;
     protected static int HEIGHT = 500;
     protected static int AREA_HEIGHT = (500 / 2) - 10;
 
-    MetaDataEditWindow(TextDataType.Area type, WritingData data){
+    public MetaDataEditWindow(TextDataType.Area type, WritingData data){
         writingData = data;
         showType = type;
+        alignChoices = new TreeMap<>();
 
         setTitle(WindowText.getString(type));
         setResizable(false);
@@ -41,9 +42,9 @@ class MetaDataEditWindow extends Stage{
 
         textArea = initTextArea(pane);
         previewText = initPreviewArea(pane);
-        textHints = initHintLabels(pane);
+        initHintLabels(pane);
 
-        updatePreview();
+        updatePreview(); /// assigns printSpans
 
         textArea.plainTextChanges().subscribe(value -> {
             writingData.setPrintText(showType, textArea.getText());
@@ -66,8 +67,19 @@ class MetaDataEditWindow extends Stage{
         area.replaceText(text);
         setPrecentHeight(pane, 45);
         pane.add(area, 0, 0);
-        // area.setParagraphGraphicFactory();
         return area;
+    }
+
+    private Node initCombobox(TextDataSpanPrint line){
+        TextDataType.Format ans = line.getFormat();
+        ComboBox<TextDataType.Format> box = new ComboBox<>();
+        box.getItems().addAll(TextDataType.Format.listAligns());
+        box.getSelectionModel().select(ans);
+        box.getSelectionModel().selectedItemProperty().addListener((b, o, n) ->{
+            line.setFormat(n);
+            updatePreview();
+        });
+        return box;
     }
 
     private VBox initPreviewArea(GridPane pane){
@@ -126,7 +138,10 @@ class MetaDataEditWindow extends Stage{
     private void updatePreview(){
         previewText.getChildren().clear();
         for (TextDataSpanPrint print: writingData.getPrint(showType)){
-            previewText.getChildren().add(TextFlowBuilder.loadMetaText(print));
+            BorderPane line = new BorderPane();
+            line.setLeft(initCombobox(print));
+            line.setCenter(TextFlowBuilder.loadMetaText(print));
+            previewText.getChildren().add(line);
         }
     }
 }

@@ -120,11 +120,14 @@ public final class TextFlowBuilder {
         FormatSpan format = (FormatSpan) child;
         if (format.isBold()){
             addStyle(ans, "display-bold");
-        } else if (format.isItalics()){
+        }
+        if (format.isItalics()){
             addStyle(ans, "display-italics");
-        } else if (format.isUnderline()){
+        }
+        if (format.isUnderline()){
             addStyle(ans, "display-underline");
-        } else if (format.isCoded()){
+        }
+        if (format.isCoded()){
             addStyle(ans, "display-coded");
         }
         return ans;
