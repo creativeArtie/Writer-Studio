@@ -55,7 +55,6 @@ public final class Record{
      * @see RecordList#fillData(Scanner)
      */
     static Builder builder(Record last, LocalDate date){
-        // argumentNotNull(last, "last");
         argumentNotNull(date, "date");
         return new Record(date).new Builder(last);
     }
@@ -250,7 +249,8 @@ public final class Record{
      * @return answer
      */
     public int getPublishTotal(){
-        return publishTotal;
+        return lastRecord.map(record -> publishTotal - record.publishTotal)
+            .orElse(publishTotal);
     }
 
     /** Get the record's note count.
@@ -275,15 +275,6 @@ public final class Record{
      */
     public Duration getWriteTime(){
         return timeTotal;
-    }
-
-    /** Get the record's publishing count.
-     *
-     * @return answer
-     */
-    public int getPublishWritten(){
-        return lastRecord.map(record -> publishTotal - record.publishTotal)
-            .orElse(publishTotal);
     }
 
     /// %Part 2.4.2: Set Methods -----------------------------------------------

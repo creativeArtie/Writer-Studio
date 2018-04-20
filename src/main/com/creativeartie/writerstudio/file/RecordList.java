@@ -89,14 +89,11 @@ public final class RecordList extends ForwardingList<Record>{
      */
     private void fillData(Scanner data){
         assert data != null: "Null data";
-
-        /// Setup the method
         int written = 0;
         Record current = null;
 
         /// Fill the list
         while (data.hasNextInt()){
-            /// For each line:
             current = Record.builder(current, LocalDate.ofYearDay(
                     data.nextInt(), data.nextInt())
                 )
@@ -120,8 +117,8 @@ public final class RecordList extends ForwardingList<Record>{
      */
     String getSaveText(){
         StringBuilder ans = new StringBuilder();
+
         for (Record out: this){
-            /// For each record:
             ans.append(out.getRecordDate().getYear())     .append(" ");
             ans.append(out.getRecordDate().getDayOfYear()).append(" ");
             ans.append(out.getPublishTotal())             .append(" ");
@@ -130,6 +127,7 @@ public final class RecordList extends ForwardingList<Record>{
             ans.append(out.getPublishGoal())              .append(" ");
             ans.append(out.getTimeGoal())                 .append("\n");
         }
+
         return ans.toString();
     }
 
@@ -141,7 +139,6 @@ public final class RecordList extends ForwardingList<Record>{
      */
     public Record getRecord(){
         assert ! recordList.isEmpty() : "empty recordList";
-
         return recordList.get(recordList.size() - 1);
     }
 
@@ -154,9 +151,9 @@ public final class RecordList extends ForwardingList<Record>{
      */
     public void startWriting(WritingText doc){
         argumentNotNull(doc, "doc");
-
         int publish = doc.getPublishTotal();
         int note = doc.getNoteTotal();
+
         updateRecord(publish, note);
         getRecord().startWriting(publish, note);
     }
@@ -170,9 +167,9 @@ public final class RecordList extends ForwardingList<Record>{
      */
     public void stopWriting(WritingText doc){
         argumentNotNull(doc, "doc");
-
         int publish = doc.getPublishTotal();
         int note = doc.getNoteTotal();
+
         updateRecord(publish, note);
         getRecord().stopWriting(publish, note);
     }
@@ -191,6 +188,7 @@ public final class RecordList extends ForwardingList<Record>{
         assert publish >= 0: "publish < 0";
         assert note >= 0: "note < 0";
 
+        /// if current record != today, stop and add new
         Record record = getRecord();
         if (!record.getRecordDate().equals(LocalDate.now())){
             record.stopWriting(publish, note);
@@ -256,8 +254,8 @@ public final class RecordList extends ForwardingList<Record>{
         for(Record record: this){
             LocalDate date = record.getRecordDate();
             if (date.getYear()  == month.getYear() &&
-                date.getMonth() == month.getMonth())
-            {
+                date.getMonth() == month.getMonth()){
+                /// month found
                 return ptr;
             }
             ptr++;

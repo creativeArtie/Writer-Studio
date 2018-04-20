@@ -117,7 +117,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
             /// Fill or refill {@link #catalogueMap}
             if (child instanceof SpanBranch){
                 SpanBranch branch = (SpanBranch) child;
-                catalogueMap.add(branch, edited);
+                catalogueMap.add(branch);
                 updateSpan(branch, edited);
             }
         }

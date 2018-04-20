@@ -8,17 +8,19 @@ import com.google.common.collect.*;
 
 public final class ParameterChecker {
 
-    public static void argumentCheck(boolean test, String message){
-        if (! test) throw new IllegalArgumentException(message);
+    public static void argumentCheck(boolean test, String field, String postfix){
+        field = createStart(field);
+        if (! test) throw new IllegalArgumentException(field + postfix);
     }
 
     private static int argumentCheck(int index, String field,
             Range<Integer> range){
-        argumentCheck(range.contains(index), outOfRange(index, field, range));
+        argumentCheck(range.contains(index), field, outOfRange(index, range));
         return index;
     }
 
-    public static void ioCheck(boolean test, String message) throws IOException{
+    public static void ioCheck(boolean test, String message)
+            throws IOException{
         if (! test) throw new IOException(message);
     }
 
@@ -28,47 +30,46 @@ public final class ParameterChecker {
 
     private static int indexCheck(int test, String field, Range<Integer> range){
         if (! range.contains(test)) throw new IndexOutOfBoundsException(
-            outOfRange(test, field, range));
+            createStart(field) + outOfRange(test, range));
         return test;
     }
 
     public static <T> T argumentEquals(T test, String field, T expect){
-        String message = createStart(field) + " does not equals " + expect;
+        String message = " does not equals " + expect;
         if (expect == null){
-            argumentCheck(test != null, message);
+            argumentCheck(test != null, field, message);
         }
-        argumentCheck(expect.equals(test), message);
+        argumentCheck(expect.equals(test), field, message);
         return test;
     }
 
     public static <T> T argumentSame(T item, String field, T expect){
-        argumentCheck(item == expect, createStart(field) +
-            " is not the same as " + expect);
+        argumentCheck(item == expect, field, " is not the same as " + expect);
         return item;
     }
 
     public static <T> T argumentNotNull(T item, String field){
-        argumentCheck(item != null, createStart(field) + " is null");
+        argumentCheck(item != null, field, " is null");
         return item;
     }
 
     public static <T> Collection<T> argumentNotEmpty(Collection<T> item,
             String field){
         argumentNotNull(item, field);
-        argumentCheck(! item.isEmpty(), createStart(field) + " is empty");
+        argumentCheck(! item.isEmpty(), field, " is empty");
         return item;
     }
 
     public static <T> T[] argumentNotEmpty(T[] item, String field){
         argumentNotNull(item, field);
-        argumentCheck(item.length != 0, createStart(field) + " is empty");
+        argumentCheck(item.length != 0, field, " is empty");
         return item;
     }
 
     public static <T extends CharSequence> T argumentNotEmpty(T item,
             String field){
         argumentNotNull(item, field);
-        argumentCheck(item.length() != 0, createStart(field) + " is empty");
+        argumentCheck(item.length() != 0, field, " is empty");
         return item;
     }
 
@@ -146,9 +147,7 @@ public final class ParameterChecker {
         return "Parameter \"" + field + "\"";
     }
 
-    private static String outOfRange(int num, String field,
-            Range<Integer> range){
-        return createStart(field) + "(" + num + ") is not in range of " +
-            range.toString() + ".";
+    private static String outOfRange(int num, Range<Integer> range){
+        return " (" + num + ") is not in range of " + range.toString() + ".";
     }
 }

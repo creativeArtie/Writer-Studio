@@ -1,11 +1,14 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*; // Optional
+import java.util.*; // Optional;
 
-/** An {@link Span} that has an {@link CatalogueIdentity}.*/
+/** An {@link Span} that has an {@link CatalogueIdentity}. */
 public interface Catalogued{
 
-    /** Get the {@link CatalogueIdentity} if there is any. */
+    /** Get the {@link CatalogueIdentity} if there is any.
+     *
+     * @return answer or empty
+     */
     public Optional<CatalogueIdentity> getSpanIdentity();
 
     /** Check if this represents an Identity. */

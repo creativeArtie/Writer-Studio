@@ -26,7 +26,7 @@ public class NoteCardData{
 
     NoteCardData(NoteCardSpan span){
         noteId = new ReadOnlyObjectWrapper<>(span.getSpanIdentity()
-            .filter(id -> id.getBase().equals(AuxiliaryData.TYPE_NOTE)));
+            .filter(id -> id.getMain().equals(AuxiliaryData.TYPE_NOTE)));
         noteSection = new ReadOnlyObjectWrapper<>(span
             .getParent(SectionSpanHead.class)
             .map(found -> (SectionSpan) found)

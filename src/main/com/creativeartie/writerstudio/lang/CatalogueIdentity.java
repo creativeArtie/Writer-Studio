@@ -1,91 +1,125 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*; // List
+import java.util.*; // List, Objects;
 
 import com.google.common.collect.*; // ComparisonChain ImmutableList
 
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * Marker for a {@link SpanBranch} that can be grouped with the same
- * {@link CatalogueIdentity}.
+/** Marker to group {@link SpanBranch}.
+ *
+ * Purpose:
+ * <ul>
+ * <li>Breaks up into categories and name </li>
+ * <li>Maintains a unique, unchanging identitfier</li>
+ * <li>Allows sorting.</li>
+ * <li>Does some help identity related tasks.</li>
+ * </ul>
  */
 public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
+
+    /// %Part 1: Constructors ##################################################
+
     private final ImmutableList<String> categoryPart;
+
     private final String namePart;
 
-    /**
-     * {@linkplain CatalogueIdentity}'s constructor base on a {@link Span}. This
-     * will take the {@linkplain Span}'s starting location as the name with the
-     * category supplied.
+    /** Creates a {@linkplain CatalogueIdenity base on the location.
+     *
+     * @param categories
+     *      id categories
+     * @param span
+     *      location extracting span
      */
     public CatalogueIdentity(List<String> categories, Span span){
-        checkNotNull(categories, "categories");
-        checkNotNull(span, "span");
-
+        argumentNotNull(categories, "categories");
         categoryPart = ImmutableList.copyOf(categories);
 
-        int ptr = span.getStart();
+        int ptr = argumentNotNull(span, "span").getStart();
         int padding = String.valueOf(span.getDocument().getLocalEnd())
             .length();
         namePart = String.format("%0" + padding + "d",  ptr);
-
     }
 
-    public CatalogueData findData(CatalogueMap map){
-        return map.get(this);
-    }
-
-    /**
-     * {@linkplain CatalogueIdentity}'s constructor using a category list and a
-     * name.
+    /** Creates a basic {@linkplain CatalogueIdentity}.
+     *
+     * @param category
+     *      id's category
+     * @param name
+     *      id's name
      */
     public CatalogueIdentity(List<String> category, String name){
-        checkNotNull(category, "categories");
-        checkNotNull(name, "name");
-
+        argumentNotNull(category, "categories");
         categoryPart = ImmutableList.copyOf(category);
-        namePart = name;
+
+        namePart = argumentNotNull(name, "name");
     }
 
-    /** Find the status base on a {@link CatalogueMap}. */
-    CatalogueStatus getStatus(CatalogueMap parent){
-        checkNotNull(parent, "parent");
+    /// %Part 2: Identifiers and Grouping ######################################
 
-        return parent.get(this).getState();
+    /** Get the full identity, each part separated by the char "-".
+     *
+     * @return answer
+     */
+    public String getFullIdentity(){
+        StringBuilder builder = new StringBuilder();
+
+        /// Append categories
+        for(String category: getCategories()){
+            builder.append(category);
+            builder.append("-");
+        }
+
+        /// Append names
+        builder.append(getName());
+
+        return builder.toString();
     }
 
+    /** Gets the category lists.
+     *
+     * @return answer
+     */
     public List<String> getCategories(){
         return categoryPart;
     }
 
-    public String getBase(){
+    /** Gets the first, main category.
+     *
+     * @return answer
+     */
+    public String getMain(){
         if (categoryPart.isEmpty()){
             return "";
         }
         return categoryPart.get(0);
     }
 
+    /** Gets the name of the {@linkplain CatalogueIdentity}.
+     *
+     * @return answer
+     */
     public String getName(){
         return namePart;
     }
 
-    /** Get the full identity, each part separated by the char "-". */
-    public String getFullIdentity(){
-        StringBuilder builder = new StringBuilder();
-        int i = 0;
-        for(String category: getCategories()){
-            builder.append(category);
-            builder.append("-");
-        }
-        builder.append(getName());
-        return builder.toString();
+
+    /// %Part 3: Helpful Methods ###############################################
+
+    /** Find the status base on a {@link CatalogueMap}.
+     *
+     * @param map
+     *      use map
+     * @return answer
+     */
+    CatalogueStatus getStatus(CatalogueMap map){
+        argumentNotNull(map, "map");
+
+        return map.get(this).getState();
     }
 
-    @Override
-    public String toString(){
-        return "(" + getFullIdentity() + ")";
-    }
+    /// %Part 4: Overriding ####################################################
+    /// %Part 4.1 Comparing ====================================================
 
     @Override
     public int compareTo(CatalogueIdentity that){
@@ -100,12 +134,16 @@ public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
     }
 
     /**
-     * Compares two lists of catergories. Helper method of
-     * {@link compareTo(CatalogueIdentity}.
+     * Compares two lists of catergories.
+     * @param self
+     *      self categories
+     * @param that
+     *      that categories
+     * @return answer
      */
     private static int compareCategory(List<String> self, List<String> that){
-        checkNotNull(self, "self");
-        checkNotNull(that, "that");
+        assert self != null: "Null self";
+        assert that != null: "Null that";
 
         int i = 0;
         for (String cat: self){
@@ -124,6 +162,8 @@ public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
         return 0;
     }
 
+    /// %Part 4.2 Equals and Hash ==============================================
+
     @Override
     public boolean equals(Object compareObj){
         if (compareObj instanceof CatalogueIdentity){ /// compareObject != null
@@ -138,5 +178,12 @@ public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
     @Override
     public int hashCode(){
         return Objects.hash(categoryPart, namePart);
+    }
+
+    /// %Part 4.3 Others =======================================================
+
+    @Override
+    public String toString(){
+        return "(" + getFullIdentity() + ")";
     }
 }
