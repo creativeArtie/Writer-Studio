@@ -15,6 +15,9 @@ This project is currently in alpha version, and will be optimized and will have
 more features. The most up-to-date stable version is located 
 [here](https://github.com/creativeArtie/Writer-Studios/releases/latest).
 
+Currently, Writer Studio can produce a pdf file that meet the manuscript format
+requirements as seen with this [pdf file example](design/example.pdf).
+
 ## Markup
 
 ### Formats
@@ -144,5 +147,6 @@ id is `category-subcategory-...-title`.
 
 ## Screen shots
 ![Main Window](design/main.png)
+![Writing without disactions](design/clean.png)
 ![Stats For Current Month](design/today.png)
 ![Stats For Past Month](design/month.png)
