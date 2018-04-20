@@ -1,15 +1,15 @@
-<project name="JWriter">
+<project name="Writer Studio">
     <description>
-    This is an ant build file JWriter, a note take and writing program.
+    This is an ant build file Writer Studio, a note take and writing program.
     </description>
 <!-- ==================== Program Environment Variables ==================== -->
     <!-- ** Edit these ones!!! ** -->
     <!-- ..................... Manifest/Running data .................... -->
     <!-- main(String[]) Location -->
-    <property name="usr.main" value="com.creativeartie.jwriter.main.Main" />
+    <property name="usr.main-run" value="com.creativeartie.writerstudio.main.Main" />
+    <property name="usr.main-trial" value="com.creativeartie.writerstudio.main.WindowMain" />
     <!-- archive file postfix -->
     <property name="usr.version" value="0.3.1" />
-    <property name="usr.test-main" value="com.creativeartie.jwriter.main.MainTest" />
     <!-- ......................... Javadoc Data ......................... -->
     <!-- Document up to public/protect/default/private level-->
     <property name="usr-access" value="public" />
@@ -22,25 +22,27 @@
     <!-- ........................ Arguments Data ........................ -->
     <property name="args.src-javac" value="-Xlint" />
     <property name="args.test-src-javac" value="-Xlint" />
-    <property name="args.test-junit-javac" value="-Xdiags:verbose" />
+    <property name="args.test-junit-javac" value="-Xlint:deprecation" />
+    <property name="args.trial-run" value="" />
 <!-- =========================== Program Folders =========================== -->
     <!-- ........................ Root Folders .......................... -->
-    <property name="loc.src" value="src/" />
+    <property name="loc.src" value="main/" />
     <property name="loc.data" value="data/" />
     <property name="loc.test" value="test/" />
     <property name="loc.lib" value="lib/" />
     <property name="loc.design" value="design/" />
 
     <!-- ........................ Code Location ......................... -->
-    <property name="dir.src" location="${loc.src}" />
-    <property name="dir.test" location="${loc.test}" />
+    <property name="dir.src"  location="src/" />
+    <property name="dir.src-main" location="${dir.src}/${loc.src}" />
+    <property name="dir.src-test" location="${dir.src}/${loc.test}" />
 
     <!-- ......................... Data Folder .......................... -->
     <property name="dir.data"      location="${loc.data}" />
     <property name="dir.data-run"  location="${dir.data}/run" />
     <property name="dir.data-jar"  location="${dir.data}/jar" />
     <property name="dir.data-test" location="${dir.data}/tests" />
-    <property name="dir.data-root"  location="${dir.data}/jar-root" />
+    <property name="dir.data-root" location="${dir.data}/jar-root" />
 
     <!-- .......................... Libraries ........................... -->
     <property name="dir.lib"  location="${loc.lib}" />
@@ -59,6 +61,7 @@
     <property name="dir.trial" location="${dir.out}/trial" />
     <property name="dir.trial-file" location="${dir.trial}/trial.jar" />
     <property name="dir.trial-data" location="${dir.trial}/data" />
+    <property name="dir.trial-lib" location="${dir.trial}/lib" />
     <!-- Jar and assoicated files -->
     <property name="dir.jar-name"     value="${ant.project.name}.${usr.version}" />
     <property name="dir.jar-out"      location="${dir.out}/jar" />
@@ -66,6 +69,7 @@
     <property name="dir.jar-out-file" location="${dir.jar-out}/${dir.jar-name}.jar" />
     <property name="dir.jar-tmp"      location="${dir.out}/jar-bin" />
     <property name="dir.jar-tmp-data" location="${dir.jar-tmp}/data" />
+    <property name="dir.jar-lib"      location="${dir.jar-out}/lib" />
     <property name="dir.zip"        location="${dir.out}" />
     <property name="dir.zip-prefix" location="${dir.jar.name}" />
     <property name="dir.zip-file"   location="${dir.zip}/${dir.jar-name}.zip" />
@@ -87,7 +91,7 @@
 
     <path id="src-debug.path">
         <path refid="src-run.path" />
-        <fileset dir="${dir.test}" />
+        <fileset dir="${dir.src-test}" />
         <fileset dir="${dir.junit}" />
     </path>
 
@@ -112,10 +116,10 @@
             <fileset dir="${dir.data-run}" />
             <fileset dir="${dir.data-jar}" />
         </copy>
-        <!-- compile from ${dir.src} -->
+        <!-- compile from ${dir.src-main} -->
         <javac
             destdir="${dir.run}"
-            srcdir="${dir.src}"
+            srcdir="${dir.src-main}"
             classpathref="src-run.path"
             includeantruntime="false"
         >
@@ -125,7 +129,7 @@
 
     <target name="run" depends="compile.run">
         <java
-            classname="${usr.main}"
+            classname="${usr.main-run}"
             classpathref="run.path"
             fork="true"
             dir="${dir.run}"
@@ -147,17 +151,26 @@
                 <exclude name="${loc.data}" />
             </fileset>
         </copy>
+        <!-- Add class path to dependence library with class path-->
+        <copy toDir="${dir.jar-lib}">
+            <fileset dir="${dir.3rd}" includes="*.jar" />
+        </copy>
+        <manifestclasspath property="lib.path" jarfile="${dir.jar-out-file}">
+            <classpath>
+                <fileset dir="${dir.jar-lib}" />
+            </classpath>
+        </manifestclasspath>
         <!-- copy files into future jar file-->
         <copy toDir="${dir.jar-tmp-data}">
             <fileset dir="${dir.data-jar}" />
         </copy>
         <!-- jar classes -->
         <jar destfile="${dir.jar-out-file}" baseDir="${dir.jar-tmp}">
-            <zipgroupfileset dir="${dir.3rd}" includes="*.jar"/>
             <!-- setup manifest file -->
             <manifest>
                 <attribute name="Program-Name" value="${ant.project.name}" />
-                <attribute name="Main-Class" value="${usr.main}" />
+                <attribute name="Main-Class" value="${usr.main-run}" />
+                <attribute name="Class-Path" value="${lib.path}" />
             </manifest>
         </jar>
         <!-- set execute flag -->
@@ -182,10 +195,10 @@
             <fileset dir="${dir.data-jar}" />
             <fileset dir="${dir.data-test}" />
         </copy>
-        <!-- compile from ${dir.src} -->
+        <!-- compile from ${dir.src-main} -->
         <javac
             destdir="${dir.debug}"
-            srcdir="${dir.src}"
+            srcdir="${dir.src-main}"
             classpathref="src-run.path"
             includeantruntime="false"
             debug="on"
@@ -193,10 +206,10 @@
         >
              <compilerarg line="${args.test-src-javac}"/>
         </javac>
-        <!-- compile from ${dir.test} -->
+        <!-- compile from ${dir.src-test} -->
         <javac
             destdir="${dir.debug}"
-            srcdir="${dir.test}"
+            srcdir="${dir.src-test}"
             classpathref="src-debug.path"
             includeantruntime="false"
             debug="on"
@@ -240,7 +253,7 @@
 
     <target name="test-run" depends="compile.debug">
         <java
-            classname="${usr.test-main}"
+            classname="${usr.main-trial}"
             classpathref="debug.path"
             fork="true"
             dir="${dir.debug}"
@@ -256,24 +269,35 @@
             <fileset dir="${dir.data-test}" />
         </copy>
 
+        <!-- Add class path to dependence library with class path-->
+        <copy toDir="${dir.trial-lib}">
+            <fileset dir="${dir.3rd}" />
+        </copy>
+        <manifestclasspath property="lib.path" jarfile="${dir.trial-file}">
+            <classpath>
+                <fileset dir="${dir.trial-lib}" />
+            </classpath>
+        </manifestclasspath>
+
         <!-- jar classes -->
         <jar destfile="${dir.trial-file}" baseDir="${dir.debug}">
-            <zipgroupfileset dir="${dir.3rd}" includes="*.jar"/>
             <!-- setup manifest file -->
             <manifest>
                 <attribute name="Program-Name" value="${ant.project.name}" />
-                <attribute name="Main-Class" value="${usr.main}" />
+                <attribute name="Main-Class" value="${usr.main-trial}" />
+                <attribute name="Class-Path" value="${lib.path}" />
             </manifest>
         </jar>
         <java jar="${dir.trial-file}" fork="true" dir="${dir.trial}">
              <assertions><enable/></assertions>
+             <arg line="${args.trial-run}" />
         </java>
     </target>
 
     <!-- ............................ Others ............................ -->
     <!-- document the project -->
     <!-- target name="javadoc">
-        <javadoc sourcepath="${dir.src}" destdir="${dir.doc}"
+        <javadoc sourcepath="${dir.src-main}" destdir="${dir.doc}"
             access="${usr-access}" classpathref="src-run.path" />
     </target -->
 

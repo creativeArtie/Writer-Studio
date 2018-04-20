@@ -7,10 +7,10 @@ Basic paragraph
 > quote block
 - bullet
 # Level 1 numbered
-    # Level 2 numbered
-        # Level 3 numbered (to level 6)
+## Level 2 numbered
+### Level 3 numbered (to level 6)
 
-    - Level 2 bullet without being nested
+-- Level 2 bullet without being nested
 Section break (below)
 ***
 !*endnote: these are notes to end of a published section/document
