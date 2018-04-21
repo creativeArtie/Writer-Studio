@@ -2,8 +2,10 @@ package com.creativeartie.writerstudio.lang;
 
 import java.util.*; // (many)
 import java.util.function.*; // UnaryOperator
+import java.util.concurrent.*; // Callable, ExecutionException
 
 import com.google.common.collect.*; // Range
+import com.google.common.cache.*; // Range, ImmuableList
 
 import static com.creativeartie.writerstudio.main.Checker.*;
 
@@ -15,7 +17,46 @@ import static com.creativeartie.writerstudio.main.Checker.*;
 public abstract class SpanNode<T extends Span> extends Span
         implements List<T> {
 
-    protected SpanNode(){}
+    private final HashSet<Consumer<Span>> childEditedListeners;
+    private final HashSet<Consumer<Span>> spanRemovedListeners;
+    private final HashSet<Consumer<Span>> spanEditedListeners;
+    private final Cache<Object, Object> spanCache;
+
+
+    protected SpanNode(){
+        childEditedListeners = new HashSet<>();
+        spanRemovedListeners = new HashSet<>();
+        spanEditedListeners = new HashSet<>();
+        spanCache = CacheBuilder.newBuilder().build();
+    }
+
+    void updateSpan(List<T> spans){
+        setChildren(spans);
+        spanEditedListeners.forEach(l -> l.accept(this));
+        spanCache.invalidateAll();
+        getParent().updateParent();
+    }
+
+    void updateParent(){
+        spanCache.invalidateAll();
+        childEditedListeners.forEach(l -> l.accept(this));
+    }
+
+    void setRemove(){
+        spanRemovedListeners.forEach(l -> l.accept(this));
+        delegate().filter(s -> s instanceof SpanBranch)
+            .forEach(s -> s.setRemove());
+    }
+
+    abstract T getParent();
+
+    protected <T> T getLocalCache(Object key, Callable<T> caller, Class<T> cast){
+        try {
+            return cast.cast(spanCache.get(key, caller));
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e.getCause());
+        }
+    }
 
     @Override
     public final String getRaw(){
@@ -33,23 +74,6 @@ public abstract class SpanNode<T extends Span> extends Span
     @Override
     public int getLocalEnd(){
         return getRaw().length();
-    }
-
-    @Override
-    public void setRemove(){
-        for(Span child: this){
-            child.setRemove();
-        }
-        super.setRemove();
-    }
-
-    void setDocEdited(){
-        for (Span span: this){
-            if (span instanceof SpanNode){
-                ((SpanNode)span).setDocEdited();
-            }
-        }
-        docEdited();
     }
 
     /** Get the first span if it a subclass of {@code clazz}. */

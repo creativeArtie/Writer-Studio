@@ -27,6 +27,19 @@ public abstract class SpanBranch extends SpanNode<Span> {
         docEdited();
     }
 
+    protected void setChildren(List<Span> spans){
+        ans.forEach((span) -> {
+            if (span instanceof SpanBranch){
+                ((SpanBranch)span).setParent(this);
+            } else {
+                ((SpanLeaf)span).setParent(this);
+            }
+        });
+        spanChildren.filter(s -> s instanceof SpanBranch)
+            .forEach(s -> s.setRemove());
+        spanChildren = spans;
+    }
+
     /**
      * Set the children's parent to this. Helper method of
      * {@link #SpanBranch(List)} and {@link #editRaw(String)}.

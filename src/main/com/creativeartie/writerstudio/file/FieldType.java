@@ -2,7 +2,10 @@ package com.creativeartie.writerstudio.file;
 
 /** Statstics Fields */
 public enum FieldType {
-    PAGE_NUMBER("Stats.PageNumber"), WORD_COUNT("Stats.WordCountEst");
+    /** To show the current page number */
+    PAGE_NUMBER("Stats.PageNumber"),
+    /** To show the word count round to the significate digit*/
+    WORD_COUNT("Stats.WordCountEst");
 
     private String fieldKey;
 

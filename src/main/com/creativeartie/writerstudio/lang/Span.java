@@ -2,8 +2,10 @@ package com.creativeartie.writerstudio.lang;
 
 import java.util.*; // HashSet, Optional
 import java.util.function.*; // Consumer, Function
+import java.util.concurrent.*; // Callable, ExecutionException
 
 import com.google.common.collect.*; // Range, ImmuableList
+import com.google.common.cache.*; // Range, ImmuableList
 
 import static com.creativeartie.writerstudio.main.Checker.*;
 
@@ -11,17 +13,6 @@ import static com.creativeartie.writerstudio.main.Checker.*;
  * A subdivision of a {@link Document document text}.
  */
 public abstract class Span{
-
-    private final HashSet<Consumer<Span>> removeListeners;
-    private final HashSet<Consumer<Span>> changeListeners;
-    private final HashSet<Consumer<Span>> updateListeners;
-
-    Span(){
-        removeListeners = new HashSet<>();
-        changeListeners = new HashSet<>();
-        updateListeners = new HashSet<>();
-    }
-
     /** Get the raw text. */
     public abstract String getRaw();
 
@@ -34,68 +25,6 @@ public abstract class Span{
     /** Get the {@link SpanNode parent span}. */
     public abstract SpanNode<?> getParent();
 
-    /** Add a listener when this is removed. */
-    public void addRemover(Consumer<Span> listener){
-        removeListeners.add(listener);
-    }
-
-    public void removeRemover(Consumer<Span> listener){
-        removeListeners.remove(listener);
-    }
-
-    /** Calls the remove listeners. */
-    void setRemove(){
-        removeListeners.forEach(remover -> remover.accept(this));
-    }
-
-    public boolean isInUsed(){
-        return getParent() != null && getParent().indexOf(this) != -1;
-    }
-
-    /** Add a listener when this span's children has been replaced. */
-    public final void addEditor(Consumer<Span> listener){
-        checkNotNull(listener, "listener");
-        changeListeners.add(listener);
-    }
-
-    public final void removeEditor(Consumer<Span> listener){
-        checkNotNull(listener, "listener");
-        changeListeners.remove(listener);
-    }
-
-    /** Add a listener when this span's text has changed. */
-    public final void addUpdater(Consumer<Span> listener){
-        checkNotNull(listener, "listener");
-        updateListeners.add(listener);
-    }
-
-    public final void removeUpdater(Consumer<Span> listener){
-        checkNotNull(listener, "listener");
-        updateListeners.remove(listener);
-    }
-
-    /** Calls the change listeners and all it's parent update listeners. */
-    void setUpdated(){
-        changeListeners.forEach(changer -> changer.accept(this));
-        updateParent();
-    }
-
-    /**
-     * Calls the update listeners, including the parent's. Helper method of
-     * {@link #setUpdated()}.
-     *
-     * This is recursive method and cannot be inlined into
-     * {@linkplain setUpdate()}.
-     */
-    private final void updateParent(){
-        updateListeners.forEach(editor -> editor.accept(this));
-        ((SpanNode<?>)this).childEdited();
-        if (! (this instanceof Document)){
-            ((Span)getParent()).updateParent();
-        }
-    }
-
-
     /**
      * Finds the index of this span in the parent or return -1.
      */
@@ -106,16 +35,6 @@ public abstract class Span{
         SpanNode<?> parent = getParent();
         return parent != null? parent.indexOf(this): -1;
     }
-
-    protected final void clearCache(){
-        ((SpanNode<?>)this).childEdited();
-        if (! (this instanceof Document)){
-            ((Span)getParent()).clearCache();
-        }
-    }
-
-    /** Listened that the document has been edited. */
-    protected abstract void docEdited();
 
     /** Get the start and end of this span in relation the the document. */
     public Range<Integer> getRange(){
