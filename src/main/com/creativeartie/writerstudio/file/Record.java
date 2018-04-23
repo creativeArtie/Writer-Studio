@@ -249,8 +249,7 @@ public final class Record{
      * @return answer
      */
     public int getPublishTotal(){
-        return lastRecord.map(record -> publishTotal - record.publishTotal)
-            .orElse(publishTotal);
+        return publishTotal;
     }
 
     /** Get the record's note count.
@@ -276,6 +275,16 @@ public final class Record{
     public Duration getWriteTime(){
         return timeTotal;
     }
+
+    /** Get the record's publishing count.
+     *
+     * @return answer
+     */
+    public int getPublishWritten(){
+        return lastRecord.map(record -> publishTotal - record.publishTotal)
+            .orElse(publishTotal);
+    }
+
 
     /// %Part 2.4.2: Set Methods -----------------------------------------------
 
