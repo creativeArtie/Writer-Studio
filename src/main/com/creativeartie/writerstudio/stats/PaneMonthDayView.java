@@ -98,7 +98,7 @@ abstract class PaneMonthDayView extends AnchorPane{
 
     void withRecord(Record record){
         readDay.setValue(record.getRecordDate());
-        int written = record.getPublishTotal();
+        int written = record.getPublishWritten();
         int goal = record.getPublishGoal();
         Duration dur = record.getWriteTime();
         Duration timeGoal = record.getTimeGoal();

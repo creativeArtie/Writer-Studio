@@ -32,7 +32,7 @@ enum InfoDataParser implements SetupParser{
     }), NOTE_REF(pointer -> {
         assert pointer != null: "Null pointer";
         ArrayList<Span> children = new ArrayList<>();
-        if (ID_DATA.parse(children, pointer)){
+        if (DirectoryParser.REF_NOTE.parse(children, pointer)){
             return Optional.of(new InfoDataSpanRef(children));
         }
         return Optional.empty();

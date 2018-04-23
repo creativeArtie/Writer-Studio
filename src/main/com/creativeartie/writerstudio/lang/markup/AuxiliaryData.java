@@ -269,9 +269,6 @@ public final class AuxiliaryData{
     static final SetupParser FORMATTED_HEADER = new FormattedParser(
         StyleInfoLeaf.TEXT, true, EDITION_BEGIN);
 
-    static final SetupParser ID_DATA = DirectoryParser
-        .getRefParser(DirectoryType.NOTE);
-
     /// Part-3-3: Main Section Line Parsers
     public static final List<SetupParser> SECTION_PARSERS = getSectionParsers();
 

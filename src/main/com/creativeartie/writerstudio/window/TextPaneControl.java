@@ -38,7 +38,7 @@ class TextPaneControl extends TextPaneView {
     }
 
     void updateStats(Record record){
-        int wordCount = record.getPublishTotal();
+        int wordCount = record.getPublishWritten();
         double wordPrecent = (wordCount / (double) record.getPublishGoal()) * 100;
 
         Duration timer = record.getWriteTime();

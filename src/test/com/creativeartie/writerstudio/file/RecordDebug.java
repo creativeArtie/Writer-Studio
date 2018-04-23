@@ -77,10 +77,10 @@ public class RecordDebug {
         assertEquals("Wrong totalCount.", expectedTotal, test.getTotalCount());
         if (expectDuration != null){
             assertEquals("Wrong duration.", expectDuration, test.getWriteTime());
-            assertEquals("Wrong publish written.", 100, test.getPublishTotal());
+            assertEquals("Wrong publish written.", 100, test.getPublishWritten());
         } else {
             /// System.out.println(test.getWriteTime());
-            assertEquals("Wrong publish written.", 0, test.getPublishTotal());
+            assertEquals("Wrong publish written.", 0, test.getPublishWritten());
         }
     }
 }
