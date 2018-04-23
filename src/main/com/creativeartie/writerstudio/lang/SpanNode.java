@@ -17,64 +17,69 @@ import static com.creativeartie.writerstudio.main.Checker.*;
 public abstract class SpanNode<T extends Span> extends Span
         implements List<T> {
 
-    private final HashSet<Consumer<Span>> childEditedListeners;
-    private final HashSet<Consumer<Span>> spanRemovedListeners;
-    private final HashSet<Consumer<Span>> spanEditedListeners;
+    private final HashSet<Consumer<SpanNode<T>>> childEditedListeners;
+    private final HashSet<Consumer<SpanNode<T>>> spanRemovedListeners;
+    private final HashSet<Consumer<SpanNode<T>>> spanEditedListeners;
+    private boolean editedTarget;
+
+    private final Cache<CacheKeyMain<?>, Object> spanCache;
+    private final Cache<CacheKeyOptional<?>, Optional<?>> spanOptionalCache;
+    private final Cache<CacheKeyList<?>, List<?>> spanListCache;
 
     private final Cache<CacheKeyMain<?>, Object> docCache;
-    private final Cache<CacheKeyMain<?>, Object> spanCache;
-
-    private final Cache<CacheKeyOptional<?>, Object> docOptionalCache;
-    private final Cache<CacheKeyOptional<?>, Object> spanOptionalCache;
-
+    private final Cache<CacheKeyOptional<?>, Optional<?>> docOptionalCache;
     private final Cache<CacheKeyList<?>, List<?>> docListCache;
-    private final Cache<CacheKeyList<?>, List<?>> spanListCache;
+
 
 
     protected SpanNode(){
         childEditedListeners = new HashSet<>();
         spanRemovedListeners = new HashSet<>();
         spanEditedListeners = new HashSet<>();
+        editedTarget = false;
 
-        docCache = CacheBuilder.newBuilder().build();
         spanCache = CacheBuilder.newBuilder().build();
+        spanOptionalCache = CacheBuilder.newBuilder().build();
+        spanListCache = CacheBuilder.newBuilder().build();
 
         docOptionalCache = CacheBuilder.newBuilder().build();
-        spanOptionalCache = CacheBuilder.newBuilder().build();
-
+        docCache = CacheBuilder.newBuilder().build();
         docListCache = CacheBuilder.newBuilder().build();
-        spanListCache = CacheBuilder.newBuilder().build();
+
     }
 
-    public void addSpanEdited(Consumer<Span> consumer){
+    public void addSpanEdited(Consumer<SpanNode<T>> consumer){
         spanEditedListeners.add(consumer);
     }
 
-    public void removeSpanEdited(Consumer<Span> consumer){
+    public void removeSpanEdited(Consumer<SpanNode<T>> consumer){
         spanEditedListeners.remove(consumer);
     }
 
-    public void addSpanRemoved(Consumer<Span> consumer){
+    public void addSpanRemoved(Consumer<SpanNode<T>> consumer){
         spanRemovedListeners.add(consumer);
     }
 
-    public void removeSpanRemoved(Consumer<Span> consumer){
+    public void removeSpanRemoved(Consumer<SpanNode<T>> consumer){
         spanRemovedListeners.remove(consumer);
     }
 
-    public void addChildEdited(Consumer<Span> consumer){
+    public void addChildEdited(Consumer<SpanNode<T>> consumer){
         childEditedListeners.add(consumer);
     }
 
-    public void removeChildEdited(Consumer<Span> consumer){
+    public void removeChildEdited(Consumer<SpanNode<T>> consumer){
         childEditedListeners.remove(consumer);
     }
 
     final void updateSpan(List<T> spans){
         setChildren(spans);
+
         spanCache.invalidateAll();
         spanOptionalCache.invalidateAll();
-        spanEditedListeners.forEach(l -> l.accept(this));
+        spanListCache.invalidateAll();
+
+        editedTarget = true;
         getParent().updateParent();
     }
 
@@ -82,7 +87,7 @@ public abstract class SpanNode<T extends Span> extends Span
         spanCache.invalidateAll();
         spanOptionalCache.invalidateAll();
         spanListCache.invalidateAll();
-        childEditedListeners.forEach(l -> l.accept(this));
+
         if (this instanceof SpanBranch){
             getParent().updateParent();
         } else {
@@ -90,7 +95,7 @@ public abstract class SpanNode<T extends Span> extends Span
         }
     }
 
-    final void clearCache(){
+    void clearCache(){
         docCache.invalidateAll();
         docOptionalCache.invalidateAll();
         docListCache.invalidateAll();
@@ -100,6 +105,17 @@ public abstract class SpanNode<T extends Span> extends Span
         spanRemovedListeners.forEach(l -> l.accept(this));
         delegate().stream().filter(s -> s instanceof SpanBranch)
             .forEach(s -> ((SpanBranch)s).setRemove());
+    }
+
+    final void fireListeners(){
+        childEditedListeners.forEach(l -> l.accept(this));
+        if (editedTarget){
+            spanEditedListeners.forEach(l -> l.accept(this));
+            editedTarget = false;
+        } else {
+        }
+        stream().filter(s -> s instanceof SpanBranch)
+            .forEach(s -> ((SpanBranch)s).fireListeners());
     }
 
     abstract void setChildren(List<T> spans);
@@ -120,7 +136,7 @@ public abstract class SpanNode<T extends Span> extends Span
     }
 
     protected final <T> Optional<T> getLocalCache(CacheKeyOptional<T> key,
-            Callable<T> caller){
+            Callable<Optional<T>> caller){
         try {
             return key.cast(spanOptionalCache.get(key, caller));
         } catch (ExecutionException e) {
@@ -129,7 +145,7 @@ public abstract class SpanNode<T extends Span> extends Span
     }
 
     protected <T> Optional<T> getDocCache(CacheKeyOptional<T> key,
-            Callable<T> caller){
+            Callable<Optional<T>> caller){
         try {
             return key.cast(docOptionalCache.get(key, caller));
         } catch (ExecutionException e) {

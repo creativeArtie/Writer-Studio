@@ -4,7 +4,6 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 
-
 public class DocumentAssert {
 
     private static class LastBranch extends SpanBranch{
@@ -51,9 +50,6 @@ public class DocumentAssert {
 
     private final Document doc;
     private IDTestDocument idTester;
-    private boolean editPass;
-    private int editedSpans;
-    private int totalSpans;
 
     private DocumentAssert(Document document){
         doc = document;
@@ -222,66 +218,16 @@ public class DocumentAssert {
     }
 
     public void insert(int location, String input, int ... idx){
-        willEdit((SpanNode<?>)getFamily(idx)[0]);
+        EditAssert edit = new EditAssert(doc, (SpanNode<?>)getFamily(idx)[0]);
         doc.insert(location, input);
         idTester = new IDTestDocument();
-        assertTrue("No span changed.", editPass);
-        assertEquals("Wrong number of updater & editor called", totalSpans,
-            editedSpans);
+        edit.testRest();
     }
 
     public void delete(int start, int end, int ... idx){
-        willEdit((SpanNode<?>)getFamily(idx)[0]);
+        EditAssert edit = new EditAssert(doc, (SpanNode<?>)getFamily(idx)[0]);
         doc.delete(start, end);
         idTester = new IDTestDocument();
-        assertTrue("No span changed.", editPass);
-        assertEquals("Wrong number of updater & editor called", totalSpans,
-            editedSpans);
-    }
-
-    private DocumentAssert willEdit(SpanNode<?> span){
-        editPass = false;
-        editedSpans = 0;
-        Document doc = span.getDocument();
-        doc.addChildEdited(out -> editedSpans++);
-        doc.addSpanRemoved(out -> fail("Document should not removed:" + out));
-        doc.addSpanEdited(span == doc? out -> editPass = true:
-            out -> fail("Document should not edited:" + out));
-        totalSpans = 1;
-        willEdit(doc, span, false);
-        return this;
-    }
-
-    private void willEdit(SpanNode<?> root, Span target, boolean isChild){
-        for(Span span: root){
-            if (! (span instanceof SpanBranch)){
-                continue;
-            }
-            SpanBranch found = (SpanBranch) span;
-            if (span == target){
-                found.addSpanEdited(out -> editPass = true);
-                found.addChildEdited(out -> editedSpans++);
-                found.addSpanRemoved(out -> fail("Edited found(" + out.getClass() +
-                    ") got removed:" + out));
-                isChild = false;
-            } else {
-                found.addSpanEdited(out -> fail("Wrong found(" + out.getClass() +
-                    ") edited:" + out));
-                if (isChild){
-                    found.addChildEdited(out -> fail("Wrong child(" + out.getClass() +
-                    ") updated:" + out));
-                    found.addSpanRemoved(out -> editedSpans++);
-                } else {
-                    found.addChildEdited(out -> editedSpans++);
-                    found.addSpanRemoved(out -> fail("Wrong found(" + out.getClass() +
-                    ")removed:" + out));
-                }
-
-            }
-            if (span instanceof SpanNode<?>){
-                willEdit((SpanNode<?>)span, target, isChild);
-            }
-            totalSpans++;
-        }
+        edit.testRest();
     }
 }

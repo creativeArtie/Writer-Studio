@@ -31,7 +31,7 @@ public final class FormatSpanLinkDirect extends FormatSpanLink {
     @Override
     public final Optional<SpanBranch> getPathSpan(){
         return getLocalCache(cacheTarget, () -> spanFromFirst(ContentSpan
-            .class).map(span -> (SpanBranch) span).orElse(null));
+            .class).map(span -> (SpanBranch) span));
     }
 
     public String getPath(){

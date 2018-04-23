@@ -40,7 +40,6 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
     public Optional<CatalogueIdentity> getSpanIdentity(){
         return getLocalCache(cacheId, () ->
             spanFromFirst(DirectorySpan.class).map(span -> span.buildId())
-            .orElse(null)
         );
     }
 

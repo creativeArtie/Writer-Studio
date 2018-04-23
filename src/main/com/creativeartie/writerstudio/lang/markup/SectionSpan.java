@@ -61,7 +61,7 @@ public abstract class SectionSpan extends SpanBranch {
 
     public final Optional<LinedSpanLevelSection> getHeading(){
         return getLocalCache(cacheHeading, () -> spanAtFirst(
-            LinedSpanLevelSection.class).orElse(null));
+            LinedSpanLevelSection.class));
     }
 
     public final int getLevel(){

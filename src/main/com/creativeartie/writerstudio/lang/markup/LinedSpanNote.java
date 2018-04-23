@@ -58,7 +58,7 @@ public class LinedSpanNote extends LinedSpan{
 
     public Optional<FormattedSpan> getFormattedSpan(){
         return getLocalCache(cacheFormatted, () -> spanFromLast(
-            FormattedSpan.class).orElse(null));
+            FormattedSpan.class));
     }
 
     public String getLookupText(){
@@ -71,7 +71,7 @@ public class LinedSpanNote extends LinedSpan{
 
     Optional<CatalogueIdentity> buildId(){
         return getLocalCache(cacheId, () -> spanFromFirst(DirectorySpan.class)
-            .map(span -> span.buildId()).orElse(null)
+            .map(span -> span.buildId())
         );
     }
 

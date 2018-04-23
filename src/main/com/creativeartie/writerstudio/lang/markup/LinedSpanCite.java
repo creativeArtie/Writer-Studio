@@ -47,8 +47,7 @@ public class LinedSpanCite extends LinedSpan {
     }
 
     public Optional<InfoDataSpan> getData(){
-        return getLocalCache(cacheData, () -> spanFromLast(InfoDataSpan.class)
-            .orElse(null));
+        return getLocalCache(cacheData, () -> spanFromLast(InfoDataSpan.class));
     }
 
     @Override

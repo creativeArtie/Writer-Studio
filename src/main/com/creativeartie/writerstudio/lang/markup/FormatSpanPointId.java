@@ -39,7 +39,6 @@ public final class FormatSpanPointId extends FormatSpan implements Catalogued{
             .map(id -> getDocument().getCatalogue().get(id))
             .filter(data -> data.isReady())
             .map(data -> data.getTarget())
-            .orElse(null)
         );
     }
 
@@ -48,7 +47,6 @@ public final class FormatSpanPointId extends FormatSpan implements Catalogued{
         return getLocalCache(cacheId, () ->
             spanFromFirst(DirectorySpan.class)
             .map(span -> span.buildId())
-            .orElse(null)
         );
     }
 

@@ -52,7 +52,6 @@ public abstract class LinedSpanPoint extends LinedSpan implements Catalogued{
     public Optional<CatalogueIdentity> getSpanIdentity(){
         return getLocalCache(cacheId, () ->
             spanFromFirst(DirectorySpan.class).map(span -> span.buildId())
-            .orElse(null)
         );
     }
 

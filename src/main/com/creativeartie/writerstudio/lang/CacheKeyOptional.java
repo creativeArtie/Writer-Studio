@@ -12,10 +12,7 @@ public final class CacheKeyOptional<T> extends CacheKey {
         valueCaster = argumentNotNull(caster, "caster");
     }
 
-    public Optional<T> cast(Object value){
-        if (value instanceof Optional){
-            value = ((Optional<?>)value).orElse(null);
-        }
-        return Optional.ofNullable(valueCaster.cast(value));
+    public Optional<T> cast(Optional<?> value){
+        return value.map(v -> valueCaster.cast(v));
     }
 }

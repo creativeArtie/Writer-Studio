@@ -25,8 +25,7 @@ public abstract class TextDataSpan<T extends SpanBranch> extends SpanBranch{
     }
 
     public Optional<T> getData(){
-        return getLocalCache(cacheData, () -> spanFromLast(getDataClass())
-            .orElse(null));
+        return getLocalCache(cacheData, () -> spanFromLast(getDataClass()));
     }
 
     protected abstract Class<T> getDataClass();

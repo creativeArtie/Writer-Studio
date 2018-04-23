@@ -36,7 +36,7 @@ public class LinedSpanAgenda extends LinedSpan implements Catalogued{
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
         return getDocCache(cacheId, () ->
-            new CatalogueIdentity(TYPE_AGENDA_LINED, this)
+            Optional.of(new CatalogueIdentity(TYPE_AGENDA_LINED, this))
         );
     }
 

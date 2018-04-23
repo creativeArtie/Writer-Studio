@@ -28,7 +28,7 @@ public class LinedSpanPointNote extends LinedSpanPoint {
 
     public Optional<FormattedSpan> getFormattedSpan(){
         return getLocalCache(cacheFormatted, () -> spanFromLast(
-            FormattedSpan.class).orElse(null));
+            FormattedSpan.class));
     }
 
     @Override

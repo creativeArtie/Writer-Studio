@@ -49,7 +49,7 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
 
     public Optional<FormattedSpan> getTitle(){
         return getLocalCache(cacheHead, () -> spanFromFirst(LinedSpanNote.class)
-            .flatMap(span -> span.getFormattedSpan()).orElse(null));
+            .flatMap(span -> span.getFormattedSpan()));
     }
 
     public List<FormattedSpan> getContent(){
@@ -75,17 +75,16 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
             for (Span child: this){
                 if(isType(child, type -> type == InfoFieldType.FOOTNOTE ||
                         type == InfoFieldType.IN_TEXT)){
-                    return (LinedSpanCite) child;
+                    return Optional.of((LinedSpanCite) child);
                 }
             }
-            return null;
+            return Optional.empty();
         });
 
     }
 
     public Optional<FormattedSpan> getSource(){
-        return getLocalCache(cacheSource, () -> getSource(this, false)
-            .orElse(null));
+        return getLocalCache(cacheSource, () -> getSource(this, false));
     }
 
     private Optional<FormattedSpan> getSource(NoteCardSpan start, boolean loop){
@@ -139,13 +138,13 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
 
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
-        return getDocCache(cacheId, () ->
+        return getDocCache(cacheId, () -> Optional.of(
             spanFromFirst(LinedSpanNote.class)
                 .flatMap(line -> line.buildId())
                 .orElseGet(() ->
                     new CatalogueIdentity(Arrays.asList(TYPE_COMMENT), this)
                 )
-        );
+        ));
     }
 
     public String getLookupText(){

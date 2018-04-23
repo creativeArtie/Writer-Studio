@@ -24,7 +24,7 @@ public class LinedSpanParagraph extends LinedSpan {
 
     public Optional<FormattedSpan> getFormattedSpan(){
         return getLocalCache(cacheFormatted, () -> spanAtFirst(
-            FormattedSpan.class).orElse(null));
+            FormattedSpan.class));
     }
 
     @Override

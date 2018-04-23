@@ -45,8 +45,8 @@ public final class FormatSpanAgenda extends SpanBranch implements Catalogued{
 
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
-        return getDocCache(cacheId, () -> new CatalogueIdentity(
-            TYPE_AGENDA_INLINE, this));
+        return getDocCache(cacheId, () -> Optional.of(new CatalogueIdentity(
+            TYPE_AGENDA_INLINE, this)));
     }
 
     @Override

@@ -80,9 +80,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
             /// CatalogueStatus checking what happen if SetupPointer fails or
             /// SetupParser[] misses the texts
             if(counter > raw.length()){
-                System.out.println(documentChildren);
-                System.out.println(ptr);
-                throw new RuntimeException("Loop too much");
+                throw new RuntimeException("Loop too much: " + ptr);
             }
             counter++;
 
@@ -110,9 +108,14 @@ public abstract class Document extends SpanNode<SpanBranch>{
         spanRanges.invalidateAll();
         spanLeaves.invalidateAll();
         spanTexts.invalidateAll();
+        clearCache();
+        for (SpanBranch span: this){
+            span.clearCache();
+        }
 
         catalogueMap.clear();
         loadMap(this);
+        fireListeners();
 
     }
 
@@ -370,6 +373,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
                 /// edit is within the local text
                 if (((SpanBranch)span).editRaw(raw)){
                     /// edit is completed
+                    // ((SpanBranch)span).updateSpan();
                     return;
                 }
             }

@@ -27,10 +27,10 @@ public abstract class SpanBranch extends SpanNode<Span> {
         spanStatus = new CacheKeyMain<>(CatalogueStatus.class);
     }
 
-    protected final void updateDoc(){
-        clearCache();
+    protected final void clearCache(){
+        super.clearCache();
         spanChildren.stream().filter(s -> s instanceof SpanBranch)
-            .forEach(s -> ((SpanBranch)s).updateDoc());
+            .forEach(s -> ((SpanBranch)s).clearCache());
     }
 
     @Override
@@ -117,7 +117,8 @@ public abstract class SpanBranch extends SpanNode<Span> {
 
         SetupPointer pointer = SetupPointer.updatePointer(text,
             getDocument());
-        parser.parse(pointer).ifPresent(s -> updateSpan(s));
+        Optional<SpanBranch> span = parser.parse(pointer);
+        span.ifPresent(s -> updateSpan((List<Span>)s));
         /// There are text left over.
         if (pointer.hasNext()){
             throw new IllegalStateException("Has left over characters.");

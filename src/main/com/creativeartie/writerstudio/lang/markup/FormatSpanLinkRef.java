@@ -41,10 +41,10 @@ public final class FormatSpanLinkRef extends FormatSpanLink
                     Span span = data.getTarget();
                     assert span instanceof LinedSpanPointLink ||
                         span instanceof LinedSpanLevelSection;
-                    return (SpanBranch) span;
+                    return Optional.of((SpanBranch) span);
                 }
             }
-            return null;
+            return Optional.empty();
         });
     }
 
@@ -64,10 +64,9 @@ public final class FormatSpanLinkRef extends FormatSpanLink
 
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
-        return getLocalCache(cacheId, () ->{
-            return spanFromFirst(DirectorySpan.class).map(
-                span -> span.buildId()).orElse(null);
-        });
+        return getLocalCache(cacheId, () ->
+            spanFromFirst(DirectorySpan.class).map(span -> span.buildId())
+        );
     }
 
     @Override

@@ -13,11 +13,13 @@ public final class CacheKeyList<T> extends CacheKey {
     }
 
 
-    List<T> cast(Object value){
-        List<?> list = argumentIsInstance(value, "value", List.class);
+    List<T> cast(List<?> value){
         ArrayList<T> ans = new ArrayList<>();
-        for (Object item : list){
-            ans.add(argumentIsInstance(item, "value's item", valueCaster));
+        int i = 0;
+        for (Object item : value){
+            ans.add(argumentIsInstance(item, "value.get(" + i + ")",
+                valueCaster));
+            i++;
         }
         return ans;
     }

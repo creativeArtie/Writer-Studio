@@ -22,7 +22,7 @@ public abstract class LinedSpanLevel extends LinedSpan {
 
     public Optional<FormattedSpan> getFormattedSpan(){
         return getLocalCache(cacheFormatted, () -> spanFromLast(
-            FormattedSpan.class).orElse(null));
+            FormattedSpan.class));
     }
 
     public int getLevel(){
