@@ -19,8 +19,6 @@ public class DocumentAssert {
         @Override protected SetupParser getParser(String text){
             return null;
         }
-        @Override protected void childEdited(){}
-        @Override protected void docEdited(){}
 
         @Override public String toString(){
             return "unused:" + get(0);
@@ -43,10 +41,7 @@ public class DocumentAssert {
     public static DocumentAssert assertDoc(int childrenSize, String rawText,
             SetupParser ... parsers){
         SetupParser[] input = SetupParser.combine(parsers, END_PARSER);
-        Document test = new Document(rawText, input){
-            @Override protected void docEdited(){}
-            @Override protected void childEdited(){}
-        };
+        Document test = new Document(rawText, input){};
         return assertDoc(childrenSize, rawText, test);
     }
 
@@ -248,9 +243,9 @@ public class DocumentAssert {
         editPass = false;
         editedSpans = 0;
         Document doc = span.getDocument();
-        doc.addUpdater(out -> editedSpans++);
-        doc.addRemover(out -> fail("Document should not removed:" + out));
-        doc.addEditor(span == doc? out -> editPass = true:
+        doc.addChildEdited(out -> editedSpans++);
+        doc.addSpanRemoved(out -> fail("Document should not removed:" + out));
+        doc.addSpanEdited(span == doc? out -> editPass = true:
             out -> fail("Document should not edited:" + out));
         totalSpans = 1;
         willEdit(doc, span, false);
@@ -259,22 +254,26 @@ public class DocumentAssert {
 
     private void willEdit(SpanNode<?> root, Span target, boolean isChild){
         for(Span span: root){
+            if (! (span instanceof SpanBranch)){
+                continue;
+            }
+            SpanBranch found = (SpanBranch) span;
             if (span == target){
-                span.addEditor(out -> editPass = true);
-                doc.addUpdater(out -> editedSpans++);
-                doc.addRemover(out -> fail("Edited span(" + out.getClass() +
+                found.addSpanEdited(out -> editPass = true);
+                found.addChildEdited(out -> editedSpans++);
+                found.addSpanRemoved(out -> fail("Edited found(" + out.getClass() +
                     ") got removed:" + out));
                 isChild = false;
             } else {
-                span.addEditor(out -> fail("Wrong span(" + out.getClass() +
+                found.addSpanEdited(out -> fail("Wrong found(" + out.getClass() +
                     ") edited:" + out));
                 if (isChild){
-                    doc.addUpdater(out -> fail("Wrong child(" + out.getClass() +
+                    found.addChildEdited(out -> fail("Wrong child(" + out.getClass() +
                     ") updated:" + out));
-                    doc.addRemover(out -> editedSpans++);
+                    found.addSpanRemoved(out -> editedSpans++);
                 } else {
-                    doc.addUpdater(out -> editedSpans++);
-                    doc.addRemover(out -> fail("Wrong span(" + out.getClass() +
+                    found.addChildEdited(out -> editedSpans++);
+                    found.addSpanRemoved(out -> fail("Wrong found(" + out.getClass() +
                     ")removed:" + out));
                 }
 

@@ -13,15 +13,20 @@ import com.creativeartie.writerstudio.lang.*;
 public final class FormatSpanPointId extends FormatSpan implements Catalogued{
     private final FormatParsePointId spanReparser;
     private final DirectoryType spanType;
-    private Optional<Optional<SpanBranch>> cacheTarget;
-    private Optional<Optional<CatalogueIdentity>> cacheId;
-    private Optional<List<StyleInfo>> cacheStyles;
-    private Optional<String> cacheOutput;
+    private final CacheKeyOptional<SpanBranch> cacheTarget;
+    private final CacheKeyOptional<CatalogueIdentity> cacheId;
+    private final CacheKeyList<StyleInfo> cacheStyles;
+    private final CacheKeyMain<String> cacheOutput;
 
     FormatSpanPointId(List<Span> children, FormatParsePointId reparser){
         super(children, reparser.getFormats());
         spanType = reparser.getDirectoryType();
         spanReparser = reparser;
+
+        cacheTarget = new CacheKeyOptional<>(SpanBranch.class);
+        cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
+        cacheStyles = new CacheKeyList<>(StyleInfo.class);
+        cacheOutput = CacheKey.stringKey();
     }
 
     /** Gets the type of note it is pointing to. */
@@ -30,21 +35,21 @@ public final class FormatSpanPointId extends FormatSpan implements Catalogued{
     }
 
     public Optional<SpanBranch> getTarget(){
-        cacheTarget = getCache(cacheTarget, () -> getSpanIdentity()
+        return getLocalCache(cacheTarget, () -> getSpanIdentity()
             .map(id -> getDocument().getCatalogue().get(id))
             .filter(data -> data.isReady())
             .map(data -> data.getTarget())
+            .orElse(null)
         );
-        return  cacheTarget.get();
     }
 
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
-        cacheId = getCache(cacheId, () -> {
-            Optional<DirectorySpan> found = spanFromFirst(DirectorySpan.class);
-            return found.map(span -> span.buildId());
-        });
-        return cacheId.get();
+        return getLocalCache(cacheId, () ->
+            spanFromFirst(DirectorySpan.class)
+            .map(span -> span.buildId())
+            .orElse(null)
+        );
     }
 
     @Override
@@ -54,42 +59,28 @@ public final class FormatSpanPointId extends FormatSpan implements Catalogued{
 
     @Override
     public List<StyleInfo> getBranchStyles(){
-        cacheStyles = getCache(cacheStyles, () -> {
+        return getLocalCache(cacheStyles, () -> {
             ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
             return builder.add(spanType).add(getIdStatus())
                 .addAll(super.getBranchStyles()).build();
         });
-        return cacheStyles.get();
     }
 
     @Override
     public String getOutput(){
-        cacheOutput = getCache(cacheOutput, () -> {
+        return getLocalCache(cacheOutput, () -> {
             Optional<DirectorySpan> id = spanFromFirst(DirectorySpan.class);
             if (id.isPresent()){
                 return id.get().getLookupText();
             }
             return "";
         });
-        return cacheOutput.get();
     }
 
     @Override
     protected SetupParser getParser(String text){
         return spanReparser.canParse(text)? spanReparser: null;
     }
-
-    @Override
-    protected void childEdited(){
-        super.childEdited();
-        cacheTarget = Optional.empty();
-        cacheId = Optional.empty();
-        cacheStyles = Optional.empty();
-        cacheOutput = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){}
 
     @Override
     protected String toChildString(){

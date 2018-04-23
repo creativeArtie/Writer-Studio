@@ -15,12 +15,13 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 public final class FormatSpanAgenda extends SpanBranch implements Catalogued{
     private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(
         AuxiliaryType.AGENDA);
-    private Optional<String> cacheAgenda;
-    private Optional<Optional<CatalogueIdentity>> cacheId;
+    private CacheKeyMain<String> cacheAgenda;
+    private CacheKeyOptional<CatalogueIdentity> cacheId;
 
     FormatSpanAgenda(List<Span> children){
         super(children);
-        cacheId = Optional.empty();
+        cacheAgenda = CacheKey.stringKey();
+        cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
     }
 
     public Optional<ContentSpan> getAgendaSpan(){
@@ -28,14 +29,13 @@ public final class FormatSpanAgenda extends SpanBranch implements Catalogued{
     }
 
     public String getAgenda(){
-        cacheAgenda = getCache(cacheAgenda, () -> {
+        return getLocalCache(cacheAgenda, () -> {
             Optional<ContentSpan> text = getAgendaSpan();
             if (text.isPresent()){
                 return text.get().getTrimmed();
             }
             return "";
         });
-        return cacheAgenda.get();
     }
 
     @Override
@@ -45,9 +45,8 @@ public final class FormatSpanAgenda extends SpanBranch implements Catalogued{
 
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
-        cacheId = getCache(cacheId, () -> Optional.of(new CatalogueIdentity(
-            TYPE_AGENDA_INLINE, this)));
-        return cacheId.get();
+        return getDocCache(cacheId, () -> new CatalogueIdentity(
+            TYPE_AGENDA_INLINE, this));
     }
 
     @Override
@@ -60,16 +59,6 @@ public final class FormatSpanAgenda extends SpanBranch implements Catalogued{
         return (text.startsWith(CURLY_AGENDA) &&
             AuxiliaryChecker.willEndWith(text, CURLY_END)
         )? FormatParseAgenda.PARSER: null;
-    }
-
-    @Override
-    protected void childEdited(){
-        cacheAgenda = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){
-        cacheId = Optional.empty();
     }
 
     @Override

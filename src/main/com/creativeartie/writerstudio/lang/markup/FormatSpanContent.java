@@ -16,15 +16,20 @@ public final class FormatSpanContent extends FormatSpan implements BasicText{
     /// Stuff for reparsing
     private final FormatParseContent spanReparser;
 
-    private Optional<String> cacheText;
-    private Optional<String> cacheTrimmed;
-    private Optional<Boolean> cacheSpaceBegin;
-    private Optional<Boolean> cacheSpaceEnd;
+    private final CacheKeyMain<String> cacheText;
+    private final CacheKeyMain<String> cacheTrimmed;
+    private final CacheKeyMain<Boolean> cacheSpaceBegin;
+    private final CacheKeyMain<Boolean> cacheSpaceEnd;
 
     FormatSpanContent(List<Span> spanChildren, boolean[] formats,
             FormatParseContent reparser){
         super(spanChildren, formats);
         spanReparser = reparser;
+
+        cacheText = CacheKey.stringKey();
+        cacheTrimmed = CacheKey.stringKey();
+        cacheSpaceBegin = CacheKey.booleanKey();
+        cacheSpaceEnd = CacheKey.booleanKey();
     }
 
     @Override
@@ -34,47 +39,29 @@ public final class FormatSpanContent extends FormatSpan implements BasicText{
 
     @Override
     public String getText(){
-        cacheText = getCache(cacheText, () -> BasicText.super.getText());
-        return cacheText.get();
+        return getLocalCache(cacheText, () -> BasicText.super.getText());
     }
 
     @Override
     public String getTrimmed(){
-        cacheTrimmed = getCache(cacheTrimmed, () -> BasicText.super
-            .getTrimmed());
-        return cacheTrimmed.get();
+        return getLocalCache(cacheTrimmed, () -> BasicText.super.getTrimmed());
     }
 
     @Override
     public boolean isSpaceBegin(){
-        cacheSpaceBegin = getCache(cacheSpaceBegin,
-            () -> BasicText.super.isSpaceBegin());
-        return cacheSpaceBegin.get();
+        return getLocalCache(cacheSpaceBegin, () -> BasicText.super
+            .isSpaceBegin());
     }
 
     @Override
     public boolean isSpaceEnd(){
-        cacheSpaceEnd = getCache(cacheSpaceEnd,
-            () -> BasicText.super.isSpaceEnd());
-        return cacheSpaceEnd.get();
+        return getLocalCache(cacheSpaceEnd, () -> BasicText.super
+            .isSpaceEnd());
     }
-
     @Override
     protected SetupParser getParser(String text){
         return null;
     }
-
-    @Override
-    protected void childEdited(){
-        super.childEdited();
-        cacheText = Optional.empty();
-        cacheTrimmed = Optional.empty();
-        cacheSpaceBegin = Optional.empty();
-        cacheSpaceEnd = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){}
 
     @Override
     protected String toChildString(){

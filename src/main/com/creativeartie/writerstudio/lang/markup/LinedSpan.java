@@ -12,17 +12,17 @@ import static com.creativeartie.writerstudio.main.Checker.*;
  */
 public abstract class LinedSpan extends SpanBranch {
 
+    private final CacheKeyMain<LinedType> cacheType;
+
     LinedSpan(List<Span> children){
         super(children);
+
+        cacheType = new CacheKeyMain<>(LinedType.class);
     }
 
-    private LinedType linedType;
-
     public LinedType getLinedType(){
-        if (linedType == null){
-            linedType = LinedType.findType(get(0).getRaw());
-        }
-        return linedType;
+        return getLocalCache(cacheType, () -> LinedType.findType(get(0)
+            .getRaw()));
     }
 
     @Override

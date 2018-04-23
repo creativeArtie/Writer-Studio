@@ -41,50 +41,50 @@ public class LinedSpanNote extends LinedSpan{
         return false;
     }
 
-    private Optional<Optional<FormattedSpan>> cacheFormatted;
-    private Optional<Optional<CatalogueIdentity>> cacheId;
-    private Optional<String> cacheLookup;
-    private Optional<Integer> cacheNote;
-    private Optional<Boolean> cacheFirst;
+    private final CacheKeyOptional<FormattedSpan> cacheFormatted;
+    private final CacheKeyOptional<CatalogueIdentity> cacheId;
+    private final CacheKeyMain<String> cacheLookup;
+    private final CacheKeyMain<Integer> cacheNote;
+    private final CacheKeyMain<Boolean> cacheFirst;
 
     public LinedSpanNote(List<Span> children){
         super(children);
+        cacheFormatted = new CacheKeyOptional<>(FormattedSpan.class);
+        cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
+        cacheLookup = CacheKey.stringKey();
+        cacheNote = CacheKey.integerKey();
+        cacheFirst = CacheKey.booleanKey();
     }
 
     public Optional<FormattedSpan> getFormattedSpan(){
-        cacheFormatted = getCache(cacheFormatted, () -> spanFromLast(
-            FormattedSpan.class));
-        return cacheFormatted.get();
+        return getLocalCache(cacheFormatted, () -> spanFromLast(
+            FormattedSpan.class).orElse(null));
     }
 
     public String getLookupText(){
-        cacheLookup = getCache(cacheLookup, () ->
+        return getLocalCache(cacheLookup, () ->
             spanFromFirst(DirectorySpan.class)
                 .map(span -> CURLY_CITE + span.getLookupText() + CURLY_END)
                 .orElse("")
         );
-        return cacheLookup.get();
     }
 
     Optional<CatalogueIdentity> buildId(){
-        cacheId = getCache(cacheId, () -> spanFromFirst(DirectorySpan.class)
-            .map(span -> span.buildId())
+        return getLocalCache(cacheId, () -> spanFromFirst(DirectorySpan.class)
+            .map(span -> span.buildId()).orElse(null)
         );
-        return cacheId.get();
     }
 
     public boolean isFirstLine(){
-        cacheFirst = getCache(cacheFirst, () -> getParent().indexOf(this) == 0);
-        return cacheFirst.get();
+        return getDocCache(cacheFirst, () -> getParent().indexOf(this) == 0);
     }
 
     @Override
     public int getNoteTotal(){
-        cacheNote = getCache(cacheNote, () -> getFormattedSpan()
+        return getLocalCache(cacheNote, () -> getFormattedSpan()
             .map(span -> span.getTotalCount())
             .orElse(0)
         );
-        return cacheNote.get();
     }
 
     @Override
@@ -93,18 +93,5 @@ public class LinedSpanNote extends LinedSpan{
             (isFirst()? checkFirstLine(text) : checkMiddleLine(text)) &&
             AuxiliaryChecker.checkLineEnd(text, isLast())
         )? LinedParseRest.NOTE: null;
-    }
-
-    @Override
-    protected void childEdited(){
-        cacheFormatted = Optional.empty();
-        cacheId = Optional.empty();
-        cacheLookup = Optional.empty();
-        cacheNote = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){
-        cacheFirst = Optional.empty();
     }
 }

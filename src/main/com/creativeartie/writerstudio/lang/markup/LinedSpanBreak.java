@@ -20,9 +20,4 @@ public class LinedSpanBreak extends LinedSpan {
         return null;
     }
 
-    @Override
-    protected void childEdited(){}
-
-    @Override
-    protected void docEdited(){}
 }

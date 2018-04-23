@@ -22,34 +22,38 @@ public class LinedSpanCite extends LinedSpan {
         return text.startsWith(LINED_CITE);
     }
 
-    private Optional<InfoFieldType> cacheFieldType;
-    private Optional<Optional<InfoDataSpan>> cacheData;
-    private Optional<List<StyleInfo>> cacheStyles;
-    private Optional<Integer> cacheNote;
+    private final CacheKeyMain<InfoFieldType> cacheFieldType;
+    private final CacheKeyOptional<InfoDataSpan> cacheData;
+    private final CacheKeyList<StyleInfo> cacheStyles;
+    private final CacheKeyMain<Integer> cacheNote;
 
     public LinedSpanCite(List<Span> children){
         super(children);
+
+        cacheFieldType = new CacheKeyMain<>(InfoFieldType.class);
+        cacheData = new CacheKeyOptional<>(InfoDataSpan.class);
+        cacheStyles = new CacheKeyList<>(StyleInfo.class);
+        cacheNote = CacheKey.integerKey();
     }
 
     public InfoFieldType getFieldType(){
-        cacheFieldType = getCache(cacheFieldType, () -> {
+        return getLocalCache(cacheFieldType, () -> {
             Optional<InfoFieldSpan> field = spanFromFirst(InfoFieldSpan.class);
             if (field.isPresent()){
                 return field.get().getFieldType();
             }
             return InfoFieldType.ERROR;
         });
-        return cacheFieldType.get();
     }
 
     public Optional<InfoDataSpan> getData(){
-        cacheData = getCache(cacheData, () -> spanFromLast(InfoDataSpan.class));
-        return cacheData.get();
+        return getLocalCache(cacheData, () -> spanFromLast(InfoDataSpan.class)
+            .orElse(null));
     }
 
     @Override
     public List<StyleInfo> getBranchStyles(){
-        cacheStyles = getCache(cacheStyles, () -> {
+        return getLocalCache(cacheStyles, () -> {
             ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
             builder.addAll(super.getBranchStyles()).add(getFieldType());
             if (! getData().isPresent()){
@@ -57,18 +61,16 @@ public class LinedSpanCite extends LinedSpan {
             }
             return builder.build();
         });
-        return cacheStyles.get();
     }
 
     @Override
     public int getNoteTotal(){
-        cacheNote = getCache(cacheNote, () -> {
+        return getLocalCache(cacheNote, () -> {
             if (getFieldType() != InfoFieldType.ERROR){
                 return getData().map(span -> getCount(span)).orElse(0);
             }
             return 0;
         });
-        return cacheNote.get();
     }
 
     private int getCount(InfoDataSpan span){
@@ -86,15 +88,4 @@ public class LinedSpanCite extends LinedSpan {
         return checkLine(text) && AuxiliaryChecker.checkLineEnd(text, isLast())?
             LinedParseCite.INSTANCE: null;
     }
-
-    @Override
-    protected void childEdited(){
-        cacheFieldType = Optional.empty();
-        cacheData = Optional.empty();
-        cacheStyles = Optional.empty();
-        cacheNote = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){}
 }

@@ -10,29 +10,20 @@ import com.creativeartie.writerstudio.lang.*;
  */
 public final class InfoDataSpanRef extends InfoDataSpan{
 
-    private Optional<DirectorySpan> cacheData;
-
-    protected InfoDataSpanRef(List<Span> children){
-        super(children, InfoDataType.NOTE_REF);
-    }
+    private final CacheKeyMain<DirectorySpan> cacheData;
 
     @Override
     public DirectorySpan getData(){
-        cacheData = getCache(cacheData, () -> (DirectorySpan)get(0));
-        return cacheData.get();
+        return getLocalCache(cacheData, () -> (DirectorySpan)get(0));
+    }
+
+    protected InfoDataSpanRef(List<Span> children){
+        super(children, InfoDataType.NOTE_REF);
+        cacheData = new CacheKeyMain<>(DirectorySpan.class);
     }
 
     @Override
     protected SetupParser getParser(String text){
         return null;
     }
-
-    @Override
-    protected void childEdited(){
-        super.childEdited();
-        cacheData = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){}
 }

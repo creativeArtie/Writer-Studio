@@ -102,23 +102,32 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
         /// Finalize the parse loop
         catalogueMap.clear();
-        updateSpan(documentChildren, new HashSet<>());
+        loadMap(documentChildren);
     }
 
+    final void updateDoc(){
+        /// clear caches and data
+        spanRanges.invalidateAll();
+        spanLeaves.invalidateAll();
+        spanTexts.invalidateAll();
+
+        catalogueMap.clear();
+        loadMap(this);
+
+    }
 
     /**
      * Recursively update all child {@link Span spans}. Helper method of
      * {@link #parseDocument(String)} and {@link #updateEdit()}.
      */
-    private final void updateSpan(List<? extends Span> children,
-            HashSet<SpanBranch> edited){
+    private final void loadMap(List<? extends Span> children){
         assert children != null: "Null children";
         for (Span child: children){
             /// Fill or refill {@link #catalogueMap}
             if (child instanceof SpanBranch){
                 SpanBranch branch = (SpanBranch) child;
                 catalogueMap.add(branch);
-                updateSpan(branch, edited);
+                loadMap(branch);
             }
         }
     }
@@ -135,6 +144,12 @@ public abstract class Document extends SpanNode<SpanBranch>{
     @Override
     public final SpanNode<?> getParent(){
         throw new UnsupportedOperationException("No parents");
+    }
+
+    @Override
+    protected final void setChildren(List<SpanBranch> children){
+        children.forEach(s -> s.setParent(this));
+        documentChildren = new ArrayList<>(children);
     }
 
     @Override
@@ -282,7 +297,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         checkNotNull(input, "input");
         if (isEmpty()){
             parseDocument(input);
-            updateEdit(this);
+            updateDoc();
             return;
         }
 
@@ -297,7 +312,6 @@ public abstract class Document extends SpanNode<SpanBranch>{
             span = span.getParent();
             while (span instanceof SpanBranch){
                 if (((SpanBranch)span).editRaw(span.getRaw() + input)){
-                    updateEdit((SpanBranch) span);
                     return;
                 }
                 span = span.getParent();
@@ -305,7 +319,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
             /// Reparse the whole document
             assert span instanceof Document: "Wrong class.";
             parseDocument(getRaw() + input);
-            updateEdit(this);
+            updateDoc();
             return;
         }
         edit(span -> {
@@ -343,7 +357,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
         if (! found.isPresent()){
             parseDocument(editedText.apply(this));
-            updateEdit(this);
+            updateDoc();
             return;
         }
 
@@ -356,7 +370,6 @@ public abstract class Document extends SpanNode<SpanBranch>{
                 /// edit is within the local text
                 if (((SpanBranch)span).editRaw(raw)){
                     /// edit is completed
-                    updateEdit((SpanBranch) span);
                     return;
                 }
             }
@@ -366,36 +379,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
         /// Must be parse at Document level
         assert span instanceof Document: "Wrong class:" + span.getClass();
         parseDocument(editedText.apply(this));
-        updateEdit(this);
+        updateDoc();
         return;
-    }
-
-    /** Update the document after editing. Helper method of
-     * {@link #insert(int, String)}, and {@link #edit(Function, int)}.
-     */
-    final void updateEdit(SpanNode<?> updated){
-        /// clear caches and data
-        spanRanges.invalidateAll();
-        spanLeaves.invalidateAll();
-        spanTexts.invalidateAll();
-
-        /// clear children caches and data
-        updated.clearCache();
-        setDocEdited();
-
-        /// Create a list of edited SpanBranches
-        HashSet<SpanBranch> edited = new HashSet<>();
-        if (updated instanceof SpanBranch){
-            edited.add((SpanBranch) updated);
-        }
-
-        /// refill catalogue map
-        catalogueMap.clear();
-        updateSpan(this, edited);
-
-        /// fire listeners
-        updated.setUpdated();
-        setDocEdited();
     }
 
     protected final void runCommand(Command command){

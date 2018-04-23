@@ -145,10 +145,7 @@ public class IDTestDocument {
             pointer.getTo(children, "\n");
             pointer.startsWith(children, "\n");
             return Optional.of(new IdSpan(children));
-        }}){
-            @Override protected void docEdited(){}
-            @Override protected void childEdited(){}
-        };
+        }}){};
     }
 
     private class IdSpan extends SpanBranch implements Catalogued{
@@ -194,12 +191,6 @@ public class IDTestDocument {
         protected SetupParser getParser(String text){
             return null;
         }
-
-        @Override
-        protected void childEdited(){}
-
-        @Override
-        protected void docEdited(){}
     }
 
     private static class TypeSpan extends SpanBranch {
@@ -221,12 +212,6 @@ public class IDTestDocument {
         protected SetupParser getParser(String text){
             return null;
         }
-
-        @Override
-        protected void childEdited(){}
-
-        @Override
-        protected void docEdited(){}
     }
 
     private enum TypeParser implements SetupParser{

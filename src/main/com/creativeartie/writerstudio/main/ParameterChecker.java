@@ -79,6 +79,14 @@ public final class ParameterChecker {
             " does not accept " + obj);
     }
 
+    public static <T> T argumentIsInstance(Object obj, String field,
+            Class<T> type){
+        argumentNotNull(obj, field);
+        argumentCheck(type.isInstance(obj), field, " is not an instance of " +
+            type);
+        return type.cast(obj);
+    }
+
     public static int argumentOpen(int test, String field, int min, int max){
         return argumentCheck(test, field, Range.open(min, max));
     }

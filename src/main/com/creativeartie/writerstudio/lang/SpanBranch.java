@@ -16,50 +16,42 @@ public abstract class SpanBranch extends SpanNode<Span> {
 
     private SpanNode<?> spanParent;
 
-    private Optional<Document> spanDoc;
+    private CacheKeyMain<Document> spanDoc;
 
-    private Optional<CatalogueStatus> spanStatus;
+    private CacheKeyMain<CatalogueStatus> spanStatus;
 
     public SpanBranch(List<Span> spans){
-        spanChildren = setParents(spans);
-        spanStatus = Optional.empty();
-        childEdited();
-        docEdited();
+        spanChildren = new ArrayList<>();
+        setChildren(spans);
+        spanDoc = new CacheKeyMain<>(Document.class);
+        spanStatus = new CacheKeyMain<>(CatalogueStatus.class);
     }
 
-    protected void setChildren(List<Span> spans){
-        ans.forEach((span) -> {
+    protected final void updateDoc(){
+        clearCache();
+        spanChildren.stream().filter(s -> s instanceof SpanBranch)
+            .forEach(s -> ((SpanBranch)s).updateDoc());
+    }
+
+    @Override
+    protected final void setChildren(List<Span> spans){
+        spans.forEach((span) -> {
             if (span instanceof SpanBranch){
                 ((SpanBranch)span).setParent(this);
             } else {
                 ((SpanLeaf)span).setParent(this);
             }
         });
-        spanChildren.filter(s -> s instanceof SpanBranch)
-            .forEach(s -> s.setRemove());
-        spanChildren = spans;
-    }
-
-    /**
-     * Set the children's parent to this. Helper method of
-     * {@link #SpanBranch(List)} and {@link #editRaw(String)}.
-     */
-    private final ArrayList<Span> setParents(List<Span> spans){
-        checkNotEmpty(spans, "spans");
-        ArrayList<Span> ans = new ArrayList<>(spans);
-        ans.forEach((span) -> {
-            if (span instanceof SpanBranch){
-                ((SpanBranch)span).setParent(this);
-            } else {
-                ((SpanLeaf)span).setParent(this);
-            }
-        });
-        return ans;
+        spanChildren.stream().filter(s -> s instanceof SpanBranch)
+            .forEach(s -> ((SpanBranch)s).setRemove());
+        spanChildren.clear();
+        spanChildren.addAll(spans);
     }
 
     @Override
     public final Document getDocument(){
-        return get(0).getDocument(); /// will eventually get to a SpanLeaf
+        /// will eventually get to a SpanLeaf
+        return getLocalCache(spanDoc, () -> get(0).getDocument());
     }
 
     @Override
@@ -119,31 +111,21 @@ public abstract class SpanBranch extends SpanNode<Span> {
                 "Command does not return a parseable answer");
         }
         reparseText(text, parser);
-
-        // fire listeners
-        getDocument().updateEdit(this);
     }
 
-    private void reparseText(String text, SetupParser parser){
-        /// Removes the children
-        for (Span span: this){
-            span.setRemove();
-        }
+    private final void reparseText(String text, SetupParser parser){
 
         SetupPointer pointer = SetupPointer.updatePointer(text,
             getDocument());
-        parser.parse(pointer).ifPresent(span ->
-            spanChildren = setParents(span)
-        );
+        parser.parse(pointer).ifPresent(s -> updateSpan(s));
         /// There are text left over.
         if (pointer.hasNext()){
             throw new IllegalStateException("Has left over characters.");
         }
-        spanStatus = Optional.empty();
     }
 
     public final CatalogueStatus getIdStatus(){
-        spanStatus = getCache(spanStatus, () -> {
+        return getDocCache(spanStatus, () -> {
             if (this instanceof Catalogued){
                 Catalogued catalogued = (Catalogued) this;
                 Optional<CatalogueIdentity> id = catalogued.getSpanIdentity();
@@ -153,18 +135,6 @@ public abstract class SpanBranch extends SpanNode<Span> {
             }
             return CatalogueStatus.NO_ID;
         });
-        return spanStatus.get();
-    }
-
-    /** A simple cache method that make use of {@link Optional}.*/
-    protected <T> Optional<T> getCache(Optional<T> found, Supplier<T> maker){
-        // TODO needs a better system
-        checkNotNull(found, "found");
-        checkNotNull(maker, "maker");
-        if (found.isPresent()){
-            return found;
-        }
-        return Optional.of(maker.get());
     }
 
 

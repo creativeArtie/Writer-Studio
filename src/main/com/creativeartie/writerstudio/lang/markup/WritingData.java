@@ -100,13 +100,4 @@ public class WritingData extends Document{
         return null;
     }
 
-    @Override
-    protected void docEdited(){
-        // TODO docEdited
-    }
-
-    @Override
-    protected void childEdited(){
-        // TODO childEdited
-    }
 }

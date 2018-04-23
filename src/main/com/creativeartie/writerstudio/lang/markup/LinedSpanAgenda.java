@@ -11,12 +11,15 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  */
 public class LinedSpanAgenda extends LinedSpan implements Catalogued{
 
-    Optional<String> cacheAgenda;
-    Optional<Integer> cacheNote;
-    Optional<Optional<CatalogueIdentity>> cacheId;
+    private final CacheKeyMain<String> cacheAgenda;
+    private final CacheKeyMain<Integer> cacheNote;
+    private final CacheKeyOptional<CatalogueIdentity> cacheId;
 
     LinedSpanAgenda(List<Span> children){
         super(children);
+        cacheAgenda = CacheKey.stringKey();
+        cacheNote = CacheKey.integerKey();
+        cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
     }
 
     public Optional<ContentSpan> getAgendaSpan(){
@@ -24,19 +27,17 @@ public class LinedSpanAgenda extends LinedSpan implements Catalogued{
     }
 
     public String getAgenda(){
-        cacheAgenda = getCache(cacheAgenda, () -> {
+        return getLocalCache(cacheAgenda, () -> {
             Optional<ContentSpan> ans = getAgendaSpan();
             return ans.isPresent()? ans.get().getTrimmed() : "";
         });
-        return cacheAgenda.get();
     }
 
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
-        cacheId = getCache(cacheId, () -> {
-            return Optional.of(new CatalogueIdentity(TYPE_AGENDA_LINED, this));
-        });
-        return cacheId.get();
+        return getDocCache(cacheId, () ->
+            new CatalogueIdentity(TYPE_AGENDA_LINED, this)
+        );
     }
 
     @Override
@@ -46,11 +47,10 @@ public class LinedSpanAgenda extends LinedSpan implements Catalogued{
 
     @Override
     public int getNoteTotal(){
-        cacheNote = getCache(cacheNote, () -> {
+        return getLocalCache(cacheNote, () -> {
             return getAgendaSpan().map(span -> span.wordCount())
                 .orElse(0);
         });
-        return cacheNote.get();
     }
 
 
@@ -59,16 +59,5 @@ public class LinedSpanAgenda extends LinedSpan implements Catalogued{
         return text.startsWith(LINED_AGENDA) &&
             AuxiliaryChecker.checkLineEnd(text, isLast())?
             LinedParseRest.AGENDA: null;
-    }
-
-    @Override
-    protected void childEdited(){
-        cacheAgenda = Optional.empty();
-        cacheNote = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){
-        cacheId = Optional.empty();
     }
 }

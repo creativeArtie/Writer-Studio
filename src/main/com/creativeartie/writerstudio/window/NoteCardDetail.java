@@ -71,13 +71,13 @@ public class NoteCardDetail extends TitledPane{
 
         /// Add the content
         Node content;
-        Collection<Optional<FormattedSpan>> lines = span.getContent();
+        Collection<FormattedSpan> lines = span.getContent();
         if (lines.isEmpty()){
             content = new Label(WindowText.NOTE_CARD_EMTPY_DETAIL.getText());
         } else {
             TextFlow text = new TextFlow();
-            for (Optional<FormattedSpan> line: lines){
-                TextFlowBuilder.loadFormatText(text, line);
+            for (FormattedSpan line: lines){
+                TextFlowBuilder.loadFormatText(text, Optional.of(line));
                 text.getChildren().add(new Text("\n"));
             }
             ScrollPane pane = new ScrollPane(text);

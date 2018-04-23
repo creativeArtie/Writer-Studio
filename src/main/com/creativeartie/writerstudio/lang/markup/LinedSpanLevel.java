@@ -11,30 +11,24 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  * {@link LinedSpanLevelList}.
  */
 public abstract class LinedSpanLevel extends LinedSpan {
-    private Optional<Optional<FormattedSpan>> cacheFormatted;
-    private Optional<Integer> cacheLevel;
+    private final CacheKeyOptional<FormattedSpan> cacheFormatted;
+    private final CacheKeyMain<Integer> cacheLevel;
 
     LinedSpanLevel(List<Span> children){
         super(children);
+        cacheFormatted = new CacheKeyOptional<>(FormattedSpan.class);
+        cacheLevel = CacheKey.integerKey();
     }
 
     public Optional<FormattedSpan> getFormattedSpan(){
-        cacheFormatted = getCache(cacheFormatted, () -> spanFromLast(
-            FormattedSpan.class));
-        return cacheFormatted.get();
+        return getLocalCache(cacheFormatted, () -> spanFromLast(
+            FormattedSpan.class).orElse(null));
     }
 
     public int getLevel(){
-        cacheLevel = getCache(cacheLevel, () -> {
+        return getLocalCache(cacheLevel, () -> {
             int extras = getLinedType() == LinedType.OUTLINE? 1: 0;
             return get(0).getRaw().length() - extras;
         });
-        return cacheLevel.get();
-    }
-
-    @Override
-    protected void childEdited(){
-        cacheFormatted = Optional.empty();
-        cacheLevel = Optional.empty();
     }
 }

@@ -11,10 +11,12 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  */
 public class LinedSpanPointLink extends LinedSpanPoint {
 
-    private Optional<String> cachePath;
+    private final CacheKeyMain<String> cachePath;
 
     LinedSpanPointLink(List<Span> children){
         super(children);
+
+        cachePath = CacheKey.stringKey();
     }
 
     @Override
@@ -27,11 +29,10 @@ public class LinedSpanPointLink extends LinedSpanPoint {
     }
 
     public String getPath(){
-        cachePath = getCache(cachePath, () -> {
+        return getLocalCache(cachePath, () -> {
             Optional<ContentSpan> span = getPathSpan();
             return span.isPresent()? span.get().getTrimmed() : "";
         });
-        return cachePath.get();
     }
 
     @Override
@@ -40,15 +41,6 @@ public class LinedSpanPointLink extends LinedSpanPoint {
             AuxiliaryChecker.checkLineEnd(text, isLast())?
             LinedParsePointer.HYPERLINK: null;
     }
-
-    @Override
-    protected void childEdited(){
-        super.childEdited();
-        cachePath = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){}
 
     protected String getLookupStart(){
         return LINK_REF;

@@ -10,24 +10,25 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  * design/ebnf.txt as {@code LinedFootnote}, {@code LinedEndnote}.
  */
 public class LinedSpanPointNote extends LinedSpanPoint {
-    private Optional<DirectoryType> cacheType;
-    private Optional<Optional<FormattedSpan>> cacheFormatted;
+    private final CacheKeyMain<DirectoryType> cacheType;
+    private final CacheKeyOptional<FormattedSpan> cacheFormatted;
 
     LinedSpanPointNote(List<Span> children){
         super(children);
+
+        cacheType = new CacheKeyMain<>(DirectoryType.class);
+        cacheFormatted = new CacheKeyOptional<>(FormattedSpan.class);
     }
 
     @Override
     public DirectoryType getDirectoryType(){
-        cacheType = getCache(cacheType, () -> getLinedType() ==
+        return getLocalCache(cacheType, () -> getLinedType() ==
             LinedType.FOOTNOTE? DirectoryType.FOOTNOTE: DirectoryType.ENDNOTE);
-        return cacheType.get();
     }
 
     public Optional<FormattedSpan> getFormattedSpan(){
-        cacheFormatted = getCache(cacheFormatted, () -> spanFromLast(
-            FormattedSpan.class));
-        return cacheFormatted.get();
+        return getLocalCache(cacheFormatted, () -> spanFromLast(
+            FormattedSpan.class).orElse(null));
     }
 
     @Override
@@ -42,16 +43,7 @@ public class LinedSpanPointNote extends LinedSpanPoint {
         return null;
     }
 
-    @Override
-    protected void childEdited(){
-        super.childEdited();
-        cacheType = Optional.empty();
-        cacheFormatted = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){}
-       protected String getLookupStart(){
+    protected String getLookupStart(){
         return getLinedType() == LinedType.ENDNOTE? CURLY_ENDNOTE: CURLY_FOOTNOTE;
     }
 

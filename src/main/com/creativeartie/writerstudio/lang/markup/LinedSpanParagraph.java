@@ -11,32 +11,32 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  */
 public class LinedSpanParagraph extends LinedSpan {
 
-    private Optional<Optional<FormattedSpan>> cacheFormatted;
-    private Optional<Integer> cachePublish;
-    private Optional<Integer> cacheNote;
+    private final CacheKeyOptional<FormattedSpan> cacheFormatted;
+    private final CacheKeyMain<Integer> cachePublish;
+    private final CacheKeyMain<Integer> cacheNote;
 
     LinedSpanParagraph(List<Span> children){
         super(children);
+        cacheFormatted = new CacheKeyOptional<>(FormattedSpan.class);
+        cachePublish = CacheKey.integerKey();
+        cacheNote = CacheKey.integerKey();
     }
 
     public Optional<FormattedSpan> getFormattedSpan(){
-        cacheFormatted = getCache(cacheFormatted, () -> spanAtFirst(
-            FormattedSpan.class));
-        return cacheFormatted.get();
+        return getLocalCache(cacheFormatted, () -> spanAtFirst(
+            FormattedSpan.class).orElse(null));
     }
 
     @Override
     public int getPublishTotal(){
-        cachePublish = getCache(cachePublish, () ->
+        return getLocalCache(cachePublish, () ->
             getFormattedSpan().map(span -> span.getPublishTotal()).orElse(0));
-        return cachePublish.get();
     }
 
     @Override
     public int getNoteTotal(){
-        cacheNote = getCache(cacheNote, () ->
+        return getLocalCache(cacheNote, () ->
             getFormattedSpan().map(span -> span.getNoteTotal()).orElse(0));
-        return cacheNote.get();
     }
 
     @Override
@@ -51,14 +51,4 @@ public class LinedSpanParagraph extends LinedSpan {
         return AuxiliaryChecker.checkLineEnd(text, isLast())?
             LinedParseRest.PARAGRAPH: null;
     }
-
-    @Override
-    protected void childEdited(){
-        cacheFormatted = Optional.empty();
-        cachePublish = Optional.empty();
-        cacheNote = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){}
 }

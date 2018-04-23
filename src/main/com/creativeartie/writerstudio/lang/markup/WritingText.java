@@ -62,13 +62,4 @@ public class WritingText extends Document{
         return count;
     }
 
-    @Override
-    protected void docEdited(){
-        // TODO docEdited
-    }
-
-    @Override
-    protected void childEdited(){
-        // TODO childEdited
-    }
 }

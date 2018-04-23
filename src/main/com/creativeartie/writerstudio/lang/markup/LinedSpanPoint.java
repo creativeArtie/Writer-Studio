@@ -12,34 +12,36 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  */
 public abstract class LinedSpanPoint extends LinedSpan implements Catalogued{
 
-    private Optional<List<StyleInfo>> cacheStyles;
-    private Optional<Optional<CatalogueIdentity>> cacheId;
-    private Optional<String> cacheLookup;
+    private final CacheKeyList<StyleInfo> cacheStyles;
+    private final CacheKeyOptional<CatalogueIdentity> cacheId;
+    private final CacheKeyMain<String> cacheLookup;
 
     LinedSpanPoint(List<Span> children){
         super(children);
+
+        cacheStyles = new CacheKeyList<>(StyleInfo.class);
+        cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
+        cacheLookup = CacheKey.stringKey();
     }
 
     public abstract DirectoryType getDirectoryType();
 
     @Override
     public List<StyleInfo> getBranchStyles(){
-         cacheStyles = getCache(cacheStyles, () -> {
+         return getLocalCache(cacheStyles, () -> {
             ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
             return builder.addAll(super.getBranchStyles()).add(getIdStatus())
                 .build();
         });
-        return cacheStyles.get();
     }
 
     public String getLookupText(){
-        cacheLookup = getCache(cacheLookup, () ->
+        return getLocalCache(cacheLookup, () ->
             spanFromFirst(DirectorySpan.class)
                 .map(span -> getLookupStart()  + span.getLookupText() +
                     getLookupEnd())
                 .orElse("")
         );
-        return cacheLookup.get();
     }
 
     protected abstract String getLookupStart();
@@ -48,21 +50,14 @@ public abstract class LinedSpanPoint extends LinedSpan implements Catalogued{
 
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
-        cacheId = getCache(cacheId, () ->
+        return getLocalCache(cacheId, () ->
             spanFromFirst(DirectorySpan.class).map(span -> span.buildId())
+            .orElse(null)
         );
-        return cacheId.get();
     }
 
     @Override
     public boolean isId(){
         return true;
-    }
-
-    @Override
-    protected void childEdited(){
-        cacheStyles = Optional.empty();
-        cacheId = Optional.empty();
-        cacheLookup = Optional.empty();
     }
 }

@@ -14,11 +14,14 @@ import static com.creativeartie.writerstudio.main.Checker.*;
  */
 public abstract class FormatSpan extends SpanBranch {
     private final boolean[] spanFormats;
-    private Optional<List<StyleInfo>> cacheStyles;
+    private final CacheKeyList<StyleInfo> cacheStyles;
+
     FormatSpan(List<Span> spanChildren, boolean[] formats){
         super(spanChildren);
         checkEqual(formats.length, "formats.length", FORMAT_TYPES);
+
         spanFormats = Arrays.copyOf(formats, formats.length);
+        cacheStyles = new CacheKeyList<>(StyleInfo.class);
     }
 
     FormatSpan(){
@@ -51,7 +54,7 @@ public abstract class FormatSpan extends SpanBranch {
 
     @Override
     public List<StyleInfo> getBranchStyles(){
-        cacheStyles = getCache(cacheStyles, () -> {
+        return getLocalCache(cacheStyles, () -> {
             ImmutableList.Builder<StyleInfo> list = ImmutableList.builder();
             int i = 0;
             FormatType[] values = FormatType.values();
@@ -63,12 +66,6 @@ public abstract class FormatSpan extends SpanBranch {
             }
             return list.build();
         });
-        return cacheStyles.get();
-    }
-
-    @Override
-    protected void childEdited(){
-        cacheStyles = Optional.empty();
     }
 
     /** Gets the parsed text for display. */

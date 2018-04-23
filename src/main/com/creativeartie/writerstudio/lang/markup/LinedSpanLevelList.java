@@ -12,26 +12,26 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  */
 public class LinedSpanLevelList extends LinedSpanLevel {
     private LinedParseLevel spanReparser;
-    private Optional<Integer> cachePublish;
-    private Optional<Integer> cacheNote;
+    private final CacheKeyMain<Integer> cachePublish;
+    private final CacheKeyMain<Integer> cacheNote;
 
     LinedSpanLevelList(List<Span> children){
         super(children);
+        cachePublish = CacheKey.integerKey();
+        cacheNote = CacheKey.integerKey();
     }
 
     @Override
     public int getPublishTotal(){
-        cachePublish = getCache(cachePublish, () -> getFormattedSpan()
+        return getLocalCache(cachePublish, () -> getFormattedSpan()
             .map(span -> span.getPublishTotal()).orElse(0));
-        return cachePublish.get();
     }
 
     @Override
     public int getNoteTotal(){
-        cacheNote = getCache(cacheNote, () -> getFormattedSpan()
+        return getLocalCache(cacheNote, () -> getFormattedSpan()
             .map(span -> span.getNoteTotal()).orElse(0)
         );
-        return cacheNote.get();
     }
 
     @Override
@@ -62,14 +62,4 @@ public class LinedSpanLevelList extends LinedSpanLevel {
         }
         return false;
     }
-
-    @Override
-    protected void childEdited(){
-        super.childEdited();
-        cachePublish = Optional.empty();
-        cacheNote = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){}
 }

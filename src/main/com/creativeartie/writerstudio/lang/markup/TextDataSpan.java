@@ -14,22 +14,25 @@ import com.google.common.base.*;
  */
 public abstract class TextDataSpan<T extends SpanBranch> extends SpanBranch{
 
-    private Optional<Optional<T>> cacheData;
-    private Optional<TextDataType.Type> cacheType;
+    private final CacheKeyOptional<T> cacheData;
+    private final CacheKeyMain<TextDataType.Type> cacheType;
 
     public TextDataSpan(List<Span> children){
         super(children);
+
+        cacheData = new CacheKeyOptional<>(getDataClass());
+        cacheType = new CacheKeyMain<>(TextDataType.Type.class);
     }
 
     public Optional<T> getData(){
-        cacheData = getCache(cacheData, () -> spanFromLast(getDataClass()));
-        return cacheData.get();
+        return getLocalCache(cacheData, () -> spanFromLast(getDataClass())
+            .orElse(null));
     }
 
     protected abstract Class<T> getDataClass();
 
     public TextDataType.Type getType(){
-        cacheType = getCache(cacheType, () -> {
+        return getLocalCache(cacheType, () -> {
             String raw = getRaw();
             for (TextDataType.Type type: listTypes()){
                 if (raw.startsWith(type.getKeyName())){
@@ -38,7 +41,6 @@ public abstract class TextDataSpan<T extends SpanBranch> extends SpanBranch{
             }
             throw new IllegalStateException("Data type not found.");
         });
-        return cacheType.get();
     }
 
     protected abstract TextDataType.Type[] listTypes();
@@ -59,15 +61,5 @@ public abstract class TextDataSpan<T extends SpanBranch> extends SpanBranch{
     public List<StyleInfo> getBranchStyles(){
         return ImmutableList.of();
     }
-
-
-    @Override
-    protected void childEdited(){
-        cacheData = Optional.empty();
-        cacheType = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){}
 
 }

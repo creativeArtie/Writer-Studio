@@ -14,12 +14,15 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  */
 public final class EditionSpan extends SpanBranch{
 
-    private Optional<EditionType> cacheEdition;
-    private Optional<String> cacheDetail;
-    private Optional<List<StyleInfo>> cacheBranchStyles;
+    private final CacheKeyMain<EditionType> cacheEdition;
+    private final CacheKeyMain<String> cacheDetail;
+    private final CacheKeyList<StyleInfo> cacheBranchStyles;
 
     EditionSpan(List<Span> children){
         super(children);
+        cacheEdition = new CacheKeyMain<>(EditionType.class);
+        cacheDetail = CacheKey.stringKey();
+        cacheBranchStyles = new CacheKeyList<>(StyleInfo.class);
     }
 
     /**
@@ -27,7 +30,7 @@ public final class EditionSpan extends SpanBranch{
      * section.
      */
     public EditionType getEdition(){
-        cacheEdition = getCache(cacheEdition, () -> {
+        return getLocalCache(cacheEdition, () -> {
             Span first = get(0);
             if (first instanceof SpanLeaf){
                 String text = first.getRaw();
@@ -38,14 +41,12 @@ public final class EditionSpan extends SpanBranch{
             }
             return EditionType.NONE;
         });
-        return cacheEdition.get();
     }
 
     /** Get more detail of the status.*/
     public String getDetail(){
-        cacheDetail = getCache(cacheDetail, () ->
+        return getLocalCache(cacheDetail, () ->
             getDetailSpan().map(span -> span.getTrimmed()).orElse(""));
-        return cacheDetail.get();
     }
 
     public Optional<ContentSpan> getDetailSpan(){
@@ -54,9 +55,8 @@ public final class EditionSpan extends SpanBranch{
 
     @Override
     public List<StyleInfo> getBranchStyles(){
-        cacheBranchStyles = getCache(cacheBranchStyles, () ->
+        return getLocalCache(cacheBranchStyles, () ->
             (List<StyleInfo>) ImmutableList.of((StyleInfo) getEdition()));
-        return cacheBranchStyles.get();
     }
 
     @Override
@@ -64,17 +64,6 @@ public final class EditionSpan extends SpanBranch{
         return text.startsWith(EDITION_BEGIN) && AuxiliaryChecker.notCutoff(text,
             LINED_END)? EditionParser.INSTANCE: null;
     }
-
-    @Override
-    protected void childEdited(){
-        cacheEdition = Optional.empty();
-        cacheDetail = Optional.empty();
-        cacheBranchStyles = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){}
-
     @Override
     public String toString(){
         return getEdition() + "(" + getDetailSpan().toString() + ")";

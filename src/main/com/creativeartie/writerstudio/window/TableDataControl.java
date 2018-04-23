@@ -62,7 +62,7 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
     /** Load agenda list. */
     public void loadList(WritingText doc){
         docText = doc;
-        doc.addUpdater(span -> updateItems());
+        doc.addSpanEdited(span -> updateItems());
         updateItems();
     }
 

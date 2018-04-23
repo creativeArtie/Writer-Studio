@@ -15,8 +15,8 @@ import static com.creativeartie.writerstudio.main.Checker.*;
 public final class DirectorySpan extends SpanBranch {
     /// helps with categorizing and describes purpose
     private final DirectoryType idPurpose;
-    private Optional<CatalogueIdentity> cacheId;
-    private Optional<String> cacheText;
+    private final CacheKeyMain<CatalogueIdentity> cacheId;
+    private final CacheKeyMain<String> cacheText;
     private final DirectoryParser spanReparser;
 
     DirectorySpan(List<Span> spanChildren, DirectoryType purpose,
@@ -24,11 +24,14 @@ public final class DirectorySpan extends SpanBranch {
         super(spanChildren);
         idPurpose = checkNotNull(purpose, "purpose");
         spanReparser = checkNotNull(reparser, "reparser");
+
+        cacheId = new CacheKeyMain<>(CatalogueIdentity.class);
+        cacheText = CacheKey.stringKey();
     }
 
     /** Creates the id for a {@link Catalogued}*/
     CatalogueIdentity buildId(){
-        cacheId = getCache(cacheId, () -> {
+        return getDocCache(cacheId, () -> {
             ArrayList<String> builder = new ArrayList<>();
             builder.add(idPurpose.getCategory());
 
@@ -47,19 +50,17 @@ public final class DirectorySpan extends SpanBranch {
             }
             return new CatalogueIdentity(builder, idTmp.orElse(""));
         });
-        return cacheId.get();
     }
 
     /** Get the display for {@link FormatSpanPointId#getOutput()}*/
     public String getLookupText(){
-        cacheText = getCache(cacheText, () -> {
+        return getLocalCache(cacheText, () -> {
             StringBuilder builder = new StringBuilder();
             this.forEach((span) -> {
                 builder.append(span.getRaw());
             });
             return builder.toString();
         });
-        return cacheText.get();
     }
 
     /** Get the purpose of this span. */
@@ -94,12 +95,4 @@ public final class DirectorySpan extends SpanBranch {
         return spanReparser.canParse(text)? spanReparser: null;
     }
 
-    @Override
-    protected void childEdited(){
-        cacheId = Optional.empty();
-        cacheText = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){}
 }

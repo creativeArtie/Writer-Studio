@@ -14,20 +14,26 @@ public final class FormatSpanLinkRef extends FormatSpanLink
         implements Catalogued{
 
     private final FormatParseLinkRef spanReparser;
-    private Optional<Optional<SpanBranch>> cachePath;
-    private Optional<String> cacheText;
-    private Optional<List<StyleInfo>> cacheStyles;
-    private Optional<Optional<CatalogueIdentity>> cacheId;
-    private Optional<Boolean> cacheExternal;
+    private final CacheKeyOptional<SpanBranch> cachePath;
+    private final CacheKeyMain<String> cacheText;
+    private final CacheKeyList<StyleInfo> cacheStyles;
+    private final CacheKeyOptional<CatalogueIdentity> cacheId;
+    private final CacheKeyMain<Boolean> cacheExternal;
 
     FormatSpanLinkRef(List<Span> children, FormatParseLinkRef reparser){
         super(children, reparser.getFormats());
         spanReparser = reparser;
+
+        cachePath = new CacheKeyOptional<>(SpanBranch.class);
+        cacheText = CacheKey.stringKey();
+        cacheStyles = new CacheKeyList<>(StyleInfo.class);
+        cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
+        cacheExternal = CacheKey.booleanKey();
     }
 
     @Override
     public Optional<SpanBranch> getPathSpan(){
-        cachePath = getCache(cachePath, () ->{
+        return getLocalCache(cachePath, () ->{
             Optional<CatalogueIdentity> id = getSpanIdentity();
             if (id.isPresent()){
                 CatalogueData data = getDocument().getCatalogue().get(id.get());
@@ -35,17 +41,16 @@ public final class FormatSpanLinkRef extends FormatSpanLink
                     Span span = data.getTarget();
                     assert span instanceof LinedSpanPointLink ||
                         span instanceof LinedSpanLevelSection;
-                    return Optional.of((SpanBranch) span);
+                    return (SpanBranch) span;
                 }
             }
-            return Optional.empty();
+            return null;
         });
-        return cachePath.get();
     }
 
     @Override
     public String getText(){
-        cacheText = getCache(cacheText, () ->{
+        return getLocalCache(cacheText, () ->{
             Optional<ContentSpan> text = spanFromFirst(ContentSpan.class);
             if (text.isPresent()){
                 return text.get().getTrimmed();
@@ -55,16 +60,14 @@ public final class FormatSpanLinkRef extends FormatSpanLink
                 .map(span -> ((LinedSpanPointLink)span).getPath())
                 .orElse("");
         });
-        return cacheText.get();
     }
 
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
-        cacheId = getCache(cacheId, () ->{
+        return getLocalCache(cacheId, () ->{
             return spanFromFirst(DirectorySpan.class).map(
-                span -> span.buildId());
+                span -> span.buildId()).orElse(null);
         });
-        return cacheId.get();
     }
 
     @Override
@@ -73,22 +76,20 @@ public final class FormatSpanLinkRef extends FormatSpanLink
     }
 
     public boolean isExternal(){
-        cacheExternal = getCache(cacheExternal, () ->
+        return getLocalCache(cacheExternal, () ->
             getSpanIdentity().map(id -> getDocument().getCatalogue()
                     .get(id).getTarget() instanceof LinedSpanPointLink)
                 .orElseThrow(() -> new IllegalStateException("Link not found."))
         );
-        return cacheExternal.get();
     }
 
     @Override
     public List<StyleInfo> getBranchStyles(){
-        cacheStyles = getCache(cacheStyles, () ->{
+        return getLocalCache(cacheStyles, () ->{
             ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
             return builder.add(AuxiliaryType.REF_LINK).add(getIdStatus())
                 .addAll(super.getBranchStyles()).build();
         });
-        return cacheStyles.get();
     }
 
     @Override
@@ -97,19 +98,6 @@ public final class FormatSpanLinkRef extends FormatSpanLink
             AuxiliaryChecker.willEndWith(text, LINK_END)
         )? spanReparser: null;
     }
-
-    @Override
-    protected void childEdited(){
-        super.childEdited();
-        cachePath = Optional.empty();
-        cacheText = Optional.empty();
-        cacheStyles = Optional.empty();
-        cacheId = Optional.empty();
-        cacheExternal = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){}
 
     @Override
     protected String toChildString(){

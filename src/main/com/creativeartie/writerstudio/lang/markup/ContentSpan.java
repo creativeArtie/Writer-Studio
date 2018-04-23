@@ -17,41 +17,41 @@ import static com.creativeartie.writerstudio.main.Checker.*;
  */
 public final class ContentSpan extends SpanBranch implements BasicText{
 
-    private Optional<String> cacheText;
-    private Optional<String> cacheTrimmed;
-    private Optional<Boolean> cacheSpaceBegin;
-    private Optional<Boolean> cacheSpaceEnd;
-    private Optional<Integer> wordCount;
+    private final CacheKeyMain<String> cacheText;
+    private final CacheKeyMain<String> cacheTrimmed;
+    private final CacheKeyMain<Boolean> cacheSpaceBegin;
+    private final CacheKeyMain<Boolean> cacheSpaceEnd;
+    private final CacheKeyMain<Integer> wordCount;
 
     ContentSpan (List<Span> spanChildren){
         super(spanChildren);
+        cacheText = CacheKey.stringKey();
+        cacheTrimmed = CacheKey.stringKey();
+        cacheSpaceBegin = CacheKey.booleanKey();
+        cacheSpaceEnd = CacheKey.booleanKey();
+        wordCount = CacheKey.integerKey();
     }
 
     @Override
     public String getText(){
-        cacheText = getCache(cacheText, () -> BasicText.super.getText());
-        return cacheText.get();
+        return getLocalCache(cacheText, () -> BasicText.super.getText());
     }
 
     @Override
     public String getTrimmed(){
-        cacheTrimmed = getCache(cacheTrimmed, () -> BasicText.super
-            .getTrimmed());
-        return cacheTrimmed.get();
+        return getLocalCache(cacheTrimmed, () -> BasicText.super.getTrimmed());
     }
 
     @Override
     public boolean isSpaceBegin(){
-        cacheSpaceBegin = getCache(cacheSpaceBegin,
-            () -> BasicText.super.isSpaceBegin());
-        return cacheSpaceBegin.get();
+        return getLocalCache(cacheSpaceBegin, () -> BasicText.super
+            .isSpaceBegin());
     }
 
     @Override
     public boolean isSpaceEnd(){
-        cacheSpaceEnd = getCache(cacheSpaceEnd,
-            () -> BasicText.super.isSpaceEnd());
-        return cacheSpaceEnd.get();
+        return getLocalCache(cacheSpaceEnd, () -> BasicText.super
+            .isSpaceEnd());
     }
 
     @Override
@@ -61,12 +61,11 @@ public final class ContentSpan extends SpanBranch implements BasicText{
 
     /** Counts the number of words by spliting word count*/
     public int wordCount(){
-        wordCount = getCache(wordCount,
+        return getLocalCache(wordCount,
             () -> Splitter.on(CharMatcher.whitespace())
                 .omitEmptyStrings()
                 .splitToList(getTrimmed())
                 .size());
-        return wordCount.get();
     }
 
     @Override
@@ -79,15 +78,4 @@ public final class ContentSpan extends SpanBranch implements BasicText{
         return null;
     }
 
-    @Override
-    protected void childEdited(){
-        cacheText = Optional.empty();
-        cacheTrimmed = Optional.empty();
-        cacheSpaceBegin = Optional.empty();
-        cacheSpaceEnd = Optional.empty();
-        wordCount = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){}
 }

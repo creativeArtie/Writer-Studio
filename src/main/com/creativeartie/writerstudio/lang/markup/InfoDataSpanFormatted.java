@@ -10,29 +10,20 @@ import com.creativeartie.writerstudio.lang.*;
  */
 public final class InfoDataSpanFormatted extends InfoDataSpan{
 
-    private Optional<FormattedSpan> cacheData;
+    private final CacheKeyMain<FormattedSpan> cacheData;
 
     @Override
     public FormattedSpan getData(){
-        cacheData = getCache(cacheData, () -> (FormattedSpan)get(0));
-        return cacheData.get();
+        return getLocalCache(cacheData, () -> (FormattedSpan)get(0));
     }
 
     protected InfoDataSpanFormatted(List<Span> children){
         super(children, InfoDataType.FORMATTED);
+        cacheData = new CacheKeyMain<>(FormattedSpan.class);
     }
 
     @Override
     protected SetupParser getParser(String text){
         return null;
     }
-
-    @Override
-    protected void childEdited(){
-        super.childEdited();
-        cacheData = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){}
 }

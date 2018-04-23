@@ -43,34 +43,35 @@ public abstract class SectionSpan extends SpanBranch {
         return true;
     }
 
-    private Optional<Optional<LinedSpanLevelSection>> cacheHeading;
-    private Optional<Integer> cacheLevel;
-    private Optional<EditionType> cacheEdition;
-    private Optional<Optional<CatalogueIdentity>> cacheId;
-    private Optional<List<NoteCardSpan>> cacheNotes;
+    private final CacheKeyOptional<LinedSpanLevelSection> cacheHeading;
+    private final CacheKeyMain<Integer> cacheLevel;
+    private final CacheKeyMain<EditionType> cacheEdition;
+    private final CacheKeyList<NoteCardSpan> cacheNotes;
     private final SectionParser spanReparser;
 
     SectionSpan(List<Span> children, SectionParser reparser){
         super(children);
         spanReparser = reparser;
+
+        cacheHeading = new CacheKeyOptional<>(LinedSpanLevelSection.class);
+        cacheLevel = CacheKey.integerKey();
+        cacheEdition = new CacheKeyMain<>(EditionType.class);
+        cacheNotes = new CacheKeyList<>(NoteCardSpan.class);
     }
 
     public final Optional<LinedSpanLevelSection> getHeading(){
-        cacheHeading = getCache(cacheHeading, () -> spanAtFirst(
-            LinedSpanLevelSection.class));
-        return cacheHeading.get();
+        return getLocalCache(cacheHeading, () -> spanAtFirst(
+            LinedSpanLevelSection.class).orElse(null));
     }
 
     public final int getLevel(){
-        cacheLevel = getCache(cacheLevel, () -> getHeading()
+        return getLocalCache(cacheLevel, () -> getHeading()
             .map(span -> span.getLevel()).orElse(1));
-        return cacheLevel.get();
     }
 
     public final EditionType getEdition(){
-        cacheEdition = getCache(cacheEdition, () -> getHeading()
+        return getLocalCache(cacheEdition, () -> getHeading()
             .map(span -> span.getEdition()).orElse(EditionType.NONE));
-        return cacheEdition.get();
     }
 
     protected final <T> List<T> getChildren(Class<T> getting){
@@ -84,7 +85,7 @@ public abstract class SectionSpan extends SpanBranch {
     }
 
     public final List<NoteCardSpan> getNotes(){
-        cacheNotes = getCache(cacheNotes, () -> {
+        return getLocalCache(cacheNotes, () -> {
             ImmutableList.Builder<NoteCardSpan> lines = ImmutableList.builder();
             for (Span child: this){
                 if (child instanceof NoteCardSpan){
@@ -93,7 +94,6 @@ public abstract class SectionSpan extends SpanBranch {
             }
             return lines.build();
         });
-        return cacheNotes.get();
     }
 
     @Override
@@ -139,19 +139,6 @@ public abstract class SectionSpan extends SpanBranch {
     protected abstract boolean checkStart(String text);
 
     public abstract List<LinedSpan> getLines();
-
-    @Override
-    protected void childEdited(){
-        cacheHeading = Optional.empty();
-        cacheLevel = Optional.empty();
-        cacheEdition = Optional.empty();
-        cacheNotes = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){
-        cacheId = Optional.empty();
-    }
 
     @Override
     public String toString(){

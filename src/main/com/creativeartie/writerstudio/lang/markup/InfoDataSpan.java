@@ -12,7 +12,7 @@ import static com.creativeartie.writerstudio.main.Checker.*;
  */
 public abstract class InfoDataSpan extends SpanBranch{
 
-    private Optional<List<StyleInfo>> cacheList;
+    private final CacheKeyList<StyleInfo> cacheList;
 
     public abstract SpanBranch getData();
 
@@ -21,6 +21,7 @@ public abstract class InfoDataSpan extends SpanBranch{
     protected InfoDataSpan(List<Span> children, InfoDataType type){
         super(children);
         dataType = checkNotNull(type, "type");
+        cacheList = new CacheKeyList<>(StyleInfo.class);
     }
 
     public final InfoDataType getDataType(){
@@ -29,17 +30,11 @@ public abstract class InfoDataSpan extends SpanBranch{
 
     @Override
     public final List<StyleInfo> getBranchStyles(){
-        cacheList = getCache(cacheList, () -> ImmutableList.of(dataType));
-        return cacheList.get();
+        return getLocalCache(cacheList, () -> ImmutableList.of(dataType));
     }
 
     @Override
     public String toString(){
         return "{" + getData() + "}";
-    }
-
-    @Override
-    protected void childEdited(){
-        cacheList = Optional.empty();
     }
 }

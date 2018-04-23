@@ -11,29 +11,31 @@ import com.creativeartie.writerstudio.lang.*;
  */
 public final class FormatSpanPointKey extends FormatSpan{
     private final FormatParsePointKey spanReparser;
-    private Optional<List<StyleInfo>> cacheStyles;
-    private Optional<String> cacheField;
-    private Optional<String> cacheValue;
+    private final CacheKeyList<StyleInfo> cacheStyles;
+    private final CacheKeyMain<String> cacheField;
+    private final CacheKeyMain<String> cacheValue;
 
     FormatSpanPointKey(List<Span> children, FormatParsePointKey reparser){
         super(children, reparser.getFormats());
         spanReparser = reparser;
+
+        cacheField = CacheKey.stringKey();
+        cacheValue = CacheKey.stringKey();
+        cacheStyles = new CacheKeyList<>(StyleInfo.class);
     }
 
     public String getField(){
-        cacheField = getCache(cacheField, () -> spanFromFirst(ContentSpan.class)
+        return getLocalCache(cacheField, () -> spanFromFirst(ContentSpan.class)
             .map(s -> s.getTrimmed()).orElse(""));
-        return cacheField.get();
     }
 
     @Override
     public List<StyleInfo> getBranchStyles(){
-        cacheStyles = getCache(cacheStyles, () -> {
+        return getLocalCache(cacheStyles, () -> {
             ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
             return builder.add(AuxiliaryType.REF_KEY)
                 .addAll(super.getBranchStyles()).build();
         });
-        return cacheStyles.get();
     }
 
     @Override
@@ -45,16 +47,6 @@ public final class FormatSpanPointKey extends FormatSpan{
     protected SetupParser getParser(String text){
         return spanReparser.canParse(text)? spanReparser: null;
     }
-
-    @Override
-    protected void childEdited(){
-        super.childEdited();
-        cacheField = Optional.empty();
-        cacheStyles = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){}
 
     @Override
     protected String toChildString(){

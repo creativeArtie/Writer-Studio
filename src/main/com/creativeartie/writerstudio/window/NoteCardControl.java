@@ -23,7 +23,7 @@ public class NoteCardControl extends NoteCardView{
     private WritingText currentDoc;
     public void loadCards(WritingText doc){
         currentDoc = doc;
-        doc.addUpdater(span -> updateCards());
+        doc.addSpanEdited(span -> updateCards());
         updateCards();
     }
 

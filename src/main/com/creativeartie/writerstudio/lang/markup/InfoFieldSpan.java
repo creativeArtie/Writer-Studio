@@ -13,44 +13,35 @@ import com.creativeartie.writerstudio.lang.*;
  */
 public final class InfoFieldSpan extends SpanBranch{
 
-    private Optional<List<StyleInfo>> cacheStyles;
-    private Optional<InfoFieldType> cacheField;
+    private final CacheKeyList<StyleInfo> cacheStyles;
+    private final CacheKeyMain<InfoFieldType> cacheField;
 
     InfoFieldSpan(List<Span> children){
         super(children);
+        cacheStyles = new CacheKeyList<>(StyleInfo.class);
+        cacheField = new CacheKeyMain<>(InfoFieldType.class);
     }
 
     @Override
     public List<StyleInfo> getBranchStyles(){
-        cacheStyles = getCache(cacheStyles, () -> ImmutableList
+        return getLocalCache(cacheStyles, () -> ImmutableList
             .of(getFieldType()));
-        return cacheStyles.get();
     }
 
     public InfoFieldType getFieldType(){
-        cacheField = getCache(cacheField, () -> {
+        return getLocalCache(cacheField, () -> {
             Optional<SpanLeaf> found = leafFromFrist(StyleInfoLeaf.FIELD);
             if (found.isPresent()){
                 return InfoFieldType.parseText(found.get().getRaw());
             }
             return InfoFieldType.ERROR;
         });
-        return cacheField.get();
     }
 
     @Override
     protected SetupParser getParser(String text){
         return null;
     }
-
-    @Override
-    protected void childEdited(){
-        cacheStyles = Optional.empty();
-        cacheField = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){}
 
     @Override
     public String toString(){

@@ -15,14 +15,20 @@ import static com.creativeartie.writerstudio.main.Checker.*;
 public final class SectionSpanHead extends SectionSpan {
     private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(
             AuxiliaryType.SECTION_HEAD);
-    private Optional<List<LinedSpan>> cacheSectionLines;
-    private Optional<List<SectionSpanHead>> cacheSections;
-    private Optional<List<SectionSpanScene>> cacheScenes;
-    private Optional<Integer> cachePublish;
-    private Optional<Integer> cacheNote;
+    private final CacheKeyList<LinedSpan> cacheSectionLines;
+    private final CacheKeyList<SectionSpanHead> cacheSections;
+    private final CacheKeyList<SectionSpanScene> cacheScenes;
+    private final CacheKeyMain<Integer> cachePublish;
+    private final CacheKeyMain<Integer> cacheNote;
 
     SectionSpanHead(List<Span> children, SectionParser reparser){
         super(children, reparser);
+
+        cacheSectionLines = new CacheKeyList<>(LinedSpan.class);
+        cacheSections = new CacheKeyList<>(SectionSpanHead.class);
+        cacheScenes = new CacheKeyList<>(SectionSpanScene.class);
+        cachePublish = CacheKey.integerKey();
+        cacheNote = CacheKey.integerKey();
     }
 
     @Override
@@ -32,7 +38,7 @@ public final class SectionSpanHead extends SectionSpan {
 
     @Override
     public List<LinedSpan> getLines(){
-        cacheSectionLines = getCache(cacheSectionLines, () -> {
+        return getLocalCache(cacheSectionLines, () -> {
             ImmutableList.Builder<LinedSpan> lines = ImmutableList.builder();
             for (Span span: this){
                 if (span instanceof LinedSpan){
@@ -45,7 +51,6 @@ public final class SectionSpanHead extends SectionSpan {
             }
             return lines.build();
         });
-        return cacheSectionLines.get();
     }
 
     private static List<LinedSpan> getLines(SectionSpanScene span){
@@ -58,30 +63,26 @@ public final class SectionSpanHead extends SectionSpan {
     }
 
     public List<SectionSpanHead> getSections(){
-        cacheSections = getCache(cacheSections, () ->
+        return getLocalCache(cacheSections, () ->
             getChildren(SectionSpanHead.class));
-        return cacheSections.get();
     }
 
     public List<SectionSpanScene> getScenes(){
-        cacheScenes = getCache(cacheScenes, () ->
+        return getLocalCache(cacheScenes, () ->
             getChildren(SectionSpanScene.class));
-        return cacheScenes.get();
     }
 
     public int getPublishTotal(){
-        cachePublish = getCache(cachePublish,
+        return getLocalCache(cachePublish,
             () -> getCount(this, span -> span.getPublishTotal(), true)
         );
-        return cachePublish.get();
     }
 
     public int getNoteTotal(){
-        cacheNote = getCache(cacheNote, () ->
+        return getLocalCache(cacheNote, () ->
             getCount(this, span -> span.getNoteTotal(), true) +
             getNotes().stream().mapToInt(note -> note.getNoteTotal()).sum()
         );
-        return cacheNote.get();
     }
 
     private int getCount(Span span, ToIntFunction<LinedSpan> counter,
@@ -108,16 +109,6 @@ public final class SectionSpanHead extends SectionSpan {
         }
         /// Base case: match none
         return 0;
-    }
-
-    @Override
-    protected void childEdited(){
-        cacheSectionLines = Optional.empty();
-        cacheSections = Optional.empty();
-        cacheScenes = Optional.empty();
-        cachePublish = Optional.empty();
-        cacheNote = Optional.empty();
-        super.childEdited();
     }
 
     @Override

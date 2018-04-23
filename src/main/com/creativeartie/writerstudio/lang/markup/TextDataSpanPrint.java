@@ -13,16 +13,18 @@ import com.google.common.base.*;
 /** A {@link TextDataSpan} for meta data in the document area.
  */
 public class TextDataSpanPrint extends TextDataSpan<FormattedSpan>{
-    private Optional<TextDataType.Format> cacheFormat;
-    private Optional<Integer> cacheIndex;
+    private final CacheKeyMain<TextDataType.Format> cacheFormat;
+    private final CacheKeyMain<Integer> cacheIndex;
+
     public TextDataSpanPrint(List<Span> spans){
         super(spans);
+        cacheFormat = new CacheKeyMain<>(TextDataType.Format.class);
+        cacheIndex = CacheKey.integerKey();
     }
 
     public int getIndex(){
-        cacheIndex = getCache(cacheIndex, () -> ((WritingData)getParent())
+        return getLocalCache(cacheIndex, () -> ((WritingData)getParent())
             .getPrint((TextDataType.Area)getType()).indexOf(this));
-        return cacheIndex.get();
     }
 
     @Override
@@ -37,7 +39,7 @@ public class TextDataSpanPrint extends TextDataSpan<FormattedSpan>{
 
     @Override
     public TextDataType.Format getFormat(){
-        cacheFormat = getCache(cacheFormat, () -> {
+        return getLocalCache(cacheFormat, () -> {
             String format = getRaw().substring(ALIGN_START);
             String start = getType().getKeyName();
             for (TextDataType.Format type: TextDataType.Format.values()){
@@ -47,7 +49,6 @@ public class TextDataSpanPrint extends TextDataSpan<FormattedSpan>{
             }
             throw new IllegalStateException("Text data format not found.");
         });
-        return cacheFormat.get();
     }
 
     public void setFormat(TextDataType.Format format){
@@ -62,12 +63,5 @@ public class TextDataSpanPrint extends TextDataSpan<FormattedSpan>{
     void setData(String raw){
         runCommand(() -> getType().getKeyName() + getFormat().getKeyName() +
             raw + LINED_END);
-    }
-
-    @Override
-    protected void childEdited(){
-        super.childEdited();
-        cacheFormat = Optional.empty();
-        cacheIndex = Optional.empty();
     }
 }

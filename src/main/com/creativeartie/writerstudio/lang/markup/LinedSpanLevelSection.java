@@ -12,16 +12,24 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 public final class LinedSpanLevelSection extends LinedSpanLevel
         implements Catalogued{
 
-    private Optional<Optional<EditionSpan>> cacheEditionSpan;
-    private Optional<Optional<CatalogueIdentity>> cacheId;
-    private Optional<String> cacheLookup;
-    private Optional<EditionType> cacheEdition;
-    private Optional<Integer> cachePublish;
-    private Optional<Integer> cacheNote;
-    private Optional<String> cacheTitle;
+    private final CacheKeyOptional<EditionSpan> cacheEditionSpan;
+    private final CacheKeyOptional<CatalogueIdentity> cacheId;
+    private final CacheKeyMain<String> cacheLookup;
+    private final CacheKeyMain<EditionType> cacheEdition;
+    private final CacheKeyMain<Integer> cachePublish;
+    private final CacheKeyMain<Integer> cacheNote;
+    private final CacheKeyMain<String> cacheTitle;
 
     LinedSpanLevelSection(List<Span> children){
         super(children);
+
+        cacheEditionSpan = new CacheKeyOptional<>(EditionSpan.class);
+        cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
+        cacheEdition = new CacheKeyMain<>(EditionType.class);
+        cachePublish = CacheKey.integerKey();
+        cacheNote = CacheKey.integerKey();
+        cacheTitle = CacheKey.stringKey();
+        cacheLookup = CacheKey.stringKey();
     }
 
     public Optional<EditionSpan> getEditionSpan(){
@@ -30,18 +38,18 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
 
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
-        cacheId = getCache(cacheId, () ->
-            spanFromFirst(DirectorySpan.class).map(span -> span.buildId()));
-        return cacheId.get();
+        return getLocalCache(cacheId, () ->
+            spanFromFirst(DirectorySpan.class).map(span -> span.buildId())
+            .orElse(null)
+        );
     }
 
     public String getLookupText(){
-        cacheLookup = getCache(cacheLookup, () ->
+        return getLocalCache(cacheLookup, () ->
             spanFromFirst(DirectorySpan.class)
                 .map(span -> LINK_REF + span.getLookupText() + LINK_END)
                 .orElse("")
         );
-        return cacheLookup.get();
     }
 
     @Override
@@ -50,30 +58,28 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
     }
 
     public EditionType getEdition(){
-        cacheEdition = getCache(cacheEdition, () -> {
+        return getLocalCache(cacheEdition, () -> {
             Optional<EditionSpan> status = getEditionSpan();
             return status.isPresent()? status.get().getEdition():
                 EditionType.NONE;
         });
-        return cacheEdition.get();
     }
 
 
     @Override
     public int getPublishTotal(){
-        cachePublish = getCache(cachePublish, () -> {
+        return getLocalCache(cachePublish, () -> {
             if (getLinedType() == LinedType.HEADING){
                 return getFormattedSpan().map(span -> span.getPublishTotal())
                     .orElse(0);
             }
             return 0;
         });
-        return cachePublish.get();
     }
 
     @Override
     public int getNoteTotal(){
-        cacheNote = getCache(cacheNote, () -> {
+        return getLocalCache(cacheNote, () -> {
             if (getLinedType() == LinedType.HEADING){
                 return getFormattedSpan().map(span -> span.getNoteTotal())
                     .orElse(0);
@@ -83,15 +89,13 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
                     .orElse(0);
             }
         });
-        return cacheNote.get();
     }
 
     public String getTitle(){
-        cacheTitle = getCache(cacheTitle, () ->{
+        return getLocalCache(cacheTitle, () ->{
             Optional<FormattedSpan> main = spanFromLast(FormattedSpan.class);
             return main.isPresent()? main.get().getParsedText(): "";
         });
-        return cacheTitle.get();
     }
 
     @Override
@@ -106,18 +110,4 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
         return text.startsWith(getLevelToken(parser, getLevel()))? parser: null;
     }
 
-    @Override
-    protected void childEdited(){
-        super.childEdited();
-        cacheEditionSpan = Optional.empty();
-        cacheId = Optional.empty();
-        cacheLookup = Optional.empty();
-        cacheEdition = Optional.empty();
-        cachePublish = Optional.empty();
-        cacheNote = Optional.empty();
-        cacheTitle = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){}
 }

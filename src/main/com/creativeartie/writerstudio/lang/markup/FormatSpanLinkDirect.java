@@ -3,7 +3,6 @@ package com.creativeartie.writerstudio.lang.markup;
 import com.google.common.collect.*;
 
 import java.util.*;
-import java.util.Optional;
 import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
@@ -14,48 +13,49 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 public final class FormatSpanLinkDirect extends FormatSpanLink {
 
     private final FormatParseLinkDirect spanReparser;
-    private Optional<Optional<SpanBranch>> cacheTarget;
-    private Optional<String> cachePath;
-    private Optional<String> cacheText;
-    private Optional<List<StyleInfo>> cacheStyles;
+    private final CacheKeyOptional<SpanBranch> cacheTarget;
+    private final CacheKeyMain<String> cachePath;
+    private final CacheKeyMain<String> cacheText;
+    private final CacheKeyList<StyleInfo> cacheStyles;
 
     FormatSpanLinkDirect(List<Span> children, FormatParseLinkDirect reparser){
         super(children, reparser.getFormats());
         spanReparser = reparser;
+
+        cacheTarget = new CacheKeyOptional<>(SpanBranch.class);
+        cachePath = CacheKey.stringKey();
+        cacheText = CacheKey.stringKey();
+        cacheStyles  = new CacheKeyList<>(StyleInfo.class);
     }
 
     @Override
-    public Optional<SpanBranch> getPathSpan(){
-        cacheTarget = getCache(cacheTarget, () -> spanFromFirst(ContentSpan
-            .class).map(span -> (SpanBranch) span));
-        return cacheTarget.get();
+    public final Optional<SpanBranch> getPathSpan(){
+        return getLocalCache(cacheTarget, () -> spanFromFirst(ContentSpan
+            .class).map(span -> (SpanBranch) span).orElse(null));
     }
 
     public String getPath(){
-        cachePath = getCache(cachePath, () -> getPathSpan()
+        return getLocalCache(cachePath, () -> getPathSpan()
             .map(span -> (ContentSpan) span)
             .map(path -> path.getTrimmed())
             .orElse(""));
-        return cachePath.get();
     }
 
     @Override
     public String getText(){
-        cacheText = getCache(cacheText, () -> {
+        return getLocalCache(cacheText, () -> {
             Optional<ContentSpan> text = spanFromLast(ContentSpan.class);
             return text.isPresent()? text.get().getTrimmed(): "";
         });
-        return cacheText.get();
     }
 
     @Override
     public List<StyleInfo> getBranchStyles(){
-        cacheStyles = getCache(cacheStyles, () -> {
+        return getLocalCache(cacheStyles, () -> {
             ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
             return builder.add(AuxiliaryType.DIRECT_LINK)
                 .addAll(super.getBranchStyles()).build();
         });
-        return cacheStyles.get();
     }
 
     @Override
@@ -65,23 +65,9 @@ public final class FormatSpanLinkDirect extends FormatSpanLink {
         )? spanReparser : null;
     }
 
-    @Override
-    protected void childEdited(){
-        super.childEdited();
-        cacheTarget = Optional.empty();
-        cachePath = Optional.empty();
-        cacheText = Optional.empty();
-        cacheStyles = Optional.empty();
-    }
-
-
     public boolean isExternal(){
         return false;
     }
-
-    @Override
-    protected void docEdited(){}
-
     @Override
     protected String toChildString(){
         return SpanLeaf.escapeText(getText()) + "->" +

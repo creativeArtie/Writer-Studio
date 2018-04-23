@@ -14,12 +14,16 @@ import static com.creativeartie.writerstudio.main.Checker.*;
 public final class SectionSpanScene extends SectionSpan {
     private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(
         AuxiliaryType.SECTION_SCENE);
-    private Optional<SectionSpanHead> cacheHead;
-    private Optional<List<SectionSpanScene>> cacheScenes;
-    private Optional<List<LinedSpan>> cacheLines;
+    private final CacheKeyMain<SectionSpanHead> cacheHead;
+    private final CacheKeyList<SectionSpanScene> cacheScenes;
+    private final CacheKeyList<LinedSpan> cacheLines;
 
     SectionSpanScene(List<Span> children, SectionParser reparser){
         super(children, reparser);
+
+        cacheHead = new CacheKeyMain<>(SectionSpanHead.class);
+        cacheLines = new CacheKeyList<>(LinedSpan.class);
+        cacheScenes = new CacheKeyList<>(SectionSpanScene.class);
     }
 
     @Override
@@ -28,7 +32,7 @@ public final class SectionSpanScene extends SectionSpan {
     }
 
     public SectionSpanHead getSection(){
-        cacheHead = getCache(cacheHead, () ->{
+        return getLocalCache(cacheHead, () ->{
             SpanNode<?> span = getParent();
             while (! (span instanceof SectionSpanHead)){
                 span = span.getParent();
@@ -36,12 +40,11 @@ public final class SectionSpanScene extends SectionSpan {
             }
             return (SectionSpanHead) span;
         });
-        return cacheHead.get();
     }
 
     @Override
     public final List<LinedSpan> getLines(){
-        cacheLines = getCache(cacheLines, () -> {
+        return getLocalCache(cacheLines, () -> {
             ImmutableList.Builder<LinedSpan> lines = ImmutableList.builder();
             for (Span child: this){
                 if (child instanceof LinedSpan){
@@ -50,26 +53,16 @@ public final class SectionSpanScene extends SectionSpan {
             }
             return lines.build();
         });
-        return cacheLines.get();
     }
 
     public List<SectionSpanScene> getSubscenes(){
-        cacheScenes = getCache(cacheScenes, () ->
+        return getLocalCache(cacheScenes, () ->
             getChildren(SectionSpanScene.class));
-        return cacheScenes.get();
     }
 
     @Override
     protected boolean checkStart(String text){
         return allowChild(text, getLevel() - 1, false);
-    }
-
-    @Override
-    protected void childEdited(){
-        cacheHead = Optional.empty();
-        cacheScenes = Optional.empty();
-        cacheLines = Optional.empty();
-        super.childEdited();
     }
 
     @Override

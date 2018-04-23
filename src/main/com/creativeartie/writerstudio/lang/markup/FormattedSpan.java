@@ -18,15 +18,20 @@ import static com.creativeartie.writerstudio.main.Checker.*;
  */
 public final class FormattedSpan extends SpanBranch {
 
-    private Optional<Integer> cachePublish;
-    private Optional<Integer> cacheNote;
-    private Optional<Integer> cacheTotal;
-    private Optional<String> cacheText;
+    private final CacheKeyMain<Integer> cachePublish;
+    private final CacheKeyMain<Integer> cacheNote;
+    private final CacheKeyMain<Integer> cacheTotal;
+    private final CacheKeyMain<String> cacheText;
     private boolean allowNotes;
 
     FormattedSpan(List<Span> spanChildren, boolean notes){
         super(spanChildren);
         allowNotes = notes;
+
+        cachePublish = CacheKey.integerKey();
+        cacheNote = CacheKey.integerKey();
+        cacheTotal = CacheKey.integerKey();
+        cacheText = CacheKey.stringKey();
     }
 
     @Override
@@ -36,20 +41,17 @@ public final class FormattedSpan extends SpanBranch {
 
     /** Get the word count of publishing text.*/
     public int getPublishTotal(){
-        cachePublish = getCache(cachePublish, () -> getCount(true, false));
-        return cachePublish.get();
+        return getLocalCache(cachePublish, () -> getCount(true, false));
     }
 
     /** Get the word count of research notes.*/
     public int getNoteTotal(){
-        cacheNote = getCache(cacheNote, () -> getCount(false, true));
-        return cacheNote.get();
+        return getLocalCache(cacheNote, () -> getCount(false, true));
     }
 
     /** Get the total word count. */
     public int getTotalCount(){
-        cacheTotal = getCache(cacheTotal, () -> getCount(true, true));
-        return cacheTotal.get();
+        return getLocalCache(cacheTotal, () -> getCount(true, true));
     }
 
     private int getCount(boolean isPublish, boolean isNote){
@@ -71,7 +73,7 @@ public final class FormattedSpan extends SpanBranch {
     }
 
     public String getParsedText(){
-        cacheText = getCache(cacheText, () -> {
+        return getLocalCache(cacheText, () -> {
             StringBuilder text = new StringBuilder();
             for (Span span: this){
                 if (span instanceof FormatSpanContent){
@@ -89,7 +91,6 @@ public final class FormattedSpan extends SpanBranch {
             }
             return text.toString();
         });
-        return cacheText.get();
     }
 
     public boolean allowNotes(){
@@ -100,17 +101,6 @@ public final class FormattedSpan extends SpanBranch {
     protected SetupParser getParser(String text){
         return null;
     }
-
-    @Override
-    protected void childEdited(){
-        cachePublish = Optional.empty();
-        cacheNote = Optional.empty();
-        cacheTotal = Optional.empty();
-        cacheText = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){}
 
     @Override
     public String toString(){

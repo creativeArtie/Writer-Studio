@@ -12,19 +12,19 @@ import com.google.common.collect.*; // ImmutableList
  */
 public final class BasicTextEscape extends SpanBranch{
 
-    private Optional<String> cacheEscape;
     private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(
         AuxiliaryType.ESCAPE);
 
+    private final CacheKeyMain<String> cacheEscape;
+
     BasicTextEscape(List<Span> children){
         super(children);
-        cacheEscape = Optional.empty();
+        cacheEscape = CacheKey.stringKey();
     }
 
     public String getEscape(){
-        cacheEscape = getCache(cacheEscape,
-            () -> size() == 2? get(1).getRaw(): "");
-        return cacheEscape.get();
+        return getLocalCache(cacheEscape, () -> size() == 2? get(1).getRaw():
+            "");
     }
 
     @Override
@@ -36,12 +36,4 @@ public final class BasicTextEscape extends SpanBranch{
     protected SetupParser getParser(String text){
         return null;
     }
-
-    @Override
-    protected void childEdited(){
-        cacheEscape = Optional.empty();
-    }
-
-    @Override
-    protected void docEdited(){}
 }

@@ -20,43 +20,141 @@ public abstract class SpanNode<T extends Span> extends Span
     private final HashSet<Consumer<Span>> childEditedListeners;
     private final HashSet<Consumer<Span>> spanRemovedListeners;
     private final HashSet<Consumer<Span>> spanEditedListeners;
-    private final Cache<Object, Object> spanCache;
+
+    private final Cache<CacheKeyMain<?>, Object> docCache;
+    private final Cache<CacheKeyMain<?>, Object> spanCache;
+
+    private final Cache<CacheKeyOptional<?>, Object> docOptionalCache;
+    private final Cache<CacheKeyOptional<?>, Object> spanOptionalCache;
+
+    private final Cache<CacheKeyList<?>, List<?>> docListCache;
+    private final Cache<CacheKeyList<?>, List<?>> spanListCache;
 
 
     protected SpanNode(){
         childEditedListeners = new HashSet<>();
         spanRemovedListeners = new HashSet<>();
         spanEditedListeners = new HashSet<>();
+
+        docCache = CacheBuilder.newBuilder().build();
         spanCache = CacheBuilder.newBuilder().build();
+
+        docOptionalCache = CacheBuilder.newBuilder().build();
+        spanOptionalCache = CacheBuilder.newBuilder().build();
+
+        docListCache = CacheBuilder.newBuilder().build();
+        spanListCache = CacheBuilder.newBuilder().build();
     }
 
-    void updateSpan(List<T> spans){
+    public void addSpanEdited(Consumer<Span> consumer){
+        spanEditedListeners.add(consumer);
+    }
+
+    public void removeSpanEdited(Consumer<Span> consumer){
+        spanEditedListeners.remove(consumer);
+    }
+
+    public void addSpanRemoved(Consumer<Span> consumer){
+        spanRemovedListeners.add(consumer);
+    }
+
+    public void removeSpanRemoved(Consumer<Span> consumer){
+        spanRemovedListeners.remove(consumer);
+    }
+
+    public void addChildEdited(Consumer<Span> consumer){
+        childEditedListeners.add(consumer);
+    }
+
+    public void removeChildEdited(Consumer<Span> consumer){
+        childEditedListeners.remove(consumer);
+    }
+
+    final void updateSpan(List<T> spans){
         setChildren(spans);
-        spanEditedListeners.forEach(l -> l.accept(this));
         spanCache.invalidateAll();
+        spanOptionalCache.invalidateAll();
+        spanEditedListeners.forEach(l -> l.accept(this));
         getParent().updateParent();
     }
 
-    void updateParent(){
+    final void updateParent(){
         spanCache.invalidateAll();
+        spanOptionalCache.invalidateAll();
+        spanListCache.invalidateAll();
         childEditedListeners.forEach(l -> l.accept(this));
+        if (this instanceof SpanBranch){
+            getParent().updateParent();
+        } else {
+            ((Document)this).updateDoc();
+        }
     }
 
-    void setRemove(){
+    final void clearCache(){
+        docCache.invalidateAll();
+        docOptionalCache.invalidateAll();
+        docListCache.invalidateAll();
+    }
+
+    final void setRemove(){
         spanRemovedListeners.forEach(l -> l.accept(this));
-        delegate().filter(s -> s instanceof SpanBranch)
-            .forEach(s -> s.setRemove());
+        delegate().stream().filter(s -> s instanceof SpanBranch)
+            .forEach(s -> ((SpanBranch)s).setRemove());
     }
 
-    abstract T getParent();
-
-    protected <T> T getLocalCache(Object key, Callable<T> caller, Class<T> cast){
+    abstract void setChildren(List<T> spans);
+    protected final <T> T getLocalCache(CacheKeyMain<T> key, Callable<T> caller){
         try {
-            return cast.cast(spanCache.get(key, caller));
+            return key.cast(spanCache.get(key, caller));
         } catch (ExecutionException e) {
             throw new RuntimeException(e.getCause());
         }
     }
+
+    protected final <T> T getDocCache(CacheKeyMain<T> key, Callable<T> caller){
+        try {
+            return key.cast(docCache.get(key, caller));
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e.getCause());
+        }
+    }
+
+    protected final <T> Optional<T> getLocalCache(CacheKeyOptional<T> key,
+            Callable<T> caller){
+        try {
+            return key.cast(spanOptionalCache.get(key, caller));
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e.getCause());
+        }
+    }
+
+    protected <T> Optional<T> getDocCache(CacheKeyOptional<T> key,
+            Callable<T> caller){
+        try {
+            return key.cast(docOptionalCache.get(key, caller));
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e.getCause());
+        }
+    }
+
+    protected final <T> List<T> getLocalCache(CacheKeyList<T> key,
+            Callable<List<T>> caller){
+        try {
+            return key.cast(spanListCache.get(key, caller));
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e.getCause());
+        }
+    }
+
+    protected <T> List<T> getDocCache(CacheKeyList<T> key,
+            Callable<List<T>> caller){
+        try {
+            return key.cast(docListCache.get(key, caller));
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e.getCause());
+        }
+    }
+
 
     @Override
     public final String getRaw(){
@@ -97,7 +195,7 @@ public abstract class SpanNode<T extends Span> extends Span
                 return Optional.of(clazz.cast(span));
             }
         }
-        //Not found or no children
+        /// Not found or no children
         return Optional.empty();
     }
 
@@ -122,7 +220,7 @@ public abstract class SpanNode<T extends Span> extends Span
                 return Optional.of(clazz.cast(span));
             }
         }
-        //Not found or no children
+        /// Not found or no children
         return Optional.empty();
     }
 
@@ -137,7 +235,7 @@ public abstract class SpanNode<T extends Span> extends Span
                 }
             }
         }
-        //Not found or no children
+        /// Not found or no children
         return Optional.empty();
     }
 
@@ -153,7 +251,7 @@ public abstract class SpanNode<T extends Span> extends Span
                 }
             }
         }
-        //Not found or no children
+        /// Not found or no children
         return Optional.empty();
     }
 
@@ -203,9 +301,6 @@ public abstract class SpanNode<T extends Span> extends Span
 
     /** Gets all the {@link SpanLeaf} found in its descendants.*/
     public abstract List<SpanLeaf> getLeaves();
-
-    /** Listens that one of its child is edited. */
-    protected abstract void childEdited();
 
     /// Implements List (ForwardList cannot be the super class)
     public abstract List<T> delegate();
