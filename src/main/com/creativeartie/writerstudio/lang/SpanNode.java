@@ -20,6 +20,8 @@ public abstract class SpanNode<T extends Span> extends Span
     private final HashSet<Consumer<SpanNode<T>>> childEditedListeners;
     private final HashSet<Consumer<SpanNode<T>>> spanRemovedListeners;
     private final HashSet<Consumer<SpanNode<T>>> spanEditedListeners;
+    private final HashSet<Consumer<SpanNode<T>>> docEditedListeners;
+    private boolean editedChild;
     private boolean editedTarget;
 
     private final Cache<CacheKeyMain<?>, Object> spanCache;
@@ -30,12 +32,11 @@ public abstract class SpanNode<T extends Span> extends Span
     private final Cache<CacheKeyOptional<?>, Optional<?>> docOptionalCache;
     private final Cache<CacheKeyList<?>, List<?>> docListCache;
 
-
-
     protected SpanNode(){
         childEditedListeners = new HashSet<>();
         spanRemovedListeners = new HashSet<>();
         spanEditedListeners = new HashSet<>();
+        docEditedListeners = new HashSet<>();
         editedTarget = false;
 
         spanCache = CacheBuilder.newBuilder().build();
@@ -72,15 +73,27 @@ public abstract class SpanNode<T extends Span> extends Span
         childEditedListeners.remove(consumer);
     }
 
+    public void addDocEdited(Consumer<SpanNode<T>> consumer){
+        docEditedListeners.add(consumer);
+    }
+
+    public void removeDocEdited(Consumer<SpanNode<T>> consumer){
+        docEditedListeners.remove(consumer);
+    }
+
     final void updateSpan(List<T> spans){
         setChildren(spans);
+        updateSpan();
+        getParent().editedChild = true;
+        getParent().updateParent();
+    }
 
+    final void updateSpan(){
         spanCache.invalidateAll();
         spanOptionalCache.invalidateAll();
         spanListCache.invalidateAll();
 
         editedTarget = true;
-        getParent().updateParent();
     }
 
     final void updateParent(){
@@ -102,17 +115,24 @@ public abstract class SpanNode<T extends Span> extends Span
     }
 
     final void setRemove(){
-        spanRemovedListeners.forEach(l -> l.accept(this));
+        getDocument().removeSpan(this);
         delegate().stream().filter(s -> s instanceof SpanBranch)
             .forEach(s -> ((SpanBranch)s).setRemove());
     }
 
+    final void fireRemoveListeners(){
+        spanRemovedListeners.forEach(l -> l.accept(this));
+    }
+
     final void fireListeners(){
-        childEditedListeners.forEach(l -> l.accept(this));
+        docEditedListeners.forEach(l -> l.accept(this));
+        if (editedChild){
+            childEditedListeners.forEach(l -> l.accept(this));
+            editedChild = false;
+        }
         if (editedTarget){
             spanEditedListeners.forEach(l -> l.accept(this));
             editedTarget = false;
-        } else {
         }
         stream().filter(s -> s instanceof SpanBranch)
             .forEach(s -> ((SpanBranch)s).fireListeners());

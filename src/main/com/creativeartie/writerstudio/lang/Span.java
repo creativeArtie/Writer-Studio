@@ -25,6 +25,11 @@ public abstract class Span{
     /** Get the {@link SpanNode parent span}. */
     public abstract SpanNode<?> getParent();
 
+    public boolean isRemoved(){
+        return this instanceof Document? false:
+            (getParent().indexOf(this) == -1? true: getParent().isRemoved());
+    }
+
     /**
      * Finds the index of this span in the parent or return -1.
      */

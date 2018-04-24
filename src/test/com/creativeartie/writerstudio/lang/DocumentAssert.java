@@ -1,6 +1,7 @@
 package com.creativeartie.writerstudio.lang;
 
 import java.util.*;
+import java.util.function.*;
 
 import static org.junit.Assert.*;
 
@@ -24,12 +25,10 @@ public class DocumentAssert {
         }
     }
 
-    private static final SetupParser END_PARSER = new SetupParser(){
-        @Override public Optional<SpanBranch> parse(SetupPointer pointer){
-            ArrayList<Span> children = new ArrayList<>();
-            pointer.getTo(children, ((char)0) + "");
-            return Optional.of(new LastBranch(children));
-        }
+    private static final SetupParser END_PARSER = (pointer) -> {
+        ArrayList<Span> children = new ArrayList<>();
+        pointer.getTo(children, ((char)0) + "");
+        return Optional.of(new LastBranch(children));
     };
 
     public static DocumentAssert assertDoc(int childrenSize, String rawText,
@@ -54,7 +53,6 @@ public class DocumentAssert {
     private DocumentAssert(Document document){
         doc = document;
         idTester = new IDTestDocument();
-        editPass = true;
     }
 
     public Document getDocument(){
@@ -228,6 +226,13 @@ public class DocumentAssert {
         EditAssert edit = new EditAssert(doc, (SpanNode<?>)getFamily(idx)[0]);
         doc.delete(start, end);
         idTester = new IDTestDocument();
+        edit.testRest();
+    }
+
+    public void call(Consumer<SpanNode<?>> caller, int ... idx) {
+        SpanNode<?> target = (SpanNode<?>)getFamily(idx)[0];
+        EditAssert edit = new EditAssert(doc, target);
+        caller.accept(target);
         edit.testRest();
     }
 }

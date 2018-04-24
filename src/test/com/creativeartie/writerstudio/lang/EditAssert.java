@@ -5,119 +5,97 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 public class EditAssert{
-    private enum Call{
-        /// target is sibling to this span
-        NONE,
-        /// target is a child to this span
-        PARENT,
-        /// target is this span
-        SELF,
-        /// targe is a parent to this span
-        CHILD;
-    }
 
     private final Span targetSpan;
-    private final Map<Span, Call> expectedCalls;
+    private int totalSpan;
     private int totalRemoved;
-    private int totalChildren;
+    private int totalParent;
+    private int countSpan;
     private int countRemoved;
     private int countParent;
     private boolean isPass;
 
-    EditAssert(Document doc, Span edited){
-        targetSpan = edited;
-
-        expectedCalls = new TreeMap<>();
-        for (SpanBranch span: doc){
-            load(span, edited == span);
-        }
-
-        /// fix targetSpan = child
-        expectedCalls.put(edited, Call.SELF);
-
-        /// fix everything else = none
-        Span self = edited;
-        while ( ! (self instanceof Document)){
-            self = self.getParent();
-            expectedCalls.put(self, Call.PARENT);
+    EditAssert(Document doc, SpanNode<?> edited){
+        totalParent = 0;
+        if (edited instanceof SpanBranch){
             totalParent++;
+            SpanNode<?> parent = edited.getParent();
+            while (parent instanceof SpanBranch){
+                totalParent++;
+                parent = parent.getParent();
+            }
         }
-        expectedCalls.put(doc, Call.PARENT);
 
+        totalSpan = 0;
+        countSpan = 0;
+        totalRemoved = countRemoved(edited);
+        targetSpan = edited;
+        isPass = false;
         addListeners(doc);
     }
 
-    private void load(SpanNode<?> span, boolean child){
-        /// Pretends targetSpan = child
-        /// Pretends everything else = none
-        expectedCalls.put(span, child? Call.CHILD: Call.NONE);
-        totalRemoved++;
-        for(Span found: span){
-            if (found instanceof SpanBranch){
-                load((SpanBranch)found, found == targetSpan? true: child);
+    private int countRemoved(SpanNode<?> target){
+        int ans = 0;
+        for (Span child: target){
+            if (child instanceof SpanNode<?>){
+                ans += countRemoved((SpanNode<?>) child) + 1;
+                totalSpan++;
             }
         }
+        return ans;
     }
 
     private void addListeners(SpanNode<?> span){
         span.addSpanEdited(this::edited);
-        span.addChildEdited(this::chiled);
+        span.addChildEdited(this::childed);
+        span.addDocEdited(this::doc);
         span.addSpanRemoved(this::removed);
+        for (Span child: span){
+            if (child instanceof SpanNode){
+                addListeners((SpanNode<?>) child);
+            }
+        }
+    }
+
+    private void doc(SpanNode<?> span){
+        countSpan++;
     }
 
     private void edited(SpanNode<?> span){
-        switch (expectedCalls.get(span)){
-        case NONE:
-            fail("Sibling span is being edited: " + span);
-            break;
-        case PARENT:
-            fail("Parent span is being edited: " + span);
-        case SELF:
-            isPass = true;
-            break;
-        case CHILD:
-            fail("removed span is being edited:" + span);
-            break;
-        }
+        assertSame("Wrong span's edit fired.", targetSpan, span);
+        isPass = true;
     }
 
     private void childed(SpanNode<?> span){
-        switch (expectedCalls.get(span)){
-        case NONE:
-            fail("Sibling span fire it children listeners: " + span);
-            break;
-        case PARENT:
-            countParent++;
-            break;
-        case SELF:
-            fail("Self span fire it children listeners: " + span);
-            break;
-        case CHILD:
-            fail("Child span fire it children listeners: " + span);
-            break;
+        assertTrue("Wrong span's child edited fired: " + span, findChild(span));
+        countParent++;
+    }
+
+    private boolean findChild(SpanNode<?> span){
+        if (span == targetSpan) return true;
+        for (Span child: span){
+            if (child == targetSpan){
+                return true;
+            }
+            if (child instanceof SpanNode){
+                if (findChild((SpanNode<?>) child)){
+                    return true;
+                }
+            }
         }
+        return false;
     }
 
     private void removed(SpanNode<?> span){
-        switch (expectedCalls.get(span)){
-        case NONE:
-            fail("Sibling span is being removed: " + span);
-            break;
-        case PARENT:
-            fail("Parent span is being removed: " + span);
-            break;
-        case SELF:
-            fail("Self span is being removed: " + span);
-            break;
-        case CHILD:
-            countRemoved++;
-            break;
-        }
+        countRemoved++;
+        assertTrue("Span not removed: " + span, span.isRemoved());
     }
 
     void testRest(){
+        assertTrue("spanEdited not fired: " + targetSpan.getClass(), isPass);
         assertEquals("Parent count", totalParent, countParent);
-        assertTrue("spanEdited fired", isPass;
+        System.out.println(totalSpan + " " + countSpan);
+        assertEquals("Span count", totalSpan, countSpan);
         assertEquals("Removed count", totalRemoved, countRemoved);
     }
 }

@@ -24,9 +24,12 @@ public abstract class Document extends SpanNode<SpanBranch>{
     private final CatalogueMap catalogueMap;
     private SetupParser[] documentParsers;
 
+    private ArrayList<SpanNode<?>> removeSpan;
+
     protected Document(String raw, SetupParser ... parsers){
         checkNotNull(raw, "raw");
         checkNotEmpty(parsers, "parser");
+        removeSpan = new ArrayList<>();
 
         spanRanges = CacheBuilder.newBuilder().weakKeys().build();
         spanLeaves = CacheBuilder.newBuilder().weakKeys().build();
@@ -51,6 +54,10 @@ public abstract class Document extends SpanNode<SpanBranch>{
         catalogueMap = new CatalogueMap();
         /// Setup for building the doc and a pointer to use
         parseDocument(raw);
+
+        /// Finalize the parse loop
+        catalogueMap.clear();
+        loadMap(documentChildren);
     }
 
     public void addReferences(Document ... docs){
@@ -97,10 +104,6 @@ public abstract class Document extends SpanNode<SpanBranch>{
                 }
             }
         }
-
-        /// Finalize the parse loop
-        catalogueMap.clear();
-        loadMap(documentChildren);
     }
 
     final void updateDoc(){
@@ -115,8 +118,14 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
         catalogueMap.clear();
         loadMap(this);
-        fireListeners();
 
+        removeSpan.forEach(s -> s.fireRemoveListeners());
+        removeSpan.clear();
+        fireListeners();
+    }
+
+    final void removeSpan(SpanNode<?> span){
+        removeSpan.add(span);
     }
 
     /**
@@ -299,8 +308,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         checkRange(location, "location", 0, true, getEnd(), true);
         checkNotNull(input, "input");
         if (isEmpty()){
-            parseDocument(input);
-            updateDoc();
+            reparseDocument(input);
             return;
         }
 
@@ -321,8 +329,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
             }
             /// Reparse the whole document
             assert span instanceof Document: "Wrong class.";
-            parseDocument(getRaw() + input);
-            updateDoc();
+            reparseDocument(getRaw() + input);
             return;
         }
         edit(span -> {
@@ -359,8 +366,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         Optional<SpanLeaf> found = getLeaf(location);
 
         if (! found.isPresent()){
-            parseDocument(editedText.apply(this));
-            updateDoc();
+            reparseDocument(editedText.apply(this));
             return;
         }
 
@@ -382,9 +388,15 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
         /// Must be parse at Document level
         assert span instanceof Document: "Wrong class:" + span.getClass();
-        parseDocument(editedText.apply(this));
-        updateDoc();
+        reparseDocument(editedText.apply(this));
         return;
+    }
+
+    private void reparseDocument(String text){
+        forEach(s -> s.setRemove());
+        parseDocument(text);
+        updateSpan();
+        updateDoc();
     }
 
     protected final void runCommand(Command command){
