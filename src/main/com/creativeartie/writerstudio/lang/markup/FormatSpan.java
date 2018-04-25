@@ -75,10 +75,12 @@ public abstract class FormatSpan extends SpanBranch {
     @Override
     public String toString(){
         StringBuilder ans = new StringBuilder();
-        if (spanFormats[0]) ans.append("b");
-        if (spanFormats[1]) ans.append("i");
-        if (spanFormats[2]) ans.append("u");
-        if (spanFormats[3]) ans.append("c");
+        boolean empty = true;
+        if (spanFormats[0]) {ans.append("b"); empty = false;}
+        if (spanFormats[1]) {ans.append("i"); empty = false;}
+        if (spanFormats[2]) {ans.append("u"); empty = false;}
+        if (spanFormats[3]) {ans.append("c"); empty = false;}
+        if (empty) ans.append("-");
         return ans.toString() + "(" + toChildString() + ")";
     }
 

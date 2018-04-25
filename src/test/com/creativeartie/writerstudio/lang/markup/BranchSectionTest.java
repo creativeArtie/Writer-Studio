@@ -12,6 +12,10 @@ import static com.creativeartie.writerstudio.lang.DocumentAssert.*;
 
 public class BranchSectionTest {
 
+    public static SetupParser getParser(){
+        return SectionParseHead.SECTION_1;
+    }
+
     public static class NoteCardTest extends SpanBranchAssert<NoteCardTest>{
 
         private ImmutableMultimap.Builder<InfoFieldType, InfoDataSpan> builder;

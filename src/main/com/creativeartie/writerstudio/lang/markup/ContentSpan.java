@@ -70,7 +70,7 @@ public final class ContentSpan extends SpanBranch implements BasicText{
 
     @Override
     public String toString(){
-        return SpanLeaf.escapeText(getText());
+        return SpanLeaf.escapeText(getRaw());
     }
 
     @Override

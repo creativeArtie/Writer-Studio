@@ -65,6 +65,6 @@ public final class FormatSpanContent extends FormatSpan implements BasicText{
 
     @Override
     protected String toChildString(){
-        return SpanLeaf.escapeText(getText());
+        return SpanLeaf.escapeText(getRaw());
     }
 }

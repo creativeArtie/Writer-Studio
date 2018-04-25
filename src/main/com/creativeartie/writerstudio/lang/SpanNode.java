@@ -84,7 +84,6 @@ public abstract class SpanNode<T extends Span> extends Span
     final void updateSpan(List<T> spans){
         setChildren(spans);
         updateSpan();
-        getParent().editedChild = true;
         getParent().updateParent();
     }
 
@@ -100,6 +99,7 @@ public abstract class SpanNode<T extends Span> extends Span
         spanCache.invalidateAll();
         spanOptionalCache.invalidateAll();
         spanListCache.invalidateAll();
+        editedChild = true;
 
         if (this instanceof SpanBranch){
             getParent().updateParent();
@@ -134,8 +134,8 @@ public abstract class SpanNode<T extends Span> extends Span
             spanEditedListeners.forEach(l -> l.accept(this));
             editedTarget = false;
         }
-        stream().filter(s -> s instanceof SpanBranch)
-            .forEach(s -> ((SpanBranch)s).fireListeners());
+        stream().filter(s -> s instanceof SpanNode)
+            .forEach(s -> ((SpanNode<?>)s).fireListeners());
     }
 
     abstract void setChildren(List<T> spans);
