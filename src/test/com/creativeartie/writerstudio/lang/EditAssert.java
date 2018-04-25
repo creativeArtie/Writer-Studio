@@ -30,7 +30,7 @@ public class EditAssert{
         totalRemoved = countRemoved(edited);
         targetSpan = edited;
         isPass = false;
-        addListeners(doc, doc == targetSpan);
+        addListeners(doc);
     }
 
     private int countRemoved(SpanNode<?> target){
@@ -43,18 +43,15 @@ public class EditAssert{
         return ans;
     }
 
-    private void addListeners(SpanNode<?> span, boolean found){
-        found = span == targetSpan? true : found;
+    private void addListeners(SpanNode<?> span){
+        totalSpan++;
         span.addSpanEdited(this::edited);
         span.addChildEdited(this::childed);
-        if (! found) {
-            totalSpan++;
-            span.addDocEdited(this::doc);
-        }
+        span.addDocEdited(this::doc);
         span.addSpanRemoved(this::removed);
         for (Span child: span){
             if (child instanceof SpanNode){
-                addListeners((SpanNode<?>) child, found);
+                addListeners((SpanNode<?>) child);
             }
         }
     }

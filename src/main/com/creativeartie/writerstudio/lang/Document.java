@@ -119,7 +119,9 @@ public abstract class Document extends SpanNode<SpanBranch>{
         catalogueMap.clear();
         loadMap(this);
 
-        removeSpan.forEach(s -> s.fireRemoveListeners());
+        for (SpanNode<?> span: removeSpan){
+            span.fireRemoveListeners();
+        }
         removeSpan.clear();
         fireListeners();
     }

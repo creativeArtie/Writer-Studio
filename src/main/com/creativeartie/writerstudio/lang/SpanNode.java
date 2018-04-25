@@ -122,6 +122,7 @@ public abstract class SpanNode<T extends Span> extends Span
 
     final void fireRemoveListeners(){
         spanRemovedListeners.forEach(l -> l.accept(this));
+        docEditedListeners.forEach(l -> l.accept(this));
     }
 
     final void fireListeners(){
