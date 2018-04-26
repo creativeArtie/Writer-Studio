@@ -23,8 +23,8 @@ public final class FormatSpanLinkDirect extends FormatSpanLink {
         spanReparser = reparser;
 
         cacheTarget = new CacheKeyOptional<>(SpanBranch.class);
-        cachePath = CacheKey.stringKey();
-        cacheText = CacheKey.stringKey();
+        cachePath = CacheKeyMain.stringKey();
+        cacheText = CacheKeyMain.stringKey();
         cacheStyles  = new CacheKeyList<>(StyleInfo.class);
     }
 

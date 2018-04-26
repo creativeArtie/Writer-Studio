@@ -83,11 +83,11 @@ public abstract class SpanNode<T extends Span> extends Span
 
     final void updateSpan(List<T> spans){
         setChildren(spans);
-        updateSpan();
+        clearSpanCache();
         getParent().updateParent();
     }
 
-    final void updateSpan(){
+    final void clearSpanCache(){
         spanCache.invalidateAll();
         spanOptionalCache.invalidateAll();
         spanListCache.invalidateAll();
@@ -108,7 +108,7 @@ public abstract class SpanNode<T extends Span> extends Span
         }
     }
 
-    void clearCache(){
+    void clearDocCache(){
         docCache.invalidateAll();
         docOptionalCache.invalidateAll();
         docListCache.invalidateAll();
@@ -192,8 +192,7 @@ public abstract class SpanNode<T extends Span> extends Span
         }
     }
 
-    protected abstract void runCommand(Command command)
-
+    protected abstract void runCommand(Command command);
 
     @Override
     public final String getRaw(){

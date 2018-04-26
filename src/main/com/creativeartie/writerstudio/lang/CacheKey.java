@@ -40,8 +40,14 @@ public abstract class CacheKey<T> implements Comparable<CacheKey<?>>{
      * @param value
      *      found value
      * @return answer
+     * @see SpanNode#getDocCache(CacheKeyMain, java.util.concurrent.Callable)
+     * @see SpanNode#getLocalCache(CacheKeyMain, java.util.concurrent.Callable)
+     * @see SpanNode#getDocCache(CacheKeyOptional, java.util.concurrent.Callable)
+     * @see SpanNode#getLocalCache(CacheKeyOptional, java.util.concurrent.Callable)
+     * @see SpanNode#getDocCache(CacheKeyList, java.util.concurrent.Callable)
+     * @see SpanNode#getLocalCache(CacheKeyList, java.util.concurrent.Callable)
      */
-    public abstract <U extends T> T cast(U value);
+    abstract T cast(T value);
 
     @Override
     public int compareTo(CacheKey<?> that){

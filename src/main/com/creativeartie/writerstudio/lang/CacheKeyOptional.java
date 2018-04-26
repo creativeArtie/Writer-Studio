@@ -9,7 +9,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  * @param T
  *      list value type
  */
-public final class CacheKeyOptional<T> extends CacheKey<Optional<T>> {
+public final class CacheKeyOptional<T> extends CacheKey<Optional<?>> {
 
     private Class<T> valueCaster;
 
@@ -23,7 +23,7 @@ public final class CacheKeyOptional<T> extends CacheKey<Optional<T>> {
     }
 
     @Override
-    public Optional<T> cast(Optional<?> value){
+    Optional<T> cast(Optional<?> value){
         return value.map(v -> valueCaster.cast(v));
     }
 }

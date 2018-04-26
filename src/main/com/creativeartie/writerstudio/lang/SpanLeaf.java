@@ -33,9 +33,10 @@ public class SpanLeaf extends Span{
         return leafStyle;
     }
 
-    void setParent(SpanBranch childOf){
+    void setParent(SpanNode<?> childOf){
+        if (childOf instanceof Document) assert false;
         checkNotNull(childOf, "childOf");
-        leafParent = childOf;
+        leafParent = (SpanBranch) childOf;
     }
 
 

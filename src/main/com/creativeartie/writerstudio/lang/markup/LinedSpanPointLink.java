@@ -16,7 +16,7 @@ public class LinedSpanPointLink extends LinedSpanPoint {
     LinedSpanPointLink(List<Span> children){
         super(children);
 
-        cachePath = CacheKey.stringKey();
+        cachePath = CacheKeyMain.stringKey();
     }
 
     @Override

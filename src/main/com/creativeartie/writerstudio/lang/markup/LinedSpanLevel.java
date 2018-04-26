@@ -17,7 +17,7 @@ public abstract class LinedSpanLevel extends LinedSpan {
     LinedSpanLevel(List<Span> children){
         super(children);
         cacheFormatted = new CacheKeyOptional<>(FormattedSpan.class);
-        cacheLevel = CacheKey.integerKey();
+        cacheLevel = CacheKeyMain.integerKey();
     }
 
     public Optional<FormattedSpan> getFormattedSpan(){

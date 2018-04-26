@@ -21,7 +21,7 @@ public final class EditionSpan extends SpanBranch{
     EditionSpan(List<Span> children){
         super(children);
         cacheEdition = new CacheKeyMain<>(EditionType.class);
-        cacheDetail = CacheKey.stringKey();
+        cacheDetail = CacheKeyMain.stringKey();
         cacheBranchStyles = new CacheKeyList<>(StyleInfo.class);
     }
 

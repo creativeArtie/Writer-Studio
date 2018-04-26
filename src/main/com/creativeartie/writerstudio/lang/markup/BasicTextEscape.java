@@ -19,7 +19,7 @@ public final class BasicTextEscape extends SpanBranch{
 
     BasicTextEscape(List<Span> children){
         super(children);
-        cacheEscape = CacheKey.stringKey();
+        cacheEscape = CacheKeyMain.stringKey();
     }
 
     public String getEscape(){

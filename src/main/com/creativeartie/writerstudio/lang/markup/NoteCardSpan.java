@@ -37,8 +37,8 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
         cacheContent = new CacheKeyList<>(FormattedSpan.class);
         cacheInText = new CacheKeyOptional<>(LinedSpanCite.class);
         cacheSource = new CacheKeyOptional<>(FormattedSpan.class);
-        cacheLookup = CacheKey.stringKey();
-        cacheNote = CacheKey.integerKey();
+        cacheLookup = CacheKeyMain.stringKey();
+        cacheNote = CacheKeyMain.integerKey();
     }
 
     @Override

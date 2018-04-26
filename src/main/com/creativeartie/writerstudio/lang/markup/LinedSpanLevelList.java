@@ -17,8 +17,8 @@ public class LinedSpanLevelList extends LinedSpanLevel {
 
     LinedSpanLevelList(List<Span> children){
         super(children);
-        cachePublish = CacheKey.integerKey();
-        cacheNote = CacheKey.integerKey();
+        cachePublish = CacheKeyMain.integerKey();
+        cacheNote = CacheKeyMain.integerKey();
     }
 
     @Override

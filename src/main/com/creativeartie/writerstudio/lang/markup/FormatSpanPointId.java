@@ -26,7 +26,7 @@ public final class FormatSpanPointId extends FormatSpan implements Catalogued{
         cacheTarget = new CacheKeyOptional<>(SpanBranch.class);
         cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
         cacheStyles = new CacheKeyList<>(StyleInfo.class);
-        cacheOutput = CacheKey.stringKey();
+        cacheOutput = CacheKeyMain.stringKey();
     }
 
     /** Gets the type of note it is pointing to. */

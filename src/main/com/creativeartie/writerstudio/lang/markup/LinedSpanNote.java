@@ -51,9 +51,9 @@ public class LinedSpanNote extends LinedSpan{
         super(children);
         cacheFormatted = new CacheKeyOptional<>(FormattedSpan.class);
         cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
-        cacheLookup = CacheKey.stringKey();
-        cacheNote = CacheKey.integerKey();
-        cacheFirst = CacheKey.booleanKey();
+        cacheLookup = CacheKeyMain.stringKey();
+        cacheNote = CacheKeyMain.integerKey();
+        cacheFirst = CacheKeyMain.booleanKey();
     }
 
     public Optional<FormattedSpan> getFormattedSpan(){

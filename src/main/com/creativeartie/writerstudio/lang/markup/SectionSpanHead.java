@@ -27,8 +27,8 @@ public final class SectionSpanHead extends SectionSpan {
         cacheSectionLines = new CacheKeyList<>(LinedSpan.class);
         cacheSections = new CacheKeyList<>(SectionSpanHead.class);
         cacheScenes = new CacheKeyList<>(SectionSpanScene.class);
-        cachePublish = CacheKey.integerKey();
-        cacheNote = CacheKey.integerKey();
+        cachePublish = CacheKeyMain.integerKey();
+        cacheNote = CacheKeyMain.integerKey();
     }
 
     @Override

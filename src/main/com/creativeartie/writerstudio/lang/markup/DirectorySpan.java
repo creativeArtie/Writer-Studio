@@ -26,7 +26,7 @@ public final class DirectorySpan extends SpanBranch {
         spanReparser = checkNotNull(reparser, "reparser");
 
         cacheId = new CacheKeyMain<>(CatalogueIdentity.class);
-        cacheText = CacheKey.stringKey();
+        cacheText = CacheKeyMain.stringKey();
     }
 
     /** Creates the id for a {@link Catalogued}*/

@@ -26,10 +26,10 @@ public final class FormatSpanContent extends FormatSpan implements BasicText{
         super(spanChildren, formats);
         spanReparser = reparser;
 
-        cacheText = CacheKey.stringKey();
-        cacheTrimmed = CacheKey.stringKey();
-        cacheSpaceBegin = CacheKey.booleanKey();
-        cacheSpaceEnd = CacheKey.booleanKey();
+        cacheText = CacheKeyMain.stringKey();
+        cacheTrimmed = CacheKeyMain.stringKey();
+        cacheSpaceBegin = CacheKeyMain.booleanKey();
+        cacheSpaceEnd = CacheKeyMain.booleanKey();
     }
 
     @Override

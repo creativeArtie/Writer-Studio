@@ -20,7 +20,7 @@ public final class FormatSpanAgenda extends SpanBranch implements Catalogued{
 
     FormatSpanAgenda(List<Span> children){
         super(children);
-        cacheAgenda = CacheKey.stringKey();
+        cacheAgenda = CacheKeyMain.stringKey();
         cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
     }
 

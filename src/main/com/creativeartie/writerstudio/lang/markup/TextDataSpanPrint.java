@@ -19,7 +19,7 @@ public class TextDataSpanPrint extends TextDataSpan<FormattedSpan>{
     public TextDataSpanPrint(List<Span> spans){
         super(spans);
         cacheFormat = new CacheKeyMain<>(TextDataType.Format.class);
-        cacheIndex = CacheKey.integerKey();
+        cacheIndex = CacheKeyMain.integerKey();
     }
 
     public int getIndex(){

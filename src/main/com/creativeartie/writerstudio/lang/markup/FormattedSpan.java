@@ -28,10 +28,10 @@ public final class FormattedSpan extends SpanBranch {
         super(spanChildren);
         allowNotes = notes;
 
-        cachePublish = CacheKey.integerKey();
-        cacheNote = CacheKey.integerKey();
-        cacheTotal = CacheKey.integerKey();
-        cacheText = CacheKey.stringKey();
+        cachePublish = CacheKeyMain.integerKey();
+        cacheNote = CacheKeyMain.integerKey();
+        cacheTotal = CacheKeyMain.integerKey();
+        cacheText = CacheKeyMain.stringKey();
     }
 
     @Override

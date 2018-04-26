@@ -21,7 +21,7 @@ public abstract class LinedSpanPoint extends LinedSpan implements Catalogued{
 
         cacheStyles = new CacheKeyList<>(StyleInfo.class);
         cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
-        cacheLookup = CacheKey.stringKey();
+        cacheLookup = CacheKeyMain.stringKey();
     }
 
     public abstract DirectoryType getDirectoryType();

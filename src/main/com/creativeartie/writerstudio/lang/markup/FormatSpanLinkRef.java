@@ -25,10 +25,10 @@ public final class FormatSpanLinkRef extends FormatSpanLink
         spanReparser = reparser;
 
         cachePath = new CacheKeyOptional<>(SpanBranch.class);
-        cacheText = CacheKey.stringKey();
+        cacheText = CacheKeyMain.stringKey();
         cacheStyles = new CacheKeyList<>(StyleInfo.class);
         cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
-        cacheExternal = CacheKey.booleanKey();
+        cacheExternal = CacheKeyMain.booleanKey();
     }
 
     @Override

@@ -54,7 +54,7 @@ public abstract class SectionSpan extends SpanBranch {
         spanReparser = reparser;
 
         cacheHeading = new CacheKeyOptional<>(LinedSpanLevelSection.class);
-        cacheLevel = CacheKey.integerKey();
+        cacheLevel = CacheKeyMain.integerKey();
         cacheEdition = new CacheKeyMain<>(EditionType.class);
         cacheNotes = new CacheKeyList<>(NoteCardSpan.class);
     }

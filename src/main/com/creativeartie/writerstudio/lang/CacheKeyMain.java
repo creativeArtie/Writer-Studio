@@ -36,7 +36,7 @@ public final class CacheKeyMain<T> extends CacheKey<T> {
     }
 
     @Override
-    public T cast(Object value){
+    T cast(Object value){
         return valueCaster.cast(value);
     }
 }

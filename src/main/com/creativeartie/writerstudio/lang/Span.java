@@ -25,7 +25,7 @@ public abstract class Span{
     /** Get the {@link SpanNode parent span}. */
     public abstract SpanNode<?> getParent();
 
-    public abstract void setParent(SpanNode<?> parent)
+    abstract void setParent(SpanNode<?> parent);
 
     public boolean isRemoved(){
         return this instanceof Document? false:

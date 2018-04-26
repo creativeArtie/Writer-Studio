@@ -25,11 +25,11 @@ public final class ContentSpan extends SpanBranch implements BasicText{
 
     ContentSpan (List<Span> spanChildren){
         super(spanChildren);
-        cacheText = CacheKey.stringKey();
-        cacheTrimmed = CacheKey.stringKey();
-        cacheSpaceBegin = CacheKey.booleanKey();
-        cacheSpaceEnd = CacheKey.booleanKey();
-        wordCount = CacheKey.integerKey();
+        cacheText = CacheKeyMain.stringKey();
+        cacheTrimmed = CacheKeyMain.stringKey();
+        cacheSpaceBegin = CacheKeyMain.booleanKey();
+        cacheSpaceEnd = CacheKeyMain.booleanKey();
+        wordCount = CacheKeyMain.integerKey();
     }
 
     @Override

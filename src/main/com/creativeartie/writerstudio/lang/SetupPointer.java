@@ -4,34 +4,51 @@ import java.util.*; // (many)
 
 import com.google.common.base.*; // CharMatcher
 
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * SetupPointer for the rawText. Stores two points: {@linkplain start} for where the
- * pointer is currently checking from and {@linkplain end} for where is the
- * next matching data.
+/** Pointer for text.
+ *
+ * Purpose
+ * <ul>
+ * <li>Marks a location to go roll back later.</li>
+ * <li>Create {@link SpanLeaf} under a condition.</li>
+ * <li>Other checking methods</li>
+ * </ul>
  */
 public final class SetupPointer{
-    /// ========================================================================
-    /// Part 1: Static Methods -------------------------------------------------
+    /// %Part 1: Constructors ##################################################
+    /// %Part 1.1: Static Constructos ==========================================
 
-    /** Create a {@link SetupPointer} with the purpose to parse full text. */
+    /** Create a {@link SetupPointer}.
+     *
+     * @param raw
+     *      raw text
+     * @param doc
+     *      span's document
+     * @see Document#parseDocument()
+     */
     static SetupPointer newPointer(String raw, Document doc){
-        checkNotNull(doc, "doc");
+        argumentNotEmpty(raw, "raw");
+        argumentNotNull(doc, "doc");
 
         return new SetupPointer(raw, doc);
     }
 
-    /** Create a {@link SetupPointer} with the purpose to reparse text. */
+    /** Create a {@link SetupPointer}.
+     * @param raw
+     *      raw text
+     * @param doc
+     *      span's document
+     * @see SpanBranch#reparseText()
+     */
     static SetupPointer updatePointer(String raw, Document doc){
-        checkNotEmpty(raw, "raw");
-        checkNotNull(doc, "doc");
+        argumentNotEmpty(raw, "raw");
+        argumentNotNull(doc, "doc");
 
         return new SetupPointer(raw, doc);
     }
 
-    /// ========================================================================
-    /// Part 2: Object Fields --------------------------------------------------
+    /// %Part 1.1: Instance Constructor ========================================
 
     private final String rawText;
     private final Document document;
@@ -43,8 +60,15 @@ public final class SetupPointer{
     /// Points to the last success (but not start at) check
     private int nextMarker;
 
+    /** Creates a {@link SetupPointer}.
+     *
+     * @param raw
+     *      raw text
+     * @param doc
+     *      span's document
+     */
     private SetupPointer(String raw, Document doc){
-        assert raw != null: "Null raw";
+        assert raw != null && raw.length() > 0: "Empty raw";
         assert doc != null: "Null doc";
         rawText = raw;
         document = doc;
@@ -53,9 +77,9 @@ public final class SetupPointer{
         lastMarker = 0;
     }
 
-    /// ========================================================================
-    /// Part 3: Marking Location -----------------------------------------------
+    /// %Part 2: Marking Location ##############################################
 
+    /** mark the current location. */
     public void mark(){
         lastMarker = nextMarker;
     }
@@ -66,150 +90,147 @@ public final class SetupPointer{
         nextMarker = lastMarker;
     }
 
-    /**
-     * Create a {@link SpanLeaf} with spaces and then {@code compare} text. The
-     * created {@linkplain SpanLeaf} will have the
-     * {@link StyleInfoLeaf#KEYWORD}.
+    /// %Part 3: Check and Add Methods #########################################
+    /// %Part 3.1: Trim Start With =============================================
+
+    /** Next {@link SpanLeaf} prefixed with spaces matches {@code compare}.
+     *
+     * The leaf's {@link StyleInfoLeaf} sets to {@link StyleInfoLeaf.KEYWORD}.
+     *
+     * @param children
+     *      adding children list
+     * @param compare
+     *      compare text
+     * @return success
      */
     public boolean trimStartsWith(ArrayList<Span> children, String compare){
-        checkNotNull(children, "children");
-        checkNotNull(compare, "compare");
+        argumentNotNull(children, "children");
+        argumentNotNull(compare, "compare");
 
         return trimStartsWith(children, StyleInfoLeaf.KEYWORD, compare);
     }
 
-    /// ========================================================================
-    /// Part 4: trimStartWith Methods ------------------------------------------
-
-    /** Create a {@link SpanLeaf} with spaces and then {@code compare} text. */
+    /** Next {@link SpanLeaf} prefixed with spaces matches {@code compare}.
+     *
+     * @param children
+     *      adding children list
+     * @param style
+     *      new span leaf style
+     * @param compare
+     *      compare text
+     * @return success
+     */
     public boolean trimStartsWith(ArrayList<Span> children, StyleInfoLeaf style,
             String compare){
-        checkNotNull(children, "children");
-        checkNotNull(style, "style");
-        checkNotNull(compare, "compare");
-        return finishing(children, style, trimStartsWith(compare));
-    }
-
-    /**
-     * Check if the pointer starts with space and then {@code compare} text. If
-     * so move {@linkplain end} to the length of {@linkplain compare}. Helper
-     * method of {@link #trimStartsWith(ArrayList, String)}, and
-     * {@link #trimStartsWith(ArrayList, StyleInfoLeaf, String)}.
-     */
-    private boolean trimStartsWith(String compare){
-        assert compare != null: "Null compare";
+        argumentNotNull(children, "children");
+        argumentNotNull(style, "style");
+        argumentNotNull(compare, "compare");
         /// End of the document
-        if (matchMarker >= rawText.length()){
+        if (matchMarker >= compare.length()){
             return false;
         }
 
         /// Ignore spaces
-        int next = ignoreSpaces();
-        if (next == -1){
-            return false;
-        }
-
-        /// compare here
-        if (rawText.startsWith(compare, next)){
-            nextMarker = next + compare.length();
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Find the of the next index of non-space character. Helper method of
-     * {@link #trimStartsWith(String)}.
-     */
-    private int ignoreSpaces(){
         if (matchMarker >= rawText.length()){
-            return -1;
+            return false;
         }
         int next = matchMarker;
         while(CharMatcher.whitespace().matches(rawText.charAt(next))){
             next++;
             if (next >= rawText.length()){
-                return -1;
+                return false;
             }
         }
-        return next;
+
+        /// compare here
+        if (compare.startsWith(compare, next)){
+            nextMarker = next + compare.length();
+            return addChild(children, style);
+        }
+        return false;
     }
 
-    /// ========================================================================
-    /// Part 5: startWith Methods ----------------------------------------------
+    /// %Part 3.2: Start With Methods ==========================================
 
-    /**
-     * Create a {@link SpanLeaf} with {@code compare} text. The created
-     * {@linkplain SpanLeaf} will have the {@link StyleInfoLeaf#KEYWORD}.
+    /** Next {@link SpanLeaf} matches {@code compare}.
+     *
+     * The leaf's {@link StyleInfoLeaf} sets to {@link StyleInfoLeaf.KEYWORD}.
+     *
+     * @param children
+     *      adding children list
+     * @param compare
+     *      compare text
+     * @return success
      */
     public boolean startsWith(ArrayList<Span> children, String compare){
-        checkNotNull(children, "children");
-        checkNotNull(compare, "compare");
+        argumentNotNull(children, "children");
+        argumentNotNull(compare, "compare");
 
         return startsWith(children, StyleInfoLeaf.KEYWORD, compare);
     }
 
-    /**  Create a {@link SpanLeaf} with {@code compare} text. */
+    /** Next {@link SpanLeaf} matches {@code compare}.
+     *
+     * The leaf's {@link StyleInfoLeaf} sets to {@link StyleInfoLeaf.KEYWORD}.
+     *
+     * @param children
+     *      adding children list
+     * @param style
+     *      new span leaf style
+     * @param compare
+     *      compare text
+     * @return success
+     */
     public boolean startsWith(ArrayList<Span> children, StyleInfoLeaf style,
             String compare){
-        checkNotNull(children, "children");
-        checkNotNull(style, "style");
-        checkNotNull(compare, "compare");
-
-        return finishing(children, style, startsWith(compare));
-    }
-
-    /**
-     * Check if the pointer at the text location starts with
-     * {@linkplain compare}. If so move {@linkplain end} to the length of
-     * {@linkplain compare}. Helper method of
-     * {@link #startsWith(ArrayList, String)}, and
-     * {@link #startsWith(ArrayList, StyleInfoLeaf, String)}.
-     */
-    private boolean startsWith(String compare){
-        assert compare != null: "Null compare.";
+        argumentNotNull(children, "children");
+        argumentNotNull(style, "style");
+        argumentNotNull(compare, "compare");
 
         int next = matchMarker;
         if (rawText.startsWith(compare, next)){
             nextMarker = next + compare.length();
 
-            return true;
+            return addChild(children, style);
         }
         return false;
     }
 
-    /// ========================================================================
-    /// Part 6: matches Methods ------------------------------------------------
+    /// %Part 3.3: CharMacher Methods ==========================================
 
-    /**
-     * Create a {@link SpanLeaf} that matches {@link CharMatcher}. The created
-     * {@linkplain SpanLeaf} will have the {@link StyleInfoLeaf#DATA}.
+    /** Next {@link SpanLeaf} has characters matches {@link CharMatcher}.
+     *
+     * The leaf's {@link StyleInfoLeaf} sets to {@link StyleInfoLeaf.Data}.
+     *
+     * @param children
+     *      adding children list
+     * @param compare
+     *      compare text
+     * @return success
      */
     public boolean matches(ArrayList<Span> children, CharMatcher matcher){
-        checkNotNull(children, "children");
-        checkNotNull(matcher, "matcher");
+        argumentNotNull(children, "children");
+        argumentNotNull(matcher, "matcher");
 
         return matches(children, StyleInfoLeaf.DATA, matcher);
     }
 
-    /** Create a {@link SpanLeaf} that matches {@link CharMatcher}. */
+
+    /** Next {@link SpanLeaf} has characters matches {@link CharMatcher}.
+     *
+     * @param children
+     *      adding children list
+     * @param style
+     *      new span leaf style
+     * @param compare
+     *      compare text
+     * @return success
+     */
     public boolean matches(ArrayList<Span> children, StyleInfoLeaf style,
             CharMatcher matcher){
-        checkNotNull(children, "children");
-        checkNotNull(style, "style");
-        checkNotNull(matcher, "matcher");
-
-        return finishing(children, style, matches(matcher));
-    }
-
-    /**
-     * Check if the pointer at the text location matches
-     * {@linkplain CharMatcher}. If so move {@linkplain end} to the length of
-     * {@linkplain compare}. Helper method of
-     * {@link #matches(ArrayList, String)}, and
-     * {@link #matches(ArrayList, StyleInfoLeaf, String)}.
-     */
-    private boolean matches(CharMatcher matcher){
+        argumentNotNull(children, "children");
+        argumentNotNull(style, "style");
+        argumentNotNull(matcher, "matcher");
         assert matcher != null: "Null matcher";
         int next = matchMarker;
         for (; rawText.length() > next; next++){
@@ -217,7 +238,7 @@ public final class SetupPointer{
                 // get to the last char + 1 that matches the matcher
                 if (next != matchMarker){
                     nextMarker = next;
-                    return true;
+                    return addChild(children, style);
                 } else {
                     return false;
                 }
@@ -228,145 +249,184 @@ public final class SetupPointer{
         if (next != matchMarker){
             //matchMarker has moved
             nextMarker = next;
-            return true;
+            return addChild(children, style);
         }
         return false;
     }
 
-    /// ========================================================================
-    /// Part 7: getTo Methods --------------------------------------------------
+    /// Part 3.4: Get To Methods ===============================================
 
-    /**
-     * Create a {@link SpanLeaf} that stop before {@code compares}. The created
-     * {@linkplain SpanLeaf} will have the {@link StyleInfoLeaf#KEYWORD}.
+    /** Next {@link SpanLeaf} continues until one of a the text.
+     *
+     * The leaf's {@link StyleInfoLeaf} sets to {@link StyleInfoLeaf.KEYWORD}.
+     *
+     * @param children
+     *      adding children list
+     * @param enders
+     *      enders text
+     * @return success
      */
-    public boolean getTo(ArrayList<Span> children, List<String> compares){
-        checkNotNull(children, "children");
-        checkNotNull(compares, "compares");
+    public boolean getTo(ArrayList<Span> children, String ... enders){
+        argumentNotNull(children, "children");
+        argumentNotNull(enders, "enders");
 
-        return getTo(children, StyleInfoLeaf.KEYWORD, compares);
+        return getTo(children, StyleInfoLeaf.KEYWORD, enders);
     }
 
-    /** Create a {@link SpanLeaf} that stop before {@code compares}. */
+    /** Next {@link SpanLeaf} continues until one of a the text.
+     *
+     * The leaf's {@link StyleInfoLeaf} sets to {@link StyleInfoLeaf.KEYWORD}.
+     *
+     * @param children
+     *      adding children list
+     * @param enders
+     *      enders text
+     * @return success
+     */
     public boolean getTo(ArrayList<Span> children, StyleInfoLeaf style,
-            List<String> compares){
-        checkNotNull(children, "children");
-        checkNotNull(style, "style");
-        checkNotNull(compares, "compares");
+            String ... enders){
+        argumentNotNull(children, "children");
+        argumentNotNull(style, "style");
+        argumentNotNull(enders, "enders");
 
-        return finishing(children, style, getTo(compares));
+        return getTo(children, style, Arrays.asList(enders));
     }
 
-    /**
-     * Create a {@link SpanLeaf} that stop before {@code compares}. The created
-     * {@linkplain SpanLeaf} will have the {@link StyleInfoLeaf#KEYWORD}.
+
+    /** Next {@link SpanLeaf} continues until one of a the text.
+     *
+     * The leaf's {@link StyleInfoLeaf} sets to {@link StyleInfoLeaf.KEYWORD}.
+     *
+     * @param children
+     *      adding children list
+     * @param enders
+     *      enders text
+     * @return success
      */
-    public boolean getTo(ArrayList<Span> children, String ... compares){
-        checkNotNull(children, "children");
-        checkNotNull(compares, "compares");
+    public boolean getTo(ArrayList<Span> children, List<String> enders){
+        argumentNotNull(children, "children");
+        argumentNotNull(enders, "enders");
 
-        return getTo(children, StyleInfoLeaf.KEYWORD, compares);
+        return getTo(children, StyleInfoLeaf.KEYWORD, enders);
     }
 
-    /** Create a {@link SpanLeaf} that stop before {@code compares}. */
+    /** Next {@link SpanLeaf} continues until one of a the text.
+     *
+     * @param children
+     *      adding children list
+     * @param style
+     *      new span leaf style
+     * @param enders
+     *      enders text
+     * @return success
+     */
     public boolean getTo(ArrayList<Span> children, StyleInfoLeaf style,
-            String ... compares){
-        checkNotNull(children, "children");
-        checkNotNull(style, "style");
-        checkNotNull(compares, "compares");
-
-        return finishing(children, style, getTo(Arrays.asList(compares)));
-    }
-
-    /**
-     * Moves {@linkplain end} pointer to before one of the {@linkplain enders}
-     * or the end of the rawText. Helper method for
-     * {@link getTo(ArrayList, List)},
-     * {@link getTo(ArrayList, StyleInfoLeaf, List)},
-     * {@link getTo(ArrayList, String ...)}, and
-     * {@link getTo(ArrayList, StyleInfoLeaf, String ...)}
-     */
-    private boolean getTo(List<String> enders) {
-        assert enders != null: "Null enders.";
+            List<String> enders){
+        argumentNotNull(children, "children");
+        argumentNotNull(style, "style");
+        argumentNotNull(enders, "enders");
 
         /// Set up next
         int next = matchMarker;
-        /// going the the text from pointer, looking out for ender strings
+        /// going the the text from pointer, looking out for enders strings
         for(;next < rawText.length(); next++){
-            for (String ender : enders){
-                if (rawText.startsWith(ender, next)){
+            for (String enders : enders){
+                if (rawText.startsWith(enders, next)){
                     /// Match is found
                     nextMarker = next;
-                    return nextMarker != matchMarker;
+                    if(nextMarker != matchMarker){
+                        return addChild(children, style);
+                    }
+                    return false;
                 }
             }
         }
 
         if (matchMarker != next) {
-            //matchMarker has moved
+            /// MatchMarker has moved
             nextMarker = next;
-            return true;
+            return addChild(children, style);
         }
 
         return false;
     }
 
-    /// ========================================================================
-    /// Part 8: nestChars Methods ----------------------------------------------
+    /// Part 3.4: Next Char Methods ============================================
 
-    /**
-     * Create a {@link SpanLeaf} with a size. The created
-     * {@linkplain SpanLeaf} will have the {@link StyleInfoLeaf#KEYWORD}.
+    /** Next {@link SpanLeaf} with a certain size.
+     *
+     * The leaf's {@link StyleInfoLeaf} sets to {@link StyleInfoLeaf.KEYWORD}.
+     *
+     * @param children
+     *      adding children list
+     * @param style
+     *      new span leaf style
+     * @param enders
+     *      enders text
+     * @return success
      */
     public boolean nextChars(ArrayList<Span> children, int size){
-        checkNotNull(children, "children");
-        checkGreater(size, "size", 0, false);
+        argumentNotNull(children, "children");
+        argumentAtLeast(size, "size", 0);
         return nextChars(children, StyleInfoLeaf.KEYWORD, size);
     }
 
-    /** Create a {@link SpanLeaf} with a size. */
+    /** Next {@link SpanLeaf} with a certain size.
+     *
+     * @param children
+     *      adding children list
+     * @param style
+     *      new span leaf style
+     * @param enders
+     *      enders text
+     * @return success
+     */
     public boolean nextChars(ArrayList<Span> children, StyleInfoLeaf style,
             int size){
-        checkNotNull(children, "children");
-        checkNotNull(style, "style");
-        checkGreater(size, "size", 0, false);
-        return finishing(children, style, nextChars(size));
-    }
+        argumentNotNull(children, "children");
+        argumentNotNull(style, "style");
+        argumentAtLeast(size, "size", 0);
 
-    /**
-     * Moves {@linkpalin end} pointer to {@linkplain size}, if possible. If not
-     * possible do not move {@linkplain end}. Helper method of
-     * {@link #nextChars(ArrayList, int)}, and
-     * {@link #nextChars(ArrayList, StyleInfoLeaf, int)}.
-     */
-    private boolean nextChars(int size) {
-        assert size > 0: "Too low size.";
         if (matchMarker + size <= rawText.length()){
             nextMarker = matchMarker + size;
 
-            return true;
+            return addChild(children, style);
         }
         return false;
     }
 
-    /// ========================================================================
-    /// Part 9: Span Building --------------------------------------------------
+    /// %Part 3.4: Span Building ===============================================
 
-    /** Setup for creating a {@link SpanLeaf}. Helper method for Part 4 - 8 */
-    private boolean finishing(ArrayList<Span> children, StyleInfoLeaf style,
-            boolean matches){
-        if(matches){
-            children.add(new SpanLeaf(this, style));
-        }
-        return matches;
+    /** Creates a new {@link SpanLeaf} and return true.
+     *
+     * @return answer
+     * @see #trimStartsWith(ArrayList, StyleInfoLeaf, String)
+     * @see #startsWith(ArrayList, StyleInfoLeaf, String)
+     * @see #matches(ArrayList, StyleInfoLeaf, CharMatcher)
+     * @see #getTo(ArrayList, StyleInfoLeaf, List)
+     * @see nextChars(ArrayList, StyleInfoLeaf, int)
+     */
+    private boolean addChild(ArrayList<Span> children, StyleInfoLeaf style){
+        children.add(new SpanLeaf(this, style));
+        return true;
     }
 
-    /** Checks if there is still text to be parsed. */
+    /// %Part 4: Check Methods #################################################
+
+    /** Checks if there is still text to be parsed.
+     *
+     * @return answer
+     */
     public boolean hasNext(){
         return matchMarker < rawText.length();
     }
 
-    /** Checks if the next text matching on on the list of Strings */
+    /** Checks if the next text matching in a list of strings.
+     *
+     * @param strings
+     *      strings to match
+     * @return answer
+     */
     public boolean hasNext(String ... strings){
         for (String string: strings){
             if (hasNext(string)){
@@ -376,34 +436,61 @@ public final class SetupPointer{
         return false;
     }
 
+    /** Checks if the next text matching a string.
+     *
+     * @param string
+     *      string to match
+     * @return answer
+     */
     public boolean hasNext(String string){
         return rawText.startsWith(string, matchMarker);
     }
 
-    /** Checks if there is still text to be parsed. */
-    protected String getRaw(){
+    /// %Part 5: Span Leaf Creation Getters ####################################
+
+    /** Gets the raw text for the {@link SpanLeaf}.
+     *
+     * @return answer
+     * @see SpanLeaf#SpanLeaf(SetupPointer, StyleInfoLeaf)
+     */
+    String getRaw(){
         return rawText.substring(matchMarker, nextMarker);
     }
 
-    /** Checks if there is still text to be parsed. */
-    protected Document getDocument(){
+    /** Gets the raw text for the {@link SpanLeaf}.
+     *
+     * @return answer
+     * @see SpanLeaf#SpanLeaf(SetupPointer, StyleInfoLeaf)
+     */
+    Document getDocument(){
         return document;
     }
 
-    /** Move the pointer forwards. */
-    protected void roll(){
+    /** Move the pointer forwards.
+     *
+     * @return answer
+     * @see SpanLeaf#SpanLeaf(SetupPointer, StyleInfoLeaf)
+     */
+    void roll(){
         matchMarker = nextMarker;
     }
 
+    /// %Part 6: Overriding Methods ============================================
+
     @Override
     public String toString(){
-        return "(" + pointerHelper(lastMarker) + "-" + pointerHelper(matchMarker) + "-" +
-            pointerHelper(nextMarker) + "): " + rawText.substring(matchMarker);
+        return "(" + pointerHelper(lastMarker) + "-" +
+            pointerHelper(matchMarker) + "-" +
+            pointerHelper(nextMarker) + "): " +
+            rawText.substring(matchMarker);
     }
 
     /**
-     * Print either the location or "end" with bracket. Helper method of
-     * {@link #toString()}.
+     * Print either the location or "end" with bracket.
+     *
+     * @param ptr
+     *      interested pointer
+     * @return answer;
      */
     private String pointerHelper(int ptr){
         assert ptr >= 0: "Too low ptr: " + ptr;

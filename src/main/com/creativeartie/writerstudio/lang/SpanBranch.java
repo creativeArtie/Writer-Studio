@@ -27,10 +27,10 @@ public abstract class SpanBranch extends SpanNode<Span> {
         spanStatus = new CacheKeyMain<>(CatalogueStatus.class);
     }
 
-    protected final void clearCache(){
-        super.clearCache();
+    protected final void clearDocCache(){
+        super.clearDocCache();
         spanChildren.stream().filter(s -> s instanceof SpanBranch)
-            .forEach(s -> ((SpanBranch)s).clearCache());
+            .forEach(s -> ((SpanBranch)s).clearDocCache());
     }
 
     @Override
@@ -98,7 +98,7 @@ public abstract class SpanBranch extends SpanNode<Span> {
     /** Gets the parser only if it can reparsed the whole text. */
     protected abstract SetupParser getParser(String text);
 
-    protected final void runCommand(Command command){
+    protected synchronized final void runCommand(Command command){
         String text = command.getResult();
         if (text == null || text.isEmpty()){
             StringBuilder builder = new StringBuilder();

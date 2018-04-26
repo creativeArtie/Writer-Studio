@@ -1,7 +1,7 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*; // (many)
-import java.util.concurrent.*; // Callabl, ExecutionException;
+import java.util.*; // ArrayList, List, Optional;
+import java.util.concurrent.*; // Callable, ExecutionException;
 import java.util.function.*; // Function;
 
 import com.google.common.cache.*; // Cache, CacheBuilder, LoadingCache;
@@ -10,6 +10,14 @@ import com.google.common.collect.*; // ImmmuableList, Range;
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** Representation of a text file that is parsed by {@link SetupParser}.
+ *
+ * Purpose
+ * <ul>
+ * <li> Edit the span contents. </li>
+ * <li> Create document wide caches </li>
+ * <li> Locate span at a location </li>
+ * <li> Manages {@link CatalogueMap}. <li>
+ * </ul>
  */
 public abstract class Document extends SpanNode<SpanBranch>{
 
@@ -48,6 +56,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
                 int line = 1;
                 String input = getRaw();
 
+                /// Find indexes by inc
                 for (int i = 0; i < pos; i++){
                     if (input.charAt(i) == '\n'){
                         /// New line
@@ -72,10 +81,10 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     /// %Part 2: Updating and Editing Document #################################
 
-    /// %Part 2.1: Main Editing Functions ######################################
+    /// %Part 2.1: Main Editing Functions ======================================
 
     @Override
-    protected final void runCommand(Command command){
+    protected final synchronized void runCommand(Command command){
         reparseDocument(command.getResult());
     }
 
@@ -87,7 +96,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
      *      input text
      */
     public synchronized final void insert(int index, String input){
-        argumentOpen(index, "index", 0, getEnd());
+        argumentClose(index, "index", 0, getEnd());
         argumentNotNull(input, "input");
 
         /// Insert into empty doc
@@ -99,7 +108,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         /// Insert at the end
         if (index == getLocalEnd()){
             /// Gets the last span leaf's parent
-            Span span = locatLeaf(size() - 1).get();
+            Span span = locateLeaf(size() - 1).get();
             assert span instanceof SpanLeaf: "Wrong class.";
             span = span.getParent();
             /// try to parse at SpanBranch
@@ -131,8 +140,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
      *      end index
      */
     public synchronized final void delete(int start, int end){
-        checkRange(end, "end", 0, true, getEnd(), true);
-        checkRange(start, "start", 0, true, end, true);
+        argumentClose(end, "end", 0, getEnd());
+        argumentCloseOpen(start, "start", 0, end);
 
         edit(span -> {
             if (span.getEnd() >= end){
@@ -198,7 +207,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     private void reparseDocument(String text){
         forEach(s -> s.setRemove());
         parseDocument(text);
-        updateSpan();
+        clearSpanCache();
         updateDoc();
     }
 
@@ -238,31 +247,43 @@ public abstract class Document extends SpanNode<SpanBranch>{
         }
     }
 
-    /// %Part 2.2: Update system
+    /// %Part 2.2: Edit System Helpers =========================================
 
     @Override
-    protected final void setChildren(List<SpanBranch> children){
+    final void setChildren(List<SpanBranch> children){
         children.forEach(s -> s.setParent(this));
         documentChildren = new ArrayList<>(children);
     }
 
+    /** Save the remove span to fire their remove listener later.
+     *
+     * @param span
+     *      removing span
+     * @see SpanNode#setRemove()
+     */
     final void removeSpan(SpanNode<?> span){
         removeSpan.add(span);
     }
 
+    /** Update this document.
+     *
+     * It will clear document caches, reload catalogue map, and fire listeners
+     */
     final void updateDoc(){
         /// clear caches and data
         spanRanges.invalidateAll();
         spanLeaves.invalidateAll();
         spanTexts.invalidateAll();
-        clearCache();
+        clearDocCache();
         for (SpanBranch span: this){
-            span.clearCache();
+            span.clearDocCache();
         }
 
+        /// reload the catalogue
         catalogueMap.clear();
         loadMap(this);
 
+        /// fire listeners
         for (SpanNode<?> span: removeSpan){
             span.fireRemoveListeners();
         }
@@ -272,8 +293,12 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
 
     /**
-     * Recursively update all child {@link Span spans}. Helper method of
-     * {@link #parseDocument(String)} and {@link #updateEdit()}.
+     * Recursively reload the catalogue {@link Span spans}.
+     *
+     * @param children
+     *      adding children
+     * @see #Document(String, SetupParser ...)
+     * @see #updateDoc()
      */
     private final void loadMap(List<? extends Span> children){
         assert children != null: "Null children";
@@ -287,27 +312,20 @@ public abstract class Document extends SpanNode<SpanBranch>{
         }
     }
 
-    public final CatalogueMap getCatalogue(){
-        return catalogueMap;
-    }
+    /// %Part 3: Document Caches ###############################################
 
-    @Override
-    public final Document getDocument(){
-        return this;
-    }
-    @Override
-    public final Range<Integer> getRange(){
-        return getRangeCache(this, () -> Range.closedOpen(0, getLocalEnd()));
-    }
-
-    /**
-     * Get a range in cache and wraps {@linkplain ExecutionException} with
-     * {@link RuntimeException}.
+    /** Gets a range in cache.
+     *
+     * @param child
+     *     span key
+     * @param caller
+     *      cache caller
+     * @see Span#getRange()
      */
     final Range<Integer> getRangeCache(Span child,
             Callable<Range<Integer>> caller) {
-        checkNotNull(child, "child");
-        checkNotNull(caller, "caller function (caller)");
+        argumentNotNull(child, "child");
+        argumentNotNull(caller, "caller function (caller)");
 
         try {
             return spanRanges.get(child, caller);
@@ -315,13 +333,19 @@ public abstract class Document extends SpanNode<SpanBranch>{
             throw new RuntimeException(ex.getCause());
         }
     }
-    /**
-     * Get a text in cache and wraps {@linkplain ExecutionException} with
-     * {@link RuntimeException}.
+
+    /** Gets a text in cache.
+     *
+     * @param child
+     *     span key
+     * @param caller
+     *      cache caller
+     * @return answer
+     * @see SpanNode#getRaw()
      */
     final String getTextCache(Span child, Callable<String> caller) {
-        checkNotNull(child, "child");
-        checkNotNull(caller, "caller");
+        argumentNotNull(child, "child");
+        argumentNotNull(caller, "caller");
 
         try {
             return spanTexts.get(child, caller);
@@ -330,14 +354,20 @@ public abstract class Document extends SpanNode<SpanBranch>{
         }
     }
 
-    /**
-     * Get a leave list in cache and wraps {@linkplain ExecutionException} with
-     * {@link RuntimeException}.
+    /** Gets a {@link SpanList} in cache.
+     *
+     * @param child
+     *     span key
+     * @param caller
+     *      cache caller
+     * @return answer
+     * @see SpanBranch#getLeaves()
+     * @see #getLeaves()
      */
     final List<SpanLeaf> getLeavesCache(Span child,
             Callable<List<SpanLeaf>> caller){
-        checkNotNull(child, "child");
-        checkNotNull(caller, "caller");
+        argumentNotNull(child, "child");
+        argumentNotNull(caller, "caller");
 
         try {
             return spanLeaves.get(child, caller);
@@ -346,19 +376,13 @@ public abstract class Document extends SpanNode<SpanBranch>{
         }
     }
 
-    @Override
-    public final List<SpanLeaf> getLeaves(){
-        return getLeavesCache(this, () ->{
-            ImmutableList.Builder<SpanLeaf> builder = ImmutableList.builder();
-            for(SpanBranch span: this){
-                /// span.getLeaves() might be cached, reduces the need to search
-                builder.addAll(span.getLeaves());
-            }
-            return builder.build();
-        });
-    }
-
-    /** Find column index. */
+    /** Find column index in cache.
+     *
+     * @param index
+     *      character index
+     * @return answer
+     * @see Span#getStartColumn()
+     */
     final int getColumn(int index){
         try {
             return spanLocation.get(index)[0];
@@ -367,7 +391,14 @@ public abstract class Document extends SpanNode<SpanBranch>{
         }
     }
 
-    /** Find line index. */
+
+    /** Find line index in cache.
+     *
+     * @param index
+     *      character index
+     * @return answer
+     * @see Span#getStartLine()
+     */
     final int getLine(int index){
         try {
             return spanLocation.get(index)[1];
@@ -376,10 +407,19 @@ public abstract class Document extends SpanNode<SpanBranch>{
         }
     }
 
-    /** Locate a {@link Span} that is a instance of a certain class  */
+    /// %Part 4: Locate Span ###################################################
+
+    /** Locate a {@link Span} of a class from the root.
+     *
+     * @param index
+     *      seach index
+     * @param clazz
+     *      span class
+     * @return answer
+     */
     public final <T> Optional<T> locateSpan(int index, Class<T> clazz){
-        checkRange(index, "index", 0, true, getEnd(), true);
-        checkNotNull(clazz, "requested class (clazz).");
+        argumentClose(index, "index", 0, getEnd());
+        argumentNotNull(clazz, "requested class (clazz).");
 
         /// Empty document
         if(getLocalEnd() == 0){
@@ -402,9 +442,14 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     }
 
-    /** Locate a {@link SpanLeaf} */
+    /** Locate a {@link SpanLeaf}.
+     *
+     * @param index
+     *      seach index
+     * @return answer
+     */
      public final Optional<SpanLeaf> locateLeaf(int index){
-        checkRange(index, "index", 0, true, getEnd(), true);
+        argumentClose(index, "index", 0, getEnd());
         if(getLocalEnd() == 0){
             return Optional.empty();
         }
@@ -415,9 +460,13 @@ public abstract class Document extends SpanNode<SpanBranch>{
         return Optional.of((SpanLeaf)pointer);
     }
 
-    /**
-     * Located the span in a {@link SpanNode}. Helper method of
-     * {@link #locateSapn(int, Class)}, and {@link #getLeaf(int)}.
+    /** Located the span in a {@link SpanNode}.
+     *
+     * @param index
+     *      search index
+     * @param parent
+     *      search parent
+     * @return answer
      */
     private final Span locateSpan(int index, SpanNode<?> parent){
         assert parent != null: "Null parent";
@@ -429,6 +478,21 @@ public abstract class Document extends SpanNode<SpanBranch>{
         return parent.get(parent.size() - 1);
     }
 
+    /// %Part 5: Catalogue map get and set #####################################
+
+    /** Get catalogue map.
+     *
+     * @return answer
+     */
+    public final CatalogueMap getCatalogue(){
+        return catalogueMap;
+    }
+
+    /** Add catalogue map from a document.
+     *
+     * @param docs
+     *      reference documents
+     */
     public void addReferences(Document ... docs){
         for (Document doc: docs){
             CatalogueMap map = doc.catalogueMap;
@@ -439,13 +503,45 @@ public abstract class Document extends SpanNode<SpanBranch>{
         }
     }
 
+    /** Remove catalogue map from a documents
+     * @param docs
+     *      reference documents
+     */
+    public void removeReference(Document docs){
+        // TODO stub
+    }
+
+    /// %Part 6: Other Overriding Methods ######################################
+
+    @Override
+    public final List<SpanLeaf> getLeaves(){
+        return getLeavesCache(this, () ->{
+            ImmutableList.Builder<SpanLeaf> builder = ImmutableList.builder();
+            for(SpanBranch span: this){
+                /// span.getLeaves() might be cached, reduces the need to search
+                builder.addAll(span.getLeaves());
+            }
+            return builder.build();
+        });
+    }
+
+    @Override
+    public final Range<Integer> getRange(){
+        return getRangeCache(this, () -> Range.closedOpen(0, getLocalEnd()));
+    }
+
+    @Override
+    public final Document getDocument(){
+        return this;
+    }
+
     @Override
     public final SpanNode<?> getParent(){
         throw new UnsupportedOperationException("No parents");
     }
 
     @Override
-    public final void setParent(){
+    final void setParent(SpanNode<?> doc){
         throw new UnsupportedOperationException("No parents can be set");
     }
 

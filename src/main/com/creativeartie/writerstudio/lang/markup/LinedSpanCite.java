@@ -33,7 +33,7 @@ public class LinedSpanCite extends LinedSpan {
         cacheFieldType = new CacheKeyMain<>(InfoFieldType.class);
         cacheData = new CacheKeyOptional<>(InfoDataSpan.class);
         cacheStyles = new CacheKeyList<>(StyleInfo.class);
-        cacheNote = CacheKey.integerKey();
+        cacheNote = CacheKeyMain.integerKey();
     }
 
     public InfoFieldType getFieldType(){

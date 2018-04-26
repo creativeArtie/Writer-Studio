@@ -17,8 +17,8 @@ public class LinedSpanAgenda extends LinedSpan implements Catalogued{
 
     LinedSpanAgenda(List<Span> children){
         super(children);
-        cacheAgenda = CacheKey.stringKey();
-        cacheNote = CacheKey.integerKey();
+        cacheAgenda = CacheKeyMain.stringKey();
+        cacheNote = CacheKeyMain.integerKey();
         cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
     }
 

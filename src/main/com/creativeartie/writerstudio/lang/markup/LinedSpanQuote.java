@@ -17,8 +17,8 @@ public class LinedSpanQuote extends LinedSpan {
     LinedSpanQuote(List<Span> children){
         super(children);
         cacheFormatted = new CacheKeyOptional<>(FormattedSpan.class);
-        cachePublish = CacheKey.integerKey();
-        cacheNote = CacheKey.integerKey();
+        cachePublish = CacheKeyMain.integerKey();
+        cacheNote = CacheKeyMain.integerKey();
     }
 
     public Optional<FormattedSpan> getFormattedSpan(){

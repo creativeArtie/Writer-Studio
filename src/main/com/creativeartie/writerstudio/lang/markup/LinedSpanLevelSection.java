@@ -26,10 +26,10 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
         cacheEditionSpan = new CacheKeyOptional<>(EditionSpan.class);
         cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
         cacheEdition = new CacheKeyMain<>(EditionType.class);
-        cachePublish = CacheKey.integerKey();
-        cacheNote = CacheKey.integerKey();
-        cacheTitle = CacheKey.stringKey();
-        cacheLookup = CacheKey.stringKey();
+        cachePublish = CacheKeyMain.integerKey();
+        cacheNote = CacheKeyMain.integerKey();
+        cacheTitle = CacheKeyMain.stringKey();
+        cacheLookup = CacheKeyMain.stringKey();
     }
 
     public Optional<EditionSpan> getEditionSpan(){

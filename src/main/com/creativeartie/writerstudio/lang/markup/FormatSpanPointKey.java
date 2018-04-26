@@ -19,8 +19,8 @@ public final class FormatSpanPointKey extends FormatSpan{
         super(children, reparser.getFormats());
         spanReparser = reparser;
 
-        cacheField = CacheKey.stringKey();
-        cacheValue = CacheKey.stringKey();
+        cacheField = CacheKeyMain.stringKey();
+        cacheValue = CacheKeyMain.stringKey();
         cacheStyles = new CacheKeyList<>(StyleInfo.class);
     }
 
