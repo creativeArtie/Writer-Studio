@@ -1,24 +1,28 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*;
+import java.util.*; // Comparator;
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-public class CacheKey implements Comparable<CacheKey>{
-    public static CacheKeyMain<String> stringKey(){
-        return new CacheKeyMain<>(String.class);
-    }
-
-    public static CacheKeyMain<Boolean> booleanKey(){
-        return new CacheKeyMain<>(Boolean.class);
-    }
-
-    public static CacheKeyMain<Integer> integerKey(){
-        return new CacheKeyMain<>(Integer.class);
-    }
+/** A key to use for the caches in {@link SpanNode}.
+ *
+ * Purpose:
+ * <ul>
+ * <li>Unique idenifly from each other.</li>
+ * <li>Cast the value to the actual type.</li>
+ * </ul>
+ * @param
+ *      the value type
+ */
+public abstract class CacheKey<T> implements Comparable<CacheKey<?>>{
 
     private static int id = Integer.MIN_VALUE;
 
+    /** Get a unique hash id number.
+     *
+     * @return answer
+     * @see #CacheKey()
+     */
     private static int getHashId(){
         int ans = id++;
         return ans;
@@ -26,13 +30,22 @@ public class CacheKey implements Comparable<CacheKey>{
 
     private int hashId;
 
+    /** Creates a {@linkplain CacheKey} */
     CacheKey(){
         hashId = getHashId();
     }
 
+    /** Cast a value
+     *
+     * @param value
+     *      found value
+     * @return answer
+     */
+    public abstract <U extends T> T cast(U value);
+
     @Override
-    public int compareTo(CacheKey that){
-        Comparator<CacheKey> compare = Comparator.comparingInt(k -> k.hashId);
+    public int compareTo(CacheKey<?> that){
+        Comparator<CacheKey<?>> compare = Comparator.comparingInt(k -> k.hashId);
         return compare.compare(this, that);
     }
 

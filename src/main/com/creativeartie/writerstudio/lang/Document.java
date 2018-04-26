@@ -1,100 +1,232 @@
 package com.creativeartie.writerstudio.lang;
 
 import java.util.*; // (many)
-import java.util.concurrent.*; // Callable, ExecutionException
-import java.util.function.*; // Function
+import java.util.concurrent.*; // Callabl, ExecutionException;
+import java.util.function.*; // Function;
 
-import com.google.common.cache.*; // Cache, CacheBuilder, LoadingCache,
-import com.google.common.collect.*; // ImmmuableList, Range
+import com.google.common.cache.*; // Cache, CacheBuilder, LoadingCache;
+import com.google.common.collect.*; // ImmmuableList, Range;
 
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * Representation of a text file that is parsed by {@link SetupParser}.
+/** Representation of a text file that is parsed by {@link SetupParser}.
  */
 public abstract class Document extends SpanNode<SpanBranch>{
 
-    /// Caches to reduce the need to recalculate data for each span.
-    private final Cache<Span, Range<Integer>> spanRanges;
-    private final LoadingCache<Integer, Integer[]> spanLocation;
-    private final Cache<Span, List<SpanLeaf>> spanLeaves;
-    private final Cache<Span, String> spanTexts;
+    /// %Part 1: Constructors ##################################################
 
-    private ArrayList<SpanBranch> documentChildren;
-    private final CatalogueMap catalogueMap;
     private SetupParser[] documentParsers;
-
     private ArrayList<SpanNode<?>> removeSpan;
 
+    private final Cache<Span, Range<Integer>> spanRanges;
+    private final Cache<Span, List<SpanLeaf>> spanLeaves;
+    private final Cache<Span, String> spanTexts;
+    /// values = Integer[]{column, line}
+    private final LoadingCache<Integer, Integer[]> spanLocation;
+
+    private final CatalogueMap catalogueMap;
+    private ArrayList<SpanBranch> documentChildren;
+
+    /** Creates a {@linkplain Document}.
+     *
+     * @param raw
+     *      raw text
+     * @param parser
+     *      text parsers
+     */
     protected Document(String raw, SetupParser ... parsers){
-        checkNotNull(raw, "raw");
-        checkNotEmpty(parsers, "parser");
+        argumentNotNull(raw, "raw");
+        documentParsers = argumentNotEmpty(parsers, "parser");
         removeSpan = new ArrayList<>();
 
         spanRanges = CacheBuilder.newBuilder().weakKeys().build();
         spanLeaves = CacheBuilder.newBuilder().weakKeys().build();
         spanTexts = CacheBuilder.newBuilder().weakKeys().build();
-        documentParsers = parsers;
         spanLocation = CacheBuilder.newBuilder().maximumSize(1000)
             .build(CacheLoader.from(pos ->{
                 int column = 0;
                 int line = 1;
                 String input = getRaw();
+
                 for (int i = 0; i < pos; i++){
                     if (input.charAt(i) == '\n'){
+                        /// New line
                         column = 0;
                         line++;
                     } else {
+                        /// Same line
                         column++;
                     }
                 }
+
                 return new Integer[]{column, line};
             }));
 
         catalogueMap = new CatalogueMap();
-        /// Setup for building the doc and a pointer to use
-        parseDocument(raw);
+        parseDocument(raw); /// Sets spanChildren
 
-        /// Finalize the parse loop
+        /// load catalogue map
         catalogueMap.clear();
         loadMap(documentChildren);
     }
 
-    public void addReferences(Document ... docs){
-        for (Document doc: docs){
-            CatalogueMap map = doc.catalogueMap;
-            // TODO work on span branches (no more editing will be doen to them)
-            // TODO remove id references (not applicable)
-            catalogueMap.add(map);
-        }
+    /// %Part 2: Updating and Editing Document #################################
+
+    /// %Part 2.1: Main Editing Functions ######################################
+
+    @Override
+    protected final void runCommand(Command command){
+        reparseDocument(command.getResult());
     }
 
-    /**
-     * Parses the document. Helper method of
-     * {@link #Document(String, SetupParsers...)}, {@link #insert(int, String},
-     * and {@link #edit(Function, int}.
+    /** Insert a {@linkplain String} at a location.
+     *
+     * @param index
+     *      insert index
+     * @param input
+     *      input text
+     */
+    public synchronized final void insert(int index, String input){
+        argumentOpen(index, "index", 0, getEnd());
+        argumentNotNull(input, "input");
+
+        /// Insert into empty doc
+        if (isEmpty()){
+            reparseDocument(input);
+            return;
+        }
+
+        /// Insert at the end
+        if (index == getLocalEnd()){
+            /// Gets the last span leaf's parent
+            Span span = locatLeaf(size() - 1).get();
+            assert span instanceof SpanLeaf: "Wrong class.";
+            span = span.getParent();
+            /// try to parse at SpanBranch
+            while (span instanceof SpanBranch){
+                if (((SpanBranch)span).editRaw(span.getRaw() + input)){
+                    return;
+                }
+                span = span.getParent();
+            }
+            /// Reparse the whole document
+            assert span instanceof Document: "Wrong class.";
+            reparseDocument(getRaw() + input);
+            return;
+        }
+
+        /// Insert at start & middle
+        edit(span -> {
+            StringBuilder text = new StringBuilder(span.getRaw());
+            text.insert(index - span.getStart(), input);
+            return text.toString();
+        }, index);
+    }
+
+    /** Delete a {@linkplain String} at a location.
+     *
+     * @param start
+     *      start index
+     * @param end
+     *      end index
+     */
+    public synchronized final void delete(int start, int end){
+        checkRange(end, "end", 0, true, getEnd(), true);
+        checkRange(start, "start", 0, true, end, true);
+
+        edit(span -> {
+            if (span.getEnd() >= end){
+                String text = span.getRaw();
+                text = text.substring(0,start - span.getStart()) +
+                    text.substring(end - span.getStart(), text.length());
+                return text.toString();
+            }
+            return "";
+        }, start);
+    }
+
+    /** Edit the document, excluding adding to the end of it.
+     *
+     * @param supplier
+     *      span text supplier
+     * @param location
+     *      replace location
+     * @see #insert(int, String)
+     * @see #delete(int, int)
+     */
+    private void edit(Function<Span, String> supplier, int location){
+        assert supplier != null: "Null supplier";
+        assert location >= 0 && location <= getEnd(): "Wrong location";
+
+        /// gets the span leaf's parent
+        Optional<SpanLeaf> found = getLeaf(location);
+        if (! found.isPresent()){
+            reparseDocument(supplier.apply(this));
+            return;
+        }
+        SpanNode<?> span = found.get().getParent();
+
+        /// Attempt to parse at a SpanBranch level
+        while (span instanceof SpanBranch){
+            String raw = supplier.apply(span);
+            if (! raw.isEmpty()){
+                /// edit is within the local text
+                if (((SpanBranch)span).editRaw(raw)){
+                    /// edit is completed
+                    return;
+                }
+            }
+            span = span.getParent();
+        }
+
+        /// Must be parse at Document level
+        assert span instanceof Document: "Wrong class:" + span.getClass();
+        reparseDocument(supplier.apply(this));
+        return;
+    }
+
+    /** Reparse the whole document.
+     *
+     * This will also called the updates methods.
+     *
+     * @param text
+     *      new text
+     * @see #runCommand(Command)
+     * @see #insert(int, String)
+     * @see #delete(int, int)
+     */
+    private void reparseDocument(String text){
+        forEach(s -> s.setRemove());
+        parseDocument(text);
+        updateSpan();
+        updateDoc();
+    }
+
+    /** Parse the whole document.
+     *
+     * @param text
+     *      new text
+     * @see #Document(String, SetupParser ...)
+     * @see #reparseDocuemnt(String)
      */
     private final void parseDocument(String raw){
         assert raw != null: "Null raw.";
 
         documentChildren = new ArrayList<>();
         SetupPointer ptr = SetupPointer.newPointer(raw, this);
-        /// Setup for runtime exceptions
-        int counter = 0;
+        int counter = 0; /// Setup for runtime exceptions
 
         /// Parse loop
         while (ptr.hasNext()){
-            /// CatalogueStatus checking what happen if SetupPointer fails or
-            /// SetupParser[] misses the texts
+            /// One small check to see if it loop to much
             if(counter > raw.length()){
                 throw new RuntimeException("Loop too much: " + ptr);
             }
-            counter++;
+            counter++; /// != ptr location
 
             /// Finding the correct SetupParser to build span from
             for(SetupParser s: documentParsers){
                 Optional<?> span = s.parse(ptr);
-
                 /// Span has been created
                 if (span.isPresent()){
                     SpanBranch found = (SpanBranch)span.get();
@@ -104,6 +236,18 @@ public abstract class Document extends SpanNode<SpanBranch>{
                 }
             }
         }
+    }
+
+    /// %Part 2.2: Update system
+
+    @Override
+    protected final void setChildren(List<SpanBranch> children){
+        children.forEach(s -> s.setParent(this));
+        documentChildren = new ArrayList<>(children);
+    }
+
+    final void removeSpan(SpanNode<?> span){
+        removeSpan.add(span);
     }
 
     final void updateDoc(){
@@ -126,9 +270,6 @@ public abstract class Document extends SpanNode<SpanBranch>{
         fireListeners();
     }
 
-    final void removeSpan(SpanNode<?> span){
-        removeSpan.add(span);
-    }
 
     /**
      * Recursively update all child {@link Span spans}. Helper method of
@@ -154,23 +295,6 @@ public abstract class Document extends SpanNode<SpanBranch>{
     public final Document getDocument(){
         return this;
     }
-
-    @Override
-    public final SpanNode<?> getParent(){
-        throw new UnsupportedOperationException("No parents");
-    }
-
-    @Override
-    protected final void setChildren(List<SpanBranch> children){
-        children.forEach(s -> s.setParent(this));
-        documentChildren = new ArrayList<>(children);
-    }
-
-    @Override
-    public final List<SpanBranch> delegate(){
-        return ImmutableList.copyOf(documentChildren);
-    }
-
     @Override
     public final Range<Integer> getRange(){
         return getRangeCache(this, () -> Range.closedOpen(0, getLocalEnd()));
@@ -305,103 +429,28 @@ public abstract class Document extends SpanNode<SpanBranch>{
         return parent.get(parent.size() - 1);
     }
 
-    /** Insert a {@linkplain String} at a location.*/
-    public synchronized final void insert(int location, String input){
-        checkRange(location, "location", 0, true, getEnd(), true);
-        checkNotNull(input, "input");
-        if (isEmpty()){
-            reparseDocument(input);
-            return;
+    public void addReferences(Document ... docs){
+        for (Document doc: docs){
+            CatalogueMap map = doc.catalogueMap;
+            // TODO work on span branches (no more editing will be doen to them)
+            // TODO remove id references (not applicable)
+            // TODO merge ids
+            catalogueMap.add(map);
         }
-
-        if (location == getLocalEnd()){
-            /// Insert at the end
-            Span span = get(size() - 1);
-            while (span instanceof SpanBranch){
-                SpanBranch child = (SpanBranch) span;
-                span = child.get(child.size() - 1);
-            }
-            assert span instanceof SpanLeaf: "Wrong class.";
-            span = span.getParent();
-            while (span instanceof SpanBranch){
-                if (((SpanBranch)span).editRaw(span.getRaw() + input)){
-                    return;
-                }
-                span = span.getParent();
-            }
-            /// Reparse the whole document
-            assert span instanceof Document: "Wrong class.";
-            reparseDocument(getRaw() + input);
-            return;
-        }
-        edit(span -> {
-            StringBuilder text = new StringBuilder(span.getRaw());
-            text.insert(location - span.getStart(), input);
-            return text.toString();
-        }, location);
     }
 
-    /** Insert a {@linkplain String} at a location.*/
-    public synchronized final void delete(int start, int end){
-        checkRange(end, "end", 0, true, getEnd(), true);
-        checkRange(start, "start", 0, true, end, true);
-
-        edit(span -> {
-            if (span.getEnd() >= end){
-                String text = span.getRaw();
-                text = text.substring(0,start - span.getStart()) +
-                    text.substring(end - span.getStart(), text.length());
-                return text.toString();
-            }
-            return "";
-        }, start);
+    @Override
+    public final SpanNode<?> getParent(){
+        throw new UnsupportedOperationException("No parents");
     }
 
-    /**
-     * Edit the document, excluding adding to the end of it. Helper function for
-     * {@link #insert(int, String)}, and {@link #delete(int, int)}.
-     */
-    private void edit(Function<Span, String> editedText,
-            int location){
-        assert editedText != null: "Null editText";
-        assert location >= 0 && location <= getEnd(): "Wrong location";
-        Optional<SpanLeaf> found = getLeaf(location);
-
-        if (! found.isPresent()){
-            reparseDocument(editedText.apply(this));
-            return;
-        }
-
-        SpanNode<?> span = found.get().getParent();
-
-        /// Attempt to parse at a SpanBranch level
-        while (span instanceof SpanBranch){
-            String raw = editedText.apply(span);
-            if (! raw.isEmpty()){
-                /// edit is within the local text
-                if (((SpanBranch)span).editRaw(raw)){
-                    /// edit is completed
-                    // ((SpanBranch)span).updateSpan();
-                    return;
-                }
-            }
-            span = span.getParent();
-        }
-
-        /// Must be parse at Document level
-        assert span instanceof Document: "Wrong class:" + span.getClass();
-        reparseDocument(editedText.apply(this));
-        return;
+    @Override
+    public final void setParent(){
+        throw new UnsupportedOperationException("No parents can be set");
     }
 
-    private void reparseDocument(String text){
-        forEach(s -> s.setRemove());
-        parseDocument(text);
-        updateSpan();
-        updateDoc();
-    }
-
-    protected final void runCommand(Command command){
-        parseDocument(command.getResult());
+    @Override
+    public final List<SpanBranch> delegate(){
+        return ImmutableList.copyOf(documentChildren);
     }
 }

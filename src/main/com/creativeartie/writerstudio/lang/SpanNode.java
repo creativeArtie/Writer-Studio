@@ -192,6 +192,8 @@ public abstract class SpanNode<T extends Span> extends Span
         }
     }
 
+    protected abstract void runCommand(Command command)
+
 
     @Override
     public final String getRaw(){

@@ -2,8 +2,7 @@ package com.creativeartie.writerstudio.lang;
 
 import java.util.*; // List
 
-/** An interface to replace text of a {@link SpanBranch}.
- */
+/** An interface to replace text of a {@link SpanBranch}. */
 public interface Command{
 
     /** Parse and get the result string.
