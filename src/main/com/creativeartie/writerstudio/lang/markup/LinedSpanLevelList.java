@@ -36,7 +36,7 @@ public class LinedSpanLevelList extends LinedSpanLevel {
 
     @Override
     protected SetupParser getParser(String text){
-        if (AuxiliaryChecker.checkLineEnd(text, isLast())){
+        if (AuxiliaryChecker.checkLineEnd(text, isDocumentLast())){
             if (getParser(text, LinedParseLevel.BULLET)){
                 return LinedParseLevel.BULLET;
             } else if (getParser(text, LinedParseLevel.NUMBERED)){

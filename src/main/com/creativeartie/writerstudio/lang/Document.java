@@ -21,7 +21,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  */
 public abstract class Document extends SpanNode<SpanBranch>{
 
-    /// %Part 1: Constructors ##################################################
+    /// %Part 1: Constructors and Fields #######################################
 
     private SetupParser[] documentParsers;
     private ArrayList<SpanNode<?>> removeSpan;

@@ -24,8 +24,8 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  */
 public final class ManuscriptFile {
 
-    /// %Part 1: Contstructors #################################################
-    /// %Part 1.1: Public Static Contstructors =================================
+    /// %Part 1: Constructors and Fields #######################################
+    /// %Part 1.1: Public Static Constructors and Constants ===================
 
     /// file name and extension for {@link #open(File)} and {@link #save()}
     private static final String TEXT = "manuscript";
@@ -132,7 +132,7 @@ public final class ManuscriptFile {
         return ans;
     }
 
-    /// %Part 1.2: Instance Setup ==============================================
+    /// %Part 1.2: Private Constructors and Fields =============================
 
     private final WritingText documentText;
     private final RecordList recordsFile;

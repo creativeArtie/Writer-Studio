@@ -176,7 +176,7 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
         checkNotNull(text, "text");
 
         /// check if ending merge with next
-        if (! AuxiliaryChecker.checkSectionEnd(text, isLast())){
+        if (! AuxiliaryChecker.checkSectionEnd(text, isDocumentLast())){
             return null;
         }
 

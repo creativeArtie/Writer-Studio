@@ -20,7 +20,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  */
 public final class RecordList extends ForwardingList<Record>{
 
-    /// %Part 1: Constructors ##################################################
+    /// %Part 1: Constructors and Fields #######################################
     /// %Part 1.1: Static constructors =========================================
 
     /** Creates {@link RecordList} with a file

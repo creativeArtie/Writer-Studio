@@ -84,7 +84,7 @@ public class LinedSpanCite extends LinedSpan {
 
     @Override
     protected SetupParser getParser(String text){
-        return checkLine(text) && AuxiliaryChecker.checkLineEnd(text, isLast())?
+        return checkLine(text) && AuxiliaryChecker.checkLineEnd(text, isDocumentLast())?
             LinedParseCite.INSTANCE: null;
     }
 }

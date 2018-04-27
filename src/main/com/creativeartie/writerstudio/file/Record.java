@@ -17,7 +17,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  */
 public final class Record{
 
-    /// %Part 1: Constructors ##################################################
+    /// %Part 1: Constructors and Fields #######################################
     /// %Part 1.1: Package access API ==========================================
 
     /** Creates the first {@link Record}.

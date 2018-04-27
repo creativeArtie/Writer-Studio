@@ -99,7 +99,7 @@ public abstract class SectionSpan extends SpanBranch {
     @Override
     protected final SetupParser getParser(String text){
         checkNotNull(text, "text");
-        if (AuxiliaryChecker.checkSectionEnd(text, isLast()) &&
+        if (AuxiliaryChecker.checkSectionEnd(text, isDocumentLast()) &&
                 checkStart(text)){
 
             /// Line per line checking

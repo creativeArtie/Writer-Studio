@@ -18,7 +18,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
         CatalogueData>{
 
-    /// %Part 1: Constructors ##################################################
+    /// %Part 1: Constructors and Fields #######################################
 
     private final TreeMap<CatalogueIdentity, CatalogueData> idMap;
     private final ArrayList<CatalogueMap> otherMaps;

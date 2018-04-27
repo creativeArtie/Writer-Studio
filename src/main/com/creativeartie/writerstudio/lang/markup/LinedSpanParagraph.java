@@ -48,7 +48,7 @@ public class LinedSpanParagraph extends LinedSpan {
             }
         }
 
-        return AuxiliaryChecker.checkLineEnd(text, isLast())?
+        return AuxiliaryChecker.checkLineEnd(text, isDocumentLast())?
             LinedParseRest.PARAGRAPH: null;
     }
 }

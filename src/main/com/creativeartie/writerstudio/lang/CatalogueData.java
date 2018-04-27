@@ -17,7 +17,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  */
 public final class CatalogueData{
 
-    /// %Part 1: Constructors ##################################################
+    /// %Part 1: Constructors and Fields #######################################
 
     private final CatalogueMap catalogueParent;
     private final CatalogueIdentity catelogueKey;

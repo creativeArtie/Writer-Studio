@@ -43,7 +43,7 @@ public class LinedSpanQuote extends LinedSpan {
     @Override
     protected SetupParser getParser(String text){
         return text.startsWith(LINED_QUOTE) &&
-            AuxiliaryChecker.checkLineEnd(text, isLast())?
+            AuxiliaryChecker.checkLineEnd(text, isDocumentLast())?
             LinedParseRest.QUOTE: null;
     }
 

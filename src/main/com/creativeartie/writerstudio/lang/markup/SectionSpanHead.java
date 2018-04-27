@@ -113,7 +113,7 @@ public final class SectionSpanHead extends SectionSpan {
 
     @Override
     protected boolean checkStart(String text){
-        if (getLevel() == 1 && isFirst()){
+        if (getLevel() == 1 && isDocumentFirst()){
             /// Skipping checking when this is the first
             return true;
         }

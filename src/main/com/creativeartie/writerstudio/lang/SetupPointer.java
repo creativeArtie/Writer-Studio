@@ -16,7 +16,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  * </ul>
  */
 public final class SetupPointer{
-    /// %Part 1: Constructors ##################################################
+    /// %Part 1: Constructors and Fields #######################################
     /// %Part 1.1: Static Constructos ==========================================
 
     /** Create a {@link SetupPointer}.
@@ -28,7 +28,7 @@ public final class SetupPointer{
      * @see Document#parseDocument()
      */
     static SetupPointer newPointer(String raw, Document doc){
-        argumentNotEmpty(raw, "raw");
+        argumentNotNull(raw, "raw");
         argumentNotNull(doc, "doc");
 
         return new SetupPointer(raw, doc);
@@ -53,12 +53,9 @@ public final class SetupPointer{
     private final String rawText;
     private final Document document;
 
-    /// Points to where the pointer would roll back to
-    private int lastMarker;
-    /// Points to the matching start
-    private int matchMarker;
-    /// Points to the last success (but not start at) check
-    private int nextMarker;
+    private int lastMarker; /// marker
+    private int matchMarker; /// match from
+    private int nextMarker; /// correct to
 
     /** Creates a {@link SetupPointer}.
      *
@@ -70,8 +67,10 @@ public final class SetupPointer{
     private SetupPointer(String raw, Document doc){
         assert raw != null && raw.length() > 0: "Empty raw";
         assert doc != null: "Null doc";
+
         rawText = raw;
         document = doc;
+
         matchMarker = 0;
         nextMarker = 0;
         lastMarker = 0;
@@ -330,8 +329,8 @@ public final class SetupPointer{
         int next = matchMarker;
         /// going the the text from pointer, looking out for enders strings
         for(;next < rawText.length(); next++){
-            for (String enders : enders){
-                if (rawText.startsWith(enders, next)){
+            for (String ender : enders){
+                if (rawText.startsWith(ender, next)){
                     /// Match is found
                     nextMarker = next;
                     if(nextMarker != matchMarker){

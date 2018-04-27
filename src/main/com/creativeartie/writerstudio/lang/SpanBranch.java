@@ -1,16 +1,22 @@
 package com.creativeartie.writerstudio.lang;
 
 import java.util.*; // ArrayList, List, Optional
-import java.util.function.*; // Supplier
 
-import com.google.common.collect.*; // ImmutableList
+import com.google.common.collect.*; // Range, ImmutableList
 
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * A {@link Span} storing {@link SpanLeaf} and {@link SpanBranch}.
+/** A {@link Span} storing {@link SpanLeaf} and {@link SpanBranch}.
+ *
+ * Purpose
+ * <ul>
+ * <li> Updating and editing text </li>
+ * <li> Common get methods </li>
+ * </ul>
  */
 public abstract class SpanBranch extends SpanNode<Span> {
+
+    /// %Part 1: Constructor & Fields ##########################################
 
     private ArrayList<Span> spanChildren;
 
@@ -20,27 +26,99 @@ public abstract class SpanBranch extends SpanNode<Span> {
 
     private CacheKeyMain<CatalogueStatus> spanStatus;
 
-    public SpanBranch(List<Span> spans){
+    /** Creates a {@link SpanBranch}.
+     *
+     * @param spans
+     *      list of children
+     */
+    protected SpanBranch(List<Span> spans){
         spanChildren = new ArrayList<>();
-        setChildren(spans);
+        setChildren(argumentNotEmpty(spans, "spans"));
+
         spanDoc = new CacheKeyMain<>(Document.class);
         spanStatus = new CacheKeyMain<>(CatalogueStatus.class);
     }
 
-    protected final void clearDocCache(){
-        super.clearDocCache();
-        spanChildren.stream().filter(s -> s instanceof SpanBranch)
-            .forEach(s -> ((SpanBranch)s).clearDocCache());
+    /// %Part 2: Updating and Editing ##########################################
+
+    @Override
+    protected synchronized final void runCommand(Command command){
+        argumentNotNull(command, "command");
+        String text = command.getResult();
+
+        /// no text = delete
+        if (text == null || text.isEmpty()){
+            StringBuilder builder = new StringBuilder();
+            getDocument().delete(getStart(), getEnd());
+            return;
+        }
+
+        /// replace text
+        SetupParser parser = getParser(text);
+        if (parser == null){
+            throw new IllegalArgumentException(
+                "Command does not return a parseable answer");
+        }
+
+        /// next step
+        reparseText(text, parser);
+    }
+
+
+    /** Check if this text can be replaced and replace as neccessary.
+     *
+     * @param text
+     *      the text to replace with
+     * @return answer
+     */
+    final boolean editRaw(String text){
+        argumentNotEmpty(text, "text");
+
+        SetupParser parser = getParser(text);
+        if (parser != null){
+            /// It can be fully parsed.
+            reparseText(text, parser);
+            return true;
+       }
+       return false;
+    }
+
+    /** Gets the parser only if it can reparsed the whole text.
+     *
+     * @param text
+     *      replacing text
+     * @return answer; nullable
+     * @see #runCommand(Command)
+     * @see #editRaw(String)
+     */
+    protected abstract SetupParser getParser(String text);
+
+    /** Reparse the text.
+     *
+     * @param text
+     *      replacing text
+     * @param parser
+     *      span parser
+     */
+    private final void reparseText(String text, SetupParser parser){
+        assert text != null && text.length() > 0: "Empty text";
+        assert parser != null: "Null parser";
+
+        SetupPointer pointer = SetupPointer.updatePointer(text,
+            getDocument());
+        Optional<SpanBranch> span = parser.parse(pointer);
+        /// There are text left over.
+        if (pointer.hasNext()){
+            throw new IllegalStateException("Has left over characters.");
+        }
+        assert span.isPresent(): "Null span";
+        updateSpan((List<Span>)span.get());
     }
 
     @Override
     protected final void setChildren(List<Span> spans){
         spans.forEach((span) -> {
-            if (span instanceof SpanBranch){
-                ((SpanBranch)span).setParent(this);
-            } else {
-                ((SpanLeaf)span).setParent(this);
-            }
+            span.setParent(this);
         });
         spanChildren.stream().filter(s -> s instanceof SpanBranch)
             .forEach(s -> ((SpanBranch)s).setRemove());
@@ -49,22 +127,38 @@ public abstract class SpanBranch extends SpanNode<Span> {
     }
 
     @Override
-    public final Document getDocument(){
-        /// will eventually get to a SpanLeaf
-        return getLocalCache(spanDoc, () -> get(0).getDocument());
+    final void clearDocCache(){
+        super.clearDocCache();
+        spanChildren.stream().filter(s -> s instanceof SpanBranch)
+            .forEach(s -> ((SpanBranch)s).clearDocCache());
     }
 
-    @Override
-    public final SpanNode<?> getParent(){
-        return spanParent;
-    }
+    /// %Part 3: Common Get Methods ############################################
 
-    final void setParent(SpanNode<?> parent){
-        spanParent = parent;
-    }
-
-    /** Get style information about this {@linkplain SpanBranch}.*/
+    /** Get style information about this {@linkplain SpanBranch}.
+     *
+     * @return answer
+     */
     public abstract List<StyleInfo> getBranchStyles();
+
+    /** Get the catalogue status.
+     *
+     * @return answer
+     */
+    public final CatalogueStatus getIdStatus(){
+        return getDocCache(spanStatus, () -> {
+            if (this instanceof Catalogued){
+                Catalogued catalogued = (Catalogued) this;
+                Optional<CatalogueIdentity> id = catalogued.getSpanIdentity();
+                if (id.isPresent()){
+                    return id.get().getStatus(getDocument().getCatalogue());
+                }
+            }
+            return CatalogueStatus.NO_ID;
+        });
+    }
+
+    /// %Part 4: Overriding Methods ############################################
 
     @Override
     public final List<SpanLeaf> getLeaves(){
@@ -82,69 +176,30 @@ public abstract class SpanBranch extends SpanNode<Span> {
         });
     }
 
-    /** Edit the children if this can hold the entire text. */
-    final boolean editRaw(String text){
-        checkNotEmpty(text, "text");
-        SetupParser parser = getParser(text);
-        if (parser != null){
-            /// It can be fully parsed.
-
-            reparseText(text, parser);
-            return true;
-       }
-       return false;
+    @Override
+    public final Document getDocument(){
+        /// will eventually get to a SpanLeaf
+        return getLocalCache(spanDoc, () -> get(0).getDocument());
     }
 
-    /** Gets the parser only if it can reparsed the whole text. */
-    protected abstract SetupParser getParser(String text);
-
-    protected synchronized final void runCommand(Command command){
-        String text = command.getResult();
-        if (text == null || text.isEmpty()){
-            StringBuilder builder = new StringBuilder();
-            getDocument().delete(getStart(), getEnd());
-            return;
-        }
-        SetupParser parser = getParser(text);
-        if (parser == null){
-            throw new IllegalArgumentException(
-                "Command does not return a parseable answer");
-        }
-        reparseText(text, parser);
+    @Override
+    public final SpanNode<?> getParent(){
+        return spanParent;
     }
 
-    private final void reparseText(String text, SetupParser parser){
-
-        SetupPointer pointer = SetupPointer.updatePointer(text,
-            getDocument());
-        Optional<SpanBranch> span = parser.parse(pointer);
-        span.ifPresent(s -> updateSpan((List<Span>)s));
-        /// There are text left over.
-        if (pointer.hasNext()){
-            throw new IllegalStateException("Has left over characters.");
-        }
+    @Override
+    final void setParent(SpanNode<?> parent){
+        spanParent = parent;
     }
 
-    public final CatalogueStatus getIdStatus(){
-        return getDocCache(spanStatus, () -> {
-            if (this instanceof Catalogued){
-                Catalogued catalogued = (Catalogued) this;
-                Optional<CatalogueIdentity> id = catalogued.getSpanIdentity();
-                if (id.isPresent()){
-                    return id.get().getStatus(getDocument().getCatalogue());
-                }
-            }
-            return CatalogueStatus.NO_ID;
-        });
+    @Override
+    public final Range<Integer> getRange(){
+        /// make it final in the package
+        return super.getRange();
     }
-
 
     @Override
     public final List<Span> delegate(){
         return ImmutableList.copyOf(spanChildren);
-    }
-
-    List<Span> getChildren(){
-        return spanChildren;
     }
 }

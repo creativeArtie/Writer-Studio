@@ -52,7 +52,7 @@ public abstract class TextDataSpan<T extends SpanBranch> extends SpanBranch{
 
     @Override
     protected SetupParser getParser(String text){
-        return AuxiliaryChecker.checkLineEnd(text, isLast())?
+        return AuxiliaryChecker.checkLineEnd(text, isDocumentLast())?
             TextDataParser.PARSER: null;
     }
 

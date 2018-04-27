@@ -53,7 +53,7 @@ public final class ParameterChecker {
         return item;
     }
 
-    public static <T> Collection<T> argumentNotEmpty(Collection<T> item,
+    public static <C extends Collection<T>, T> C argumentNotEmpty(C item,
             String field){
         argumentNotNull(item, field);
         argumentCheck(! item.isEmpty(), field, " is empty");

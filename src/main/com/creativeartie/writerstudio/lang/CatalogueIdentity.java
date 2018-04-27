@@ -18,7 +18,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  */
 public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
 
-    /// %Part 1: Constructors ##################################################
+    /// %Part 1: Constructors and Fields #######################################
 
     private final ImmutableList<String> categoryPart;
 

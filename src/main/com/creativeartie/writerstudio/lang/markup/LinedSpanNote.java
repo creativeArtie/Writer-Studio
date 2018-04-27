@@ -90,8 +90,8 @@ public class LinedSpanNote extends LinedSpan{
     @Override
     protected SetupParser getParser(String text){
         return (
-            (isFirst()? checkFirstLine(text) : checkMiddleLine(text)) &&
-            AuxiliaryChecker.checkLineEnd(text, isLast())
+            (isDocumentFirst()? checkFirstLine(text) : checkMiddleLine(text)) &&
+            AuxiliaryChecker.checkLineEnd(text, isDocumentLast())
         )? LinedParseRest.NOTE: null;
     }
 }

@@ -99,7 +99,7 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
 
     @Override
     protected SetupParser getParser(String text){
-        if (! AuxiliaryChecker.checkLineEnd(text, isLast())){
+        if (! AuxiliaryChecker.checkLineEnd(text, isDocumentLast())){
             return null;
         }
 

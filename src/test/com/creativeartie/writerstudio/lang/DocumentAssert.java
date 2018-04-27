@@ -70,10 +70,10 @@ public class DocumentAssert {
         for (int i = 0; i < span.size(); i++){
             Span test = span.get(i);
             boolean first = i == 0 && begin;
-            assertEquals(getError("isFirst", test), first, test.isFirst());
+            assertEquals(getError("isFirst", test), first, test.isDocumentFirst());
 
             boolean last = i == span.size() - 1 && end;
-            assertEquals(getError("isLast", test), last, test.isLast());
+            assertEquals(getError("isLast", test), last, test.isDocumentLast());
             if (test instanceof SpanNode){
                 assertLocations((SpanNode<?>) test, first, last);
             }

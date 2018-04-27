@@ -1,59 +1,67 @@
 package com.creativeartie.writerstudio.lang;
 
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * A {@link Span} storing the raw text.
- */
-public class SpanLeaf extends Span{
+/** A {@link Span} storing the raw text. */
+public final class SpanLeaf extends Span{
+    /// %Part 1: Non-override Methods ##########################################
+
+    /// %Part 1.1: Constructor & Fields ========================================
+
     private final String leafText;
     private SpanBranch leafParent;
     private final StyleInfoLeaf leafStyle;
-
     /// Don't infer by looking up parents, it is needed before the parent is set
     private Document spanDoc;
 
-    /** create raw text for {@linkplain Object#toString()}. */
-    public static String escapeText(String input){
-        checkNotNull(input, "input");
-        return "\"" + input.replace("\"", "\" \\\" \"")
-            .replace("\n", "\" \\n \"").replace("\t", "\" \\t \"") + "\"";
-    }
-
+    /** Create a {@link SpanLeaf}.
+     *
+     * @param pointer
+     *      data input pointer
+     * @param style
+     *      leaf info style
+     */
     SpanLeaf(SetupPointer pointer, StyleInfoLeaf style){
-        checkNotNull(pointer, "pointer");
-        checkNotNull(style, "style");
+        argumentNotNull(pointer, "pointer");
         leafText = pointer.getRaw();
         pointer.roll();
-        leafStyle = style;
+        leafStyle = argumentNotNull(style, "style");
         spanDoc = pointer.getDocument();
     }
 
+    /// %Part 1.2: Leaf style ==================================================
+
+    /** Get the leaf style
+     *
+     * @return answer
+     */
     public StyleInfoLeaf getLeafStyle(){
         return leafStyle;
     }
 
-    void setParent(SpanNode<?> childOf){
-        if (childOf instanceof Document) assert false;
-        checkNotNull(childOf, "childOf");
-        leafParent = (SpanBranch) childOf;
+    /** create raw text for {@linkplain Object#toString()}.
+     *
+     * @param input
+     *      text to escape
+     * @return answer
+     */
+    public static String escapeText(String input){
+        argumentNotNull(input, "input");
+        return "\"" + input.replace("\"", "\" \\\" \"")
+            .replace("\n", "\" \\n \"").replace("\t", "\" \\t \"") + "\"";
     }
 
+    /// %Part 2: Overrding Methods #############################################
+
+    @Override
+    void setParent(SpanNode<?> parent){
+        argumentIsInstance(parent, "parent", Document.class);
+        leafParent = (SpanBranch) parent;
+    }
 
     @Override
     public final String getRaw(){
         return leafText;
-    }
-
-    @Override
-    public String toString(){
-        return escapeText(leafText);
-    }
-
-
-    @Override
-    public SpanBranch getParent(){
-        return leafParent;
     }
 
     @Override
@@ -66,4 +74,13 @@ public class SpanLeaf extends Span{
         return spanDoc;
     }
 
+    @Override
+    public SpanBranch getParent(){
+        return leafParent;
+    }
+
+    @Override
+    public String toString(){
+        return escapeText(leafText);
+    }
 }
