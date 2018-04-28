@@ -1,8 +1,8 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*; // (many)
+import java.util.*; // ArrayList, Arrays, List;
 
-import com.google.common.base.*; // CharMatcher
+import com.google.common.base.*; //CharMatcher;
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 

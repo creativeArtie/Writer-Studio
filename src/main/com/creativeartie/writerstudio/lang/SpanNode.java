@@ -1,11 +1,11 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*; // (many)
-import java.util.function.*; // UnaryOperator
+import java.util.*; // Collection, Comparator, HashSet, Iterator, Spliterator, List, ListIterator, Optional;
 import java.util.concurrent.*; // Callable, ExecutionException
+import java.util.function.*; // Consumer, UnaryOperator;
 
+import com.google.common.cache.*;// Cache, CacheBuilder;
 import com.google.common.collect.*; // Range
-import com.google.common.cache.*; // Range, ImmuableList
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 

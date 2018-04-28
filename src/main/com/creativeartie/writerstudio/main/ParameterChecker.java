@@ -1,10 +1,9 @@
 package com.creativeartie.writerstudio.main;
 
-import java.io.*;
-import java.time.*;
-import java.util.*;
+import java.io.*; // IOException
+import java.util.*; // Collection;
 
-import com.google.common.collect.*;
+import com.google.common.collect.*; // Range
 
 public final class ParameterChecker {
 
