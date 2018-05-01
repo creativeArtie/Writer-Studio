@@ -23,14 +23,14 @@ public class NoteCardControl extends NoteCardView{
     private WritingText currentDoc;
     public void loadCards(WritingText doc){
         currentDoc = doc;
-        doc.addSpanEdited(span -> updateCards());
+        doc.addDocEdited(span -> updateCards());
         updateCards();
     }
 
     public void updateCards(){
         CatalogueMap map = currentDoc.getCatalogue();
-        TreeSet<SpanBranch> set = map.getIds(AuxiliaryData.TYPE_COMMENT);
-        set.addAll(map.getIds(AuxiliaryData.TYPE_NOTE));
+        TreeSet<SpanBranch> set = map.getIds(AuxiliaryData.TYPE_NOTE);
+        set.addAll(map.getIds(AuxiliaryData.TYPE_RESEARCH));
         ArrayList<NoteCardData> data = new ArrayList<>();
 
         NoteCardSpan last = Optional

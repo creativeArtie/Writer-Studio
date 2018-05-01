@@ -6,7 +6,6 @@ import javafx.beans.property.*;
 
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
-import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
 import com.google.common.collect.*;
 

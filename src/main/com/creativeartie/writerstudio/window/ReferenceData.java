@@ -8,7 +8,8 @@ import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.file.*;
 import com.creativeartie.writerstudio.resource.*;
-import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
+import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.CURLY_KEY;
+import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.CURLY_END;
 
 import com.google.common.collect.*;
 

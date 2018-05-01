@@ -24,7 +24,7 @@ public class FormatLinkDebug {
     }
 
     public static IDBuilder buildLinkId(String name){
-        return new IDBuilder().addCategory("link").setId(name);
+        return new IDBuilder().addCategory(AuxiliaryData.TYPE_LINK).setId(name);
     }
 
     @Test

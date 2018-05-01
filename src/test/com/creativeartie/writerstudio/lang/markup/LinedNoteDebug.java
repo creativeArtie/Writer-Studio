@@ -19,7 +19,7 @@ import static com.creativeartie.writerstudio.lang.markup.BranchTest.*;
 public class LinedNoteDebug {
 
     private static IDBuilder buildId(String id){
-        return new IDBuilder().addCategory("note").setId(id);
+        return new IDBuilder().addCategory(AuxiliaryData.TYPE_RESEARCH).setId(id);
     }
 
     private final SetupParser[] parsers = new SetupParser[]{LinedParseRest.NOTE};

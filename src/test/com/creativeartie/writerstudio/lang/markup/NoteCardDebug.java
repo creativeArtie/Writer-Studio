@@ -26,7 +26,8 @@ public class NoteCardDebug {
     private static final NoteCardParser PARSER = NoteCardParser.PARSER;
 
     public static IDBuilder buildId(boolean isNameless, String name){
-        String category = isNameless? "comment" : "note";
+        String category = isNameless? AuxiliaryData.TYPE_NOTE :
+            AuxiliaryData.TYPE_RESEARCH;
         return new IDBuilder().addCategory(category).setId(name);
     }
 

@@ -19,7 +19,7 @@ import com.creativeartie.writerstudio.lang.*;
 public class LinedRestDebug {
 
     public static IDBuilder buildAgendaId(String name){
-        return new IDBuilder().addCategory("agenda").setId(name);
+        return new IDBuilder().addCategory(AuxiliaryData.TYPE_AGENDA).setId(name);
     }
 
     private static final SetupParser[] parsers = LinedParseRest.values();

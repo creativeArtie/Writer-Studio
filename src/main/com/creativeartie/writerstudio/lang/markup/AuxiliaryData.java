@@ -1,13 +1,10 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // List;
+import java.util.*; // List, Map;
 
-import com.google.common.collect.*;  // ImmutableList;
+import com.google.common.collect.*;  // ImmutableList, ImmutableMap;
 
 import com.creativeartie.writerstudio.lang.*; // SetupParser, StyleInfoLeaf;
-
-import static com.creativeartie.writerstudio.main.Checker.*;
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** All constants used in this package. */
 public final class AuxiliaryData{
@@ -22,10 +19,10 @@ public final class AuxiliaryData{
     /// Leveled Line begin part token for numbered and bullet
     private static final String LEVEL_BEGIN    = "\t";
     /// Leveled line begin part tokens
+    private static final String LEVEL_BULLET   = "-";
     private static final String LEVEL_HEADING  = "=";
     private static final String LEVEL_NUMBERED = "#";
     private static final String LEVEL_OUTLINE  = "#";
-    private static final String LEVEL_BULLET   = "-";
 
     /** Headings and levels.
      *
@@ -160,20 +157,15 @@ public final class AuxiliaryData{
     /** Fills {@link LINED_STARTERS}.
      *
      * @return answer
+     * @see #LINED_STARTERS
      */
     private static List<String> getLinedTokens(){
         ImmutableList.Builder<String> ans = ImmutableList.builder();
         for (List<String> list: LEVEL_STARTERS.values()){
             ans.addAll(list);
         }
-        ans.add(LINED_AGENDA);
-        ans.add(LINED_NOTE);
-        ans.add(LINED_CITE);
-        ans.add(LINED_LINK);
-        ans.add(LINED_FOOTNOTE);
-        ans.add(LINED_ENDNOTE);
-        ans.add(LINED_QUOTE);
-        ans.add(LINED_BREAK);
+        ans.add(LINED_AGENDA, LINED_NOTE, LINED_CITE, LINED_LINK)
+            .add(LINED_FOOTNOTE, LINED_ENDNOTE, LINED_QUOTE, LINED_BREAK);
         return ans.build();
     }
 
@@ -244,11 +236,11 @@ public final class AuxiliaryData{
     /** Char escape token:              {@value}*/
     public static String TOKEN_ESCAPE = CHAR_ESCAPE + "";
 
-    /// %Part 1.9: Format Part Separators ======================================
-    /// For FormattedParsers
+    /// %Part 1.8: Format Part Separators ======================================
 
     /** Create the list of how children spans of format can end.
-     * @return the list of term, without {@linkplain FORMAT_BOLD}
+     *
+     * @return answer
      */
     public static String[] listFormatEnderTokens(boolean note,
             String ... enders){
@@ -256,6 +248,7 @@ public final class AuxiliaryData{
 
         builder.add(CURLY_AGENDA);
         if (note){
+            /// excludes notes:
             builder.add(CURLY_FOOTNOTE, CURLY_ENDNOTE, CURLY_CITE);
         }
         ImmutableList<String> ans = builder.add(CURLY_KEY)
@@ -267,61 +260,157 @@ public final class AuxiliaryData{
 
     }
 
-    /// ========================================================================
-    /// @Part-2: Catalougue Categories ========================================-
+    /// %Part 2: Catalougue Categories #########################################
 
-    /// @Part-2-1: Document Cross-Refereneces ==================================
-    /// For DirectoryType
+    /// %Part 2.1: DirectoryType Base Categories ===============================
 
-    public static final String TYPE_FOOTNOTE = "foot";
-    public static final String TYPE_ENDNOTE  = "end";
-    public static final String TYPE_LINK     = "link";
-    public static final String TYPE_NOTE     = "note";
-    public static final String TYPE_COMMENT  = "comment";
+    /** For {@link DirectoryType.FOOTNOTE}:     {@value} */
+    public static final String TYPE_FOOTNOTE  = "foot";
+    /** For {@link DirectoryType.ENDNOTE}:      {@value} */
+    public static final String TYPE_ENDNOTE   = "end";
+    /** For {@link DirectoryType.LINK}:         {@value} */
+    public static final String TYPE_LINK      = "link";
+    /** For {@link DirectoryType.RESEARCH}:     {@value} */
+    public static final String TYPE_RESEARCH  = "note";
+    /** For {@link DirectoryType.NOTE}:         {@value} */
+    public static final String TYPE_NOTE      = "idless";
 
 
-    /// @Part-2-1: Document automatic bookmarks ================================
-    /// For DirectoryType
-    public static final List<String> TYPE_SECTION = ImmutableList.of("head");
+    /// %Part 2.2: Agenda Categories ===========================================
 
+    /** Basic agenda category:               {@value}. */
     public static final String TYPE_AGENDA = "agenda";
+    /** Same as {@link #TYPE_AGENDA} in a list for {@link FormatSpanAgenda}.*/
     public static final List<String> TYPE_AGENDA_INLINE = ImmutableList.of(
         TYPE_AGENDA);
+    /** Same as {@link #TYPE_AGENDA} in a list for {@link LinedSpanAgenda}.*/
     public static final List<String> TYPE_AGENDA_LINED = ImmutableList.of(
         TYPE_AGENDA);
 
-    /// ========================================================================
-    /// @Part-3: Setup Parsers ================================================-
+    /// %Part 3: Setup Parsers #################################################
+    /// %Part 3.1: Other Content Span Parsers ==================================
 
-    /// Part-3-1: Content Span Parsers ========================================-
-    static final SetupParser CONTENT_BASIC = new ContentParser(
+    /** A {@link ContentParser} for simple text.
+     *
+     * This set leaf style as {@link StyleInfoLeaf.TEXT}.
+     *
+     * @see EditionParser
+     * @see LinedParseRest.AGENDA
+     * @see TextDataParser
+     */
+    static final ContentParser CONTENT_BASIC = new ContentParser(
         StyleInfoLeaf.TEXT);
-    static final SetupParser CONTENT_AGENDA = new ContentParser(
+
+    /** A {@link ContentParser} for agenda text.
+     *
+     * This set leaf style as {@link StyleInfoLeaf.TEXT} and adds a ender
+     * "{@value CURLY_END}".
+     *
+     * @see FormatParseAgenda
+     */
+    static final ContentParser CONTENT_AGENDA = new ContentParser(
         StyleInfoLeaf.TEXT, CURLY_END);
-    static final SetupParser CONTENT_KEY = new ContentParser(
+
+    /** A {@link ContentParser} for reference field text
+     *
+     * This set leaf style as {@link StyleInfoLeaf.FIELD} and adds a ender
+     * "{@value CURLY_END}".
+     *
+     * @see FormatParsePointKey
+     */
+    static final ContentParser CONTENT_KEY = new ContentParser(
         StyleInfoLeaf.FIELD, CURLY_END);
-    static final SetupParser CONTENT_LINK = new ContentParser(
+
+    /** A {@link ContentParser} for hyperlink text.
+     *
+     * This set leaf style as {@link StyleInfoLeaf.TEXT} and adds a ender
+     * "{@value LINK_END}".
+     *
+     * @see FormatParseLink
+     */
+    static final ContentParser CONTENT_LINK = new ContentParser(
         StyleInfoLeaf.TEXT, LINK_END);
-    static final SetupParser CONTENT_DATA = new ContentParser(
+
+    /** A {@link ContentParser} for contntData text.
+     *
+     * This set leaf style as {@link StyleInfoLeaf.Data}.
+     *
+     * @see InfoDataParser.TEXT
+     */
+    static final ContentParser CONTENT_DATA = new ContentParser(
         StyleInfoLeaf.DATA);
-    static final SetupParser CONTENT_DIR_LINK  = new ContentParser(
+
+    /** A {@link ContentParser} for link line text.
+     *
+     * This set leaf style as {@link StyleInfoLeaf.PATH}.
+     *
+     * @see LinedParsePointer#HYPERLINK
+     */
+    static final ContentParser CONTENT_DIR_LINK  = new ContentParser(
         StyleInfoLeaf.PATH);
-    static final SetupParser CONTENT_LINE_LINK = new ContentParser(
+
+    /** A {@link ContentParser} for direct link text.
+     *
+     * This set leaf style as {@link StyleInfoLeaf.PATH} and adds a ender
+     * "{@value LINK_TEXT}" and "{@value LINK_END}".
+     *
+     * @see LinedParsePointer#HYPERLINK
+     */
+    static final ContentParser CONTENT_LINE_LINK = new ContentParser(
         StyleInfoLeaf.PATH, LINK_TEXT, LINK_END);
 
-    /// Part-3-2: Formatted Span Parsers ======================================-
-    static final SetupParser FORMATTED_TEXT = new FormattedParser(
+    /// For ContentParser for DirectoryParser see the class itself
+
+    /// %Part 3.2: Formatted Span Parsers =======================================
+
+    /** A {@link ContentParser} for note text.
+     *
+     * This set leaf style as {@link StyleInfoLeaf.TEXT}, and allows notes.
+     *
+     * @see LinedParsePointer#FOOTNOTE
+     * @see LinedParsePointer#ENDNOTE
+     * @see LinedParseRest#QUOTE
+     * @see LinedParseRest#PARAGRAPH
+     */
+    static final FormattedParser FORMATTED_TEXT = new FormattedParser(
         StyleInfoLeaf.TEXT, true);
-    static final SetupParser NOTE_TEXT = new FormattedParser(
+
+    /** A {@link ContentParser} for note text and other document matters.
+     *
+     * This set leaf style as {@link StyleInfoLeaf.TEXT}, and not allows notes.
+     *
+     * @see LinedParseRest#NOTE
+     * @see TextDataParser
+     */
+    static final FormattedParser NOTE_TEXT = new FormattedParser(
         StyleInfoLeaf.TEXT, false);
-    static final SetupParser FORMATTED_DATA = new FormattedParser(
+
+    /** A {@link ContentParser} for citations.
+     *
+     * This set leaf style as {@link StyleInfoLeaf.DATA}, and not allows notes.
+     *
+     * @see InfoDataParser#FORMATTED
+     */
+    static final FormattedParser FORMATTED_DATA = new FormattedParser(
         StyleInfoLeaf.DATA, false);
-    static final SetupParser FORMATTED_HEADER = new FormattedParser(
+
+    /** A {@link ContentParser} for heading text.
+     *
+     * This set leaf style as {@link StyleInfoLeaf.PATH}, allows notes, and
+     * adds a ender "{@value EDITION_BEGIN}".
+     *
+     * @see LinedParseLevel
+     */
+    static final FormattedParser FORMATTED_HEADER = new FormattedParser(
         StyleInfoLeaf.TEXT, true, EDITION_BEGIN);
 
-    /// Part-3-3: Main Section Line Parsers
+    /// %Part 3.3: Main Section Line Parsers ===================================
     public static final List<SetupParser> SECTION_PARSERS = getSectionParsers();
 
+    /** Create the list of {@link SECTION_PARSERS}.
+     *
+     * @return answer
+     */
     private static List<SetupParser> getSectionParsers(){
         ImmutableList.Builder<SetupParser> builder = ImmutableList.builder();
         builder.add(LinedParseLevel.BULLET, LinedParseLevel.NUMBERED);
@@ -333,26 +422,42 @@ public final class AuxiliaryData{
     /// ========================================================================
     /// @Part 4: Writing Data
 
-    private static final String TITLE        = "head-";
+    private static final String TITLE         = "head-";
+    /** At top    of a  title  page:          {@value} */
     public static final String TITLE_TOP     = TITLE  + "top     |";
+    /** At center of a  title  page:          {@value} */
     public static final String TITLE_CENTER  = TITLE  + "centre  |";
+    /** At bottom of a  title  page:          {@value} */
     public static final String TITLE_BOTTOM  = TITLE  + "bottom  |";
     private static final String TEXT         = "text-";
+    /** For the header of a  content page:    {@value} */
     public static final String TEXT_HEADER   = TEXT   + "header  |";
+    /** For the ending of a  content section:  {@value} */
     public static final String TEXT_AFTER    = TEXT   + "after   |";
+    /** For a   break of a content page:      {@value} */
     public static final String TEXT_BREAK    = TEXT   + "break   |";
     private static final String CITE         = "cite-";
+    /** For title   of a citation section:     {@value} */
     public static final String CITE_TITLE    = CITE   + "header  |";
     private static final String META         = "meta-";
+    /** PDF file property  for author:        {@value} */
     public static final String META_AUTHOR   = META   + "author  |";
+    /** PDF file property  for keywords:      {@value} */
     public static final String META_KEYWORDS = META   + "keywords|";
+    /** PDF file property  for subject:       {@value} */
     public static final String META_SUBJECT  = META   + "subject |";
+    /** PDF file property  for title:         {@value} */
     public static final String META_TITLE    = META   + "title   |";
 
-    public static final int ALIGN_START = TITLE_TOP.length();
+    /** Data type or line alignment length:  {@value} */
+    public static final int ALIGN_START     = TITLE_TOP.length();
+    /** Alignment right:                      {@value} */
     public static final String ALIGN_RIGHT  = "right |";
+    /** Alignment left:                       {@value} */
     public static final String ALIGN_LEFT   = "left  |";
+    /** Alignment center:                     {@value} */
     public static final String ALIGN_CENTER = "center|";
+    /** Data type text:                       {@value} */
     public static final String ALIGN_TEXT   = "text  |";
 
 

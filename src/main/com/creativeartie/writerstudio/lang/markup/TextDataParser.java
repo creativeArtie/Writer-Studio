@@ -40,12 +40,12 @@ enum TextDataParser implements SetupParser {
             }
         }
         if (type instanceof TextDataType.Area){
-            FORMATTED_DATA.parse(children, pointer);
+            NOTE_TEXT.parse(children, pointer);
             pointer.startsWith(children, LINED_END);
             return Optional.of(new TextDataSpanPrint(children));
         }
 
-        CONTENT_DATA.parse(children, pointer);
+        CONTENT_BASIC.parse(children, pointer);
         pointer.startsWith(children, LINED_END);
         return Optional.of(new TextDataSpanMeta(children));
     }

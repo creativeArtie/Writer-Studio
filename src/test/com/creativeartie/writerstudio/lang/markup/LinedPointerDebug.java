@@ -19,15 +19,15 @@ import com.creativeartie.writerstudio.lang.*;
 public class LinedPointerDebug{
 
     public static IDBuilder buildLinkId(String name){
-        return new IDBuilder().addCategory("link").setId(name);
+        return new IDBuilder().addCategory(AuxiliaryData.TYPE_LINK).setId(name);
     }
 
     public static IDBuilder buildFootnoteId(String name){
-        return new IDBuilder().addCategory("foot").setId(name);
+        return new IDBuilder().addCategory(AuxiliaryData.TYPE_FOOTNOTE).setId(name);
     }
 
     public static IDBuilder buildEndnoteId(String name){
-        return new IDBuilder().addCategory("end").setId(name);
+        return new IDBuilder().addCategory(AuxiliaryData.TYPE_ENDNOTE).setId(name);
     }
 
     private final SetupParser[] parsers = LinedParsePointer.values();

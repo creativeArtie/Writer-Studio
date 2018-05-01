@@ -17,15 +17,15 @@ import com.creativeartie.writerstudio.lang.*;
 public class FormatCurlyDebug {
 
     public static IDBuilder buildNoteId(String name){
-        return new IDBuilder().addCategory("note").setId(name);
+        return new IDBuilder().addCategory(AuxiliaryData.TYPE_RESEARCH).setId(name);
     }
 
     public static IDBuilder buildFootnoteId(String name){
-        return new IDBuilder().addCategory("foot").setId(name);
+        return new IDBuilder().addCategory(AuxiliaryData.TYPE_FOOTNOTE).setId(name);
     }
 
     public static IDBuilder buildEndnoteId(String name){
-        return new IDBuilder().addCategory("end").setId(name);
+        return new IDBuilder().addCategory(AuxiliaryData.TYPE_ENDNOTE).setId(name);
     }
 
     private static final SetupParser[] parsers =

@@ -142,7 +142,7 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
             spanFromFirst(LinedSpanNote.class)
                 .flatMap(line -> line.buildId())
                 .orElseGet(() ->
-                    new CatalogueIdentity(Arrays.asList(TYPE_COMMENT), this)
+                    new CatalogueIdentity(Arrays.asList(TYPE_NOTE), this)
                 )
         ));
     }

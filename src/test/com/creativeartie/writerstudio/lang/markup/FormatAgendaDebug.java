@@ -18,7 +18,7 @@ import com.creativeartie.writerstudio.lang.*;
 public class FormatAgendaDebug{
 
     public static IDBuilder buildId(String id){
-        return new IDBuilder().addCategory("agenda").setId(id);
+        return new IDBuilder().addCategory(AuxiliaryData.TYPE_AGENDA).setId(id);
     }
 
     private static final SetupParser[] parsers = new SetupParser[]{

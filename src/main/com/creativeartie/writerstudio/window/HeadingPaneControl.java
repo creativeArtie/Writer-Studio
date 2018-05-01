@@ -23,7 +23,7 @@ class HeadingPaneControl extends HeadingPaneView{
 
     public void loadHeadings(WritingText document){
         documentText = document;
-        documentText.addSpanEdited(span -> fillHeadings());
+        documentText.addDocEdited(span -> fillHeadings());
         getOutlines().clearTree();
         fillHeadings();
     }

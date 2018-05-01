@@ -11,15 +11,15 @@ import static com.creativeartie.writerstudio.main.Checker.*;
  * Parser for {@link DirectorySpan}.
  */
 enum DirectoryParser implements SetupParser{
-    REF_NOTE(DirectoryType.NOTE, CURLY_END),
+    REF_NOTE(    DirectoryType.NOTE,     CURLY_END),
     REF_FOOTNOTE(DirectoryType.FOOTNOTE, CURLY_END),
-    REF_ENDNOTE(DirectoryType.ENDNOTE, CURLY_END),
-    REF_LINK(DirectoryType.LINK, LINK_TEXT, LINK_END),
-    ID_NOTE(DirectoryType.NOTE, DIRECTORY_END),
-    ID_FOOTNOTE(DirectoryType.FOOTNOTE, DIRECTORY_END),
-    ID_ENDNOTE(DirectoryType.ENDNOTE, LINED_DATA),
-    ID_LINK(DirectoryType.LINK, LINED_DATA),
-    ID_BOOKMARK(DirectoryType.LINK, DIRECTORY_END, EDITION_BEGIN);
+    REF_ENDNOTE( DirectoryType.ENDNOTE,  CURLY_END),
+    REF_LINK(    DirectoryType.LINK,     LINK_TEXT, LINK_END),
+    ID_NOTE(     DirectoryType.NOTE,     DIRECTORY_END),
+    ID_FOOTNOTE( DirectoryType.FOOTNOTE, DIRECTORY_END),
+    ID_ENDNOTE(  DirectoryType.ENDNOTE,  LINED_DATA),
+    ID_LINK(     DirectoryType.LINK,     LINED_DATA),
+    ID_BOOKMARK( DirectoryType.LINK,     DIRECTORY_END, EDITION_BEGIN);
 
     private static final int ID_SHIFT = 3;
 
@@ -54,8 +54,8 @@ enum DirectoryParser implements SetupParser{
         String[] init = new String[enders.length + 1];
         System.arraycopy(enders, 0, init, 0, enders.length);
         init[enders.length] = DIRECTORY_CATEGORY;
-        reparseEnders = enders;
 
+        reparseEnders = enders;
         idContent = new ContentParser(StyleInfoLeaf.ID, init);
     }
 

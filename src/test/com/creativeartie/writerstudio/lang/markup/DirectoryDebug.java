@@ -24,7 +24,7 @@ public class DirectoryDebug{
         DirectoryParser.REF_NOTE};
 
     private static IDBuilder buildId(String id){
-        return new IDBuilder().addCategory("note").setId(id);
+        return new IDBuilder().addCategory(AuxiliaryData.TYPE_RESEARCH).setId(id);
     }
 
     @Test
