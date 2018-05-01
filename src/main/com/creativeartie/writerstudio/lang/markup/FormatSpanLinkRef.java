@@ -99,6 +99,11 @@ public final class FormatSpanLinkRef extends FormatSpanLink
     }
 
     @Override
+    protected String toChildName(){
+        return "ref";
+    }
+
+    @Override
     protected String toChildString(){
         Optional<DirectorySpan> id = spanFromFirst(DirectorySpan.class);
         String data = spanFromFirst(DirectorySpan.class)

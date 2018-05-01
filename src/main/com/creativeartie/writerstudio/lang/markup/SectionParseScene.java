@@ -18,7 +18,7 @@ enum SectionParseScene implements SectionParser {
     private final String starter;
 
     private SectionParseScene(){
-        starter = getLevelToken(LinedParseLevel.OUTLINE, ordinal() + 1);
+        starter = LEVEL_STARTERS.get(LinedParseLevel.OUTLINE).get(ordinal());
     }
 
     public void headParsing(ArrayList<Span> children, SetupPointer pointer,

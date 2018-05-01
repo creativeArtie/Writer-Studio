@@ -215,15 +215,26 @@ public class DocumentAssert {
         idTester.assertIds(doc);
     }
 
-    public void insert(int location, String input, int ... idx){
-        EditAssert edit = new EditAssert(doc, (SpanNode<?>)getFamily(idx)[0]);
+    public void insert( int location, String input, int ... idx){
+        insert(false, location, input, idx);
+    }
+
+    public void insert(boolean verbose, int location, String input, int ... idx){
+        EditAssert edit = new EditAssert(doc, (SpanNode<?>)getFamily(idx)[0],
+            verbose);
         doc.insert(location, input);
         idTester = new IDTestDocument();
         edit.testRest();
     }
 
+
     public void delete(int start, int end, int ... idx){
-        EditAssert edit = new EditAssert(doc, (SpanNode<?>)getFamily(idx)[0]);
+        delete(false, start, end, idx);
+    }
+
+    public void delete(boolean verbose, int start, int end, int ... idx){
+        EditAssert edit = new EditAssert(doc, (SpanNode<?>)getFamily(idx)[0],
+            verbose);
         doc.delete(start, end);
         idTester = new IDTestDocument();
         edit.testRest();

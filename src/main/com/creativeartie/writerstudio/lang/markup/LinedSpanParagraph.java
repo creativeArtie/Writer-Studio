@@ -42,7 +42,7 @@ public class LinedSpanParagraph extends LinedSpan {
     @Override
     protected SetupParser getParser(String text){
         /// Make sure it turn into a different line type
-        for (String token: getLinedTokens()){
+        for (String token: LINED_STARTERS){
             if (text.startsWith(token)){
                 return null;
             }

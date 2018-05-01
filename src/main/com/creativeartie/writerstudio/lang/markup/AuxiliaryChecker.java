@@ -1,28 +1,26 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // Arrays, List
-
-import com.creativeartie.writerstudio.lang.*; // SetupParser
+import java.util.*; // Arrays, List;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * All methods meant to check if a string can be reparsed locally in a single
- * {@link SpanBranch}.
- */
+/** Utility methods to check if {@link SpanBranch} can reparse by iteself. */
 public final class AuxiliaryChecker{
 
-    /** Check if a {@link SectionSpan} or {@link NoteCardSpan} can be contained.
+    /** Check if a {@link SpanBranch} ends with a new line or at file end
      *
      * @param last
-     *      last section?
+     *      in last section
      * @param text
      *      new text
      * @return answer
+     * @see NoteCardSpan#getParser(String)
+     * @see SectionSpan#getParser(String)
      */
     static boolean checkSectionEnd(String text, boolean isLast){
-        checkNotNull(text, "text");
+        argumentNotNull(text, "text");
+
         if (text.endsWith(TOKEN_ESCAPE)){
             /// if (text == "text\\")
             return isLast;
@@ -45,12 +43,17 @@ public final class AuxiliaryChecker{
      *      new text
      * @param last
      *      last line?
+     * @see LinedSpan
+     * @see TextDataSpan#getParser(String)
      */
     static boolean checkLineEnd(String text, boolean last){
-        checkNotNull(text, "text");
+        argumentNotNull(text, "text");
+
         return last?
+            /// "\n" at end is optional
             notCutoff(text.substring(0, text.length() - LINED_END.length()),
                 LINED_END):
+            /// "\n" at end is required
             willEndWith(text, LINED_END);
     }
 
@@ -61,26 +64,40 @@ public final class AuxiliaryChecker{
      * @param ender
      *      text ender
      * @return answer
+     * @see #checkLineEnd(String, boolean)
+     * @see FormatParsePoint#canParse(String)
+     * @see FormatSpanAgenda#getParse(String)
+     * @see FormatSpanLinkDirect#getParse(String)
+     * @see FormatSpanLinkRef#getParse(String)
      */
     static boolean willEndWith(String text, String ender){
-        checkNotNull(text, "text");
-        checkNotNull(ender, "ender");
+        argumentNotNull(text, "text");
+        argumentNotNull(ender, "ender");
+
         return text.endsWith(ender)?
+            /// text ends with ender, check for middle
             notCutoff(text.substring(0, text.length() - ender.length()),
                 Arrays.asList(ender)
-            ): false;
+            ):
+            /// text does not end with ender
+            false;
     }
 
     /** Check if text not cutoff by span enders and line end.
+     *
+     * Same as {@code AuxiliaryChecker#notCutoff(text, Arrays.asList(endings))}.
      *
      * @param text
      *     new text
      * @param ending
      *      ending tokens
      * @return answer
-     * @see #notCutoff(text, List)
+     * @see #checkLineEnd(String, boolean)
+     * @see EditionSpan#canParse(String)
      */
     static boolean notCutoff(String text, String ... endings){
+        argumentNotNull(text, "text");
+        argumentNotEmpty(endings, "endings");
         return notCutoff(text, Arrays.asList(endings));
     }
 
@@ -92,10 +109,12 @@ public final class AuxiliaryChecker{
      *      ending tokens
      * @return answer
      * @see #notCutoff(text, String ...)
+     * @see #willEndWith(String, String)
+     * @see DirectoryParser#canParse(String)
      */
     static boolean notCutoff(String text, List<String> endings){
-        checkNotNull(text, "text");
-        checkNotNull(endings, "endings");
+        argumentNotNull(text, "text");
+        argumentNotEmpty(endings, "endings");
 
         boolean escaped = false;
         for(int i = 0; i < text.length(); i++){

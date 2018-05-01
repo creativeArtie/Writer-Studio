@@ -26,17 +26,19 @@ public abstract class SectionSpan extends SpanBranch {
      * @return answer
      */
     static boolean allowChild(String text, int allowed, boolean heading){
-        for (int i = LEVEL_MAX; i > 0; i--){
-            if (text.startsWith(getLevelToken(LinedParseLevel.OUTLINE, i))){
+        List<String> starters = LEVEL_STARTERS.get(LinedParseLevel.OUTLINE);
+        for (int i = LEVEL_MAX - 1; i >= 0; i--){
+            if (text.startsWith(starters.get(i))){
                 /// if (text == outline)
-                return heading? true : allowed < i;
+                return heading? true : allowed < i + 1;
             }
         }
 
-        for (int i = LEVEL_MAX; i > 0; i--){
-            if (text.startsWith(getLevelToken(LinedParseLevel.HEADING, i))){
+        starters = LEVEL_STARTERS.get(LinedParseLevel.HEADING);
+        for (int i = LEVEL_MAX - 1; i >= 0; i--){
+            if (text.startsWith(starters.get(i))){
                 /// if (text == heading)
-                return heading? allowed < i: false;
+                return heading? allowed < i + 1: false;
             }
         }
         /// if (text == others)

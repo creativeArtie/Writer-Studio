@@ -6,45 +6,60 @@ import static org.junit.Assert.*;
 
 public class EditAssert{
 
-    private final Span targetSpan;
-    private int totalSpan;
-    private int totalRemoved;
-    private int totalParent;
-    private int countSpan;
-    private int countRemoved;
-    private int countParent;
-    private boolean isPass;
+    private boolean showEdits;
+
+    private SpanNode<?> expectedEdited;
+    private ArrayList<SpanNode<?>> actualEdited;
+
+    private ArrayList<SpanNode<?>> expectedParents;
+    private ArrayList<SpanNode<?>> actualParents;
+
+    private ArrayList<SpanNode<?>> expectedSpans;
+    private ArrayList<SpanNode<?>> actualSpans;
+
+    private ArrayList<SpanNode<?>> expectedRemoves;
+    private ArrayList<SpanNode<?>> actualRemoves;
 
     EditAssert(Document doc, SpanNode<?> edited){
-        totalParent = 0;
-        if (edited instanceof SpanBranch){
-            totalParent++;
-            SpanNode<?> parent = edited.getParent();
-            while (parent instanceof SpanBranch){
-                totalParent++;
-                parent = parent.getParent();
-            }
-        }
+        this(doc, edited, false);
+    }
 
-        totalSpan = 0;
-        totalRemoved = countRemoved(edited);
-        targetSpan = edited;
-        isPass = false;
+    EditAssert(Document doc, SpanNode<?> edited, boolean show){
+        showEdits = show;
+        expectedEdited = edited;
+        actualEdited = new ArrayList<>();
+
+        expectedParents = new ArrayList<>();
+        SpanNode<?> ptr = edited;
+        while (ptr instanceof SpanBranch){
+            ptr = ptr.getParent();
+            expectedParents.add(ptr);
+        }
+        actualParents = new ArrayList<>();
+
+        assert ptr instanceof Document;
+        expectedSpans = addAll(ptr);
+        expectedSpans.add(ptr);
+        actualSpans = new ArrayList<>();
+
+        expectedRemoves = addAll(edited);
+        actualRemoves = new ArrayList<>();
+
         addListeners(doc);
     }
 
-    private int countRemoved(SpanNode<?> target){
-        int ans = 0;
-        for (Span child: target){
-            if (child instanceof SpanNode<?>){
-                ans += countRemoved((SpanNode<?>) child) + 1;
+    private ArrayList<SpanNode<?>> addAll(SpanNode<?> from){
+        ArrayList<SpanNode<?>> ans = new ArrayList<>();
+        for (Span span: from){
+            if (span instanceof SpanNode){
+                ans.add((SpanNode<?>)span);
+                ans.addAll(addAll((SpanBranch) span));
             }
         }
         return ans;
     }
 
     private void addListeners(SpanNode<?> span){
-        totalSpan++;
         span.addSpanEdited(this::edited);
         span.addChildEdited(this::childed);
         span.addDocEdited(this::doc);
@@ -56,44 +71,71 @@ public class EditAssert{
         }
     }
 
-    private void doc(SpanNode<?> span){
-        countSpan++;
-    }
-
     private void edited(SpanNode<?> span){
-        assertSame("Wrong span's edit fired.", targetSpan, span);
-        isPass = true;
+        actualEdited.add(span);
     }
 
     private void childed(SpanNode<?> span){
-        assertTrue("Wrong span's child edited fired: " + span, findChild(span));
-        countParent++;
+        actualParents.add(span);
     }
 
-    private boolean findChild(SpanNode<?> span){
-        if (span == targetSpan) return true;
-        for (Span child: span){
-            if (child == targetSpan){
-                return true;
-            }
-            if (child instanceof SpanNode){
-                if (findChild((SpanNode<?>) child)){
-                    return true;
-                }
-            }
-        }
-        return false;
+    private void doc(SpanNode<?> span){
+        actualSpans.add(span);
     }
 
     private void removed(SpanNode<?> span){
-        countRemoved++;
-        assertTrue("Span not removed: " + span, span.isRemoved());
+        actualRemoves.add(span);
     }
 
     void testRest(){
-        assertTrue("spanEdited not fired: " + targetSpan.getClass(), isPass);
-        assertEquals("Parent count", totalParent, countParent);
-        assertEquals("Span count", totalSpan, countSpan);
-        assertEquals("Removed count", totalRemoved, countRemoved);
+        if (showEdits) {
+            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++");
+            System.out.println(expectedEdited.getDocument());
+            System.out.println(expectedEdited);
+
+            System.out.println("Edits-----------------");
+            System.out.println(expectedEdited);
+            System.out.println(actualEdited);
+        }
+        assertEquals("edited span size: " + actualEdited,
+            actualEdited.size(), 1);
+        assertSame("edited span", expectedEdited, actualEdited.get(0));
+
+        if (showEdits) {
+            System.out.println("Parents-----------------");
+            System.out.println(expectedParents);
+            System.out.println(actualParents);
+        }
+        search("parent", expectedParents, actualParents);
+
+        if (showEdits) {
+            System.out.println("Spans-----------------");
+            System.out.println(expectedSpans);
+            System.out.println(actualSpans);
+        }
+        search("spans", expectedSpans, actualSpans);
+
+
+        if (showEdits) {
+            System.out.println("Removes-----------------");
+            System.out.println(expectedRemoves);
+            System.out.println(actualRemoves);
+        }
+        search("remove", expectedRemoves, actualRemoves);
+
+
+    }
+
+    private void search(String name, List<SpanNode<?>> expect,
+            List<SpanNode<?>> actual){
+        if (showEdits) System.out.println("remove......");
+        for (SpanNode<?> got: actual){
+            assertTrue("unexpected " + name + ": "  + got, expect.contains(got));
+            expect.remove(got);
+            if (showEdits) System.out.println(got);
+        }
+        if (showEdits) System.out.println("ends......");
+        if (showEdits) System.out.println(expect);
+        assertTrue(name + " not called: " + expect, expect.isEmpty());
     }
 }

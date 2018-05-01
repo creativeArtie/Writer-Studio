@@ -14,15 +14,11 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  */
 interface SectionParser extends SetupParser {
 
-    static final String[] HEAD_STARTERS = SetupParser.combine(
-        getLevelTokens(LinedParseLevel.HEADING),
-        getLevelTokens(LinedParseLevel.OUTLINE));
-
     static void parseContent(ArrayList<Span> children,
             SetupPointer pointer){
         checkNotNull(children, "children");
         checkNotNull(pointer, "pointer");
-        while (! pointer.hasNext(HEAD_STARTERS) && pointer.hasNext()){
+        while (! pointer.hasNext(LEVEL_HEADINGS) && pointer.hasNext()){
             /// pointer next is not heading/outline and has text
             if (! NoteCardParser.PARSER.parse(children, pointer)){
                 /// Not a note

@@ -6,6 +6,8 @@ import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.writerstudio.main.Checker.*;
 
+import com.google.common.collect.*;
+
 /**
  * Parser for {@link LinedSpanLevel} and it's subclasse {@link LinedSpanLevelSection}.
  */
@@ -23,7 +25,7 @@ enum LinedParseLevel implements SetupParser {
         checkNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
         boolean isFirst = true;
-        for(String token: getLevelTokens(this)){
+        for(String token: Lists.reverse(LEVEL_STARTERS.get(this))){
             if (pointer.startsWith(children, token)){
                 return ordinal() <= OUTLINE.ordinal()?
                     parseSec(children, pointer):

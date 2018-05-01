@@ -66,6 +66,6 @@ public final class EditionSpan extends SpanBranch{
     }
     @Override
     public String toString(){
-        return getEdition() + "(" + getDetailSpan().toString() + ")";
+        return "ed(" + getEdition() + "{" + spanAtLast(ContentSpan.class) + "})";
     }
 }

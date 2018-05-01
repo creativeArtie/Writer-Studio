@@ -58,13 +58,30 @@ public final class FormatSpanContent extends FormatSpan implements BasicText{
         return getLocalCache(cacheSpaceEnd, () -> BasicText.super
             .isSpaceEnd());
     }
+
     @Override
     protected SetupParser getParser(String text){
         return null;
     }
 
     @Override
+    protected String toChildName(){
+        return "format";
+    }
+
+    @Override
     protected String toChildString(){
-        return SpanLeaf.escapeText(getRaw());
+        String ans = "";
+        for(Span span: this){
+            if (! ans.isEmpty()) {
+                ans += ", ";
+            }
+            if (span instanceof SpanLeaf){
+                ans += SpanLeaf.escapeText(span.getRaw());
+            } else {
+                ans += span.toString();
+            }
+        }
+        return ans;
     }
 }

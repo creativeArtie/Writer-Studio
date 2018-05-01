@@ -35,6 +35,6 @@ public abstract class InfoDataSpan extends SpanBranch{
 
     @Override
     public String toString(){
-        return "{" + getData() + "}";
+        return "Data%%" + getDataType() + " " + getData() + "%%";
     }
 }

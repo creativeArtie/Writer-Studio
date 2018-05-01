@@ -1,28 +1,22 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // List
+import java.util.*; // List;
 
-import com.google.common.collect.*;  // ImmutableList
+import com.google.common.collect.*;  // ImmutableList;
 
-import com.creativeartie.writerstudio.lang.*; // SetupParser, StyleInfoLeaf
+import com.creativeartie.writerstudio.lang.*; // SetupParser, StyleInfoLeaf;
 
 import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * All strings used in this package. Each field (private and public) has its own
- * prefix. See source code for how the strings are grouped.
- */
+/** All constants used in this package. */
 public final class AuxiliaryData{
-    /// ========================================================================
-    /// @Part-1: Token Constants------------------------------------------------
+    /// %Part 1: Token Constants ###############################################
+    /// %Part 1.1: Lines =======================================================
+    /// %Part 1.1.1: Lines with levels -----------------------------------------
+    /// public static constants = LEVEL_MAX, LEVEL_STARTERS, LEVEL_HEADINGS
 
-    /// @Part-1.1: Lines with Levels -------------------------------------------
-    /// For LinedParseLevel
-
-    /**
-     * Maximum number of levels. Use for
-     * {@link getLevelToken(LinedParseLevel, int)}
-     */
+    /** Maximum number of levels:       {@value} */
     public static final int LEVEL_MAX = 6;
 
     /// Leveled Line begin part token for numbered and bullet
@@ -33,33 +27,51 @@ public final class AuxiliaryData{
     private static final String LEVEL_OUTLINE  = "#";
     private static final String LEVEL_BULLET   = "-";
 
-    /** Create a list of tokens for different level of a
-     * {@link LinedParseLevel}.
+    /** Headings and levels.
+     *
+     * <b> Be aware that the {@linkplain String#startsWith(String)} might return
+     * true for several token starters. </b>
      */
-    public static String[] getLevelTokens(LinedParseLevel parser){
-        String[] levels = new String[LEVEL_MAX];
-        for (int i = 0; i < LEVEL_MAX; i++){
-            levels[i] = getLevelToken(parser, LEVEL_MAX - i);
+    public static final Map<LinedParseLevel, List<String>> LEVEL_STARTERS =
+        getLinedLevels();
+
+    /** Heading and outlines only.
+     *
+     * See the warning in {@link LEVEL_STARTERS}
+     */
+    public static final List<String> LEVEL_HEADINGS = getLinedHeads();
+
+    /** Fills the map of {@link LEVEL_STARTERS}.
+     *
+     * @return answer
+     * @see #LEVEL_STARTERS
+     */
+    private static final Map<LinedParseLevel, List<String>> getLinedLevels(){
+        ImmutableMap.Builder<LinedParseLevel, List<String>> ans = ImmutableMap
+            .builder();
+        for (LinedParseLevel parser: LinedParseLevel.values()){
+            ImmutableList.Builder<String> set = ImmutableList.builder();
+            for (int i = 0; i < LEVEL_MAX; i++){
+                set.add(getLevelToken(parser, i + 1));
+            }
+            ans.put(parser, set.build());
         }
-        return levels;
+        return ans.build();
     }
 
     /** Creates a Leveled Line begin token.
      *
-     * <b> Be aware that the {@linkplain String#startsWith(String)} will return
-     * true for several {@link LinedParseLevel#HEADING}'s or
-     * {@link LinedParseLevel#OUTLINE}'s tokens
-     *
      * @param parser
-     *      use to specific which token. This should be all of them.
+     *      for parser
      * @param level
-     *      a number between 1 and {@link LEVEL_MAX}
-     * @return
-     *      the starter token created
+     *      line level
+     * @return answer
+     * @see #getLinedLevels()
+     * @see #getLineHeads()
      */
-    public static String getLevelToken(LinedParseLevel parser, int level){
-        checkNotNull(parser, "parser");
-        checkRange(level, "level", 0, false, LEVEL_MAX, true);
+    private static String getLevelToken(LinedParseLevel parser, int level){
+        assert parser != null: "Null parser";
+        assert level > 0 && level <= LEVEL_MAX: "Level not in range";
         switch (parser){
         case HEADING:
             /// =, ==, ===, ...
@@ -78,7 +90,15 @@ public final class AuxiliaryData{
                 parser);
         }
     }
-    /// getLevelToken helper
+
+    /** repeats a character for {@code level} times
+     *
+     * @param repeat
+     *      characters to repeat
+     * @param level
+     *      number of repeats
+     * @see #getLevelToken(LinedParseLevel, int)
+     */
     private static String repeat(String repeat, int level){
         assert repeat != null: "Null repeat";
         StringBuilder builder = new StringBuilder();
@@ -88,88 +108,121 @@ public final class AuxiliaryData{
         return builder.toString();
     }
 
-    public static List<String> getLinedTokens(){
-        ImmutableList.Builder<String> list = ImmutableList.builder();
-        for (LinedParseLevel parser: LinedParseLevel.values()){
-            for (String token: getLevelTokens(parser)){
-                list.add(token);
-            }
-        }
-        list.add(LINED_AGENDA);
-        list.add(LINED_NOTE);
-        list.add(LINED_CITE);
-        list.add(LINED_LINK);
-        list.add(LINED_FOOTNOTE);
-        list.add(LINED_ENDNOTE);
-        list.add(LINED_QUOTE);
-        list.add(LINED_BREAK);
-        return list.build();
+    /** Fills the list of {@link LEVEL_HEADS}.
+     *
+     * @return answer
+     * @see #LEVEL_HEADS.
+     */
+    private static final List<String> getLinedHeads(){
+        ImmutableList.Builder<String> builder = ImmutableList.builder();
+        return builder
+            .addAll(LEVEL_STARTERS.get(LinedParseLevel.HEADING))
+            .addAll(LEVEL_STARTERS.get(LinedParseLevel.OUTLINE))
+            .build();
     }
 
-    /// @Part-1-2: Other Lined Details -----------------------------------------
-    /// For BasicTextParse, LinedParseCite, LinedParseLevel, LinedParsePointer,
-    ///     LinedParseRest, getLevelToken(LinedParseLevel, int)
+    /// %Part 1.1.2: Other Lined Details ---------------------------------------
+    /// public static constants: CHAR_NEWLINE, LINED_*
 
+    /** new line character:                 {@value}. */
     public static final char CHAR_NEWLINE = '\n';
-    public static final String LINED_END = CHAR_NEWLINE + "";
-
+    /** new line token:                     {@value}. */
+    public static final String LINED_END  = CHAR_NEWLINE + "";
+    /** separator between field and data:   {@value}.*/
     public static final String LINED_DATA = ":";
 
     /// "Special" Line begin token  part 1
     private static final String LINED_BEGIN = "!";
     /// "Special" Line begin tokens part 2
+    /** Agenda line starter:                    {@value}*/
     public static final String LINED_AGENDA   = LINED_BEGIN + "!"; /// aka: !!
+    /** Note (heading & content) line starter:  {@value}*/
     public static final String LINED_NOTE     = LINED_BEGIN + "%"; /// aka: !%
+    /** Citation line starter:                  {@value}*/
     public static final String LINED_CITE     = LINED_BEGIN + ">"; /// aka: !>
+    /** Link line starter:                      {@value}*/
     public static final String LINED_LINK     = LINED_BEGIN + "@"; /// aka: !@
+    /** Footnote line starter:                  {@value}*/
     public static final String LINED_FOOTNOTE = LINED_BEGIN + "^"; /// aka: !^
+    /** Endnote line starter:                   {@value}*/
     public static final String LINED_ENDNOTE  = LINED_BEGIN + "*"; /// aka: !*
+    /** Quote line starter:                     {@value}*/
+    public static final String LINED_QUOTE    = ">";
+    /** Line break token:                       {@value}*/
+    public static final String LINED_BREAK    = "***\n";
 
-    public static final String LINED_QUOTE = ">";
-    public static final String LINED_BREAK = "***\n";
+    /** List of Line starter.
+     *
+     * See the warning in {@link LEVEL_STARTERS}.
+     */
+    public static final List<String> LINED_STARTERS = getLinedTokens();
 
-    /// @Part-1-3: Directory ---------------------------------------------------
-    /// For DirectoryParser, LinedParseLevel, LinedParseRest, CURLY_CITE
+    /** Fills {@link LINED_STARTERS}.
+     *
+     * @return answer
+     */
+    private static List<String> getLinedTokens(){
+        ImmutableList.Builder<String> ans = ImmutableList.builder();
+        for (List<String> list: LEVEL_STARTERS.values()){
+            ans.addAll(list);
+        }
+        ans.add(LINED_AGENDA);
+        ans.add(LINED_NOTE);
+        ans.add(LINED_CITE);
+        ans.add(LINED_LINK);
+        ans.add(LINED_FOOTNOTE);
+        ans.add(LINED_ENDNOTE);
+        ans.add(LINED_QUOTE);
+        ans.add(LINED_BREAK);
+        return ans.build();
+    }
 
-    public static final String DIRECTORY_BEGIN    = "@"; /// Usual start
-    public static final String DIRECTORY_CATEGORY = "-"; /// Category middle
-    public static final String DIRECTORY_END      = ":"; /// Usual end
+    /// %Part 1.2: Directory ===================================================
 
-    /// @Part-1-4: Status ------------------------------------------------------
-    /// For EditionParser, LinedParseLevel
+    /** usual directory begin token:                {@value} */
+    public static final String DIRECTORY_BEGIN    = "@";
+    /** directory category separator token:         {@value} */
+    public static final String DIRECTORY_CATEGORY = "-";
+    /** usual directory end token  :                {@value} */
+    public static final String DIRECTORY_END      = ":";
 
-    /** Edition start token */
+    /// %Part 1.3: Status ======================================================
+
+    /** Edition start token:                   {@value} */
     public static final String EDITION_BEGIN = "#";
     /// (more constants are devise with {@link Edition#name()}
 
-    /// @Part-1-5: Hyperlinks --------------------------------------------------
-    /// For FormatParseLinkDirect, FormatParseLinkRef, listFormatEnderTokens()
+    /// %Part 1.4: Hyperlinks ==================================================
 
-    public static final String LINK_BEGIN =              "<";/// aka: <
+    /** Hyperlinks ref and direct starts:  {@value}*/
+    public static final String LINK_BEGIN = "<";/// aka: <
+    /** Hyperlinks ref starts:             {@value}*/
     public static final String LINK_REF   = LINK_BEGIN + "@";/// aka: <@
-
-    /** Path - text separator token*/
+    /** Path - text separator token:        {@value}*/
     public static final String LINK_TEXT  = "|";
+    /** Hyperlink end token:                {@value}*/
     public static final String LINK_END   = ">";
 
-    /// @Part-1-6: Curly Formats -----------------------------------------------
-    /// For FormatParseAgenda, FormatParsePointId, listFormatEnderTokens()
+    /// %Part 1.5: Curly Formats ==============================================-
 
     /// Curly format begins token  part 1
     private static final String CURLY_BEGIN   = "{";
     /// Curly format begins tokens part 2
+    /** Agenda    start token:                  {@value}.*/
     public static final String CURLY_AGENDA   = CURLY_BEGIN + "!"; /// aka: {!
+    /** Ref key   start token:                  {@value}.*/
     public static final String CURLY_KEY      = CURLY_BEGIN + "%"; /// aka: {%
+    /** Footnote  start token:                  {@value}.*/
     public static final String CURLY_FOOTNOTE = CURLY_BEGIN + "^"; /// aka: {^
+    /** Endnote   start token:                  {@value}.*/
     public static final String CURLY_ENDNOTE  = CURLY_BEGIN + "*"; /// aka: {*
+    /** Citation  start token:                  {@value}.*/
     public static final String CURLY_CITE     = CURLY_BEGIN + DIRECTORY_BEGIN;
-    ///                                                                aka: {@
 
-    /** Curly format end token. **/
+    /** Curly format end token.                 {@value} **/
     public static final String CURLY_END      = "}";
 
-    /// @Part-1-7: Format Modifiers --------------------------------------------
-    /// For FormattedParser, listFormatEnderTokens()
+    /// %Part 1.6: Format Modifiers ============================================
 
     /// list of possible formats
     private static final String FORMAT_ITALICS   = "*" ;
@@ -177,50 +230,47 @@ public final class AuxiliaryData{
     private static final String FORMAT_UNDERLINE = "_" ;
     private static final String FORMAT_CODED     = "`" ;
 
-    /** Number of format types*/
+    /** Number of format types:            {@value} */
     public static final int FORMAT_TYPES = FormatType.values().length;
 
-    /** Create the list of possible format of text.
-     * @return list of format with the correct parse order
-     */
-    public static final String[] listFormatTextTokens(){
-        /// FORMAT_BOLD must before FORMAT_ITALICS
-        return new String[]{
-            FORMAT_BOLD, FORMAT_ITALICS, FORMAT_UNDERLINE, FORMAT_CODED
-        };
-    }
+    /** List of Format keys in parse order*/
+    public static final List<String> FORMAT_KEYS = ImmutableList.of(
+        FORMAT_BOLD, FORMAT_ITALICS, FORMAT_UNDERLINE, FORMAT_CODED);
 
-    /// @Part-1-8: Escape Begin Token ------------------------------------------
-    /// For BasicParseText
+    /// %Part 1.7: Escape Begin Token ==========================================
 
-    /** Char escape token. */
-    public static char CHAR_ESCAPE = '\\';
+    /** Char escape character:          {@value}*/
+    public static char CHAR_ESCAPE    = '\\';
+    /** Char escape token:              {@value}*/
     public static String TOKEN_ESCAPE = CHAR_ESCAPE + "";
 
-    /// @Part-1-9: Format Part Separators --------------------------------------
+    /// %Part 1.9: Format Part Separators ======================================
     /// For FormattedParsers
 
     /** Create the list of how children spans of format can end.
      * @return the list of term, without {@linkplain FORMAT_BOLD}
      */
-    public static String[] listFormatEnderTokens(boolean note){
-        if (! note){
-            return new String[]{
-                CURLY_AGENDA, LINK_BEGIN, LINK_REF, CURLY_KEY,
-                FORMAT_ITALICS, FORMAT_UNDERLINE, FORMAT_CODED
-            };
+    public static String[] listFormatEnderTokens(boolean note,
+            String ... enders){
+        ImmutableList.Builder<String> builder = ImmutableList.builder();
+
+        builder.add(CURLY_AGENDA);
+        if (note){
+            builder.add(CURLY_FOOTNOTE, CURLY_ENDNOTE, CURLY_CITE);
         }
-        return new String[]{
-            CURLY_AGENDA, CURLY_FOOTNOTE, CURLY_ENDNOTE, CURLY_CITE, CURLY_KEY,
-            LINK_BEGIN, LINK_REF,
-            /* FORMAT_BOLD, */ FORMAT_ITALICS, FORMAT_UNDERLINE, FORMAT_CODED
-        };
+        ImmutableList<String> ans = builder.add(CURLY_KEY)
+            /// Skipping FORMAT_BOLD
+            .add(FORMAT_ITALICS, FORMAT_UNDERLINE, FORMAT_CODED)
+            .add(LINK_BEGIN, LINK_REF)
+            .add(enders).build();
+        return ans.toArray(new String[ans.size()]);
+
     }
 
     /// ========================================================================
-    /// @Part-2: Catalougue Categories -----------------------------------------
+    /// @Part-2: Catalougue Categories ========================================-
 
-    /// @Part-2-1: Document Cross-Refereneces ----------------------------------
+    /// @Part-2-1: Document Cross-Refereneces ==================================
     /// For DirectoryType
 
     public static final String TYPE_FOOTNOTE = "foot";
@@ -230,7 +280,7 @@ public final class AuxiliaryData{
     public static final String TYPE_COMMENT  = "comment";
 
 
-    /// @Part-2-1: Document automatic bookmarks --------------------------------
+    /// @Part-2-1: Document automatic bookmarks ================================
     /// For DirectoryType
     public static final List<String> TYPE_SECTION = ImmutableList.of("head");
 
@@ -241,9 +291,9 @@ public final class AuxiliaryData{
         TYPE_AGENDA);
 
     /// ========================================================================
-    /// @Part-3: Setup Parsers -------------------------------------------------
+    /// @Part-3: Setup Parsers ================================================-
 
-    /// Part-3-1: Content Span Parsers -----------------------------------------
+    /// Part-3-1: Content Span Parsers ========================================-
     static final SetupParser CONTENT_BASIC = new ContentParser(
         StyleInfoLeaf.TEXT);
     static final SetupParser CONTENT_AGENDA = new ContentParser(
@@ -259,7 +309,7 @@ public final class AuxiliaryData{
     static final SetupParser CONTENT_LINE_LINK = new ContentParser(
         StyleInfoLeaf.PATH, LINK_TEXT, LINK_END);
 
-    /// Part-3-2: Formatted Span Parsers ---------------------------------------
+    /// Part-3-2: Formatted Span Parsers ======================================-
     static final SetupParser FORMATTED_TEXT = new FormattedParser(
         StyleInfoLeaf.TEXT, true);
     static final SetupParser NOTE_TEXT = new FormattedParser(
@@ -307,6 +357,6 @@ public final class AuxiliaryData{
 
 
     /// ========================================================================
-    /// @Part-4: Private Constructor -------------------------------------------
+    /// @Part-4: Private Constructor ==========================================-
     private AuxiliaryData(){}
 }

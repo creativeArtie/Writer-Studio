@@ -81,10 +81,15 @@ public final class FormatSpanPointId extends FormatSpan implements Catalogued{
     }
 
     @Override
+    protected String toChildName(){
+        return "id";
+    }
+
+    @Override
     protected String toChildString(){
         Optional<CatalogueIdentity> id = getSpanIdentity();
         String data = id.isPresent()? SpanLeaf.escapeText(id.get().toString()):
             "null";
-        return getIdType().toString() + data;
+        return getIdType().toString() + " " + data;
     }
 }

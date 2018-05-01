@@ -18,7 +18,7 @@ final class FormattedParser implements SetupParser {
     public FormattedParser(StyleInfoLeaf style, boolean note, String ... enders){
         /// Combine the list of span enders and formatting enders
         checkNotNull(enders, "enders");
-        spanEnders = SetupParser.combine(listFormatEnderTokens(note), enders);
+        spanEnders = listFormatEnderTokens(note, enders);
         leafStyle = checkNotNull(style, "style");
         withNote = note;
     }
@@ -53,7 +53,7 @@ final class FormattedParser implements SetupParser {
             /// Keeps FomratContentParser parsing alone b/c of needs to edit
             /// format
             int i = 0;
-            for (String type : listFormatTextTokens()){
+            for (String type: FORMAT_KEYS){
                 if (pointer.startsWith(children, type)){
                     /// change format of bold/italics/underline/code
                     formats[i] = ! formats[i];

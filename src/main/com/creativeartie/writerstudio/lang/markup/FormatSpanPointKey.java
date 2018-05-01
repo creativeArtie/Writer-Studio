@@ -49,6 +49,11 @@ public final class FormatSpanPointKey extends FormatSpan{
     }
 
     @Override
+    protected String toChildName(){
+        return "ref-key";
+    }
+
+    @Override
     protected String toChildString(){
         return getField();
     }

@@ -36,4 +36,9 @@ public final class BasicTextEscape extends SpanBranch{
     protected SetupParser getParser(String text){
         return null;
     }
+
+    @Override
+    public String toString(){
+        return getEscape() == "\n"? "\\\n": getRaw();
+    }
 }

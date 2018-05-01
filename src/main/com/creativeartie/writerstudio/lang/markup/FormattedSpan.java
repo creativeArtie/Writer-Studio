@@ -111,7 +111,7 @@ public final class FormattedSpan extends SpanBranch {
             }
             output.append(span);
         }
-        return "{" + output.toString() + "}";
+        return "Format%%" + output.toString() + "%%";
     }
 
 }

@@ -68,6 +68,12 @@ public final class FormatSpanLinkDirect extends FormatSpanLink {
     public boolean isExternal(){
         return false;
     }
+
+    @Override
+    protected String toChildName(){
+        return "direct";
+    }
+
     @Override
     protected String toChildString(){
         return SpanLeaf.escapeText(getText()) + "->" +

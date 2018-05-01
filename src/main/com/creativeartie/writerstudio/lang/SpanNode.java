@@ -77,7 +77,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
      */
     final void updateSpan(List<T> spans){
         setChildren(spans);
-        clearSpanCache();
+        setEdited();
         getParent().updateParent();
     }
 
@@ -116,6 +116,11 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
             .forEach(s -> ((SpanBranch)s).setRemove());
     }
 
+    final void setEdited(){
+        clearSpanCache();
+        editedTarget = true;
+    }
+
     /** Clear span's cache.
      *
      * @see Document#reparseDocument(String)
@@ -126,8 +131,6 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
         spanMainCache.invalidateAll();
         spanOptionalCache.invalidateAll();
         spanListCache.invalidateAll();
-
-        editedTarget = true;
     }
 
     /** clear the document's cache
@@ -298,7 +301,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
      * @return answer
      */
     public final Optional<SpanLeaf> getLeaf(int pos){
-        argumentClose(pos, "pos", 0, getEnd());
+        indexClose(pos, "pos", 0, getEnd());
 
         /// Gets the last span leaf
         if (pos == getEnd()){

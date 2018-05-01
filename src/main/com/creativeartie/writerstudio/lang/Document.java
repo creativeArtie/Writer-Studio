@@ -207,7 +207,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     private void reparseDocument(String text){
         forEach(s -> s.setRemove());
         parseDocument(text);
-        clearSpanCache();
+        setEdited();
         updateDoc();
     }
 

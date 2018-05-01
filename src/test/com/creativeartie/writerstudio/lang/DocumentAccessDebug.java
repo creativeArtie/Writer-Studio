@@ -225,7 +225,7 @@ public class DocumentAccessDebug{
         assertTrue("Leaf not found.", found.isPresent());
         SpanLeaf leaf = found.get();
         Span span = findLeaf();
-        assertSame(span, leaf);
+        assertSame(span + " was not " + leaf, span, leaf);
     }
 
 }

@@ -87,7 +87,7 @@ public final class DirectorySpan extends SpanBranch {
             output.append(":");
         }
         output.append(SpanLeaf.escapeText(id.getName()));
-        return "ID(" + output.toString() + ")";
+        return "id ->" + output.toString() + "";
     }
 
     @Override

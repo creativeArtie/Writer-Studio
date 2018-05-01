@@ -62,4 +62,8 @@ public class WritingText extends Document{
         return count;
     }
 
+    public String toString(){
+        return "Document" + super.toString();
+    }
+
 }

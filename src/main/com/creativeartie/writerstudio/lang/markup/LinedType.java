@@ -57,8 +57,9 @@ public enum LinedType implements StyleInfo{
             }
             if (type.setupParser instanceof LinedParseLevel){
                 LinedParseLevel level = (LinedParseLevel)type.setupParser;
-                for (int i = LEVEL_MAX; i > 0; i--){
-                    if(raw.startsWith(getLevelToken(level, i))){
+                List<String> starters = LEVEL_STARTERS.get(level);
+                for (int i = LEVEL_MAX - 1; i >= 0; i--){
+                    if(raw.startsWith(starters.get(i))){
                         if (i == LEVEL_MAX + 1){
                             return LinedType.PARAGRAPH;
                         } else {

@@ -65,7 +65,7 @@ public final class SetupPointer{
      *      span's document
      */
     private SetupPointer(String raw, Document doc){
-        assert raw != null && raw.length() > 0: "Empty raw";
+        assert raw != null: "Null raw";
         assert doc != null: "Null doc";
 
         rawText = raw;
@@ -125,24 +125,21 @@ public final class SetupPointer{
         argumentNotNull(style, "style");
         argumentNotNull(compare, "compare");
         /// End of the document
-        if (matchMarker >= compare.length()){
+        if (matchMarker >= rawText.length()){
             return false;
         }
 
         /// Ignore spaces
-        if (matchMarker >= rawText.length()){
-            return false;
-        }
         int next = matchMarker;
         while(CharMatcher.whitespace().matches(rawText.charAt(next))){
             next++;
             if (next >= rawText.length()){
-                return false;
+                break;
             }
         }
 
         /// compare here
-        if (compare.startsWith(compare, next)){
+        if (rawText.startsWith(compare, next)){
             nextMarker = next + compare.length();
             return addChild(children, style);
         }
@@ -427,6 +424,16 @@ public final class SetupPointer{
      * @return answer
      */
     public boolean hasNext(String ... strings){
+        return hasNext(Arrays.asList(strings));
+    }
+
+    /** Checks if the next text matching in a list of strings.
+     *
+     * @param strings
+     *      strings to match
+     * @return answer
+     */
+    public boolean hasNext(List<String> strings){
         for (String string: strings){
             if (hasNext(string)){
                 return true;

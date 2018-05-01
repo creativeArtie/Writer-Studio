@@ -28,6 +28,7 @@ public abstract class FormatSpanLink extends FormatSpan {
 
     @Override
     public final String getOutput(){
-        return getText();
+        return "text: " + SpanLeaf.escapeText(getText()) + " link: " +
+            getPathSpan().map(s -> s.toString()).orElse("null");
     }
 }

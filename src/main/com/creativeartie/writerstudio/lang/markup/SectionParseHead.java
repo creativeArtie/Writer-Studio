@@ -18,7 +18,7 @@ enum SectionParseHead implements SectionParser {
     private final String starter;
 
     private SectionParseHead(){
-        starter = getLevelToken(LinedParseLevel.HEADING, ordinal() + 1);
+        starter = LEVEL_STARTERS.get(LinedParseLevel.HEADING).get(ordinal());
     }
 
     @Override
@@ -50,11 +50,11 @@ enum SectionParseHead implements SectionParser {
     public void headParsing(ArrayList<Span> children, SetupPointer pointer,
             boolean findHead){
         if (!findHead && isFirst()){
-            if (! pointer.hasNext(SectionParser.HEAD_STARTERS)){
+            if (! pointer.hasNext(LEVEL_HEADINGS)){
                 SectionParser.parseContent(children, pointer);
             }
         }
-        while (pointer.hasNext(getLevelTokens(LinedParseLevel.OUTLINE))){
+        while (pointer.hasNext(LEVEL_STARTERS.get(LinedParseLevel.OUTLINE))){
             SectionParseScene.SCENE_1.parse(children, pointer);
         }
         if (! isLast()){
