@@ -9,8 +9,7 @@ import com.google.common.collect.*; // Range
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * A list of {@link Span spans}. Mainly implements {@linkplain List}.
+/** A list of {@link Span spans} which mainly implements {@linkplain List}.
  *
  * Purpose
  * <ul>
