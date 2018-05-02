@@ -21,7 +21,7 @@ class FormatParsePointKey extends FormatParsePoint {
     }
 
     @Override
-    SpanBranch parseFinish(SetupPointer pointer, ArrayList<Span> children){
+    SpanBranch buildSpan(SetupPointer pointer, ArrayList<Span> children){
         return new FormatSpanPointKey(children, this);
     }
 }

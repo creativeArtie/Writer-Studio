@@ -23,8 +23,9 @@ abstract class FormatParsePoint implements SetupParser {
      * @see FormatParsePointKey#FormatParsePointKey(formats)
      */
     protected FormatParsePoint(String start, boolean[] formats){
+        indexEquals(formats.length, "format.length", FORMAT_TYPES);
         spanStart = argumentNotNull(start, "start");
-        formatList = indexEqual(formats.length, "format", FORMAT_TYPES);
+        formatList = formats;
     }
 
     /** Gets the list of formats.
@@ -73,6 +74,14 @@ abstract class FormatParsePoint implements SetupParser {
     abstract SpanBranch buildSpan(SetupPointer pointer,
         ArrayList<Span> children);
 
+    /** Check if the text can be parsed.
+     *
+     * @param text
+     *      new text
+     * @return answer
+     * @see FormatSpanPointId#getParser(String)
+     * @see FormatSpanPointKey#getParser(String)
+     */
     boolean canParse(String text){
         argumentNotNull(text, "text");
         return text.startsWith(spanStart) &&
