@@ -16,13 +16,12 @@ class FormatParsePointKey extends FormatParsePoint {
     }
 
     @Override
-    void parseContent(ArrayList<Span> children, SetupPointer pointer){
-        CONTENT_KEY.parse(children, pointer);
+    void parseContent(SetupPointer pointer, ArrayList<Span> children){
+        CONTENT_KEY.parse(pointer, children);
     }
 
     @Override
-    Optional<SpanBranch> parseFinish(ArrayList<Span> children,
-            SetupPointer pointer){
-        return Optional.of(new FormatSpanPointKey(children, this));
+    SpanBranch parseFinish(SetupPointer pointer, ArrayList<Span> children){
+        return new FormatSpanPointKey(children, this);
     }
 }

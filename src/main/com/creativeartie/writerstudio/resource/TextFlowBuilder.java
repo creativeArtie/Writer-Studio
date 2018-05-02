@@ -23,7 +23,7 @@ public final class TextFlowBuilder {
             LinedSpanLevelSection heading = span.get();
             loadFormatText(node, heading.getFormattedSpan());
             heading.getEditionSpan().flatMap(child ->
-                newText("(" + child.getEdition() + ")", "display-edition")
+                newText("(" + child.getEditionType() + ")", "display-edition")
             ).ifPresent(text -> node.getChildren().add(text));
 
         } else {

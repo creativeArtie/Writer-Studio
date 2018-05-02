@@ -133,7 +133,7 @@ public class IDTestDocument {
     public Document build(){
         return new Document(doc.toString(), new SetupParser[]{(pointer) -> {
             ArrayList<Span> children = new ArrayList<>();
-            TypeParser.PARSER.parse(children, pointer);
+            TypeParser.PARSER.parse(pointer, children);
             pointer.matches(children, CharMatcher.javaDigit());
             int size = Integer.parseInt(children.get(children.size() - 1)
                 .getRaw());

@@ -17,16 +17,14 @@ enum LinedParseCite implements SetupParser {
         if (pointer.startsWith(children, LINED_CITE)){
             Optional<SetupParser> used = Optional.empty();
             for (InfoFieldParser parser: InfoFieldParser.getParsers()){
-                if (parser.parse(children, pointer)){
+                if (parser.parse(pointer, children)){
                     used = parser.getDataParser();
                     break;
                 }
             }
             pointer.trimStartsWith(children, LINED_DATA);
 
-            if (! (used.isPresent() && used.get().parse(children,
-                pointer)))
-            {
+            if (! (used.isPresent() && used.get().parse(pointer, children))){
                 pointer.getTo(children, StyleInfoLeaf.TEXT, LINED_END);
             }
 

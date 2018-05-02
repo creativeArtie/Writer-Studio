@@ -1,6 +1,6 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*; // List
+import java.util.*;
 
 /** An interface to replace text of a {@link SpanBranch}. */
 public interface Command{

@@ -27,9 +27,35 @@ public final class ParameterChecker {
         if (! test) throw new IllegalStateException(message);
     }
 
+    @SafeVarargs /// Just one == test
+    public static <T extends Enum<T>> T argumentNotState(T test, String field,
+            T ... nots){
+        argumentNotNull(test, field);
+        for (T not : nots){
+            argumentCheck(test != not, field, " can not be " + not);
+        }
+        return test;
+    }
+
+    @SafeVarargs /// Just one == test
+    public static <T extends Enum<T>> T arugmentRequireState(T test,
+        String field, T ... requires){
+        argumentNotNull(test, field);
+        for (T require: requires){
+            if (require == test){
+                return test;
+            }
+        }
+        argumentCheck(false, field, " is not one accepted enums.");
+        return test;
+    }
+
     private static int indexCheck(int test, String field, Range<Integer> range){
-        if (! range.contains(test)) throw new IndexOutOfBoundsException(
-            createStart(field) + outOfRange(test, range));
+        if (! range.contains(test)) {
+            throw new IndexOutOfBoundsException(
+                createStart(field) + outOfRange(test, range)
+            );
+        }
         return test;
     }
 
@@ -39,6 +65,18 @@ public final class ParameterChecker {
             argumentCheck(test != null, field, message);
         }
         argumentCheck(expect.equals(test), field, message);
+        return test;
+    }
+
+    public static <T> T indexEquals(T test, String field, T expect){
+        String message = " does not equals " + expect;
+        if (expect == null){
+            argumentCheck(test != null, field, message);
+        }
+        if (test != expect){
+            throw new IndexOutOfBoundsException(createStart(field) +
+                "(" + test + ") is not " + expect + ".");
+        }
         return test;
     }
 

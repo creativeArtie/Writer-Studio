@@ -1,19 +1,23 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // Arrays, Optional
+import java.util.*;
 
-import com.creativeartie.writerstudio.lang.*; // (many)
+import com.creativeartie.writerstudio.lang.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * Parser for {@link FormatSpanLink} and parent class of
- * {@link FormatParseLinkDirect}, and {@link FormatParseLinkRef}.
- */
+/** Template for {@link FormatParseLinkDirect} and {@link FormatParseLinkRef}. */
 abstract class FormatParseLink implements SetupParser {
 
-    public static FormatParseLink[] getParsers(boolean[] formats){
+    /** Create a list {@linkplain FormatParseLink}.
+     *
+     * @param formats
+     *      style formats
+     * @return answer
+     * @see FormattedParser#parse(SetupPointer)
+     */
+    static FormatParseLink[] getParsers(boolean[] formats){
 
         boolean[] setup = Arrays.copyOf(formats, formats.length);
         return new FormatParseLink[]{
@@ -25,38 +29,72 @@ abstract class FormatParseLink implements SetupParser {
     private final String spanStart;
     private final boolean[] formatList;
 
-    FormatParseLink(String start, boolean[] formats){
-        spanStart = checkNotNull(start, "starts");
-        checkNotNull(formats, "formats");
-        checkEqual(formats.length, "formats.length", FORMAT_TYPES);
+
+    /** Creates a {@linkplain FormatParseLink}.
+     *
+     * @param start
+     *      start token
+     * @param formats
+     *      format lists
+     * @see #getParsers(boolean[])
+     * @see FormatParseLinkDirect#FormatParseLinkDirect(boolean[])
+     * @see FormatParseLinkRef#FormatParseLinkRef(boolean[])
+     */
+    protected FormatParseLink(String start, boolean[] formats){
+        spanStart = argumentNotNull(start, "starts");
+        argumentNotNull(formats, "formats");
+        indexEquals(formats.length, "formats.length", FORMAT_TYPES);
         formatList = formats;
     }
 
-    protected final boolean[] getFormats(){
+    /** Gets the list of formats.
+     *
+     * @return answer
+     * @see FromatSpanLinkDirect#FromatSpanLinkDirect(List, FormatParseLinkDirect)
+     * @see FromatSpanLinkRef#FromatSpanLinkRef(List, FormatParseLinkRef)
+     */
+    final boolean[] getFormats(){
         return formatList;
     }
 
     @Override
     public final Optional<SpanBranch> parse(SetupPointer pointer){
-        checkNotNull(pointer, "pointer");
+        argumentNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
         if(pointer.startsWith(children, spanStart)){
-            return parseFinish(children, pointer);
+            return parseSpan(pointer, children);
         }
         return Optional.empty();
     }
 
-    abstract Optional<SpanBranch> parseFinish(ArrayList<Span> spanChildren,
-        SetupPointer childPointer);
+    /** Parse a span when it is known.
+     *
+     * @param pointer
+     *      setup pointer
+     * @param children
+     *      span children
+     * @see #parse(SetupPointer)
+     */
+    abstract Optional<SpanBranch> parseSpan(SetupPointer pointer,
+        ArrayList<Span> children);
 
-    protected final void parseRest(ArrayList<Span> children,
-            SetupPointer pointer){
-        checkNotNull(children, "children");
-        checkNotNull(pointer, "pointer");
+    /** Parse the rest, excluding URL path or reference id.
+     *
+     * @param pointer
+     *      setup pointer
+     * @param children
+     *      span children
+     * @see FormatParseLinkDirect#parseSpan(SetupPointer, ArrayList)
+     * @see FormatParseLinkRef#parseSpan(SetupPointer, ArrayList)
+     */
+    protected final void parseRest(SetupPointer pointer,
+            ArrayList<Span> children){
+        argumentNotNull(pointer, "pointer");
+        argumentNotNull(children, "children");
         /// Create display text if any
         if (pointer.startsWith(children, LINK_TEXT)){
             /// Add the text itself
-            CONTENT_LINK.parse(children, pointer);
+            CONTENT_LINK.parse(pointer, children);
         }
 
         /// Add the ">"

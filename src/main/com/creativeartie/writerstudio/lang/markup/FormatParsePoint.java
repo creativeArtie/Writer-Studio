@@ -1,54 +1,80 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // ArrayList, Optional
+import java.util.*;
 
-import com.creativeartie.writerstudio.lang.*; // Span, SpanBranch
+import com.creativeartie.writerstudio.lang.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import com.creativeartie.writerstudio.main.Checker;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * Parser for {@link FormatSpanPointId}.
- */
+/** Template for {@link FormatParsePointId} and {@link FormatParsePointKey}. */
 abstract class FormatParsePoint implements SetupParser {
 
     private final String spanStart;
     private final boolean[] formatList;
 
+    /** Creates a {@linkplain FormatParsePoint}.
+     *
+     * @param start
+     *      start token
+     * @param formats
+     *      format lists
+     * @see FormatParsePointId#FormatParsePointId(DirectoryType, start, formats)
+     * @see FormatParsePointKey#FormatParsePointKey(formats)
+     */
     protected FormatParsePoint(String start, boolean[] formats){
-        Checker.checkNotNull(start, "start");
-        Checker.checkEqual(formats.length, "format", FORMAT_TYPES);
-        spanStart = start;
-        formatList = formats;
+        spanStart = argumentNotNull(start, "start");
+        formatList = indexEqual(formats.length, "format", FORMAT_TYPES);
     }
 
+    /** Gets the list of formats.
+     *
+     * @return answer
+     * @see FormatSpanPointId#FormatSpanPointId(List, FormatParsePointId)
+     * @see FormatSpanPointKey#FormatSpanPointKey(List, FormatParsePointKey)
+     */
     boolean[] getFormats(){
         return formatList;
     }
 
     @Override
     public Optional<SpanBranch> parse(SetupPointer pointer){
-        Checker.checkNotNull(pointer, "pointer");
+        argumentNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
         if(pointer.startsWith(children, spanStart)){
-            /// CatalogueIdentity for the other Parsers
-            parseContent(children, pointer);
 
-            /// Complete the last steps
+            parseContent(pointer, children);
+
+
             pointer.startsWith(children, CURLY_END);
 
-            return parseFinish(children, pointer);
+            return Optional.of(buildSpan(pointer, children));
         }
         return Optional.empty();
     }
 
-    abstract void parseContent(ArrayList<Span> children, SetupPointer pointer);
+    /** Parse the span content.
+     *
+     * @param pointer
+     *      setup pointer
+     * @param children
+     *      span children
+     * @see #parse(SetupPointer)
+     */
+    abstract void parseContent(SetupPointer pointer, ArrayList<Span> children);
 
-    abstract Optional<SpanBranch> parseFinish(ArrayList<Span> children,
-        SetupPointer pointer);
+    /** Creates the Span after the parsing complete.
+     *
+     * @param children
+     *    span children
+     * @return answer
+     * @see #parse(SetupPointer)
+     */
+    abstract SpanBranch buildSpan(SetupPointer pointer,
+        ArrayList<Span> children);
 
     boolean canParse(String text){
-        Checker.checkNotNull(text, "text");
+        argumentNotNull(text, "text");
         return text.startsWith(spanStart) &&
             AuxiliaryChecker.willEndWith(text, CURLY_END);
     }

@@ -1,6 +1,6 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import com.creativeartie.writerstudio.lang.*; //StyleInfo
+import com.creativeartie.writerstudio.lang.*;
 
 /** {@link StyleInfo} that is part of no group. */
 public enum AuxiliaryType implements StyleInfo{

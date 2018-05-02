@@ -1,8 +1,8 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*; // ArrayList, Comparator, HashSet, Map, Optional, SortedMap, TreeMap, TreeSet;
+import java.util.*;
 
-import com.google.common.collect.*; // ImmutableList, ImmutableSortedMap, ForwardingSortedMap;
+import com.google.common.collect.*;
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 

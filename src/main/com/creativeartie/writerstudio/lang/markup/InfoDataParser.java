@@ -17,7 +17,7 @@ enum InfoDataParser implements SetupParser{
     FORMATTED(pointer -> {
         assert pointer != null: "Null pointer";
         ArrayList<Span> children = new ArrayList<>();
-        if (FORMATTED_DATA.parse(children, pointer))
+        if (FORMATTED_DATA.parse(pointer, children))
         {
             return Optional.of(new InfoDataSpanFormatted(children));
         }
@@ -25,14 +25,14 @@ enum InfoDataParser implements SetupParser{
     }), TEXT(pointer -> {
         assert pointer != null: "Null pointer";
         ArrayList<Span> children = new ArrayList<>();
-        if (CONTENT_DATA.parse(children, pointer)){
+        if (CONTENT_DATA.parse(pointer, children)){
             return Optional.of(new InfoDataSpanText(children));
         }
         return Optional.empty();
     }), NOTE_REF(pointer -> {
         assert pointer != null: "Null pointer";
         ArrayList<Span> children = new ArrayList<>();
-        if (DirectoryParser.REF_NOTE.parse(children, pointer)){
+        if (DirectoryParser.REF_NOTE.parse(pointer, children)){
             return Optional.of(new InfoDataSpanRef(children));
         }
         return Optional.empty();

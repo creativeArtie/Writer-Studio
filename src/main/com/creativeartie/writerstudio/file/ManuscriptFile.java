@@ -1,16 +1,16 @@
 package com.creativeartie.writerstudio.file;
 
-import com.creativeartie.writerstudio.lang.markup.*; // WritingData, WritingText;
+import com.creativeartie.writerstudio.lang.markup.*;
 
-import java.io.*; // File, IOException, InputStreamReader;
-import java.util.*; // Enumeration, Optional, Arrays;
+import java.io.*;
+import java.util.*;
 import java.util.Optional;
-import java.util.zip.*; // ZipEntry, ZipFile, ZipOutputStream;
+import java.util.zip.*;
 
-import com.google.common.base.*;// MoreObjects, Charsets;
-import com.google.common.io.*; // CharStream, Files;
+import com.google.common.base.*;
+import com.google.common.io.*;
 
-import com.creativeartie.writerstudio.resource.*; // MetaData;
+import com.creativeartie.writerstudio.resource.*;
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 

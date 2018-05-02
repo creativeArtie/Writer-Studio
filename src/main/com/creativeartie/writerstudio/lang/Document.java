@@ -1,11 +1,11 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*; // ArrayList, List, Optional;
-import java.util.concurrent.*; // Callable, ExecutionException;
-import java.util.function.*; // Function;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.*;
 
-import com.google.common.cache.*; // Cache, CacheBuilder, LoadingCache;
-import com.google.common.collect.*; // ImmmuableList, Range;
+import com.google.common.cache.*;
+import com.google.common.collect.*;
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 

@@ -1,57 +1,48 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // Arrays
-
-import com.creativeartie.writerstudio.lang.*; // StyleInfo
+import com.creativeartie.writerstudio.lang.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
-/**
- * Styles for the {@link CatalogueMap} created by user provided
- * {@link CatalogueIdentity}.
+/** Categories of catalogue directories.
+ *
+ * The value order is required through:
+ * <ul>
+ * <li>{@link DirectoryParser#getRefParser(DirectoryType}</li>
+ * <li> {@link DirectoryParser#getIDParser(DirectoryType}</li>
+ * </ul>
  */
 public enum DirectoryType implements StyleInfo{
-    /// Enum value order mandated by LinedParsePointer, DirectoryType and in
-    /// interface
+    /** Category for id less note cards. */
+    COMMENT(TYPE_NOTE),
+    /** Category for ided note cards. */
+    NOTE(TYPE_RESEARCH),
+    /** Category for footnotes. */
+    FOOTNOTE(TYPE_FOOTNOTE),
+    /** Category for endnotes. */
+    ENDNOTE(TYPE_ENDNOTE),
+    /** Category for hyperlinks and bookmarks. */
+    LINK(TYPE_LINK);
 
-    /** {@linkplain StyleInfo} for {@link BasicTextEscape}. */
-    COMMENT(TYPE_NOTE, "", ""),
-    NOTE(TYPE_RESEARCH, CURLY_CITE),
-    FOOTNOTE(TYPE_FOOTNOTE, CURLY_FOOTNOTE),
-    ENDNOTE(TYPE_ENDNOTE, CURLY_ENDNOTE),
-    LINK(TYPE_LINK, LINK_REF, LINK_END);
-
-    /** Create the list of user notes.*/
-    public static DirectoryType[] getMenuList(){
-        return Arrays.copyOfRange(values(), 1, values().length);
-    }
-
-    /** Start reference key span's string. */
-    private final String startString;
-    /** End reference key span's string */
-    private final String endString;
     /** The first and upper most category. */
     private final String baseCategory;
 
-    private DirectoryType(String category, String start){
-        this (category, start, CURLY_END);
-    }
-
-    private DirectoryType(String category, String start, String end){
+    /** Creates a {@link DirectoryType}
+     *
+     * @param category
+     *      base category text
+     */
+    private DirectoryType(String category){
+        assert category != null;
         baseCategory = category;
-        startString = start;
-        endString = end;
     }
 
-    public String getStart(){
-        return startString;
-    }
-
-    public String getEnd(){
-        return endString;
-    }
-
-    public String getCategory(){
+    /** Gets the base category.
+     *
+     * @return answer
+     * @see DirectorySpan#buildId();
+     */
+    String getCategory(){
         return baseCategory;
     }
 }

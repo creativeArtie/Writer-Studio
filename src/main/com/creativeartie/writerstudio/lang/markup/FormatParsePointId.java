@@ -39,14 +39,13 @@ final class FormatParsePointId extends FormatParsePoint {
     }
 
     @Override
-    void parseContent(ArrayList<Span> children, SetupPointer pointer){
-        idParser.parse(children, pointer);
+    void parseContent(SetupPointer pointer, ArrayList<Span> children){
+        idParser.parse(pointer, children);
     }
 
     @Override
-    Optional<SpanBranch> parseFinish(ArrayList<Span> children,
-            SetupPointer pointer){
-        return Optional.of(new FormatSpanPointId(children, this));
+    SpanBranch parseFinish(SetupPointer pointer, ArrayList<Span> children){
+        return new FormatSpanPointId(children, this);
     }
 
 }

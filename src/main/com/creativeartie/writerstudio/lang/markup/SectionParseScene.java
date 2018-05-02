@@ -27,7 +27,7 @@ enum SectionParseScene implements SectionParser {
         if (! isLast()){
             SectionParseScene child = values()[ordinal() + 1];
             while (pointer.hasNext(child.starter)){
-                child.parse(children, pointer);
+                child.parse(pointer, children);
             }
         }
     }

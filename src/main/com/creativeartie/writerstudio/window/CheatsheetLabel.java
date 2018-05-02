@@ -63,7 +63,7 @@ class CheatsheetLabel extends Label{
     static CheatsheetLabel getLabel(EditionType type){
         return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
             (doc, point) -> doc.locateSpan(point, EditionSpan.class)
-                .map(span -> span.getEdition() == type)
+                .map(span -> span.getEditionType() == type)
                 .orElse(false),
             (doc, point) -> doc.locateSpan(point, EditionSpan.class)
                 .isPresent()

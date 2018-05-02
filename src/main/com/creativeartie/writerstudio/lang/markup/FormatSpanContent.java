@@ -34,12 +34,12 @@ public final class FormatSpanContent extends FormatSpan implements BasicText{
 
     @Override
     public String getOutput(){
-        return getText();
+        return getRendered();
     }
 
     @Override
-    public String getText(){
-        return getLocalCache(cacheText, () -> BasicText.super.getText());
+    public String getRendered(){
+        return getLocalCache(cacheText, () -> BasicText.super.getRendered());
     }
 
     @Override

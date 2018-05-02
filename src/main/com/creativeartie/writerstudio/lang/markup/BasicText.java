@@ -1,30 +1,38 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // List
+import java.util.*;
 
-import com.google.common.base.*; // CharMatcher
+import com.google.common.base.*;
 
-import com.creativeartie.writerstudio.lang.*; // Span, SpanLeaf
+import com.creativeartie.writerstudio.lang.*;
 
-/**
- * Text with {@link AuxiliaryData#TOKEN_ESCAPE escape character}.
- * Parent class of {@link ContentSpan} and {@link FormatSpanContent}.
- * Represented in ebnf.txt as {@code Raw}.
+/** Text with {@link BasicTextEscape escape characters}.
  *
  * Dec 27,2017: it was decided that subclassing of this class will <b>not</b>
  * do any local reparsing, because it is deem to be too much work.
  */
 interface BasicText{
 
-    /**
-     * Get a list of children {@link Span}. Implemented by
-     * {@link SpanNode#delegate()}. If classes can have multiple inheritance,
-     * this method would not have been existed.
+    /** Get a list of children {@link Span} and implemented by
+     * {@link SpanNode#delegate()}.
+     *
+     * If classes can have multiple inheritance, this method would not have been
+     * existed.
+     *
+     * @return answer
+     * @see #getRendered
      */
     public List<Span> delegate();
 
-    /** Get the text with space collapsed, and escape character removed.*/
-    public default String getText(){
+    /** Get the text with space collapsed, and escape character removed.
+     *
+     * Therefore "{@code   12\\3  ad  }" ->  "{@code 123  ad}".
+     *
+     * @return answer
+     * @see #getTrimmed() but also trimed
+     * @see #getRaw() all text verison
+     */
+    public default String getRendered(){
         StringBuilder builder = new StringBuilder();
         delegate().forEach((child) -> {
             if (child instanceof BasicTextEscape){
@@ -39,23 +47,35 @@ interface BasicText{
         return CharMatcher.whitespace().collapseFrom(builder, ' ');
     }
 
-    /** Get text from {@link #getText}, but trimmed. */
+    /** Get text from {@link #getText}, but also trimmed.
+     *
+     * Therefore "{@code   12\\3  ad  }" ->  "{@code 123 ad}".
+     *
+     * @return answer
+     * @see #getText() also collapse space version
+     * @see #getRaw() all text verison
+     */
     public default String getTrimmed(){
-        return CharMatcher.whitespace().trimFrom(getText());
+        return CharMatcher.whitespace().trimFrom(getRendered());
     }
 
-    /** Check if the text starts with a whitespace. */
+    /** Check if the text starts with a whitespace.
+     * @return answer
+     */
     public default boolean isSpaceBegin(){
-        String output = getText();
+        String output = getRendered();
         if (output.isEmpty()){
             return false;
         }
         return CharMatcher.whitespace().matches(output.charAt(0));
     }
 
-    /** Check if the text ends with a whitespace. */
+    /** Check if the text ends with a whitespace.
+     *
+     * @return answer
+     */
     public default boolean isSpaceEnd(){
-        String output = getText();
+        String output = getRendered();
         if (output.isEmpty()){
             return false;
         }

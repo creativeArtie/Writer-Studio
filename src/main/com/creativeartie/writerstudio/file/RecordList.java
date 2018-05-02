@@ -1,11 +1,11 @@
 package com.creativeartie.writerstudio.file;
 
-import java.util.*; // ArrayList Iterator, List, Scanner;
-import java.time.*; // Duration, LocalDate, YearMonth;
+import java.util.*;
+import java.time.*;
 
-import com.google.common.collect.*; // AbstractIterator, ForwardingListm, ImmutableList;
+import com.google.common.collect.*;
 
-import com.creativeartie.writerstudio.lang.markup.*; // WritingText;
+import com.creativeartie.writerstudio.lang.markup.*;
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 

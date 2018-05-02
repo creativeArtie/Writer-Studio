@@ -213,7 +213,7 @@ class DivisionTextFormatted extends DivisionText{
         assert span != null: "null span";
         assert font != null: "null font";
 
-        String text = span.getText();
+        String text = span.getRendered();
         appendText(text, font);
     }
 
@@ -321,7 +321,7 @@ class DivisionTextFormatted extends DivisionText{
                     .filter(s -> s instanceof InfoDataSpanText)
                     .map(s -> ((InfoDataSpanText)s).getData())
                     /// s = ContentSpan
-                    .map(s -> s.getText()).orElse("")
+                    .map(s -> s.getRendered()).orElse("")
                 , font);
 
             }

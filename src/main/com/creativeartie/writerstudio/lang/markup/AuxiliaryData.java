@@ -1,10 +1,10 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // List, Map;
+import java.util.*;
 
-import com.google.common.collect.*;  // ImmutableList, ImmutableMap;
+import com.google.common.collect.*;
 
-import com.creativeartie.writerstudio.lang.*; // SetupParser, StyleInfoLeaf;
+import com.creativeartie.writerstudio.lang.*;
 
 /** All constants used in this package. */
 public final class AuxiliaryData{

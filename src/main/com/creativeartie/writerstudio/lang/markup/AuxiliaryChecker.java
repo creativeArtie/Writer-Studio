@@ -1,6 +1,6 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // Arrays, List;
+import java.util.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;

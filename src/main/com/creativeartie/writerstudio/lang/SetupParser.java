@@ -1,6 +1,6 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*; // List, Optional
+import java.util.*;
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
@@ -56,9 +56,9 @@ public interface SetupParser{
      * @param pointer
      *      text pointer
      */
-    public default boolean parse(List<Span> children, SetupPointer pointer){
-        argumentNotNull(children, "children");
+    public default boolean parse(SetupPointer pointer, List<Span> children){
         argumentNotNull(pointer, "pointer");
+        argumentNotNull(children, "children");
 
         Optional<SpanBranch> child = parse(pointer);
         child.ifPresent(c -> children.add(c));

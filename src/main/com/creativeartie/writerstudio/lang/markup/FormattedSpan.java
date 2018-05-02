@@ -61,7 +61,7 @@ public final class FormattedSpan extends SpanBranch {
             if (isNote && span instanceof FormatSpanAgenda){
                 text.append(" " + ((FormatSpanAgenda)span).getAgenda() + " ");
             } else if (isPublish && span instanceof FormatSpanContent){
-                text.append(((FormatSpanContent) span).getText());
+                text.append(((FormatSpanContent) span).getRendered());
             // } else if (span instanceof FormatSpanPointId){
             } else if (isPublish && span instanceof FormatSpanLink){
                 text.append(((FormatSpanLink)span).getText());

@@ -1,8 +1,8 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*; // ArrayList, List, Optional;
+import java.util.*;
 
-import com.google.common.collect.*; // ImmutableList;
+import com.google.common.collect.*;
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 

@@ -20,10 +20,10 @@ interface SectionParser extends SetupParser {
         checkNotNull(pointer, "pointer");
         while (! pointer.hasNext(LEVEL_HEADINGS) && pointer.hasNext()){
             /// pointer next is not heading/outline and has text
-            if (! NoteCardParser.PARSER.parse(children, pointer)){
+            if (! NoteCardParser.PARSER.parse(pointer, children)){
                 /// Not a note
                 for (SetupParser parser: SECTION_PARSERS){
-                    if (parser.parse(children, pointer)){
+                    if (parser.parse(pointer, children)){
                         /// is line of some sort
                         break;
                     }
@@ -62,7 +62,7 @@ interface SectionParser extends SetupParser {
             /// has an heading/outline
             if (! isLast() && ! pointer.hasNext(getNext().getStarter())){
                 /// parse heading/outline line
-                getHeadLineParser().parse(children, pointer);
+                getHeadLineParser().parse(pointer, children);
                 /// parse the content
                 parseContent(children, pointer);
             }

@@ -16,10 +16,10 @@ enum LinedParseRest implements SetupParser {
         if (pointer.startsWith(children, LINED_NOTE)){
             Optional<DirectorySpan> id = Optional.empty();
             if (pointer.trimStartsWith(children, DIRECTORY_BEGIN)){
-                DirectoryParser.ID_NOTE.parse(children, pointer);
+                DirectoryParser.ID_NOTE.parse(pointer, children);
                 pointer.startsWith(children, DIRECTORY_END);
             }
-            NOTE_TEXT.parse(children, pointer);
+            NOTE_TEXT.parse(pointer, children);
             pointer.startsWith(children, LINED_END);
             LinedSpanNote ans = new LinedSpanNote(children);
             return Optional.of(ans);
@@ -30,7 +30,7 @@ enum LinedParseRest implements SetupParser {
         assert pointer != null: "Null pointer.";
         ArrayList<Span> children = new ArrayList<>();
         if (pointer.startsWith(children, LINED_AGENDA)){
-            CONTENT_BASIC.parse(children, pointer);
+            CONTENT_BASIC.parse(pointer, children);
             pointer.startsWith(children, LINED_END);
             return Optional.of(new LinedSpanAgenda(children));
         }
@@ -40,7 +40,7 @@ enum LinedParseRest implements SetupParser {
         assert pointer != null: "Null pointer.";
         ArrayList<Span> children = new ArrayList<>();
         if (pointer.startsWith(children, LINED_QUOTE)){
-            FORMATTED_TEXT.parse(children, pointer);
+            FORMATTED_TEXT.parse(pointer, children);
             pointer.startsWith(children, LINED_END);
             return Optional.of(new LinedSpanQuote(children));
         }
@@ -58,7 +58,7 @@ enum LinedParseRest implements SetupParser {
         assert pointer != null: "Null pointer.";
         if (pointer.hasNext()){
             ArrayList<Span> children = new ArrayList<>();
-            FORMATTED_TEXT.parse(children, pointer);
+            FORMATTED_TEXT.parse(pointer, children);
             pointer.startsWith(children, LINED_END);
             return Optional.of(new LinedSpanParagraph(children));
         }

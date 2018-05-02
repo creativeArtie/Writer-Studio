@@ -59,7 +59,7 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
     public EditionType getEdition(){
         return getLocalCache(cacheEdition, () -> {
             Optional<EditionSpan> status = getEditionSpan();
-            return status.isPresent()? status.get().getEdition():
+            return status.isPresent()? status.get().getEditionType():
                 EditionType.NONE;
         });
     }

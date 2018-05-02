@@ -1,6 +1,6 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*; // List;
+import java.util.*;
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 

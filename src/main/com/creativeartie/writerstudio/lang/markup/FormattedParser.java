@@ -41,12 +41,12 @@ final class FormattedParser implements SetupParser {
 
             /// try to find text first
             if (new FormatParseContent(leafStyle, formats, spanEnders)
-                .parse(children, pointer)
+                .parse(pointer, children)
             ){
                 more = true;
             }
 
-            if (FormatParseAgenda.PARSER.parse(children, pointer)){
+            if (FormatParseAgenda.PARSER.parse(pointer, children)){
                 more = true;
             }
 
@@ -64,11 +64,11 @@ final class FormattedParser implements SetupParser {
                 i++;
             }
 
-            new FormatParsePointKey(formats).parse(children, pointer);
+            new FormatParsePointKey(formats).parse(pointer, children);
 
             if (! withNote){
                 for (SetupParser parser: FormatParseLink.getParsers(formats)){
-                    if (parser.parse(children, pointer)){
+                    if (parser.parse(pointer, children)){
                         more = true;
                     }
                 }
@@ -80,7 +80,7 @@ final class FormattedParser implements SetupParser {
                 FormatParsePointId.getParsers(formats),
                 FormatParseLink.getParsers(formats)
             )){
-                if(parser.parse(children, pointer)){
+                if(parser.parse(pointer, children)){
                     /// Striaght forwarding adding of found spans.
                     more = true;
                 }

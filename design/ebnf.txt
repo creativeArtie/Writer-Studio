@@ -74,28 +74,33 @@ InfoDataText      = Content, -\n;
 InfoDataFormatted = Format2, -\n;
 InfoDataRef       = Directory
 
-Format1 = {FormatAgenda | FormatDirectLink | FormatRefLink | "**" | "*" | "_" |
-          "`" | FormatContent}, (-\? | -\n);
+(* Implemented as Format* classes *)
+Format1 = {FormatAgenda | FormatDirectLink | FormatRefLink FormatReference |
+          "**" | "*" | "_" | "`" | FormatContent}, (-\? | -\n);
 Format2 = {FormatAgenda | FormatFootnote | FormatEndnote | FormatNote |
-          FormatDirectLink | FormatRefLink | "**" | "*" | "_" | "`" |
-          FormatContent}, (-\? | -\n);
-FormatRefLink    =  "<@", Content, (">" | -\n);
-FormatDirectLink =  "<", Content, (">" | -\n);
+          FormatReference | FormatDirectLink | FormatRefLink | "**" | "*" |
+          "_" | "`" | FormatContent}, (-\? | -\n);
 FormatNote       = "{@", Directory, ("}" | -\n );
 FormatEndnote    = "{^", [Directory], ("}" | -\n );
 FormatFootnote   = "{*", [Directory], ("}" | -\n );
-FormatData       = "{", [Contetnt], "}"
+FormatReference  = "{%", [Content], ( "%}" | -\n);
+FormatRefLink    =  "<@", [Directory], (">" | -\n);
+FormatDirectLink =  "<", [Content], (">" | -\n);
+FormatData       = "{", [Content], "}"
 FormatContent    = Basic
 FormatAgenda     = "{!", [ Content],  ("}" | -\n );
 
+(* Implemented as Content*, Directory* and Edition* classes *)
 Edition   = ("#STUB" | "#DRAFT" | "#FINAL" | "#"), [Content];
 Directory = Content, {"-", Content};
 Content   = Basic;
 
+(* Implemented as Basic* class *)
 Basic  = {Raw, Escape};
 Raw    = {-("\" | -\? | \n )};
 Escape = "\", ?any unicode character?;
 
+(* characters for this file only *)
 \n     = ? new line ?
 \t     = ? new tab ?
 \?     = ? next terminal string ?

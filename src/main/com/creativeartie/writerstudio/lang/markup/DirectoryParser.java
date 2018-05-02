@@ -1,39 +1,63 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // ArrayList, Optional
+import java.util.*;
 
-import com.creativeartie.writerstudio.lang.*; // (many)
+import com.creativeartie.writerstudio.lang.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * Parser for {@link DirectorySpan}.
+/** Implements {@code design/ebnf.txt Directory}.
+ *
+ * The value order is required through:
+ * <ul>
+ * <li>{@link #getRefParser(DirectoryType}</li>
+ * <li> {@link #getIDParser(DirectoryType}</li>
+ * </ul>
  */
 enum DirectoryParser implements SetupParser{
+    /** Pointer  for {@link FormatSpanPointId} or a {@link InfoDataSpanRef}. */
     REF_NOTE(    DirectoryType.NOTE,     CURLY_END),
+    /** Pointer for {@link FormatSpanPointId}. */
     REF_FOOTNOTE(DirectoryType.FOOTNOTE, CURLY_END),
+    /** Pointer for {@link FormatSpanPointId}. */
     REF_ENDNOTE( DirectoryType.ENDNOTE,  CURLY_END),
+    /** Pointer for {@link FormatSpanLinkRef}. */
     REF_LINK(    DirectoryType.LINK,     LINK_TEXT, LINK_END),
+    /** Pointer for {@link NoteCard}. */
     ID_NOTE(     DirectoryType.NOTE,     DIRECTORY_END),
+    /** Pointer for {@link LinedSpanNote footnote}. */
     ID_FOOTNOTE( DirectoryType.FOOTNOTE, DIRECTORY_END),
+    /** Pointer for {@link LinedSpanNote endnote}.  */
     ID_ENDNOTE(  DirectoryType.ENDNOTE,  LINED_DATA),
+    /** Pointer for {@link LinedSpanPointLink}. */
     ID_LINK(     DirectoryType.LINK,     LINED_DATA),
+    /** Pointer for {@link LinedSpanLevelSection}. */
     ID_BOOKMARK( DirectoryType.LINK,     DIRECTORY_END, EDITION_BEGIN);
 
     private static final int ID_SHIFT = 3;
 
-    public static DirectoryParser getRefParser(DirectoryType type){
-        if (type == DirectoryType.COMMENT){
-            throw new IllegalArgumentException("No parser for Comments.");
-        }
+    /** Gets a reference {@link DirectoryParser}.
+     *
+     * @param type
+     *      reference type
+     * @return answer
+     * @see FormatParsePointId#FormatParsePointId(DirectoryType, String, boolean[])
+     */
+    static DirectoryParser getRefParser(DirectoryType type){
+        argumentNotState(type, "type", DirectoryType.COMMENT);
         return values()[type.ordinal() - 1];
     }
 
-    public static DirectoryParser getIDParser(DirectoryType type){
-        if (type == DirectoryType.COMMENT){
-            throw new IllegalArgumentException("No parser for Comments.");
-        }
+    /** Gets a id {@link DirectoryParser}.
+     *
+     * @param type
+     *      id type
+     * @return answer
+     * @see LinedParsePointer#parseCommon(SetupPointer, List)
+     */
+    static DirectoryParser getIDParser(DirectoryType type){
+        argumentNotState(type, "type", DirectoryType.COMMENT);
         return values()[type.ordinal() + ID_SHIFT];
     }
 
@@ -45,29 +69,35 @@ enum DirectoryParser implements SetupParser{
     private final DirectoryType idType;
 
     private DirectoryParser(DirectoryType type, String ... enders){
-        checkNotNull(enders, "enders");
-        checkNotNull(type, "type");
+        argumentNotNull(type, "type");
+        argumentNotNull(enders, "enders");
 
         idType = type;
 
-        /// adding DIRECTORY_CATEGORY into spanEnders by copying into new array
+        /// two version required: for parsing and for reparsing
+        /// DIRECTORY_CATEGORY is needed for parsing and unwanted in the other
         String[] init = new String[enders.length + 1];
         System.arraycopy(enders, 0, init, 0, enders.length);
         init[enders.length] = DIRECTORY_CATEGORY;
 
-        reparseEnders = enders;
         idContent = new ContentParser(StyleInfoLeaf.ID, init);
+        reparseEnders = enders;
     }
 
-    /** Check if the text can be parse at Directory level. */
+    /** Check if the text can be parse at Directory level.
+     *
+     * @param text
+     *      new text
+     * @return answer
+     */
     boolean canParse(String text){
-        checkNotNull(text, "text");
+        argumentNotNull(text, "text");
         return AuxiliaryChecker.notCutoff(text, reparseEnders);
     }
 
     @Override
     public Optional<SpanBranch> parse(SetupPointer pointer){
-        checkNotNull(pointer, "pointer");
+        argumentNotNull(pointer, "pointer");
 
         /// Setup for DirectorySpan
         ArrayList<Span> children = new ArrayList<>();
@@ -75,7 +105,7 @@ enum DirectoryParser implements SetupParser{
         /// Extract category & id
         boolean more;
         do {
-            idContent.parse(children, pointer);
+            idContent.parse(pointer, children);
 
             /// last current is not an id but a category
             more = pointer.startsWith(children, DIRECTORY_CATEGORY);

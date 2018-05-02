@@ -113,7 +113,7 @@ public class BranchTest {
         public void test(SpanBranch span){
             DirectorySpan test = assertClass(span, DirectorySpan.class);
 
-            assertEquals(getError("purpose", test), purpose, test.getPurpose());
+            assertEquals(getError("purpose", test), purpose, test.getPurposeType());
             assertEquals(getError("id",      test), produces,   test.buildId());
         }
     }
@@ -146,7 +146,7 @@ public class BranchTest {
         public void test(SpanBranch span){
             EditionSpan test = assertClass(span, EditionSpan.class);
 
-            assertEquals(getError("edition", test), edition, test.getEdition());
+            assertEquals(getError("edition", test), edition, test.getEditionType());
             assertEquals(getError("detail", test),  text, test.getDetail());
         }
     }

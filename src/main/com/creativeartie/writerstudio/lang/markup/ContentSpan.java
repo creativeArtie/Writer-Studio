@@ -1,20 +1,16 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // List
+import java.util.*;
 import java.util.Optional;
 
-import com.google.common.collect.*; // ImmutableList
-import com.google.common.base.*; // CharMatcher, Spliter
+import com.google.common.collect.*;
+import com.google.common.base.*;
 
-import com.creativeartie.writerstudio.lang.*; // (many)
+import com.creativeartie.writerstudio.lang.*;
 
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-
-/**
- * Text implementing {@link BasicText} for non-formatted text. Represented in
- * design/ebnf.txt as {@code Content}.
- */
+/** Text that is not formatted */
 public final class ContentSpan extends SpanBranch implements BasicText{
 
     private final CacheKeyMain<String> cacheText;
@@ -23,8 +19,14 @@ public final class ContentSpan extends SpanBranch implements BasicText{
     private final CacheKeyMain<Boolean> cacheSpaceEnd;
     private final CacheKeyMain<Integer> wordCount;
 
-    ContentSpan (List<Span> spanChildren){
-        super(spanChildren);
+    /** Creates a {@linkplain ContentSpan}.
+     *
+     * @param children
+     *      span children
+     * @see ContentParser#buildSpan(List)
+     */
+    ContentSpan (List<Span> children){
+        super(children);
         cacheText = CacheKeyMain.stringKey();
         cacheTrimmed = CacheKeyMain.stringKey();
         cacheSpaceBegin = CacheKeyMain.booleanKey();
@@ -33,8 +35,8 @@ public final class ContentSpan extends SpanBranch implements BasicText{
     }
 
     @Override
-    public String getText(){
-        return getLocalCache(cacheText, () -> BasicText.super.getText());
+    public String getRendered(){
+        return getLocalCache(cacheText, () -> BasicText.super.getRendered());
     }
 
     @Override
@@ -54,18 +56,26 @@ public final class ContentSpan extends SpanBranch implements BasicText{
             .isSpaceEnd());
     }
 
-    @Override
-    public List<StyleInfo> getBranchStyles(){
-        return ImmutableList.of();
-    }
-
-    /** Counts the number of words by spliting word count*/
+    /** Counts the number of words by spliting word count.
+     *
+     * @return answer
+     */
     public int wordCount(){
         return getLocalCache(wordCount,
             () -> Splitter.on(CharMatcher.whitespace())
                 .omitEmptyStrings()
                 .splitToList(getTrimmed())
                 .size());
+    }
+
+    @Override
+    public List<StyleInfo> getBranchStyles(){
+        return ImmutableList.of();
+    }
+
+    @Override
+    protected SetupParser getParser(String text){
+        return null;
     }
 
     @Override
@@ -82,11 +92,6 @@ public final class ContentSpan extends SpanBranch implements BasicText{
             }
         }
         return "text -> " + ans;
-    }
-
-    @Override
-    protected SetupParser getParser(String text){
-        return null;
     }
 
 }

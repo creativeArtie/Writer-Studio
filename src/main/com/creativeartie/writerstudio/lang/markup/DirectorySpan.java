@@ -1,41 +1,47 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // ArrayList, List, Optional
+import java.util.*;
 
-import com.google.common.collect.*; // ImmutableList
+import com.google.common.collect.*;
 
-import com.creativeartie.writerstudio.lang.*; // (many)
+import com.creativeartie.writerstudio.lang.*;
 
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * Grouping of text {@link Span} that creates a {@link CatalogueIdentity}.
- * Represented in design/ebnf.txt as {@code Directory}.
- */
+/** Grouping of text {@link Span} that creates a {@link CatalogueIdentity}. */
 public final class DirectorySpan extends SpanBranch {
-    /// helps with categorizing and describes purpose
+
     private final DirectoryType idPurpose;
     private final CacheKeyMain<CatalogueIdentity> cacheId;
     private final CacheKeyMain<String> cacheText;
     private final DirectoryParser spanReparser;
 
+    /** Creates a {@linkplain ContentSpan}.
+     *
+     * @param children
+     *      span children
+     * @see ContentParser#buildSpan(List)
+     */
     DirectorySpan(List<Span> spanChildren, DirectoryType purpose,
             DirectoryParser reparser){
         super(spanChildren);
-        idPurpose = checkNotNull(purpose, "purpose");
-        spanReparser = checkNotNull(reparser, "reparser");
+        idPurpose = argumentNotNull(purpose, "purpose");
+        spanReparser = argumentNotNull(reparser, "reparser");
 
         cacheId = new CacheKeyMain<>(CatalogueIdentity.class);
         cacheText = CacheKeyMain.stringKey();
     }
 
-    /** Creates the id for a {@link Catalogued}*/
-    CatalogueIdentity buildId(){
+    /** Creates the id for a {@link Catalogued}
+     *
+     * @return answer
+     */
+    public CatalogueIdentity buildId(){
         return getDocCache(cacheId, () -> {
             ArrayList<String> builder = new ArrayList<>();
             builder.add(idPurpose.getCategory());
 
-            // idTmp is tmp because the text maybe a category
+            /// idTmp is tmp because the text maybe a category
             Optional<String> idTmp = Optional.empty();
             for(Span child: this){
                 if (child instanceof SpanLeaf){
@@ -52,7 +58,10 @@ public final class DirectorySpan extends SpanBranch {
         });
     }
 
-    /** Get the display for {@link FormatSpanPointId#getOutput()}*/
+    /** Get the display for {@link FormatSpanPointId#getOutput()}
+     *
+     * @return answer
+     */
     public String getLookupText(){
         return getLocalCache(cacheText, () -> {
             StringBuilder builder = new StringBuilder();
@@ -63,14 +72,23 @@ public final class DirectorySpan extends SpanBranch {
         });
     }
 
-    /** Get the purpose of this span. */
-    public DirectoryType getPurpose(){
+    /** Get the id purpose.
+     *
+     * @return answer
+     */
+    public DirectoryType getPurposeType(){
         return idPurpose;
     }
 
     @Override
     public List<StyleInfo> getBranchStyles(){
         return ImmutableList.of();
+    }
+
+    @Override
+    protected SetupParser getParser(String text){
+        argumentNotNull(text, "text");
+        return spanReparser.canParse(text)? spanReparser: null;
     }
 
     @Override
@@ -88,11 +106,6 @@ public final class DirectorySpan extends SpanBranch {
         }
         output.append(SpanLeaf.escapeText(id.getName()));
         return "id ->" + output.toString() + "";
-    }
-
-    @Override
-    protected SetupParser getParser(String text){
-        return spanReparser.canParse(text)? spanReparser: null;
     }
 
 }

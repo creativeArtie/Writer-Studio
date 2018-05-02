@@ -1,31 +1,35 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // ArrayList, Optional
+import java.util.*;
 
-import com.creativeartie.writerstudio.lang.*; // Span, SpanBranch
+import com.creativeartie.writerstudio.lang.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * SetupParser for {{@link FormatRefSpan}.
- */
+/** Implements {@code design/ebnf.txt FormatRefLink}. */
 final class FormatParseLinkRef extends FormatParseLink {
 
+    /** Creates a {@linkplain FormatParseLinkDirect}.
+     *
+     * @param formats
+     *      format lists
+     * @see FormattedParser#getParsers(boolean[])
+     */
     FormatParseLinkRef(boolean[] formats){
         super(LINK_REF, formats);
     }
 
     @Override
-    Optional<SpanBranch> parseFinish(ArrayList<Span> children,
-            SetupPointer pointer){
-        checkNotNull(children, "children");
-        checkNotNull(pointer, "pointer");
+    Optional<SpanBranch> parseSpan(SetupPointer pointer,
+            ArrayList<Span> children){
+        argumentNotNull(children, "children");
+        argumentNotNull(pointer, "pointer");
 
-        DirectoryParser.REF_LINK.parse(children, pointer);
+        DirectoryParser.REF_LINK.parse(pointer, children);
 
-        /// Complete the last steps
-        parseRest(children, pointer);
+
+        parseRest(pointer, children);
         FormatSpanLinkRef span = new FormatSpanLinkRef(children, this);
         return Optional.of(span);
     }

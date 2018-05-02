@@ -1,28 +1,30 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // ArrayList, List, Optional
+import java.util.*;
 
-import com.google.common.collect.*; // ImmuableList
+import com.google.common.collect.*;
 
-import com.creativeartie.writerstudio.lang.*; // (many)
+import com.creativeartie.writerstudio.lang.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * Parser for {@link BasicText} with {@link BasicTextEscape}.
- *
- */
+/** Implements {@code design/ebnf.txt Basic} and the rules it uses. */
 abstract class BasicParseText implements SetupParser{
 
-    /// Describes how the Span will end
     private final ImmutableList<String> setupEnders;
-
     private final StyleInfoLeaf leafStyle;
 
-    public BasicParseText(StyleInfoLeaf style, String ... enders){
-        checkNotNull(style, "style");
-        checkNotNull(enders, "enders");
+    /** Creates a {@linkplain BasicParseText}.
+     *
+     * @param style
+     *      non-key text leaf styles
+     * @param enders
+     *      span ending tokens
+     */
+    BasicParseText(StyleInfoLeaf style, String ... enders){
+        argumentNotNull(style, "style");
+        argumentNotNull(enders, "enders");
 
         ImmutableList.Builder<String> builder = ImmutableList.builder();
 
@@ -35,7 +37,7 @@ abstract class BasicParseText implements SetupParser{
             }
         }
 
-        // For setup parser.
+        /// For setup parser.
         builder.add(TOKEN_ESCAPE);
         setupEnders = builder.build();
         leafStyle = style;
@@ -44,16 +46,19 @@ abstract class BasicParseText implements SetupParser{
 
     @Override
     public final Optional<SpanBranch> parse(SetupPointer pointer){
-        checkNotNull(pointer, "pointer");
+        argumentNotNull(pointer, "pointer");
+
         /// Setup
         ArrayList<Span> children = new ArrayList<>();
         boolean more;
 
         /// Extract the text
         do{
+            /// = design/ebnf.txt Raw
             pointer.getTo(children, leafStyle, setupEnders);
+
             /// no more escape span = no more text to deal with
-            more = parseEscape(children, pointer);
+            more = parseEscape(pointer, children);
         } while (more);
 
         /// Create span if there are Span extracted
@@ -63,19 +68,32 @@ abstract class BasicParseText implements SetupParser{
         return Optional.empty();
     }
 
-    /** Creates the Span after the parsing complete*/
+    /** Creates the Span after the parsing complete.
+     *
+     * @param children
+     *    span children
+     * @return answer
+     */
     protected abstract SpanBranch buildSpan(List<Span> children);
 
-    /** Parse {@link BasicTextEscape}. Helper method for parse(SetupPointer)*/
-    private boolean parseEscape(List<Span> parent, SetupPointer pointer){
-        checkNotNull(parent, "parent");
-        checkNotNull(pointer, "pointer");
+    /** Parse {@link BasicTextEscape}.
+     *
+     * @param parent
+     *      parent span list
+     * @param pointer
+     *      setup pointer
+     * @return success
+     */
+    private boolean parseEscape(SetupPointer pointer, List<Span> parent){
+        assert pointer != null;
+        assert parent != null;
 
         /// Setup
         ArrayList<Span> children = new ArrayList<>();
 
         /// build Span if found
         if (pointer.startsWith(children, TOKEN_ESCAPE)){
+            /// = design/ebnf.txt Escape
             pointer.nextChars(children, leafStyle, 1);
             parent.add(new BasicTextEscape(children));
             return true;

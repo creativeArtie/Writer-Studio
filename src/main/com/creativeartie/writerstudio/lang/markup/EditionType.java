@@ -1,31 +1,29 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // Arrays
+import java.util.*;
 
-import com.google.common.base.*; // CaseFormat
+import com.google.common.base.*;
 
-import com.creativeartie.writerstudio.lang.*; // StyleInfo
+import com.creativeartie.writerstudio.lang.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
-/**
- * Styles showing the current status of section in the document.
+/** Edition status of a document section.
+ * The value order is required through:
+ * <ul>
+ * <li>{@link #getNamedSyntaxes()}</li>
+ * </ul>
  */
 public enum EditionType implements StyleInfo{
-    /// Enum order mandated by WindowText
-
-    /** The status to describe a section with empty text. */
+    /** Draft with no text or just an outline. */
     STUB,
-    /**
-     * The status to describe a section with text, but not ready to be
-     * published.
-     */
+    /** Draft with text, but unedited */
     DRAFT,
-    /** The status to describe a section that is ready to be published. */
+    /** Draft with edited text */
     FINAL,
-    /** The status to describe a section that is user defined. */
+    /** Draft with user define status */
     OTHER,
-    /** The status to describe a section that not assigned by the user.*/
+    /** No draft status set.*/
     NONE;
 
     /** Get edition with a name in the syntax. */

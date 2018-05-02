@@ -1,23 +1,30 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // List
+import java.util.*;
 
-import com.creativeartie.writerstudio.lang.*; // StyleInfoLeaf
+import com.creativeartie.writerstudio.lang.*;
 
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * Parser for {@link ContentSpan}.
- */
+/** Implements {@code design/ebnf.txt Content}. */
 final class ContentParser extends BasicParseText{
 
-    public ContentParser(StyleInfoLeaf style, String ... enders){
+    /** Creates a {@linkplain ContentParser}.
+     *
+     * @param style
+     *      text leaves style
+     * @param enders
+     *      span ending tokens
+     * @see AuxiliaryData constants starts with "CONTENT"
+     * @see DirectoryParser#DirectoryParser(DirectoryType, String)
+     */
+    ContentParser(StyleInfoLeaf style, String ... enders){
         super(style, enders);
     }
 
     @Override
     protected ContentSpan buildSpan(List<Span> children){
-        checkNotNull(children, "children");
+        argumentNotNull(children, "children");
         return new ContentSpan(children);
     }
 

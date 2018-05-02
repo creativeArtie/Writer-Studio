@@ -1,30 +1,38 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // List
+import java.util.*;
 
-import com.creativeartie.writerstudio.lang.*; // Span, StyleInfoLeaf
+import com.creativeartie.writerstudio.lang.*;
+
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * Parser for {@link FormatSpanContent}.
- */
+/** Implements {@code design/ebnf.txt FormatContent}. */
 final class FormatParseContent extends BasicParseText{
 
     private boolean[] formatList;
 
-    public FormatParseContent(StyleInfoLeaf style, boolean[] formats,
+    /** Creates a {@linkplain FormatParseContent}.
+     *
+     * @param style
+     *      text leaves style
+     * @param formats
+     *      format lists
+     * @param enders
+     *      span ending tokens
+     * @see FormattedParser#parse(SetupPointer)
+     */
+    FormatParseContent(StyleInfoLeaf style, boolean[] formats,
             String ... enders){
         super(style, enders);
-        checkNotNull(formats, "formats");
-        checkEqual(formats.length, "formats.length", FORMAT_TYPES);
+        indexEquals(formats.length, "formats.length", FORMAT_TYPES);
         formatList = Arrays.copyOf(formats, formats.length);
     }
 
     @Override
     protected FormatSpanContent buildSpan(List<Span> children){
-        checkNotNull(children, "children");
+        argumentNotNull(children, "children");
         return new FormatSpanContent(children, formatList, this);
     }
 
