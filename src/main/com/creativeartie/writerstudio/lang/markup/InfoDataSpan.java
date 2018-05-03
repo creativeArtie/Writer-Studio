@@ -5,32 +5,45 @@ import java.util.*;
 import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.lang.*;
-import static com.creativeartie.writerstudio.main.Checker.*;
 
-/**
- * Base class for all {@link InfoDataSpan*} classes.
- */
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+
+/** A span to store data. */
 public abstract class InfoDataSpan extends SpanBranch{
 
-    private final CacheKeyList<StyleInfo> cacheList;
-
-    public abstract SpanBranch getData();
+    private final List<StyleInfo> infoStyle;
 
     private final InfoDataType dataType;
 
+    /** Creates a {@linkplain InfoDataSpan}.
+     * @param children
+     *      span children
+     * @param type
+     *      data type
+     */
     protected InfoDataSpan(List<Span> children, InfoDataType type){
         super(children);
-        dataType = checkNotNull(type, "type");
-        cacheList = new CacheKeyList<>(StyleInfo.class);
+        dataType = argumentNotNull(type, "type");
+        infoStyle = ImmutableList.of(dataType);
     }
 
+    /** Gets the data type.
+     *
+     * @return answer
+     */
     public final InfoDataType getDataType(){
         return dataType;
     }
 
+    /** Gets the branch data.
+     *
+     * @return answer
+     */
+    public abstract SpanBranch getData();
+
     @Override
     public final List<StyleInfo> getBranchStyles(){
-        return getLocalCache(cacheList, () -> ImmutableList.of(dataType));
+        return infoStyle;
     }
 
     @Override

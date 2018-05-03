@@ -98,6 +98,7 @@ public final class AuxiliaryChecker{
     static boolean notCutoff(String text, String ... endings){
         argumentNotNull(text, "text");
         argumentNotEmpty(endings, "endings");
+
         return notCutoff(text, Arrays.asList(endings));
     }
 

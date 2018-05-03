@@ -69,6 +69,7 @@ public final class AuxiliaryData{
     private static String getLevelToken(LinedParseLevel parser, int level){
         assert parser != null: "Null parser";
         assert level > 0 && level <= LEVEL_MAX: "Level not in range";
+
         switch (parser){
         case HEADING:
             /// =, ==, ===, ...
@@ -98,6 +99,7 @@ public final class AuxiliaryData{
      */
     private static String repeat(String repeat, int level){
         assert repeat != null: "Null repeat";
+
         StringBuilder builder = new StringBuilder();
         for(int i = 0; i < level; i++){
             builder.append(repeat);
@@ -217,17 +219,13 @@ public final class AuxiliaryData{
     /// %Part 1.6: Format Modifiers ============================================
 
     /// list of possible formats
-    private static final String FORMAT_ITALICS   = "*" ;
-    private static final String FORMAT_BOLD      = "**";
-    private static final String FORMAT_UNDERLINE = "_" ;
-    private static final String FORMAT_CODED     = "`" ;
+    public static final String FORMAT_ITALICS   = "*" ;
+    public static final String FORMAT_BOLD      = "**";
+    public static final String FORMAT_UNDERLINE = "_" ;
+    public static final String FORMAT_CODED     = "`" ;
 
     /** Number of format types:            {@value} */
     public static final int FORMAT_TYPES = FormatType.values().length;
-
-    /** List of Format keys in parse order*/
-    public static final List<String> FORMAT_KEYS = ImmutableList.of(
-        FORMAT_BOLD, FORMAT_ITALICS, FORMAT_UNDERLINE, FORMAT_CODED);
 
     /// %Part 1.7: Escape Begin Token ==========================================
 

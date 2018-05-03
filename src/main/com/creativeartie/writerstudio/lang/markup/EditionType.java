@@ -9,7 +9,8 @@ import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
 /** Edition status of a document section.
- * The value order is required through:
+ *
+ * The value order is set by:
  * <ul>
  * <li>{@link #getNamedSyntaxes()}</li>
  * </ul>

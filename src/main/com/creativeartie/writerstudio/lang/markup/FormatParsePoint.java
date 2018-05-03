@@ -19,13 +19,26 @@ abstract class FormatParsePoint implements SetupParser {
      *      start token
      * @param formats
      *      format lists
-     * @see FormatParsePointId#FormatParsePointId(DirectoryType, start, formats)
-     * @see FormatParsePointKey#FormatParsePointKey(formats)
      */
     protected FormatParsePoint(String start, boolean[] formats){
-        indexEquals(formats.length, "format.length", FORMAT_TYPES);
         spanStart = argumentNotNull(start, "start");
+
+        indexEquals(formats.length, "format.length", FORMAT_TYPES);
         formatList = formats;
+    }
+
+    /** Check if the text can be parsed.
+     *
+     * @param text
+     *      new text
+     * @return answer
+     * @see FormatSpanPointId#getParser(String)
+     * @see FormatSpanPointKey#getParser(String)
+     */
+    final boolean canParse(String text){
+        argumentNotNull(text, "text");
+        return text.startsWith(spanStart) &&
+            AuxiliaryChecker.willEndWith(text, CURLY_END);
     }
 
     /** Gets the list of formats.
@@ -34,14 +47,15 @@ abstract class FormatParsePoint implements SetupParser {
      * @see FormatSpanPointId#FormatSpanPointId(List, FormatParsePointId)
      * @see FormatSpanPointKey#FormatSpanPointKey(List, FormatParsePointKey)
      */
-    boolean[] getFormats(){
+    final boolean[] getFormats(){
         return formatList;
     }
 
     @Override
-    public Optional<SpanBranch> parse(SetupPointer pointer){
+    public final Optional<SpanBranch> parse(SetupPointer pointer){
         argumentNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
+
         if(pointer.startsWith(children, spanStart)){
 
             parseContent(pointer, children);
@@ -49,7 +63,7 @@ abstract class FormatParsePoint implements SetupParser {
 
             pointer.startsWith(children, CURLY_END);
 
-            return Optional.of(buildSpan(pointer, children));
+            return Optional.of(buildSpan(children));
         }
         return Optional.empty();
     }
@@ -71,20 +85,5 @@ abstract class FormatParsePoint implements SetupParser {
      * @return answer
      * @see #parse(SetupPointer)
      */
-    abstract SpanBranch buildSpan(SetupPointer pointer,
-        ArrayList<Span> children);
-
-    /** Check if the text can be parsed.
-     *
-     * @param text
-     *      new text
-     * @return answer
-     * @see FormatSpanPointId#getParser(String)
-     * @see FormatSpanPointKey#getParser(String)
-     */
-    boolean canParse(String text){
-        argumentNotNull(text, "text");
-        return text.startsWith(spanStart) &&
-            AuxiliaryChecker.willEndWith(text, CURLY_END);
-    }
+    abstract SpanBranch buildSpan(ArrayList<Span> children);
 }

@@ -1,16 +1,20 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // ArrayList, Optional
+import java.util.*;
 
-import com.creativeartie.writerstudio.lang.*; // Span, SpanBranch
+import com.creativeartie.writerstudio.lang.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * Parser for {@link FormatSpanCurlyAgenda}.
- */
+/** Implements {@code design/ebnf.txt FormatReference}. */
 class FormatParsePointKey extends FormatParsePoint {
+
+    /** Creates a {@linkplain FormatParsePointKey}.
+     * @param formats
+     *      format list
+     * @see FormattedParser#parse(SetupPointer)
+     */
     FormatParsePointKey(boolean[] formats){
         super(CURLY_KEY, formats);
     }
@@ -21,7 +25,8 @@ class FormatParsePointKey extends FormatParsePoint {
     }
 
     @Override
-    SpanBranch buildSpan(SetupPointer pointer, ArrayList<Span> children){
-        return new FormatSpanPointKey(children, this);
+    SpanBranch buildSpan(ArrayList<Span> children){
+        argumentNotNull(children, "children");
+        return new FormatSpanPointKey(children, getFormats(), this);
     }
 }

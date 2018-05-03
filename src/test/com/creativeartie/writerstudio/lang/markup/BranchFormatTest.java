@@ -171,7 +171,6 @@ public class BranchFormatTest {
             }
 
             FormatSpanLink test = (FormatSpanLink) span;
-            assertSpan("link path", test, path, test.getPathSpan());
             assertEquals(getError("link text", test), text, test.getText());
             testFormats(test, formats);
         }

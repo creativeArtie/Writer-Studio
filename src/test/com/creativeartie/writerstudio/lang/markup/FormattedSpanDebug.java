@@ -142,7 +142,7 @@ public class FormattedSpanDebug {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormattedSpanTest main = new FormattedSpanTest()
-            .setPublishTotal(0).setNoteTotal(0);
+            .setPublishTotal(1).setNoteTotal(0);
         FormatKeyTest key = new FormatKeyTest()
             .setField("abc");
         ContentTest data = new ContentTest()

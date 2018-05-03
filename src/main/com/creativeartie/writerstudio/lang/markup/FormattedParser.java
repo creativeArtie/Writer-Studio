@@ -3,31 +3,38 @@ package com.creativeartie.writerstudio.lang.markup;
 import java.util.*;
 
 import com.creativeartie.writerstudio.lang.*;
-import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.Checker.*;
 
-/**
- * Parser for {@link FormattedSpan}
- */
+import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+
+/** Implements {@code design/ebnf.txt Format1} and {Format2}. */
 final class FormattedParser implements SetupParser {
 
     private final String[] spanEnders;
     private final StyleInfoLeaf leafStyle;
     private final boolean withNote;
 
-    public FormattedParser(StyleInfoLeaf style, boolean note, String ... enders){
+    /** Creates a {@linkplain FormattedParser}.
+     * @param style
+     *      content leaf style
+     * @param note
+     *      allows note spans
+     * @param enders
+     *      span enders tokens
+     * @see FormattedParser#parse(SetupPointer)
+     */
+    FormattedParser(StyleInfoLeaf style, boolean note, String ... enders){
         /// Combine the list of span enders and formatting enders
-        checkNotNull(enders, "enders");
         spanEnders = listFormatEnderTokens(note, enders);
-        leafStyle = checkNotNull(style, "style");
+        leafStyle = argumentNotNull(style, "style");
         withNote = note;
     }
 
     @Override
     public Optional<SpanBranch> parse(SetupPointer pointer){
-        checkNotNull(pointer, "pointer");
+        argumentNotNull(pointer, "pointer");
 
-        /// Setup format style: bold, italics, underline, coded
+        /// Setup format style
         boolean[] formats = new boolean[]{false, false, false, false};
 
         /// Setup for FormattedSpan
@@ -39,58 +46,52 @@ final class FormattedParser implements SetupParser {
         do {
             more = false; /// Assume FormattedSpan has ended
 
-            /// try to find text first
-            if (new FormatParseContent(leafStyle, formats, spanEnders)
-                .parse(pointer, children)
-            ){
-                more = true;
-            }
-
             if (FormatParseAgenda.PARSER.parse(pointer, children)){
                 more = true;
             }
 
-            /// Keeps FomratContentParser parsing alone b/c of needs to edit
-            /// format
-            int i = 0;
-            for (String type: FORMAT_KEYS){
-                if (pointer.startsWith(children, type)){
+            /// for content text first
+            if (new FormatParseContent(leafStyle, formats, spanEnders)
+                .parse(pointer, children)){
+                more = true;
+            }
+
+            /// Find the formatting tokens
+            for (FormatType type: FormatType.values()){
+                if (pointer.startsWith(children, type.getToken())){
                     /// change format of bold/italics/underline/code
-                    formats[i] = ! formats[i];
+                    formats[type.ordinal()] = ! formats[type.ordinal()];
 
                     more = true;
                     break;
                 }
-                i++;
             }
 
+            /// find reference text
             new FormatParsePointKey(formats).parse(pointer, children);
 
-            if (! withNote){
-                for (SetupParser parser: FormatParseLink.getParsers(formats)){
-                    if (parser.parse(pointer, children)){
-                        more = true;
-                    }
+            /// find link
+            for (SetupParser parser: FormatParseLink.getParsers(formats)){
+                if (parser.parse(pointer, children)){
+                    more = true;
                 }
-                continue;
             }
 
-            /// Lastly deal with FormatParseCurly and FormatParseLink together
-            for (SetupParser parser: SetupParser.combine(
-                FormatParsePointId.getParsers(formats),
-                FormatParseLink.getParsers(formats)
-            )){
-                if(parser.parse(pointer, children)){
-                    /// Striaght forwarding adding of found spans.
-                    more = true;
+            /// finds not if allowed
+            if (withNote){
+                for (SetupParser parser: FormatParsePointId.getParsers(formats)){
+                    if(parser.parse(pointer, children)){
+                        /// Striaght forwarding adding of found spans.
+                        more = true;
+                    }
                 }
             }
         } while(more);
 
-        /// Add the FormattedParser with its children spans if there are children.
-        if (children.size() > 0){
-            return Optional.of(new FormattedSpan(children, withNote));
+        /// Create span if there are children.
+        if (children.isEmpty()){
+            return Optional.empty();
         }
-        return Optional.empty();
+        return Optional.of(new FormattedSpan(children, withNote));
     }
 }

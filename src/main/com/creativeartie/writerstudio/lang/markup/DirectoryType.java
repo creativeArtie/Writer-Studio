@@ -6,7 +6,7 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
 /** Categories of catalogue directories.
  *
- * The value order is required through:
+ * The value order is set by:
  * <ul>
  * <li>{@link DirectoryParser#getRefParser(DirectoryType}</li>
  * <li> {@link DirectoryParser#getIDParser(DirectoryType}</li>
@@ -14,9 +14,9 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  */
 public enum DirectoryType implements StyleInfo{
     /** Category for id less note cards. */
-    COMMENT(TYPE_NOTE),
+    NOTE(TYPE_NOTE),
     /** Category for ided note cards. */
-    NOTE(TYPE_RESEARCH),
+    RESEARCH(TYPE_RESEARCH),
     /** Category for footnotes. */
     FOOTNOTE(TYPE_FOOTNOTE),
     /** Category for endnotes. */

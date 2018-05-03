@@ -1,53 +1,73 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // (many)
+import java.util.*;
 
-import com.google.common.collect.*; // ImmutableList
+import com.google.common.collect.*;
 
-import com.creativeartie.writerstudio.lang.*; // Span, SpanBranch, StyleInfo
+import com.creativeartie.writerstudio.lang.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.writerstudio.main.Checker.*;
 
-/**
- * {@link Span} for several formatted {@code FormatSpan*} classes.
- */
+/** A text with formats. */
 public abstract class FormatSpan extends SpanBranch {
+
     private final boolean[] spanFormats;
     private final CacheKeyList<StyleInfo> cacheStyles;
 
-    FormatSpan(List<Span> spanChildren, boolean[] formats){
-        super(spanChildren);
+    /** Creates an instance of {@linkplain FormatSpan}.
+     *
+     * @param children
+     *      span children
+     * @param formats
+     *      format list
+     */
+    FormatSpan(List<Span> children, boolean[] formats){
+        super(children);
         checkEqual(formats.length, "formats.length", FORMAT_TYPES);
-
         spanFormats = Arrays.copyOf(formats, formats.length);
+
         cacheStyles = new CacheKeyList<>(StyleInfo.class);
     }
 
-    FormatSpan(){
-        this(new ArrayList<>(), new boolean[FORMAT_TYPES]);
-    }
-
-    final boolean[] getFormats(){
-        return spanFormats;
-    }
-
+    /** Checks if text has the fromat type.
+     *
+     * @param type
+     *      format type
+     * @return answer
+     */
     public final boolean isFormat(FormatType type){
         return spanFormats[type.ordinal()];
     }
 
+    /** Check if text is bold.
+     *
+     * @return answer
+     */
     public final boolean isBold(){
         return spanFormats[FormatType.BOLD.ordinal()];
     }
 
+    /** Check if text is itlalics.
+     *
+     * @return answer
+     */
     public final boolean isItalics(){
         return spanFormats[FormatType.ITALICS.ordinal()];
     }
 
+    /** Check if text is underlined.
+     *
+     * @return answer
+     */
     public final boolean isUnderline(){
         return spanFormats[FormatType.UNDERLINE.ordinal()];
     }
 
+    /** Check if text is coded.
+     *
+     * @return answer
+     */
     public final boolean isCoded(){
         return spanFormats[FormatType.CODED.ordinal()];
     }
@@ -68,20 +88,27 @@ public abstract class FormatSpan extends SpanBranch {
         });
     }
 
-    /** Gets the parsed text for display. */
-    public abstract String getOutput();
-
-
     @Override
-    public String toString(){
+    public final String toString(){
         StringBuilder ans = new StringBuilder();
-        if (spanFormats[0]) ans.append("b");
-        if (spanFormats[1]) ans.append("i");
-        if (spanFormats[2]) ans.append("u");
-        if (spanFormats[3]) ans.append("c");
+        if (spanFormats[FormatType.BOLD.ordinal()]) ans.append("b");
+        if (spanFormats[FormatType.ITALICS.ordinal()]) ans.append("i");
+        if (spanFormats[FormatType.UNDERLINE.ordinal()]) ans.append("u");
+        if (spanFormats[FormatType.CODED.ordinal()]) ans.append("c");
         return toChildName() + "(" + ans.toString() + toChildString() + ")";
     }
 
+    /** Gets the child class name.
+     *
+     * @return answer
+     * @see #toString()
+     */
     protected abstract String toChildName();
+
+    /** Gets the child content text.
+     *
+     * @return answer
+     * @see #toString()
+     */
     protected abstract String toChildString();
 }

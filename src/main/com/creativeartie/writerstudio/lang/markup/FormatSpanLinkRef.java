@@ -1,28 +1,40 @@
 package com.creativeartie.writerstudio.lang.markup;
 
+import java.util.*;
+
 import com.google.common.collect.*;
 
-import java.util.*;
 import com.creativeartie.writerstudio.lang.*;
-import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
-/**
- * {@link FormatSpanLink} with path located somewhere in the document.
- * Represented in design/ebnf.txt as {@code FormatRefLink}.
- */
+import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+
+/** A formatted link with a bookmark or a {@link LinedSpanPointLink} reference. */
 public final class FormatSpanLinkRef extends FormatSpanLink
         implements Catalogued{
 
     private final FormatParseLinkRef spanReparser;
+
     private final CacheKeyOptional<SpanBranch> cachePath;
     private final CacheKeyMain<String> cacheText;
     private final CacheKeyList<StyleInfo> cacheStyles;
     private final CacheKeyOptional<CatalogueIdentity> cacheId;
     private final CacheKeyMain<Boolean> cacheExternal;
 
-    FormatSpanLinkRef(List<Span> children, FormatParseLinkRef reparser){
-        super(children, reparser.getFormats());
-        spanReparser = reparser;
+    /** Creates a {@linkplain FormatSpanLinkRef}.
+     *
+     * @param children
+     *      span children
+     * @param formats
+     *      format list
+     * @param reparser
+     *      span reparser
+     * @see FormatParseLinkRef#buildSpan(ArrayList)
+     */
+    FormatSpanLinkRef(List<Span> spanChildren, boolean[] formats,
+            FormatParseLinkRef reparser){
+        super(spanChildren, formats);
+        spanReparser = argumentNotNull(reparser, "reparser");
 
         cachePath = new CacheKeyOptional<>(SpanBranch.class);
         cacheText = CacheKeyMain.stringKey();
@@ -31,7 +43,10 @@ public final class FormatSpanLinkRef extends FormatSpanLink
         cacheExternal = CacheKeyMain.booleanKey();
     }
 
-    @Override
+    /** Gets target span where bookmark or link is.
+     *
+     * @return answer
+     */
     public Optional<SpanBranch> getPathSpan(){
         return getLocalCache(cachePath, () ->{
             Optional<CatalogueIdentity> id = getSpanIdentity();

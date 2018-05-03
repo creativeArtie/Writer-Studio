@@ -90,13 +90,6 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
         });
     }
 
-    public String getTitle(){
-        return getLocalCache(cacheTitle, () ->{
-            Optional<FormattedSpan> main = spanFromLast(FormattedSpan.class);
-            return main.isPresent()? main.get().getParsedText(): "";
-        });
-    }
-
     @Override
     protected SetupParser getParser(String text){
         if (! AuxiliaryChecker.checkLineEnd(text, isDocumentLast())){

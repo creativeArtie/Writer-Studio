@@ -14,9 +14,7 @@
         5. Apache PDFBox (and only in export package).
         6. project libraries
     - use wildcard if possible
-    - put the import classes in comment at the end of each wildcard statement, or
-        `// (many)` for 4 or more classes
-    - no static import except for JUnit, Checker, and AuxiliaryData
+    - no static import except for JUnit, ParameterChecker, and AuxiliaryData
     - no line wrapping
 - Class comment
     - short describing on the first line, and a noun phrase.
@@ -57,7 +55,7 @@
         - use long description using the parameter name then
         - simicolon and requirements
     - for `@return`
-        - use `self`, or `answer`
+        - use `self`, `success` or `answer`
     - for `@see`
         - for default, protected and private methods, its callers
 - declaration

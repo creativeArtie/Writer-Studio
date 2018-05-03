@@ -80,10 +80,11 @@ Format1 = {FormatAgenda | FormatDirectLink | FormatRefLink FormatReference |
 Format2 = {FormatAgenda | FormatFootnote | FormatEndnote | FormatNote |
           FormatReference | FormatDirectLink | FormatRefLink | "**" | "*" |
           "_" | "`" | FormatContent}, (-\? | -\n);
-FormatNote       = "{@", Directory, ("}" | -\n );
+FormatReference  = "{%", [Content], ( "%}" | -\n);
+FormatNote       = FormatResearch | FormatFootnote | FomratEndnote;
 FormatEndnote    = "{^", [Directory], ("}" | -\n );
 FormatFootnote   = "{*", [Directory], ("}" | -\n );
-FormatReference  = "{%", [Content], ( "%}" | -\n);
+FormatResearch   = "{@", Directory, ("}" | -\n );
 FormatRefLink    =  "<@", [Directory], (">" | -\n);
 FormatDirectLink =  "<", [Content], (">" | -\n);
 FormatData       = "{", [Content], "}"

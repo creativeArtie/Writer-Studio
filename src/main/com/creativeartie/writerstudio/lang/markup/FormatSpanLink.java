@@ -1,34 +1,33 @@
 package com.creativeartie.writerstudio.lang.markup;
 
 import java.util.*;
+
 import com.creativeartie.writerstudio.lang.*;
 
-/**
- * Formatted {@link Span} for common methods in {@link FormatSpanLinkDirect}
- * and {@link FormatSpanLinkRef}.
- */
+/** Formatted text with links. */
 public abstract class FormatSpanLink extends FormatSpan {
 
+    /** Creates a {@linkplain FormatSpanLink}.
+     *
+     * @param children
+     *      span children
+     * @param formats
+     *      format list
+     */
     FormatSpanLink(List<Span> children, boolean[] formats){
         super(children, formats);
     }
 
-    /**
-     * Return the path of the link.
-     */
-    public abstract Optional<SpanBranch> getPathSpan();
-
-    /**
-     * Return the display output text.
+    /** Gets the display output text.
+     *
+     * @return answer
      */
     public abstract String getText();
 
-
+    /** Check if linke is not a bookmark.
+     *
+     * @return answer
+     */
     public abstract boolean isExternal();
 
-    @Override
-    public final String getOutput(){
-        return "text: " + SpanLeaf.escapeText(getText()) + " link: " +
-            getPathSpan().map(s -> s.toString()).orElse("null");
-    }
 }

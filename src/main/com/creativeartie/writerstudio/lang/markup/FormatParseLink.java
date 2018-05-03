@@ -37,8 +37,6 @@ abstract class FormatParseLink implements SetupParser {
      * @param formats
      *      format lists
      * @see #getParsers(boolean[])
-     * @see FormatParseLinkDirect#FormatParseLinkDirect(boolean[])
-     * @see FormatParseLinkRef#FormatParseLinkRef(boolean[])
      */
     protected FormatParseLink(String start, boolean[] formats){
         spanStart = argumentNotNull(start, "starts");
@@ -60,9 +58,10 @@ abstract class FormatParseLink implements SetupParser {
     @Override
     public final Optional<SpanBranch> parse(SetupPointer pointer){
         argumentNotNull(pointer, "pointer");
+
         ArrayList<Span> children = new ArrayList<>();
         if(pointer.startsWith(children, spanStart)){
-            return parseSpan(pointer, children);
+            return Optional.of(parseSpan(pointer, children));
         }
         return Optional.empty();
     }
@@ -73,9 +72,10 @@ abstract class FormatParseLink implements SetupParser {
      *      setup pointer
      * @param children
      *      span children
+     * @return answer
      * @see #parse(SetupPointer)
      */
-    abstract Optional<SpanBranch> parseSpan(SetupPointer pointer,
+    abstract SpanBranch parseSpan(SetupPointer pointer,
         ArrayList<Span> children);
 
     /** Parse the rest, excluding URL path or reference id.
@@ -91,6 +91,7 @@ abstract class FormatParseLink implements SetupParser {
             ArrayList<Span> children){
         argumentNotNull(pointer, "pointer");
         argumentNotNull(children, "children");
+
         /// Create display text if any
         if (pointer.startsWith(children, LINK_TEXT)){
             /// Add the text itself

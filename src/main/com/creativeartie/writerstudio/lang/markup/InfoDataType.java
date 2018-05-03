@@ -1,11 +1,15 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import com.creativeartie.writerstudio.lang.*;
 
-/**
- * Style describing the type of data.
- */
+import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
+
+/** Describe data type. */
 public enum InfoDataType implements StyleInfo{
-    FORMATTED, TEXT, NOTE_REF;
+    /** Data type of {@link FormattedSpan} */
+    FORMATTED,
+    /** Data type of {@link DirectorySpan} for {@link DirectoryType#RESEARCH}. */
+    NOTE_REF,
+    /** Data type of {@link ContentSpan} */
+    TEXT;
 }

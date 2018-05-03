@@ -4,22 +4,24 @@ import java.util.*;
 
 import com.creativeartie.writerstudio.lang.*;
 
-/**
- * Data that stores a {@link FormattedSpan}. Represented in design/ebnf.txt as
- * {@code InfoDataFormatted}.
- */
+/** Data storing a {@link FormattedSpan}. */
 public final class InfoDataSpanFormatted extends InfoDataSpan{
 
     private final CacheKeyMain<FormattedSpan> cacheData;
 
-    @Override
-    public FormattedSpan getData(){
-        return getLocalCache(cacheData, () -> (FormattedSpan)get(0));
-    }
-
+    /** Creates a {@linkplain InfoDataSpanFormatted}.
+     * @param children
+     *      span children
+     * @see InfoDataParser#FORMATTED
+     */
     protected InfoDataSpanFormatted(List<Span> children){
         super(children, InfoDataType.FORMATTED);
         cacheData = new CacheKeyMain<>(FormattedSpan.class);
+    }
+
+    @Override
+    public FormattedSpan getData(){
+        return getLocalCache(cacheData, () -> (FormattedSpan)get(0));
     }
 
     @Override

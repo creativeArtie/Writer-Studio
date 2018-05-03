@@ -123,10 +123,6 @@ public enum WindowText {
         return getDisplay(getText("DocData.Matter", area.name()));
     }
 
-    public static String getText(DirectoryType type){
-        return getDisplay(getText("UserLists.", type.name()) + "ListName");
-    }
-
     public static String getText(ButtonIcon icon){
         return getDisplay(getText("Icon.", icon.name()));
     }

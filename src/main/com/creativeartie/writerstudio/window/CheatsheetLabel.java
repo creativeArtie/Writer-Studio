@@ -74,7 +74,7 @@ class CheatsheetLabel extends Label{
      * Get in line reference spans (footnote, endnote, and note) hints labels.
      */
     static CheatsheetLabel getLabel(DirectoryType type){
-        if (type == DirectoryType.COMMENT || type == DirectoryType.LINK){
+        if (type == DirectoryType.NOTE || type == DirectoryType.LINK){
             throw new IllegalArgumentException("Unsupported type: " + type);
         }
         return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),

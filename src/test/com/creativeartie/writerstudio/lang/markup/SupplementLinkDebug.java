@@ -26,7 +26,7 @@ public class SupplementLinkDebug extends IDParamTest{
         WritingText doc = buildDoc(target, pointer);
 
         FormatSpanLink test = findSpan(doc, FormatSpanLink.class);
-        linkTest(findSpan(doc, FormatSpanLink.class),
+        linkTest(findSpan(doc, FormatSpanLinkRef.class),
             findSpan(doc, LinedSpanPointLink.class), text);
     }
 
@@ -38,12 +38,12 @@ public class SupplementLinkDebug extends IDParamTest{
         String pointer = "<@" + id + "|" + text + ">";
         WritingText doc = buildDoc(target, pointer);
 
-        FormatSpanLink test = findSpan(doc, FormatSpanLink.class);
-        linkTest(findSpan(doc, FormatSpanLink.class),
+        FormatSpanLinkRef test = findSpan(doc, FormatSpanLinkRef.class);
+        linkTest(findSpan(doc, FormatSpanLinkRef.class),
             findSpan(doc, LinedSpanLevelSection.class), text);
     }
 
-    private void linkTest(FormatSpanLink test, SpanBranch expect, String text){
+    private void linkTest(FormatSpanLinkRef test, SpanBranch expect, String text){
         switch(expected){
         case NOT_FOUND:
             assertEquals(text, test.getText());

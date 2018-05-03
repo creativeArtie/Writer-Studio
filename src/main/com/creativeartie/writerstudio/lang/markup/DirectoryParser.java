@@ -17,7 +17,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  */
 enum DirectoryParser implements SetupParser{
     /** Pointer  for {@link FormatSpanPointId} or a {@link InfoDataSpanRef}. */
-    REF_NOTE(    DirectoryType.NOTE,     CURLY_END),
+    REF_NOTE(    DirectoryType.RESEARCH, CURLY_END),
     /** Pointer for {@link FormatSpanPointId}. */
     REF_FOOTNOTE(DirectoryType.FOOTNOTE, CURLY_END),
     /** Pointer for {@link FormatSpanPointId}. */
@@ -25,7 +25,7 @@ enum DirectoryParser implements SetupParser{
     /** Pointer for {@link FormatSpanLinkRef}. */
     REF_LINK(    DirectoryType.LINK,     LINK_TEXT, LINK_END),
     /** Pointer for {@link NoteCard}. */
-    ID_NOTE(     DirectoryType.NOTE,     DIRECTORY_END),
+    ID_NOTE(     DirectoryType.RESEARCH, DIRECTORY_END),
     /** Pointer for {@link LinedSpanNote footnote}. */
     ID_FOOTNOTE( DirectoryType.FOOTNOTE, DIRECTORY_END),
     /** Pointer for {@link LinedSpanNote endnote}.  */
@@ -45,7 +45,7 @@ enum DirectoryParser implements SetupParser{
      * @see FormatParsePointId#FormatParsePointId(DirectoryType, String, boolean[])
      */
     static DirectoryParser getRefParser(DirectoryType type){
-        argumentNotState(type, "type", DirectoryType.COMMENT);
+        argumentNotState(type, "type", DirectoryType.NOTE);
         return values()[type.ordinal() - 1];
     }
 
@@ -57,7 +57,7 @@ enum DirectoryParser implements SetupParser{
      * @see LinedParsePointer#parseCommon(SetupPointer, List)
      */
     static DirectoryParser getIDParser(DirectoryType type){
-        argumentNotState(type, "type", DirectoryType.COMMENT);
+        argumentNotState(type, "type", DirectoryType.NOTE);
         return values()[type.ordinal() + ID_SHIFT];
     }
 
@@ -68,6 +68,13 @@ enum DirectoryParser implements SetupParser{
     /// Adds a root category to differentiate footnote, links, etc
     private final DirectoryType idType;
 
+    /** Creates a {@linkplain DirectoryParser}.
+     *
+     * @param type
+     *      directory type
+     * @param enders
+     *      span enders
+     */
     private DirectoryParser(DirectoryType type, String ... enders){
         argumentNotNull(type, "type");
         argumentNotNull(enders, "enders");

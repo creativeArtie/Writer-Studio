@@ -3,13 +3,13 @@ package com.creativeartie.writerstudio.lang.markup;
 import com.google.common.collect.*;
 
 import java.util.*;
-import com.creativeartie.writerstudio.lang.*;
-import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
-/**
- * {@link FormatSpanLink} with path indicated right in the text. Represented in
- * design/ebnf.txt as {@code FormatDirectLink}.
- */
+import com.creativeartie.writerstudio.lang.*;
+
+import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+
+/** A formatted link with a link path. */
 public final class FormatSpanLinkDirect extends FormatSpanLink {
 
     private final FormatParseLinkDirect spanReparser;
@@ -18,9 +18,20 @@ public final class FormatSpanLinkDirect extends FormatSpanLink {
     private final CacheKeyMain<String> cacheText;
     private final CacheKeyList<StyleInfo> cacheStyles;
 
-    FormatSpanLinkDirect(List<Span> children, FormatParseLinkDirect reparser){
-        super(children, reparser.getFormats());
-        spanReparser = reparser;
+    /** Creates a {@linkplain FormatSpanLinkDirect}.
+     *
+     * @param children
+     *      span children
+     * @param formats
+     *      format list
+     * @param reparser
+     *      span reparser
+     * @see FormatParseLinkDirect#parseSpan(SetupPointer, List)
+     */
+    FormatSpanLinkDirect(List<Span> spanChildren, boolean[] formats,
+            FormatParseLinkDirect reparser){
+        super(spanChildren, formats);
+        spanReparser = argumentNotNull(reparser, "reparser");
 
         cacheTarget = new CacheKeyOptional<>(SpanBranch.class);
         cachePath = CacheKeyMain.stringKey();
@@ -28,15 +39,12 @@ public final class FormatSpanLinkDirect extends FormatSpanLink {
         cacheStyles  = new CacheKeyList<>(StyleInfo.class);
     }
 
-    @Override
-    public final Optional<SpanBranch> getPathSpan(){
-        return getLocalCache(cacheTarget, () -> spanFromFirst(ContentSpan
-            .class).map(span -> (SpanBranch) span));
-    }
-
+    /** Gets the link path
+     *
+     * @return answer
+     */
     public String getPath(){
-        return getLocalCache(cachePath, () -> getPathSpan()
-            .map(span -> (ContentSpan) span)
+        return getLocalCache(cachePath, () -> spanFromFirst(ContentSpan.class)
             .map(path -> path.getTrimmed())
             .orElse(""));
     }
@@ -50,23 +58,17 @@ public final class FormatSpanLinkDirect extends FormatSpanLink {
     }
 
     @Override
+    public boolean isExternal(){
+        return false;
+    }
+
+    @Override
     public List<StyleInfo> getBranchStyles(){
         return getLocalCache(cacheStyles, () -> {
             ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
             return builder.add(AuxiliaryType.DIRECT_LINK)
                 .addAll(super.getBranchStyles()).build();
         });
-    }
-
-    @Override
-    protected SetupParser getParser(String text){
-        return (text.startsWith(LINK_BEGIN) &&
-            AuxiliaryChecker.willEndWith(text, LINK_END)
-        )? spanReparser : null;
-    }
-
-    public boolean isExternal(){
-        return false;
     }
 
     @Override
@@ -78,6 +80,14 @@ public final class FormatSpanLinkDirect extends FormatSpanLink {
     protected String toChildString(){
         return SpanLeaf.escapeText(getText()) + "->" +
             SpanLeaf.escapeText(getPath());
+    }
+
+    @Override
+    protected SetupParser getParser(String text){
+        argumentNotNull(text, "text");
+        return (text.startsWith(LINK_BEGIN) &&
+            AuxiliaryChecker.willEndWith(text, LINK_END)
+        )? spanReparser : null;
     }
 
 }

@@ -94,7 +94,7 @@ public final class TextFlowBuilder {
                 .map(id -> id.getFullIdentity()).orElse("");
             DirectoryType type = span.getIdType();
             switch (type){
-                case NOTE:
+                case RESEARCH:
                     ans = newText(found, "display-note");
                     break;
                 case FOOTNOTE:

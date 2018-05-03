@@ -21,16 +21,13 @@ final class FormatParseLinkRef extends FormatParseLink {
     }
 
     @Override
-    Optional<SpanBranch> parseSpan(SetupPointer pointer,
-            ArrayList<Span> children){
+    SpanBranch parseSpan(SetupPointer pointer, ArrayList<Span> children){
         argumentNotNull(children, "children");
         argumentNotNull(pointer, "pointer");
 
         DirectoryParser.REF_LINK.parse(pointer, children);
-
-
         parseRest(pointer, children);
-        FormatSpanLinkRef span = new FormatSpanLinkRef(children, this);
-        return Optional.of(span);
+
+        return new FormatSpanLinkRef(children, getFormats(), this);
     }
 }

@@ -5,12 +5,9 @@ import java.util.*;
 import com.creativeartie.writerstudio.lang.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import com.creativeartie.writerstudio.main.Checker;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * {@link BasicText} with {@link FormatSpan format} for {@link FormattedSpan}.
- * Represented in design/ebnf.txt as {@code FormatContent}.
- */
+/** A formatted {@link BasicText}. */
 public final class FormatSpanContent extends FormatSpan implements BasicText{
 
     /// Stuff for reparsing
@@ -21,20 +18,25 @@ public final class FormatSpanContent extends FormatSpan implements BasicText{
     private final CacheKeyMain<Boolean> cacheSpaceBegin;
     private final CacheKeyMain<Boolean> cacheSpaceEnd;
 
+    /** Creates a {@linkplain FormatSpanContent}.
+     *
+     * @param children
+     *      span children
+     * @param formats
+     *      format list
+     * @param reparser
+     *      span reparser
+     * @see FormatParseContent#buildSpan(SetupPointer)
+     */
     FormatSpanContent(List<Span> spanChildren, boolean[] formats,
             FormatParseContent reparser){
         super(spanChildren, formats);
-        spanReparser = reparser;
+        spanReparser = argumentNotNull(reparser, "reparser");
 
         cacheText = CacheKeyMain.stringKey();
         cacheTrimmed = CacheKeyMain.stringKey();
         cacheSpaceBegin = CacheKeyMain.booleanKey();
         cacheSpaceEnd = CacheKeyMain.booleanKey();
-    }
-
-    @Override
-    public String getOutput(){
-        return getRendered();
     }
 
     @Override
@@ -60,11 +62,6 @@ public final class FormatSpanContent extends FormatSpan implements BasicText{
     }
 
     @Override
-    protected SetupParser getParser(String text){
-        return null;
-    }
-
-    @Override
     protected String toChildName(){
         return "format";
     }
@@ -83,5 +80,10 @@ public final class FormatSpanContent extends FormatSpan implements BasicText{
             }
         }
         return ans;
+    }
+
+    @Override
+    protected SetupParser getParser(String text){
+        return null;
     }
 }

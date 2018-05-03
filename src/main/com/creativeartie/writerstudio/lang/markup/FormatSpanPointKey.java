@@ -3,21 +3,32 @@ package com.creativeartie.writerstudio.lang.markup;
 import com.google.common.collect.*;
 
 import java.util.*;
+
 import com.creativeartie.writerstudio.lang.*;
 
-/**
- * A {@linkplain FormatSpan} meta data and stats.
- * Represented in design/ebnf.txt as {@code FormatKey}.
- */
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+
+/** A formatted reference text, mainly to docuement statistics. */
 public final class FormatSpanPointKey extends FormatSpan{
     private final FormatParsePointKey spanReparser;
     private final CacheKeyList<StyleInfo> cacheStyles;
     private final CacheKeyMain<String> cacheField;
     private final CacheKeyMain<String> cacheValue;
 
-    FormatSpanPointKey(List<Span> children, FormatParsePointKey reparser){
-        super(children, reparser.getFormats());
-        spanReparser = reparser;
+    /** Creates a {@linkplain FormatSpanLinkRef}.
+     *
+     * @param children
+     *      span children
+     * @param formats
+     *      format list
+     * @param reparser
+     *      span reparser
+     * @see FormatParseLinkRef#parseSpan(SetupPointer, List)
+     */
+    FormatSpanPointKey(List<Span> spanChildren, boolean[] formats,
+            FormatParsePointKey reparser){
+        super(spanChildren, formats);
+        spanReparser = argumentNotNull(reparser, "reparser");
 
         cacheField = CacheKeyMain.stringKey();
         cacheValue = CacheKeyMain.stringKey();
@@ -39,12 +50,8 @@ public final class FormatSpanPointKey extends FormatSpan{
     }
 
     @Override
-    public String getOutput(){
-        return "";
-    }
-
-    @Override
     protected SetupParser getParser(String text){
+        argumentNotNull(text, "text");
         return spanReparser.canParse(text)? spanReparser: null;
     }
 

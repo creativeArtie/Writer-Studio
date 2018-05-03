@@ -7,11 +7,8 @@ import com.google.common.base.*;
 import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.lang.*;
-import static com.creativeartie.writerstudio.main.Checker.*;
 
-/**
- * {@link Span} to store all other {@link FormatSpan*} classes. Represented in
- * design/ebnf.txt as {@code Format1} or {@code Foramt2}.
+/** {@link Span} to list all {@link FormatSpan*} object.
  *
  * Dec 29,2017: it was decided that this class will <b>not</b> do any local
  * reparsing, because it is deem to be too much work.
@@ -24,8 +21,15 @@ public final class FormattedSpan extends SpanBranch {
     private final CacheKeyMain<String> cacheText;
     private boolean allowNotes;
 
-    FormattedSpan(List<Span> spanChildren, boolean notes){
-        super(spanChildren);
+    /** Creates a {@linkplain FormattedSpan}.
+     * @param children
+     *      span children
+     * @param notes
+     *      allow notes
+     * @see FormattedParser#parse(SetupPointer)
+     */
+    FormattedSpan(List<Span> children, boolean notes){
+        super(children);
         allowNotes = notes;
 
         cachePublish = CacheKeyMain.integerKey();
@@ -62,9 +66,11 @@ public final class FormattedSpan extends SpanBranch {
                 text.append(" " + ((FormatSpanAgenda)span).getAgenda() + " ");
             } else if (isPublish && span instanceof FormatSpanContent){
                 text.append(((FormatSpanContent) span).getRendered());
-            // } else if (span instanceof FormatSpanPointId){
             } else if (isPublish && span instanceof FormatSpanLink){
                 text.append(((FormatSpanLink)span).getText());
+            // } else if (span instanceof FormatSpanPointId){
+            } else if (isPublish && span instanceof FormatSpanPointKey){
+                text.append("1");
             }
         }
         /// creative use of Splitter to count words.
@@ -72,11 +78,19 @@ public final class FormattedSpan extends SpanBranch {
             .omitEmptyStrings().splitToList(text).size();
     }
 
+    /** Gets the parsed text.
+     *
+     * Used for sorting in citation page.
+     *
+     * @return answer
+     */
     public String getParsedText(){
         return getLocalCache(cacheText, () -> {
             StringBuilder text = new StringBuilder();
             for (Span span: this){
-                if (span instanceof FormatSpanContent){
+                // if (span instancof FormatSpanAgenda){
+                /*} else */if (span instanceof FormatSpanContent){
+                    /// content
                     FormatSpanContent content = (FormatSpanContent) span;
                     if (content.isSpaceBegin()){
                         text.append(" ");
@@ -87,12 +101,19 @@ public final class FormattedSpan extends SpanBranch {
                     }
                 } else if (span instanceof FormatSpanLink){
                     text.append(((FormatSpanLink)span).getText());
+                // } else if (span instanceof FormatSpanPointId){
+                } else if (span instanceof FormatSpanPointKey){
+                    text.append("1");
                 }
             }
             return text.toString();
         });
     }
 
+    /** Check if notes are allowed.
+     *
+     * @return answer
+     */
     public boolean allowNotes(){
         return allowNotes;
     }

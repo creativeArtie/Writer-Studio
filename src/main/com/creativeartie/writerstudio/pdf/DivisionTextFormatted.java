@@ -274,7 +274,7 @@ class DivisionTextFormatted extends DivisionText{
         assert font != null: "null font";
 
         /// This is not a note
-        if (span.getIdType() != DirectoryType.NOTE){
+        if (span.getIdType() != DirectoryType.RESEARCH){
             font = font.changeToSuperscript();
         }
 

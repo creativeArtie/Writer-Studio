@@ -21,16 +21,13 @@ final class FormatParseLinkDirect extends FormatParseLink {
     }
 
     @Override
-    Optional<SpanBranch> parseSpan(SetupPointer pointer,
-            ArrayList<Span> children){
+    SpanBranch parseSpan(SetupPointer pointer, ArrayList<Span> children){
         argumentNotNull(children, "children");
         argumentNotNull(pointer, "pointer");
 
-
         CONTENT_LINE_LINK.parse(pointer, children);
 
-
         parseRest(pointer, children);
-        return Optional.of(new FormatSpanLinkDirect(children, this));
+        return new FormatSpanLinkDirect(children, getFormats(), this);
     }
 }

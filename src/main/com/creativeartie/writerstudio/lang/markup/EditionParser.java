@@ -40,6 +40,7 @@ enum EditionParser implements SetupParser{
             ArrayList<Span> children){
         assert children != null: "Null children.";
         assert pointer != null: "Null pointer.";
+
         /// Add the meta text, if any found
         CONTENT_BASIC.parse(pointer, children);
 

@@ -9,7 +9,10 @@ import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/** Implements {@code design/ebnf.txt Basic} and the rules it uses. */
+/** Implements {@code design/ebnf.txt Basic} and the rules it uses.
+ *
+ * The rules {@code Basic} uses are {@code Raw} and {@code Escape}.
+ */
 abstract class BasicParseText implements SetupParser{
 
     private final ImmutableList<String> setupEnders;
@@ -84,7 +87,7 @@ abstract class BasicParseText implements SetupParser{
      *      setup pointer
      * @return success
      */
-    private boolean parseEscape(SetupPointer pointer, List<Span> parent){
+    private final boolean parseEscape(SetupPointer pointer, List<Span> parent){
         assert pointer != null;
         assert parent != null;
 
