@@ -11,7 +11,7 @@ import static com.creativeartie.writerstudio.main.Checker.*;
  * of {@link LinedSpanPointLink} and {@link LinedSpanPointNote}
  */
 enum LinedParsePointer implements SetupParser {
-    FOOTNOTE(LINED_FOOTNOTE), ENDNOTE(LINED_ENDNOTE), HYPERLINK(LINED_LINK){
+    FOOTNOTE(LINED_FOOTNOTE), ENDNOTE(LINED_ENDNOTE), LINK(LINED_LINK){
 
         @Override
         public Optional<SpanBranch> parse(SetupPointer pointer){

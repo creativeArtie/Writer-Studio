@@ -10,6 +10,7 @@ public final class InfoDataSpanText extends InfoDataSpan{
     private final CacheKeyMain<ContentSpan> cacheData;
 
     /** Creates a {@linkplain InfoDataSpanText}.
+     *
      * @param children
      *      span children
      * @see InfoDataParser#TEXT

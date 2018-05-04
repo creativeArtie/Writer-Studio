@@ -414,13 +414,12 @@ public final class AuxiliaryData{
         StyleInfoLeaf.TEXT, true, EDITION_BEGIN);
 
     /// %Part 3.3: Main Section Line Parsers ===================================
-    public static final List<SetupParser> SECTION_PARSERS = getSectionParsers();
 
     /** Create the list of {@link SECTION_PARSERS}.
      *
      * @return answer
      */
-    private static List<SetupParser> getSectionParsers(){
+    public static List<SetupParser> getSectionParsers(){
         ImmutableList.Builder<SetupParser> builder = ImmutableList.builder();
         builder.add(LinedParseLevel.BULLET, LinedParseLevel.NUMBERED);
         builder.add(LinedParsePointer.values());

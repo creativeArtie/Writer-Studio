@@ -43,6 +43,7 @@ enum InfoDataParser implements SetupParser{
     private final SetupParser llambaParser;
 
     /** Creates a {@linkplain InfoDataParser}.
+     *
      * @param parser
      *      llamba parser
      */

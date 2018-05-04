@@ -10,6 +10,7 @@ public final class InfoDataSpanFormatted extends InfoDataSpan{
     private final CacheKeyMain<FormattedSpan> cacheData;
 
     /** Creates a {@linkplain InfoDataSpanFormatted}.
+     *
      * @param children
      *      span children
      * @see InfoDataParser#FORMATTED

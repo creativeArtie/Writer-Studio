@@ -10,6 +10,7 @@ public final class InfoDataSpanRef extends InfoDataSpan{
     private final CacheKeyMain<DirectorySpan> cacheData;
 
     /** Creates a {@linkplain InfoDataSpanRef}.
+     *
      * @param children
      *      span children
      * @param type

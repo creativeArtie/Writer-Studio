@@ -29,6 +29,7 @@ public enum FormatType implements StyleInfo{
      *      formatter token
      */
     private FormatType(String token){
+        assert token != null && token.length() > 0: "Empty token";
         formatToken = token;
     }
 

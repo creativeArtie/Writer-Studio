@@ -188,7 +188,7 @@ public class BranchLineTest {
 
         @Override
         public void setup(){
-            setLinedType(LinedType.HYPERLINK);
+            setLinedType(LinedType.LINK);
             setStyles(getLinedType(), getCatalogueStatus());
         }
 

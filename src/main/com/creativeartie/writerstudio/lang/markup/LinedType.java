@@ -18,7 +18,7 @@ public enum LinedType implements StyleInfo{
 
     FOOTNOTE(LinedParsePointer.FOOTNOTE, LINED_FOOTNOTE),
     ENDNOTE(LinedParsePointer.ENDNOTE, LINED_ENDNOTE),
-    HYPERLINK(LinedParsePointer.HYPERLINK, LINED_LINK),
+    LINK(LinedParsePointer.LINK, LINED_LINK),
     NOTE(LinedParseRest.NOTE, LINED_NOTE),
 
     AGENDA(LinedParseRest.AGENDA, LINED_AGENDA),

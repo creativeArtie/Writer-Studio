@@ -16,6 +16,7 @@ public abstract class InfoDataSpan extends SpanBranch{
     private final InfoDataType dataType;
 
     /** Creates a {@linkplain InfoDataSpan}.
+     *
      * @param children
      *      span children
      * @param type

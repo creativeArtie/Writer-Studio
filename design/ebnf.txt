@@ -32,33 +32,31 @@ Section     = ((LinedHeading | LinedOutline), [{\n, SectionContent}]) |
 SectionContent = {(SectionLine, \n) | LinedBreak} | {SectionLine | LineBreak};
 SectionLine = (LinedParagraph | LinedAgenda | LinedFootnote |
                LinedEndnote | LinedLink);
-LinedParagrah = Content;
-LinedBreak    = "***", \n;
-LinedAgenda   = "!!", [Content] ;
-LinedFootnote = "!^", Directory, [[":"], Content];
-LinedEndnote  = "!*", Directory, [[":"], Content];
-LinedLink     = "!@", Directory, [[":"], Content];
-LinedHeading  = HeadingStart, [LineId];
-LinedOutline  = OutlineStart, [LineId];
-LinedQuote    = QuoteStart, [Format1];
-LinedNumbered = NumberedStart, [Format1];
-LinedBullet   = BulletStart, Format1;
-LineId = (Spaces, "@", Directory, [":", [Format1], [Edition]]) |
-        ([Format1], [Edition]);
+LinedParagraph = Content;
+LinedBreak     = "***", \n;
+LinedAgenda    = "!!", [Content] ;
+LinedFootnote  = "!^", Directory, [[":"], Content];
+LinedEndnote   = "!*", Directory, [[":"], Content];
+LinedLink      = "!@", Directory, [[":"], Content];
+LinedQuote     = ">", [Format1];
 
-HeadingStart  = "=", [ "=", ["=", ["=", ["=", ["="] ] ] ] ];
-OutlineStart  = "!", \t, [ \t, [\t, [\t, [\t, [\t] ] ] ] ];
-QuoteStart    = ">", [ ">", [">", [">", [">", [">"] ] ] ] ];
-NumberedStart = \t, [ \t, [\t, [\t, [\t, [\t] ] ] ] ], #;
-BulletStart   = \t, [ \t, [\t, [\t, [\t, [\t] ] ] ] ], -;
-
+LevelLinedHeading   = HeadingStart, [LineId];
+LevelLinedOutline   = OutlineStart, [LineId];
+LevelLinedNumbered  = NumberedStart, [Format2];
+LevelLinedBullet    = BulletStart, [Format2];
+(*                    1      2     3     4     5     6
+HeadingStart  =      "=", [ "=", ["=", ["=", ["=", ["="] ] ] ] ];
+OutlineStart  = "!", "#", [ "#", ["#", ["#", ["#", ["#"] ] ] ] ];
+NumberedStart =      "#", [ "#", ["#", ["#", ["#", ["#"] ] ] ] ];
+BulletStart   =      "-", [ "-", ["-", ["-", ["-", ["-"] ] ] ] ]-;
+LineId = (Spaces, [ ["@"], [Directory], [":", [Format2], [Edition]] ]) |
+        ([Format2], [Edition]);
 
 Note     = (LinedNoteHead, [{\n LinedNoteLine}]) |
            (LinedNoteLine, [{\n LinedNoteLine}];
 NoteLine = LinedNote | LinedCite;
 LinedNoteHead = "!%", Spaces, "@", Directory, [":", [Format1]];
 LinedNoteLine = "!%", Format1;
-
 
 LinedCite = "!>",
     ((InfoFieldFootnote | InfoFieldIntext), [[Spaces, [":"]] InfoDataText]) |

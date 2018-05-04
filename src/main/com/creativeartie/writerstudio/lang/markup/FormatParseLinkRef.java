@@ -10,11 +10,11 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 /** Implements {@code design/ebnf.txt FormatRefLink}. */
 final class FormatParseLinkRef extends FormatParseLink {
 
-    /** Creates a {@linkplain FormatParseLinkDirect}.
+    /** Creates a {@linkplain FormatParseLinkRef}.
      *
      * @param formats
      *      format lists
-     * @see FormattedParser#getParsers(boolean[])
+     * @see FormatParseLink#getParsers(boolean[])
      */
     FormatParseLinkRef(boolean[] formats){
         super(LINK_REF, formats);

@@ -60,7 +60,7 @@ abstract class CheatsheetPaneView extends GridPane{
         addLabel(ans, CheatsheetLabel.getLabel(LinedType.NOTE),      5, 0);
         addLabel(ans, CheatsheetLabel.getLabel(LinedType.FOOTNOTE),  5, 1);
         addLabel(ans, CheatsheetLabel.getLabel(LinedType.ENDNOTE),   5, 2);
-        addLabel(ans, CheatsheetLabel.getLabel(LinedType.HYPERLINK), 5, 3);
+        addLabel(ans, CheatsheetLabel.getLabel(LinedType.LINK), 5, 3);
         setPrecentWidth(12); /// fills to: 50
 
         addLabel(ans, CheatsheetLabel.getLabel(DirectoryType.RESEARCH), 6, 0);

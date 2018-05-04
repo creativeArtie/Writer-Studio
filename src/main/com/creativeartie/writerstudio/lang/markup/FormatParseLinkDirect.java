@@ -14,7 +14,7 @@ final class FormatParseLinkDirect extends FormatParseLink {
      *
      * @param formats
      *      format lists
-     * @see FormattedParser#getParsers(boolean[])
+     * @see FormatParseLink#getParsers(boolean[])
      */
     FormatParseLinkDirect(boolean[] formats){
         super(LINK_BEGIN, formats);

@@ -10,6 +10,7 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  * <ul>
  * <li>{@link DirectoryParser#getRefParser(DirectoryType}</li>
  * <li> {@link DirectoryParser#getIDParser(DirectoryType}</li>
+ * <li> {@link LinedParsePointer#parse(SetupPointer)}</li>
  * </ul>
  */
 public enum DirectoryType implements StyleInfo{
