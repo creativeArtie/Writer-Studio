@@ -9,30 +9,21 @@ import com.creativeartie.writerstudio.lang.*;
 
 /**
  * Styles describe the type of data.
+ *
+ * The value order is set by:
+ * <ul>
+ * <li>{@link InfoFieldType#parseText()}</li>
+ * </ul>
  */
 public enum InfoFieldType implements StyleInfo{
 
-    SOURCE(InfoDataParser.FORMATTED), IN_TEXT(InfoDataParser.TEXT),
-    FOOTNOTE(InfoDataParser.FORMATTED), REF(InfoDataParser.NOTE_REF),
+    SOURCE, IN_TEXT, FOOTNOTE, REF, ERROR;
 
-    ERROR(null);
-
-    private final Optional<SetupParser> dataParser;
-
-    private InfoFieldType(SetupParser parser){
-        dataParser = Optional.ofNullable(parser);
-    }
-
-    Optional<SetupParser> getDataParser(){
-        return dataParser;
-    }
 
     public static InfoFieldType parseText(String text){
-        String name = CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_UNDERSCORE,
-            text.trim());
-        for (InfoFieldType type: values()){
-            if (type.name().equals(name)){
-                return type;
+        for (InfoFieldParser type: InfoFieldParser.values()){
+            if (type.getFieldName().equals(text)){
+                return values()[type.ordinal()];
             }
         }
         return InfoFieldType.ERROR;

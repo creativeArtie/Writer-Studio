@@ -15,8 +15,8 @@ enum LinedParseCite implements SetupParser {
     public Optional<SpanBranch> parse(SetupPointer pointer){
         ArrayList<Span> children = new ArrayList<>();
         if (pointer.startsWith(children, LINED_CITE)){
-            Optional<SetupParser> used = Optional.empty();
-            for (InfoFieldParser parser: InfoFieldParser.getParsers()){
+            Optional<InfoDataParser> used = Optional.empty();
+            for (InfoFieldParser parser: InfoFieldParser.values()){
                 if (parser.parse(pointer, children)){
                     used = parser.getDataParser();
                     break;

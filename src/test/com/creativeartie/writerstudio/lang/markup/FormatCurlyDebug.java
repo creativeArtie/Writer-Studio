@@ -41,10 +41,10 @@ public class FormatCurlyDebug {
             buildNoteId("-bc").addCategory("a"),
             CatalogueStatus.NOT_FOUND, 0);
         FormatNoteTest note = new FormatNoteTest()
-            .setDirectoryType(DirectoryType.NOTE)
+            .setDirectoryType(DirectoryType.RESEARCH)
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder);
         DirectoryTest id = new DirectoryTest()
-            .setPurpose(DirectoryType.NOTE)
+            .setPurpose(DirectoryType.RESEARCH)
             .setIdentity(builder);
         ContentTest content1 = new ContentTest()
             .setBegin(false).setText("a")
@@ -245,7 +245,7 @@ public class FormatCurlyDebug {
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(5, "-dd", 0);
         commonEdited(doc, buildNoteId("dd").addCategory("abc"),
-            DirectoryType.NOTE, "{@");
+            DirectoryType.RESEARCH, "{@");
     }
 
     @Test

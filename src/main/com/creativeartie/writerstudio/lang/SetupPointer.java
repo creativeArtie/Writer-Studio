@@ -104,7 +104,7 @@ public final class SetupPointer{
      */
     public boolean trimStartsWith(ArrayList<Span> children, String compare){
         argumentNotNull(children, "children");
-        argumentNotNull(compare, "compare");
+        argumentNotEmpty(compare, "compare");
 
         return trimStartsWith(children, StyleInfoLeaf.KEYWORD, compare);
     }
@@ -123,7 +123,7 @@ public final class SetupPointer{
             String compare){
         argumentNotNull(children, "children");
         argumentNotNull(style, "style");
-        argumentNotNull(compare, "compare");
+        argumentNotEmpty(compare, "compare");
         /// End of the document
         if (matchMarker >= rawText.length()){
             return false;
@@ -160,7 +160,7 @@ public final class SetupPointer{
      */
     public boolean startsWith(ArrayList<Span> children, String compare){
         argumentNotNull(children, "children");
-        argumentNotNull(compare, "compare");
+        argumentNotEmpty(compare, "compare");
 
         return startsWith(children, StyleInfoLeaf.KEYWORD, compare);
     }
@@ -181,7 +181,7 @@ public final class SetupPointer{
             String compare){
         argumentNotNull(children, "children");
         argumentNotNull(style, "style");
-        argumentNotNull(compare, "compare");
+        argumentNotEmpty(compare, "compare");
 
         int next = matchMarker;
         if (rawText.startsWith(compare, next)){
@@ -363,7 +363,7 @@ public final class SetupPointer{
      */
     public boolean nextChars(ArrayList<Span> children, int size){
         argumentNotNull(children, "children");
-        argumentAtLeast(size, "size", 0);
+        argumentAtLeast(size, "size", 1);
         return nextChars(children, StyleInfoLeaf.KEYWORD, size);
     }
 
@@ -381,7 +381,7 @@ public final class SetupPointer{
             int size){
         argumentNotNull(children, "children");
         argumentNotNull(style, "style");
-        argumentAtLeast(size, "size", 0);
+        argumentAtLeast(size, "size", 1);
 
         if (matchMarker + size <= rawText.length()){
             nextMarker = matchMarker + size;

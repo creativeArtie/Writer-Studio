@@ -75,11 +75,13 @@ InfoDataFormatted = Format2, -\n;
 InfoDataRef       = Directory
 
 (* Implemented as Format* classes *)
-Format1 = {FormatAgenda | FormatDirectLink | FormatRefLink FormatReference |
-          "**" | "*" | "_" | "`" | FormatContent}, (-\? | -\n);
-Format2 = {FormatAgenda | FormatFootnote | FormatEndnote | FormatNote |
-          FormatReference | FormatDirectLink | FormatRefLink | "**" | "*" |
-          "_" | "`" | FormatContent}, (-\? | -\n);
+Format1 = {FormatAgenda | "**" | "*" | "_" | "`" | FormatContent |
+           FormatDirectLink | FormatRefLink | FormatReference
+          }, (-\? | -\n);
+Format2 = {FormatAgenda |  "**" | "*" | "_" | "`" | FormatContent |
+           FormatDirectLink | FormatRefLink | FormatReference |
+           FormatFootnote | FormatEndnote | FormatNote
+          }, (-\? | -\n);
 FormatReference  = "{%", [Content], ( "%}" | -\n);
 FormatNote       = FormatResearch | FormatFootnote | FomratEndnote;
 FormatEndnote    = "{^", [Directory], ("}" | -\n );

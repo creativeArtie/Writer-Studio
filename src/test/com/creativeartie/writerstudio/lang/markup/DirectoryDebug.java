@@ -34,7 +34,7 @@ public class DirectoryDebug{
         DocumentAssert doc  = assertDoc(1, raw, parsers);
 
         DirectoryTest id = new DirectoryTest()
-            .setPurpose(DirectoryType.NOTE)
+            .setPurpose(DirectoryType.RESEARCH)
             .setIdentity(buildId("hello"));
         ContentTest content = new ContentTest()
             .setBegin(false).setText(raw)
@@ -54,7 +54,7 @@ public class DirectoryDebug{
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         DirectoryTest id = new DirectoryTest()
-            .setPurpose(DirectoryType.NOTE)
+            .setPurpose(DirectoryType.RESEARCH)
             .setIdentity(buildId("").addCategory("no"));
         ContentTest content = new ContentTest()
             .setText("no").setBegin(false)
@@ -75,7 +75,7 @@ public class DirectoryDebug{
         DocumentAssert doc  = assertDoc(1, raw, parsers);
 
         DirectoryTest id = new DirectoryTest()
-            .setPurpose(DirectoryType.NOTE)
+            .setPurpose(DirectoryType.RESEARCH)
             .setIdentity(buildId("hi").addCategory("cat"));
         ContentTest content1 = new ContentTest()
             .setBegin(false).setText("cat")
@@ -108,7 +108,7 @@ public class DirectoryDebug{
         String raw = "cat-gory-name";
 
         DirectoryTest id = new DirectoryTest()
-            .setPurpose(DirectoryType.NOTE)
+            .setPurpose(DirectoryType.RESEARCH)
             .setIdentity(buildId("name").addCategory("cat", "gory"));
         ContentTest content1 = new ContentTest()
             .setBegin(false).setText("cat")
@@ -140,7 +140,7 @@ public class DirectoryDebug{
         DocumentAssert doc  = assertDoc(1, raw, parsers);
 
         DirectoryTest id = new DirectoryTest()
-            .setPurpose(DirectoryType.NOTE)
+            .setPurpose(DirectoryType.RESEARCH)
             .setIdentity(buildId("see").addCategory(""));
         ContentTest content = new ContentTest()
             .setBegin(false).setText("see")
@@ -161,7 +161,7 @@ public class DirectoryDebug{
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         DirectoryTest id = new DirectoryTest()
-            .setPurpose(DirectoryType.NOTE)
+            .setPurpose(DirectoryType.RESEARCH)
             .setIdentity(buildId("wee").addCategory("yes sir" , ""));
         ContentTest content1 = new ContentTest()
             .setBegin(false).setText("yes sir")
@@ -193,7 +193,7 @@ public class DirectoryDebug{
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         DirectoryTest id = new DirectoryTest()
-            .setPurpose(DirectoryType.NOTE)
+            .setPurpose(DirectoryType.RESEARCH)
             .setIdentity(buildId("-c"));
         ContentTest content = new ContentTest()
             .setBegin(false).setText("-c")
@@ -230,7 +230,7 @@ public class DirectoryDebug{
         ///           012       3    4567
         String raw = "abc" + last + "abc";
         DirectoryTest id = new DirectoryTest()
-            .setPurpose(DirectoryType.NOTE)
+            .setPurpose(DirectoryType.RESEARCH)
             .setIdentity(buildId("abc"));
         ContentTest content = new ContentTest()
             .setBegin(false).setText("abc")

@@ -18,6 +18,7 @@ import com.creativeartie.writerstudio.lang.*;
 public class InfoDebug {
 
     /// TODO Test data edited
+    private final SetupParser[] FIELD_PARSER = InfoFieldParser.values();
 
     @Test
     public void dataFormatted(){
@@ -82,8 +83,7 @@ public class InfoDebug {
     public void fieldSource(){
         ///           0123456
         String raw = "source";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
-            InfoFieldParser.getParsers());
+        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, FIELD_PARSER);
 
         FieldTest field = new FieldTest().setType(InfoFieldType.SOURCE);
 
@@ -97,8 +97,7 @@ public class InfoDebug {
     public void fieldInText(){
         ///           01234567
         String raw = "in-text";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
-            InfoFieldParser.getParsers());
+        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, FIELD_PARSER);
 
         FieldTest field = new FieldTest().setType(InfoFieldType.IN_TEXT);
 
@@ -112,8 +111,7 @@ public class InfoDebug {
     public void fieldFootnote(){
         ///           012345678
         String raw = "footnote";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
-            InfoFieldParser.getParsers());
+        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, FIELD_PARSER);
         FieldTest field = new FieldTest()
             .setType(InfoFieldType.FOOTNOTE);
 
@@ -127,8 +125,7 @@ public class InfoDebug {
     public void fieldError(){
         ///           012345
         String raw = "error";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
-            InfoFieldParser.getParsers());
+        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, FIELD_PARSER);
 
         FieldTest field = new FieldTest().setType(InfoFieldType.ERROR);
 
@@ -140,8 +137,7 @@ public class InfoDebug {
     public void fieldErrorRandom(){
         ///           012345
         String raw = "p-ges";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
-            InfoFieldParser.getParsers());
+        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,FIELD_PARSER);
 
         FieldTest field = new FieldTest().setType(InfoFieldType.ERROR);
 

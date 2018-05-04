@@ -298,11 +298,11 @@ public class FormattedSpanDebug {
         /// "{@note}"
         IDBuilder builder = doc.addRef(FormatCurlyDebug.buildNoteId("note"), 2);
         FormatNoteTest cite = new FormatNoteTest()
-            .setDirectoryType(DirectoryType.NOTE)
+            .setDirectoryType(DirectoryType.RESEARCH)
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder)
             .setFormats(FormatType.ITALICS);
         DirectoryTest citeId = new DirectoryTest()
-            .setPurpose(DirectoryType.NOTE)
+            .setPurpose(DirectoryType.RESEARCH)
             .setIdentity(builder);
         /// " "
         FormatContentTest text6 = new FormatContentTest()

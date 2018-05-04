@@ -7,8 +7,7 @@ import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/** Implements {@code design/ebnf.txt InfoDataText}, {@code InfoDataFormatted},
- * and {@code InfoDataRef}*/
+/** Implements rule prefixed with {@code design/ebnf.txt InfoData}. */
 enum InfoDataParser implements SetupParser{
     /** A {@link FomattedSpan} data. */
     FORMATTED(pointer -> {

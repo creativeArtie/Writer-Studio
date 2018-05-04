@@ -8,52 +8,54 @@ import com.google.common.base.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import com.creativeartie.writerstudio.lang.*;
 
-/**
- * Parser for {@link InfoFieldSpan}.
+/** Implements rule prefixed with {@code design/ebnf.txt InfoField}
+ *
+ * The value order is set by:
+ * <ul>
+ * <li>{@link InfoFieldType#parseText()}</li>
+ * </ul>
  */
-final class InfoFieldParser implements SetupParser{
+enum InfoFieldParser implements SetupParser{
 
-    private final InfoFieldType fieldType;
+    SOURCE(InfoDataParser.FORMATTED, SOURCE_MAIN),
+    IN_TEXT(InfoDataParser.TEXT, SOURCE_IN_TEXT),
+    FOOTNOTE(InfoDataParser.FORMATTED, SOURCE_FOOTNOTE),
+    REF(InfoDataParser.NOTE_REF, SOURCE_REFERENCE),
 
-    private static Optional<InfoFieldParser[]> baseParsers = Optional.empty();
+    ERROR(null, "");
 
-    public static InfoFieldParser[] getParsers(){
-        if (! baseParsers.isPresent()){
-            InfoFieldType[] types = InfoFieldType.values();
-            InfoFieldParser[] create = new InfoFieldParser[types.length];
-            for(int i = 0; i < create.length; i++){
-                create[i] = new InfoFieldParser(types[i]);
-            }
-            baseParsers = Optional.of(create);
-        }
-        return baseParsers.get();
+    private final Optional<InfoDataParser> dataParser;
+    private final String fieldName;
+
+    private InfoFieldParser(InfoDataParser parser, String name){
+        dataParser = Optional.ofNullable(parser);
+        fieldName = name;
     }
 
-    private InfoFieldParser(InfoFieldType type){
-        fieldType = type;
+    Optional<InfoDataParser> getDataParser(){
+        return dataParser;
     }
 
-    Optional<SetupParser> getDataParser(){
-        return fieldType.getDataParser();
+    String getFieldName(){
+        return fieldName;
     }
 
     @Override
     public Optional<SpanBranch> parse(SetupPointer childPointer){
         ArrayList<Span> children = new ArrayList<>();
-        String field = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_HYPHEN,
-            fieldType.name());
 
-        if(childPointer.trimStartsWith(children, StyleInfoLeaf.FIELD, field)){
+        if (this == InfoFieldParser.ERROR){
+            if (childPointer.getTo(children, StyleInfoLeaf.FIELD, LINED_DATA,
+                    LINED_END)){
+                return Optional.of(new InfoFieldSpan(children));
+            }
+            return Optional.empty();
+        }
+
+        if(childPointer.trimStartsWith(children, StyleInfoLeaf.FIELD, fieldName)){
             return Optional.of(new InfoFieldSpan(children));
         }
 
-        if (fieldType == InfoFieldType.ERROR){
-            if (childPointer.getTo(children, StyleInfoLeaf.FIELD, LINED_DATA,
-                LINED_END))
-            {
-                return Optional.of(new InfoFieldSpan(children));
-            }
-        }
 
         return Optional.empty();
     }

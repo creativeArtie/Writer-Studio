@@ -258,6 +258,17 @@ public final class AuxiliaryData{
 
     }
 
+    /// %Part 1.9 Citation Field Names #########################################
+
+    /** Citation in-text  field:                 {@value}*/
+    public static final String SOURCE_IN_TEXT   = "in-text";
+    /** Citation footnote field:                  {@value}*/
+    public static final String SOURCE_FOOTNOTE  = "footnote";
+    /** Citation last page field:                 {@value}*/
+    public static final String SOURCE_MAIN      = "source";
+    /** Citation error field    :                 {@value}*/
+    public static final String SOURCE_REFERENCE = "ref";
+
     /// %Part 2: Catalougue Categories #########################################
 
     /// %Part 2.1: DirectoryType Base Categories ===============================
