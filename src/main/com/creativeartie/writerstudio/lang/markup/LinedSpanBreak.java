@@ -5,12 +5,15 @@ import java.util.*;
 import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
-/**
- * Line that create a section break, or a scene break in the document or a
- * novel. Represented in design/ebnf.txt as {@code LinedBreak}.
- */
+/** Section break line*/
 public class LinedSpanBreak extends LinedSpan {
 
+    /** Creates a {@linkplain LinedSpanBreak}.
+     *
+     * @param children
+     *      span children
+     * @see LinedParseRest#BREAK
+     */
     LinedSpanBreak(List<Span> children){
         super(children);
     }

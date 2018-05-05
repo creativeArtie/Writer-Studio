@@ -5,16 +5,20 @@ import java.util.*;
 import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.main.Checker.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * Line that points to a list. Represented in design/ebnf.txt as
- * {@code LinedNumbered}, and {@link LinedBullet}.
- */
+/** A bullet or numbered line item. */
 public class LinedSpanLevelList extends LinedSpanLevel {
     private LinedParseLevel spanReparser;
     private final CacheKeyMain<Integer> cachePublish;
     private final CacheKeyMain<Integer> cacheNote;
 
+    /** Creates a {@linkplain LinedSpanLevelList}.
+     *
+     * @param children
+     *      span children
+     * @see LinedParseLevel#buildBasic(SetupPointer, List)
+     */
     LinedSpanLevelList(List<Span> children){
         super(children);
         cachePublish = CacheKeyMain.integerKey();
@@ -36,6 +40,7 @@ public class LinedSpanLevelList extends LinedSpanLevel {
 
     @Override
     protected SetupParser getParser(String text){
+        argumentNotNull(text, "text");
         if (AuxiliaryChecker.checkLineEnd(text, isDocumentLast())){
             if (getParser(text, LinedParseLevel.BULLET)){
                 return LinedParseLevel.BULLET;
@@ -55,6 +60,8 @@ public class LinedSpanLevelList extends LinedSpanLevel {
      * @return answer
      */
     private boolean getParser(String text, LinedParseLevel parser){
+        assert text != null: "Null text";
+        assert parser != null: "Null parser";
         for (String token: LEVEL_STARTERS.get(parser)){
             if (text.startsWith(token)){
                 return true;

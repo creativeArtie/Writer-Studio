@@ -1,15 +1,15 @@
 package com.creativeartie.writerstudio.lang.markup;
 
 import java.util.*;
+
 import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.lang.*;
-import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
-/**
- * Line that store research sources and how to do in-text citation. Represented
- * in design/ebnf.txt as {@code LinedCite}.
- */
+import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+
+/** A citation for "Cite Worked" page, footnote or in-text. */
 public class LinedSpanCite extends LinedSpan {
 
     /** Check if the line start with {@link LINED_CITE}.
@@ -17,6 +17,8 @@ public class LinedSpanCite extends LinedSpan {
      * @param text
      *      new text
      * @return answer
+     * @see #getParser(String)
+     * @see NoteCardSpan#getParser(String)
      */
     static boolean checkLine(String text){
         return text.startsWith(LINED_CITE);
@@ -27,7 +29,13 @@ public class LinedSpanCite extends LinedSpan {
     private final CacheKeyList<StyleInfo> cacheStyles;
     private final CacheKeyMain<Integer> cacheNote;
 
-    public LinedSpanCite(List<Span> children){
+    /** Creates a {@linkplain LinedSpanCite}.
+     *
+     * @param children
+     *      span children
+     * @see LinedParseRest#CITE
+     */
+    LinedSpanCite(List<Span> children){
         super(children);
 
         cacheFieldType = new CacheKeyMain<>(InfoFieldType.class);
@@ -36,6 +44,10 @@ public class LinedSpanCite extends LinedSpan {
         cacheNote = CacheKeyMain.integerKey();
     }
 
+    /** Gets the citation field type
+     *
+     * @return answer
+     */
     public InfoFieldType getFieldType(){
         return getLocalCache(cacheFieldType, () -> {
             Optional<InfoFieldSpan> field = spanFromFirst(InfoFieldSpan.class);
@@ -46,6 +58,10 @@ public class LinedSpanCite extends LinedSpan {
         });
     }
 
+    /** Gets the citation field data
+     *
+     * @return answer
+     */
     public Optional<InfoDataSpan> getData(){
         return getLocalCache(cacheData, () -> spanFromLast(InfoDataSpan.class));
     }
@@ -66,13 +82,18 @@ public class LinedSpanCite extends LinedSpan {
     public int getNoteTotal(){
         return getLocalCache(cacheNote, () -> {
             if (getFieldType() != InfoFieldType.ERROR){
-                return getData().map(span -> getCount(span)).orElse(0);
+                return getData().map(this::getCount).orElse(0);
             }
             return 0;
         });
     }
 
+    /** Gets the note count
+     *
+     * @return answer
+     */
     private int getCount(InfoDataSpan span){
+        assert span != null: "Null span";
         if (span instanceof InfoDataSpanFormatted){
             FormattedSpan data = ((InfoDataSpanFormatted)span).getData();
             return data.getPublishTotal() + data.getNoteTotal();
@@ -84,7 +105,8 @@ public class LinedSpanCite extends LinedSpan {
 
     @Override
     protected SetupParser getParser(String text){
+        argumentNotNull(text, "text");
         return checkLine(text) && AuxiliaryChecker.checkLineEnd(text, isDocumentLast())?
-            LinedParseCite.INSTANCE: null;
+            LinedParseRest.CITE: null;
     }
 }

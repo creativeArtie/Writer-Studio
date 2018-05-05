@@ -3,18 +3,23 @@ package com.creativeartie.writerstudio.lang.markup;
 import java.util.*;
 
 import com.creativeartie.writerstudio.lang.*;
-import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
-/**
- * Line that store information that needed to be done before published.
- * Represented in design/ebnf.txt as {@code LinedAgenda}.
- */
+import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+
+/** A to do reminder line.*/
 public class LinedSpanAgenda extends LinedSpan implements Catalogued{
 
     private final CacheKeyMain<String> cacheAgenda;
     private final CacheKeyMain<Integer> cacheNote;
     private final CacheKeyOptional<CatalogueIdentity> cacheId;
 
+    /** Creates a {@linkplain LinedSpanAgenda}.
+     *
+     * @param children
+     *      span children
+     * @see LinedParseRest#AGENDA
+     */
     LinedSpanAgenda(List<Span> children){
         super(children);
         cacheAgenda = CacheKeyMain.stringKey();
@@ -22,15 +27,31 @@ public class LinedSpanAgenda extends LinedSpan implements Catalogued{
         cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
     }
 
-    public Optional<ContentSpan> getAgendaSpan(){
-        return spanFromLast(ContentSpan.class);
-    }
-
+    /** Get the agenda text.
+     *
+     * @return answer.
+     */
     public String getAgenda(){
         return getLocalCache(cacheAgenda, () -> {
             Optional<ContentSpan> ans = getAgendaSpan();
             return ans.isPresent()? ans.get().getTrimmed() : "";
         });
+    }
+
+    @Override
+    public int getNoteTotal(){
+        return getLocalCache(cacheNote, () -> {
+            return getAgendaSpan().map(span -> span.wordCount())
+                .orElse(0);
+        });
+    }
+
+    /** Get the agenda span.
+     *
+     * @return answer.
+     */
+    private Optional<ContentSpan> getAgendaSpan(){
+        return spanFromLast(ContentSpan.class);
     }
 
     @Override
@@ -46,16 +67,8 @@ public class LinedSpanAgenda extends LinedSpan implements Catalogued{
     }
 
     @Override
-    public int getNoteTotal(){
-        return getLocalCache(cacheNote, () -> {
-            return getAgendaSpan().map(span -> span.wordCount())
-                .orElse(0);
-        });
-    }
-
-
-    @Override
     protected SetupParser getParser(String text){
+        argumentNotNull(text, "text");
         return text.startsWith(LINED_AGENDA) &&
             AuxiliaryChecker.checkLineEnd(text, isDocumentLast())?
             LinedParseRest.AGENDA: null;

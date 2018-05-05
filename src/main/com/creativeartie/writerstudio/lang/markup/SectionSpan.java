@@ -73,7 +73,7 @@ public abstract class SectionSpan extends SpanBranch {
 
     public final EditionType getEdition(){
         return getLocalCache(cacheEdition, () -> getHeading()
-            .map(span -> span.getEdition()).orElse(EditionType.NONE));
+            .map(span -> span.getEditionType()).orElse(EditionType.NONE));
     }
 
     protected final <T> List<T> getChildren(Class<T> getting){

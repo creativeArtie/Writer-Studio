@@ -157,7 +157,7 @@ public class BranchLineTest {
 
         protected LinedSpanLevel testSubclass(SpanBranch span){
             LinedSpanLevelSection test = assertClass(span, LinedSpanLevelSection.class);
-            assertEquals(getError("edition", span), edition, test.getEdition());
+            assertEquals(getError("edition", span), edition, test.getEditionType());
             return test;
         }
     }

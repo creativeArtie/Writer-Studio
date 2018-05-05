@@ -58,7 +58,7 @@ public final class DirectorySpan extends SpanBranch {
         });
     }
 
-    /** Get the display for {@link FormatSpanPointId#getOutput()}
+    /** Get the reference help text.
      *
      * @return answer
      */

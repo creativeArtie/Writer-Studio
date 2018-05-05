@@ -13,8 +13,7 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  *
  */
 interface SectionParser extends SetupParser {
-
-    static List<SetupParser> SECTION_PARSERS = getSectionParsers();
+    public static final List<SetupParser> SECTION_PARSERS = getSectionParsers();
 
     static void parseContent(ArrayList<Span> children,
             SetupPointer pointer){

@@ -76,7 +76,7 @@ public class BranchSectionTest {
                 .class, idx);
             sectionHeading = Optional.of(line);
             sectionLevel = line.getLevel();
-            sectionEdition = line.getEdition();
+            sectionEdition = line.getEditionType();
             return cast();
         }
 

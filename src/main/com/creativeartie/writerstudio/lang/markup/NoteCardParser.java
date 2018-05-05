@@ -27,7 +27,7 @@ enum NoteCardParser implements SetupParser {
                 }
                 children.add(line.get());
             } else {
-                line = LinedParseCite.INSTANCE.parse(pointer);
+                line = LinedParseRest.CITE.parse(pointer);
                 if (line.isPresent()){
                     children.add(line.get());
                 } else {

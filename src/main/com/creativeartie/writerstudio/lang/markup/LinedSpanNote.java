@@ -5,10 +5,7 @@ import java.util.*;
 import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
-/**
- * Line that store note heading or details. Represented in design/ebnf.txt as
- * {@code LinedNoteHead}, and {@code LinedNoteLine}.
- */
+/** A heading or content note line */
 public class LinedSpanNote extends LinedSpan{
 
     /** Check line as a first line in a {@link NoteCard}.

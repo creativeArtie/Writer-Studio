@@ -19,7 +19,7 @@ import com.creativeartie.writerstudio.lang.*;
 public class LinedCiteDebug {
 
     private static final SetupParser[] parsers = new SetupParser[]{
-            LinedParseCite.INSTANCE};
+            LinedParseRest.CITE};
 
     @Test
     public void basicInText(){

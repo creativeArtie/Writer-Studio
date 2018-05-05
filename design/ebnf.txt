@@ -33,12 +33,12 @@ SectionContent = {(SectionLine, \n) | LinedBreak} | {SectionLine | LineBreak};
 SectionLine = (LinedParagraph | LinedAgenda | LinedFootnote |
                LinedEndnote | LinedLink);
 LinedParagraph = Content;
+LinedQuote     = ">", [Format1];
 LinedBreak     = "***", \n;
-LinedAgenda    = "!!", [Content] ;
+LinedAgenda    = "!!", [Content];
 LinedFootnote  = "!^", Directory, [[":"], Content];
 LinedEndnote   = "!*", Directory, [[":"], Content];
 LinedLink      = "!@", Directory, [[":"], Content];
-LinedQuote     = ">", [Format1];
 
 LevelLinedHeading   = HeadingStart, [LineId];
 LevelLinedOutline   = OutlineStart, [LineId];

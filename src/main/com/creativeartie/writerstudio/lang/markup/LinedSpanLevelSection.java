@@ -4,45 +4,45 @@ import java.util.*;
 
 import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * Line that stores a section heading. Represented in design/ebnf.txt as
- * {@code LinedHeading}, {@code LinedOutline}.
- */
+/** A section heading line. */
 public final class LinedSpanLevelSection extends LinedSpanLevel
         implements Catalogued{
 
-    private final CacheKeyOptional<EditionSpan> cacheEditionSpan;
-    private final CacheKeyOptional<CatalogueIdentity> cacheId;
     private final CacheKeyMain<String> cacheLookup;
+
+    private final CacheKeyOptional<EditionSpan> cacheEditionSpan;
     private final CacheKeyMain<EditionType> cacheEdition;
+
     private final CacheKeyMain<Integer> cachePublish;
     private final CacheKeyMain<Integer> cacheNote;
-    private final CacheKeyMain<String> cacheTitle;
 
+    private final CacheKeyOptional<CatalogueIdentity> cacheId;
+
+    /** Creates a {@linkplain LinedSpanLevelSection}.
+     *
+     * @param children
+     *      span children
+     * @see LinedParseLevel#buildSection(SetupPointer, List)
+     */
     LinedSpanLevelSection(List<Span> children){
         super(children);
+        cacheLookup = CacheKeyMain.stringKey();
 
         cacheEditionSpan = new CacheKeyOptional<>(EditionSpan.class);
-        cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
         cacheEdition = new CacheKeyMain<>(EditionType.class);
+
         cachePublish = CacheKeyMain.integerKey();
         cacheNote = CacheKeyMain.integerKey();
-        cacheTitle = CacheKeyMain.stringKey();
-        cacheLookup = CacheKeyMain.stringKey();
+
+        cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
     }
 
-    public Optional<EditionSpan> getEditionSpan(){
-        return spanFromLast(EditionSpan.class);
-    }
-
-    @Override
-    public Optional<CatalogueIdentity> getSpanIdentity(){
-        return getLocalCache(cacheId, () ->
-            spanFromFirst(DirectorySpan.class).map(span -> span.buildId())
-        );
-    }
-
+    /** Gets the user reference help text.
+     *
+     * @return answer
+     */
     public String getLookupText(){
         return getLocalCache(cacheLookup, () ->
             spanFromFirst(DirectorySpan.class)
@@ -51,19 +51,26 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
         );
     }
 
-    @Override
-    public boolean isId(){
-        return true;
+    /** Gets the edition span.
+     *
+     * @return answer
+     */
+    public Optional<EditionSpan> getEditionSpan(){
+        return getLocalCache(cacheEditionSpan, () ->
+            spanFromLast(EditionSpan.class));
     }
 
-    public EditionType getEdition(){
+    /** Gets the edition status.
+     *
+     * @return answer
+     */
+    public EditionType getEditionType(){
         return getLocalCache(cacheEdition, () -> {
             Optional<EditionSpan> status = getEditionSpan();
             return status.isPresent()? status.get().getEditionType():
                 EditionType.NONE;
         });
     }
-
 
     @Override
     public int getPublishTotal(){
@@ -91,7 +98,21 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
     }
 
     @Override
+    public Optional<CatalogueIdentity> getSpanIdentity(){
+        return getLocalCache(cacheId, () ->
+            spanFromFirst(DirectorySpan.class).map(span -> span.buildId())
+        );
+    }
+
+    @Override
+    public boolean isId(){
+        return true;
+    }
+
+    @Override
     protected SetupParser getParser(String text){
+        argumentNotNull(text, "text");
+
         if (! AuxiliaryChecker.checkLineEnd(text, isDocumentLast())){
             return null;
         }

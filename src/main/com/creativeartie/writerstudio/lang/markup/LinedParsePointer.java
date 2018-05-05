@@ -1,63 +1,58 @@
 package com.creativeartie.writerstudio.lang.markup;
 
 import java.util.*;
+import java.util.function.*;
 
 import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**
- * Parser for {@link LinedSpanPoint}. {@code LinedSpanPoint} is the base class
- * of {@link LinedSpanPointLink} and {@link LinedSpanPointNote}
+/** Implements {@code design/ebnf.txt LinedFootnote}, {@code LinedEndnote}, and
+ * {@code LinedLink}.
  */
 enum LinedParsePointer implements SetupParser {
-    FOOTNOTE(LINED_FOOTNOTE), ENDNOTE(LINED_ENDNOTE), LINK(LINED_LINK){
-
-        @Override
-        public Optional<SpanBranch> parse(SetupPointer pointer){
-            checkNotNull(pointer, "pointer");
-            ArrayList<Span> children = new ArrayList<>();
-            if (pointer.startsWith(children, LINED_LINK)){
-                parseCommon(children, pointer);
-                if (pointer.startsWith(children, LINED_DATA)){
-                    CONTENT_DIR_LINK.parse(pointer, children);
-                }
-                pointer.startsWith(children, LINED_END);
-                LinedSpanPointLink ans = new LinedSpanPointLink(children);
-                return Optional.of(ans);
-            }
-            return Optional.empty();
-        }
-
-    };
+    FOOTNOTE(LINED_FOOTNOTE, FORMATTED_TEXT, c -> new LinedSpanPointNote(c)),
+    ENDNOTE(LINED_ENDNOTE, FORMATTED_TEXT, c -> new LinedSpanPointNote(c)),
+    LINK(LINED_LINK, CONTENT_DIR_LINK, c -> new LinedSpanPointLink(c));
 
     private final String spanStart;
+    private final SetupParser dataParser;
+    private final Function<ArrayList<Span>, SpanBranch> spanBuilder;
 
-    private LinedParsePointer(String start){
+    /** Creates a {@linkplain LinedParsePointer}.
+     *
+     * @param start
+     *      start token
+     * @param parser
+     *      data span parser
+     * @param builder
+     *      span builder
+     */
+    private LinedParsePointer(String start, SetupParser parser,
+            Function<ArrayList<Span>, SpanBranch> builder){
         spanStart = start;
-    }
-
-    void parseCommon(ArrayList<Span> children, SetupPointer pointer){
-        checkNotNull(pointer, "childPointer");
-        checkNotNull(children, "spanChildren");
-        DirectoryType idType = DirectoryType.values()[ordinal() + 2];
-        DirectoryParser.getIDParser(idType).parse(pointer, children);
+        dataParser = parser;
+        spanBuilder = builder;
     }
 
     @Override
     public Optional<SpanBranch> parse(SetupPointer pointer){
-        checkNotNull(pointer, "pointer");
+        argumentNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
         if (pointer.startsWith(children, spanStart)){
 
-            parseCommon(children, pointer);
+            /// Create directory type
+            DirectoryType idType = DirectoryType.values()[ordinal() + 2];
+            DirectoryParser.getIDParser(idType).parse(pointer, children);
 
+            /// Create data span
             if (pointer.startsWith(children, LINED_DATA)){
-                FORMATTED_TEXT.parse(pointer, children);
+                dataParser.parse(pointer, children);
             }
+
             pointer.startsWith(children, LINED_END);
 
-            return Optional.of(new LinedSpanPointNote(children));
+            return Optional.of(spanBuilder.apply(children));
         }
         return Optional.empty();
     }

@@ -15,18 +15,6 @@ fg=white</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLUseCase</id>
-    <coordinates>
-      <x>380</x>
-      <y>40</y>
-      <w>370</w>
-      <h>260</h>
-    </coordinates>
-    <panel_attributes>
-bg=cyan</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>UMLClass</id>
     <coordinates>
       <x>140</x>
@@ -154,7 +142,7 @@ bg=yellow</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>560</x>
+      <x>550</x>
       <y>70</y>
       <w>130</w>
       <h>30</h>
@@ -179,11 +167,11 @@ bg=cyan</panel_attributes>
     <coordinates>
       <x>580</x>
       <y>90</y>
-      <w>70</w>
+      <w>60</w>
       <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;70.0;50.0;10.0</additional_attributes>
+    <additional_attributes>10.0;70.0;40.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -201,11 +189,11 @@ bg=cyan</panel_attributes>
     <coordinates>
       <x>640</x>
       <y>90</y>
-      <w>60</w>
+      <w>50</w>
       <h>150</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;130.0;40.0;10.0</additional_attributes>
+    <additional_attributes>10.0;130.0;30.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -528,11 +516,22 @@ bg=pink</panel_attributes>
     <coordinates>
       <x>500</x>
       <y>70</y>
-      <w>80</w>
+      <w>70</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 state</panel_attributes>
-    <additional_attributes>60.0;10.0;10.0;30.0</additional_attributes>
+    <additional_attributes>50.0;10.0;10.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>400</x>
+      <y>30</y>
+      <w>330</w>
+      <h>260</h>
+    </coordinates>
+    <panel_attributes>bg=cyan</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>

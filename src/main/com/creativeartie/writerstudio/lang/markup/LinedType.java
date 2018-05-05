@@ -24,7 +24,7 @@ public enum LinedType implements StyleInfo{
     AGENDA(LinedParseRest.AGENDA, LINED_AGENDA),
     QUOTE(LinedParseRest.QUOTE, LINED_QUOTE),
     BREAK(LinedParseRest.BREAK, LINED_BREAK),
-    SOURCE(LinedParseCite.INSTANCE, LINED_CITE),
+    SOURCE(LinedParseRest.CITE, LINED_CITE),
     PARAGRAPH(LinedParseRest.PARAGRAPH);
 
     private final SetupParser setupParser;
