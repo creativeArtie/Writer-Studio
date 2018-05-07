@@ -259,22 +259,15 @@ public class BranchLineTest {
 
         private Optional<CatalogueIdentity> buildId;
         private Optional<FormattedSpan> lineText;
-        private boolean isFirst;
 
         public NoteLineTest(){
             super(NoteLineTest.class, LinedType.NOTE);
             buildId = Optional.empty();
             lineText = Optional.empty();
-            isFirst = true;
         }
 
         public NoteLineTest setBuildId(IDBuilder builder){
             buildId = Optional.ofNullable(builder).map(found -> found.build());
-            return this;
-        }
-
-        public NoteLineTest setIsFirstLine(boolean bool){
-            isFirst = bool;
             return this;
         }
 
@@ -288,7 +281,6 @@ public class BranchLineTest {
             LinedSpanNote test = assertClass(span, LinedSpanNote.class);
             assertSpan("data", span, lineText, test.getFormattedSpan());
             assertEquals(getError("id", span), buildId, test.buildId());
-            assertEquals(getError("isFirst", span), isFirst, test.isFirstLine());
             super.test(span);
         }
     }

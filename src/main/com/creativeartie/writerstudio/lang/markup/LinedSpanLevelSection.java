@@ -46,7 +46,7 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
     public String getLookupText(){
         return getLocalCache(cacheLookup, () ->
             spanFromFirst(DirectorySpan.class)
-                .map(span -> LINK_REF + span.getLookupText() + LINK_END)
+                .map(s -> LINK_REF + s.getLookupText() + LINK_END)
                 .orElse("")
         );
     }
@@ -76,7 +76,7 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
     public int getPublishTotal(){
         return getLocalCache(cachePublish, () -> {
             if (getLinedType() == LinedType.HEADING){
-                return getFormattedSpan().map(span -> span.getPublishTotal())
+                return getFormattedSpan().map(s -> s.getPublishTotal())
                     .orElse(0);
             }
             return 0;
@@ -87,11 +87,11 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
     public int getNoteTotal(){
         return getLocalCache(cacheNote, () -> {
             if (getLinedType() == LinedType.HEADING){
-                return getFormattedSpan().map(span -> span.getNoteTotal())
+                return getFormattedSpan().map(s -> s.getNoteTotal())
                     .orElse(0);
             } else {
                 assert getLinedType() == LinedType.OUTLINE: getLinedType();
-                return getFormattedSpan().map(span -> span.getTotalCount())
+                return getFormattedSpan().map(s -> s.getTotalCount())
                     .orElse(0);
             }
         });
@@ -100,7 +100,7 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
         return getLocalCache(cacheId, () ->
-            spanFromFirst(DirectorySpan.class).map(span -> span.buildId())
+            spanFromFirst(DirectorySpan.class).map(s -> s.buildId())
         );
     }
 

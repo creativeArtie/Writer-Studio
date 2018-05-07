@@ -4,14 +4,11 @@ import java.util.*;
 import java.util.function.*;
 
 import com.creativeartie.writerstudio.lang.*;
-import static com.creativeartie.writerstudio.main.Checker.*;
-import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
-/**
- * Parser for {@code MainSpan*} classes. See {@code design/SectionParser.txt}
- * for details
- *
- */
+import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+
+/** Implements {@code design/ebnf.txt SectionHead1} and {@code SectionHead}. */
 enum SectionParseHead implements SectionParser {
     SECTION_1, SECTION_2, SECTION_3, SECTION_4, SECTION_5, SECTION_6;
 
@@ -19,11 +16,6 @@ enum SectionParseHead implements SectionParser {
 
     private SectionParseHead(){
         starter = LEVEL_STARTERS.get(LinedParseLevel.HEADING).get(ordinal());
-    }
-
-    @Override
-    public boolean isFirst(){
-        return this == SECTION_1;
     }
 
     @Override
@@ -49,7 +41,7 @@ enum SectionParseHead implements SectionParser {
     @Override
     public void headParsing(ArrayList<Span> children, SetupPointer pointer,
             boolean findHead){
-        if (!findHead && isFirst()){
+        if (!findHead && (this == SECTION_1)){
             if (! pointer.hasNext(LEVEL_HEADINGS)){
                 SectionParser.parseContent(children, pointer);
             }

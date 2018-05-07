@@ -52,8 +52,8 @@ BulletStart   =      "-", [ "-", ["-", ["-", ["-", ["-"] ] ] ] ]-;
 LineId = (Spaces, [ ["@"], [Directory], [":", [Format2], [Edition]] ]) |
         ([Format2], [Edition]);
 
-Note     = (LinedNoteHead, [{\n LinedNoteLine}]) |
-           (LinedNoteLine, [{\n LinedNoteLine}];
+Note     = (LinedNoteHead, [{\n NoteLine}]) |
+           (NoteLine, [{\n LinedNoteLine}];
 NoteLine = LinedNote | LinedCite;
 LinedNoteHead = "!%", Spaces, "@", Directory, [":", [Format1]];
 LinedNoteLine = "!%", Format1;

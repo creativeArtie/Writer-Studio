@@ -53,13 +53,13 @@ abstract class WriterSceneView extends BorderPane{
             initAgendaPane(top), initLinksPane(top),
             initFootnotePane(top), initEndnotePane(top)
         );
-        tableTabs.forEach(pane -> {
+        for (TableDataControl<?> pane: tableTabs){
             pane.focusedProperty().addListener((data, oldValue, newValue) ->
                 returnFocus());
             pane.itemSelectedProperty().addListener(
                 (data, oldValue, newValue) -> selectionChanged(newValue)
             );
-        });
+        }
         initReferencePane(top);
 
         /// Inner SplitPane - Right

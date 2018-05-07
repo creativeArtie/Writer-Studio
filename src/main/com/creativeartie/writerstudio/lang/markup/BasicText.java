@@ -34,7 +34,7 @@ interface BasicText{
      */
     public default String getRendered(){
         StringBuilder builder = new StringBuilder();
-        delegate().forEach((child) -> {
+        for (Span child: delegate()){
             if (child instanceof BasicTextEscape){
                 builder.append(((BasicTextEscape)child).getEscape());
             } else if (child instanceof SpanLeaf){
@@ -43,7 +43,7 @@ interface BasicText{
             } else {
                 assert false: child.getClass();
             }
-        });
+        }
         return CharMatcher.whitespace().collapseFrom(builder, ' ');
     }
 

@@ -75,7 +75,7 @@ public final class FormatSpanContent extends FormatSpan implements BasicText{
             }
             if (span instanceof SpanLeaf){
                 ans += SpanLeaf.escapeText(span.getRaw());
-            } else {
+            } else /** if (span == BasicTextEscape, but whatever) */{
                 ans += span.toString();
             }
         }

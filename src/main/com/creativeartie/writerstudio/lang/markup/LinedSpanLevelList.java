@@ -28,13 +28,13 @@ public class LinedSpanLevelList extends LinedSpanLevel {
     @Override
     public int getPublishTotal(){
         return getLocalCache(cachePublish, () -> getFormattedSpan()
-            .map(span -> span.getPublishTotal()).orElse(0));
+            .map(s -> s.getPublishTotal()).orElse(0));
     }
 
     @Override
     public int getNoteTotal(){
         return getLocalCache(cacheNote, () -> getFormattedSpan()
-            .map(span -> span.getNoteTotal()).orElse(0)
+            .map(s -> s.getNoteTotal()).orElse(0)
         );
     }
 

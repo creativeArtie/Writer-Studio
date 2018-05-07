@@ -77,7 +77,7 @@ enum LinedParseRest implements SetupParser {
         return Optional.empty();
     }),
     /** Implements {@code design/ebnf.txt LinedAgenda}. */
-    AGENDA(pointer ->{
+    AGENDA(pointer -> {
         assert pointer != null: "Null pointer.";
         ArrayList<Span> children = new ArrayList<>();
 
@@ -90,7 +90,7 @@ enum LinedParseRest implements SetupParser {
         return Optional.empty();
     }),
     /** Implements {@code design/ebnf.txt LinedQuote}. */
-    QUOTE(pointer ->{
+    QUOTE(pointer -> {
         assert pointer != null: "Null pointer.";
         ArrayList<Span> children = new ArrayList<>();
 
@@ -103,7 +103,7 @@ enum LinedParseRest implements SetupParser {
         return Optional.empty();
     }),
     /** Implements {@code design/ebnf.txt LinedBreak}. */
-    BREAK(pointer ->{
+    BREAK(pointer -> {
         assert pointer != null: "Null pointer.";
         ArrayList<Span> children = new ArrayList<>();
 
@@ -117,7 +117,7 @@ enum LinedParseRest implements SetupParser {
      *
      * This must be the list value in the enum.
      */
-    PARAGRAPH(pointer ->{
+    PARAGRAPH(pointer -> {
         assert pointer != null: "Null pointer.";
 
         if (pointer.hasNext()){

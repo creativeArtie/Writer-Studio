@@ -92,13 +92,12 @@ public class NoteCardDebug {
             .putData(InfoFieldType.IN_TEXT, doc, 0, 2, 3)
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         NoteLineTest line1 = new NoteLineTest()
-            .setNoteTotal(2)    .setFormattedSpan(doc, 0, 0, 4)
+            .setNoteTotal(2).setFormattedSpan(doc, 0, 0, 4)
             .setBuildId(builder);
         NoteLineTest line2 = new NoteLineTest()
-            .setNoteTotal(3)    .setFormattedSpan(doc, 0, 1, 1)
-            .setIsFirstLine(false);
+            .setNoteTotal(3).setFormattedSpan(doc, 0, 1, 1);
         CiteLineTest line3 = new CiteLineTest()
-            .setNoteTotal(2)    .setDataSpan(doc, 0, 2, 3)
+            .setNoteTotal(2).setDataSpan(doc, 0, 2, 3)
             .setInfoType(InfoFieldType.IN_TEXT);
 
         note.test( doc, 3, full, 0);
@@ -191,8 +190,7 @@ public class NoteCardDebug {
         NoteLineTest line1 = new NoteLineTest()
             .setFormattedSpan(doc, 0, 0, 1).setNoteTotal(2);
         NoteLineTest line2 = new NoteLineTest()
-            .setFormattedSpan(doc, 0, 1, 1).setNoteTotal(1)
-            .setIsFirstLine(false);
+            .setFormattedSpan(doc, 0, 1, 1).setNoteTotal(1);
 
         String out1 = "!%line 1\n";
         String out2 = "!%   line2\n";

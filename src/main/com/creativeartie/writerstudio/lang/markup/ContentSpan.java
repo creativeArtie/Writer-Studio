@@ -87,7 +87,7 @@ public final class ContentSpan extends SpanBranch implements BasicText{
             }
             if (span instanceof SpanLeaf){
                 ans += SpanLeaf.escapeText(span.getRaw());
-            } else {
+            } else /* if (span 99.999% certainly == BasicTextEscape) */{
                 ans += span.toString();
             }
         }

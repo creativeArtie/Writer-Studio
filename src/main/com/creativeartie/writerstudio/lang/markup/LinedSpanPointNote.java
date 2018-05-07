@@ -3,21 +3,46 @@ package com.creativeartie.writerstudio.lang.markup;
 import java.util.*;
 
 import com.creativeartie.writerstudio.lang.*;
-import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
-/**
- * Line that stores text of a footnote or a endnote. Represented in
- * design/ebnf.txt as {@code LinedFootnote}, {@code LinedEndnote}.
- */
+import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+
+/** Footnote or a endnote line. */
 public class LinedSpanPointNote extends LinedSpanPoint {
     private final CacheKeyMain<DirectoryType> cacheType;
     private final CacheKeyOptional<FormattedSpan> cacheFormatted;
 
+    /** Creates a {@linkplain LinedSpanPointNote}.
+     *
+     * @param children
+     *      span children
+     * @see LinedParsePointer#FOOTNOTE
+     * @see LinedParsePointer#ENDNOTE
+     */
     LinedSpanPointNote(List<Span> children){
         super(children);
 
         cacheType = new CacheKeyMain<>(DirectoryType.class);
         cacheFormatted = new CacheKeyOptional<>(FormattedSpan.class);
+    }
+
+    /** Gets the formatted content.
+     *
+     * @return answer
+     */
+    public Optional<FormattedSpan> getFormattedSpan(){
+        return getLocalCache(cacheFormatted, () -> spanFromLast(
+            FormattedSpan.class));
+    }
+
+    @Override
+    protected String getLookupStart(){
+        return getLinedType() == LinedType.ENDNOTE? CURLY_ENDNOTE: CURLY_FOOTNOTE;
+    }
+
+    @Override
+    protected String getLookupEnd(){
+        return CURLY_END;
     }
 
     @Override
@@ -26,13 +51,9 @@ public class LinedSpanPointNote extends LinedSpanPoint {
             LinedType.FOOTNOTE? DirectoryType.FOOTNOTE: DirectoryType.ENDNOTE);
     }
 
-    public Optional<FormattedSpan> getFormattedSpan(){
-        return getLocalCache(cacheFormatted, () -> spanFromLast(
-            FormattedSpan.class));
-    }
-
     @Override
     protected SetupParser getParser(String text){
+        argumentNotNull(text, "text");
         if (AuxiliaryChecker.checkLineEnd(text, isDocumentLast())){
             if( text.startsWith(LINED_ENDNOTE)){
                 return LinedParsePointer.ENDNOTE;
@@ -41,13 +62,5 @@ public class LinedSpanPointNote extends LinedSpanPoint {
             }
         }
         return null;
-    }
-
-    protected String getLookupStart(){
-        return getLinedType() == LinedType.ENDNOTE? CURLY_ENDNOTE: CURLY_FOOTNOTE;
-    }
-
-    protected String getLookupEnd(){
-        return CURLY_END;
     }
 }

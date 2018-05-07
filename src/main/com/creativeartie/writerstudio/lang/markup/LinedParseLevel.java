@@ -12,9 +12,18 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** Implements rules prefixed with {@code design/ebnf.txt LevelLined}.
  *
+ * The rules prefixed with {@code LevelLined} are:
+ * <ul>
+ * <li> {@code LevelLinedHeading} </li>
+ * <li> {@code LevelLinedOutline} </li>
+ * <li> {@code LevelLinedNumbered} </li>
+ * <li> {@code LevelLinedBullet} </li>
+ * </ul>
+ *
  * The value order is set by:
  * <ul>
  * <li>{@link #parse(SetupParser)}</li>
+ * <li>{@link LinedType#findType(String)}</li>
  * </ul>
  */
 enum LinedParseLevel implements SetupParser {

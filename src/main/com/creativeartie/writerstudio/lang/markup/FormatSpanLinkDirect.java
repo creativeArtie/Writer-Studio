@@ -45,7 +45,7 @@ public final class FormatSpanLinkDirect extends FormatSpanLink {
      */
     public String getPath(){
         return getLocalCache(cachePath, () -> spanFromFirst(ContentSpan.class)
-            .map(path -> path.getTrimmed())
+            .map(p -> p.getTrimmed())
             .orElse(""));
     }
 

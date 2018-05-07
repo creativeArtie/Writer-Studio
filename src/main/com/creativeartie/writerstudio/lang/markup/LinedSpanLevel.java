@@ -22,14 +22,26 @@ public abstract class LinedSpanLevel extends LinedSpan {
         cacheLevel = CacheKeyMain.integerKey();
     }
 
+    /** Gets the formatted content.
+     *
+     * @return answer
+     */
     public Optional<FormattedSpan> getFormattedSpan(){
         return getLocalCache(cacheFormatted, () -> spanFromLast(
             FormattedSpan.class));
     }
 
+    /** Get the line level.
+     *
+     * This is from {@code 1} to {@value LEVEL_MAX}.
+     *
+     * @return answer
+     */
     public int getLevel(){
         return getLocalCache(cacheLevel, () -> {
+            /// Where only outline line has an extra "!"
             int extras = getLinedType() == LinedType.OUTLINE? 1: 0;
+            /// for everything else is just the length of text
             return get(0).getRaw().length() - extras;
         });
     }

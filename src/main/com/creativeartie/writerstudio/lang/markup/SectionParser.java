@@ -5,13 +5,11 @@ import java.util.function.*;
 
 import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.main.Checker.*;
-import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
-/**
- * Parser for {@code MainSpan*} classes. See {@code design/SectionParser.txt}
- * for details
- *
- */
+import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+
+/** Template for {@link SectionParseHead} and {@link SectionParseScene}. */
 interface SectionParser extends SetupParser {
     public static final List<SetupParser> SECTION_PARSERS = getSectionParsers();
 
@@ -56,7 +54,7 @@ interface SectionParser extends SetupParser {
 
     @Override
     public default Optional<SpanBranch> parse(SetupPointer pointer){
-        checkNotNull(pointer, "pointer");
+        argumentNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
         boolean isReady = true;
         if (pointer.hasNext(getStarter())){
@@ -77,9 +75,6 @@ interface SectionParser extends SetupParser {
         return Optional.ofNullable(children.isEmpty()? null:
             create(children));
     }
-
-    /** Is {@code oridnal() == 0}. */
-    public boolean isFirst();
 
     /** Is {@code oridnal() == values().length}. */
     public boolean isLast();

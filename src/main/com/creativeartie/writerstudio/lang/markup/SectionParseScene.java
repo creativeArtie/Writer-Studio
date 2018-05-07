@@ -7,11 +7,7 @@ import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.main.Checker.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
-/**
- * Parser for {@code MainSpan*} classes. See {@code design/SectionParser.txt}
- * for details
- *
- */
+/** Implements {@code design/ebnf.txt SectionHead1} and {@code SectionHead}. */
 enum SectionParseScene implements SectionParser {
     SCENE_1, SCENE_2, SCENE_3, SCENE_4, SCENE_5, SCENE_6;
 
@@ -30,11 +26,6 @@ enum SectionParseScene implements SectionParser {
                 child.parse(pointer, children);
             }
         }
-    }
-
-    @Override
-    public boolean isFirst(){
-        return this == SCENE_1;
     }
 
     @Override

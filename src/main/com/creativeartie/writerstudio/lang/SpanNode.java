@@ -111,8 +111,9 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
      */
     final void setRemove(){
         getDocument().removeSpan(this);
-        delegate().stream().filter(s -> s instanceof SpanBranch)
-            .forEach(s -> ((SpanBranch)s).setRemove());
+        for (T child: this){
+            if (child instanceof SpanBranch) ((SpanBranch)child).setRemove();
+        }
     }
 
     final void setEdited(){
@@ -147,8 +148,8 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
      * @see #updateDoc()
      */
     final void fireRemoveListeners(){
-        spanRemovedListeners.forEach(l -> l.accept(this));
-        docEditedListeners.forEach(l -> l.accept(this));
+        fire(spanRemovedListeners);
+        fire(docEditedListeners);
     }
 
     /** Recusively Fires span edited, child edited and doc listeners.
@@ -158,18 +159,18 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
     final void fireListeners(){
         /// Fire target edited listeners
         if (editedTarget){
-            spanEditedListeners.forEach(l -> l.accept(this));
+            fire(spanEditedListeners);
             editedTarget = false;
         }
 
         /// Fire child edited listeners
         if (editedChild){
-            childEditedListeners.forEach(l -> l.accept(this));
+            fire(childEditedListeners);
             editedChild = false;
         }
 
         /// Fire doc edited listeners
-        docEditedListeners.forEach(l -> l.accept(this));
+        fire(docEditedListeners);
 
         /// Recusive call
         for (Span span: this){
@@ -177,6 +178,17 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
                 ((SpanNode<?>)span).fireListeners();
             }
         }
+    }
+
+    /** fires a list of listeners
+     *
+     * @param listeners
+     *      firing listeners
+     * @see #fireRemoveListeners()
+     * @see #fireListeners()
+     */
+    private void fire(HashSet<Consumer<SpanNode<T>>> listeners){
+        for (Consumer<SpanNode<T>> listener: listeners) listener.accept(this);
     }
 
     /// %Part 3: Get Span ######################################################

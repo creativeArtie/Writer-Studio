@@ -22,6 +22,8 @@ class CheatsheetPaneControl extends CheatsheetPaneView{
 
      /** Updates the labels base on the cursor movements. */
     public void updateLabels(WritingText doc, int position){
-        getLabels().forEach(label -> label.updateLabelStatus(doc, position));
+        for (CheatsheetLabel label: getLabels()){
+            label.updateLabelStatus(doc, position);
+        }
     }
 }

@@ -51,7 +51,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         spanLeaves = CacheBuilder.newBuilder().weakKeys().build();
         spanTexts = CacheBuilder.newBuilder().weakKeys().build();
         spanLocation = CacheBuilder.newBuilder().maximumSize(1000)
-            .build(CacheLoader.from(pos ->{
+            .build(CacheLoader.from(pos -> {
                 int column = 0;
                 int line = 1;
                 String input = getRaw();
@@ -205,7 +205,9 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * @see #delete(int, int)
      */
     private void reparseDocument(String text){
-        forEach(s -> s.setRemove());
+        for (Span span: this) {
+            if (span instanceof SpanBranch) ((SpanBranch) span).setRemove();
+        }
         parseDocument(text);
         setEdited();
         updateDoc();
@@ -251,7 +253,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     @Override
     final void setChildren(List<SpanBranch> children){
-        children.forEach(s -> s.setParent(this));
+        for (SpanBranch child : children) child.setParent(this);
         documentChildren = new ArrayList<>(children);
     }
 
@@ -515,7 +517,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     @Override
     public final List<SpanLeaf> getLeaves(){
-        return getLeavesCache(this, () ->{
+        return getLeavesCache(this, () -> {
             ImmutableList.Builder<SpanLeaf> builder = ImmutableList.builder();
             for(SpanBranch span: this){
                 /// span.getLeaves() might be cached, reduces the need to search

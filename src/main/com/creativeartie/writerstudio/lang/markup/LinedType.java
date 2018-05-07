@@ -2,61 +2,74 @@ package com.creativeartie.writerstudio.lang.markup;
 
 import java.util.*;
 
-import com.creativeartie.writerstudio.main.*;
 import com.creativeartie.writerstudio.lang.*;
-import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
-/**
- * Sytles that describe heading sections.
+import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+
+/** Type of lines.
+ *
+ * The value order is set by:
+ * <ul>
+ * <li>{@link #findType(String)}</li>
+ * </ul>
  */
 public enum LinedType implements StyleInfo{
-    /// name() is being used to generate keys in window_text "TextView.*"
-    /// LinedType follows the same order as PaneCheatsheatLabel.Name
 
-    HEADING(LinedParseLevel.HEADING), OUTLINE(LinedParseLevel.OUTLINE),
-    NUMBERED(LinedParseLevel.NUMBERED), BULLET(LinedParseLevel.BULLET),
+    /** a heading line. */
+    HEADING(null),
+    /** a non-publishing outline line. */
+    OUTLINE(null),
+    /** a numbered list item. */
+    NUMBERED(null),
+    /** a bullet list item. */
+    BULLET(null),
 
-    FOOTNOTE(LinedParsePointer.FOOTNOTE, LINED_FOOTNOTE),
-    ENDNOTE(LinedParsePointer.ENDNOTE, LINED_ENDNOTE),
-    LINK(LinedParsePointer.LINK, LINED_LINK),
-    NOTE(LinedParseRest.NOTE, LINED_NOTE),
+    /** Footnote that starts with "{@value LINED_FOOTNOTE}" */
+    FOOTNOTE(LINED_FOOTNOTE),
+    /** Endnote that starts with "{@value LINED_ENDNOTE}" */
+    ENDNOTE(LINED_ENDNOTE),
+    /** A resuable link that starts with "{@value LINED_LINK}" */
+    LINK(LINED_LINK),
+    /** Non-pulishing note that starts with "{@value LINED_NOTE}" */
+    NOTE(LINED_NOTE),
 
-    AGENDA(LinedParseRest.AGENDA, LINED_AGENDA),
-    QUOTE(LinedParseRest.QUOTE, LINED_QUOTE),
-    BREAK(LinedParseRest.BREAK, LINED_BREAK),
-    SOURCE(LinedParseRest.CITE, LINED_CITE),
-    PARAGRAPH(LinedParseRest.PARAGRAPH);
+    /** Non-pulishing to do item that starts with "{@value LINED_AGENDA}" */
+    AGENDA(LINED_AGENDA),
+    /** A block quote that starts with "{@value LINED_QUOTE}". */
+    QUOTE(LINED_QUOTE),
+    /** A section break the line is "{@value LINED_BREAK}". */
+    BREAK(LINED_BREAK),
+    /** A citation source that starts with "{@value LINED_CITE}". */
+    SOURCE(LINED_CITE),
+    /** A paragraph with no starting token.
+     *
+     * The should be kept last because it is the "default case" for
+     * {@link #findType(String)}.
+     */
+    PARAGRAPH(null);
 
-    private final SetupParser setupParser;
     private final Optional<String> spanStarter;
 
-    private LinedType(SetupParser parser){
-        setupParser = parser;
-        spanStarter = Optional.empty();
+    /** Creates a {@linkplain LineType}.
+     *
+     * @param parser
+     *      start token
+     */
+    private LinedType(String starter){
+        spanStarter = Optional.ofNullable(starter);
     }
 
-    private LinedType(SetupParser parser, String starter){
-        setupParser = parser;
-        spanStarter = Optional.of(starter);
-    }
-
-    SetupParser getParser(){
-        return setupParser;
-    }
 
     static LinedType findType(String raw){
-        Checker.checkNotNull(raw, "raw");
+        argumentNotNull(raw, "raw");
         for (LinedType type: values()){
             if (type == PARAGRAPH){
                 return type;
             }
-            if (type.spanStarter.isPresent() &&
-                raw.startsWith(type.spanStarter.get())
-            ){
-                return type;
-            }
-            if (type.setupParser instanceof LinedParseLevel){
-                LinedParseLevel level = (LinedParseLevel)type.setupParser;
+            int ordinal = type.ordinal();
+            if (ordinal < FOOTNOTE.ordinal()){
+                LinedParseLevel level = LinedParseLevel.values()[ordinal];
                 List<String> starters = LEVEL_STARTERS.get(level);
                 for (int i = LEVEL_MAX - 1; i >= 0; i--){
                     if(raw.startsWith(starters.get(i))){
@@ -67,6 +80,10 @@ public enum LinedType implements StyleInfo{
                         }
                     }
                 }
+            }
+            if (type.spanStarter.isPresent() &&
+                    raw.startsWith(type.spanStarter.get())){
+                return type;
             }
         }
         assert false;

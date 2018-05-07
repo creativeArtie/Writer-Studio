@@ -117,11 +117,10 @@ public abstract class SpanBranch extends SpanNode<Span> {
 
     @Override
     protected final void setChildren(List<Span> spans){
-        spans.forEach((span) -> {
-            span.setParent(this);
-        });
-        spanChildren.stream().filter(s -> s instanceof SpanBranch)
-            .forEach(s -> ((SpanBranch)s).setRemove());
+        for (Span span: spans) span.setParent(this);
+        for (Span child: spanChildren){
+            if (child instanceof SpanBranch) ((SpanBranch)child).setRemove();
+        }
         spanChildren.clear();
         spanChildren.addAll(spans);
     }
@@ -129,8 +128,11 @@ public abstract class SpanBranch extends SpanNode<Span> {
     @Override
     final void clearDocCache(){
         super.clearDocCache();
-        spanChildren.stream().filter(s -> s instanceof SpanBranch)
-            .forEach(s -> ((SpanBranch)s).clearDocCache());
+        for (Span child: spanChildren){
+            if (child instanceof SpanBranch) {
+                ((SpanBranch)child).clearDocCache();
+            }
+        }
     }
 
     /// %Part 3: Common Get Methods ############################################

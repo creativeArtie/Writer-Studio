@@ -41,7 +41,7 @@ public class LinedSpanAgenda extends LinedSpan implements Catalogued{
     @Override
     public int getNoteTotal(){
         return getLocalCache(cacheNote, () -> {
-            return getAgendaSpan().map(span -> span.wordCount())
+            return getAgendaSpan().map(s -> s.wordCount())
                 .orElse(0);
         });
     }

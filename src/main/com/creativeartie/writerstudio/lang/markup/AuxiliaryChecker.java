@@ -133,7 +133,7 @@ public final class AuxiliaryChecker{
                     /// check for line ending
                     if (text.startsWith(LINED_END, i)) return false;
                 }
-            } else {
+            } else /* if (escape) */{
                 escaped = false;
             }
         }

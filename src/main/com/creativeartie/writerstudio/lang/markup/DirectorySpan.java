@@ -48,7 +48,7 @@ public final class DirectorySpan extends SpanBranch {
                     /// child == DIRECTORY_CATEGORY:
                     builder.add(idTmp.orElse(""));
                     idTmp = Optional.empty();
-                } else {
+                } else /** if (child == ContentSpan) */{
                     /// child is a text
                     idTmp = Optional.of(((ContentSpan)child).getTrimmed()
                         .toLowerCase());
@@ -65,9 +65,9 @@ public final class DirectorySpan extends SpanBranch {
     public String getLookupText(){
         return getLocalCache(cacheText, () -> {
             StringBuilder builder = new StringBuilder();
-            this.forEach((span) -> {
+            for(Span span: this){
                 builder.append(span.getRaw());
-            });
+            }
             return builder.toString();
         });
     }

@@ -74,14 +74,14 @@ public final class SectionSpanHead extends SectionSpan {
 
     public int getPublishTotal(){
         return getLocalCache(cachePublish,
-            () -> getCount(this, span -> span.getPublishTotal(), true)
+            () -> getCount(this, s -> s.getPublishTotal(), true)
         );
     }
 
     public int getNoteTotal(){
         return getLocalCache(cacheNote, () ->
-            getCount(this, span -> span.getNoteTotal(), true) +
-            getNotes().stream().mapToInt(note -> note.getNoteTotal()).sum()
+            getCount(this, s -> s.getNoteTotal(), true) +
+            getNotes().stream().mapToInt(n -> n.getNoteTotal()).sum()
         );
     }
 

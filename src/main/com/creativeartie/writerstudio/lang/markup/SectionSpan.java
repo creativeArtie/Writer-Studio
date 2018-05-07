@@ -68,12 +68,12 @@ public abstract class SectionSpan extends SpanBranch {
 
     public final int getLevel(){
         return getLocalCache(cacheLevel, () -> getHeading()
-            .map(span -> span.getLevel()).orElse(1));
+            .map(s -> s.getLevel()).orElse(1));
     }
 
     public final EditionType getEdition(){
         return getLocalCache(cacheEdition, () -> getHeading()
-            .map(span -> span.getEditionType()).orElse(EditionType.NONE));
+            .map(s -> s.getEditionType()).orElse(EditionType.NONE));
     }
 
     protected final <T> List<T> getChildren(Class<T> getting){

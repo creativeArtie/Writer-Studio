@@ -42,7 +42,7 @@ public class WriterSceneControl extends WriterSceneView {
         getTextArea().updateStats(currentRecords.getRecord());
         getTextArea().setReady(true);
 
-        getTableTabs().forEach(pane -> pane.loadList(currentDoc));
+        for (TableDataControl<?> pane: getTableTabs()) pane.loadList(currentDoc);
         getTableOfContent().loadHeadings(currentDoc);
         getTableOfContent().updateTable(getTextArea().getCaretPlaced());
         getNoteCardsPane().loadCards(currentDoc);
@@ -104,9 +104,9 @@ public class WriterSceneControl extends WriterSceneView {
         if (! textReady()){
             return;
         }
-        getTableTabs().forEach(pane -> {
-            if (shouldMoveTable(pane, position)){pane.updateLocation(position);}
-        });
+        for (TableDataControl<?> pane: getTableTabs()){
+            if (shouldMoveTable(pane, position)) pane.updateLocation(position);
+        }
 
         HeadingPaneControl content = getTableOfContent();
         if (shouldMoveHead(position)){

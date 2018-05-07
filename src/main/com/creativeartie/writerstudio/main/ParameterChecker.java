@@ -27,6 +27,10 @@ public final class ParameterChecker {
         if (! test) throw new IllegalStateException(message);
     }
 
+    public static IllegalStateException stateBuild(String message){
+        return new IllegalStateException(message);
+    }
+
     @SafeVarargs /// Just one == test
     public static <T extends Enum<T>> T argumentNotState(T test, String field,
             T ... nots){
@@ -38,7 +42,7 @@ public final class ParameterChecker {
     }
 
     @SafeVarargs /// Just one == test
-    public static <T extends Enum<T>> T arugmentRequireState(T test,
+    public static <T extends Enum<T>> T argumentRequireState(T test,
         String field, T ... requires){
         argumentNotNull(test, field);
         for (T require: requires){

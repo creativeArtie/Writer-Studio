@@ -3,20 +3,43 @@ package com.creativeartie.writerstudio.lang.markup;
 import java.util.*;
 
 import com.creativeartie.writerstudio.lang.*;
-import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
-/**
- * Line that stores a hyperlink to be use later. Represented in design/ebnf.txt
- * as {@code LinedLink}.
- */
+import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+
+/**A reusable hyperlink. */
 public class LinedSpanPointLink extends LinedSpanPoint {
 
     private final CacheKeyMain<String> cachePath;
 
+    /** Creates a {@linkplain LinedSpanPointLink}.
+     *
+     * @param children
+     *      span children
+     * @see LinedParsePointer#LINK
+     */
     LinedSpanPointLink(List<Span> children){
         super(children);
 
         cachePath = CacheKeyMain.stringKey();
+    }
+
+    /** Gets the link path. */
+    public String getPath(){
+        return getLocalCache(cachePath, () -> {
+            Optional<ContentSpan> span = spanFromLast(ContentSpan.class);
+            return span.isPresent()? span.get().getTrimmed() : "";
+        });
+    }
+
+    @Override
+    protected String getLookupStart(){
+        return LINK_REF;
+    }
+
+    @Override
+    protected String getLookupEnd(){
+        return LINK_END;
     }
 
     @Override
@@ -24,29 +47,11 @@ public class LinedSpanPointLink extends LinedSpanPoint {
         return DirectoryType.LINK;
     }
 
-    public Optional<ContentSpan> getPathSpan(){
-        return spanFromLast(ContentSpan.class);
-    }
-
-    public String getPath(){
-        return getLocalCache(cachePath, () -> {
-            Optional<ContentSpan> span = getPathSpan();
-            return span.isPresent()? span.get().getTrimmed() : "";
-        });
-    }
-
     @Override
     protected SetupParser getParser(String text){
+        argumentNotNull(text, "text");
         return text.startsWith(LINED_LINK) &&
             AuxiliaryChecker.checkLineEnd(text, isDocumentLast())?
             LinedParsePointer.LINK: null;
-    }
-
-    protected String getLookupStart(){
-        return LINK_REF;
-    }
-
-    protected String getLookupEnd(){
-        return LINK_END;
     }
 }

@@ -71,8 +71,8 @@ public final class FormatSpanLinkRef extends FormatSpanLink
                 return text.get().getTrimmed();
             }
             return getPathSpan()
-                .filter(span -> span instanceof LinedSpanPointLink)
-                .map(span -> ((LinedSpanPointLink)span).getPath())
+                .filter(s -> s instanceof LinedSpanPointLink)
+                .map(s -> ((LinedSpanPointLink)s).getPath())
                 .orElse("");
         });
     }
@@ -80,7 +80,7 @@ public final class FormatSpanLinkRef extends FormatSpanLink
     @Override
     public Optional<CatalogueIdentity> getSpanIdentity(){
         return getLocalCache(cacheId, () ->
-            spanFromFirst(DirectorySpan.class).map(span -> span.buildId())
+            spanFromFirst(DirectorySpan.class).map(s -> s.buildId())
         );
     }
 
@@ -122,7 +122,7 @@ public final class FormatSpanLinkRef extends FormatSpanLink
     protected String toChildString(){
         Optional<DirectorySpan> id = spanFromFirst(DirectorySpan.class);
         String data = spanFromFirst(DirectorySpan.class)
-            .map(span -> span.toString())
+            .map(s -> s.toString())
             .orElse("null");
         return data + "->" + getPathSpan().toString();
     }

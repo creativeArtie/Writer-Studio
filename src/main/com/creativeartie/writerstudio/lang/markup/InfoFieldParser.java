@@ -7,7 +7,16 @@ import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/** Implements rule prefixed with {@code design/ebnf.txt InfoField}
+/** Implements rule prefixed with {@code design/ebnf.txt InfoField}.
+ *
+ * The rules prefixed with {@code InfoField} are:
+ * <ul>
+ * <li> {@code InfoFieldFootnote}</li>
+ * <li> {@code InfoFieldInText}</li>
+ * <li> {@code InfoFieldSource}</li>
+ * <li> {@code InfoFieldRef}</li>
+ * <li> {@code InfoFieldError}</li>
+ * </ul>
  *
  * The value order is set by:
  * <ul>
@@ -28,10 +37,10 @@ enum InfoFieldParser implements SetupParser{
      *
      * <b> Must be the last InfoFieldParser.</b>
      */
-    ERROR(null, "");
+    ERROR(null, null);
 
     private final Optional<InfoDataParser> dataParser;
-    private final String fieldName;
+    private final Optional<String> fieldName;
 
     /** Creates a {@linkplain InfoDataParser}.
      *
@@ -43,7 +52,7 @@ enum InfoFieldParser implements SetupParser{
     private InfoFieldParser(InfoDataParser parser, String name){
         assert name != null: "Null name";
         dataParser = Optional.ofNullable(parser);
-        fieldName = name;
+        fieldName = Optional.ofNullable(name);
     }
 
     /** Gets the data parser
@@ -61,7 +70,8 @@ enum InfoFieldParser implements SetupParser{
      * @see InfoFieldType#parseText(String)
      */
     String getFieldName(){
-        return fieldName;
+        return fieldName.orElseThrow(() ->
+            stateBuild("Enum does not a field name: " + this));
     }
 
     @Override
@@ -78,10 +88,11 @@ enum InfoFieldParser implements SetupParser{
             return Optional.empty();
         }
 
-        assert fieldName.length() > 0: "Empty fieldName";
+        assert fieldName.isPresent(): "Empty fieldName";
 
         /// For all others fields
-        if(pointer.trimStartsWith(children, StyleInfoLeaf.FIELD, fieldName)){
+        if(pointer.trimStartsWith(children, StyleInfoLeaf.FIELD,
+                fieldName.get())){
             return Optional.of(new InfoFieldSpan(children));
         }
 

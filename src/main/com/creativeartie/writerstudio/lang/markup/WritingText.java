@@ -40,8 +40,7 @@ public class WritingText extends Document{
     public int getPublishTotal(){
         int count = 0;
         for (SpanBranch span: this){
-            count += count((SectionSpanHead) span, child -> child
-                .getPublishTotal());
+            count += count((SectionSpanHead) span, c -> c.getPublishTotal());
         }
         return count;
     }
@@ -57,7 +56,7 @@ public class WritingText extends Document{
     public int getNoteTotal(){
         int count = 0;
         for (SpanBranch span: this){
-            count += count((SectionSpanHead) span, child -> child.getNoteTotal());
+            count += count((SectionSpanHead) span, c -> c.getNoteTotal());
         }
         return count;
     }
