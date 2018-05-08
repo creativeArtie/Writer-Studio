@@ -7,54 +7,53 @@ import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.main.Checker.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
-/** Implements {@code design/ebnf.txt SectionHead1} and {@code SectionHead}. */
+/** Implements {@code design/ebnf.txt SectionScene}. */
 enum SectionParseScene implements SectionParser {
-    SCENE_1, SCENE_2, SCENE_3, SCENE_4, SCENE_5, SCENE_6;
+    /** Top most section. */
+    SCENE_1,
+    /** Scene 2. */
+    SCENE_2,
+    /** Scene 3. */
+    SCENE_3,
+    /** Scene 4. */
+    SCENE_4,
+    /** Scene 5. */
+    SCENE_5,
+    /** Scene 6. */
+    SCENE_6;
 
-    private final String starter;
+    private final String lineStarter;
 
+    /** Creates a {@line SectionParseScene}. */
     private SectionParseScene(){
-        starter = LEVEL_STARTERS.get(LinedParseLevel.OUTLINE).get(ordinal());
-    }
-
-    public void headParsing(ArrayList<Span> children, SetupPointer pointer,
-            boolean findHead){
-        checkArgument(findHead, "heading is not found.");
-        if (! isLast()){
-            SectionParseScene child = values()[ordinal() + 1];
-            while (pointer.hasNext(child.starter)){
-                child.parse(pointer, children);
-            }
-        }
-    }
-
-    @Override
-    public boolean isLast(){
-        return this == SCENE_6;
-    }
-
-    @Override
-    public SectionParser getNext(){
-        return values()[ordinal() + 1];
-    }
-
-    @Override
-    public SectionSpan create(ArrayList<Span> children){
-        return new SectionSpanScene(children, this);
-    }
-
-    @Override
-    public SectionParser[] getParsers(){
-        return values();
-    }
-
-    @Override
-    public LinedParseLevel getHeadLineParser(){
-        return LinedParseLevel.OUTLINE;
+        lineStarter = LEVEL_STARTERS.get(LinedParseLevel.OUTLINE).get(ordinal());
     }
 
     @Override
     public String getStarter(){
-        return starter;
+        return lineStarter;
+    }
+
+    @Override
+    public Optional<String> getNextStarter(){
+        if (ordinal() < values().length - 1){
+            return Optional.of(values()[ordinal() + 1].lineStarter);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public LinedParseLevel getHeadParser(){
+        return LinedParseLevel.OUTLINE;
+    }
+
+    @Override
+    public SectionParseScene nextParser(){
+        return values()[ordinal() + 1];
+    }
+
+    @Override
+    public SectionSpan buildSpan(ArrayList<Span> children){
+        return new SectionSpanScene(children, this);
     }
 }

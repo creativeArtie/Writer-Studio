@@ -9,14 +9,90 @@ import static com.creativeartie.writerstudio.main.Checker.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/** Template for {@link SectionParseHead} and {@link SectionParseScene}. */
+/** Template for {@link SectionParseHead} and {@link SectionParseScene}.
+ *
+ * This includes the implementation of {@code design/ebnf.txt SectionContent}.
+ */
 interface SectionParser extends SetupParser {
+    /** List of line parsers for each sections.
+     *
+     * @see #parseContent(SetupPointer, ArrayList)
+     * @see AuxiliaryData#getSectionParser() how it is produced.
+     */
     public static final List<SetupParser> SECTION_PARSERS = getSectionParsers();
 
-    static void parseContent(ArrayList<Span> children,
-            SetupPointer pointer){
-        checkNotNull(children, "children");
-        checkNotNull(pointer, "pointer");
+    @Override
+    public default Optional<SpanBranch> parse(SetupPointer pointer){
+        argumentNotNull(pointer, "pointer");
+        ArrayList<Span> children = new ArrayList<>();
+
+        /// parse section content
+        if (pointer.hasNext(getStarter())){
+            /// at least == current
+            boolean child = getNextStarter().map(s -> pointer.hasNext(s))
+                .orElse(false);
+            if (! child){
+                /// parse heading + content
+                getHeadParser().parse(pointer, children);
+                parseContent(pointer, children);
+            }
+        } else if (this == SectionParseHead.SECTION_1){
+            if (! pointer.hasNext(LEVEL_STARTERS.get(LinedParseLevel.OUTLINE)
+                    .get(0))){
+                /// content only (section 1 with heading done above)
+                parseContent(pointer, children);
+            }
+        }
+
+        /// parse section scenes, (head only)
+        if (this instanceof SectionParseHead){
+            SectionParseHead.parseOutline(pointer, children);
+        }
+
+        /// parse sub section heads or secnes
+        if (getNextStarter().map(s -> pointer.hasNext(s)).orElse(false)){
+            nextParser().parse(pointer, children);
+        }
+
+        return Optional.ofNullable(children.isEmpty()? null:
+            buildSpan(children));
+    }
+
+    /** Get the starter token.
+     *
+     * Use for checking if the heading is at least this level or a child
+     *
+     * @return answer
+     * @see parse(SetupPointer)
+     */
+    public String getStarter();
+
+    /** Get the next starter token.
+     *
+     * Use for checking if the heading is a child.
+     *
+     * @return answer
+     * @see parse(SetupPointer)
+     */
+    public Optional<String> getNextStarter();
+
+    /** Gets the heading parser.
+     *
+     * @return answer
+     * @see parse(SetupPointer)
+     */
+    public LinedParseLevel getHeadParser();
+
+    /** parses the content
+     *
+     * @param pointer
+     *      setup pointer
+     * @param children
+     *      span children
+     */
+    static void parseContent(SetupPointer pointer, ArrayList<Span> children){
+        argumentNotNull(children, "children");
+        argumentNotNull(pointer, "pointer");
         while (! pointer.hasNext(LEVEL_HEADINGS) && pointer.hasNext()){
             /// pointer next is not heading/outline and has text
             if (! NoteCardParser.PARSER.parse(pointer, children)){
@@ -32,72 +108,22 @@ interface SectionParser extends SetupParser {
         }
     }
 
-    public default boolean hasChild(SetupPointer pointer, SectionParser current){
-        checkNotNull(pointer, "pointer");
-        checkNotNull(current, "current");
-        boolean checking = false;
-        for (SectionParser parser: getParsers()){
-            if (! pointer.hasNext(parser.getStarter())){
-                /// not a child at this level
-                return false;
-            }
-            if (checking){
-                /// find a child
-                return true;
-            } else if (parser == current){
-                /// from this point on this is a child
-                checking = true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public default Optional<SpanBranch> parse(SetupPointer pointer){
-        argumentNotNull(pointer, "pointer");
-        ArrayList<Span> children = new ArrayList<>();
-        boolean isReady = true;
-        if (pointer.hasNext(getStarter())){
-            /// has an heading/outline
-            if (! isLast() && ! pointer.hasNext(getNext().getStarter())){
-                /// parse heading/outline line
-                getHeadLineParser().parse(pointer, children);
-                /// parse the content
-                parseContent(children, pointer);
-            }
-        } else {
-            isReady = false;
-        }
-
-        /// parse subsection and subscenes
-        headParsing(children, pointer, isReady);
-
-        return Optional.ofNullable(children.isEmpty()? null:
-            create(children));
-    }
-
-    /** Is {@code oridnal() == values().length}. */
-    public boolean isLast();
-
-    /** Returns {@code values()[ordinal() + 1]}*/
-    public SectionParser getNext();
-
-    /** Creates either a {@link SectionSpanHead} or {@link SectionSpanScene}. */
-    public SectionSpan create(ArrayList<Span> children);
-
-    /** Returns {@code values()}*/
-    public SectionParser[] getParsers();
-
-    /**
-     * Returns {@link LinedParseLevel.HEADING} or
-     * {@link LinedParseLevel.OUTLINE}
+    /** Gets the next parser.
+     *
+     * Can return {@code null} if
+     * {@link #getNextPointer() getNextPointer().isPresent())} returns
+     * {@code false}.
+     *
+     * @return answer
      */
-    public LinedParseLevel getHeadLineParser();
+    public SectionParser nextParser();
 
-    /** Extra steps for parsing {@link SectionSpanHead}. */
-    public void headParsing(ArrayList<Span> children,
-        SetupPointer pointer, boolean findHead);
+    /** Creates a new {@link SectionSpan}.
+     *
+     * @param children
+     *      span children
+     * @return answer
+     */
+    public SectionSpan buildSpan(ArrayList<Span> children);
 
-    /** Gets the line starter, to see if line is a heading or outline. */
-    public String getStarter();
 }

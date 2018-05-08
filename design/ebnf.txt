@@ -12,6 +12,11 @@
  * comment          (* ... *)
  * special sequence ? ... ?
  * exception        -
+ *
+ * Heading simplification: the extact heading syntax for each section are not
+ * Heading simplification: shown because it will create will too much rules with
+ * Heading simplification: very similar syntaxes.
+ * Heading simplification: (grep 'Heading simplification' for information)
  *)
 
 Meta = {Data};
@@ -24,14 +29,18 @@ DataArea = ("head-", ("top     |" | "centre  |" | "bottom  |") ) |
 DataMeta =  "meta-", ("author  |" | "keywords|" | "subject |" | "title   |";
 DataType = "right |" | "left  |" | "center|" | "text  |";
 
-Manuscript = (Section | Note), [{\n, (Section | Note)}], [\n];
+Manuscript = (SectionHead1), [{\n, (SectionHead)}], [\n];
 
-Section     = ((LinedHeading | LinedOutline), [{\n, SectionContent}]) |
-              SectionContent;
+(* Heading simplification: SectionHead1's LevelLinedHeading == level 1 *)
+SectionHead1 = [LevelLinedHeading], [SectionContent], [SectionScene],
+               [SectionHead];
+(* Heading simplification: SectionHead's child level > parent level *)
+SectionHead = LevelLinedHeading [SectionContent], [SectionScene], [SectionHead];
+SectionScene = LevelLinedOutline, [SectionContent];
+SectionContent = (LinedParagraph | LinedQuote | LinedBreak | LinedAgenda |
+    LinedFootnote | LinedEndnote | LinedLink | LevelLinedNumbered |
+    LevelLinedBullet | Note), [ "\n", SectionContent];
 
-SectionContent = {(SectionLine, \n) | LinedBreak} | {SectionLine | LineBreak};
-SectionLine = (LinedParagraph | LinedAgenda | LinedFootnote |
-               LinedEndnote | LinedLink);
 LinedParagraph = Content;
 LinedQuote     = ">", [Format1];
 LinedBreak     = "***", \n;
@@ -40,11 +49,14 @@ LinedFootnote  = "!^", Directory, [[":"], Content];
 LinedEndnote   = "!*", Directory, [[":"], Content];
 LinedLink      = "!@", Directory, [[":"], Content];
 
+(* Heading simplification: HeadingStart & OutlineStart produces the levels. *)
 LevelLinedHeading   = HeadingStart, [LineId];
 LevelLinedOutline   = OutlineStart, [LineId];
 LevelLinedNumbered  = NumberedStart, [Format2];
 LevelLinedBullet    = BulletStart, [Format2];
-(*                    1      2     3     4     5     6
+
+(* Heading simplification: Levels are decided by number of repeat characters. *)
+(*            level   1      2     3     4     5     6         *)
 HeadingStart  =      "=", [ "=", ["=", ["=", ["=", ["="] ] ] ] ];
 OutlineStart  = "!", "#", [ "#", ["#", ["#", ["#", ["#"] ] ] ] ];
 NumberedStart =      "#", [ "#", ["#", ["#", ["#", ["#"] ] ] ] ];
