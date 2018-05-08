@@ -50,7 +50,6 @@ enum InfoFieldParser implements SetupParser{
      *      field name
      */
     private InfoFieldParser(InfoDataParser parser, String name){
-        assert name != null: "Null name";
         dataParser = Optional.ofNullable(parser);
         fieldName = Optional.ofNullable(name);
     }
@@ -71,7 +70,7 @@ enum InfoFieldParser implements SetupParser{
      */
     String getFieldName(){
         return fieldName.orElseThrow(() ->
-            stateBuild("Enum does not a field name: " + this));
+            stateBuild("Enum does not have a field name: " + this));
     }
 
     @Override

@@ -32,6 +32,10 @@ public final class AuxiliaryData{
     public static final Map<LinedParseLevel, List<String>> LEVEL_STARTERS =
         getLinedLevels();
 
+
+    public static final Map<LinedParseLevel, List<String>> LEVEL_REVERSE =
+        getReverse(LEVEL_STARTERS);
+
     /** Heading and outlines only.
      *
      * See the warning in {@link LEVEL_STARTERS}
@@ -52,6 +56,16 @@ public final class AuxiliaryData{
                 set.add(getLevelToken(parser, i + 1));
             }
             ans.put(parser, set.build());
+        }
+        return ans.build();
+    }
+
+    private static Map<LinedParseLevel, List<String>> getReverse(
+            Map<LinedParseLevel, List<String>> map){
+        ImmutableMap.Builder<LinedParseLevel, List<String>> ans = ImmutableMap
+            .builder();
+        for (Map.Entry<LinedParseLevel, List<String>> entry: map.entrySet()){
+            ans.put(entry.getKey(), Lists.reverse(entry.getValue()));
         }
         return ans.build();
     }

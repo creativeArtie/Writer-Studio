@@ -35,10 +35,14 @@ public enum InfoFieldType implements StyleInfo{
         argumentNotNull(text, "text");
 
         for (InfoFieldParser type: InfoFieldParser.values()){
+            if (type == InfoFieldParser.ERROR){
+                return InfoFieldType.ERROR;
+            }
             if (type.getFieldName().equals(text)){
                 return values()[type.ordinal()];
             }
         }
+        assert false: "unreachable";
         return InfoFieldType.ERROR;
     }
 }
