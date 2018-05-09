@@ -4,7 +4,6 @@ import java.io.*; // IOException
 import java.util.*; // Optional
 
 import com.creativeartie.writerstudio.pdf.value.*; // Utilities
-import com.creativeartie.writerstudio.file.*; // ManuscriptFile
 import com.creativeartie.writerstudio.lang.markup.*; // LinedSpanPointNote
 
 import static com.creativeartie.writerstudio.main.Checker.*;
@@ -25,7 +24,7 @@ public class SectionContentEndnote extends SectionContent<LinedSpanPointNote> {
     }
 
     @Override
-    protected MatterArea parseHeader(ManuscriptFile data) throws IOException{
+    protected MatterArea parseHeader(WritingFile data) throws IOException{
         return null;
     }
 

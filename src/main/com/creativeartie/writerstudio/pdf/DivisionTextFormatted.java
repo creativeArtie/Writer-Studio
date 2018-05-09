@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.function.*; // Supplier
 
 import com.creativeartie.writerstudio.pdf.value.*; // ContentFont
-import com.creativeartie.writerstudio.file.*; // FieldType
 import com.creativeartie.writerstudio.lang.*; // Span, SpanBranch
 import com.creativeartie.writerstudio.lang.markup.*; // (many)
 

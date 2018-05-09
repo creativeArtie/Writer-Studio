@@ -17,7 +17,6 @@ import com.creativeartie.writerstudio.main.*;
 import com.creativeartie.writerstudio.resource.*;
 
 import com.creativeartie.writerstudio.window.*;
-import com.creativeartie.writerstudio.file.*;
 
 abstract class PaneMonthView extends GridPane{
     private Button startMonth;

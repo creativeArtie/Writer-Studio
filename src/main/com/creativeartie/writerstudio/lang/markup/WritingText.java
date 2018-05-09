@@ -61,6 +61,17 @@ public class WritingText extends Document{
         return count;
     }
 
+    @Override
+    public synchronized void insert(int index, String input){
+        super.insert(index, input);
+    }
+
+    @Override
+    public synchronized void delete(int start, int end){
+        super.delete(start, end);
+    }
+
+    @Override
     public String toString(){
         return "Document" + super.toString();
     }

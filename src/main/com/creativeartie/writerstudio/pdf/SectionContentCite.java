@@ -3,7 +3,6 @@ package com.creativeartie.writerstudio.pdf;
 import java.io.*; // IOException
 
 import com.creativeartie.writerstudio.pdf.value.*; // Utilities
-import com.creativeartie.writerstudio.file.*; // ManuscriptFile
 import com.creativeartie.writerstudio.lang.markup.*; // FormattedSpan
 
 import static com.creativeartie.writerstudio.main.Checker.*;
@@ -32,7 +31,7 @@ final class SectionContentCite extends SectionContent<FormattedSpan> {
     }
 
     @Override
-    protected MatterArea parseHeader(ManuscriptFile data) throws IOException{
+    protected MatterArea parseHeader(WritingFile data) throws IOException{
         return null;
     }
 

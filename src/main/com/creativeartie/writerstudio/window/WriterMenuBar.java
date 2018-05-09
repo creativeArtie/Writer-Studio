@@ -12,7 +12,6 @@ import javafx.application.*;
 import com.google.common.base.*;
 
 import com.creativeartie.writerstudio.main.*;
-import com.creativeartie.writerstudio.file.*;
 import com.creativeartie.writerstudio.stats.*;
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
@@ -25,7 +24,7 @@ class WriterMenuBar extends MenuBar{
     private Stage statWindow;
     private Stage mainWindow;
     private FileChooser chooser;
-    private SimpleObjectProperty<ManuscriptFile> manuscriptFile;
+    private SimpleObjectProperty<WritingFile> manuscriptFile;
     private SimpleBooleanProperty agendaChecked;
     private SimpleBooleanProperty linkChecked;
     private SimpleBooleanProperty noteChecked;
@@ -40,7 +39,7 @@ class WriterMenuBar extends MenuBar{
         chooser.setTitle(WindowText.MENU_CHOOSER_TITLE.getText());
         mainWindow = window;
 
-        manuscriptFile = new SimpleObjectProperty<>(this, "manuscriptFile");
+        manuscriptFile = new SimpleObjectProperty<>(this, "WritingFile");
         statTable.statTableProperty().bind(Bindings.createObjectBinding(
             () -> Optional.ofNullable(manuscriptFile.getValue()).map(
                 value -> value.getRecords()
@@ -74,15 +73,15 @@ class WriterMenuBar extends MenuBar{
         getMenus().addAll(file, stats, help);
     }
 
-    public ObjectProperty<ManuscriptFile> manuscriptFileProperty(){
+    public ObjectProperty<WritingFile> WritingFileProperty(){
         return manuscriptFile;
     }
 
-    public ManuscriptFile getManuscriptFile(){
+    public WritingFile getWritingFile(){
         return manuscriptFile.getValue();
     }
 
-    public void setManuscriptFile(ManuscriptFile file){
+    public void setWritingFile(WritingFile file){
         manuscriptFile.setValue(file);
     }
 
@@ -91,7 +90,7 @@ class WriterMenuBar extends MenuBar{
         File file = chooser.showOpenDialog(mainWindow);
         if (file != null){
             try {
-                manuscriptFile.setValue(ManuscriptFile.open(file));
+                manuscriptFile.setValue(WritingFile.open(file));
             } catch (Exception ex){
                 throw new RuntimeException(ex);
             }
@@ -99,12 +98,12 @@ class WriterMenuBar extends MenuBar{
     }
 
     private void newFile(){
-        manuscriptFile.setValue(ManuscriptFile.newFile());
+        manuscriptFile.setValue(WritingFile.newFile());
     }
 
     private void saveFile(){
         try {
-            ManuscriptFile data = getManuscriptFile();
+            WritingFile data = getWritingFile();
             if (data != null){
                 if (! data.canSave()){
                     File file = chooser.showSaveDialog(mainWindow);
@@ -123,7 +122,7 @@ class WriterMenuBar extends MenuBar{
     }
 
     private void exportPdf(){
-        ManuscriptFile writing = manuscriptFile.get();
+        WritingFile writing = manuscriptFile.get();
         if (writing != null){
             File file = chooser.showSaveDialog(mainWindow);
             try (WritingExporter out = new WritingExporter(file.getAbsolutePath())){
@@ -140,7 +139,7 @@ class WriterMenuBar extends MenuBar{
 
     private void exit(){
         try {
-            if (getManuscriptFile().canSave()){
+            if (getWritingFile().canSave()){
                 saveFile();
             }
             Platform.exit();

@@ -3,7 +3,6 @@ package com.creativeartie.writerstudio.pdf;
 import java.io.*; // IOException
 import java.util.*; // ArrayList, LinkedList, Optional
 
-import com.creativeartie.writerstudio.file.*; // ManuscriptFile
 import com.creativeartie.writerstudio.lang.markup.*; // (many)
 import com.creativeartie.writerstudio.pdf.value.*; // LineAlginment, PageAignment, Utitlies
 
@@ -27,7 +26,7 @@ public class SectionContentMain extends SectionContent<LinedSpan> {
     }
 
     @Override
-    protected MatterArea parseHeader(ManuscriptFile data) throws IOException{
+    protected MatterArea parseHeader(WritingFile data) throws IOException{
         checkNotNull(data, "data");
         MatterArea header = new MatterArea(getPage(), PageAlignment.TOP);
         header.addAll(DivisionTextFormatted.newPrintLines(this,

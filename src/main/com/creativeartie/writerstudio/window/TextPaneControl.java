@@ -11,7 +11,6 @@ import org.fxmisc.richtext.*;
 
 import com.google.common.base.*;
 
-import com.creativeartie.writerstudio.file.*;
 import com.creativeartie.writerstudio.main.*;
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;

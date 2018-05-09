@@ -161,7 +161,7 @@ public class SectionDebug {
 
         SceneSectionTest head1_1_1 = new SceneSectionTest() /// 0, 1, 2
             .setParentHead(doc, 0, 1).setHeading(doc, 0, 1, 2, 0)
-            .addLine(doc, 0, 1, 2, 0).setLevel(3);
+            .addLine(doc, 0, 1, 2, 0).setLevel(1);
         HeadLevelLineTest line3 = new HeadLevelLineTest()/// 0, 1, 2, 0
             .setLevel(1)             .setEdition(EditionType.NONE)
             .setPublishTotal(0)      .setNoteTotal(1)

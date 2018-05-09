@@ -95,7 +95,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * @param input
      *      input text
      */
-    public synchronized final void insert(int index, String input){
+    protected synchronized void insert(int index, String input){
         argumentClose(index, "index", 0, getEnd());
         argumentNotNull(input, "input");
 
@@ -139,7 +139,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * @param end
      *      end index
      */
-    public synchronized final void delete(int start, int end){
+    protected synchronized void delete(int start, int end){
         argumentClose(end, "end", 0, getEnd());
         argumentClose(start, "start", 0, end);
 

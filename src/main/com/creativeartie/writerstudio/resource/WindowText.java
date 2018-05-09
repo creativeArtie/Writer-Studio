@@ -9,7 +9,6 @@ import static com.google.common.base.Preconditions.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.lang.Span;
 import com.creativeartie.writerstudio.main.*;
-import com.creativeartie.writerstudio.file.*;
 
 public enum WindowText {
     PROGRAM_NAME("MainWindow.Title"),

@@ -9,7 +9,6 @@ import javafx.fxml.*;
 import java.util.*;
 import java.io.*;
 
-import com.creativeartie.writerstudio.file.*;
 import com.creativeartie.writerstudio.stats.*;
 import com.creativeartie.writerstudio.resource.*;
 import com.creativeartie.writerstudio.window.*;
@@ -29,11 +28,11 @@ public class WindowMain extends Main{
 
     @Override
     @SuppressWarnings("deprecation")
-    protected ManuscriptFile getStartFile() throws IOException{
+    protected WritingFile getStartFile() throws IOException{
         // File file = new File("data/sectionDebug7.txt");
         File file = new File("data/help-text.txt");
         WritingText doc = new WritingText(file);
-        ManuscriptFile use = ManuscriptFile.withManuscript(doc);
+        WritingFile use = WritingFile.withManuscript(doc);
 
         return use;
     }

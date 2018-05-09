@@ -10,8 +10,8 @@ import javafx.stage.*;
 import javafx.scene.*;
 import java.io.*;
 
-import com.creativeartie.writerstudio.file.*;
 import com.creativeartie.writerstudio.main.*;
+import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.resource.*;
 
 public abstract class SceneStatsView extends BorderPane{

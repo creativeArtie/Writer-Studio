@@ -4,7 +4,6 @@ import java.io.*; // IOException
 import java.util.*; // List
 
 import com.creativeartie.writerstudio.pdf.value.*; // PageAlignment
-import com.creativeartie.writerstudio.file.*; // ManuscriptFile
 import com.creativeartie.writerstudio.lang.*; // SpanBranch
 import com.creativeartie.writerstudio.lang.markup.*; // SpanBranch, TextDataSpanPrint
 
@@ -18,7 +17,7 @@ import static com.creativeartie.writerstudio.main.Checker.*;
  *      rending {@link SpanBranch} class.
  */
 abstract class SectionContent<T extends SpanBranch> extends Section {
-    private ManuscriptFile outputData;
+    private WritingFile outputData;
     private PageContent currentPage;
     private int pageNumber;
 
@@ -83,7 +82,7 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
      *      the input data
      * @see #parseHeader(ManuscriptData)
      */
-    final void addHeader(ManuscriptFile data) throws IOException{
+    final void addHeader(WritingFile data) throws IOException{
         outputData = data;
         addHeader();
     }
@@ -92,7 +91,7 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
      *
      * @param data
      *      the input data
-     * @see #addHeader(ManuscriptFile)
+     * @see #addHeader(WritingFile)
      * @see #nextPage(PageAlignment)
      */
     private final void addHeader() throws IOException{
@@ -105,13 +104,13 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
     }
 
     /** Created the {@link MatterArea} for the header provided from
-     * {@link #addHeader(ManuscriptFile)}.
+     * {@link #addHeader(WritingFile)}.
      *
      * @param data
      *      the input data
-     * @see #addHeader(ManuscriptFile)
+     * @see #addHeader(WritingFile)
      */
-    protected abstract MatterArea parseHeader(ManuscriptFile data)
+    protected abstract MatterArea parseHeader(WritingFile data)
         throws IOException;
 
 
@@ -233,7 +232,7 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
     /** get the output data
      * @return answer
      */
-    protected final ManuscriptFile getOutputData(){
+    protected final WritingFile getOutputData(){
         return outputData;
     }
 

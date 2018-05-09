@@ -5,7 +5,6 @@ import java.util.*; // ArrayList, GregorianCalendar, List
 
 import org.apache.pdfbox.pdmodel.*; // PDDocumentInformation
 
-import com.creativeartie.writerstudio.file.*; // ManuscriptFile
 import com.creativeartie.writerstudio.lang.markup.*; // WritingData
 import com.creativeartie.writerstudio.pdf.value.*; // LineAlignment, PageAlignment
 import com.creativeartie.writerstudio.resource.*; // WindowText
@@ -40,7 +39,7 @@ final class SectionTitle extends Section {
      * @param data
      *      rendering data
      */
-    void export(ManuscriptFile data) throws IOException{
+    void export(WritingFile data) throws IOException{
         exportData = data.getMetaData();
         writeMeta();
         writeTitlePage();
@@ -48,7 +47,7 @@ final class SectionTitle extends Section {
 
     /** Set the PDF file properties
      *
-     * @see #export(ManuscriptFile)
+     * @see #export(WritingFile)
      */
     private void writeMeta(){
         PDDocumentInformation info = getPdfDocument().getDocumentInformation();
@@ -64,7 +63,7 @@ final class SectionTitle extends Section {
 
     /** Set the PDF file properties
      *
-     * @see #export(ManuscriptFile)
+     * @see #export(WritingFile)
      */
     private void writeTitlePage() throws IOException{
         writeTop();

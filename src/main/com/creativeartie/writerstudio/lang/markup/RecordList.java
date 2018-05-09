@@ -1,11 +1,9 @@
-package com.creativeartie.writerstudio.file;
+package com.creativeartie.writerstudio.lang.markup;
 
 import java.util.*;
 import java.time.*;
 
 import com.google.common.collect.*;
-
-import com.creativeartie.writerstudio.lang.markup.*;
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
@@ -41,8 +39,8 @@ public final class RecordList extends ForwardingList<Record>{
 
     /** Creates an empty {@linkplain RecordList}.
      *
-     * @see ManuscriptFile#withManuscript(WritingText)
-     * @see ManuscriptFile#newFile()
+     * @see WritingFile#withManuscript(WritingText)
+     * @see WritingFile#newFile()
      */
     RecordList(){
         recordList = new ArrayList<>();
@@ -53,7 +51,7 @@ public final class RecordList extends ForwardingList<Record>{
      *
      * @param text
      *      extracted file text
-     * @see ManuscriptFile#open(File)
+     * @see WritingFile#open(File)
      */
     RecordList(String text){
         argumentNotNull(text, "text");
@@ -113,7 +111,7 @@ public final class RecordList extends ForwardingList<Record>{
     /** Get the save text to put into a file.
      *
      * @return answer
-     * @see ManuscriptFile#save()
+     * @see WritingFile#save()
      */
     String getSaveText(){
         StringBuilder ans = new StringBuilder();

@@ -11,7 +11,6 @@ import javafx.animation.*;
 import javafx.geometry.*;
 
 import com.creativeartie.writerstudio.main.*;
-import com.creativeartie.writerstudio.file.*;
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.resource.*;
@@ -26,7 +25,7 @@ abstract class WriterSceneView extends BorderPane{
     private List<TableDataControl<?>> tableTabs;
     private NoteCardControl noteCards;
     private CheatsheetPaneControl langCheatsheet;
-    private SimpleObjectProperty<ManuscriptFile> manuscriptFile;
+    private SimpleObjectProperty<WritingFile> WritingFile;
     private double[] verDividerPos;
     private double[] hozDividerPos;
 
@@ -35,8 +34,8 @@ abstract class WriterSceneView extends BorderPane{
         verDividerPos = new double[]{.2, .8};
         hozDividerPos = new double[]{.0, 1.0};
 
-        manuscriptFile = new SimpleObjectProperty<>(this, "manuscriptFile");
-        manuscriptFile.addListener((data, oldValue, newValue) ->
+        WritingFile = new SimpleObjectProperty<>(this, "WritingFile");
+        WritingFile.addListener((data, oldValue, newValue) ->
             changeDoc(newValue));
 
         /// Top
@@ -110,7 +109,7 @@ abstract class WriterSceneView extends BorderPane{
 
     private WriterMenuBar initMenuBar(Stage window){
         WriterMenuBar ans = new WriterMenuBar(window);
-        ans.manuscriptFileProperty().bindBidirectional(manuscriptFile);
+        ans.WritingFileProperty().bindBidirectional(WritingFile);
         return ans;
     }
 
@@ -211,20 +210,20 @@ abstract class WriterSceneView extends BorderPane{
     }
 
     /// Node Properties
-    public ObjectProperty<ManuscriptFile> manuscriptFileProperty(){
-        return manuscriptFile;
+    public ObjectProperty<WritingFile> WritingFileProperty(){
+        return WritingFile;
     }
 
-    public ManuscriptFile getManuscriptFile(){
-        return manuscriptFile.getValue();
+    public WritingFile getWritingFile(){
+        return WritingFile.getValue();
     }
 
-    public void setManuscriptFile(ManuscriptFile doc){
-        manuscriptFile.setValue(doc);
+    public void setWritingFile(WritingFile doc){
+        WritingFile.setValue(doc);
     }
 
     /// Control Methods
-    protected abstract void changeDoc(ManuscriptFile file);
+    protected abstract void changeDoc(WritingFile file);
 
     protected abstract void textChanged(PlainTextChange changes);
 

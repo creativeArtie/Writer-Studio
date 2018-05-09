@@ -9,7 +9,6 @@ import org.apache.pdfbox.pdmodel.*; // PDDocument
 import org.apache.pdfbox.pdmodel.font.*; // PDFont, PDFontDescriptor, PDType0Font
 
 import com.creativeartie.writerstudio.pdf.value.*; // ContentFont, Utilities
-import com.creativeartie.writerstudio.file.*; // ManuscriptFile
 import com.creativeartie.writerstudio.lang.*; // Span, SpanNode
 import com.creativeartie.writerstudio.lang.markup.*; // (many)
 import com.creativeartie.writerstudio.resource.*; // FileResources
@@ -99,7 +98,7 @@ public final class WritingExporter implements AutoCloseable{
     private final PDDocument pdfDocument;
     private final PDFont[] embedFonts;
 
-    private ManuscriptFile exportingFile;
+    private WritingFile exportingFile;
     private final ArrayList<LinedSpanPointNote> endnoteList;
     private final TreeSet<FormattedSpan> citationList;
 
@@ -128,12 +127,12 @@ public final class WritingExporter implements AutoCloseable{
         ));
     }
 
-    /** exports a {@link ManuscriptFile}.
+    /** exports a {@link WritingFile}.
      *
      * @param path
      *      file path
      */
-    public void export(ManuscriptFile data) throws IOException{
+    public void export(WritingFile data) throws IOException{
         checkNotNull(data, "data");
 
         exportingFile = data;
@@ -194,7 +193,7 @@ public final class WritingExporter implements AutoCloseable{
      * @param first
      *      the first line span
      * @return answer
-     * @see #export(ManuscriptFile)
+     * @see #export(WritingFile)
      */
     private Iterator<LinedSpan> listChildren(LinedSpan first){
         assert first != null: "Null first";
@@ -298,7 +297,7 @@ public final class WritingExporter implements AutoCloseable{
     /** Gets the output data file
      * @return answer
      */
-    ManuscriptFile getDataFile(){
+    WritingFile getDataFile(){
         return exportingFile;
     }
 

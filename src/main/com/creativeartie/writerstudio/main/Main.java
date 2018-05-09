@@ -5,7 +5,7 @@ import javafx.application.*;  // Appplication;
 import javafx.scene.*; // Scene
 import javafx.stage.*; // Stage
 
-import com.creativeartie.writerstudio.file.*; // ManuscriptFile;
+import com.creativeartie.writerstudio.lang.markup.*; // WritingFile;
 import com.creativeartie.writerstudio.resource.*; // WindowText
 import com.creativeartie.writerstudio.window.*; // WriterSceneControl;
 
@@ -14,7 +14,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 /** Main method */
 public class Main extends Application{
     private static Stage mainStage;
-    private static ManuscriptFile writeFile;
+    private static WritingFile writeFile;
 
     /** Main method
      *
@@ -60,7 +60,7 @@ public class Main extends Application{
 
         /// create main pane
         WriterSceneControl writer = new WriterSceneControl(stage);
-        writer.setManuscriptFile(writeFile);
+        writer.setWritingFile(writeFile);
 
         /// set scene
         Scene scene = new Scene(writer, 800, 600);
@@ -78,7 +78,7 @@ public class Main extends Application{
      *
      * @return answer
      */
-    protected ManuscriptFile getStartFile() throws IOException{
-        return ManuscriptFile.newFile();
+    protected WritingFile getStartFile() throws IOException{
+        return WritingFile.newFile();
     }
 }

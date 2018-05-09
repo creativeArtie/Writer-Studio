@@ -9,7 +9,6 @@ import org.fxmisc.richtext.*;
 import org.fxmisc.richtext.model.*;
 import com.google.common.collect.*;
 
-import com.creativeartie.writerstudio.file.*;
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 
@@ -30,7 +29,7 @@ public class WriterSceneControl extends WriterSceneView {
     }
 
     @Override
-    protected void changeDoc(ManuscriptFile file){
+    protected void changeDoc(WritingFile file){
 
         getMetaDataPane().setMetaData(file.getMetaData());
 

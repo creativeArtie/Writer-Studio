@@ -15,7 +15,6 @@ import com.creativeartie.writerstudio.main.*;
 import com.creativeartie.writerstudio.window.*;
 import com.creativeartie.writerstudio.resource.*;
 
-import com.creativeartie.writerstudio.file.*;
 
 abstract class PaneMonthDayView extends AnchorPane{
     private Label localDay;

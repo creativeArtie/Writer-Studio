@@ -13,7 +13,6 @@ import java.util.*;
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.main.*;
-import com.creativeartie.writerstudio.file.*;
 import com.creativeartie.writerstudio.resource.*;
 
 class ReferencePane extends TableView<ReferenceData>{

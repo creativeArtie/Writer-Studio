@@ -1,6 +1,4 @@
-package com.creativeartie.writerstudio.file;
-
-import com.creativeartie.writerstudio.lang.markup.*;
+package com.creativeartie.writerstudio.lang.markup;
 
 import java.io.*;
 import java.util.*;
@@ -22,7 +20,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  * <li> Access to individuals parts of the document </li>
  * </ul>
  */
-public final class ManuscriptFile {
+public final class WritingFile {
 
     /// %Part 1: Constructors and Fields #######################################
     /// %Part 1.1: Public Static Constructors and Constants ===================
@@ -38,10 +36,10 @@ public final class ManuscriptFile {
      *      the zip file
      * @return answer
      */
-    public static ManuscriptFile open(File file) throws IOException{
+    public static WritingFile open(File file) throws IOException{
         argumentNotNull(file, "file");
 
-        /// {@link #ManuscriptFile(File,WritingText, RecordList} params:
+        /// {@link #WritingFile(File,WritingText, RecordList} params:
         WritingText doc = null;
         RecordList record = null;
         WritingData data = null;
@@ -74,29 +72,29 @@ public final class ManuscriptFile {
 
         /// Create Object or throw exception
         if (doc != null && record != null && data != null){
-            return new ManuscriptFile(file, doc, record, data);
+            return new WritingFile(file, doc, record, data);
         }
         throw new IOException("Corrupted file: document -> " + doc +
             "; records -> " + record + "; data -> " + data);
     }
 
-    /** Create a {@linkplain ManuscriptFile} with no data.
+    /** Create a {@linkplain WritingFile} with no data.
      *
      * @return answer
      */
-    public static ManuscriptFile newFile() {
-        return new ManuscriptFile(null, new WritingText(), new RecordList(),
+    public static WritingFile newFile() {
+        return new WritingFile(null, new WritingText(), new RecordList(),
             new WritingData());
     }
 
-    /** Create a {@linkplain ManuscriptFile} with a test {@link WritingText}.
+    /** Create a {@linkplain WritingFile} with a test {@link WritingText}.
      *
      * @param doc
      *      text document
      * @return answer
      */
     @Deprecated
-    public static ManuscriptFile withManuscript(WritingText doc){
+    public static WritingFile withManuscript(WritingText doc){
         argumentNotNull(doc, "doc");
         String data = String.join("\n", Arrays.asList(
             "head-top     |left  |John Roe",
@@ -127,7 +125,7 @@ public final class ManuscriptFile {
             "meta-subject |text  |exmaple, novel",
             "meta-title   |text  |Some Novel Title"
         ));
-        ManuscriptFile ans = new ManuscriptFile(null, doc, new RecordList(),
+        WritingFile ans = new WritingFile(null, doc, new RecordList(),
             new WritingData(data));
         return ans;
     }
@@ -139,7 +137,7 @@ public final class ManuscriptFile {
     private Optional<File> zipFile;
     private final WritingData metaData;
 
-    /** {@linkplain ManuscriptFile}'s constructor.
+    /** {@linkplain WritingFile}'s constructor.
      *
      * @param file
      *      storage file
@@ -150,7 +148,7 @@ public final class ManuscriptFile {
      * @param data
      *      writing meta data
      */
-    private ManuscriptFile(File file, WritingText doc,
+    private WritingFile(File file, WritingText doc,
             RecordList table, WritingData data) {
         assert doc != null: "Null doc";
         assert table != null: "Null table";

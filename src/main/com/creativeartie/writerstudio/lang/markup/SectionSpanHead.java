@@ -8,7 +8,7 @@ import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.writerstudio.main.Checker.*;
 
-/** Section with optional headings, notes and lines of text. */
+/** Section with optional heading. */
 public final class SectionSpanHead extends SectionSpan {
     private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(
             AuxiliaryType.SECTION_HEAD);
@@ -52,7 +52,7 @@ public final class SectionSpanHead extends SectionSpan {
         ImmutableList.Builder<LinedSpan> builder = ImmutableList.builder();
         builder.addAll(head.getLines());
         for (SectionSpanScene scene: head.getScenes()){
-            builder.addAll(scene.getLines());
+            builder.addAll(getAllSceneLines(scene));
         }
         for (SectionSpanHead child: head.getSections()) {
             builder.addAll(getAllHeadLines(child));

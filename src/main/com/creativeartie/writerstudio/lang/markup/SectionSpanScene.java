@@ -7,10 +7,7 @@ import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.writerstudio.main.Checker.*;
 
-/**
- * Line that stores a block quote. Represented in design/ebnf.txt as
- * {@code LinedQuote}.
- */
+/** Section with a outline as a heading*/
 public final class SectionSpanScene extends SectionSpan {
     private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(
         AuxiliaryType.SECTION_SCENE);

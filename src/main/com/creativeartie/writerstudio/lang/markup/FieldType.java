@@ -1,4 +1,4 @@
-package com.creativeartie.writerstudio.file;
+package com.creativeartie.writerstudio.lang.markup;
 
 /** Statstics Fields */
 public enum FieldType {
