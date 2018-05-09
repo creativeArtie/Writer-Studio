@@ -361,7 +361,7 @@ class DivisionTextFormatted extends DivisionText{
         assert span != null: "null span";
         assert font != null: "null font";
 
-        FieldType type = FieldType.findField(span.getField());
+        TextDataType.FieldType type = TextDataType.FieldType.findField(span.getField());
         if (type == null){
             appendText(" ", font);
         }

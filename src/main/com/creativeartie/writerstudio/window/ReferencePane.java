@@ -50,7 +50,7 @@ class ReferencePane extends TableView<ReferenceData>{
 
     private void fillRows(){
         ArrayList<ReferenceData> data = new ArrayList<>();
-        for (FieldType type: FieldType.values()){
+        for (TextDataType.FieldType type: TextDataType.FieldType.values()){
             data.add(new ReferenceData(type));
         }
         setItems(FXCollections.observableList(data));

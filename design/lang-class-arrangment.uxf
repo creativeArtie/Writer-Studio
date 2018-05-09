@@ -141,7 +141,7 @@ bg=yellow</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>560</x>
+      <x>550</x>
       <y>100</y>
       <w>130</w>
       <h>30</h>
@@ -166,11 +166,11 @@ bg=cyan</panel_attributes>
     <coordinates>
       <x>590</x>
       <y>120</y>
-      <w>60</w>
+      <w>50</w>
       <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;70.0;40.0;10.0</additional_attributes>
+    <additional_attributes>10.0;70.0;30.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -188,11 +188,11 @@ bg=cyan</panel_attributes>
     <coordinates>
       <x>650</x>
       <y>120</y>
-      <w>50</w>
+      <w>40</w>
       <h>150</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;130.0;30.0;10.0</additional_attributes>
+    <additional_attributes>10.0;130.0;20.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -208,14 +208,14 @@ bg=cyan</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>510</x>
+      <x>480</x>
       <y>150</y>
-      <w>80</w>
+      <w>110</w>
       <h>60</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 state</panel_attributes>
-    <additional_attributes>60.0;40.0;10.0;10.0</additional_attributes>
+    <additional_attributes>90.0;40.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -467,10 +467,10 @@ bg=pink</panel_attributes>
       <w>110</w>
       <h>210</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;.
+    <panel_attributes>lt=.&gt;&gt;
 Subclass
 Sometimes
-bg=cyan</panel_attributes>
+bg=light_gray</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;190.0</additional_attributes>
   </element>
   <element>
@@ -513,14 +513,14 @@ bg=pink</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>510</x>
+      <x>480</x>
       <y>100</y>
-      <w>70</w>
+      <w>90</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 state</panel_attributes>
-    <additional_attributes>50.0;10.0;10.0;30.0</additional_attributes>
+    <additional_attributes>70.0;10.0;10.0;30.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>

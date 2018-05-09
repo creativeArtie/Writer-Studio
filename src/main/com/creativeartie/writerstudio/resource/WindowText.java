@@ -98,15 +98,15 @@ public enum WindowText {
 
     WORK_CITED("ExportText.WorkCited");
 
-    public static String getNameText(FieldType area){
+    public static String getNameText(TextDataType.FieldType area){
         return getDisplay(getText("RefereceData.Name", area.name()));
     }
 
-    public static String getDescriptionText(FieldType area){
+    public static String getDescriptionText(TextDataType.FieldType area){
         return getDisplay(getText("RefereceData.Description", area.name()));
     }
 
-    public static String getExampleText(FieldType area){
+    public static String getExampleText(TextDataType.FieldType area){
         return getDisplay(getText("RefereceData.Example", area.name()));
     }
 
