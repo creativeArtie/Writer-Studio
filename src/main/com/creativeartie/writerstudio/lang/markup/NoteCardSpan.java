@@ -63,14 +63,11 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
         return getLocalCache(cacheContent, () -> {
             ArrayList<FormattedSpan> ans = new ArrayList<>();
             boolean first = true;
-            for (Span child: this){
-                if (child instanceof LinedSpanNote){
-                    if (first){
-                        first = false;
-                    } else /** if (not heading line) */{
-                        ((LinedSpanNote) child).getFormattedSpan()
-                            .ifPresent(c -> ans.add(c));
-                    }
+            for (LinedSpanNote child: getChildren(LinedSpanNote.class)){
+                if (first){
+                    first = false;
+                } else /** if (not heading line) */{
+                    child.getFormattedSpan().ifPresent(c -> ans.add(c));
                 }
             }
             return ImmutableList.copyOf(ans);
@@ -83,10 +80,10 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
      */
     public Optional<LinedSpanCite> getInTextLine(){
         return getLocalCache(cacheInText, () ->{
-            for (Span child: this){
+            for (LinedSpanCite child: getChildren(LinedSpanCite.class)){
                 if(isType(child, t -> t == InfoFieldType.FOOTNOTE ||
                         t == InfoFieldType.IN_TEXT)){
-                    return Optional.of((LinedSpanCite) child);
+                    return Optional.of(child);
                 }
             }
             return Optional.empty();
@@ -118,23 +115,21 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
         if (this == start && loop){/// base case
             return Optional.empty();
         }
-        for (Span child: this){
+        for (LinedSpanCite child: getChildren(LinedSpanCite.class)){
             if (isType(child, type -> type == InfoFieldType.SOURCE)){
                 /// Finds the citation
-                LinedSpanCite cite = (LinedSpanCite) child;
-                InfoDataSpan data = cite.getData().get();
+                InfoDataSpan data = child.getData().get();
                 return Optional.of((FormattedSpan)data.getData());
 
             } else if (isType(child, t -> t == InfoFieldType.REF)){
                 /// finds a reference
-                LinedSpanCite cite = (LinedSpanCite) child;
-                InfoDataSpan found = cite.getData().get();
+                InfoDataSpan found = child.getData().get();
 
                 /// gets the next note
                 DirectorySpan id = (DirectorySpan)found.getData();
                 CatalogueData data = getDocument().getCatalogue().get(id);
-                if (data.isReady()){
 
+                if (data.isReady()){
                     /// tries to get the next note card
                     Span span = data.getTarget();
                     assert span instanceof NoteCardSpan;
@@ -153,9 +148,8 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
      *      test filter
      * @return answer
      */
-    private boolean isType(Span child, Predicate<InfoFieldType> filter){
-        return Optional.ofNullable(child instanceof LinedSpanCite?
-                (LinedSpanCite) child: null)
+    private boolean isType(LinedSpanCite child, Predicate<InfoFieldType> filter){
+        return Optional.ofNullable(child)
             /// c == LindSpanCite
             .filter(c -> c.getData().isPresent())
             .map(c -> c.getFieldType())

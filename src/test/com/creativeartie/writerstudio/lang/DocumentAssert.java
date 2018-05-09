@@ -85,7 +85,8 @@ public class DocumentAssert {
         Span parent = null;
         for (int i: idx){
             assertTrue("Not a span node: " + span, span instanceof SpanNode);
-            assertTrue("Index " + i + " not in range: " + span.toString(),
+            assertTrue("Index " + i + " not in range(0 - " +
+                ((SpanNode<?>)span).size() + "): " + span.toString(),
                 ((SpanNode<?>)span).size() > i);
             parent = span;
             span = ((SpanNode<?>)span).get(i);
@@ -96,9 +97,13 @@ public class DocumentAssert {
     public <T extends SpanBranch> T getChild(Class<T> clazz, int ... idx){
         Span child = getFamily(idx)[0];
         assertTrue("Expects instance of " + clazz.getSimpleName() + ", gotten " +
-            child.getClass(), clazz.isInstance(child));
+            child.getClass() + ": " + child, clazz.isInstance(child));
         return clazz.cast(child);
 
+    }
+
+    public void printDocument(){
+        System.out.println(doc);
     }
 
     @Deprecated

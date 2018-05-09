@@ -90,13 +90,18 @@ public class BranchSectionTest {
             return cast();
         }
 
+        public T setLevel(int level){
+            sectionLevel = level;
+            return cast();
+        }
+
         @Override
         public void test(SpanBranch span){
             SectionSpan test = (SectionSpan) span;
             assertSpan("heading", span, sectionHeading, test.getHeading());
             assertEquals(getError("level", span), sectionLevel, test.getLevel());
             assertSame(getError("edition", span), sectionEdition,
-                test.getEdition());
+                test.getEditionType());
             assertEquals(getError("lines", span), sectionLines, test.getLines());
             assertEquals(getError("notes", span), sectionNotes, test.getNotes());
         }
@@ -105,6 +110,7 @@ public class BranchSectionTest {
     public static class HeadSectionTest extends SectionTest<HeadSectionTest>{
         private List<SectionSpanHead> spanSections;
         private List<SectionSpanScene> spanScenes;
+        private List<LinedSpan> allLines;
         private int publishTotal;
         private int noteTotal;
 
@@ -112,6 +118,7 @@ public class BranchSectionTest {
             super(HeadSectionTest.class);
             spanSections = new ArrayList<>();
             spanScenes = new ArrayList<>();
+            allLines = new ArrayList<>();
         }
 
         public HeadSectionTest addSection(DocumentAssert doc, int ... idx){
@@ -134,6 +141,18 @@ public class BranchSectionTest {
             return this;
         }
 
+        public HeadSectionTest addAllLine(DocumentAssert doc, int ... idx){
+            allLines.add(doc.getChild(LinedSpan.class, idx));
+            return this;
+        }
+
+        @Override
+        public HeadSectionTest addLine(DocumentAssert doc, int ... idx){
+            super.addLine(doc, idx);
+            allLines.add(doc.getChild(LinedSpan.class, idx));
+            return this;
+        }
+
         @Override
         public void setup(){
             setStyles(AuxiliaryType.SECTION_HEAD);
@@ -146,6 +165,7 @@ public class BranchSectionTest {
             assertEquals(getError("scenes", test), spanScenes, test.getScenes());
             assertEquals(getError("publish", span), publishTotal, test.getPublishTotal());
             assertEquals(getError("note", span), noteTotal, test.getNoteTotal());
+            assertEquals(getError("all lines", span), allLines, test.getAllLines());
             super.test(span);
         }
     }

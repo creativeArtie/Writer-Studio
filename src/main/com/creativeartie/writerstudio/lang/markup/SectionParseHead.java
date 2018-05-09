@@ -15,16 +15,9 @@ enum SectionParseHead implements SectionParser {
      * This is the main parser for {@link WritingText}.
      */
     SECTION_1,
-    /** Section 2. */
-    SECTION_2,
-    /** Section 3. */
-    SECTION_3,
-    /** Section 4. */
-    SECTION_4,
-    /** Section 5. */
-    SECTION_5,
-    /** Section 6. */
-    SECTION_6;
+    /** Section 2. */ SECTION_2,     /** Section 3. */ SECTION_3,
+    /** Section 4. */ SECTION_4,    /** Section 5. */ SECTION_5,
+    /** Section 6. */ SECTION_6;
 
     private final String lineStarter;
     private static final String OUTLINE = LEVEL_STARTERS
@@ -62,7 +55,7 @@ enum SectionParseHead implements SectionParser {
      * @see SectionParser#parse(SetupPointer)
      */
     static void parseOutline(SetupPointer pointer, ArrayList<Span> children){
-        if (pointer.hasNext(OUTLINE)){
+        while (pointer.hasNext(OUTLINE)){
             SectionParseScene.SCENE_1.parse(pointer, children);
         }
     }
@@ -73,6 +66,7 @@ enum SectionParseHead implements SectionParser {
     }
     @Override
     public SectionSpan buildSpan(ArrayList<Span> children){
+        argumentNotEmpty(children, "children");
         return new SectionSpanHead(children, this);
     }
 }

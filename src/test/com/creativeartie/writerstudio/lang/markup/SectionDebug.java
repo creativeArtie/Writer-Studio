@@ -73,10 +73,54 @@ public class SectionDebug {
         testSections(doc);
     }
 
+    @Test
+    public void editSection6(){
+        ///            012345678
+        String raw  = "======ac";
+        String text = "======abc";
+
+        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, PARSER);
+        ///                1, 2, 3, 4, 5, 6, l
+        doc.insert(7, "b", 0, 0, 0, 0, 0, 0, 0);
+
+        HeadSectionTest head1 = new HeadSectionTest().setLevel(1)
+            .addSection(doc, 0, 0)               .setPublishTotal(0)
+            .addAllLine(doc, 0, 0, 0, 0, 0, 0, 0).setNoteTotal(0);
+        HeadSectionTest head2 = new HeadSectionTest().setLevel(2)
+            .addSection(doc, 0, 0, 0)            .setPublishTotal(0)
+            .addAllLine(doc, 0, 0, 0, 0, 0, 0, 0).setNoteTotal(0);
+        HeadSectionTest head3 = new HeadSectionTest().setLevel(3)
+            .addSection(doc, 0, 0, 0, 0)         .setPublishTotal(0)
+            .addAllLine(doc, 0, 0, 0, 0, 0, 0, 0).setNoteTotal(0);
+        HeadSectionTest head4 = new HeadSectionTest().setLevel(4)
+            .addSection(doc, 0, 0, 0, 0, 0)      .setPublishTotal(0)
+            .addAllLine(doc, 0, 0, 0, 0, 0, 0, 0).setNoteTotal(0);
+        HeadSectionTest head5 = new HeadSectionTest().setLevel(5)
+            .addSection(doc, 0, 0, 0, 0, 0, 0)   .setPublishTotal(0)
+            .addAllLine(doc, 0, 0, 0, 0, 0, 0, 0).setNoteTotal(0);
+        HeadSectionTest head6 = new HeadSectionTest().setLevel(6)
+            .addLine(   doc, 0, 0, 0, 0, 0, 0, 0).setPublishTotal(1)
+            .setHeading(doc, 0, 0, 0, 0, 0, 0, 0).setNoteTotal(0);
+        HeadLevelLineTest line = new HeadLevelLineTest()
+        ///                        1, 2, 3, 4, 5, 6, l, f
+            .setFormattedSpan(doc, 0, 0, 0, 0, 0, 0, 0, 1)
+            .setLevel(6)          .setEdition(EditionType.NONE)
+            .setPublishTotal(1)   .setNoteTotal(0)
+            .setLinedType(LinedType.HEADING);
+
+        head1.test(doc, 1, text, 0);
+        head2.test(doc, 1, text, 0, 0);
+        head3.test(doc, 1, text, 0, 0, 0);
+        head4.test(doc, 1, text, 0, 0, 0, 0);
+        head5.test(doc, 1, text, 0, 0, 0, 0, 0);
+        head6.test(doc, 1, text, 0, 0, 0, 0, 0, 0);
+        line.test( doc, 2, text, 0, 0, 0, 0, 0, 0, 0);
+    }
+
     private void testSections(DocumentAssert doc){
         String[] lines = new String[]{
             /// Section 1:
-                "=Chapter 1\n",
+            "=Chapter 1\n",
                 /// Section 1.1:
                     "==Section 1\n", "section 1 text\n", "!# outline\n",
             /// Section 2
@@ -90,8 +134,11 @@ public class SectionDebug {
         String full = String.join("", lines);
         HeadSectionTest head1 = new HeadSectionTest() /// 0
             .setPublishTotal(2)   .setNoteTotal(0)
+            .addLine(doc, 0, 0)   .setLevel(1)
             .addSection(doc, 0, 1).setHeading(doc, 0, 0)
-            .addLine(doc, 0, 0);
+            .addAllLine(doc, 0, 1, 0)
+            .addAllLine(doc, 0, 1, 1)
+            .addAllLine(doc, 0, 1, 2, 0);
         HeadLevelLineTest line0 = new HeadLevelLineTest() ///0, 0
             .setLevel(1)          .setEdition(EditionType.NONE)
             .setPublishTotal(2)   .setNoteTotal(0)
@@ -100,21 +147,21 @@ public class SectionDebug {
 
         HeadSectionTest head1_1 = new HeadSectionTest() /// 0, 1
             .setPublishTotal(5)      .setNoteTotal(1)
-            .addScene(doc, 0, 1, 2)  .setHeading(doc, 0, 1, 0)
-            .addLine(doc, 0, 1, 0)   .addLine(doc, 0, 1, 1)
-            .addLine(doc, 0, 1, 2, 0);
+            .addLine(   doc, 0, 1, 0).addLine(doc, 0, 1, 1)
+            .addScene(  doc, 0, 1, 2).setHeading(doc, 0, 1, 0)
+            .addAllLine(doc, 0, 1, 2, 0).setLevel(2);
         HeadLevelLineTest line1 = new HeadLevelLineTest() ///0, 1, 0
-            .setLevel(2)             .setEdition(EditionType.NONE)
-            .setPublishTotal(2)      .setNoteTotal(0)
+            .setLevel(2)           .setEdition(EditionType.NONE)
+            .setPublishTotal(2)    .setNoteTotal(0)
             .setFormattedSpan(doc, 0, 1, 0, 1)
             .setLinedType(LinedType.HEADING);
         ParagraphLineTest line2 = new ParagraphLineTest() /// 0, 1, 1
-            .setPublishTotal(3)      .setNoteTotal(0)
+            .setPublishTotal(3)    .setNoteTotal(0)
             .setFormattedSpan(doc, 0, 1, 1, 0);
 
         SceneSectionTest head1_1_1 = new SceneSectionTest() /// 0, 1, 2
             .setParentHead(doc, 0, 1).setHeading(doc, 0, 1, 2, 0)
-            .addLine(doc, 0, 1, 2, 0);
+            .addLine(doc, 0, 1, 2, 0).setLevel(3);
         HeadLevelLineTest line3 = new HeadLevelLineTest()/// 0, 1, 2, 0
             .setLevel(1)             .setEdition(EditionType.NONE)
             .setPublishTotal(0)      .setNoteTotal(1)
@@ -124,7 +171,7 @@ public class SectionDebug {
         HeadSectionTest head2 = new HeadSectionTest() /// 1
             .setPublishTotal(4)   .setNoteTotal(0)
             .setHeading(doc, 1, 0).addLine(doc, 1, 0)
-            .addLine(doc, 1, 1);
+            .addLine(doc, 1, 1)   .setLevel(1);
         HeadLevelLineTest line4 = new HeadLevelLineTest() //1, 0
             .setLevel(1)          .setEdition(EditionType.NONE)
             .setPublishTotal(2)   .setNoteTotal(0)
@@ -247,7 +294,7 @@ public class SectionDebug {
          HeadSectionTest head = new HeadSectionTest()
             .setPublishTotal(2).setNoteTotal(2)
             .addScene(doc, 0, 0)
-            .addLine(doc, 0, 0, 0, 0).addLine(doc, 0, 0, 0, 1);
+            .addAllLine(doc, 0, 0, 0, 0).addAllLine(doc, 0, 0, 0, 1);
          SceneSectionTest out1 = new SceneSectionTest()
             .addScene(doc, 0, 0, 0)     .setParentHead(doc, 0);
          SceneSectionTest out2 = new SceneSectionTest()
@@ -270,6 +317,7 @@ public class SectionDebug {
         doc.assertLast();
         doc.assertIds();
     }
+
     @Test
     public void sectionWithSubheading(){
         String line1 = "==Heading 2\n";
@@ -278,12 +326,13 @@ public class SectionDebug {
         DocumentAssert doc = assertDoc(1, full, PARSER);
 
         HeadSectionTest head1 = new HeadSectionTest()
-            .setPublishTotal(0).setNoteTotal(0)
-            .addSection(doc, 0, 0);
+            .setPublishTotal(0)      .setNoteTotal(0)
+            .addSection(doc, 0, 0)   .setLevel(1)
+            .addAllLine(doc, 0, 0, 0).addAllLine(doc, 0, 0, 1);
          HeadSectionTest head2 = new HeadSectionTest()
-            .setPublishTotal(4).setNoteTotal(0)
-            .setHeading(doc, 0, 0, 0)
-            .addLine(doc, 0, 0, 0).addLine(doc, 0, 0, 1);
+            .setPublishTotal(4)      .setNoteTotal(0)
+            .setHeading(doc, 0, 0, 0).setLevel(2)
+            .addLine(doc, 0, 0, 0)   .addLine(doc, 0, 0, 1);
         HeadLevelLineTest child1 = new HeadLevelLineTest()
             .setLevel(2)          .setEdition(EditionType.NONE)
             .setPublishTotal(2)   .setNoteTotal(0)

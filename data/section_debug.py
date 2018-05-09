@@ -10,7 +10,6 @@ def get_type(line):
     else:
         return " OTHERS  "
 
-lines = [line.rstrip('\n') for line in open('sectionDebug_note.txt')]
 class LineSetup:
     def __init__(self):
         self.fNum = 1
@@ -53,7 +52,7 @@ with open('sectionDebug_note.txt') as lines:
                 data.output(line)
         elif line == "\n":
             data.nextFile()
-            print "0 NEW_FILE |"
+            print str(data.fNum) + " NEW_FILE |"
         else:
-            print "0 SKIP_LINE |"
+            print str(data.fNum) + " SKIP_LINE |"
             pass

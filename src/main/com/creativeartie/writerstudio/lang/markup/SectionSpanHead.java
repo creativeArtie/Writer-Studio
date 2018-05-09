@@ -8,10 +8,7 @@ import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.writerstudio.main.Checker.*;
 
-/**
- * Line that stores a block quote. Represented in design/ebnf.txt as
- * {@code LinedQuote}.
- */
+/** Section with optional headings, notes and lines of text. */
 public final class SectionSpanHead extends SectionSpan {
     private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(
             AuxiliaryType.SECTION_HEAD);
@@ -36,48 +33,75 @@ public final class SectionSpanHead extends SectionSpan {
         return BRANCH_STYLE;
     }
 
-    @Override
-    public List<LinedSpan> getLines(){
-        return getLocalCache(cacheSectionLines, () -> {
-            ImmutableList.Builder<LinedSpan> lines = ImmutableList.builder();
-            for (Span span: this){
-                if (span instanceof LinedSpan){
-                    lines.add((LinedSpan)span);
-                } else if (span instanceof SectionSpanScene){
-                    lines.addAll(getLines((SectionSpanScene) span));
-                } else if (span instanceof SectionSpanHead){
-                    return lines.build();
-                }
-            }
-            return lines.build();
-        });
+    /** Gets all the lines in a section
+     *
+     * @return answer
+     */
+    public List<LinedSpan> getAllLines(){
+        return getLocalCache(cacheSectionLines, () -> getAllHeadLines(this));
     }
 
-    private static List<LinedSpan> getLines(SectionSpanScene span){
-        ImmutableList.Builder<LinedSpan> lines = ImmutableList.builder();
-        lines.addAll(span.getLines());
-        for (SectionSpanScene child: span.getSubscenes()){
-            lines.addAll(getLines(child));
+    /** Recusively find all the lines in a {@link SectionSpanHead}.
+     *
+     * @param head
+     *     extracting head
+     * @return answer
+     * @see getAllLines()
+     */
+    private static List<LinedSpan> getAllHeadLines(SectionSpanHead head){
+        ImmutableList.Builder<LinedSpan> builder = ImmutableList.builder();
+        builder.addAll(head.getLines());
+        for (SectionSpanScene scene: head.getScenes()){
+            builder.addAll(scene.getLines());
         }
-        return lines.build();
+        for (SectionSpanHead child: head.getSections()) {
+            builder.addAll(getAllHeadLines(child));
+        }
+        return builder.build();
     }
 
+    /** Recusively find all the lines in a {@link SectionSpanScene}.
+     *
+     * @param head
+     *     extracting head
+     * @return answer
+     * @see getAllHeadLines(SectionSpanHead)
+     */
+    private static List<LinedSpan> getAllSceneLines(SectionSpanScene scene){
+        ImmutableList.Builder<LinedSpan> builder = ImmutableList.builder();
+        builder.addAll(scene.getLines());
+        for (SectionSpanScene child: scene.getSubscenes()){
+            builder.addAll(getAllSceneLines(child));
+        }
+        return builder.build();
+    }
+
+    /** get child sections.
+     *
+     * @return answer
+     */
     public List<SectionSpanHead> getSections(){
         return getLocalCache(cacheSections, () ->
             getChildren(SectionSpanHead.class));
     }
 
+    /** get child scenes (with level 1).
+     *
+     * @return answer
+     */
     public List<SectionSpanScene> getScenes(){
         return getLocalCache(cacheScenes, () ->
             getChildren(SectionSpanScene.class));
     }
 
+    /** Gets the section publish word count. */
     public int getPublishTotal(){
         return getLocalCache(cachePublish,
             () -> getCount(this, s -> s.getPublishTotal(), true)
         );
     }
 
+    /** Gets the section note word count. */
     public int getNoteTotal(){
         return getLocalCache(cacheNote, () ->
             getCount(this, s -> s.getNoteTotal(), true) +
@@ -85,6 +109,7 @@ public final class SectionSpanHead extends SectionSpan {
         );
     }
 
+    /** Recusively count the lines */
     private int getCount(Span span, ToIntFunction<LinedSpan> counter,
             boolean isFirst){
         if (isFirst){

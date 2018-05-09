@@ -42,19 +42,6 @@ public final class SectionSpanScene extends SectionSpan {
         });
     }
 
-    @Override
-    public final List<LinedSpan> getLines(){
-        return getLocalCache(cacheLines, () -> {
-            ImmutableList.Builder<LinedSpan> lines = ImmutableList.builder();
-            for (Span child: this){
-                if (child instanceof LinedSpan){
-                    lines.add((LinedSpan) child);
-                }
-            }
-            return lines.build();
-        });
-    }
-
     public List<SectionSpanScene> getSubscenes(){
         return getLocalCache(cacheScenes, () ->
             getChildren(SectionSpanScene.class));

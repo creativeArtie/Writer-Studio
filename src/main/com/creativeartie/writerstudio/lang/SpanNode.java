@@ -193,6 +193,22 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
 
     /// %Part 3: Get Span ######################################################
 
+    /** Gets a list of children.
+     *
+     * @param clazz
+     *      span class
+     * @return answer
+     */
+    protected final <T> List<T> getChildren(Class<T> clazz){
+        ImmutableList.Builder<T> builder = ImmutableList.builder();
+        for (Span span: this){
+            if (clazz.isInstance(span)){
+                builder.add(clazz.cast(span));
+            }
+        }
+        return builder.build();
+    }
+
     /** Get the first span if it a subclass of {@code clazz}.
      *
      * @param clazz

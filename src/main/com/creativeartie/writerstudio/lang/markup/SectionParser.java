@@ -50,7 +50,8 @@ interface SectionParser extends SetupParser {
         }
 
         /// parse sub section heads or secnes
-        if (getNextStarter().map(s -> pointer.hasNext(s)).orElse(false)){
+        /// while (nested starter != null && pointer.hasNext(nested starter) ) {
+        while (getNextStarter().map(s -> pointer.hasNext(s)).orElse(false)){
             nextParser().parse(pointer, children);
         }
 
