@@ -6,31 +6,38 @@ import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** Section with optional heading. */
 public final class SectionSpanHead extends SectionSpan {
     private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(
             AuxiliaryType.SECTION_HEAD);
     private final CacheKeyList<LinedSpan> cacheSectionLines;
+
     private final CacheKeyList<SectionSpanHead> cacheSections;
     private final CacheKeyList<SectionSpanScene> cacheScenes;
+
     private final CacheKeyMain<Integer> cachePublish;
     private final CacheKeyMain<Integer> cacheNote;
 
+    /** Creates a {@linkplain SectionSpanHead}.
+     *
+     * @param children
+     *      span children
+     * @param reparser
+     *      span reparser
+     * @see SectionParseHead#buildSpan(ArrayList)
+     */
     SectionSpanHead(List<Span> children, SectionParser reparser){
         super(children, reparser);
 
         cacheSectionLines = new CacheKeyList<>(LinedSpan.class);
+
         cacheSections = new CacheKeyList<>(SectionSpanHead.class);
         cacheScenes = new CacheKeyList<>(SectionSpanScene.class);
+
         cachePublish = CacheKeyMain.integerKey();
         cacheNote = CacheKeyMain.integerKey();
-    }
-
-    @Override
-    public List<StyleInfo> getBranchStyles(){
-        return BRANCH_STYLE;
     }
 
     /** Gets all the lines in a section
@@ -49,7 +56,9 @@ public final class SectionSpanHead extends SectionSpan {
      * @see getAllLines()
      */
     private static List<LinedSpan> getAllHeadLines(SectionSpanHead head){
+        assert head != null: "Null head";
         ImmutableList.Builder<LinedSpan> builder = ImmutableList.builder();
+
         builder.addAll(head.getLines());
         for (SectionSpanScene scene: head.getScenes()){
             builder.addAll(getAllSceneLines(scene));
@@ -68,7 +77,9 @@ public final class SectionSpanHead extends SectionSpan {
      * @see getAllHeadLines(SectionSpanHead)
      */
     private static List<LinedSpan> getAllSceneLines(SectionSpanScene scene){
+        assert scene != null: "Null scene";
         ImmutableList.Builder<LinedSpan> builder = ImmutableList.builder();
+
         builder.addAll(scene.getLines());
         for (SectionSpanScene child: scene.getSubscenes()){
             builder.addAll(getAllSceneLines(child));
@@ -94,55 +105,38 @@ public final class SectionSpanHead extends SectionSpan {
             getChildren(SectionSpanScene.class));
     }
 
-    /** Gets the section publish word count. */
+    @Override
     public int getPublishTotal(){
-        return getLocalCache(cachePublish,
-            () -> getCount(this, s -> s.getPublishTotal(), true)
+        return getLocalCache(cachePublish, () ->
+            getPublishCount() +
+            getSections().stream().mapToInt(s -> s.getPublishTotal()).sum() +
+            getScenes().stream().mapToInt(s -> s.getPublishTotal()).sum()
         );
     }
 
-    /** Gets the section note word count. */
+    @Override
     public int getNoteTotal(){
         return getLocalCache(cacheNote, () ->
-            getCount(this, s -> s.getNoteTotal(), true) +
-            getNotes().stream().mapToInt(n -> n.getNoteTotal()).sum()
+            getNoteCount() +
+            getSections().stream().mapToInt(s -> s.getNoteTotal()).sum() +
+            getScenes().stream().mapToInt(s -> s.getNoteTotal()).sum()
         );
-    }
-
-    /** Recusively count the lines */
-    private int getCount(Span span, ToIntFunction<LinedSpan> counter,
-            boolean isFirst){
-        if (isFirst){
-            assert span instanceof SectionSpanHead;
-            int sum = 0;
-            for (Span child: (SectionSpanHead)span){
-                /// recursive loop
-                sum += getCount(child, counter, false);
-            }
-            return sum;
-        }
-        if (span instanceof LinedSpan){
-            /// Base case: find LinedSpan
-            return counter.applyAsInt((LinedSpan) span);
-        } else if (span instanceof SectionSpanScene){
-            int sum = 0;
-            for (Span child: (SectionSpanScene) span){
-                /// recursive loop
-                sum += getCount(child, counter, false);
-            }
-            return sum;
-        }
-        /// Base case: match none
-        return 0;
     }
 
     @Override
     protected boolean checkStart(String text){
+        argumentNotNull(text, "text");
+
         if (getLevel() == 1 && isDocumentFirst()){
             /// Skipping checking when this is the first
             return true;
         }
         return allowChild(text, getLevel() - 1, true);
+    }
+
+    @Override
+    public List<StyleInfo> getBranchStyles(){
+        return BRANCH_STYLE;
     }
 
     @Override

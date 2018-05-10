@@ -55,6 +55,8 @@ enum SectionParseHead implements SectionParser {
      * @see SectionParser#parse(SetupPointer)
      */
     static void parseOutline(SetupPointer pointer, ArrayList<Span> children){
+        argumentNotNull(pointer, "pointer");
+        argumentNotNull(children, "children");
         while (pointer.hasNext(OUTLINE)){
             SectionParseScene.SCENE_1.parse(pointer, children);
         }

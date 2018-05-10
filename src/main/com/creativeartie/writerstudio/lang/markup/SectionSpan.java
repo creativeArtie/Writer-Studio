@@ -20,7 +20,8 @@ public abstract class SectionSpan extends SpanBranch {
     private final CacheKeyList<NoteCardSpan> cacheNotes;
     private final CacheKeyList<LinedSpan> cacheLines;
     private final SectionParser spanReparser;
-
+    private final CacheKeyMain<Integer> cachePublish;
+    private final CacheKeyMain<Integer> cacheNote;
 
     /** Creates a {@linkplain SectionSpan}.
      *
@@ -38,6 +39,9 @@ public abstract class SectionSpan extends SpanBranch {
         cacheEdition = new CacheKeyMain<>(EditionType.class);
         cacheNotes = new CacheKeyList<>(NoteCardSpan.class);
         cacheLines = new CacheKeyList<>(LinedSpan.class);
+
+        cachePublish = CacheKeyMain.integerKey();
+        cacheNote = CacheKeyMain.integerKey();
     }
 
     /// %Part 2: Constant gets #################################################
@@ -76,6 +80,14 @@ public abstract class SectionSpan extends SpanBranch {
             .map(s -> s.getEditionType()).orElse(EditionType.NONE));
     }
 
+    /** Gets the lines in a section
+     *
+     * @return answer
+     */
+    public final List<LinedSpan> getLines(){
+        return getLocalCache(cacheLines, () -> getChildren(LinedSpan.class));
+    }
+
     /** Gets the section notes.
      *
      * @return answer
@@ -84,13 +96,35 @@ public abstract class SectionSpan extends SpanBranch {
         return getLocalCache(cacheNotes, () -> getChildren(NoteCardSpan.class));
     }
 
-    /** Gets the lines in a section
+    /** Gets the section publish word count.
      *
      * @return answer
      */
-    public final List<LinedSpan> getLines(){
-        return getLocalCache(cacheLines, () -> getChildren(LinedSpan.class));
+    public final int getPublishCount(){
+        return getLocalCache(cachePublish,
+            () -> getLines().stream().mapToInt(s -> s.getPublishTotal()).sum()
+        );
     }
+
+    /** Gets the section + children publish word count.
+     *
+     * @return answer
+     */
+    public abstract int getPublishTotal();
+
+
+    /** Gets the section note word count.
+     *
+     * @return answer
+     */
+    public final int getNoteCount(){
+        return getLocalCache(cacheNote, () ->
+            getLines().stream().mapToInt(s -> s.getNoteTotal()).sum() +
+            getNotes().stream().mapToInt(n -> n.getNoteTotal()).sum()
+        );
+    }
+
+    public abstract int getNoteTotal();
 
     /// %Part 3: Get Parser ####################################################
 

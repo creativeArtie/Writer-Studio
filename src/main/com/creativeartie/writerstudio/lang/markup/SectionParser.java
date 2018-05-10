@@ -94,6 +94,7 @@ interface SectionParser extends SetupParser {
     static void parseContent(SetupPointer pointer, ArrayList<Span> children){
         argumentNotNull(children, "children");
         argumentNotNull(pointer, "pointer");
+
         while (! pointer.hasNext(LEVEL_HEADINGS) && pointer.hasNext()){
             /// pointer next is not heading/outline and has text
             if (! NoteCardParser.PARSER.parse(pointer, children)){
