@@ -93,9 +93,8 @@ public final class WritingFile {
      *      text document
      * @return answer
      */
-    @Deprecated
-    public static WritingFile withManuscript(WritingText doc){
-        argumentNotNull(doc, "doc");
+    public static WritingFile newSampleFile(File file) throws IOException{
+        argumentNotNull(file, "file");
         String data = String.join("\n", Arrays.asList(
             "head-top     |left  |John Roe",
             "head-top     |left  |555 Main Street",
@@ -118,15 +117,15 @@ public final class WritingFile {
             "head-bottom  |center|Copyright 1900 (c) Jane Doe",
             "text-header  |right |Doe/Novel/{%Stats.PageNumber}",
             "text-break   |center|#",
-            "text-after   |center|The End",
-            "cite-header  |center|Word Cited",
+            "text-ender   |center|The End",
+            "cite-starter |center|Word Cited",
             "meta-author  |text  |Jane Smith",
             "meta-keywords|text  |example text",
             "meta-subject |text  |exmaple, novel",
             "meta-title   |text  |Some Novel Title"
         ));
-        WritingFile ans = new WritingFile(null, doc, new RecordList(),
-            new WritingData(data));
+        WritingFile ans = new WritingFile(null, new WritingText(file),
+            new RecordList(), new WritingData(data));
         return ans;
     }
 

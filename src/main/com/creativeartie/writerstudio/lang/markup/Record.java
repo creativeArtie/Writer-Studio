@@ -59,7 +59,6 @@ public final class Record{
         return new Record(date).new Builder(last);
     }
 
-
     /** Builder class to create a {@link Record}.
      * @see RecordList
      */

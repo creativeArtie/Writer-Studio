@@ -31,8 +31,7 @@ public class WindowMain extends Main{
     protected WritingFile getStartFile() throws IOException{
         // File file = new File("data/sectionDebug7.txt");
         File file = new File("data/help-text.txt");
-        WritingText doc = new WritingText(file);
-        WritingFile use = WritingFile.withManuscript(doc);
+        WritingFile use = WritingFile.newSampleFile(file);
 
         return use;
     }

@@ -11,7 +11,7 @@ class MetaDataPaneControl extends MetaDataPaneView{
     @Override
     protected void loadMetaData(WritingData data){
         for (TextDataType.Meta meta: TextDataType.Meta.values()){
-            getTextField(meta).setText(data.getMetaRaw(meta));
+            getTextField(meta).setText(data.getMetaText(meta));
         }
     }
 

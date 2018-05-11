@@ -20,12 +20,10 @@ public class PdfMain {
         // superscriptSupportTest();
     }
 
-    @SuppressWarnings("deprecation")
     private static void exportTest() throws IOException {
 
         File file = new File("data/pdf-long.txt");
-        WritingText doc = new WritingText(file);
-        WritingFile use = WritingFile.withManuscript(doc);
+        WritingFile use = WritingFile.newSampleFile(file);
         try (WritingExporter out = new WritingExporter("test.pdf")){
             out.export(use);
         }

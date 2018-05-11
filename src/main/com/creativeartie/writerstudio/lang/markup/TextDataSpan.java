@@ -1,36 +1,53 @@
 package com.creativeartie.writerstudio.lang.markup;
 
 import java.util.*;
-import java.util.Optional;
-
-import com.creativeartie.writerstudio.lang.*;
-import static com.creativeartie.writerstudio.main.Checker.*;
 
 import com.google.common.collect.*;
-import com.google.common.base.*;
 
-/** A line of text in the {@link WritingData}. Represented in design/ebnf.txt as
- * {@code DataSpan}.
- */
+import com.creativeartie.writerstudio.lang.*;
+
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+
+
+/** A line of text in the {@link WritingData}. */
 public abstract class TextDataSpan<T extends SpanBranch> extends SpanBranch{
 
     private final CacheKeyOptional<T> cacheData;
     private final CacheKeyMain<TextDataType.Type> cacheType;
+    private final CacheKeyList<StyleInfo> cacheStyles;
 
-    public TextDataSpan(List<Span> children){
+    /** Create a {@link TextDataSpan}.
+     *
+     * @param children
+     */
+    TextDataSpan(List<Span> children){
         super(children);
 
         cacheData = new CacheKeyOptional<>(getDataClass());
         cacheType = new CacheKeyMain<>(TextDataType.Type.class);
+        cacheStyles = new CacheKeyList<>(StyleInfo.class);
     }
 
-    public Optional<T> getData(){
+    /** Gets the data.
+     *
+     * @return answer
+     */
+    public final Optional<T> getData(){
         return getLocalCache(cacheData, () -> spanFromLast(getDataClass()));
     }
 
+    /** Gets the class type of the data.
+     *
+     * @return answer
+     * @see #getData()
+     */
     protected abstract Class<T> getDataClass();
 
-    public TextDataType.Type getType(){
+    /** Get the type of data.
+     *
+     * @return answer
+     */
+    public final TextDataType.Type getType(){
         return getLocalCache(cacheType, () -> {
             String raw = getRaw();
             for (TextDataType.Type type: listTypes()){
@@ -42,23 +59,30 @@ public abstract class TextDataSpan<T extends SpanBranch> extends SpanBranch{
         });
     }
 
+    /** List the possible types of this class.
+     *
+     * @return answer
+     * @see #getType()
+     */
     protected abstract TextDataType.Type[] listTypes();
 
+    /** Get the content format
+     *
+     * @return answer
+     */
     public abstract TextDataType.Format getFormat();
 
-    protected String replaceText(String text){
-        return text;
+    @Override
+    public final List<StyleInfo> getBranchStyles(){
+        return getLocalCache(cacheStyles, () -> ImmutableList.of(
+            (StyleInfo) getType(), (StyleInfo) getFormat()));
     }
 
     @Override
-    protected SetupParser getParser(String text){
+    protected final SetupParser getParser(String text){
+        argumentNotNull(text, "text");
         return AuxiliaryChecker.checkLineEnd(text, isDocumentLast())?
             TextDataParser.PARSER: null;
-    }
-
-    @Override
-    public List<StyleInfo> getBranchStyles(){
-        return ImmutableList.of();
     }
 
 }

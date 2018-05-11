@@ -27,7 +27,7 @@ final class SectionContentCite extends SectionContent<FormattedSpan> {
      */
     void addTitle(WritingData data) throws IOException{
         checkNotNull(data, "data");
-        addLines(data.getPrint(TextDataType.Area.SOURCE_TITLE));
+        addLines(data.getPrint(TextDataType.Area.SOURCE_STARTER));
     }
 
     @Override

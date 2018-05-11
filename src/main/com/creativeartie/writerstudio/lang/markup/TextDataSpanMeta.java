@@ -1,19 +1,25 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.*; // List
+import java.util.*;
 
-import com.google.common.base.*; // CharMatcher
+import com.google.common.base.*;
 
-import com.creativeartie.writerstudio.lang.*; // List
+import com.creativeartie.writerstudio.lang.*;
+
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**  A {@link TextDataSpan} for meta data in the PDF properties.
- */
+/**  A {@link TextDataSpan} for meta data in the PDF properties. */
 public class TextDataSpanMeta extends TextDataSpan<ContentSpan>{
 
-    public TextDataSpanMeta(List<Span> spans){
-        super(spans);
+    /** Creates a {@link TextDataSpanMeta}.
+     *
+     * @param children
+     *      span children
+     * @see TextDataParser#parse(SetupPointer)
+     */
+    TextDataSpanMeta(List<Span> children){
+        super(children);
     }
 
     @Override
@@ -31,18 +37,27 @@ public class TextDataSpanMeta extends TextDataSpan<ContentSpan>{
         return TextDataType.Format.TEXT;
     }
 
-    @Override
-    public String replaceText(String text){
-        return CharMatcher.whitespace().trimAndCollapseFrom(text, ' ');
-    }
-
+    /** Edit the text
+     *
+     * @param text
+     *      the text to edit
+     */
     public void editText(String text){
+        argumentNotNull(text, "text");
         runCommand(() -> getType().getKeyName() + getFormat().getKeyName() +
             escapeText(text) + LINED_END);
     }
 
-    private String escapeText(String text){
-        return CharMatcher.is(CHAR_ESCAPE).replaceFrom(replaceText(text),
+    /** Escapes the text for this span.
+     *
+     * @param text
+     *      text to escape
+     * @see #editText(String)
+     * @see WritingData#setMetaText(TextDataType.Meta)
+     */
+    static String escapeText(String text){
+        text = CharMatcher.whitespace().trimAndCollapseFrom(text, ' ');
+        return CharMatcher.is(CHAR_ESCAPE).replaceFrom(text,
             TOKEN_ESCAPE + CHAR_ESCAPE);
     }
 }

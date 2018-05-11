@@ -1,27 +1,33 @@
 package com.creativeartie.writerstudio.lang.markup;
 
 import java.util.*;
-import java.util.Optional;
 
 import com.creativeartie.writerstudio.lang.*;
+
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-import com.google.common.collect.*;
-import com.google.common.base.*;
-
-/** A {@link TextDataSpan} for meta data in the document area.
- */
+/** A {@link TextDataSpan} for meta data in the document area. */
 public class TextDataSpanPrint extends TextDataSpan<FormattedSpan>{
     private final CacheKeyMain<TextDataType.Format> cacheFormat;
     private final CacheKeyMain<Integer> cacheIndex;
 
-    public TextDataSpanPrint(List<Span> spans){
-        super(spans);
+    /** Creates a {@link TextDataSpanPrint}.
+     *
+     * @param children
+     *      span children
+     * @see TextDataParser#parse(SetupPointer)
+     */
+    public TextDataSpanPrint(List<Span> children){
+        super(children);
         cacheFormat = new CacheKeyMain<>(TextDataType.Format.class);
         cacheIndex = CacheKeyMain.integerKey();
     }
 
+    /** Gets the line index.
+     *
+     * @return answer
+     */
     public int getIndex(){
         return getLocalCache(cacheIndex, () -> ((WritingData)getParent())
             .getPrint((TextDataType.Area)getType()).indexOf(this));
@@ -51,17 +57,45 @@ public class TextDataSpanPrint extends TextDataSpan<FormattedSpan>{
         });
     }
 
+    /** Set the text format.
+     *
+     * @return answer
+     */
     public void setFormat(TextDataType.Format format){
+        argumentNotNull(format, "format");
         runCommand(() -> getType().getKeyName() + format.getKeyName() +
             getData().map(s -> s.getRaw()).orElse("") + LINED_END);
     }
 
+    /** Delete this line. */
     void deleteLine(){
         runCommand(() -> null);
     }
 
-    void setData(String raw){
-        runCommand(() -> getType().getKeyName() + getFormat().getKeyName() +
-            raw + LINED_END);
+    /** Change the text line.
+     *
+     * @param raw
+     *      new raw text
+     * @throws TextAreaLineException
+     *      from {@link checkText(String)
+     */
+    void setData(String raw) throws TextAreaLineException{
+        String text =  getType().getKeyName() + getFormat().getKeyName() +
+            checkText(raw) + LINED_END;
+        runCommand(() -> text);
+    }
+
+    /** Escapes the text for this span.
+     *
+     * @param text
+     *      text to escape
+     * @see #editText(String)
+     * @see WritingData#setMetaText(TextDataType.Meta)
+     * @throws TextAreaLineException
+     *      text ends with "{@value TOKEN_ESCAPE}"
+     */
+    static String checkText(String text) throws TextAreaLineException{
+        if (text.endsWith(TOKEN_ESCAPE)) throw new TextAreaLineException(text);
+        return text;
     }
 }

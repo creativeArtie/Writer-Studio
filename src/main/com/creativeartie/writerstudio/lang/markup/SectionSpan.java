@@ -183,7 +183,7 @@ public abstract class SectionSpan extends SpanBranch {
      * @see #checkStart(String)
      * @see #getPaser(String)
      */
-    static boolean allowChild(String text, int allowed, boolean heading){
+    static final boolean allowChild(String text, int allowed, boolean heading){
         argumentNotNull(text, "text");
         argumentClose(allowed, "allowed", 0, LEVEL_MAX - 1);
 

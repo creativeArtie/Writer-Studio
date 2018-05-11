@@ -444,23 +444,6 @@ public final class AuxiliaryData{
     /// ========================================================================
     /// @Part 4: Writing Data
 
-    private static final String TITLE         = "head-";
-    /** At top    of a  title  page:          {@value} */
-    public static final String TITLE_TOP     = TITLE  + "top     |";
-    /** At center of a  title  page:          {@value} */
-    public static final String TITLE_CENTER  = TITLE  + "centre  |";
-    /** At bottom of a  title  page:          {@value} */
-    public static final String TITLE_BOTTOM  = TITLE  + "bottom  |";
-    private static final String TEXT         = "text-";
-    /** For the header of a  content page:    {@value} */
-    public static final String TEXT_HEADER   = TEXT   + "header  |";
-    /** For the ending of a  content section:  {@value} */
-    public static final String TEXT_AFTER    = TEXT   + "after   |";
-    /** For a   break of a content page:      {@value} */
-    public static final String TEXT_BREAK    = TEXT   + "break   |";
-    private static final String CITE         = "cite-";
-    /** For title   of a citation section:     {@value} */
-    public static final String CITE_TITLE    = CITE   + "header  |";
     private static final String META         = "meta-";
     /** PDF file property  for author:        {@value} */
     public static final String META_AUTHOR   = META   + "author  |";
@@ -470,6 +453,50 @@ public final class AuxiliaryData{
     public static final String META_SUBJECT  = META   + "subject |";
     /** PDF file property  for title:         {@value} */
     public static final String META_TITLE    = META   + "title   |";
+
+    private static final String AREA         = "-";
+    private static final String AREA_STARTER = AREA  + "starter |";
+    private static final String AREA_HEADER  = AREA  + "header  |";
+    private static final String AREA_BREAK   = AREA  + "break   |";
+    private static final String AREA_FOOTER  = AREA  + "footer  |";
+    private static final String AREA_ENDER   = AREA  + "ender |";
+    private static final String TEXT = "text";
+    /** Text at the start of the main content. */
+    public static final String TEXT_STARTER = TEXT + AREA_STARTER;
+    /** Text for the top of each main content page. */
+    public static final String TEXT_HEADER  = TEXT + AREA_HEADER;
+    /** Text for section break in the main content */
+    public static final String TEXT_BREAK   = TEXT + AREA_BREAK;
+    /** Text for the bottom of each main content page. */
+    public static final String TEXT_FOOTER  = TEXT + AREA_FOOTER;
+    /** Text for the end of the main content. */
+    public static final String TEXT_ENDER   = TEXT + AREA_ENDER;
+    private static final String END         = "end";
+    /** Text for start of the endnote content. */
+    public static final String END_STARTER  = END + AREA_STARTER;
+    /** Text for the top of each endnote content page. */
+    public static final String END_HEADER   = END + AREA_HEADER;
+    /** Text for the bottom of each endnote content page. */
+    public static final String END_FOOTER   = END + AREA_FOOTER;
+    /** Text for the end of the endnote content. */
+    public static final String END_ENDER    = END + AREA_ENDER;
+    private static final String CITE        = "cite";
+    /** Text for start of the work(s) cited content. */
+    public static final String CITE_STARTER = CITE + AREA_STARTER;
+    /** Text for the top of each work(s) cited content page. */
+    public static final String CITE_HEADER  = CITE + AREA_HEADER;
+    /** Text for the bottom of each work(s) cited content page. */
+    public static final String CITE_FOOTER  = CITE + AREA_FOOTER;
+    /** Text for the end of the work(s) cited content. */
+    public static final String CITE_ENDER   = CITE + AREA_ENDER;
+
+    private static final String TITLE         = "head-";
+    /** At top    of a  title  page:          {@value} */
+    public static final String TITLE_TOP     = TITLE  + "top     |";
+    /** At center of a  title  page:          {@value} */
+    public static final String TITLE_CENTER  = TITLE  + "centre  |";
+    /** At bottom of a  title  page:          {@value} */
+    public static final String TITLE_BOTTOM  = TITLE  + "bottom  |";
 
     /** Data type or line alignment length:  {@value} */
     public static final int ALIGN_START     = TITLE_TOP.length();

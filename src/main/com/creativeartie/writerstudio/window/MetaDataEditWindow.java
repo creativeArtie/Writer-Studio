@@ -47,7 +47,22 @@ public class MetaDataEditWindow extends Stage{
         updatePreview(); /// assigns printSpans
 
         textArea.plainTextChanges().subscribe(value -> {
-            writingData.setPrintText(showType, textArea.getText());
+            String text = textArea.getText();
+            try {
+                writingData.setPrintText(showType, text);
+            } catch (TextAreaLineException except){
+                text = text.substring(0, AuxiliaryData.TOKEN_ESCAPE.length());
+                // TODO better alert dialogue
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Text Setting Error");
+                error.setHeaderText("Text cannot ends with a '\\'");
+                error.setContentText("The text will be set as: " + text);
+                try {
+                    writingData.setPrintText(showType, text);
+                } catch (TextAreaLineException ex){
+                    throw new RuntimeException(ex);
+                }
+            }
             updatePreview();
         });
 

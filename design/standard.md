@@ -73,7 +73,7 @@
     - group statements by groups with a comments at their top
     - method variables are a 1 word, lowercase
 - llambda
-    - parameter is a single letter
+    - parameter is a single letter, unless is it block code
     - add class name comment as needed: `//c = Object`
     - for single variable and statment, remove brackets (`()` / `{}`).
 - braces
