@@ -1,5 +1,4 @@
 out/*
 build/*
 lib/javadoc/*
-jwriter.geany
-writer.geany
+*.geany
