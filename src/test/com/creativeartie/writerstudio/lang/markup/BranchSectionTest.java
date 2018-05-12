@@ -61,6 +61,10 @@ public class BranchSectionTest {
         private EditionType sectionEdition;
         private List<LinedSpan> sectionLines;
         private List<NoteCardSpan> sectionNotes;
+        private int publishCount;
+        private int noteCount;
+        private int publishTotal;
+        private int noteTotal;
 
         public SectionTest(Class<T> clazz){
             super(clazz);
@@ -77,6 +81,26 @@ public class BranchSectionTest {
             sectionHeading = Optional.of(line);
             sectionLevel = line.getLevel();
             sectionEdition = line.getEditionType();
+            return cast();
+        }
+
+        public T setPublishCount(int count){
+            publishCount = count;
+            return cast();
+        }
+
+        public T setNoteCount(int count){
+            noteCount = count;
+            return cast();
+        }
+
+        public T setPublishTotal(int count){
+            publishTotal = count;
+            return cast();
+        }
+
+        public T setNoteTotal(int count){
+            noteTotal = count;
             return cast();
         }
 
@@ -99,6 +123,9 @@ public class BranchSectionTest {
         public void test(SpanBranch span){
             SectionSpan test = (SectionSpan) span;
             assertSpan("heading", span, sectionHeading, test.getHeading());
+            assertEquals(getError("publish", span), publishCount, test.getPublishCount());
+            assertEquals(getError("note", span), noteCount, test.getNoteCount());
+            assertEquals(getError("publish", span), publishTotal, test.getPublishTotal());
             assertEquals(getError("level", span), sectionLevel, test.getLevel());
             assertSame(getError("edition", span), sectionEdition,
                 test.getEditionType());
@@ -111,8 +138,6 @@ public class BranchSectionTest {
         private List<SectionSpanHead> spanSections;
         private List<SectionSpanScene> spanScenes;
         private List<LinedSpan> allLines;
-        private int publishTotal;
-        private int noteTotal;
 
         public HeadSectionTest(){
             super(HeadSectionTest.class);
@@ -128,16 +153,6 @@ public class BranchSectionTest {
 
         public HeadSectionTest addScene(DocumentAssert doc, int ... idx){
             spanScenes.add(doc.getChild(SectionSpanScene.class, idx));
-            return this;
-        }
-
-        public HeadSectionTest setPublishTotal(int count){
-            publishTotal = count;
-            return this;
-        }
-
-        public HeadSectionTest setNoteTotal(int count){
-            noteTotal = count;
             return this;
         }
 
@@ -163,7 +178,6 @@ public class BranchSectionTest {
             SectionSpanHead test = assertClass(span, SectionSpanHead.class);
             assertEquals(getError("sections", test), spanSections, test.getSections());
             assertEquals(getError("scenes", test), spanScenes, test.getScenes());
-            assertEquals(getError("publish", span), publishTotal, test.getPublishTotal());
             assertEquals(getError("note", span), noteTotal, test.getNoteTotal());
             assertEquals(getError("all lines", span), allLines, test.getAllLines());
             super.test(span);

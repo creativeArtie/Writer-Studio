@@ -84,22 +84,28 @@ public class SectionDebug {
         doc.insert(7, "b", 0, 0, 0, 0, 0, 0, 0);
 
         HeadSectionTest head1 = new HeadSectionTest().setLevel(1)
-            .addSection(doc, 0, 0)               .setPublishTotal(0)
+            .setPublishCount(0)                  .setNoteCount(0)
+            .addSection(doc, 0, 0)               .setPublishTotal(2)
             .addAllLine(doc, 0, 0, 0, 0, 0, 0, 0).setNoteTotal(0);
         HeadSectionTest head2 = new HeadSectionTest().setLevel(2)
-            .addSection(doc, 0, 0, 0)            .setPublishTotal(0)
+            .setPublishCount(0)                  .setNoteCount(0)
+            .addSection(doc, 0, 0, 0)            .setPublishTotal(2)
             .addAllLine(doc, 0, 0, 0, 0, 0, 0, 0).setNoteTotal(0);
         HeadSectionTest head3 = new HeadSectionTest().setLevel(3)
-            .addSection(doc, 0, 0, 0, 0)         .setPublishTotal(0)
+            .setPublishCount(0)                  .setNoteCount(0)
+            .addSection(doc, 0, 0, 0, 0)         .setPublishTotal(2)
             .addAllLine(doc, 0, 0, 0, 0, 0, 0, 0).setNoteTotal(0);
         HeadSectionTest head4 = new HeadSectionTest().setLevel(4)
-            .addSection(doc, 0, 0, 0, 0, 0)      .setPublishTotal(0)
+            .setPublishCount(0)                  .setNoteCount(0)
+            .addSection(doc, 0, 0, 0, 0, 0)      .setPublishTotal(2)
             .addAllLine(doc, 0, 0, 0, 0, 0, 0, 0).setNoteTotal(0);
         HeadSectionTest head5 = new HeadSectionTest().setLevel(5)
-            .addSection(doc, 0, 0, 0, 0, 0, 0)   .setPublishTotal(0)
+            .setPublishCount(0)                  .setNoteCount(0)
+            .addSection(doc, 0, 0, 0, 0, 0, 0)   .setPublishTotal(2)
             .addAllLine(doc, 0, 0, 0, 0, 0, 0, 0).setNoteTotal(0);
         HeadSectionTest head6 = new HeadSectionTest().setLevel(6)
-            .addLine(   doc, 0, 0, 0, 0, 0, 0, 0).setPublishTotal(1)
+            .setPublishCount(1)                  .setNoteCount(0)
+            .addLine(   doc, 0, 0, 0, 0, 0, 0, 0).setPublishTotal(2)
             .setHeading(doc, 0, 0, 0, 0, 0, 0, 0).setNoteTotal(0);
         HeadLevelLineTest line = new HeadLevelLineTest()
         ///                        1, 2, 3, 4, 5, 6, l, f
@@ -133,7 +139,8 @@ public class SectionDebug {
 
         String full = String.join("", lines);
         HeadSectionTest head1 = new HeadSectionTest() /// 0
-            .setPublishTotal(2)   .setNoteTotal(0)
+            .setPublishCount(2)   .setNoteCount(0)
+            .setPublishTotal(7)   .setNoteTotal(1)
             .addLine(doc, 0, 0)   .setLevel(1)
             .addSection(doc, 0, 1).setHeading(doc, 0, 0)
             .addAllLine(doc, 0, 1, 0)
@@ -146,6 +153,7 @@ public class SectionDebug {
             .setLinedType(LinedType.HEADING);
 
         HeadSectionTest head1_1 = new HeadSectionTest() /// 0, 1
+            .setPublishCount(5)      .setNoteCount(0)
             .setPublishTotal(5)      .setNoteTotal(1)
             .addLine(   doc, 0, 1, 0).addLine(doc, 0, 1, 1)
             .addScene(  doc, 0, 1, 2).setHeading(doc, 0, 1, 0)
@@ -160,6 +168,7 @@ public class SectionDebug {
             .setFormattedSpan(doc, 0, 1, 1, 0);
 
         SceneSectionTest head1_1_1 = new SceneSectionTest() /// 0, 1, 2
+            .setPublishCount(0)      .setNoteCount(1)
             .setParentHead(doc, 0, 1).setHeading(doc, 0, 1, 2, 0)
             .addLine(doc, 0, 1, 2, 0).setLevel(1);
         HeadLevelLineTest line3 = new HeadLevelLineTest()/// 0, 1, 2, 0
@@ -185,7 +194,6 @@ public class SectionDebug {
         line0.test(    doc, 3, lines[0], 0, 0);
         head1_1.test(  doc, 3, sec1_1,   0, 1);
         line1.test(    doc, 3, lines[1], 0, 1, 0);
-        line2.test(    doc, 2, lines[2], 0, 1, 1);
         head1_1_1.test(doc, 1, lines[3], 0, 1, 2);
         line3.test(    doc, 3, lines[3], 0, 1, 2, 0);
         head2.test(    doc, 2, sec2,     1);

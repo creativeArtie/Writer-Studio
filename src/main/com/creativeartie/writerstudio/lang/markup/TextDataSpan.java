@@ -8,7 +8,6 @@ import com.creativeartie.writerstudio.lang.*;
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-
 /** A line of text in the {@link WritingData}. */
 public abstract class TextDataSpan<T extends SpanBranch> extends SpanBranch{
 

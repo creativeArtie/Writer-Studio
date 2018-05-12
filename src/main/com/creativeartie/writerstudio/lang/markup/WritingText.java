@@ -13,52 +13,72 @@ import com.google.common.io.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import com.creativeartie.writerstudio.main.Checker;
 
-/**
- * Main document that put all the {@link Span spans} together. Represented in
- * design/ebnf.txt as {@code Manuscript}
+/** Main document that contain the content.
+ *
+ * Impelments the rule {@code design/ebnf.txt Data}.
  */
 public class WritingText extends Document{
 
-    public WritingText(File file) throws IOException{
+    private final CacheKeyMain<Boolean> cacheHeadings;
+    private final CacheKeyMain<Integer> cachePublish;
+    private final CacheKeyMain<Integer> cacheNote;
+
+    /** Creates a {@linkplain WritingText}.
+     *
+     * @param file
+     *      file text source
+     * @see WritingFile#newSampleFile(File)
+     */
+    WritingText(File file) throws IOException{
         this(Files.asCharSource(Checker.checkNotNull(file, "textFile"),
             Charsets.UTF_8).read());
     }
 
-    public WritingText(){
+    /** Creates an empty  {@linkplain WritingText}.
+     *
+     * @see WritingFile#newFile()
+     */
+    WritingText(){
         this("");
     }
 
+    /** Creates a {@linkplain WritingText}.
+     *
+     * @param text
+     *      raw content text
+     * @see WritingFile#opeFile(File)
+     */
     public WritingText(String text){
         super(text, SectionParseHead.SECTION_1);
+        cacheHeadings = CacheKeyMain.booleanKey();
+        cachePublish = CacheKeyMain.integerKey();
+        cacheNote = CacheKeyMain.integerKey();
     }
 
+    /** Check if all section has a heading.
+     */
     public boolean allHasHeading(){
-        Optional<SectionSpanHead> found = spanAtFirst(SectionSpanHead.class);
-        return found.isPresent() && found.get().getHeading().isPresent();
+        return getLocalCache(cacheHeadings, () ->
+            spanAtFirst(SectionSpanHead.class)
+                .flatMap(s -> s.getHeading())
+                .isPresent()
+        );
     }
 
     public int getPublishTotal(){
-        int count = 0;
-        for (SpanBranch span: this){
-            count += count((SectionSpanHead) span, c -> c.getPublishTotal());
-        }
-        return count;
-    }
-
-    private int count(SectionSpanHead span, ToIntFunction<SectionSpanHead> counter){
-        int count = counter.applyAsInt(span);
-        for (SectionSpanHead child: span.getSections()){
-            count += count(child, counter);
-        }
-        return count;
+        return getLocalCache(cachePublish, () -> stream()
+            .map(s -> (SectionSpanHead) s)
+            .mapToInt(s -> s.getPublishTotal())
+            .sum()
+        );
     }
 
     public int getNoteTotal(){
-        int count = 0;
-        for (SpanBranch span: this){
-            count += count((SectionSpanHead) span, c -> c.getNoteTotal());
-        }
-        return count;
+        return getLocalCache(cacheNote, () -> stream()
+            .map(s -> (SectionSpanHead) s)
+            .mapToInt(s -> s.getNoteTotal())
+            .sum()
+        );
     }
 
     @Override

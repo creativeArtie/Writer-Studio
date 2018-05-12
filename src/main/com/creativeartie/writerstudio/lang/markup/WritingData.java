@@ -3,30 +3,27 @@ package com.creativeartie.writerstudio.lang.markup;
 import com.creativeartie.writerstudio.lang.*;
 
 import java.util.*;
-import java.util.function.*;
-import java.util.stream.*;
 import java.util.Optional;
-import java.io.*;
+import java.util.stream.*;
 
 import com.google.common.base.*;
-import com.google.common.io.*;
 import com.google.common.collect.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import com.creativeartie.writerstudio.main.Checker;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/** Main writing meta data and other matters. */
+/** Main writing meta data and other matters.
+ *
+ * Impelments the rule {@code design/ebnf.txt Data}.
+ */
 public final class WritingData extends Document{
 
     private List<CacheKeyList<TextDataSpanPrint>> cachePrint;
     private List<CacheKeyMain<String>> cacheMeta;
 
-
     /** Creates an empty {@linkplain WritingData}.
      *
-     * @see WritingFile#opeFile(File)
      * @see WritingFile#newFile()
-     * @see WritingFile#newSampleFile(File)
      */
     WritingData(){
         this("");
@@ -35,6 +32,8 @@ public final class WritingData extends Document{
     /** Creates a {@linkplain WritingData}.
      * @param text
      *      data text
+     * @see WritingFile#opeFile(File)
+     * @see WritingFile#newSampleFile(File)
      */
     WritingData(String text){
         super(text, TextDataParser.PARSER);
@@ -60,6 +59,8 @@ public final class WritingData extends Document{
      * @return answer
      */
     public List<TextDataSpanPrint> getPrint(TextDataType.Area area){
+        argumentNotNull(area, "area");
+
         return getLocalCache(cachePrint.get(area.ordinal()), () ->
             ImmutableList.copyOf(getChildren(TextDataSpanPrint.class).stream()
                 .filter(p -> p.getType() == area)
@@ -78,6 +79,9 @@ public final class WritingData extends Document{
      */
     public void setPrintText(TextDataType.Area area, String raw)
             throws TextAreaLineException{
+        argumentNotNull(area, "area");
+        argumentNotNull(raw, "raw");
+
         raw = raw.replace(TOKEN_ESCAPE + LINED_END, LINED_END);
         List<TextDataSpanPrint> print = getPrint(area);
         int i = 0;
@@ -103,7 +107,9 @@ public final class WritingData extends Document{
      * @return answer
      */
     public String getMetaText(TextDataType.Meta meta){
-        return getLocalCache(cacheMeta.get(meta.ordinal()), () -> 
+        argumentNotNull(meta, "meta");
+
+        return getLocalCache(cacheMeta.get(meta.ordinal()), () ->
             getWritingData(meta)
             /// s = TextDataSpanMeta
             .flatMap(s -> s.getData())
@@ -122,6 +128,9 @@ public final class WritingData extends Document{
      * @return answer
      */
     public void setMetaText(TextDataType.Meta meta, String raw){
+        argumentNotNull(meta, "meta");
+        argumentNotNull(raw, "raw");
+
         Optional<TextDataSpanMeta> span = getWritingData(meta);
         if (! span.isPresent()){
             runCommand(() -> getRaw() + meta.getKeyName() +
@@ -140,10 +149,11 @@ public final class WritingData extends Document{
      * @see #setMetaText(TextDataType.Meta, String)
      */
     private Optional<TextDataSpanMeta> getWritingData(TextDataType.Meta meta){
-        for (SpanBranch span: this){
-            if (span instanceof TextDataSpanMeta &&
-                    ((TextDataSpan) span).getType() == meta){
-                return Optional.of((TextDataSpanMeta) span);
+        assert meta != null: "Null meta";
+
+        for (TextDataSpanMeta span: getChildren(TextDataSpanMeta.class)){
+            if (span.getType() == meta){
+                return Optional.of(span);
             }
         }
         return Optional.empty();

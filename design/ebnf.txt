@@ -19,10 +19,9 @@
  * Heading simplification: (grep 'Heading simplification' for information)
  *)
 
-Meta = {Data};
-Data = DataSpan, [{\n, DataSpan}], [\n];
+Data = DataSpan, {DataSpan}
 
-DataSpan = (DataArea, DataType, Format1) | (DataMeta, DataType, Content)
+DataSpan = (DataArea, DataType, Format1) | (DataMeta, DataType, Content), \n;
 DataArea = ("head-", ("top     |" | "centre  |" | "bottom  |") ) |
            ("text-", ("header  |" | "ender   |" ) ) |
            ("cite-",  "header  |" );
