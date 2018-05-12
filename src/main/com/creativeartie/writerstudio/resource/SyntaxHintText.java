@@ -32,7 +32,7 @@ public enum SyntaxHintText {
         return getText("Line", type);
     }
 
-    public String getText(FormatType type){
+    public String getText(FormatTypeStyle type){
         return getText("Format", type);
     }
 

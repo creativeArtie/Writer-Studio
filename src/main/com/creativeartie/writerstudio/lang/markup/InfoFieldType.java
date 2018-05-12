@@ -29,7 +29,7 @@ public enum InfoFieldType implements StyleInfo{
      * @param text
      *      text to parse
      * @return answer
-     * @see InfoFieldSpan#getFieldType()
+     * @see InfoFieldSpan#getFormatTypeField()
      */
     static InfoFieldType getType(String text){
         argumentNotNull(text, "text");

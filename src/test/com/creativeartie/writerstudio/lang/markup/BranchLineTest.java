@@ -82,7 +82,7 @@ public class BranchLineTest {
         @Override
         public void test(SpanBranch span){
             LinedSpanCite test = assertClass(span, LinedSpanCite.class);
-            assertEquals(getError("field", test), infoType, test.getFieldType());
+            assertEquals(getError("field", test), infoType, test.getFormatTypeField());
             assertSpan("data", span, dataSpan, test.getData());
             super.test(span);
         }

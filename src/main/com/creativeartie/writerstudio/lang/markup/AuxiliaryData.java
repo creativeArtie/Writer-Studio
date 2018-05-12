@@ -239,7 +239,7 @@ public final class AuxiliaryData{
     public static final String FORMAT_CODED     = "`" ;
 
     /** Number of format types:            {@value} */
-    public static final int FORMAT_TYPES = FormatType.values().length;
+    public static final int FORMAT_TYPES = FormatTypeStyle.values().length;
 
     /// %Part 1.7: Escape Begin Token ==========================================
 

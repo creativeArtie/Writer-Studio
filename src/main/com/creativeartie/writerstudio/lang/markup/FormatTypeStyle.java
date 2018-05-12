@@ -12,7 +12,7 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  * <li> {@link AuxiliaryData#FORMATTED_TEXT}</li>
  * </ol>
  */
-public enum FormatType implements StyleInfo{
+public enum FormatTypeStyle implements StyleInfo{
     /** Bold text with the token: "{@value #FORMAT_BOLD}"*/
     BOLD(FORMAT_BOLD),
     /** Italics text with the token: "{@value #FORMAT_ITALICS"*/
@@ -28,7 +28,7 @@ public enum FormatType implements StyleInfo{
      * @param token
      *      formatter token
      */
-    private FormatType(String token){
+    private FormatTypeStyle(String token){
         assert token != null && token.length() > 0: "Empty token";
         formatToken = token;
     }

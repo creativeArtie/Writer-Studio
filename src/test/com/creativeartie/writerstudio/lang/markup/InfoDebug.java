@@ -36,7 +36,7 @@ public class InfoDebug {
             .setEnd(false);
         FormatContentTest text2 = new FormatContentTest()
             .setText("*efg")   .setBegin(false)
-            .setEnd(false)     .setFormats(FormatType.ITALICS);
+            .setEnd(false)     .setFormats(FormatTypeStyle.ITALICS);
         EscapeTest escape = new BranchTest.EscapeTest().setEscape("*");
 
         data.test(       doc,  1, raw,      0);

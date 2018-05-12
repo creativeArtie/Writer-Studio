@@ -78,10 +78,10 @@ abstract class CheatsheetPaneView extends GridPane{
         addLabel(ans, CheatsheetLabel.getLabel(AuxiliaryType.REF_KEY), 8, 0);
         setPrecentWidth(12); /// fills to: 86
 
-        addLabel(ans, CheatsheetLabel.getLabel(FormatType.BOLD),      9, 0);
-        addLabel(ans, CheatsheetLabel.getLabel(FormatType.CODED),     9, 1);
-        addLabel(ans, CheatsheetLabel.getLabel(FormatType.ITALICS),   9, 2);
-        addLabel(ans, CheatsheetLabel.getLabel(FormatType.UNDERLINE), 9, 3);
+        addLabel(ans, CheatsheetLabel.getLabel(FormatTypeStyle.BOLD),      9, 0);
+        addLabel(ans, CheatsheetLabel.getLabel(FormatTypeStyle.CODED),     9, 1);
+        addLabel(ans, CheatsheetLabel.getLabel(FormatTypeStyle.ITALICS),   9, 2);
+        addLabel(ans, CheatsheetLabel.getLabel(FormatTypeStyle.UNDERLINE), 9, 3);
         setPrecentWidth(14); /// fills to: 100
         return ans;
     }

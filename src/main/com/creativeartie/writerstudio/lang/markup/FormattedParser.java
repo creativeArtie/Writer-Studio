@@ -57,7 +57,7 @@ final class FormattedParser implements SetupParser {
             }
 
             /// Find the formatting tokens
-            for (FormatType type: FormatType.values()){
+            for (FormatTypeStyle type: FormatTypeStyle.values()){
                 if (pointer.startsWith(children, type.getToken())){
                     /// change format of bold/italics/underline/code
                     formats[type.ordinal()] = ! formats[type.ordinal()];

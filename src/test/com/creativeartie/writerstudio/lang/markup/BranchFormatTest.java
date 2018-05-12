@@ -10,20 +10,20 @@ import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.DocumentAssert.*;
 public class BranchFormatTest {
 
-    private static void testFormats(SpanBranch span, FormatType[] formats){
+    private static void testFormats(SpanBranch span, FormatTypeStyle[] formats){
         FormatSpan test = (FormatSpan) span;
 
-        assertFormat(test, test.isBold(),      FormatType.BOLD, formats);
-        assertFormat(test, test.isItalics(),   FormatType.ITALICS, formats);
-        assertFormat(test, test.isUnderline(), FormatType.UNDERLINE, formats);
-        assertFormat(test, test.isCoded(),     FormatType.CODED, formats);
+        assertFormat(test, test.isBold(),      FormatTypeStyle.BOLD, formats);
+        assertFormat(test, test.isItalics(),   FormatTypeStyle.ITALICS, formats);
+        assertFormat(test, test.isUnderline(), FormatTypeStyle.UNDERLINE, formats);
+        assertFormat(test, test.isCoded(),     FormatTypeStyle.CODED, formats);
     }
 
     private static void assertFormat(FormatSpan span, boolean format,
-            FormatType type,  FormatType[] formats)
+            FormatTypeStyle type,  FormatTypeStyle[] formats)
     {
         boolean isTrue = false;
-        for (FormatType expected: formats){
+        for (FormatTypeStyle expected: formats){
             if (type == expected){
                 isTrue = true;
             }
@@ -34,12 +34,12 @@ public class BranchFormatTest {
 
     public static class FormatNoteTest extends SpanBranchAssert<FormatNoteTest>{
         private DirectoryType directory;
-        private FormatType[] formats;
+        private FormatTypeStyle[] formats;
         private Optional<SpanBranch> target;
 
         public FormatNoteTest(){
             super(FormatNoteTest.class);
-            formats = new FormatType[0];
+            formats = new FormatTypeStyle[0];
             target = Optional.empty();
         }
 
@@ -48,7 +48,7 @@ public class BranchFormatTest {
             return this;
         }
 
-        public FormatNoteTest setFormats(FormatType ... types){
+        public FormatNoteTest setFormats(FormatTypeStyle ... types){
             formats = types;
             return this;
         }
@@ -58,7 +58,7 @@ public class BranchFormatTest {
             return this;
         }
 
-        public FormatType[] getFormats(){
+        public FormatTypeStyle[] getFormats(){
             return formats;
         }
 
@@ -81,12 +81,12 @@ public class BranchFormatTest {
 
     public static class FormatKeyTest extends SpanBranchAssert<FormatKeyTest>{
 
-        private FormatType[] formats;
+        private FormatTypeStyle[] formats;
         private String field;
 
         public FormatKeyTest(){
             super(FormatKeyTest.class);
-            formats = new FormatType[0];
+            formats = new FormatTypeStyle[0];
         }
 
         public FormatKeyTest setField(String str){
@@ -94,12 +94,12 @@ public class BranchFormatTest {
             return this;
         }
 
-        public FormatKeyTest setFormats(FormatType ... types){
+        public FormatKeyTest setFormats(FormatTypeStyle ... types){
             formats = types;
             return this;
         }
 
-        public FormatType[] getFormats(){
+        public FormatTypeStyle[] getFormats(){
             return formats;
         }
 
@@ -122,13 +122,13 @@ public class BranchFormatTest {
 
     public static class FormatLinkTest extends SpanBranchAssert<FormatLinkTest>{
 
-        private FormatType[] formats;
+        private FormatTypeStyle[] formats;
         private Optional<SpanBranch> path;
         private String text;
 
         public FormatLinkTest(){
             super(FormatLinkTest.class);
-            formats = new FormatType[0];
+            formats = new FormatTypeStyle[0];
             path = Optional.empty();
         }
 
@@ -142,12 +142,12 @@ public class BranchFormatTest {
             return cast();
         }
 
-        public FormatLinkTest setFormats(FormatType ... types){
+        public FormatLinkTest setFormats(FormatTypeStyle ... types){
             formats = types;
             return this;
         }
 
-        public FormatType[] getFormats(){
+        public FormatTypeStyle[] getFormats(){
             return formats;
         }
 
@@ -178,19 +178,19 @@ public class BranchFormatTest {
 
     public static class FormatContentTest extends BranchTest.ContentBasicTest<FormatContentTest> {
 
-        private FormatType[] formats;
+        private FormatTypeStyle[] formats;
 
         public FormatContentTest(){
             super(FormatContentTest.class);
-            formats = new FormatType[0];
+            formats = new FormatTypeStyle[0];
         }
 
-        public FormatContentTest setFormats(FormatType... types){
+        public FormatContentTest setFormats(FormatTypeStyle... types){
             formats = types;
             return this;
         }
 
-        public FormatType[] getFormats(){
+        public FormatTypeStyle[] getFormats(){
             return formats;
         }
 

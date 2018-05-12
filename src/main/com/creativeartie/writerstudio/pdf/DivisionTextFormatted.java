@@ -309,7 +309,7 @@ class DivisionTextFormatted extends DivisionText{
             LinedSpanCite cite = citation.get();
 
             /// Add in text citation as footnote
-            if (cite.getFieldType() == InfoFieldType.FOOTNOTE){
+            if (cite.getFormatTypeField() == InfoFieldType.FOOTNOTE){
                 font = font.changeToSuperscript();
                 addFootnote(cite, font);
 
@@ -361,7 +361,7 @@ class DivisionTextFormatted extends DivisionText{
         assert span != null: "null span";
         assert font != null: "null font";
 
-        TextDataType.FieldType type = TextDataType.FieldType.findField(span.getField());
+        FormatTypeField type = FormatTypeField.findField(span.getField());
         if (type == null){
             appendText(" ", font);
         }

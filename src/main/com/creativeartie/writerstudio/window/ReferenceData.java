@@ -21,7 +21,7 @@ public class ReferenceData{
     private final ReadOnlyStringWrapper referenceDescription;
     private final ReadOnlyStringWrapper referenceExample;
 
-    ReferenceData(TextDataType.FieldType field){
+    ReferenceData(FormatTypeField field){
         referenceName = new ReadOnlyStringWrapper(WindowText
             .getNameText(field));
         referenceId = new ReadOnlyStringWrapper(CURLY_KEY + field

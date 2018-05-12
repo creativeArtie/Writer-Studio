@@ -24,7 +24,7 @@ public class LinedSpanCite extends LinedSpan {
         return text.startsWith(LINED_CITE);
     }
 
-    private final CacheKeyMain<InfoFieldType> cacheFieldType;
+    private final CacheKeyMain<InfoFieldType> cacheFormatTypeField;
     private final CacheKeyOptional<InfoDataSpan> cacheData;
     private final CacheKeyList<StyleInfo> cacheStyles;
     private final CacheKeyMain<Integer> cacheNote;
@@ -38,7 +38,7 @@ public class LinedSpanCite extends LinedSpan {
     LinedSpanCite(List<Span> children){
         super(children);
 
-        cacheFieldType = new CacheKeyMain<>(InfoFieldType.class);
+        cacheFormatTypeField = new CacheKeyMain<>(InfoFieldType.class);
         cacheData = new CacheKeyOptional<>(InfoDataSpan.class);
         cacheStyles = new CacheKeyList<>(StyleInfo.class);
         cacheNote = CacheKeyMain.integerKey();
@@ -48,11 +48,11 @@ public class LinedSpanCite extends LinedSpan {
      *
      * @return answer
      */
-    public InfoFieldType getFieldType(){
-        return getLocalCache(cacheFieldType, () -> {
+    public InfoFieldType getFormatTypeField(){
+        return getLocalCache(cacheFormatTypeField, () -> {
             Optional<InfoFieldSpan> field = spanFromFirst(InfoFieldSpan.class);
             if (field.isPresent()){
-                return field.get().getFieldType();
+                return field.get().getFormatTypeField();
             }
             return InfoFieldType.ERROR;
         });
@@ -70,7 +70,7 @@ public class LinedSpanCite extends LinedSpan {
     public List<StyleInfo> getBranchStyles(){
         return getLocalCache(cacheStyles, () -> {
             ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
-            builder.addAll(super.getBranchStyles()).add(getFieldType());
+            builder.addAll(super.getBranchStyles()).add(getFormatTypeField());
             if (! getData().isPresent()){
                 builder.add(AuxiliaryType.DATA_ERROR);
             }
@@ -81,7 +81,7 @@ public class LinedSpanCite extends LinedSpan {
     @Override
     public int getNoteTotal(){
         return getLocalCache(cacheNote, () -> {
-            if (getFieldType() != InfoFieldType.ERROR){
+            if (getFormatTypeField() != InfoFieldType.ERROR){
                 return getData().map(this::getCount).orElse(0);
             }
             return 0;

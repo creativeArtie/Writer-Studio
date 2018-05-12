@@ -103,12 +103,13 @@ public final class WritingData extends Document{
      * @return answer
      */
     public String getMetaText(TextDataType.Meta meta){
-        getLocalCache(cacheMeta, () -> getWritingData(meta)
-            /// s = TextDataSPanMeta
-            .flatMap(s -> span.getData())
+        return getLocalCache(cacheMeta.get(meta.ordinal()), () -> 
+            getWritingData(meta)
+            /// s = TextDataSpanMeta
+            .flatMap(s -> s.getData())
             /// s = ContentSpan
             .map(s -> s.getTrimmed())
-            .orElse("");
+            .orElse("")
         );
     }
 
@@ -121,8 +122,8 @@ public final class WritingData extends Document{
      * @return answer
      */
     public void setMetaText(TextDataType.Meta meta, String raw){
-        TextDataSpanMeta span = getWritingData(meta);
-        if (span.isEmpty()){
+        Optional<TextDataSpanMeta> span = getWritingData(meta);
+        if (! span.isPresent()){
             runCommand(() -> getRaw() + meta.getKeyName() +
                 TextDataType.Format.TEXT.getKeyName() + "\n");
             span = getWritingData(meta);

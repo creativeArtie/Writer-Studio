@@ -36,7 +36,7 @@ public abstract class FormatSpan extends SpanBranch {
      *      format type
      * @return answer
      */
-    public final boolean isFormat(FormatType type){
+    public final boolean isFormat(FormatTypeStyle type){
         return spanFormats[type.ordinal()];
     }
 
@@ -45,7 +45,7 @@ public abstract class FormatSpan extends SpanBranch {
      * @return answer
      */
     public final boolean isBold(){
-        return spanFormats[FormatType.BOLD.ordinal()];
+        return spanFormats[FormatTypeStyle.BOLD.ordinal()];
     }
 
     /** Check if text is itlalics.
@@ -53,7 +53,7 @@ public abstract class FormatSpan extends SpanBranch {
      * @return answer
      */
     public final boolean isItalics(){
-        return spanFormats[FormatType.ITALICS.ordinal()];
+        return spanFormats[FormatTypeStyle.ITALICS.ordinal()];
     }
 
     /** Check if text is underlined.
@@ -61,7 +61,7 @@ public abstract class FormatSpan extends SpanBranch {
      * @return answer
      */
     public final boolean isUnderline(){
-        return spanFormats[FormatType.UNDERLINE.ordinal()];
+        return spanFormats[FormatTypeStyle.UNDERLINE.ordinal()];
     }
 
     /** Check if text is coded.
@@ -69,7 +69,7 @@ public abstract class FormatSpan extends SpanBranch {
      * @return answer
      */
     public final boolean isCoded(){
-        return spanFormats[FormatType.CODED.ordinal()];
+        return spanFormats[FormatTypeStyle.CODED.ordinal()];
     }
 
     @Override
@@ -77,7 +77,7 @@ public abstract class FormatSpan extends SpanBranch {
         return getLocalCache(cacheStyles, () -> {
             ImmutableList.Builder<StyleInfo> list = ImmutableList.builder();
             int i = 0;
-            FormatType[] values = FormatType.values();
+            FormatTypeStyle[] values = FormatTypeStyle.values();
             for (boolean format: spanFormats){
                 if (format){
                     list.add(values[i]);
@@ -91,10 +91,10 @@ public abstract class FormatSpan extends SpanBranch {
     @Override
     public final String toString(){
         StringBuilder ans = new StringBuilder();
-        if (spanFormats[FormatType.BOLD.ordinal()]) ans.append("b");
-        if (spanFormats[FormatType.ITALICS.ordinal()]) ans.append("i");
-        if (spanFormats[FormatType.UNDERLINE.ordinal()]) ans.append("u");
-        if (spanFormats[FormatType.CODED.ordinal()]) ans.append("c");
+        if (spanFormats[FormatTypeStyle.BOLD.ordinal()]) ans.append("b");
+        if (spanFormats[FormatTypeStyle.ITALICS.ordinal()]) ans.append("i");
+        if (spanFormats[FormatTypeStyle.UNDERLINE.ordinal()]) ans.append("u");
+        if (spanFormats[FormatTypeStyle.CODED.ordinal()]) ans.append("c");
         return toChildName() + "(" + ans.toString() + toChildString() + ")";
     }
 

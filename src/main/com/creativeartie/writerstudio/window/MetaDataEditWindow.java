@@ -108,7 +108,7 @@ public class MetaDataEditWindow extends Stage{
     private CheatsheetLabel[] initHintLabels(GridPane parent){
         CheatsheetLabel[] format = new CheatsheetLabel[4];
         int i = 0;
-        for (FormatType type: FormatType.values()){
+        for (FormatTypeStyle type: FormatTypeStyle.values()){
             format[i++] = CheatsheetLabel.getLabel(type);
         }
         CheatsheetLabel[] labels = new CheatsheetLabel[]{

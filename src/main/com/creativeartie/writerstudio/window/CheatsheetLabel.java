@@ -26,7 +26,7 @@ class CheatsheetLabel extends Label{
 
     /**
      * Check if FormatSpanContent class is found. Helper method of
-     * getLabel(FormatType), getLabel(DirectoryType) and
+     * getLabel(FormatTypeStyle), getLabel(DirectoryType) and
      * getLabel(AuxiliaryType).
      */
     private static boolean findContent(Document doc, Integer point){
@@ -48,7 +48,7 @@ class CheatsheetLabel extends Label{
     /**
      * Get format hints labels.
      */
-    static CheatsheetLabel getLabel(FormatType type){
+    static CheatsheetLabel getLabel(FormatTypeStyle type){
         return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
             (doc, point) -> doc.locateSpan(point, FormatSpan.class)
                 .map(span -> span.isFormat(type))
@@ -95,7 +95,7 @@ class CheatsheetLabel extends Label{
         }
         return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
             (doc, point) -> doc.locateSpan(point, LinedSpanCite.class).map(
-                span -> span.getFieldType() == type
+                span -> span.getFormatTypeField() == type
             ).orElse(false),
             (doc, point) -> doc.locateSpan(point, LinedSpanCite.class)
                 .isPresent()

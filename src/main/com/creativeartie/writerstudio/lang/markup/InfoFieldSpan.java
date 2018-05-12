@@ -28,7 +28,7 @@ public final class InfoFieldSpan extends SpanBranch{
      *
      * @return answer
      */
-    public InfoFieldType getFieldType(){
+    public InfoFieldType getFormatTypeField(){
         return getLocalCache(cacheField, () -> {
             Optional<SpanLeaf> found = leafFromFirst(StyleInfoLeaf.FIELD);
             if (found.isPresent()){
@@ -41,7 +41,7 @@ public final class InfoFieldSpan extends SpanBranch{
     @Override
     public List<StyleInfo> getBranchStyles(){
         return getLocalCache(cacheStyles, () -> ImmutableList
-            .of(getFieldType()));
+            .of(getFormatTypeField()));
     }
 
     @Override
@@ -51,6 +51,6 @@ public final class InfoFieldSpan extends SpanBranch{
 
     @Override
     public String toString(){
-        return getFieldType().toString() + ": ";
+        return getFormatTypeField().toString() + ": ";
     }
 }

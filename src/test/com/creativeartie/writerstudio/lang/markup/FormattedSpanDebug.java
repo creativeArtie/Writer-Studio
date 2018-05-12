@@ -50,7 +50,7 @@ public class FormattedSpanDebug {
             .setText("or");
         FormatContentTest content2 = new FormatContentTest()
             .setBegin(false).setEnd(false)
-            .setText("an")  .setFormats(FormatType.BOLD);
+            .setText("an")  .setFormats(FormatTypeStyle.BOLD);
         FormatContentTest content3 = new FormatContentTest()
             .setBegin(false).setEnd(false)
             .setText("an");
@@ -80,7 +80,7 @@ public class FormattedSpanDebug {
             .setText("g");
         FormatContentTest content2 = new FormatContentTest()
             .setBegin(false).setEnd(false)
-            .setText("ee")  .setFormats(FormatType.ITALICS);
+            .setText("ee")  .setFormats(FormatTypeStyle.ITALICS);
         FormatContentTest content3 = new FormatContentTest()
             .setBegin(false).setEnd(false)
             .setText("n");
@@ -111,11 +111,11 @@ public class FormattedSpanDebug {
             .setText("g");
         FormatContentTest content2 = new FormatContentTest()
             .setBegin(false).setEnd(false)
-            .setText("e_e") .setFormats(FormatType.UNDERLINE);
+            .setText("e_e") .setFormats(FormatTypeStyle.UNDERLINE);
         EscapeTest escape = new BranchTest.EscapeTest().setEscape("_");
         FormatContentTest content3 = new FormatContentTest()
             .setBegin(false).setEnd(false)
-            .setText("dd")  .setFormats(FormatType.UNDERLINE, FormatType.CODED);
+            .setText("dd")  .setFormats(FormatTypeStyle.UNDERLINE, FormatTypeStyle.CODED);
 
         main.test(       doc,  6, raw,     0);
         content1.test(   doc,  1, "g",     0, 0);
@@ -169,7 +169,7 @@ public class FormattedSpanDebug {
             .setPublishTotal(2).setNoteTotal(0);
         FormatContentTest content = new FormatContentTest()
             .setBegin(false)  .setEnd(false)
-            .setText("abc ab").setFormats(FormatType.UNDERLINE);
+            .setText("abc ab").setFormats(FormatTypeStyle.UNDERLINE);
 
         main.test(       doc, 2, raw,       0);
         doc.assertKeyLeaf( 0, 1, "_",       0, 0);
@@ -193,7 +193,7 @@ public class FormattedSpanDebug {
         FormatNoteTest cite = new FormatNoteTest()
             .setDirectoryType(DirectoryType.ENDNOTE)
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder)
-            .setFormats(FormatType.UNDERLINE);
+            .setFormats(FormatTypeStyle.UNDERLINE);
         DirectoryTest id = new DirectoryTest()
             .setPurpose(DirectoryType.ENDNOTE)
             .setIdentity(builder);
@@ -202,7 +202,7 @@ public class FormattedSpanDebug {
             .setEnd(false)  .setCount(1);
         FormatContentTest content = new FormatContentTest()
             .setBegin(false).setEnd(false)
-            .setText("pee") .setFormats(FormatType.UNDERLINE);
+            .setText("pee") .setFormats(FormatTypeStyle.UNDERLINE);
 
         main.test(       doc,  3, raw,      0);
         doc.assertKeyLeaf( 0,  1, "_",      0, 0);
@@ -280,40 +280,40 @@ public class FormattedSpanDebug {
         /// " Say"
         FormatContentTest text2 = new FormatContentTest()
             .setBegin(true).setEnd(false)
-            .setText("Say").setFormats(FormatType.ITALICS);
+            .setText("Say").setFormats(FormatTypeStyle.ITALICS);
         /// "'s"
         FormatContentTest text3 = new FormatContentTest()
             .setBegin(false).setEnd(false)
-            .setText("'s").setFormats(FormatType.BOLD, FormatType.ITALICS);
+            .setText("'s").setFormats(FormatTypeStyle.BOLD, FormatTypeStyle.ITALICS);
         /// " Hi "
         FormatContentTest text4 = new FormatContentTest()
             .setBegin(true).setEnd(true)
-            .setText("Hi") .setFormats(FormatType.BOLD, FormatType.ITALICS,
-                                       FormatType.UNDERLINE);
+            .setText("Hi") .setFormats(FormatTypeStyle.BOLD, FormatTypeStyle.ITALICS,
+                                       FormatTypeStyle.UNDERLINE);
         /// "Joy"
         FormatContentTest text5 = new FormatContentTest()
             .setBegin(false).setEnd(false)
-            .setText("Joy") .setFormats(FormatType.BOLD, FormatType.ITALICS,
-                                        FormatType.UNDERLINE, FormatType.CODED);
+            .setText("Joy") .setFormats(FormatTypeStyle.BOLD, FormatTypeStyle.ITALICS,
+                                        FormatTypeStyle.UNDERLINE, FormatTypeStyle.CODED);
         /// "{@note}"
         IDBuilder builder = doc.addRef(FormatCurlyDebug.buildNoteId("note"), 2);
         FormatNoteTest cite = new FormatNoteTest()
             .setDirectoryType(DirectoryType.RESEARCH)
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder)
-            .setFormats(FormatType.ITALICS);
+            .setFormats(FormatTypeStyle.ITALICS);
         DirectoryTest citeId = new DirectoryTest()
             .setPurpose(DirectoryType.RESEARCH)
             .setIdentity(builder);
         /// " "
         FormatContentTest text6 = new FormatContentTest()
             .setBegin(true).setEnd(true)
-            .setText("")   .setFormats(FormatType.ITALICS);
+            .setText("")   .setFormats(FormatTypeStyle.ITALICS);
         /// "<@link>"
         builder = doc.addRef(FormatLinkDebug.buildLinkId("link"), 1);
         FormatLinkTest ref = new FormatLinkTest()
             .setText("")
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder)
-            .setFormats(FormatType.ITALICS);
+            .setFormats(FormatTypeStyle.ITALICS);
         DirectoryTest refId = new DirectoryTest()
             .setPurpose(DirectoryType.LINK).setIdentity(builder);
         ContentTest refIdText = new BranchTest.ContentTest()
@@ -322,7 +322,7 @@ public class FormattedSpanDebug {
         /// "<a.ca| web>"
         FormatLinkTest link = new FormatLinkTest()
             .setText("web").setPath(doc, 0, 15, 1)
-            .setFormats(FormatType.ITALICS);
+            .setFormats(FormatTypeStyle.ITALICS);
         ContentTest linkPath = new BranchTest.ContentTest()
             .setBegin(false).setText("a.ca")
             .setEnd(false)  .setCount(1);
@@ -339,7 +339,7 @@ public class FormattedSpanDebug {
         /// " see"
         FormatContentTest text7 = new FormatContentTest()
             .setBegin(true).setEnd(false)
-            .setText("see").setFormats(FormatType.ITALICS);
+            .setText("see").setFormats(FormatTypeStyle.ITALICS);
 
 
         ///0           1         2         3         4         5         6
@@ -422,7 +422,7 @@ public class FormattedSpanDebug {
             .setText("before");
         FormatContentTest content2 = new FormatContentTest()
             .setBegin(false).setEnd(false)
-            .setText("bold").setFormats(FormatType.BOLD);
+            .setText("bold").setFormats(FormatTypeStyle.BOLD);
 
         main.test(       doc,   3, after,     0);
         content1.test(   doc,   1, "before ", 0, 0);
