@@ -96,33 +96,56 @@ public final class WritingData extends Document{
         }
     }
 
-    /** Sets meta text. */
+    /** Gets meta data text.
+     *
+     * @param meta
+     *      target meta data
+     * @return answer
+     */
     public String getMetaText(TextDataType.Meta meta){
-        TextDataSpanMeta span = getWritingData(meta);
-        if (span != null){
-            return span.getData().map(s -> s.getTrimmed()).orElse("");
-        }
-        return "";
+        getLocalCache(cacheMeta, () -> getWritingData(meta)
+            /// s = TextDataSPanMeta
+            .flatMap(s -> span.getData())
+            /// s = ContentSpan
+            .map(s -> s.getTrimmed())
+            .orElse("");
+        );
     }
 
+    /** Sets meta data text.
+     *
+     * @param meta
+     *      target meta data
+     * @param raw
+     *      new raw text
+     * @return answer
+     */
     public void setMetaText(TextDataType.Meta meta, String raw){
         TextDataSpanMeta span = getWritingData(meta);
-        if (span == null){
+        if (span.isEmpty()){
             runCommand(() -> getRaw() + meta.getKeyName() +
                 TextDataType.Format.TEXT.getKeyName() + "\n");
             span = getWritingData(meta);
         }
-        span.editText(raw);
+        span.get().editText(raw);
     }
 
-    private TextDataSpanMeta getWritingData(TextDataType.Meta meta){
+    /** Gets meta data.
+     *
+     * @param meta
+     *      target meta data
+     * @return answer
+     * @see #getMetaText(TextDataType.Meta)
+     * @see #setMetaText(TextDataType.Meta, String)
+     */
+    private Optional<TextDataSpanMeta> getWritingData(TextDataType.Meta meta){
         for (SpanBranch span: this){
             if (span instanceof TextDataSpanMeta &&
                     ((TextDataSpan) span).getType() == meta){
-                return (TextDataSpanMeta) span;
+                return Optional.of((TextDataSpanMeta) span);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
 }
