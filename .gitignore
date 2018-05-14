@@ -2,3 +2,6 @@ out/*
 build/*
 lib/javadoc/*
 *.geany
+.gradle/*
+
+

@@ -1,0 +1,12 @@
+!# outline
+!! Needs Heading 1!!!!
+== No *Heading 1*!
+Some text here
+= Chapter 1: **Bold** and _underlined_ #STUB
+=== Sub-sub \<b>heading\</b>
+= Chapter 2: #DRAFT
+== Standard 1
+== Standard 2 {!done}
+= Chapter 3{^num-123} #FINAL
+= `Chapter` 4{*ded} #other
+!*ded: ready

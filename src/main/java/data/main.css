@@ -1,0 +1,63 @@
+.no-text, .no-span, .id-numbered, .display-italics{
+    -fx-font-style:italic;
+}
+
+.hint-set, .hint-unset, .hint-allow, .hint-disallow{
+    -fx-label-padding:2,0,0,0
+}
+
+.hint-set{
+    -fx-font-weight:bold;
+}
+.hint-unset{
+    -fx-font-weight:normal;
+}
+.hint-allow{
+    -fx-text-fill:"black";
+}
+.hint-disallow{
+    -fx-text-fill:"gray"
+}
+
+.display-edition, .no-text, .no-span, .display-reference{
+    -fx-fill:"gray";
+    -fx-font-family:'monospace';
+}
+
+.display-agenda{
+    -fx-fill:"chocolate";
+    -fx-font-style:italic;
+}
+.display-note{
+    -fx-fill:"darkslategray";
+}
+
+.display-footnote, .display-endnote{
+    -fx-translate-y:-800%;
+    -fx-font-size:80%;
+}
+
+.display-link{
+    -fx-fill:"blue";
+}
+
+.display-bold{
+    -fx-font-weight:bolder;
+}
+.display-underline{
+    -fx-underline:true;
+}
+
+.display-coded{
+    -fx-fill:#333;
+    -fx-font-family:'monospace';
+}
+
+.display-status{
+    -fx-fill:gray;
+    -fx-font-family:'monospace';
+}
+
+.table-number{
+    -fx-alignment:center-right;
+}
