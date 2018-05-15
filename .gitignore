@@ -3,5 +3,3 @@ build/*
 lib/javadoc/*
 *.geany
 .gradle/*
-
-

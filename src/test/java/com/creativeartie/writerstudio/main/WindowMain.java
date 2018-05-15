@@ -29,8 +29,8 @@ public class WindowMain extends Main{
     @Override
     @SuppressWarnings("deprecation")
     protected WritingFile getStartFile() throws IOException{
-        // File file = new File("data/sectionDebug7.txt");
-        File file = new File("data/help-text.txt");
+        // File file = new File("build/resources/test/sectionDebug7.txt");
+        File file = new File("build/resources/test/help-text.txt");
         WritingFile use = WritingFile.newSampleFile(file);
 
         return use;
@@ -40,7 +40,7 @@ public class WindowMain extends Main{
     private void testChildWindows(Stage stage) throws Exception{
         Button button1 = new Button("Stats");
         SceneStatsControl pane = new SceneStatsControl();
-        pane.setStatTable(RecordList.build(new File("data/record3.txt")));
+        pane.setStatTable(RecordList.build(new File("build/resources/test/record3.txt")));
         Stage stats = SceneStatsControl.createStage(pane);
         button1.setOnAction(event -> stats.show());
 

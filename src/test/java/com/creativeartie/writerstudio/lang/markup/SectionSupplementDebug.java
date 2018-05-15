@@ -27,14 +27,14 @@ public class SectionSupplementDebug {
     public static Collection<Object[]> data() throws Exception{
         WritingText[] texts = new WritingText[FILE_SIZE];
         for (int i = 1; i <= FILE_SIZE; i++){
-            File file = new File("data/sectionDebug" + i + ".txt");
+            File file = new File("build/resources/test/sectionDebug" + i + ".txt");
             texts[i - 1] = new WritingText(Files
                 .asCharSource(file, Charsets.UTF_8).read());
             if (verbose) System.out.println(texts[i - 1]);
             if (verbose) System.out.println();
         }
         ArrayList<Object[]> test = new ArrayList<>();
-        File file = new File("data/sectionDebugOutcomes.txt");
+        File file = new File("build/resources/test/sectionDebugOutcomes.txt");
         try (Scanner scan = new Scanner(new FileInputStream(file))){
             while(scan.hasNextInt()){
                 int index = scan.nextInt();

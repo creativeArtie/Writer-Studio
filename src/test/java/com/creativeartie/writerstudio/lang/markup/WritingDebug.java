@@ -21,9 +21,9 @@ import com.google.common.base.Joiner;
 public class WritingDebug {
 
     @Test
-    @Ignore("Because it will cause an timeout error.")
+    // @Ignore("Because it will cause an timeout error.")
     public void reallyLarge() throws Exception{
-        String raw = new String(Files.readAllBytes(Paths.get("data/stressTest.txt")),
+        String raw = new String(Files.readAllBytes(Paths.get("build/resources/test/stressTest.txt")),
             StandardCharsets.UTF_8);
         LocalDateTime from = LocalDateTime.now();
         new WritingText(raw);

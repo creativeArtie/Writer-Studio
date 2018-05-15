@@ -16,7 +16,7 @@ more features. The most up-to-date stable version is located
 [here](https://github.com/creativeArtie/Writer-Studios/releases/latest).
 
 Currently, Writer Studio can produce a pdf file that meet the manuscript format
-requirements as seen with this [pdf file example](design/example.pdf).
+requirements as seen with this [pdf file example](doc/example.pdf).
 
 ## Markup
 
@@ -146,7 +146,7 @@ sorted in the alphabetical order and are not case sensitive. The syntax of an
 id is `category-subcategory-...-title`.
 
 ## Screen shots
-![Main Window](design/main.png)
-![Writing without disactions](design/clean.png)
-![Stats For Current Month](design/today.png)
-![Stats For Past Month](design/month.png)
+![Main Window](doc/main.png)
+![Writing without disactions](doc/clean.png)
+![Stats For Current Month](doc/today.png)
+![Stats For Past Month](doc/month.png)

@@ -50,7 +50,7 @@ public class RecordDebug {
 
     @Before
     public void before() throws Exception{
-        try (FileReader reader = new FileReader(new File("data/record1.txt"))){
+        try (FileReader reader = new FileReader(new File("build/resources/test/record1.txt"))){
             records = new RecordList(CharStreams.toString(reader));
         }
         expectedTotal = expectPublish + expectNote;

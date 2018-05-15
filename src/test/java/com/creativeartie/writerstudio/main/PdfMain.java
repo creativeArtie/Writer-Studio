@@ -22,7 +22,7 @@ public class PdfMain {
 
     private static void exportTest() throws IOException {
 
-        File file = new File("data/pdf-long.txt");
+        File file = new File("build/resources/test/pdf-long.txt");
         WritingFile use = WritingFile.newSampleFile(file);
         try (WritingExporter out = new WritingExporter("test.pdf")){
             out.export(use);
