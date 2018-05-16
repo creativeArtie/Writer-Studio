@@ -37,22 +37,10 @@ public final class WritingExporter implements AutoCloseable{
 
     /** Font that can be use in the package
      */
-    class PdfFont extends ContentFont{
+    class PdfFont extends ContentFont<PDFont>{
 
         /** Only public constructor. */
-        PdfFont(){
-            super((mono, bold, italics, superscript) ->
-                embedFonts[superscript? SUPERSCRIPT:(mono?
-                    (bold?
-                        (italics? MONO_BOTH   : MONO_BOLD):
-                        (italics? MONO_ITALICS: MONO)
-                    ):(bold?
-                        (italics? SERIF_BOTH   : SERIF_BOLD):
-                        (italics? SERIF_ITALICS: SERIF)
-                    )
-                )]
-            );
-        }
+        PdfFont(){}
 
         /** Construtor for {#link proude(ContentFont, Key, Object)
          *
@@ -64,7 +52,7 @@ public final class WritingExporter implements AutoCloseable{
          *      replacing value
          * @see #produce(ContentFont, Key, Object)
          */
-        private PdfFont(ContentFont res, Key edit, Object replace){
+        private PdfFont(PdfFont res, Key edit, Object replace){
             super(res, edit, replace);
         }
 
@@ -85,13 +73,27 @@ public final class WritingExporter implements AutoCloseable{
         }
 
         @Override
-        public PdfFont produce(ContentFont font, Key key, Object value){
+        public PdfFont produce(ContentFont<?> font, Key key, Object value){
             checkNotNull(font, "font");
             checkNotNull(key, "key");
             checkNotNull(value, "value");
 
-            return new PdfFont(font, key, value);
+            return new PdfFont((PdfFont) font, key, value);
         }
+        
+        @Override
+        protected PDFont buildFont(boolean mono, boolean bold, 
+				boolean italics, boolean superscript) {
+            return embedFonts[superscript? SUPERSCRIPT:(mono?
+				(bold?
+					(italics? MONO_BOTH   : MONO_BOLD):
+					(italics? MONO_ITALICS: MONO)
+				):(bold?
+					(italics? SERIF_BOTH   : SERIF_BOLD):
+					(italics? SERIF_ITALICS: SERIF)
+				)
+			)];
+		}
     }
 
     private final String savePath;

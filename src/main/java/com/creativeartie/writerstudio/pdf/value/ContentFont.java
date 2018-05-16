@@ -1,32 +1,37 @@
 package com.creativeartie.writerstudio.pdf.value;
 
-import java.awt.*; // Color
-import java.io.*; // IOException
+import java.awt.*; 
+import java.io.*; 
 import java.util.Optional;
 import java.util.Objects;
 import java.util.function.Function;
 
-import com.google.common.base.*; // MoreObjects
+import com.google.common.base.*;
 
-import org.apache.pdfbox.pdmodel.font.*; // PDFont
+import org.apache.pdfbox.pdmodel.font.*;
 
 import static com.creativeartie.writerstudio.main.Checker.*;
 
+/** Information about the font, to be filled by sub-classes. */
+public abstract class ContentFont<T>{
 
-public abstract class ContentFont{
-
-    public interface FontChanger{
-        public PDFont getFont(boolean mono, boolean bold, boolean italics,
-            boolean superscript);
-    }
-
-    /** Describes what field is changed. Using constructor the normal way was
-     * to long and prone to mistakes. Making builder class is too much work. */
+    /** Describes what field is changed. 
+     * 
+     * Using constructor the normal way was to long and prone to 
+     * mistakes. Making builder class is too much work. 
+     */
     protected enum Key {
-        FONT, SIZE, COLOR, BOLD, ITALICS, LINED, SUPER;
+		/** Font family changed. */             FONT,
+		/** Font size changed. */               SIZE, 
+		/** Font color changed. */              COLOR, 
+		/** Font bold format changed. */        BOLD, 
+		/** Font italics format changed. */     ITALICS, 
+		/** Font underline format changed. */   LINED, 
+		/** Font superscript format changed. */ SUPER;
+        
     }
 
-    private final PDFont textFont;
+    private final T textFont;
     private final boolean textMono;
     private final int textSize;
     private final Color textColor;
@@ -34,39 +39,49 @@ public abstract class ContentFont{
     private final boolean textItalics;
     private final boolean textLined;
     private final boolean textSuper;
-    private final FontChanger fontChanger;
 
-    protected ContentFont(FontChanger changer){
-        this(changer, false, 12, Color.BLACK, false, false, false, false);
+	/** Creating the first {@link ContentFont}. */
+    protected ContentFont(){
+        this(false, 12, Color.BLACK, false, false, false, false);
     }
 
-    protected ContentFont(ContentFont res, Key edit, Object replace){
-        textColor   = edit == Key.COLOR?   (Color)   replace: res.textColor;
-        textSize    = edit == Key.SIZE?    (Integer) replace: res.textSize;
-        textBold    = edit == Key.BOLD?    (Boolean) replace: res.textBold;
-        textItalics = edit == Key.ITALICS? (Boolean) replace: res.textItalics;
-        textLined   = edit == Key.LINED?   (Boolean) replace: res.textLined;
-        textSuper   = edit == Key.SUPER?   (Boolean) replace: res.textSuper;
-        fontChanger = res.fontChanger;
+	/** Creating the updated {@link ContentFont}. 
+	 * 
+	 * @param old
+	 * 		old {@linkplain ContentFont}.
+	 * @param edit
+	 * 		edited field
+	 * @param replace 
+	 * 		replace value
+	 */
+    protected ContentFont(ContentFont<T> old, Key edit, Object replace){
+        textColor   = edit == Key.COLOR?   (Color)   replace: old.textColor;
+        textSize    = edit == Key.SIZE?    (Integer) replace: old.textSize;
+        textBold    = edit == Key.BOLD?    (Boolean) replace: old.textBold;
+        textItalics = edit == Key.ITALICS? (Boolean) replace: old.textItalics;
+        textLined   = edit == Key.LINED?   (Boolean) replace: old.textLined;
+        textSuper   = edit == Key.SUPER?   (Boolean) replace: old.textSuper;
         if (Key.FONT == edit){
             /// Replaces font families
             textMono = (Boolean)replace;
-            textFont = fontChanger.getFont(textMono, textBold, textItalics,
-                textMono);
-        } else if (Key.ITALICS == edit || Key.BOLD == edit || Key.SUPER == edit){
+            textFont = buildFont(textMono, textBold, 
+				textItalics, textMono);
+        } else if (Key.ITALICS == edit || Key.BOLD == edit || 
+				Key.SUPER == edit){
             /// Replaces font due to bold or italics, etc.
-            textMono = res.textMono;
-            textFont = fontChanger.getFont(textMono, textBold, textItalics,
-                textSuper);
+            textMono = old.textMono;
+            textFont = buildFont(textMono, textBold, 
+				textItalics, textSuper);
         } else {
-            textMono = res.textMono;
-            textFont = res.textFont;
+			/// No font changes
+            textMono = old.textMono;
+            textFont = old.textFont;
         }
     }
 
-    private ContentFont(FontChanger changer, boolean mono, int size, Color color,
+    private ContentFont(boolean mono, int size, Color color,
             boolean bold, boolean italics, boolean underline, boolean superscript){
-        textFont = changer.getFont(mono, bold, italics, superscript);
+        textFont = buildFont(mono, bold, italics, superscript);
         textMono = mono;
         textSize = size;
         textColor = color;
@@ -74,10 +89,24 @@ public abstract class ContentFont{
         textItalics = italics;
         textLined = underline;
         textSuper = superscript;
-        fontChanger = changer;
     }
+    
+	/** Gets the new font.
+	 * 
+	 * @param mono
+	 * 		is mono text
+	 * @param bold
+	 * 		is bold text
+	 * @param italics
+	 * 		is italics text
+	 * @param superscript
+	 * 		is superscript text
+	 * @return answer
+	 */
+    protected abstract T buildFont(boolean mono, boolean bold, 
+		boolean italics, boolean superscript);
 
-    public PDFont getFont(){
+    public T getFont(){
         return textFont;
     }
 

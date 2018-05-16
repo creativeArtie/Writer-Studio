@@ -5,7 +5,7 @@ import java.util.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/** Utility methods to check if {@link SpanBranch} can reparse by iteself. */
+/** Utility methods to check if a text can be parse locally. */
 public final class AuxiliaryChecker{
 
     /** Check if a {@link SpanBranch} ends with a new line or at file end

@@ -37,20 +37,14 @@ jfx {
     vendor = 'CreativeArtie'
 }
 
-// In this section you declare the dependencies for your production and test code
 dependencies {
-    // The production code uses the SLF4J logging API at compile time
-    //compile 'org.slf4j:slf4j-api:1.7.21'
-
-    // Declare the dependency for your favourite test framework you want to use in your tests.
-    // TestNG is also supported by the Gradle Test task. Just change the
-    // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
-    // 'test.useTestNG()' to your build script.
+	/// junit 4 version
     testCompile 'junit:junit:4.12'
     
     compile group: 'com.google.guava', name: 'guava', version: '23.5-jre'
     compile group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.9.0'
     compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.9'
+ 
     // compile 'org.bitbucket.shemnon.javafxplugin:gradle-javafx-plugin:8.1.1'
 }
 
