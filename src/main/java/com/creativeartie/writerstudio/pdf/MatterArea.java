@@ -7,6 +7,7 @@ import com.google.common.collect.*; // FowardingList
 
 import org.apache.pdfbox.pdmodel.*; //PDPageContentStream
 import org.apache.pdfbox.pdmodel.common.*; //PDRectangle
+import org.apache.pdfbox.pdmodel.font.*; //PDRectangle
 
 import com.creativeartie.writerstudio.pdf.value.*; // (many)
 
@@ -214,9 +215,14 @@ final class MatterArea extends ForwardingList<Division> {
      */
     private void changeFont(ContentFont font) throws IOException{
         assert font != null: "null font";
+        if (! (font instanceof WritingExporter.PdfFont)){
+			return;
+		}
         if (textFont == null || ! font.equals(textFont)){
             contentStream.setNonStrokingColor(font.getColor());
-            contentStream.setFont(font.getFont(), font.getSize());
+            contentStream.setFont(
+				(PDFont) font.getFont(), font.getSize()
+			);
             textFont = font;
         }
     }

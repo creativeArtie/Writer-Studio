@@ -37,6 +37,16 @@ jfx {
     vendor = 'CreativeArtie'
 }
 
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
+compileTestJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
 dependencies {
 	/// junit 4 version
     testCompile 'junit:junit:4.12'

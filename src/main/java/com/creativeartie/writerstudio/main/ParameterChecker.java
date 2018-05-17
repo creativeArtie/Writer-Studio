@@ -26,6 +26,13 @@ public final class ParameterChecker {
     public static void stateCheck(boolean test, String message){
         if (! test) throw new IllegalStateException(message);
     }
+    
+    public static <T> T argumentClass(Object obj, String field, 
+			Class<T> clazz) {
+		argumentCheck(clazz.isInstance(obj), field, obj.getClass() + 
+			" is not an instance of " + clazz);
+		return clazz.cast(obj);
+	}
 
     public static IllegalStateException stateBuild(String message){
         return new IllegalStateException(message);

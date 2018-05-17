@@ -73,7 +73,8 @@ public final class WritingExporter implements AutoCloseable{
         }
 
         @Override
-        public PdfFont produce(ContentFont<?> font, Key key, Object value){
+        public PdfFont produce(ContentFont<PDFont> font, Key key, 
+				Object value){
             checkNotNull(font, "font");
             checkNotNull(key, "key");
             checkNotNull(value, "value");

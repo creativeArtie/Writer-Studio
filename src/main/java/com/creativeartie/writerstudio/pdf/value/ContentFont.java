@@ -2,15 +2,11 @@ package com.creativeartie.writerstudio.pdf.value;
 
 import java.awt.*; 
 import java.io.*; 
-import java.util.Optional;
 import java.util.Objects;
-import java.util.function.Function;
 
 import com.google.common.base.*;
 
-import org.apache.pdfbox.pdmodel.font.*;
-
-import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** Information about the font, to be filled by sub-classes. */
 public abstract class ContentFont<T>{
@@ -21,28 +17,40 @@ public abstract class ContentFont<T>{
      * mistakes. Making builder class is too much work. 
      */
     protected enum Key {
-		/** Font family changed. */             FONT,
 		/** Font size changed. */               SIZE, 
 		/** Font color changed. */              COLOR, 
+		
 		/** Font bold format changed. */        BOLD, 
 		/** Font italics format changed. */     ITALICS, 
 		/** Font underline format changed. */   LINED, 
-		/** Font superscript format changed. */ SUPER;
+		/** Font superscript format changed. */ SUPER,
         
+		/** Font family changed. */             FONT;
     }
-
-    private final T textFont;
-    private final boolean textMono;
+    
     private final int textSize;
     private final Color textColor;
+    
     private final boolean textBold;
     private final boolean textItalics;
     private final boolean textLined;
     private final boolean textSuper;
 
+    private final boolean textMono;
+    private final T textFont; /// This depends on format
+
 	/** Creating the first {@link ContentFont}. */
     protected ContentFont(){
-        this(false, 12, Color.BLACK, false, false, false, false);
+        textSize = 12;
+        textColor = Color.BLACK;
+        
+        textBold = false;
+        textItalics = false;
+        textLined = false;
+        textSuper = false;
+        
+        textMono = false;
+        textFont = buildFont(false, false, false, false);
     }
 
 	/** Creating the updated {@link ContentFont}. 
@@ -55,12 +63,16 @@ public abstract class ContentFont<T>{
 	 * 		replace value
 	 */
     protected ContentFont(ContentFont<T> old, Key edit, Object replace){
-        textColor   = edit == Key.COLOR?   (Color)   replace: old.textColor;
-        textSize    = edit == Key.SIZE?    (Integer) replace: old.textSize;
-        textBold    = edit == Key.BOLD?    (Boolean) replace: old.textBold;
-        textItalics = edit == Key.ITALICS? (Boolean) replace: old.textItalics;
-        textLined   = edit == Key.LINED?   (Boolean) replace: old.textLined;
-        textSuper   = edit == Key.SUPER?   (Boolean) replace: old.textSuper;
+		argumentNotNull(old, "old");
+		argumentNotNull(edit, "edit");
+		textColor = check(Key.COLOR, edit, replace, old.textColor);
+		textSize  = check(Key.SIZE,  edit, replace, old.textSize);
+        
+        textBold    = check(Key.BOLD,    edit, replace, old.textBold);
+        textItalics = check(Key.ITALICS, edit, replace, old.textItalics);
+        textLined   = check(Key.LINED,   edit, replace, old.textLined);
+        textSuper   = check(Key.SUPER,   edit, replace, old.textSuper);
+        
         if (Key.FONT == edit){
             /// Replaces font families
             textMono = (Boolean)replace;
@@ -78,18 +90,26 @@ public abstract class ContentFont<T>{
             textFont = old.textFont;
         }
     }
-
-    private ContentFont(boolean mono, int size, Color color,
-            boolean bold, boolean italics, boolean underline, boolean superscript){
-        textFont = buildFont(mono, bold, italics, superscript);
-        textMono = mono;
-        textSize = size;
-        textColor = color;
-        textBold = bold;
-        textItalics = italics;
-        textLined = underline;
-        textSuper = superscript;
-    }
+    
+    /** Check the type of data.
+     * 
+     * @param match
+     * 		match to key 
+     * @param actual
+     * 		actual key 
+     * @param obj
+     * 		setting/ checking object
+     * @param old
+     * 		old value
+     * @return result
+     * @see #ContentFont(ContentFont, Key, Object)
+     */
+    @SuppressWarnings("unchecked") /// guaranteed by getClass javadoc
+    private <U> U check(Key match, Key actual, Object obj, U old){
+		Class<? extends U> clazz = (Class<? extends U>)old.getClass();
+		return match == actual? 
+				argumentClass(obj, match.toString(), clazz): old;
+	}	
     
 	/** Gets the new font.
 	 * 
@@ -102,86 +122,171 @@ public abstract class ContentFont<T>{
 	 * @param superscript
 	 * 		is superscript text
 	 * @return answer
+     * @see #ContentFont()
+     * @see #ContentFont(ContentFont, Key, Object)
 	 */
     protected abstract T buildFont(boolean mono, boolean bold, 
 		boolean italics, boolean superscript);
 
-    public T getFont(){
-        return textFont;
-    }
-
+	/** Gets the font size.
+	 * 
+	 * @return answer
+	 */
     public int getSize(){
         return textSize;
     }
 
+	/** Change the font size
+	 * 
+	 * @param size
+	 * 		new font size
+	 * @return result
+	 */
+    public ContentFont<T> changeSize(int size){
+        if (size == textSize){
+            return this;
+        }
+        return produce(this, Key.SIZE, 12);
+    }
+
+	/** Gets the font color.
+	 * 
+	 * @return answer
+	 */
     public Color getColor(){
         return textColor;
     }
 
-    public ContentFont changeSize(int size){
-        if (size == textSize){
-            return this;
-        }
-        Object key = new Object();
-        return produce(this, Key.SIZE, 12);
-    }
-
-    public ContentFont changeToSerif(){
-        return produce(this, Key.FONT, false);
-    }
-
-    public ContentFont changeToMono(){
-        return produce(this, Key.FONT, true);
-    }
-
-    public ContentFont changeFontColor(Color color){
-        checkNotNull(color, "color");
+	/** Change the font color.
+	 * 
+	 * @param color
+	 * 		changing color
+	 * @return result
+	 */
+    public ContentFont<T> changeFontColor(Color color){
+        argumentNotNull(color, "color");
         return produce(this, Key.COLOR, color);
     }
 
-    public ContentFont changeBold(boolean b){
+	/** Change bold formatting on or off.
+	 * 
+	 * @param b
+	 * 		new boolean.
+	 * @return result
+	 */
+    public ContentFont<T> changeBold(boolean b){
         return produce(this, Key.BOLD, b);
     }
 
-    public ContentFont changeItalics(boolean b){
+	/** Change italics formatting on or off.
+	 * 
+	 * @param b
+	 * 		new boolean
+	 * @return result
+	 */
+    public ContentFont<T> changeItalics(boolean b){
         return produce(this, Key.ITALICS, b);
     }
 
-    public ContentFont changeUnderline(boolean b){
-        return produce(this, Key.LINED, b);
-    }
-
-    public ContentFont changeToSuperscript(){
-        return produce(this, Key.SUPER, true);
-    }
-
-    public ContentFont changeToNoramlScript(){
-        return produce(this, Key.SUPER, false);
-    }
-
-    public abstract ContentFont produce(ContentFont font, Key key,
-        Object value);
-
-    public abstract float getWidth(String text) throws IOException;
-    public abstract float getHeight() throws IOException;
-
-    public boolean isSuperscript(){
-        return textSuper;
-    }
-
+	/** Check if font is a underline.
+	 * 
+	 * @return answer
+	 */
     public boolean isUnderline(){
         return textLined;
     }
 
-    @Override
-    public String toString(){
-        return MoreObjects.toStringHelper(this)
-            .add("font", textFont)
-            .add("size", textSize)
-            .add("color", textColor)
-            .toString();
+	/** Change underline formatting on or off.
+	 * 
+	 * @param b
+	 * 		new boolean
+	 * @return result
+	 */
+    public ContentFont<T> changeUnderline(boolean b){
+        return produce(this, Key.LINED, b);
     }
 
+	/** Change font to superscript.
+	 * 
+	 * @param b
+	 * 		new boolean
+	 * @return result
+	 */
+    public ContentFont<T> changeToSuperscript(){
+        return produce(this, Key.SUPER, true);
+    }
+
+	/** Check if font is a superscript.
+	 * 
+	 * @return answer
+	 */
+    public boolean isSuperscript(){
+        return textSuper;
+    }
+
+	/** Change font to normal script.
+	 * 
+	 * @param b
+	 * 		new boolean
+	 */
+    public ContentFont<T> changeToNoramlScript(){
+        return produce(this, Key.SUPER, false);
+    }
+
+	/** Gets the font object.
+	 * 
+	 * @return answer
+	 */
+    public T getFont(){
+        return textFont;
+    }
+
+	/** Change font to a serif font type. 
+	 * 
+	 * As oppose to {@link #changeToMono()}.
+	 * 
+	 * @return result
+	 */
+    public ContentFont<T> changeToSerif(){
+        return produce(this, Key.FONT, false);
+    }
+
+	/** Change font to a mono font type. 
+	 * 
+	 * 
+	 * As oppose to {@link #changeToSerif()}.
+	 * @return result
+	 */
+    public ContentFont<T> changeToMono(){
+        return produce(this, Key.FONT, true);
+    }
+
+	/** Produce a new {@link ContentFont} with the correct {@code T}
+	 * class paramemter.
+	 * 
+	 * @param font
+	 * 		reference font
+	 * @param key
+	 * 		update key
+	 * @param value
+	 * 		new value
+	 */
+    protected abstract ContentFont<T> produce(ContentFont<T> font, 
+		Key key, Object value);
+
+	/** Gets the width of the text using this font.
+	 * 
+	 * @param text
+	 * 		calculating text
+	 * @return answer
+	 */
+    public abstract float getWidth(String text) throws IOException;
+    
+	/** Gets the height of the text using this font.
+	 * 
+	 * @return answer
+	 */
+    public abstract float getHeight() throws IOException;
 
     @Override
     public boolean equals(Object obj){
@@ -200,4 +305,12 @@ public abstract class ContentFont<T>{
         return Objects.hash(textFont, textSize, textSuper, textColor);
     }
 
+    @Override
+    public String toString(){
+        return MoreObjects.toStringHelper(this)
+            .add("font", textFont)
+            .add("size", textSize)
+            .add("color", textColor)
+            .toString();
+    }
 }

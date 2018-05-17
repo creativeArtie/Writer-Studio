@@ -1,0 +1,8 @@
+src/main/java/com/creativeartie/writerstudio/pdf/DivisionTextFormatted.java
+src/main/java/com/creativeartie/writerstudio/pdf/PageFootnote.java
+src/main/java/com/creativeartie/writerstudio/pdf/SectionContentCite.java
+src/main/java/com/creativeartie/writerstudio/pdf/SectionContentEndnote.java
+src/main/java/com/creativeartie/writerstudio/pdf/SectionContent.java
+src/main/java/com/creativeartie/writerstudio/pdf/SectionContentMain.java
+src/main/java/com/creativeartie/writerstudio/pdf/SectionTitle.java
+src/main/java/com/creativeartie/writerstudio/pdf/WritingExporter.java

@@ -55,7 +55,7 @@
         - use long description using the parameter name then
         - simicolon and requirements
     - for `@return`
-        - use `self`, `success` or `answer`
+        - use `self`, `success`, `answer` or `result`
     - for `@see`
         - for default, protected and private methods, its callers
 - declaration
