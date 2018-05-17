@@ -57,12 +57,16 @@ public final class WritingExporter implements AutoCloseable{
         }
 
         @Override
-        public float getWidth(String text) throws IOException{
+        public float getWidth(String text){
             checkNotNull(text, "text");
 
             /// From https://stackoverflow.com/questions/13701017/calculation-
             /// string-width-in-pdfbox-seems-only-to-count-characters
-            return getFont().getStringWidth(text) / 1000 * getSize();
+            try {
+				return getFont().getStringWidth(text) / 1000 * getSize();
+			} catch (IOException ex){
+				throw new RuntimeException(ex.getCause());
+			}
         }
 
         @Override

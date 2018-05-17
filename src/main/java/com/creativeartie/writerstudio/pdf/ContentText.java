@@ -14,6 +14,7 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.*; // PDAnnotationLink
 import com.creativeartie.writerstudio.pdf.value.*; // ContentFont, ContentPostEditor
 import com.creativeartie.writerstudio.lang.*; // SpanBranch
 import static com.creativeartie.writerstudio.main.Checker.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** Stores a text and its properties.
  *
@@ -44,8 +45,8 @@ final class ContentText {
      */
     static ArrayList<ContentText> createWords(String text, ContentFont font)
             throws IOException{
-        checkNotNull(text, "text");
-        checkNotNull(font, "font");
+        argumentNotNull(text, "text");
+        argumentNotNull(font, "font");
 
         /// Setup for repeating uses
         ContentText space = new ContentText(SPACE, font, true);
@@ -93,12 +94,13 @@ final class ContentText {
     private Optional<SpanBranch> footnoteSpan;
 
     /** Creates a {@linkplain ContentText} by copying.
+     * 
      * @param original
      *      original object
      * @see DivisionText#addLine(DivisionText.Line)
      */
     ContentText(ContentText original){
-        checkNotNull(original, "original");
+        argumentNotNull(original, "original");
 
         outputText = original.outputText;
         spaceText = original.spaceText;
@@ -113,6 +115,7 @@ final class ContentText {
     }
 
     /** Creates a {@linkplain ContentText}.
+     * 
      * @param text
      *      content text
      * @param font
@@ -121,8 +124,7 @@ final class ContentText {
      *      is space text
      * @see #createWords(String, ContentFont)
      */
-    private ContentText(String text, ContentFont font, boolean space)
-            throws IOException{
+    private ContentText(String text, ContentFont font, boolean space){
         assert text != null && !text.isEmpty();
         assert font != null;
         assert text == SPACE? space: !space;
@@ -142,22 +144,24 @@ final class ContentText {
     /** Get the text.
      *
      * @return answer
-     * @see MatterArea#printText(List)
+     * @see DivisionText.Line#toString()
+     * @see MatterArea MatterArea.printText(List)
      */
     String getText(){
         return outputText;
     }
 
-    // TODO text isn't suitable to deal with whitespaces
     /** Change the text.
+     * 
+     * <b> TODO: text isn't suitable to deal with whitespaces</b>
      * @param text
      *      the new text; not null
      * @return self
-     * @see #getText()
-     * @see #isSpaceText()
+     * @see DivisionTextNote#setNumbering(String)
+     * @see PageFootnote#resetFootnote(ContentText)
      */
-    ContentText setText(String text) throws IOException{
-        checkNotEmpty(text, "text");
+    ContentText setText(String text) {
+        argumentNotEmpty(text, "text");
         CharMatcher whitespace = CharMatcher.whitespace();
         outputText = whitespace.matchesAllOf(text)? SPACE:
             whitespace.trimAndCollapseFrom(text, ' ');
@@ -166,20 +170,21 @@ final class ContentText {
         return this;
     }
 
-    /** Is the text is a space
+    /** Check if the text is a space.
+     * 
      * @return answer
-     * @see #getText()
-     * @see #setText(String)
+     * @see DivisionText DivisionText.appendText(String)
      */
     boolean isSpaceText(){
         return spaceText;
     }
 
     /** Sets the listener.
+     * 
      * @param
      *      the consumer to set
      * @return self
-     * @see #setText(String)
+     * @see DivisionText DivisionText.appendText(String)
      */
     ContentText setListener(Consumer<ContentText> consumer){
         textChange = Optional.ofNullable(consumer);
@@ -187,14 +192,16 @@ final class ContentText {
     }
 
     /** Get the height of the text.
+     * 
      * @return answer
-     * @see #getWidth()
+     * @see MatterArea MatterArea.printText(List)
      */
     float getHeight(){
         return textHeight;
     }
 
     /** Get the width of the text.
+     * 
      * @return answer
      * @see #getHeight()
      */

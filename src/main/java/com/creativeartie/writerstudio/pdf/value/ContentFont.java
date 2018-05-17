@@ -280,13 +280,13 @@ public abstract class ContentFont<T>{
 	 * 		calculating text
 	 * @return answer
 	 */
-    public abstract float getWidth(String text) throws IOException;
+    public abstract float getWidth(String text);
     
 	/** Gets the height of the text using this font.
 	 * 
 	 * @return answer
 	 */
-    public abstract float getHeight() throws IOException;
+    public abstract float getHeight();
 
     @Override
     public boolean equals(Object obj){
