@@ -459,8 +459,8 @@ public final class AuxiliaryData{
     private static final String AREA_HEADER  = AREA  + "header  |";
     private static final String AREA_BREAK   = AREA  + "break   |";
     private static final String AREA_FOOTER  = AREA  + "footer  |";
-    private static final String AREA_ENDER   = AREA  + "ender |";
-    private static final String TEXT = "text";
+    private static final String AREA_ENDER   = AREA  + "ender   |";
+    private static final String TEXT        = "text";
     /** Text at the start of the main content. */
     public static final String TEXT_STARTER = TEXT + AREA_STARTER;
     /** Text for the top of each main content page. */

@@ -21,16 +21,6 @@ repositories {
     mavenCentral()
 }
 
-jar {
-	from('src/main/java') {
-		include '**/*.properties'
-		include '**/*.css'
-		include '**/*.png'
-		include '**/*.txt'
-		include '**/*.ttf'
-	}
-}
-
 jfx {
     // minimal requirement for jfxJar-task
     mainClass = 'com.creativeartie.writerstudio.main.Main'
