@@ -46,7 +46,7 @@ public class WritingText extends Document{
      *
      * @param text
      *      raw content text
-     * @see WritingFile#opeFile(File)
+     * @see WritingFile#open(File)
      */
     public WritingText(String text){
         super(text, SectionParseHead.SECTION_1);

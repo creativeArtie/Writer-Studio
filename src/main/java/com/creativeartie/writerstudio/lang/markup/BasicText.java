@@ -20,7 +20,7 @@ interface BasicText{
      * existed.
      *
      * @return answer
-     * @see #getRendered
+     * @see #getRendered()
      */
     public List<Span> delegate();
 
@@ -30,7 +30,7 @@ interface BasicText{
      *
      * @return answer
      * @see #getTrimmed() but also trimed
-     * @see #getRaw() all text verison
+     * @see Span#getRaw() all text verison
      */
     public default String getRendered(){
         StringBuilder builder = new StringBuilder();
@@ -47,13 +47,13 @@ interface BasicText{
         return CharMatcher.whitespace().collapseFrom(builder, ' ');
     }
 
-    /** Get text from {@link #getText}, but also trimmed.
+    /** Get text from {@link #getRendered()}, but also trimmed.
      *
      * Therefore "{@code   12\\3  ad  }" ->  "{@code 123 ad}".
      *
      * @return answer
-     * @see #getText() also collapse space version
-     * @see #getRaw() all text verison
+     * @see #getRendered() also collapse space version
+     * @see Span#getRaw() all text verison
      */
     public default String getTrimmed(){
         return CharMatcher.whitespace().trimFrom(getRendered());

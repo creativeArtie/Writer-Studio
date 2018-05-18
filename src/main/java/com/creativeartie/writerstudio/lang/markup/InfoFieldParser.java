@@ -20,7 +20,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  *
  * The value order is set by:
  * <ul>
- * <li>{@link InfoFieldType#parseText()}</li>
+ * <li>{@link InfoFieldType#getType(String)}</li>
  * </ul>
  */
 enum InfoFieldParser implements SetupParser{

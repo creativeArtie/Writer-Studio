@@ -233,7 +233,6 @@ public final class Record{
      *
      * @param goal
      *      writing time goal
-     * @return answer
      */
     public void setTimeGoal(Duration goal){
         timeGoal = argumentNotNull(goal, "goal");

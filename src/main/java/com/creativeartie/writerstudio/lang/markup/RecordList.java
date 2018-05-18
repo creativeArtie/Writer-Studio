@@ -199,8 +199,8 @@ public final class RecordList extends ForwardingList<Record>{
 
     /** Gets all records found in a {@link YearMonth month}.
      *
-     * @param
-     *      showing months
+     * @param month
+     *      showing month
      * @return answer
      */
     public Iterator<Record> getMonth(YearMonth month){

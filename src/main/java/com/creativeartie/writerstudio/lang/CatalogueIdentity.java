@@ -24,7 +24,7 @@ public final class CatalogueIdentity implements Comparable<CatalogueIdentity>{
 
     private final String namePart;
 
-    /** Creates a {@linkplain CatalogueIdenity base on the location.
+    /** Creates a {@linkplain CatalogueIdentity} base on the location.
      *
      * @param categories
      *      id categories

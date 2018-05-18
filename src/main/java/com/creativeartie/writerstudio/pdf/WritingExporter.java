@@ -136,8 +136,8 @@ public final class WritingExporter implements AutoCloseable{
 
     /** exports a {@link WritingFile}.
      *
-     * @param path
-     *      file path
+     * @param data
+     *      export data
      */
     public void export(WritingFile data) throws IOException{
         checkNotNull(data, "data");

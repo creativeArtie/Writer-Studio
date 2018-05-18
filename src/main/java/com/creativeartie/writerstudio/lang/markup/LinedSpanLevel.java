@@ -33,7 +33,7 @@ public abstract class LinedSpanLevel extends LinedSpan {
 
     /** Get the line level.
      *
-     * This is from {@code 1} to {@value LEVEL_MAX}.
+     * This is from {@code 1} to {@link AuxiliaryData#LEVEL_MAX}.
      *
      * @return answer
      */

@@ -10,7 +10,7 @@ import static com.creativeartie.writerstudio.main.Checker.*;
 
 /** A {@link SectionContent} for endnotes
  */
-public class SectionContentEndnote extends SectionContent<LinedSpanPointNote> {
+class SectionContentEndnote extends SectionContent<LinedSpanPointNote> {
     private int noteNumber;
 
     /** Only construcutor.

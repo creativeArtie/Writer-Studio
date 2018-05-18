@@ -128,11 +128,11 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
 
     /** Parse a line of text from a {@link Span}.
      *
-     * The span is provided by {@link #addLine(T)}
+     * The span is provided by {@link #addLine(SpanBranch)}
      *
      * @param span
      *      the span to add
-     * @see #addLine(T)
+     * @see #addLine(SpanBranch)
      */
     protected abstract DivisionText parseSpan(T span) throws IOException;
 

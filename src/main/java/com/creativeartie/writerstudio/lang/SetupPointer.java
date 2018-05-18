@@ -94,7 +94,8 @@ public final class SetupPointer{
 
     /** Next {@link SpanLeaf} prefixed with spaces matches {@code compare}.
      *
-     * The leaf's {@link StyleInfoLeaf} sets to {@link StyleInfoLeaf.KEYWORD}.
+     * The leaf's {@link StyleInfoLeaf} sets to 
+     * {@link StyleInfoLeaf#KEYWORD}.
      *
      * @param children
      *      adding children list
@@ -150,7 +151,8 @@ public final class SetupPointer{
 
     /** Next {@link SpanLeaf} matches {@code compare}.
      *
-     * The leaf's {@link StyleInfoLeaf} sets to {@link StyleInfoLeaf.KEYWORD}.
+     * The leaf's {@link StyleInfoLeaf} sets to 
+     * {@link StyleInfoLeaf#KEYWORD}.
      *
      * @param children
      *      adding children list
@@ -167,7 +169,8 @@ public final class SetupPointer{
 
     /** Next {@link SpanLeaf} matches {@code compare}.
      *
-     * The leaf's {@link StyleInfoLeaf} sets to {@link StyleInfoLeaf.KEYWORD}.
+     * The leaf's {@link StyleInfoLeaf} sets to 
+     * {@link StyleInfoLeaf#KEYWORD}.
      *
      * @param children
      *      adding children list
@@ -196,12 +199,13 @@ public final class SetupPointer{
 
     /** Next {@link SpanLeaf} has characters matches {@link CharMatcher}.
      *
-     * The leaf's {@link StyleInfoLeaf} sets to {@link StyleInfoLeaf.Data}.
+     * The leaf's {@link StyleInfoLeaf} sets to 
+     * {@link StyleInfoLeaf#DATA}.
      *
      * @param children
      *      adding children list
-     * @param compare
-     *      compare text
+     * @param matcher
+     *      characters matcher
      * @return success
      */
     public boolean matches(ArrayList<Span> children, CharMatcher matcher){
@@ -218,8 +222,8 @@ public final class SetupPointer{
      *      adding children list
      * @param style
      *      new span leaf style
-     * @param compare
-     *      compare text
+     * @param matcher
+     *      characters matcher
      * @return success
      */
     public boolean matches(ArrayList<Span> children, StyleInfoLeaf style,
@@ -254,7 +258,7 @@ public final class SetupPointer{
 
     /** Next {@link SpanLeaf} continues until one of a the text.
      *
-     * The leaf's {@link StyleInfoLeaf} sets to {@link StyleInfoLeaf.KEYWORD}.
+     * The leaf's {@link StyleInfoLeaf} sets to {@link StyleInfoLeaf#KEYWORD}.
      *
      * @param children
      *      adding children list
@@ -271,7 +275,8 @@ public final class SetupPointer{
 
     /** Next {@link SpanLeaf} continues until one of a the text.
      *
-     * The leaf's {@link StyleInfoLeaf} sets to {@link StyleInfoLeaf.KEYWORD}.
+     * The leaf's {@link StyleInfoLeaf} sets to 
+     * {@link StyleInfoLeaf#KEYWORD}.
      *
      * @param children
      *      adding children list
@@ -291,7 +296,8 @@ public final class SetupPointer{
 
     /** Next {@link SpanLeaf} continues until one of a the text.
      *
-     * The leaf's {@link StyleInfoLeaf} sets to {@link StyleInfoLeaf.KEYWORD}.
+     * The leaf's {@link StyleInfoLeaf} sets to 
+     * {@link StyleInfoLeaf#KEYWORD}.
      *
      * @param children
      *      adding children list
@@ -351,14 +357,13 @@ public final class SetupPointer{
 
     /** Next {@link SpanLeaf} with a certain size.
      *
-     * The leaf's {@link StyleInfoLeaf} sets to {@link StyleInfoLeaf.KEYWORD}.
+     * The leaf's {@link StyleInfoLeaf} sets to 
+     * {@link StyleInfoLeaf#KEYWORD}.
      *
      * @param children
      *      adding children list
-     * @param style
-     *      new span leaf style
-     * @param enders
-     *      enders text
+     * @param size
+     *      character length size
      * @return success
      */
     public boolean nextChars(ArrayList<Span> children, int size){
@@ -373,8 +378,8 @@ public final class SetupPointer{
      *      adding children list
      * @param style
      *      new span leaf style
-     * @param enders
-     *      enders text
+     * @param size
+     *      character length size
      * @return success
      */
     public boolean nextChars(ArrayList<Span> children, StyleInfoLeaf style,

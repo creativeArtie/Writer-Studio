@@ -168,7 +168,7 @@ public final class CatalogueData{
         return catalogueParent;
     }
 
-    /** Gets the {@linkplain CatalogueKey}.
+    /** Gets the {@linkplain CatalogueIdentity}.
      * @return answer
      */
     public CatalogueIdentity getKey(){

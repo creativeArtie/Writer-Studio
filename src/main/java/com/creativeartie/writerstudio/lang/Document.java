@@ -39,7 +39,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
      *
      * @param raw
      *      raw text
-     * @param parser
+     * @param parsers
      *      text parsers
      */
     protected Document(String raw, SetupParser ... parsers){

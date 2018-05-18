@@ -29,20 +29,20 @@ public final class AuxiliaryData{
      * <b> Be aware that the {@linkplain String#startsWith(String)} might return
      * true for several token starters. </b>
      */
-    public static final Map<LinedParseLevel, List<String>> LEVEL_STARTERS =
+    static final Map<LinedParseLevel, List<String>> LEVEL_STARTERS =
         getLinedLevels();
 
 
-    public static final Map<LinedParseLevel, List<String>> LEVEL_REVERSE =
+    static final Map<LinedParseLevel, List<String>> LEVEL_REVERSE =
         getReverse(LEVEL_STARTERS);
 
     /** Heading and outlines only.
      *
-     * See the warning in {@link LEVEL_STARTERS}
+     * See the warning in {@link #LEVEL_STARTERS}
      */
-    public static final List<String> LEVEL_HEADINGS = getLinedHeads();
+    static final List<String> LEVEL_HEADINGS = getLinedHeads();
 
-    /** Fills the map of {@link LEVEL_STARTERS}.
+    /** Fills the map of {@link #LEVEL_STARTERS}.
      *
      * @return answer
      * @see #LEVEL_STARTERS
@@ -166,11 +166,11 @@ public final class AuxiliaryData{
 
     /** List of Line starter.
      *
-     * See the warning in {@link LEVEL_STARTERS}.
+     * See the warning in {@link #LEVEL_STARTERS}.
      */
-    public static final List<String> LINED_STARTERS = getLinedTokens();
+    static final List<String> LINED_STARTERS = getLinedTokens();
 
-    /** Fills {@link LINED_STARTERS}.
+    /** Fills {@link #LINED_STARTERS}.
      *
      * @return answer
      * @see #LINED_STARTERS
@@ -238,14 +238,16 @@ public final class AuxiliaryData{
     public static final String FORMAT_UNDERLINE = "_" ;
     public static final String FORMAT_CODED     = "`" ;
 
-    /** Number of format types:            {@value} */
+    /** Number of format types: from 
+     * {@link FormatTypeStyle}{@code .values().length()} 
+     */
     public static final int FORMAT_TYPES = FormatTypeStyle.values().length;
 
     /// %Part 1.7: Escape Begin Token ==========================================
 
     /** Char escape character:          {@value}*/
-    public static char CHAR_ESCAPE    = '\\';
-    /** Char escape token:              {@value}*/
+    public static final char CHAR_ESCAPE    = '\\';
+    /** Char escape token:  from string of "{@value CHAR_ESCAPE}".*/
     public static String TOKEN_ESCAPE = CHAR_ESCAPE + "";
 
     /// %Part 1.8: Format Part Separators ======================================
@@ -287,15 +289,15 @@ public final class AuxiliaryData{
 
     /// %Part 2.1: DirectoryType Base Categories ===============================
 
-    /** For {@link DirectoryType.FOOTNOTE}:     {@value} */
+    /** For {@link DirectoryType#FOOTNOTE}:     {@value} */
     public static final String TYPE_FOOTNOTE  = "foot";
-    /** For {@link DirectoryType.ENDNOTE}:      {@value} */
+    /** For {@link DirectoryType#ENDNOTE}:      {@value} */
     public static final String TYPE_ENDNOTE   = "end";
-    /** For {@link DirectoryType.LINK}:         {@value} */
+    /** For {@link DirectoryType#LINK}:         {@value} */
     public static final String TYPE_LINK      = "link";
-    /** For {@link DirectoryType.RESEARCH}:     {@value} */
+    /** For {@link DirectoryType#RESEARCH}:     {@value} */
     public static final String TYPE_RESEARCH  = "note";
-    /** For {@link DirectoryType.NOTE}:         {@value} */
+    /** For {@link DirectoryType#NOTE}:         {@value} */
     public static final String TYPE_NOTE      = "idless";
 
 
@@ -304,10 +306,10 @@ public final class AuxiliaryData{
     /** Basic agenda category:               {@value}. */
     public static final String TYPE_AGENDA = "agenda";
     /** Same as {@link #TYPE_AGENDA} in a list for {@link FormatSpanAgenda}.*/
-    public static final List<String> TYPE_AGENDA_INLINE = ImmutableList.of(
+    static final List<String> TYPE_AGENDA_INLINE = ImmutableList.of(
         TYPE_AGENDA);
     /** Same as {@link #TYPE_AGENDA} in a list for {@link LinedSpanAgenda}.*/
-    public static final List<String> TYPE_AGENDA_LINED = ImmutableList.of(
+    static final List<String> TYPE_AGENDA_LINED = ImmutableList.of(
         TYPE_AGENDA);
 
     /// %Part 3: Setup Parsers #################################################
@@ -429,7 +431,7 @@ public final class AuxiliaryData{
 
     /// %Part 3.3: Main Section Line Parsers ===================================
 
-    /** Create the list of {@link SECTION_PARSERS}.
+    /** Create the list of {@link SectionParser#SECTION_PARSERS}.
      *
      * @return answer
      */
@@ -498,7 +500,7 @@ public final class AuxiliaryData{
     /** At bottom of a  title  page:          {@value} */
     public static final String TITLE_BOTTOM  = TITLE  + "bottom  |";
 
-    /** Data type or line alignment length:  {@value} */
+    /** Length of second field:  {@code "{@value TITLE}"#length()} */
     public static final int ALIGN_START     = TITLE_TOP.length();
     /** Alignment right:                      {@value} */
     public static final String ALIGN_RIGHT  = "right |";

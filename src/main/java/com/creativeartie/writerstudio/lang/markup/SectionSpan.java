@@ -167,7 +167,7 @@ public abstract class SectionSpan extends SpanBranch {
      * @param text
      *      new text
      * @return anwser
-     * @see #getParser(SetupParse)
+     * @see #getParser(String)
      */
     protected abstract boolean checkStart(String text);
 

@@ -8,8 +8,8 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  *
  * The value order is set by:
  * <ul>
- * <li>{@link DirectoryParser#getRefParser(DirectoryType}</li>
- * <li> {@link DirectoryParser#getIDParser(DirectoryType}</li>
+ * <li>{@link DirectoryParser#getRefParser(DirectoryType)}</li>
+ * <li> {@link DirectoryParser#getIDParser(DirectoryType)}</li>
  * <li> {@link LinedParsePointer#parse(SetupPointer)}</li>
  * </ul>
  */

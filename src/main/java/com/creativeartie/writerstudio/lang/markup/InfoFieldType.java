@@ -9,7 +9,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  * The value order is set by:
  * <ul>
  * <li>{@link InfoFieldParser} through </li>
- * <li>{@link InfoFieldType#parseText()}</li>
+ * <li>{@link #getType(String)}</li>
  * </ul>
  */
 public enum InfoFieldType implements StyleInfo{

@@ -16,17 +16,15 @@ public enum AuxiliaryType implements StyleInfo{
     REF_KEY,
     /** {@linkplain StyleInfo} for no {@link DirectorySpan} is found.
      *
-     * This is for {@link LinedSpanPoint} and {@link MainSpanNote}.
+     * This is for {@link LinedSpanPoint} and {@link NoteCardSpan}.
      */
     NO_ID,
     /** {@linkplain StyleInfo} for there data error in {@link LinedSpanCite}. */
     DATA_ERROR,
-    /** {@linkplain StyleInfo} for {@link MainSpanSection}. */
-    MAIN_SECTION,
     /** {@linkplain StyleInfo} for {@link SectionSpanScene}. */
     SECTION_SCENE,
     /** {@linkplain StyleInfo} for {@link SectionSpanHead}. */
     SECTION_HEAD,
-    /** {@linkplain StyleInfo} for {@link MainSpanNote}. */
+    /** {@linkplain StyleInfo} for {@link NoteCardSpan}. */
     MAIN_NOTE;
 }

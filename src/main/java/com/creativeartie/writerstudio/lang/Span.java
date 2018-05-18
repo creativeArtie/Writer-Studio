@@ -45,8 +45,8 @@ public abstract class Span{
 
     /** Get the {@link SpanNode parent span}.
      *
-     * {@link Document} will throws an {@link IllegalOperationExcpetion} if
-     * called.
+     * {@link Document} will throws an 
+     * {@link UnsupportedOperationException} if called.
      *
      * @return answer
      */
@@ -54,8 +54,8 @@ public abstract class Span{
 
     /** Get the {@link SpanNode parent span}.
      *
-     * {@link Document} will throws an {@link IllegalOperationExcpetion} if
-     * called.
+     * {@link Document} will throws an 
+     * {@link UnsupportedOperationException} if called.
      *
      * @param parent
      *      parent to set

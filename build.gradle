@@ -21,6 +21,17 @@ repositories {
     mavenCentral()
 }
 
+javadoc{
+	doLast{
+		copy{
+			from ("src/main/java"){
+				include "**/doc-files/**"
+			}
+			into "build/docs/javadoc/"
+		}
+	}
+}
+
 jfx {
     // minimal requirement for jfxJar-task
     mainClass = 'com.creativeartie.writerstudio.main.Main'

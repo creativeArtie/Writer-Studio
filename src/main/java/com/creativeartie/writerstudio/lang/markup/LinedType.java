@@ -25,22 +25,22 @@ public enum LinedType implements StyleInfo{
     /** a bullet list item. */
     BULLET(null),
 
-    /** Footnote that starts with "{@value LINED_FOOTNOTE}" */
+    /** Footnote that starts with {@link AuxiliaryData#LINED_FOOTNOTE}. */
     FOOTNOTE(LINED_FOOTNOTE),
-    /** Endnote that starts with "{@value LINED_ENDNOTE}" */
+    /** Endnote that starts with {@link AuxiliaryData#LINED_ENDNOTE}. */
     ENDNOTE(LINED_ENDNOTE),
-    /** A resuable link that starts with "{@value LINED_LINK}" */
+    /** A resuable link that starts with {@link AuxiliaryData#LINED_LINK}. */
     LINK(LINED_LINK),
-    /** Non-pulishing note that starts with "{@value LINED_NOTE}" */
+    /** Non-pulishing note that starts with {@link AuxiliaryData#LINED_NOTE}.  */
     NOTE(LINED_NOTE),
 
-    /** Non-pulishing to do item that starts with "{@value LINED_AGENDA}" */
+    /** Non-pulishing to do item that starts with {@link AuxiliaryData#LINED_AGENDA}. */
     AGENDA(LINED_AGENDA),
-    /** A block quote that starts with "{@value LINED_QUOTE}". */
+    /** A block quote that starts with {@link AuxiliaryData#LINED_QUOTE}. */
     QUOTE(LINED_QUOTE),
-    /** A section break the line is "{@value LINED_BREAK}". */
+    /** A section break the line is {@link AuxiliaryData#LINED_BREAK}. */
     BREAK(LINED_BREAK),
-    /** A citation source that starts with "{@value LINED_CITE}". */
+    /** A citation source that starts with {@link AuxiliaryData#LINED_CITE}. */
     SOURCE(LINED_CITE),
     /** A paragraph with no starting token.
      *

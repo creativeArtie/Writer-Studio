@@ -10,7 +10,7 @@ import static com.creativeartie.writerstudio.main.Checker.*;
 
 /** A {@link SectionContent} for main contents.
  */
-public class SectionContentMain extends SectionContent<LinedSpan> {
+class SectionContentMain extends SectionContent<LinedSpan> {
     private boolean paraFirst;
     private LinkedList<Integer> listNumbering;
 

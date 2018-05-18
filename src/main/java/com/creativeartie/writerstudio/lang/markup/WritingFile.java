@@ -32,7 +32,7 @@ public final class WritingFile {
     private static final String EXTENSION = ".txt";
 
     /** Opens a zip file.
-     * @param File
+     * @param file
      *      the zip file
      * @return answer
      */
@@ -89,8 +89,8 @@ public final class WritingFile {
 
     /** Create a {@linkplain WritingFile} with a test {@link WritingText}.
      *
-     * @param doc
-     *      text document
+     * @param file
+     *      text document file
      * @return answer
      */
     public static WritingFile newSampleFile(File file) throws IOException{

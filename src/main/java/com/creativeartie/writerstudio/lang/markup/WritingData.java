@@ -75,7 +75,6 @@ public final class WritingData extends Document{
      *      target area
      * @param raw
      *      new raw text
-     * @return answer
      */
     public void setPrintText(TextDataType.Area area, String raw)
             throws TextAreaLineException{
@@ -125,7 +124,6 @@ public final class WritingData extends Document{
      *      target meta data
      * @param raw
      *      new raw text
-     * @return answer
      */
     public void setMetaText(TextDataType.Meta meta, String raw){
         argumentNotNull(meta, "meta");

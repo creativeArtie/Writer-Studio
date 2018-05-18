@@ -13,13 +13,13 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  * </ol>
  */
 public enum FormatTypeStyle implements StyleInfo{
-    /** Bold text with the token: "{@value #FORMAT_BOLD}"*/
+    /** Bold text with the token: {@link AuxiliaryData#FORMAT_BOLD}.*/
     BOLD(FORMAT_BOLD),
-    /** Italics text with the token: "{@value #FORMAT_ITALICS"*/
+    /** Italics text with the token: {@link AuxiliaryData#FORMAT_ITALICS}. */
     ITALICS(FORMAT_ITALICS),
-    /** Underlined text with the token: "{@value #FORMAT_UNDERLINE}"  */
+    /** Underlined text with the token: {@link AuxiliaryData#FORMAT_UNDERLINE}. */
     UNDERLINE(FORMAT_UNDERLINE),
-    /** Mono-text text with the token: "{@value #FORMAT_CODED}"*/
+    /** Mono-text text with the token: {@link AuxiliaryData#FORMAT_CODED}.  */
     CODED(FORMAT_CODED);
 
     private String formatToken;

@@ -8,7 +8,7 @@ import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.lang.*;
 
-/** {@link Span} to list all {@link FormatSpan*} object.
+/** {@link Span} to list all {@code FormatSpan*} object.
  *
  * Dec 29,2017: it was decided that this class will <b>not</b> do any local
  * reparsing, because it is deem to be too much work.

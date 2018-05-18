@@ -208,8 +208,6 @@ public abstract class ContentFont<T>{
 
 	/** Change font to superscript.
 	 * 
-	 * @param b
-	 * 		new boolean
 	 * @return result
 	 */
     public ContentFont<T> changeToSuperscript(){
@@ -226,8 +224,7 @@ public abstract class ContentFont<T>{
 
 	/** Change font to normal script.
 	 * 
-	 * @param b
-	 * 		new boolean
+	 * @return result
 	 */
     public ContentFont<T> changeToNoramlScript(){
         return produce(this, Key.SUPER, false);
