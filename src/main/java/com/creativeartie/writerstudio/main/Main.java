@@ -79,6 +79,6 @@ public class Main extends Application{
      * @return answer
      */
     protected WritingFile getStartFile() throws IOException{
-        return WritingFile.newFile();
+		return WritingFile.newFile();
     }
 }

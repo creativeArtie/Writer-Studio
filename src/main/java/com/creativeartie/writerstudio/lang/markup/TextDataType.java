@@ -10,7 +10,7 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 public class TextDataType{
 
     /** Basic {@link TextDataSpan} type.*/
-    public interface Type{
+    public interface Type extends StyleInfo{
         /** Gets the key name in the file.
          *
          * @return answer
@@ -19,7 +19,7 @@ public class TextDataType{
     }
 
     /** {@link Type} for {@link TextDataSpanPrint}.*/
-    public enum Area implements Type, StyleInfo{
+    public enum Area implements Type{
         // TODO render the following comment out Area, then uncomment out,
         /** Formatted text at the top of the front page.*/
         FRONT_TOP(TITLE_TOP),
@@ -75,7 +75,7 @@ public class TextDataType{
     }
 
     /** {@link Type} for {@link TextDataSpanMeta}.*/
-    public enum Meta implements Type, StyleInfo{
+    public enum Meta implements Type{
         /** Text for the pdf author field. */
         AUTHOR(META_AUTHOR),
         /** Text for the pdf keyword field. */
