@@ -12,53 +12,62 @@
  * comment          (* ... *)
  * special sequence ? ... ?
  * exception        -
+ *
+ * Heading simplification: the extact heading syntax for each section are not
+ * Heading simplification: shown because it will create will too much rules with
+ * Heading simplification: very similar syntaxes.
+ * Heading simplification: (grep 'Heading simplification' for information)
  *)
 
-Meta = {Data};
-Data = DataSpan, [{\n, DataSpan}], [\n];
+Data = DataSpan, {DataSpan}
 
-DataSpan = (DataArea, DataType, Format1) | (DataMeta, DataType, Content)
+DataSpan = (DataArea, DataType, Format1) | (DataMeta, DataType, Content), \n;
 DataArea = ("head-", ("top     |" | "centre  |" | "bottom  |") ) |
            ("text-", ("header  |" | "ender   |" ) ) |
            ("cite-",  "header  |" );
 DataMeta =  "meta-", ("author  |" | "keywords|" | "subject |" | "title   |";
 DataType = "right |" | "left  |" | "center|" | "text  |";
 
-Manuscript = (Section | Note), [{\n, (Section | Note)}], [\n];
+Manuscript = (SectionHead1), [{\n, (SectionHead)}], [\n];
 
-Section     = ((LinedHeading | LinedOutline), [{\n, SectionContent}]) |
-              SectionContent;
+(* Heading simplification: SectionHead1's LevelLinedHeading == level 1 *)
+SectionHead1 = [LevelLinedHeading], [SectionContent], [SectionScene],
+               [SectionHead];
+(* Heading simplification: SectionHead's child level > parent level *)
+SectionHead = LevelLinedHeading [SectionContent], [SectionScene], [SectionHead];
+SectionScene = LevelLinedOutline, [SectionContent];
+SectionContent = (LinedParagraph | LinedQuote | LinedBreak | LinedAgenda |
+    LinedFootnote | LinedEndnote | LinedLink | LevelLinedNumbered |
+    LevelLinedBullet | Note), [ "\n", SectionContent];
 
-SectionContent = {(SectionLine, \n) | LinedBreak} | {SectionLine | LineBreak};
-SectionLine = (LinedParagraph | LinedAgenda | LinedFootnote |
-               LinedEndnote | LinedLink);
-LinedParagrah = Content;
-LinedBreak    = "***", \n;
-LinedAgenda   = "!!", [Content] ;
-LinedFootnote = "!^", Directory, [[":"], Content];
-LinedEndnote  = "!*", Directory, [[":"], Content];
-LinedLink     = "!@", Directory, [[":"], Content];
-LinedHeading  = HeadingStart, [LineId];
-LinedOutline  = OutlineStart, [LineId];
-LinedQuote    = QuoteStart, [Format1];
-LinedNumbered = NumberedStart, [Format1];
-LinedBullet   = BulletStart, Format1;
-LineId = (Spaces, "@", Directory, [":", [Format1], [Edition]]) |
-        ([Format1], [Edition]);
+LinedParagraph = Content;
+LinedQuote     = ">", [Format1];
+LinedBreak     = "***", \n;
+LinedAgenda    = "!!", [Content];
+LinedFootnote  = "!^", Directory, [[":"], Content];
+LinedEndnote   = "!*", Directory, [[":"], Content];
+LinedLink      = "!@", Directory, [[":"], Content];
 
-HeadingStart  = "=", [ "=", ["=", ["=", ["=", ["="] ] ] ] ];
-OutlineStart  = "!", \t, [ \t, [\t, [\t, [\t, [\t] ] ] ] ];
-QuoteStart    = ">", [ ">", [">", [">", [">", [">"] ] ] ] ];
-NumberedStart = \t, [ \t, [\t, [\t, [\t, [\t] ] ] ] ], #;
-BulletStart   = \t, [ \t, [\t, [\t, [\t, [\t] ] ] ] ], -;
+(* Heading simplification: HeadingStart & OutlineStart produces the levels. *)
+LevelLinedHeading   = HeadingStart, [LineId];
+LevelLinedOutline   = OutlineStart, [LineId];
+LevelLinedNumbered  = NumberedStart, [Format2];
+LevelLinedBullet    = BulletStart, [Format2];
 
+(* Heading simplification: Levels are decided by number of repeat characters. *)
+(*            level   1      2     3     4     5     6         *)
+HeadingStart  =      "=", [ "=", ["=", ["=", ["=", ["="] ] ] ] ];
+OutlineStart  = "!", "#", [ "#", ["#", ["#", ["#", ["#"] ] ] ] ];
+NumberedStart =      "#", [ "#", ["#", ["#", ["#", ["#"] ] ] ] ];
+BulletStart   =      "-", [ "-", ["-", ["-", ["-", ["-"] ] ] ] ]-;
+LineId = (Spaces, [ ["@"], [Directory], [":", [Format2], [Edition]] ]) |
+        ([Format2], [Edition]);
 
-Note     = (LinedNoteHead, [{\n LinedNoteLine}]) |
-           (LinedNoteLine, [{\n LinedNoteLine}];
+Note     = (LinedNoteHead, [{\n NoteLine}]) |
+           (NoteLine, [{\n LinedNoteLine}];
 NoteLine = LinedNote | LinedCite;
 LinedNoteHead = "!%", Spaces, "@", Directory, [":", [Format1]];
 LinedNoteLine = "!%", Format1;
-
 
 LinedCite = "!>",
     ((InfoFieldFootnote | InfoFieldIntext), [[Spaces, [":"]] InfoDataText]) |
@@ -74,28 +83,36 @@ InfoDataText      = Content, -\n;
 InfoDataFormatted = Format2, -\n;
 InfoDataRef       = Directory
 
-Format1 = {FormatAgenda | FormatDirectLink | FormatRefLink | "**" | "*" | "_" |
-          "`" | FormatContent}, (-\? | -\n);
-Format2 = {FormatAgenda | FormatFootnote | FormatEndnote | FormatNote |
-          FormatDirectLink | FormatRefLink | "**" | "*" | "_" | "`" |
-          FormatContent}, (-\? | -\n);
-FormatRefLink    =  "<@", Content, (">" | -\n);
-FormatDirectLink =  "<", Content, (">" | -\n);
-FormatNote       = "{@", Directory, ("}" | -\n );
+(* Implemented as Format* classes *)
+Format1 = {FormatAgenda | "**" | "*" | "_" | "`" | FormatContent |
+           FormatDirectLink | FormatRefLink | FormatReference
+          }, (-\? | -\n);
+Format2 = {FormatAgenda |  "**" | "*" | "_" | "`" | FormatContent |
+           FormatDirectLink | FormatRefLink | FormatReference |
+           FormatFootnote | FormatEndnote | FormatNote
+          }, (-\? | -\n);
+FormatReference  = "{%", [Content], ( "%}" | -\n);
+FormatNote       = FormatResearch | FormatFootnote | FomratEndnote;
 FormatEndnote    = "{^", [Directory], ("}" | -\n );
 FormatFootnote   = "{*", [Directory], ("}" | -\n );
-FormatData       = "{", [Contetnt], "}"
+FormatResearch   = "{@", Directory, ("}" | -\n );
+FormatRefLink    =  "<@", [Directory], (">" | -\n);
+FormatDirectLink =  "<", [Content], (">" | -\n);
+FormatData       = "{", [Content], "}"
 FormatContent    = Basic
 FormatAgenda     = "{!", [ Content],  ("}" | -\n );
 
+(* Implemented as Content*, Directory* and Edition* classes *)
 Edition   = ("#STUB" | "#DRAFT" | "#FINAL" | "#"), [Content];
 Directory = Content, {"-", Content};
 Content   = Basic;
 
+(* Implemented as Basic* class *)
 Basic  = {Raw, Escape};
 Raw    = {-("\" | -\? | \n )};
 Escape = "\", ?any unicode character?;
 
+(* characters for this file only *)
 \n     = ? new line ?
 \t     = ? new tab ?
 \?     = ? next terminal string ?

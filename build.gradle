@@ -1,0 +1,78 @@
+version = "0.3.3.2-alpha"
+
+// Set up javafx
+buildscript {
+    dependencies {
+        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.8.2'
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
+// apply plugins 
+apply plugin: 'java'
+apply plugin: 'javafx-gradle-plugin'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+javadoc{
+	doLast{
+		copy{
+			from ("src/main/java"){
+				include "**/doc-files/**"
+			}
+			into "build/docs/javadoc/"
+		}
+	}
+}
+
+jfx {
+    // minimal requirement for jfxJar-task
+    mainClass = 'com.creativeartie.writerstudio.main.Main'
+    
+    // minimal requirement for jfxNative-task
+    vendor = 'CreativeArtie'
+    nativeReleaseVersion = "${version}"
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
+compileTestJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
+dependencies {
+	testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.2.0'
+	testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.2.0'
+    
+    compile group: 'com.google.guava', name: 'guava', version: '23.5-jre'
+    compile group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.9.0'
+    compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.9'
+ 
+    // compile 'org.bitbucket.shemnon.javafxplugin:gradle-javafx-plugin:8.1.1'
+}
+
+
+test {
+    // Enable JUnit 5 (Gradle 4.6+).
+    useJUnitPlatform()
+
+    // Always run tests, even when nothing changed.
+    dependsOn 'cleanTest'
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
