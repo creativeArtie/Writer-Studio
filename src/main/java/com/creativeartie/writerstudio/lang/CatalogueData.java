@@ -133,8 +133,7 @@ public final class CatalogueData{
      */
     void add(Catalogued span){
         argumentNotNull(span, "Span");
-        argumentCheck(span instanceof SpanBranch, "span",
-            " is not of type SpanBranch.");
+        argumentClass(span, "span", SpanBranch.class);
         (span.isId()? idSpans: refSpans).add((SpanBranch)span);
     }
 
@@ -145,8 +144,7 @@ public final class CatalogueData{
      */
     void addExternal(Catalogued span){
         argumentNotNull(span, "Span");
-        argumentCheck(span instanceof SpanBranch, "span",
-            " is not of type SpanBranch.");
+        argumentClass(span, "span", SpanBranch.class);
 
         (span.isId()? externalIds: externalRefs).add((SpanBranch)span);
         cacheIds = Optional.empty();
