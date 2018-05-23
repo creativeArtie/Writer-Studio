@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("Number Rounding")
 public class NumberRoundingTest {
     @DisplayName("Round Scaling")
-    @ParameterizedTest(name = "Round Scaling [{index}]: {1}")
+    @ParameterizedTest(name = "Round Scaling: {1}")
     @CsvSource({
         "'1',   1",   "'200',   220",  "'500',     499",
         "'500', 500", "'2,000', 1923", "'200,000', 233344"
@@ -18,7 +18,7 @@ public class NumberRoundingTest {
     }
 
     @DisplayName("Thousands Rounding")
-    @ParameterizedTest(name = "Rouding Thousands [{index}]: {1}")
+    @ParameterizedTest(name = "Rouding Thousands: {1}")
     @CsvSource({
         "'< 1,000', 1",     "'< 1,000', 46", "'< 1,000', 499",
         "'1,000', 500",     "'1,000', 1001", "'1,000', 1499",
@@ -29,7 +29,7 @@ public class NumberRoundingTest {
         assertEquals(expect, Utilities.round(input, 3));
     }
 
-    @DisplayName("Tens Rounding")
+    @DisplayName("Tens Rounding: 433")
     @Test
     public void testTen(){
         assertEquals("430", Utilities.round(433, 1));
