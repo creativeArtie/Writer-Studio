@@ -37,7 +37,7 @@ public final class WritingExporter implements AutoCloseable{
 
     /** Font that can be use in the package
      */
-    class PdfFont extends ContentFont<PDFont>{
+    class PdfFont extends ContentFont<PDFont, PdfFont>{
 
         /** Only public constructor. */
         PdfFont(){}
@@ -77,7 +77,7 @@ public final class WritingExporter implements AutoCloseable{
         }
 
         @Override
-        public PdfFont produce(ContentFont<PDFont> font, Key key,
+        public PdfFont produce(ContentFont<PDFont, PdfFont> font, Key key,
                 Object value){
             checkNotNull(font, "font");
             checkNotNull(key, "key");

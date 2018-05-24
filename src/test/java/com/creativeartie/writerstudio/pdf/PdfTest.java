@@ -5,11 +5,11 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
-import java.io.*;
-import java.time.*;
+import java.io.*; /// For exporting doc
+import java.time.*; /// timeout assertion
 
-import org.apache.pdfbox.pdmodel.*;
-import org.apache.pdfbox.pdmodel.font.*;
+import org.apache.pdfbox.pdmodel.*; /// superscript testing
+import org.apache.pdfbox.pdmodel.font.*; /// font testing
 
 import com.creativeartie.writerstudio.lang.markup.*;
 
@@ -19,12 +19,12 @@ public class PdfTest{
 
     private static final String RESOURCE = "build/resources/test/";
     private static final String OUT = "build/outputs/pdf";
-    
+
     @BeforeAll
     public static void beforeAll(){
         new File(OUT).mkdirs();
     }
-    
+
     @Test
     @DisplayName("Superscript Font")
     public void fontTest() {
@@ -33,7 +33,7 @@ public class PdfTest{
             PDPage page = new PDPage();
             doc.addPage(page);
             PDPageContentStream contentStream = new PDPageContentStream(doc, page);
-            
+
             PDFont font = PDType0Font.load(doc, PdfTest.class.getResourceAsStream(
                 "/data/fonts/FreeSerif.ttf"));
 
@@ -46,9 +46,9 @@ public class PdfTest{
             doc.close();
         });
     }
-    
-    /** Tests for the exporting 1. 
-     * 
+
+    /** Tests for the exporting 1.
+     *
      * There are 4 tests:
      * <ul>
      * <li>{@code sample} is for showcase</li>
@@ -65,7 +65,7 @@ public class PdfTest{
         File doc = new File(RESOURCE + "pdf-" + file + ".txt");
         WritingFile use = WritingFile.newSampleFile(doc);
         try (WritingExporter out = new WritingExporter(OUT + file + ".pdf")){
-            assertTimeout(Duration.ofSeconds(60), () -> out.export(use), 
+            assertTimeout(Duration.ofSeconds(60), () -> out.export(use),
             "Export takes over 1 minute");
         }
         System.out.println("Check file at: " + OUT + file + ".pdf");
