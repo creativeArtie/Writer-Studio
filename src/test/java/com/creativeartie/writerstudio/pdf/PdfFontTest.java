@@ -91,7 +91,7 @@ public class PdfFontTest{
 
     @AfterEach
     public void afterEach(){
-        assertEquals(12 * baseSize, useFont.getHeight(), 1,  "In height");
+        assertEquals(12 * baseSize, useFont.getHeight(), 1f,  "In height");
         assertEquals(Color.BLACK, useFont.getColor(),          "In color");
         assertEquals(false,       useFont.isUnderline(),       "In underline");
         assertEquals(false,       useFont.isSuperscript(),     "In super");
@@ -99,7 +99,7 @@ public class PdfFontTest{
 
         assertTrue(newFont instanceof PdfFont, "Wrong class.");
         PdfFont font = (PdfFont) newFont;
-        assertEquals(outSize * baseSize, font.getHeight(), 1, "Out height");
+        assertEquals(outSize * baseSize, font.getHeight(), 1f, "Out height");
         assertEquals(outColor, font.getColor(),          "Out color ");
         assertEquals(outLined, font.isUnderline(),       "Out underline");
         assertEquals(outSuper, font.isSuperscript(),     "Out super");
