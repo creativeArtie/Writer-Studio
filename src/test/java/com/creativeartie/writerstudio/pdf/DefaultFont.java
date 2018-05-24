@@ -5,21 +5,29 @@ import org.apache.pdfbox.pdmodel.font.*;
 
 import com.creativeartie.writerstudio.pdf.value.*;
 
-public class DefaultFont extends ContentFont{
+public class DefaultFont extends ContentFont<PDFont>{
 
-    public DefaultFont(){
-        super((m, b, i, s) -> PDType1Font.TIMES_ROMAN);
-    }
+    public DefaultFont(){}
 
-    private DefaultFont(ContentFont font, Key key, Object value){
+    private DefaultFont(ContentFont<PDFont> font, Key key, Object value){
         super(font, key, value);
     }
 
     @Override
-    public float getWidth(String text) throws IOException{
+    protected PDFont buildFont(boolean mono, boolean bold,
+            boolean italics, boolean superscript) {
+        return PDType1Font.TIMES_ROMAN;
+    }
+
+    @Override
+    public float getWidth(String text){
         /// From https://stackoverflow.com/questions/13701017/calculation-
         /// string-width-in-pdfbox-seems-only-to-count-characters
-        return getFont().getStringWidth(text) / 1000 * getSize();
+        try {
+            return getFont().getStringWidth(text) / 1000 * getSize();
+        } catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
@@ -30,7 +38,7 @@ public class DefaultFont extends ContentFont{
     }
 
     @Override
-    public ContentFont produce(ContentFont font, Key key, Object value){
+    public DefaultFont produce(ContentFont<PDFont> font, Key key, Object value){
         return new DefaultFont(font, key, value);
     }
 }
