@@ -106,18 +106,6 @@ public final class ParameterChecker {
         return test;
     }
 
-    /** Check if the argument is null.
-     *
-     * @param item
-     *      checking item
-     * @param field
-     *      field/argument name
-     */
-    public static <T> T argumentNotNull(T item, String field){
-        argumentCheck(item != null, field, " is null.");
-        return item;
-    }
-
     /** Check if a {@linkplain Collection} is empty.
      *
      * @param item
@@ -132,12 +120,26 @@ public final class ParameterChecker {
         return item;
     }
 
+    /** Check if a {@code Array} is empty.
+     *
+     * @param item
+     *      item list
+     * @param field
+     *      field/argument name
+     */
     public static <T> T[] argumentNotEmpty(T[] item, String field){
         argumentNotNull(item, field);
         argumentCheck(item.length != 0, field, " is empty.");
         return item;
     }
 
+    /** Check if a {@linkplain CharSequence} is empty.
+     *
+     * @param item
+     *      item list
+     * @param field
+     *      field/argument name
+     */
     public static <T extends CharSequence> T argumentNotEmpty(T item,
             String field){
         argumentNotNull(item, field);
@@ -145,19 +147,33 @@ public final class ParameterChecker {
         return item;
     }
 
-
-    public static <T> T argumentSame(T item, String field, T expect){
-        argumentCheck(item == expect, field, " is not the same as " + expect +
-            ".");
+    /** Check if the argument is null.
+     *
+     * @param item
+     *      checking item
+     * @param field
+     *      field/argument name
+     */
+    public static <T> T argumentNotNull(T item, String field){
+        argumentCheck(item != null, field, " is null.");
         return item;
     }
 
-    public static <T> T argumentIsInstance(Object obj, String field,
-            Class<T> type){
-        argumentNotNull(obj, field);
-        argumentCheck(type.isInstance(obj), field, " is not an instance of " +
-            type);
-        return type.cast(obj);
+
+    /** Check if a {@linkplain Object} the same object.
+     *
+     * @param item
+     *      item list
+     * @param field
+     *      field/argument name
+     */
+    public static <T> T argumentSame(T item, String field, T expect){
+        if(item == null && expect != null){
+            argumentNotNull(item, field);
+        }
+        argumentCheck(item == expect, field, " is not the same as <" + expect +
+            ">.");
+        return item;
     }
 
     public static <T> T argumentEquals(T test, String field, T expect){

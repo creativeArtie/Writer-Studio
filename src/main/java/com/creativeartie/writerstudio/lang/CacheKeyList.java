@@ -28,7 +28,7 @@ public final class CacheKeyList<T> extends CacheKey<List<?>> {
         int i = 0;
 
         for (Object item : value){
-            ans.add(argumentIsInstance(item, "value.get(" + i + ")",
+            ans.add(argumentClass(item, "value.get(" + i + ")",
                 valueCaster));
             i++;
         }

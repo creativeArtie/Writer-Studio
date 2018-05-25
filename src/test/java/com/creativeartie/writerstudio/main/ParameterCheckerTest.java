@@ -152,8 +152,6 @@ public class ParameterCheckerTest {
         private static final String EMPTY = ERROR + " is empty.";
         private static final String NULL = ERROR + " is null.";
 
-        /// ParameterChecker#argumentNotNull checked by almost everywhere.
-
         @DisplayName("Collection Pass")
         @Test
         public void collectionFilled(){
@@ -231,5 +229,64 @@ public class ParameterCheckerTest {
         }
     }
 
-    /// TODO more assertion tests
+    @Nested
+    @DisplayName("Null And Equal Assertions")
+    class NullEqual{
+
+        @Test
+        @DisplayName("Method `argumentNotNull`: Pass")
+        public void notNullPass(){
+            assertDoesNotThrow(() -> argumentNotNull("abc", FIELD));
+        }
+
+        @Test
+        @DisplayName("Method  `argumentNotNull`: Fail")
+        public void notNullFail(){
+            Throwable thrown = assertThrows(IllegalArgumentException.class, () ->
+                argumentNotNull(null, FIELD));
+            assertEquals(ERROR + " is null.", thrown.getMessage());
+        }
+
+        @Test
+        @DisplayName("Method `argumentSame`: Pass")
+        public void samePass(){
+            String answer = "abc";
+            assertDoesNotThrow(() -> argumentSame(answer, FIELD, answer));
+        }
+
+        @Test
+        @DisplayName("Method `argumentSame`: Equal not same")
+        public void sameEqualButFail(){
+            String answer = "abc";
+            Throwable thrown = assertThrows(IllegalArgumentException.class, () ->
+                argumentSame("1abc".substring(1), FIELD, answer));
+            assertEquals(ERROR + " is not the same as <abc>.", thrown.getMessage());
+        }
+
+        @Test
+        @DisplayName("Method `argumentSame`: Unexpected null.")
+        public void sameUnexpectedNull(){
+            String answer = "abc";
+            Throwable thrown = assertThrows(IllegalArgumentException.class, () ->
+                argumentSame(null, FIELD, answer));
+            assertEquals(ERROR + " is null.", thrown.getMessage());
+        }
+
+        @Test
+        @DisplayName("Method `argumentSame`: Expected null.")
+        public void sameNullExpectedPass(){
+            assertDoesNotThrow(() -> argumentSame(null, FIELD, null));
+        }
+
+        @Test
+        @DisplayName("Method `argumentSame`: Unexpected value.")
+        public void sameUnexpectedValuePass(){
+            Throwable thrown = assertThrows(IllegalArgumentException.class, () ->
+                argumentSame("Hello", FIELD, null));
+            assertEquals(ERROR + " is not the same as <null>.", thrown.getMessage());
+        }
+
+        /// TODO more assertion tests
+    }
+
 }

@@ -11,7 +11,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  * Purpose:
  * <ul>
  * <li> Calculates identity readiness and state </li>
- * <li> Stores a list of relative ids and refs </li>
+ * <li> Stores a list of relative idList and refs </li>
  * <li> Identifies itself with location and identity </li>
  * </ul>
  */
@@ -96,7 +96,7 @@ public final class CatalogueData{
         return getIds().get(0);
     }
 
-    /** Gets the complete set of ids.
+    /** Gets the complete set of idList.
      *
      * As oppose to {@link #getTarget()}.
      *

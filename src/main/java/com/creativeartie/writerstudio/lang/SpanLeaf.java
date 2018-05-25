@@ -55,7 +55,7 @@ public final class SpanLeaf extends Span{
 
     @Override
     void setParent(SpanNode<?> parent){
-        argumentIsInstance(parent, "parent", SpanBranch.class);
+        argumentClass(parent, "parent", SpanBranch.class);
         leafParent = (SpanBranch) parent;
     }
 
