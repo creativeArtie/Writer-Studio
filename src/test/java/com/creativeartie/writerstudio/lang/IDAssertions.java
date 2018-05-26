@@ -27,11 +27,10 @@ public class IDAssertions{
     }
 
     public IDAssertions addId(IDBuilder addId, int i) {
-        return addId(addId, CatalogueStatus.UNUSED, i);
+        return addId(addId, i, CatalogueStatus.UNUSED);
     }
 
-    public IDAssertions addId(IDBuilder addId, CatalogueStatus newStatus,
-            int i){
+    public IDAssertions addId(IDBuilder addId, int i, CatalogueStatus newStatus){
         CatalogueIdentity id = addId.build();
         idList.add(id);
         idStatus.add(newStatus);
@@ -40,11 +39,10 @@ public class IDAssertions{
     }
 
     public IDAssertions addRef(IDBuilder addId, int i) {
-        return addRef(addId, CatalogueStatus.NOT_FOUND, i);
+        return addRef(addId, i, CatalogueStatus.NOT_FOUND);
     }
 
-    public IDAssertions addRef(IDBuilder addId, CatalogueStatus newStatus,
-        int i){
+    public IDAssertions addRef(IDBuilder addId, int i, CatalogueStatus newStatus){
         CatalogueIdentity id = addId.build();
         idList.add(id);
         idStatus.add(newStatus);
