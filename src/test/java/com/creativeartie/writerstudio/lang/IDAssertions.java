@@ -2,9 +2,12 @@ package com.creativeartie.writerstudio.lang;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.function.*;
 
 import java.util.*;
 
+// TODO add test to number of id/refs
+/// Assertion for {@link CatalogueMap}.
 public class IDAssertions{
     private ArrayList<CatalogueIdentity> idList;
     private ArrayList<CatalogueStatus> idStatus;
@@ -16,13 +19,13 @@ public class IDAssertions{
         idOrder = new ArrayList<>();
     }
 
+    /// please call {@link #addId(IDBuilder, int, [CatalougueStatus])} first
     public IDAssertions addId(IDBuilder id){
-        // TODO test SpanBranch ided too
         return this;
     }
 
+    /// please call {@link #addRef(IDBuilder, int, [CatalougueStatus])} first
     public IDAssertions addRef(IDBuilder id){
-        // TODO test SpanBranch referenced too
         return this;
     }
 
@@ -38,6 +41,7 @@ public class IDAssertions{
         return this;
     }
 
+    /// please call {@link #addId(IDBuilder, int, [CatalougueStatus])} first
     public IDAssertions addRef(IDBuilder addId, int i) {
         return addRef(addId, i, CatalogueStatus.NOT_FOUND);
     }
@@ -55,7 +59,9 @@ public class IDAssertions{
     }
 
     public void assertIds(Document doc, boolean showIds){
+        /// prints the expected ids
         if (showIds){
+            System.out.println(doc.getRaw());
             for(int i = 0; i < idOrder.size(); i++){
                 int idx = idOrder.indexOf(i);
                 System.out.print(idList.get(idx));
@@ -64,6 +70,7 @@ public class IDAssertions{
         }
 
         Map<CatalogueIdentity, CatalogueData> map = doc.getCatalogue();
+        /// prints the actual ids
         if (showIds){
             for(Map.Entry<CatalogueIdentity, CatalogueData> entry:
                 map.entrySet())
@@ -73,14 +80,20 @@ public class IDAssertions{
             System.out.println();
             System.out.println();
         }
-        assertEquals(idList.size(), map.size(), "Number of Ids");
+
+        /// actual tests
+        ArrayList<Executable> list = new ArrayList<>();
+        list.add(() -> assertEquals(idList.size(), map.size(), "Number of Ids"));
         int i = 0;
         for (Map.Entry<CatalogueIdentity, CatalogueData> entry: map.entrySet()){
             int idx = idOrder.indexOf(i);
             assert idx != -1: idx;
-            assertEquals(idList.get(idx), entry.getKey(), "Key idOrder");
-            assertEquals(idStatus.get(idx), entry.getValue().getState(), "Status");
+            list.add(() -> assertEquals(idList.get(idx), entry.getKey(),
+                "Key idOrder"));
+            list.add(() -> assertEquals(idStatus.get(idx), entry.getValue()
+                .getState(), "Status"));
             i++;
         }
+        assertAll("ids", list);
     }
 }

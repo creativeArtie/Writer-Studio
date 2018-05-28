@@ -1,4 +1,3 @@
-
 package com.creativeartie.writerstudio.lang;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -6,11 +5,13 @@ import org.junit.jupiter.api.function.*;
 
 import java.util.*;
 import java.util.stream.*;
+import java.util.function.*;
 
 import static com.creativeartie.writerstudio.lang.DocumentAssert.*;
 
+/// Group of tests related to SpanBranch
 public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
-    private SpanBranch assertDoc;
+    private DocumentAssert assertDoc;
     private Optional<CatalogueIdentity> expectId;
     private CatalogueStatus expectStatus;
     private ArrayList<StyleInfo> expectStyles;
@@ -18,7 +19,7 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
     private Class<T> returnCast;
     private SpanBranch spanTarget;
 
-    public SpanBranchAssert(Class<T> self, Document doc){
+    public SpanBranchAssert(Class<T> self, DocumentAssert doc){
         returnCast = self;
         expectStatus = CatalogueStatus.NO_ID;
         isCatalogued = false;
@@ -27,14 +28,17 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         assertDoc = doc;
     }
 
-    public T returnCast(){
+    /// cast it self back for nice chain calling.
+    protected T returnCast(){
         return returnCast.cast(this);
     }
 
+    /// span is a {@link Catalogued} but without id.
     public T setCatalogued(CatalogueStatus status){
         return setCatalogued(status, null);
     }
 
+    /// span is a {@link Catalogued} with an id.
     public T setCatalogued(CatalogueStatus status, IDBuilder builder){
         expectId = Optional.ofNullable(builder).map(found -> found.build());
         expectStatus = status;
@@ -62,20 +66,25 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         expectStyles.addAll(Arrays.asList(styles));
     }
 
+    /// Setup other things
     public void setup(){}
 
+    /// Main test function
     public SpanBranch test(int size, String rawText, int ... idx){
         setup();
         SpanBranch span = assertDoc.assertChild(size, rawText, idx);
+        ArrayList<Executable> list = new ArrayList<>();
 
-        assertArrayEquals(expectStyles.toArray(),
-            span.getBranchStyles().toArray(), "styles");
+        list.add(() -> assertArrayEquals(expectStyles.toArray(),
+            span.getBranchStyles().toArray(), "styles"));
 
+        /// catalogue testing
         ArrayList<Executable> catalogue = new ArrayList<>();
         if (isCatalogued){
             catalogue.add(() -> assertTrue(span instanceof Catalogued));
+            /// Set empty if fail before
             Optional<CatalogueIdentity> test = span instanceof Catalogued?
-                ((Catalogued)span.getSpanIdentity(): Optional.empty();
+                ((Catalogued)span).getSpanIdentity(): Optional.empty();
             if (expectId.isPresent()){
                 catalogue.add(() -> assertTrue(test.isPresent()));
                 catalogue.add(() -> assertEquals(expectId.get(), test.get()));
@@ -84,30 +93,34 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
             }
         }
         catalogue.add(() -> assertEquals(expectStatus, span.getIdStatus()));
-        assertAll("catalogue id", catalogue);
+        list.add(() -> assertAll("catalogue id", catalogue));
 
-        test(span);
+        test(span, list);
+        assertAll(span.toString(), list);
         return span;
     }
 
-    protected static <U> T assertClass(SpanBranch span, Class<U> clazz){
+    /// covert the {@link SpanBranch} to the correct class.
+    protected <U> U assertClass(SpanBranch span, Class<U> clazz){
         assertEquals(clazz, spanTarget.getClass(), "span class");
         return clazz.cast(spanTarget);
     }
 
+    /// Find a child span
     protected <U> void assertSpan(Optional<U> expect,
-            Supplier<SpanBranch> supplier, String message){
-        Optional<SpanBranch> span = supplier.get();
+            Supplier<Optional<SpanBranch>> supplier, String message){
+        Optional<SpanBranch> test = supplier.get();
 
         ArrayList<Executable> tests = new ArrayList<>();
         if (expect.isPresent()){
-            tests.add(() -> assertTrue(span.isPresent());
-            tests.add(() -> assertSame(expect.get(), test.orElse(null));
+            tests.add(() -> assertTrue(test.isPresent()));
+            tests.add(() -> assertSame(expect.get(), test.orElse(null)));
         } else {
-            tests.add(() -> assertFalse(span.isPresent());
+            tests.add(() -> assertFalse(test.isPresent()));
         }
         assertAll(message, tests);
     }
 
-    protected abstract void test(SpanBranch branch);
+    /// Tests related to the class.
+    protected abstract void test(SpanBranch branch, ArrayList<Executable> tests);
 }

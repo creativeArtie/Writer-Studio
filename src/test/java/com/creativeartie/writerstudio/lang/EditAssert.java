@@ -5,7 +5,10 @@ import org.junit.jupiter.api.function.*;
 
 import java.util.*;
 
+/// Tests for listeners
 public class EditAssert{
+
+    /// %Part 1: Setup tests ###################################################
 
     private boolean showEdits;
 
@@ -27,11 +30,13 @@ public class EditAssert{
 
     EditAssert(Document doc, SpanNode<?> edited, boolean show){
         showEdits = show;
+
         expectedEdited = edited;
         actualEdited = new ArrayList<>();
 
+        SpanNode<?> ptr = edited; /// For parent and span list
+
         expectedParents = new ArrayList<>();
-        SpanNode<?> ptr = edited;
         while (ptr instanceof SpanBranch){
             ptr = ptr.getParent();
             expectedParents.add(ptr);
@@ -49,6 +54,7 @@ public class EditAssert{
         addListeners(doc);
     }
 
+    /// Add the children and grade children to the list
     private ArrayList<SpanNode<?>> addAll(SpanNode<?> from){
         ArrayList<SpanNode<?>> ans = new ArrayList<>();
         for (Span span: from){
@@ -60,6 +66,7 @@ public class EditAssert{
         return ans;
     }
 
+    /// Adds the listeners
     private void addListeners(SpanNode<?> span){
         span.addSpanEdited(this::edited);
         span.addChildEdited(this::childed);
@@ -71,6 +78,8 @@ public class EditAssert{
             }
         }
     }
+
+    /// %Part 2: Listener functions ############################################
 
     private void edited(SpanNode<?> span){
         actualEdited.add(span);
@@ -88,8 +97,9 @@ public class EditAssert{
         actualRemoves.add(span);
     }
 
+    /// %Part 3: Assertion Calls ###############################################
+
     void testRest(){
-        ArrayList<Excu
         if (showEdits) {
             System.out.println("+++++++++++++++++++++++++++++++++++++++++++++");
             System.out.println(expectedEdited.getDocument());
@@ -98,51 +108,53 @@ public class EditAssert{
             System.out.println("Edits-----------------");
             System.out.println(expectedEdited);
             System.out.println(actualEdited);
-        }
-        assertAll("edited"
-            () -> assertEquals(actualEdited.size(), 1,
-                () -> "esize: " + actualEdited),
-            () -> assertSame(expectedEdited, actualEdited.get(0),
-                () -> "span: " + actualEdited.get(0));
-        );
 
-        if (showEdits) {
             System.out.println("Parents-----------------");
             System.out.println(expectedParents);
             System.out.println(actualParents);
-        }
-        search("parent", expectedParents, actualParents);
 
-        if (showEdits) {
             System.out.println("Spans-----------------");
             System.out.println(expectedSpans);
             System.out.println(actualSpans);
-        }
-        search("spans", expectedSpans, actualSpans);
 
-
-        if (showEdits) {
             System.out.println("Removes-----------------");
             System.out.println(expectedRemoves);
             System.out.println(actualRemoves);
         }
-        search("remove", expectedRemoves, actualRemoves);
 
+        ArrayList<Executable> tests = new ArrayList<>();
+
+        /// Tests
+        tests.add(() -> assertAll("edited",
+            () -> assertEquals(actualEdited.size(), 1,
+                () -> "esize: " + actualEdited),
+            () -> assertSame(expectedEdited, actualEdited.get(0),
+                () -> "span: " + actualEdited.get(0))
+        ));
+
+        tests.add(search("parent", expectedParents, actualParents));
+
+        tests.add(search("spans", expectedSpans, actualSpans));
+
+        tests.add(search("remove", expectedRemoves, actualRemoves));
+
+        assertAll("edit listeners", tests);
 
     }
 
-    private void search(String name, List<SpanNode<?>> expect,
+    private Executable search(String name, List<SpanNode<?>> expect,
             List<SpanNode<?>> actual){
-        if (showEdits) System.out.println("remove......");
+        ArrayList<Executable> list = new ArrayList<>();
         for (SpanNode<?> got: actual){
-            assertTrue(expect.contains(got),
-                () -> "unexpected " + name + ": "  + got);
-            expect.remove(got);
-            if (showEdits) System.out.println(got);
+            list.add(() -> {
+                assertTrue(expect.contains(got),
+                    () -> "Unexpected: "  + got);
+                expect.remove(got);
+            });
         }
-        if (showEdits) System.out.println("ends......");
-        if (showEdits) System.out.println(expect);
-        assertTrue(expect.isEmpty(),
-            () -> name + " not called: " + expect);
+
+        /// since the one called are removed from `expect`:
+        list.add(() ->  assertTrue(expect.isEmpty(), () -> "Not called: " + expect));
+        return () -> assertAll(name, list);
     }
 }

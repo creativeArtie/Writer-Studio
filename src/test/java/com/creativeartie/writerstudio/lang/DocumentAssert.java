@@ -6,8 +6,12 @@ import org.junit.jupiter.api.function.*;
 import java.util.*;
 import java.util.function.*;
 
+/// Group of tests related to Document
 public class DocumentAssert {
 
+    /// %Part 1 Last Branch ####################################################
+
+    /// Span covering unused text.
     private static class LastBranch extends SpanBranch{
 
         private LastBranch(List<Span> children){
@@ -26,11 +30,14 @@ public class DocumentAssert {
         }
     }
 
+    /// Parser for {@link LastBranch}.
     private static final SetupParser END_PARSER = (pointer) -> {
         ArrayList<Span> children = new ArrayList<>();
         pointer.getTo(children, ((char)0) + "");
         return Optional.of(new LastBranch(children));
     };
+
+    /// %Part 2: Creation ######################################################
 
     public static DocumentAssert assertDoc(int childrenSize, String rawText,
             Document test){
@@ -48,25 +55,25 @@ public class DocumentAssert {
     private IDAssertions idTester;
 
     private DocumentAssert(Document document){
-    private DocumentAssert(Document document){
         testDocument = document;
         idTester = new IDAssertions();
     }
 
-    public Document getDocument(){
-        return testDocument;
-    }
+    /// %Part 3: Document Assertion ############################################
 
     public DocumentAssert assertDoc(int size, String raw){
         ArrayList<Executable> doc = new ArrayList<>();
-        doc.add(() -> assertEquals(raw, testDocument.getRaw(), "text");
-        doc.add(() -> assertEquals(size, testDocument.size(), "size");
+        doc.add(() -> assertEquals(raw, testDocument.getRaw(), "text"));
+        doc.add(() -> assertEquals(size, testDocument.size(), "size"));
         doc.add(() -> assertLocations(testDocument, true, true));
         assertAll("document", doc);
         return this;
     }
 
-    private void assertLocations(SpanNode<?> span, boolean begin, boolean end){
+    /// For {@link Document#isDocumentFirst()} and
+    /// {@link Document#isDocumentLast()}
+    private Executable assertLocations(SpanNode<?> span, boolean begin,
+            boolean end){
         ArrayList<Executable> self = new ArrayList<>();
         int i = 0;
         for (Span test: span){
@@ -79,6 +86,8 @@ public class DocumentAssert {
             self.add(() ->
                 assertEquals(last, test.isDocumentLast(), "isLast")
             );
+
+            /// Also test for children spans
             if (test instanceof SpanNode){
                 self.add(() -> assertLocations((SpanNode<?>) test,
                     first, last));
@@ -88,27 +97,30 @@ public class DocumentAssert {
         return () -> assertAll(span.toString(), self);
     }
 
-    public SpanBranch assertChild(int ... indexes){
+    /// %Part 4: Assert Child ##################################################
+
+    /// Gets a child,
+    private Span assertChild(int ... indexes){
         Span pointer = testDocument;
-        ArrayList<Executable> search = new ArrayList();
+        ArrayList<Executable> search = new ArrayList<>();
         for (int i: indexes){
+            SpanNode<?> parent = (SpanNode<?>) pointer;
+            SpanNode<?> test = pointer instanceof SpanNode? (SpanNode<?>) pointer:
+                null;
             assertAll("index for " + pointer,
-                () -> assertTrue(pointer instanceof SpanNode,
-                    "not span node"),
-                () -> assertTrue(((SpanNode<?>)pointer).size() > i,
-                    "index"),
-                () -> assertTrue(pointer, (SpanNode<?>)pointer.get(i),
-                    () -> "parent of " + pointer.get(i)),
-                () -> assertEquals(testDocument, pointer, pointer.get(i),
-                    () -> "document of " + pointer.get(i))
+                () -> assertTrue(test != null, "not span node"),
+                () -> assertTrue(test.size() > i, "index"),
+                () -> assertEquals(parent, test.get(i).getParent(),
+                    () -> "parent of " + test.get(i)),
+                () -> assertEquals(testDocument, test.get(i).getDocument(),
+                    () -> "document of " + test.get(i))
             );
             pointer = ((SpanNode<?>) pointer).get(i);
         }
-        assertTrue(span instanceof SpanBranch,
-            () -> "not span branch:" + span);
-        return (SpanBranch) span;
+        return pointer;
     }
 
+    /// Finds a child with this class type
     public <T extends SpanBranch> T assertChild(Class<T> clazz,
             int ... indexes){
         Span child = assertChild(indexes);
@@ -119,34 +131,34 @@ public class DocumentAssert {
 
     }
 
-    public void printDocument(){
-        System.out.println(testDocument);
-    }
-
+    /// Main test a {@link SpanBranch} without using {@link SpanBranchAssert}.
     public SpanBranch assertChild(int size, String text,
             int ... indexes){
-        SpanBranch test = assertChild(indexes);
+        Span test = assertChild(indexes);
         assertAll("SpanBranch assertChild",
-            () -> assertEquals(text, test.getRaw(), "text"),
-            () -> assertEquals(size, test.size(),   "size")
+            () -> assertTrue(test instanceof SpanBranch,        "class"),
+            () -> assertEquals(text, test.getRaw(),             "text"),
+            () -> assertEquals(size, ((SpanBranch)test).size(), "size")
         );
-        return test;
+        return (SpanBranch) test;
     }
 
+    /// %Part 5: Assert Leaf ###################################################
+
+    /// {@link SpanLeaf} tests.
     private void assertLeaf(int start, int end, String raw,
             StyleInfoLeaf info, int ... indexes){
-        Span[] child = assertChild(indexes);
+        Span child = assertChild(indexes);
 
         assertAll(child.toString(),
             () -> assertTrue(child instanceof SpanLeaf, "Not leaf"),
-            () -> assertEquals(raw, child.getRaw(),      "text");
-            () -> assertEquals(start,   test.getStart(), "start");
-            () -> assertEquals(end,     test.getEnd(),   "end");
+            () -> assertEquals(raw,   child.getRaw(),   "text"),
+            () -> assertEquals(start, child.getStart(), "start"),
+            () -> assertEquals(end,   child.getEnd(),   "end"),
             () -> assertEquals(info, ((SpanLeaf)child).getLeafStyle(),
                 "style")
         );
     }
-
 
     public void assertText(int start, int end, String rawText,
             int ... idx){
@@ -177,6 +189,8 @@ public class DocumentAssert {
         assertLeaf(start, end, rawText, StyleInfoLeaf.PATH, idx);
     }
 
+    /// %Part 6: IDAssertion Methods ###########################################
+
     public IDBuilder addId(IDBuilder id){
         idTester.addId(id);
         return id;
@@ -193,7 +207,7 @@ public class DocumentAssert {
     }
 
     public IDBuilder addId(IDBuilder addId, CatalogueStatus newStatus, int i){
-        idTester.addId(addId, newStatus, i);
+        idTester.addId(addId, i, newStatus);
         return addId;
     }
 
@@ -203,21 +217,23 @@ public class DocumentAssert {
     }
 
     public IDBuilder addRef(IDBuilder addId, CatalogueStatus newStatus, int i){
-        idTester.addRef(addId, newStatus, i);
+        idTester.addRef(addId, i, newStatus);
         return addId;
     }
 
+    /// %Part 7: Last Assertion Tests ##########################################
+
     public void assertRest(String last){
-        assertRest(false, last);
+        assertRest(last, false);
     }
 
     public void assertRest(String last, boolean show){
         idTester.assertIds(testDocument, show);
-        SpanBranch last = testDocument.get(testDocument.size() - 1);
+        SpanBranch target = testDocument.get(testDocument.size() - 1);
         assertAll("last",
-            () -> assertTrue(last instanceof LastBranch,
+            () -> assertTrue(target instanceof LastBranch,
                 "No more text."),
-            () -> assertEquals(raw, last.getRaw())
+            () -> assertEquals(last, target.getRaw())
         );
     }
 
@@ -227,17 +243,20 @@ public class DocumentAssert {
 
     public void assertRest(boolean show){
         idTester.assertIds(testDocument, show);
-        assertFalse(testDocument.get(testDocument.size() - 1) instanceof
-            LastBranch, "More text");
+        if (! testDocument.isEmpty()){
+            assertFalse(testDocument.get(testDocument.size() - 1) instanceof
+                LastBranch, "More text");
+        }
     }
+
+    /// %Part 8: Edit Listener Tests ###########################################
 
     public void insert(int location, String input, int ... idx){
         insert(false, location, input, idx);
     }
 
     public void insert(boolean verbose, int location, String input, int ... idx){
-        EditAssert edit = new EditAssert(testDocument, assertChild(idx),
-            verbose);
+        EditAssert edit = createAssert(verbose, idx);
         testDocument.insert(location, input);
         idTester = new IDAssertions();
         edit.testRest();
@@ -249,17 +268,41 @@ public class DocumentAssert {
     }
 
     public void delete(boolean verbose, int start, int end, int ... idx){
-        EditAssert edit = new EditAssert(testDocument, assertChild(idx),
-            verbose);
+        EditAssert edit = createAssert(verbose, idx);
         testDocument.delete(start, end);
         idTester = new IDAssertions();
         edit.testRest();
     }
 
     public void call(Consumer<SpanNode<?>> caller, int ... idx) {
-        SpanNode<?> target = assertChild(idx);
-        EditAssert edit = new EditAssert(testDocument, target);
-        caller.accept(target);
+        call(false, caller, idx);
+    }
+
+    public void call(boolean verbose, Consumer<SpanNode<?>> caller, int ... idx) {
+        Span target = assertChild(idx);
+        assertTrue(target instanceof SpanNode, () -> "Target not branch: " +
+            target);
+        EditAssert edit = new EditAssert(testDocument, (SpanBranch) target,
+            verbose);
+        caller.accept((SpanBranch) target);
         edit.testRest();
+    }
+
+    private EditAssert createAssert(boolean verbose, int ... indexes){
+        Span child = assertChild(indexes);
+        assertTrue(child instanceof SpanNode, () -> "Target not branch: " +
+            child);
+        return new EditAssert(testDocument, (SpanNode<?>) child, verbose);
+
+    }
+
+    /// %Part 9: Get and Print #################################################
+
+    public Document getDocument(){
+        return testDocument;
+    }
+
+    public void printDocument(){
+        System.out.println(testDocument);
     }
 }

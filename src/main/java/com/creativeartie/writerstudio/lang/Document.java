@@ -386,6 +386,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * @see Span#getStartColumn()
      */
     final int getColumn(int index){
+        indexClose(index, "position", 0, getRaw().length());
         try {
             return spanLocation.get(index)[0];
         } catch (ExecutionException e) {
@@ -402,6 +403,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * @see Span#getStartLine()
      */
     final int getLine(int index){
+        indexClose(index, "position", 0, getRaw().length());
         try {
             return spanLocation.get(index)[1];
         } catch (ExecutionException e) {

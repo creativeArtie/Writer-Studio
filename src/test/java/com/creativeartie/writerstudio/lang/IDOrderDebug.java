@@ -1,116 +1,172 @@
 package com.creativeartie.writerstudio.lang;
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.*;
 
 import java.util.*;
 
-public class IDOrderDebug {
+import com.creativeartie.writerstudio.lang.markup.*;
 
-    private IDBuilder newId(){
+@DisplayName("Order of Catalogue Identities")
+public class IDOrderDebug {
+    /// Creates a quick document
+    private static class IDDocument{
+
+        private StringBuilder rawText;
+
+        IDDocument(){
+            rawText = new StringBuilder();
+        }
+
+        IDDocument addFoot(String id, String ... categories){
+            rawText.append("!^").append(addId(id, categories)).append("\n");
+            return this;
+        }
+
+        IDDocument addEnd(String id, String ... categories){
+            rawText.append("!*").append(addId(id, categories)).append("\n");
+            return this;
+        }
+
+        private StringBuilder addId(String id, String ... categories){
+            StringBuilder ans = new StringBuilder();
+            boolean first = true;
+            for (String category: categories){
+                if (first){
+                    first = false;
+                } else {
+                    ans.append("-");
+                }
+                ans.append(category);
+            }
+            return ans.append((first? "": "-")).append(id);
+        }
+
+        Document build(){
+            return new WritingText(rawText.toString());
+        }
+    }
+
+    private IDBuilder newFootId(){
         return new IDBuilder().addCategory("foot");
     }
 
+    private IDBuilder newEndId(){
+        return new IDBuilder().addCategory("end");
+    }
+
     @Test
-    public void subCategoryDirectorys(){
+    @DisplayName("Same 2 Subcategory, Different Name")
+    public void sameCateogry2(){
         IDDocument builder = new IDDocument();
-        builder.addId("files", "abc", "dd");
-        builder.addId("fly",   "abc", "dd");
-        IDAssertions doc = builder.build();
-        doc.addId(newId.addCategory("abc", "dd").setId("files"), 0);
-        doc.addId(newId().addCategory("abc", "dd").setId("fly"),  1);
+        builder.addFoot("files", "abc", "dd");
+        builder.addFoot("fly",   "abc", "dd");
+        IDAssertions doc = new IDAssertions();
+        doc.addId(newFootId().addCategory("abc", "dd").setId("files"), 0);
+        doc.addId(newFootId().addCategory("abc", "dd").setId("fly"),  1);
         doc.assertIds(builder.build(), true);
     }
 
     @Test
-    public void mix(){
+    @DisplayName("Footnote with Different Subcategories")
+    public void differentSubCategory(){
         IDDocument builder = new IDDocument();
-        builder.addId("id",   "");
-        builder.addId("abc", "abc");
-        builder.addId("kkk");
-        builder.addId("ddd");
-        builder.addId("",    "abc");
-        DocumentAssert doc = builder.build();
-        doc.addId(newId().addCategory("")   .setId("id"),  2);
-        doc.addId(newId()                   .setId("abc"), 0);
-        doc.addId(newId()                   .setId("kkk"), 1);
-        doc.addId(newId().addCategory("abc").setId("ddd"), 4);
-        doc.addId(newId().addCategory("abc").setId(""),    3);
+        builder.addFoot("id",   "");
+        builder.addFoot("abc");
+        builder.addEnd( "kkk");
+        builder.addFoot("ddd", "abc");
+        builder.addFoot("",    "abc");
+        IDAssertions doc = new IDAssertions();
+        doc.addId(newFootId().addCategory("")   .setId("id"),  2);
+        doc.addId(newFootId()                   .setId("abc"), 1);
+        doc.addId(newEndId()                    .setId("kkk"), 0);
+        doc.addId(newFootId().addCategory("abc").setId("ddd"), 4);
+        doc.addId(newFootId().addCategory("abc").setId(""),    3);
         doc.assertIds(builder.build(), true);
     }
 
     @Test
-    public void sameCategory(){
+    @DisplayName("Same 1 Subcategory, Different Name")
+    public void sameCategory1(){
         IDDocument builder = new IDDocument();
-        builder.addId("de", "abc");
-        builder.addId("abc");
-        builder.addId("aaa", "abc");
-        builder.addId("",    "abc");
-        DocumentAssert doc = builder.build();
-        doc.addId(newId().addCategory("abc").setId("de" ), 3);
-        doc.addId(newId().addCategory()     .setId("abc"), 0);
-        doc.addId(newId().addCategory("abc").setId("aaa"), 2);
-        doc.addId(newId().addCategory("abc").setId(""),    1);
+        builder.addFoot("de", "abc");
+        builder.addFoot("see", "abc");
+        builder.addFoot("aaa", "abc");
+        builder.addFoot("",    "abc");
+        IDAssertions doc = new IDAssertions();
+        doc.addId(newFootId().addCategory("abc").setId("de" ), 2);
+        doc.addId(newFootId().addCategory("abc").setId("see"), 3);
+        doc.addId(newFootId().addCategory("abc").setId("aaa"), 1);
+        doc.addId(newFootId().addCategory("abc").setId(""),    0);
         doc.assertIds(builder.build(), true);
     }
 
     @Test
-    public void subCategory(){
+    @DisplayName("With empty subcategory")
+    public void emptySubcategory(){
         IDDocument builder = new IDDocument();
-        builder.addId("c", "a", "b");
-        builder.addId("d", "a", "");
-        DocumentAssert doc = builder.build();
-        doc.addId(newId() .addCategory("a", "b").setId("c"),1);
-        doc.addId(newId().addCategory("a", "" ).setId("d"),0);
+        builder.addFoot("c", "a", "b");
+        builder.addFoot("d", "a", "");
+        IDAssertions doc = new IDAssertions();
+        doc.addId(newFootId() .addCategory("a", "b").setId("c"),1);
+        doc.addId(newFootId().addCategory("a", "" ).setId("d"),0);
         doc.assertIds(builder.build(), true);
     }
 
     @Test
-    public void basicSimpleOrder(){
+    @DisplayName("With no subcategory")
+    public void noSubcategory(){
         IDDocument builder = new IDDocument();
-        builder.addId("aaa");
-        builder.addId("ccc");
-        DocumentAssert doc = builder.build();
-        doc.addId(newId().addCategory().setId("aaa"),0);
-        doc.addId(newId().addCategory().setId("ccc"),1);
+        builder.addFoot("aaa");
+        builder.addFoot("ccc");
+        IDAssertions doc = new IDAssertions();
+        doc.addId(newFootId().addCategory().setId("aaa"),0);
+        doc.addId(newFootId().addCategory().setId("ccc"),1);
         doc.assertIds(builder.build(), true);
     }
 
     @Test
+    @DisplayName("CatalogueMap#getIds(String) Test")
     public void longList(){
         IDDocument builder = new IDDocument();
-        builder.addId("a");
-        builder.addId("b", "a");
-        builder.addId("1", "b");
-        builder.addId("2", "b");
-        builder.addId("3", "b");
-        builder.addId("4", "b");
-        builder.addId("5", "b");
-        builder.addId("6", "b");
-        builder.addId("7", "b");
-        builder.addId("8", "b", "a");
-        builder.addId("c", "ba");
-        DocumentAssert doc = builder.build();
-        doc.addId(newId()                      .setId("a"), 0);
-        doc.addId(newId().addCategory("a")     .setId("b"), 1);
-        doc.addId(newId().addCategory("b")     .setId("1"), 2);
-        doc.addId(newId().addCategory("b")     .setId("2"), 3);
-        doc.addId(newId().addCategory("b")     .setId("3"), 4);
-        doc.addId(newId().addCategory("b")     .setId("4"), 5);
-        doc.addId(newId().addCategory("b")     .setId("5"), 6);
-        doc.addId(newId().addCategory("b")     .setId("6"), 7);
-        doc.addId(newId().addCategory("b")     .setId("7"), 8);
-        doc.addId(newId().addCategory("b", "a").setId("8"), 9);
-        doc.addId(newId().addCategory("ba")    .setId("c"), 10);
+        builder.addEnd( "a");
+        builder.addEnd( "b", "a");
+        builder.addFoot("0");
+        builder.addFoot("1", "b");
+        builder.addFoot("2", "b");
+        builder.addFoot("3", "b");
+        builder.addFoot("4", "b");
+        builder.addFoot("5", "b");
+        builder.addFoot("6", "b");
+        builder.addFoot("7", "b");
+        builder.addFoot("8", "b", "a");
+        IDAssertions doc = new IDAssertions();
+        doc.addId(newEndId()                       .setId("a"), 0);
+        doc.addId(newEndId() .addCategory("a")     .setId("b"), 1);
+        doc.addId(newFootId()                      .setId("0"), 2);
+        doc.addId(newFootId().addCategory("b")     .setId("1"), 3);
+        doc.addId(newFootId().addCategory("b")     .setId("2"), 4);
+        doc.addId(newFootId().addCategory("b")     .setId("3"), 5);
+        doc.addId(newFootId().addCategory("b")     .setId("4"), 6);
+        doc.addId(newFootId().addCategory("b")     .setId("5"), 7);
+        doc.addId(newFootId().addCategory("b")     .setId("6"), 8);
+        doc.addId(newFootId().addCategory("b")     .setId("7"), 9);
+        doc.addId(newFootId().addCategory("b", "a").setId("8"), 10);
 
-        TreeSet<SpanBranch> list = doc.getCatalogue().getIds("b");
-        assertEquals("Wrong size.", 8, list.size());
+        Document out = builder.build();
+        doc.assertIds(out, true);
 
-        int i = 1;
+        TreeSet<SpanBranch> list = out.getDocument().getCatalogue()
+            .getIds("foot");
+        assertEquals(9, list.size(), "size");
+
+        int i = 0;
         for(SpanBranch span : list){
             CatalogueIdentity id = null;
             id = new CatalogueIdentity(i == 8?
-                    Arrays.asList("foot", "b", "a"): Arrays.asList("b"),
+                    Arrays.asList("foot", "b", "a"):
+                    (i == 0? Arrays.asList("foot"): Arrays.asList("foot", "b")),
                 String.valueOf(i));
             CatalogueIdentity test = ((Catalogued)span).getSpanIdentity().get();
             assertEquals(id, test, "Wrong id");

@@ -1,54 +1,56 @@
 package com.creativeartie.writerstudio.lang;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.*;
+import org.junit.jupiter.params.provider.*;
 
-import org.junit.*;
-import org.junit.runner.*;
-import org.junit.runners.*;
-import org.junit.runners.Parameterized.*;
+import java.util.*;
+import java.util.stream.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
+import com.creativeartie.writerstudio.lang.markup.*;
 
-import com.creativeartie.writerstudio.lang.*;
+@DisplayName("Catalogue Status Tester")
+public class IDStateDebug {
 
-public class IDStateDebug extends IDParamTest{
-    private class Tester extends IDParameterMethodSource{
+    private static class Tester extends IDParameterMethodSource{
+
         protected String getIdText(){
             return "!^abc:text\n";
         }
         protected String getRefText(){
-            return "{!^abc}";
+            return "{^abc}\n";
         }
     }
 
-    @ParameterTest
-    public void test(CatalogueStatus status, String text) {
-        WritingText text = new WritingText(text);
+    public static Stream<Arguments> provideText(){
+        return Tester.provideText(new Tester());
+    }
+
+    @ParameterizedTest(name = "{0}: {2}")
+    @MethodSource("provideText")
+    public void test(CatalogueStatus expected, String text, boolean[] ids) {
+        WritingText doc = new WritingText(text);
         IDBuilder builder = new IDBuilder();
+        IDAssertions asserters = new IDAssertions();
         boolean isFirst = true;
-        for (IDParamTest.States state: input){
-            builder.reset().setId("abc");
+        for (boolean id: ids){
+            builder.reset().addCategory("foot").setId("abc");
             if (isFirst){
-                switch(state){
-                case ID:
-                    doc.addId(builder, expected, 0);
-                    break;
-                case REF:
-                    doc.addRef(builder, expected, 0);
+                /// Add id/ref for the first span
+                if (id){
+                    asserters.addId(builder, 0, expected);
+                } else {
+                    asserters.addRef(builder, 0, expected);
                 }
                 isFirst = false;
             } else {
-                switch(state){
-                case ID:
-                    doc.addId(builder);
-                    break;
-                case REF:
-                    doc.addRef(builder);
+                if (id){
+                    asserters.addId(builder);
+                } else {
+                    asserters.addRef(builder);
                 }
             }
         }
-        doc.assertIds();
+        asserters.assertIds(doc);
     }
 }

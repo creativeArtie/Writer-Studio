@@ -5,52 +5,53 @@ import static com.creativeartie.writerstudio.lang.CatalogueStatus.*;
 
 import java.util.stream.*;
 
+/// Create document for all different type of {@link CataloguStatus} formation.
 public abstract class IDParameterMethodSource {
-
-    private Arguments buildArgument(CatalogueStatus status,
-            boolean ... ids){
-        StringBuilder builder = new StringBuilder();
-        for (boolean id: ids){
-            builder.append(id? getIdText(), getRefText());
-        }
-        return Arguments.of(UNUSED, builder.build, ids);
-    }
 
     public static Stream<Arguments> provideText(IDParameterMethodSource source){
         String id = source.getIdText();
         String ref = source.getRefText();
         return Stream.of(
-            buildArgument(UNUSED,    id),
-            buildArgument(MULTIPLE,  id  + id),
-            buildArgument(MULTIPLE,  id  + id  + id),
-            buildArgument(MULTIPLE,  id  + id  + id + id),
-            buildArgument(MULTIPLE,  id  + id  + id + ref),
-            buildArgument(MULTIPLE,  id  + id  + ref),
-            buildArgument(MULTIPLE,  id  + id  + ref + id),
-            buildArgument(MULTIPLE,  id  + id  + ref + ref),
-            buildArgument(READY,     id  + ref),
-            buildArgument(MULTIPLE,  id  + ref + id),
-            buildArgument(MULTIPLE,  id  + ref + id + id),
-            buildArgument(MULTIPLE,  id  + ref + id + ref),
-            buildArgument(READY,     id  + ref + ref),
-            buildArgument(MULTIPLE,  id  + ref + ref + id),
-            buildArgument(READY,     id  + ref + ref + ref),
-            buildArgument(NOT_FOUND, ref),
-            buildArgument(READY,     ref + id),
-            buildArgument(MULTIPLE,  ref + id  + id),
-            buildArgument(MULTIPLE,  ref + id  + id + id),
-            buildArgument(MULTIPLE,  ref + id  + id + ref),
-            buildArgument(READY,     ref + id  + ref),
-            buildArgument(MULTIPLE,  ref + id  + ref + id),
-            buildArgument(READY,     ref + id  + ref + ref),
-            buildArgument(NOT_FOUND, ref + ref),
-            buildArgument(READY,     ref + ref + id),
-            buildArgument(MULTIPLE,  ref + ref + id + id),
-            buildArgument(READY,     ref + ref + id + ref),
-            buildArgument(NOT_FOUND, ref + ref + ref),
-            buildArgument(READY,     ref + ref + ref + id),
-            buildArgument(NOT_FOUND, ref + ref + ref + ref)
+            source.buildArgument(UNUSED,    true),
+            source.buildArgument(MULTIPLE,  true,  true),
+            source.buildArgument(MULTIPLE,  true,  true,  true),
+            source.buildArgument(MULTIPLE,  true,  true,  true,  true),
+            source.buildArgument(MULTIPLE,  true,  true,  true,  false),
+            source.buildArgument(MULTIPLE,  true,  true,  false),
+            source.buildArgument(MULTIPLE,  true,  true,  false, true),
+            source.buildArgument(MULTIPLE,  true,  true,  false, false),
+            source.buildArgument(READY,     true,  false),
+            source.buildArgument(MULTIPLE,  true,  false, true),
+            source.buildArgument(MULTIPLE,  true,  false, true,  true),
+            source.buildArgument(MULTIPLE,  true,  false, true,  false),
+            source.buildArgument(READY,     true,  false, false),
+            source.buildArgument(MULTIPLE,  true,  false, false, true),
+            source.buildArgument(READY,     true,  false, false, false),
+            source.buildArgument(NOT_FOUND, false),
+            source.buildArgument(READY,     false, true),
+            source.buildArgument(MULTIPLE,  false, true,  true),
+            source.buildArgument(MULTIPLE,  false, true,  true,  true),
+            source.buildArgument(MULTIPLE,  false, true,  true,  false),
+            source.buildArgument(READY,     false, true,  false),
+            source.buildArgument(MULTIPLE,  false, true,  false, true),
+            source.buildArgument(READY,     false, true,  false, false),
+            source.buildArgument(NOT_FOUND, false, false),
+            source.buildArgument(READY,     false, false, true),
+            source.buildArgument(MULTIPLE,  false, false, true,  true),
+            source.buildArgument(READY,     false, false, true,  false),
+            source.buildArgument(NOT_FOUND, false, false, false),
+            source.buildArgument(READY,     false, false, false, true),
+            source.buildArgument(NOT_FOUND, false, false, false, false)
         );
+    }
+
+    private Arguments buildArgument(CatalogueStatus status,
+            boolean ... ids){
+        StringBuilder builder = new StringBuilder();
+        for (boolean id: ids){
+            builder.append(id? getIdText(): getRefText());
+        }
+        return Arguments.of(status, builder.toString(), ids);
     }
 
     protected IDParameterMethodSource(){}

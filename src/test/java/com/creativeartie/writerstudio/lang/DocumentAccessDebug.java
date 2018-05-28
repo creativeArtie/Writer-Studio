@@ -1,34 +1,58 @@
 package com.creativeartie.writerstudio.lang;
 
-import static org.junit.Assert.*;
-
-import org.junit.*;
-import org.junit.runner.*;
-import org.junit.runners.*;
-import org.junit.runners.Parameterized.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.function.*;
+import org.junit.jupiter.params.*;
+import org.junit.jupiter.params.provider.*;
 
 import java.util.*;
+import java.util.stream.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
 
-@RunWith(Parameterized.class)
+@DisplayName("General Document Tests.")
 public class DocumentAccessDebug{
 
-    /// Print everything or not
-    private static boolean verbose = true;
+    /// %Part 1: Before All Setup ##############################################
+
+    /// Data structure to be use in tests.
+    private static class TestData{
+        /// #testColumn(), #testLine(), #testLeafByIndex()
+        private int itemPointer;
+        /// #testColumn(), #testLine(), #testLeafByStream() #testLeafByIndex()
+        private boolean useEmpty;
+        /// #testColumn(), #testLine(), #testLeafByStream() #testLeafByIndex()
+        private int[] forSpan;
+        /// #testColumn()
+        private int expectColumn;
+        /// #testLine()
+        private int expectLine;
+        /// #testLeafByStream()
+        private int testIndex;
+        private boolean isContains;
+    }
 
     private static int countColumn;
     private static int countLine;
     private static int countIt;
 
-    private static String leafSpan(ArrayList<Object[]> data, String span,
-        int ... indexes
-    ){
+    /// Create a {@link TestData}. Used in the majority of the cases
+    private static String leafSpan(String span, int ... indexes){
         boolean isFirst = true;
         for(int i = 0; i < span.length(); i++){
             int store = isFirst? countIt: -1;
-            data.add(new Object[]{data.size() - 1, false, indexes, countColumn,
-                countLine, store, true});
+
+            TestData data = new TestData();
+            data.itemPointer = testData.size() - 1;
+            data.useEmpty = false;
+            data.forSpan = indexes;
+            data.expectColumn = countColumn;
+            data.expectLine = countLine;
+            data.testIndex = store;
+            data.isContains = true;
+            testData.add(data);
+
             if (span.charAt(i) == '\n'){
                 countLine++;
                 countColumn = 0;
@@ -40,189 +64,283 @@ public class DocumentAccessDebug{
         return span;
     }
 
-    @Parameters
-    public static Collection<Object[]> data() {
-        ArrayList<Object[]> data = new ArrayList<>();
-        StringBuilder docRaw = new StringBuilder();
-        countColumn = 0;
-        countLine = 1;
+    private static Collection<TestData> testData;
 
-        data.add(new Object[]{-1, false, new int[0], 0 , 1, -1, false});
-
-        docRaw.append(leafSpan(data, "=",                0, 0, 0));
-        docRaw.append(leafSpan(data, "@",                0, 0, 1));
-        docRaw.append(leafSpan(data, "Chapter 1",        0, 0, 2, 0, 0));
-        docRaw.append(leafSpan(data, ":",                0, 0, 3));
-        docRaw.append(leafSpan(data, "\\",               0, 0, 4, 0, 0, 0));
-        docRaw.append(leafSpan(data, "\n",               0, 0, 4, 0, 0, 1));
-        docRaw.append(leafSpan(data, " Story of nobody", 0, 0, 4, 0, 1));
-        docRaw.append(leafSpan(data, "\n",               0, 0, 5));
-
-        docRaw.append(leafSpan(data, "!%",                   0, 1, 0, 0));
-        docRaw.append(leafSpan(data, "Add some random note", 0, 1, 0, 1, 0, 0));
-        docRaw.append(leafSpan(data, "\n",                   0, 1, 0, 2));
-
-        docRaw.append(leafSpan(data, "!>",            0, 1, 1, 0));
-        docRaw.append(leafSpan(data, "in-text",       0, 1, 1, 1, 0));
-        docRaw.append(leafSpan(data, ":",             0, 1, 1, 2));
-        docRaw.append(leafSpan(data, "Some sources.", 0, 1, 1, 3, 0, 0));
-        docRaw.append(leafSpan(data, "\n",            0, 1, 1, 4));
-
-        docRaw.append(leafSpan(data, "Paragraph ",  0, 2, 0, 0, 0));
-        docRaw.append(leafSpan(data, "*",           0, 2, 0, 1));
-        docRaw.append(leafSpan(data, "continue",    0, 2, 0, 2, 0));
-        docRaw.append(leafSpan(data, "*",           0, 2, 0, 3));
-        docRaw.append(leafSpan(data, " from above", 0, 2, 0, 4, 0));
-        docRaw.append(leafSpan(data, "\n",          0, 2, 1));
-
-        docRaw.append(leafSpan(data, "***\n", 0, 3, 0));
-
-        docRaw.append(leafSpan(data, "Text after the break.", 0, 4, 0, 0, 0));
-        docRaw.append(leafSpan(data, "\n",                    0, 4, 1));
-
-
-        docRaw.append(leafSpan(data, "=",     1, 0, 0));
-        docRaw.append(leafSpan(data, "@",     1, 0, 1));
-        docRaw.append(leafSpan(data, "Ch 2",  1, 0, 2, 0, 0));
-        docRaw.append(leafSpan(data, ":",     1, 0, 3));
-        docRaw.append(leafSpan(data, " More", 1, 0, 4, 0, 0));
-        docRaw.append(leafSpan(data, "#STUB", 1, 0, 5, 0));
-        docRaw.append(leafSpan(data, " abc",  1, 0, 5, 1, 0));
-        docRaw.append(leafSpan(data, "\\",    1, 0, 5, 1, 1, 0));
-        docRaw.append(leafSpan(data, "d",     1, 0, 5, 1, 1, 1));
-        docRaw.append(leafSpan(data, "ee",    1, 0, 5, 1, 2));
-        docRaw.append(leafSpan(data, "\n",    1, 0, 6));
-
-        docRaw.append(leafSpan(data, "#",                 1, 1, 0));
-        docRaw.append(leafSpan(data, "An outline thing.", 1, 1, 1, 0, 0));
-        docRaw.append(leafSpan(data, "\n",                1, 1, 2));
-
-        docRaw.append(leafSpan(data, "#",          1, 2, 0));
-        docRaw.append(leafSpan(data, "See me fly", 1, 2, 1, 0, 0));
-        docRaw.append(leafSpan(data, "{^",         1, 2, 1, 1, 0));
-        docRaw.append(leafSpan(data, "random ",    1, 2, 1, 1, 1, 0, 0));
-        docRaw.append(leafSpan(data, "}",          1, 2, 1, 1, 2));
-        docRaw.append(leafSpan(data, "\n",         1, 2, 2));
-
-        docRaw.append(leafSpan(data, "!^",                     1, 3, 0));
-        docRaw.append(leafSpan(data, "footnote",               1, 3, 1, 0, 0));
-        docRaw.append(leafSpan(data, ":",                      1, 3, 2));
-        docRaw.append(leafSpan(data, "text for the foot note", 1, 3, 3, 0, 0));
-        docRaw.append(leafSpan(data, "\n",                     1, 3, 4));
-
-        data.add(new Object[]{data.size() - 1, false, new int[]{1, 3, 4}, 0,
-                countLine, countIt++, false});
-
-        data.add(new Object[]{data.size() - 1, false, new int[0], 0, 1,
-                countIt++, false});
-
-        data.add(new Object[]{data.size() - 1, true, new int[0], 0, 1,
-            countIt++, false});
-
-        docText = docRaw.toString();
-        return data;
-    }
-
-    private static String docText;
     private static Document filledDoc;
     private static Document emptyDoc;
 
-    @Parameter
-    public int ptr;
+    @BeforeAll
+    public static void data() {
+        testData = new ArrayList<>();
+        StringBuilder raw = new StringBuilder();
+        countColumn = 0;
+        countLine = 1;
 
-    @Parameter(value = 1)
-    public boolean useEmpty;
+        /// For before filled document
+        TestData data = new TestData();
+        data.itemPointer = -1;
+        data.useEmpty = false;
+        data.forSpan = new int[0];
+        data.expectColumn = 0;
+        data.expectLine = 1;
+        data.testIndex = -1;
+        data.isContains = false;
+        testData.add(data);
 
-    @Parameter(value = 2)
-    public int[] indexes;
+        raw.append(leafSpan("=",                0, 0, 0));
+        raw.append(leafSpan("@",                0, 0, 1));
+        raw.append(leafSpan("Chapter 1",        0, 0, 2, 0, 0));
+        raw.append(leafSpan(":",                0, 0, 3));
+        raw.append(leafSpan("\\",               0, 0, 4, 0, 0, 0));
+        raw.append(leafSpan("\n",               0, 0, 4, 0, 0, 1));
+        raw.append(leafSpan(" Story of nobody", 0, 0, 4, 0, 1));
+        raw.append(leafSpan("\n",               0, 0, 5));
 
-    @Parameter(value = 3)
-    public int column;
+        raw.append(leafSpan("!%",                   0, 1, 0, 0));
+        raw.append(leafSpan("Add some random note", 0, 1, 0, 1, 0, 0));
+        raw.append(leafSpan("\n",                   0, 1, 0, 2));
 
-    @Parameter(value = 4)
-    public int line;
+        raw.append(leafSpan("!>",            0, 1, 1, 0));
+        raw.append(leafSpan("in-text",       0, 1, 1, 1, 0));
+        raw.append(leafSpan(":",             0, 1, 1, 2));
+        raw.append(leafSpan("Some sources.", 0, 1, 1, 3, 0, 0));
+        raw.append(leafSpan("\n",            0, 1, 1, 4));
 
-    @Parameter(value = 5)
-    public int to;
+        raw.append(leafSpan("Paragraph ",  0, 2, 0, 0, 0));
+        raw.append(leafSpan("*",           0, 2, 0, 1));
+        raw.append(leafSpan("continue",    0, 2, 0, 2, 0));
+        raw.append(leafSpan("*",           0, 2, 0, 3));
+        raw.append(leafSpan(" from above", 0, 2, 0, 4, 0));
+        raw.append(leafSpan("\n",          0, 2, 1));
 
-    @Parameter(value = 6)
-    public boolean canIterate;
+        raw.append(leafSpan("***\n", 0, 3, 0));
+
+        raw.append(leafSpan("Text after the break.", 0, 4, 0, 0, 0));
+        raw.append(leafSpan("\n",                    0, 4, 1));
 
 
-    @BeforeClass
-    public static void beforeClass(){
-        filledDoc = new WritingText(docText);
+        raw.append(leafSpan("=",     1, 0, 0));
+        raw.append(leafSpan("@",     1, 0, 1));
+        raw.append(leafSpan("Ch 2",  1, 0, 2, 0, 0));
+        raw.append(leafSpan(":",     1, 0, 3));
+        raw.append(leafSpan(" More", 1, 0, 4, 0, 0));
+        raw.append(leafSpan("#STUB", 1, 0, 5, 0));
+        raw.append(leafSpan(" abc",  1, 0, 5, 1, 0));
+        raw.append(leafSpan("\\",    1, 0, 5, 1, 1, 0));
+        raw.append(leafSpan("d",     1, 0, 5, 1, 1, 1));
+        raw.append(leafSpan("ee",    1, 0, 5, 1, 2));
+        raw.append(leafSpan("\n",    1, 0, 6));
+
+        raw.append(leafSpan("#",                 1, 1, 0));
+        raw.append(leafSpan("An outline thing.", 1, 1, 1, 0, 0));
+        raw.append(leafSpan("\n",                1, 1, 2));
+
+        raw.append(leafSpan("#",          1, 2, 0));
+        raw.append(leafSpan("See me fly", 1, 2, 1, 0, 0));
+        raw.append(leafSpan("{^",         1, 2, 1, 1, 0));
+        raw.append(leafSpan("random ",    1, 2, 1, 1, 1, 0, 0));
+        raw.append(leafSpan("}",          1, 2, 1, 1, 2));
+        raw.append(leafSpan("\n",         1, 2, 2));
+
+        raw.append(leafSpan("!^",                     1, 3, 0));
+        raw.append(leafSpan("footnote",               1, 3, 1, 0, 0));
+        raw.append(leafSpan(":",                      1, 3, 2));
+        raw.append(leafSpan("text for the foot note", 1, 3, 3, 0, 0));
+        raw.append(leafSpan("\n",                     1, 3, 4));
+
+        /// Index after filled document
+        data = new TestData();
+        data.itemPointer = testData.size() - 1;
+        data.useEmpty = false;
+        data.forSpan = new int[]{1, 3, 4};
+        data.expectColumn = 0;
+        data.expectLine = countLine;
+        data.testIndex = countIt++;
+        data.isContains = false;
+        testData.add(data);
+
+        /// 2 indexes after filled document
+        data = new TestData();
+        data.itemPointer = testData.size() - 1;
+        data.useEmpty = false;
+        data.forSpan = new int[0];
+        data.expectColumn = 0;
+        data.expectLine = 1;
+        data.testIndex = countIt++;
+        data.isContains = false;
+        testData.add(data);
+
+        /// empty document to somewhere out there
+        data = new TestData();
+        data.itemPointer = testData.size() - 1;
+        data.useEmpty = true;
+        data.forSpan = new int[0];
+        data.expectColumn = 0;
+        data.expectLine = 1;
+        data.testIndex = countIt++;
+        data.isContains = false;
+        testData.add(data);
+
+        /// empty document to 0
+        data = new TestData();
+        data.itemPointer = 0;
+        data.useEmpty = true;
+        data.forSpan = new int[0];
+        data.expectColumn = 0;
+        data.expectLine = 1;
+        data.testIndex = countIt++;
+        data.isContains = false;
+        testData.add(data);
+
+        /// empty document to 1
+        data = new TestData();
+        data.itemPointer = 1;
+        data.useEmpty = true;
+        data.forSpan = new int[0];
+        data.expectColumn = 0;
+        data.expectLine = 1;
+        data.testIndex = countIt++;
+        data.isContains = false;
+        testData.add(data);
+
+        filledDoc = new WritingText(raw.toString());
         emptyDoc = new WritingText("");
     }
 
-    @Test
-    public void getColumn(){
-        if (useEmpty){
-            assertFalse(emptyDoc.getLeaf(0).isPresent());
-            assertEquals(column, emptyDoc.getColumn(0));
+    /// %Part 2: Column and Lines ##############################################
+
+    /// %Part 2.1: Test Column =================================================
+
+    static Stream<Arguments> testColumn(){
+        ArrayList<Arguments> ans = new ArrayList<>();
+        for (TestData data: testData){
+            ans.add(Arguments.of(data.itemPointer, data.useEmpty, data.forSpan,
+                data.expectColumn));
         }
-        Assume.assumeTrue(indexes.length > 0);
-        assertEquals(column, filledDoc.getColumn(ptr));
+        return ans.stream();
     }
 
-    @Test
-    public void getLine(){
-        if (useEmpty){
-            assertFalse(emptyDoc.getLeaf(0).isPresent());
-            assertEquals(line, emptyDoc.getLine(0));
+    @ParameterizedTest(name = "Column [empty={1}]: {0}")
+    @MethodSource
+    public void testColumn(int ptr, boolean empty, int[] indexes, int column){
+        Document doc = empty? emptyDoc: filledDoc;
+        String size = empty? "[0..0]": "[0..237]";
+        if (indexes.length > 0 || (empty && ptr == 0) ){
+            assertEquals(column, doc.getColumn(ptr));
+        } else {
+            Throwable thrown = assertThrows(IndexOutOfBoundsException.class,
+                () -> doc.getColumn(ptr));
+            assertEquals("Parameter \"position\" (" + ptr +
+                ") is not in range of " + size + ".", thrown.getMessage());
         }
-        Assume.assumeTrue(indexes.length > 0);
-        assertEquals(line, filledDoc.getLine(ptr));
     }
 
-    private Span findLeaf(){
+    /// %Part 2.2: Test Line ===================================================
+
+    static Stream<Arguments> testLine(){
+        ArrayList<Arguments> ans = new ArrayList<>();
+        for (TestData data: testData){
+            ans.add(Arguments.of(data.itemPointer, data.useEmpty, data.forSpan,
+                data.expectLine));
+        }
+        return ans.stream();
+    }
+
+    @ParameterizedTest(name = "Line [empty={1}]: {0}")
+    @MethodSource
+    public void testLine(int ptr, boolean empty, int[] indexes, int line){
+        Document doc = empty? emptyDoc: filledDoc;
+        String size = empty? "[0..0]": "[0..237]";
+        if (indexes.length > 0 || (empty && ptr == 0) ){
+            assertEquals(line, doc.getLine(ptr));
+        } else {
+            Throwable thrown = assertThrows(IndexOutOfBoundsException.class,
+                () -> doc.getLine(ptr));
+            assertEquals("Parameter \"position\" (" + ptr +
+                ") is not in range of " + size + ".", thrown.getMessage());
+        }
+    }
+
+    /// %Part 2.3: Helper Method ===============================================
+
+    private Span findLeaf(int[] indexes){
         Span span = filledDoc;
         for(int index: indexes){
-            assertTrue("Span is not a SpanNode: " + span, span instanceof
-                SpanNode);
+            assertTrue(span instanceof SpanNode, "Not span node");
             SpanNode parent = (SpanNode) span;
-            assertTrue("Index (" + index + ") is not in range(" + parent.size()
-                +"):" + parent, index < parent.size());
+            assertTrue(index < parent.size(),
+                () -> "Index (" + index + ") is not in range(" + parent.size()
+                    + "):" + parent);
             span = ((SpanNode)span).get(index);
         }
         return span;
     }
 
-    @Test
-    public void iterateLeaves(){
-        Assume.assumeTrue(countIt > 0);
-        if (useEmpty || ! canIterate){
-            try {
-                (useEmpty? emptyDoc: filledDoc).getLeaves().get(to);
-            } catch (IndexOutOfBoundsException ex){
-                return;
+    /// %Part 3: Get Leaf By Stream ############################################
+
+    static Stream<Arguments> testLeafByStream(){
+        ArrayList<Arguments> ans = new ArrayList<>();
+        boolean first = true;
+        int index = 0;
+        for (TestData data: testData){
+            if (first){
+                first = false;
+            } else if (index == data.testIndex){
+                continue;
             }
-            fail("No IndexOutOfBoundsException thrown.");
+            index = data.testIndex;
+            ans.add(Arguments.of(data.useEmpty, data.forSpan, data.testIndex,
+                data.isContains));
         }
-        Span span = findLeaf();
-        assertSame(span, filledDoc.getLeaves().get(to));
+        return ans.stream();
     }
 
-    @Test
-    public void getLeaf(){
-        if (indexes.length == 0){
-            try {
-                filledDoc.getLeaf(ptr);
-            } catch (IndexOutOfBoundsException ex){
-                return;
-            }
-            fail("No IndexOutOfBoundsException thrown.");
+    @ParameterizedTest(name = "Leaf by Stream [empty={0}]: {2} ({1})")
+    @MethodSource
+    public void testLeafByStream(boolean empty, int[] indexes, int index,
+            boolean contains){
+        if (empty || ! contains){
+            assertThrows(ArrayIndexOutOfBoundsException.class, () ->
+                (empty? emptyDoc: filledDoc).getLeaves().get(index));
+        } else {
+            Span span = findLeaf(indexes);
+            assertSame(span, filledDoc.getLeaves().get(index));
         }
-        if (useEmpty){
+    }
+
+    /// %Part 4: Get Leaf By Index #############################################
+
+    static Stream<Arguments> testLeafByIndex(){
+        ArrayList<Arguments> ans = new ArrayList<>();
+        for (TestData data: testData){
+            ans.add(Arguments.of(data.itemPointer, data.useEmpty, data.forSpan));
+        }
+        return ans.stream();
+    }
+
+    @ParameterizedTest(name = "Leaf by index [empty={1}]: {0} ({2})")
+    @MethodSource
+    public void testLeafByIndex(int ptr, boolean empty, int[] indexes){
+        Document doc = empty? emptyDoc: filledDoc;
+        String size = empty? "[0..0]": "[0..237]";
+        if (indexes.length == 0 && !(empty && ptr == 0)){
+            Throwable thrown = assertThrows(IndexOutOfBoundsException.class,
+                () -> System.out.println(doc.getLeaf(ptr)));
+            assertEquals("Parameter \"pos\" (" + ptr +
+                ") is not in range of " + size + ".", thrown.getMessage());
+            return;
+        }
+        if (empty){
             Optional<SpanLeaf> found = emptyDoc.getLeaf(ptr);
-            assertFalse("Leaf is found.", found.isPresent());
+            assertFalse(found.isPresent(), "Leaf is found.");
+            return;
         }
 
         Optional<SpanLeaf> found = filledDoc.getLeaf(ptr);
-        assertTrue("Leaf not found.", found.isPresent());
+        assertTrue(found.isPresent(), "Leaf not found.");
         SpanLeaf leaf = found.get();
-        Span span = findLeaf();
-        assertSame(span + " was not " + leaf, span, leaf);
+        Span span = findLeaf(indexes);
+        assertSame(span, leaf);
     }
 
 }

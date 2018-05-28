@@ -2,6 +2,7 @@ package com.creativeartie.writerstudio.lang;
 
 import java.util.*;
 
+/// Helper class to create {@link CatalogueIdentity}.
 public class IDBuilder {
     private ArrayList<String> category;
     private String id;
