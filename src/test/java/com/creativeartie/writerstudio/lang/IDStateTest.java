@@ -4,13 +4,12 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
-import java.util.*;
 import java.util.stream.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
 
 @DisplayName("Catalogue Status Tester")
-public class IDStateDebug {
+public class IDStateTest {
 
     private static class Tester extends IDParameterMethodSource{
 
@@ -31,7 +30,7 @@ public class IDStateDebug {
     public void test(CatalogueStatus expected, String text, boolean[] ids) {
         WritingText doc = new WritingText(text);
         IDBuilder builder = new IDBuilder();
-        IDAssertions asserters = new IDAssertions();
+        IDAssert asserters = new IDAssert();
         boolean isFirst = true;
         for (boolean id: ids){
             builder.reset().addCategory("foot").setId("abc");

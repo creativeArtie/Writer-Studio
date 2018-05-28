@@ -1,15 +1,15 @@
 package com.creativeartie.writerstudio.lang;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.function.*;
 
 import java.util.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @DisplayName("Order of Catalogue Identities")
-public class IDOrderDebug {
+public class IDOrderTest {
     /// Creates a quick document
     private static class IDDocument{
 
@@ -62,7 +62,7 @@ public class IDOrderDebug {
         IDDocument builder = new IDDocument();
         builder.addFoot("files", "abc", "dd");
         builder.addFoot("fly",   "abc", "dd");
-        IDAssertions doc = new IDAssertions();
+        IDAssert doc = new IDAssert();
         doc.addId(newFootId().addCategory("abc", "dd").setId("files"), 0);
         doc.addId(newFootId().addCategory("abc", "dd").setId("fly"),  1);
         doc.assertIds(builder.build(), true);
@@ -77,7 +77,7 @@ public class IDOrderDebug {
         builder.addEnd( "kkk");
         builder.addFoot("ddd", "abc");
         builder.addFoot("",    "abc");
-        IDAssertions doc = new IDAssertions();
+        IDAssert doc = new IDAssert();
         doc.addId(newFootId().addCategory("")   .setId("id"),  2);
         doc.addId(newFootId()                   .setId("abc"), 1);
         doc.addId(newEndId()                    .setId("kkk"), 0);
@@ -94,7 +94,7 @@ public class IDOrderDebug {
         builder.addFoot("see", "abc");
         builder.addFoot("aaa", "abc");
         builder.addFoot("",    "abc");
-        IDAssertions doc = new IDAssertions();
+        IDAssert doc = new IDAssert();
         doc.addId(newFootId().addCategory("abc").setId("de" ), 2);
         doc.addId(newFootId().addCategory("abc").setId("see"), 3);
         doc.addId(newFootId().addCategory("abc").setId("aaa"), 1);
@@ -108,7 +108,7 @@ public class IDOrderDebug {
         IDDocument builder = new IDDocument();
         builder.addFoot("c", "a", "b");
         builder.addFoot("d", "a", "");
-        IDAssertions doc = new IDAssertions();
+        IDAssert doc = new IDAssert();
         doc.addId(newFootId() .addCategory("a", "b").setId("c"),1);
         doc.addId(newFootId().addCategory("a", "" ).setId("d"),0);
         doc.assertIds(builder.build(), true);
@@ -120,7 +120,7 @@ public class IDOrderDebug {
         IDDocument builder = new IDDocument();
         builder.addFoot("aaa");
         builder.addFoot("ccc");
-        IDAssertions doc = new IDAssertions();
+        IDAssert doc = new IDAssert();
         doc.addId(newFootId().addCategory().setId("aaa"),0);
         doc.addId(newFootId().addCategory().setId("ccc"),1);
         doc.assertIds(builder.build(), true);
@@ -141,7 +141,7 @@ public class IDOrderDebug {
         builder.addFoot("6", "b");
         builder.addFoot("7", "b");
         builder.addFoot("8", "b", "a");
-        IDAssertions doc = new IDAssertions();
+        IDAssert doc = new IDAssert();
         doc.addId(newEndId()                       .setId("a"), 0);
         doc.addId(newEndId() .addCategory("a")     .setId("b"), 1);
         doc.addId(newFootId()                      .setId("0"), 2);

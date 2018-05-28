@@ -1,9 +1,10 @@
 package com.creativeartie.writerstudio.lang;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.function.*;
 
 import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /// Tests for listeners
 public class EditAssert{

@@ -1,13 +1,11 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 
 import java.util.*;
 
-import com.creativeartie.writerstudio.lang.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-/// @see SupplementSectionDebug
 @DisplayName("AuxiliaryChecker Checkers")
 public class BasicCanParseTest {
     private static final List<String> endList = Arrays.asList("+!", "-");

@@ -1,13 +1,11 @@
 package com.creativeartie.writerstudio.lang;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.function.*;
 
 import java.util.*;
-import java.util.stream.*;
 import java.util.function.*;
 
-import static com.creativeartie.writerstudio.lang.DocumentAssert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /// Group of tests related to SpanBranch
 public abstract class SpanBranchAssert<T extends SpanBranchAssert>{

@@ -1,9 +1,10 @@
 package com.creativeartie.writerstudio.lang;
 
 import org.junit.jupiter.params.provider.*;
-import static com.creativeartie.writerstudio.lang.CatalogueStatus.*;
 
 import java.util.stream.*;
+
+import static com.creativeartie.writerstudio.lang.CatalogueStatus.*;
 
 /// Create document for all different type of {@link CataloguStatus} formation.
 public abstract class IDParameterMethodSource {

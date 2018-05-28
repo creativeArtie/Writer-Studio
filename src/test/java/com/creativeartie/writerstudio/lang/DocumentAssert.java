@@ -1,10 +1,11 @@
 package com.creativeartie.writerstudio.lang;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.function.*;
 
 import java.util.*;
 import java.util.function.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /// Group of tests related to Document
 public class DocumentAssert {
@@ -52,11 +53,11 @@ public class DocumentAssert {
     }
 
     private final Document testDocument;
-    private IDAssertions idTester;
+    private IDAssert idTester;
 
     private DocumentAssert(Document document){
         testDocument = document;
-        idTester = new IDAssertions();
+        idTester = new IDAssert();
     }
 
     /// %Part 3: Document Assertion ############################################
@@ -258,7 +259,7 @@ public class DocumentAssert {
     public void insert(boolean verbose, int location, String input, int ... idx){
         EditAssert edit = createAssert(verbose, idx);
         testDocument.insert(location, input);
-        idTester = new IDAssertions();
+        idTester = new IDAssert();
         edit.testRest();
     }
 
@@ -270,7 +271,7 @@ public class DocumentAssert {
     public void delete(boolean verbose, int start, int end, int ... idx){
         EditAssert edit = createAssert(verbose, idx);
         testDocument.delete(start, end);
-        idTester = new IDAssertions();
+        idTester = new IDAssert();
         edit.testRest();
     }
 

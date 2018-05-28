@@ -1,15 +1,11 @@
 package com.creativeartie.writerstudio.lang;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.function.*;
-
-import java.util.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
 
 @DisplayName("Some Document Editing Tester")
-public class DocumentEditDebug{
+public class DocumentEditTest{
 
     private static Document build(String raw){
         return new WritingText(raw);

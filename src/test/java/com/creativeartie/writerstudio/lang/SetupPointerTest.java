@@ -1,6 +1,5 @@
 package com.creativeartie.writerstudio.lang;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 
 import java.util.*;
@@ -9,7 +8,7 @@ import java.util.function.*;
 
 import com.google.common.base.*;
 
-import com.creativeartie.writerstudio.lang.markup.WritingText;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Setup Pointer Tester")
 public class SetupPointerTest{

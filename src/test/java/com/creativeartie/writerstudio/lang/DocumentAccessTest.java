@@ -1,8 +1,6 @@
 package com.creativeartie.writerstudio.lang;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.function.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
@@ -11,8 +9,10 @@ import java.util.stream.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @DisplayName("General Document Tests.")
-public class DocumentAccessDebug{
+public class DocumentAccessTest{
 
     /// %Part 1: Before All Setup ##############################################
 

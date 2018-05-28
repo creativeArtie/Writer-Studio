@@ -1,39 +1,39 @@
 package com.creativeartie.writerstudio.lang;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.*;
 
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 // TODO add test to number of id/refs
 /// Assertion for {@link CatalogueMap}.
-public class IDAssertions{
+public class IDAssert{
     private ArrayList<CatalogueIdentity> idList;
     private ArrayList<CatalogueStatus> idStatus;
     private ArrayList<Integer> idOrder;
 
-    public IDAssertions(){
+    public IDAssert(){
         idList = new ArrayList<>();
         idStatus = new ArrayList<>();
         idOrder = new ArrayList<>();
     }
 
     /// please call {@link #addId(IDBuilder, int, [CatalougueStatus])} first
-    public IDAssertions addId(IDBuilder id){
+    public IDAssert addId(IDBuilder id){
         return this;
     }
 
     /// please call {@link #addRef(IDBuilder, int, [CatalougueStatus])} first
-    public IDAssertions addRef(IDBuilder id){
+    public IDAssert addRef(IDBuilder id){
         return this;
     }
 
-    public IDAssertions addId(IDBuilder addId, int i) {
+    public IDAssert addId(IDBuilder addId, int i) {
         return addId(addId, i, CatalogueStatus.UNUSED);
     }
 
-    public IDAssertions addId(IDBuilder addId, int i, CatalogueStatus newStatus){
+    public IDAssert addId(IDBuilder addId, int i, CatalogueStatus newStatus){
         CatalogueIdentity id = addId.build();
         idList.add(id);
         idStatus.add(newStatus);
@@ -42,11 +42,11 @@ public class IDAssertions{
     }
 
     /// please call {@link #addId(IDBuilder, int, [CatalougueStatus])} first
-    public IDAssertions addRef(IDBuilder addId, int i) {
+    public IDAssert addRef(IDBuilder addId, int i) {
         return addRef(addId, i, CatalogueStatus.NOT_FOUND);
     }
 
-    public IDAssertions addRef(IDBuilder addId, int i, CatalogueStatus newStatus){
+    public IDAssert addRef(IDBuilder addId, int i, CatalogueStatus newStatus){
         CatalogueIdentity id = addId.build();
         idList.add(id);
         idStatus.add(newStatus);
