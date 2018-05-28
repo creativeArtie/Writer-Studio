@@ -7,12 +7,9 @@ import org.junit.runner.*;
 import org.junit.runners.*;
 import org.junit.runners.Parameterized.*;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
+import java.util.*;
 
-import com.creativeartie.writerstudio.lang.markup.WritingText;
+import com.creativeartie.writerstudio.lang.markup.*;
 
 @RunWith(Parameterized.class)
 public class DocumentAccessDebug{
@@ -25,7 +22,8 @@ public class DocumentAccessDebug{
     private static int countIt;
 
     private static String leafSpan(ArrayList<Object[]> data, String span,
-			int ... indexes){
+        int ... indexes
+    ){
         boolean isFirst = true;
         for(int i = 0; i < span.length(); i++){
             int store = isFirst? countIt: -1;

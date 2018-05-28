@@ -6,41 +6,50 @@ import static com.creativeartie.writerstudio.lang.CatalogueStatus.*;
 import java.util.stream.*;
 
 public abstract class IDParameterMethodSource {
+	
+	private Arguments buildArgument(CatalogueStatus status, 
+			boolean ... ids){
+		StringBuilder builder = new StringBuilder();
+		for (boolean id: ids){
+			builder.append(id? getIdText(), getRefText());
+		}
+		return Arguments.of(UNUSED, builder.build, ids);
+	}
 
     public static Stream<Arguments> provideText(IDParameterMethodSource source){
         String id = source.getIdText();
         String ref = source.getRefText();
         return Stream.of(
-            Arguments.of(UNUSED,    id),
-            Arguments.of(MULTIPLE,  id  + id),
-            Arguments.of(MULTIPLE,  id  + id  + id),
-            Arguments.of(MULTIPLE,  id  + id  + id + id),
-            Arguments.of(MULTIPLE,  id  + id  + id + ref),
-            Arguments.of(MULTIPLE,  id  + id  + ref),
-            Arguments.of(MULTIPLE,  id  + id  + ref + id),
-            Arguments.of(MULTIPLE,  id  + id  + ref + ref),
-            Arguments.of(READY,     id  + ref),
-            Arguments.of(MULTIPLE,  id  + ref + id),
-            Arguments.of(MULTIPLE,  id  + ref + id + id),
-            Arguments.of(MULTIPLE,  id  + ref + id + ref),
-            Arguments.of(READY,     id  + ref + ref),
-            Arguments.of(MULTIPLE,  id  + ref + ref + id),
-            Arguments.of(READY,     id  + ref + ref + ref),
-            Arguments.of(NOT_FOUND, ref),
-            Arguments.of(READY,     ref + id),
-            Arguments.of(MULTIPLE,  ref + id  + id),
-            Arguments.of(MULTIPLE,  ref + id  + id + id),
-            Arguments.of(MULTIPLE,  ref + id  + id + ref),
-            Arguments.of(READY,     ref + id  + ref),
-            Arguments.of(MULTIPLE,  ref + id  + ref + id),
-            Arguments.of(READY,     ref + id  + ref + ref),
-            Arguments.of(NOT_FOUND, ref + ref),
-            Arguments.of(READY,     ref + ref + id),
-            Arguments.of(MULTIPLE,  ref + ref + id + id),
-            Arguments.of(READY,     ref + ref + id + ref),
-            Arguments.of(NOT_FOUND, ref + ref + ref),
-            Arguments.of(READY,     ref + ref + ref + id),
-            Arguments.of(NOT_FOUND, ref + ref + ref + ref)
+            buildArgument(UNUSED,    id),
+            buildArgument(MULTIPLE,  id  + id),
+            buildArgument(MULTIPLE,  id  + id  + id),
+            buildArgument(MULTIPLE,  id  + id  + id + id),
+            buildArgument(MULTIPLE,  id  + id  + id + ref),
+            buildArgument(MULTIPLE,  id  + id  + ref),
+            buildArgument(MULTIPLE,  id  + id  + ref + id),
+            buildArgument(MULTIPLE,  id  + id  + ref + ref),
+            buildArgument(READY,     id  + ref),
+            buildArgument(MULTIPLE,  id  + ref + id),
+            buildArgument(MULTIPLE,  id  + ref + id + id),
+            buildArgument(MULTIPLE,  id  + ref + id + ref),
+            buildArgument(READY,     id  + ref + ref),
+            buildArgument(MULTIPLE,  id  + ref + ref + id),
+            buildArgument(READY,     id  + ref + ref + ref),
+            buildArgument(NOT_FOUND, ref),
+            buildArgument(READY,     ref + id),
+            buildArgument(MULTIPLE,  ref + id  + id),
+            buildArgument(MULTIPLE,  ref + id  + id + id),
+            buildArgument(MULTIPLE,  ref + id  + id + ref),
+            buildArgument(READY,     ref + id  + ref),
+            buildArgument(MULTIPLE,  ref + id  + ref + id),
+            buildArgument(READY,     ref + id  + ref + ref),
+            buildArgument(NOT_FOUND, ref + ref),
+            buildArgument(READY,     ref + ref + id),
+            buildArgument(MULTIPLE,  ref + ref + id + id),
+            buildArgument(READY,     ref + ref + id + ref),
+            buildArgument(NOT_FOUND, ref + ref + ref),
+            buildArgument(READY,     ref + ref + ref + id),
+            buildArgument(NOT_FOUND, ref + ref + ref + ref)
         );
     }
 

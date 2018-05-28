@@ -1,6 +1,7 @@
 package com.creativeartie.writerstudio.lang;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class IDBuilder {
     private ArrayList<String> category;
