@@ -6,15 +6,15 @@ import static com.creativeartie.writerstudio.lang.CatalogueStatus.*;
 import java.util.stream.*;
 
 public abstract class IDParameterMethodSource {
-	
-	private Arguments buildArgument(CatalogueStatus status, 
-			boolean ... ids){
-		StringBuilder builder = new StringBuilder();
-		for (boolean id: ids){
-			builder.append(id? getIdText(), getRefText());
-		}
-		return Arguments.of(UNUSED, builder.build, ids);
-	}
+
+    private Arguments buildArgument(CatalogueStatus status,
+            boolean ... ids){
+        StringBuilder builder = new StringBuilder();
+        for (boolean id: ids){
+            builder.append(id? getIdText(), getRefText());
+        }
+        return Arguments.of(UNUSED, builder.build, ids);
+    }
 
     public static Stream<Arguments> provideText(IDParameterMethodSource source){
         String id = source.getIdText();

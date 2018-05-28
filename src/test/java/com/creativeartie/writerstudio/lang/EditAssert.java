@@ -89,7 +89,7 @@ public class EditAssert{
     }
 
     void testRest(){
-		ArrayList<Excu
+        ArrayList<Excu
         if (showEdits) {
             System.out.println("+++++++++++++++++++++++++++++++++++++++++++++");
             System.out.println(expectedEdited.getDocument());
@@ -100,11 +100,11 @@ public class EditAssert{
             System.out.println(actualEdited);
         }
         assertAll("edited"
-			() -> assertEquals(actualEdited.size(), 1, 
-				() -> "esize: " + actualEdited),
-			() -> assertSame(expectedEdited, actualEdited.get(0), 
-				() -> "span: " + actualEdited.get(0));
-		);
+            () -> assertEquals(actualEdited.size(), 1,
+                () -> "esize: " + actualEdited),
+            () -> assertSame(expectedEdited, actualEdited.get(0),
+                () -> "span: " + actualEdited.get(0));
+        );
 
         if (showEdits) {
             System.out.println("Parents-----------------");
@@ -135,14 +135,14 @@ public class EditAssert{
             List<SpanNode<?>> actual){
         if (showEdits) System.out.println("remove......");
         for (SpanNode<?> got: actual){
-            assertTrue(expect.contains(got), 
-				() -> "unexpected " + name + ": "  + got);
+            assertTrue(expect.contains(got),
+                () -> "unexpected " + name + ": "  + got);
             expect.remove(got);
             if (showEdits) System.out.println(got);
         }
         if (showEdits) System.out.println("ends......");
         if (showEdits) System.out.println(expect);
-        assertTrue(expect.isEmpty(), 
-			() -> name + " not called: " + expect);
+        assertTrue(expect.isEmpty(),
+            () -> name + " not called: " + expect);
     }
 }

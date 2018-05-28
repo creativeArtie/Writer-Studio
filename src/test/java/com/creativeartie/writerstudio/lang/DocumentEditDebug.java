@@ -7,7 +7,6 @@ import java.util.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
 
-@RunWith(JUnit4.class)
 public class DocumentEditDebug{
 
     private static SetupParser PARSER = BranchSectionTest.getParser();

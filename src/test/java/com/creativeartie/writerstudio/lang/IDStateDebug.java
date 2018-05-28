@@ -14,18 +14,18 @@ import java.util.Optional;
 import com.creativeartie.writerstudio.lang.*;
 
 public class IDStateDebug extends IDParamTest{
-	private class Tester extends IDParameterMethodSource{
-		protected String getIdText(){
-			return "!^abc:text\n";
-		}
-		protected String getRefText(){
-			return "{!^abc}";
-		}
-	}
-	
+    private class Tester extends IDParameterMethodSource{
+        protected String getIdText(){
+            return "!^abc:text\n";
+        }
+        protected String getRefText(){
+            return "{!^abc}";
+        }
+    }
+
     @ParameterTest
     public void test(CatalogueStatus status, String text) {
-		WritingText text = new WritingText(text);
+        WritingText text = new WritingText(text);
         IDBuilder builder = new IDBuilder();
         boolean isFirst = true;
         for (IDParamTest.States state: input){
@@ -35,7 +35,7 @@ public class IDStateDebug extends IDParamTest{
                 case ID:
                     doc.addId(builder, expected, 0);
                     break;
-                case REF: 
+                case REF:
                     doc.addRef(builder, expected, 0);
                 }
                 isFirst = false;

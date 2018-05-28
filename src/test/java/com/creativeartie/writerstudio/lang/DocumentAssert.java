@@ -58,7 +58,7 @@ public class DocumentAssert {
     }
 
     public DocumentAssert assertDoc(int size, String raw){
-		ArrayList<Executable> doc = new ArrayList<>();
+        ArrayList<Executable> doc = new ArrayList<>();
         doc.add(() -> assertEquals(raw, testDocument.getRaw(), "text");
         doc.add(() -> assertEquals(size, testDocument.size(), "size");
         doc.add(() -> assertLocations(testDocument, true, true));
@@ -67,53 +67,53 @@ public class DocumentAssert {
     }
 
     private void assertLocations(SpanNode<?> span, boolean begin, boolean end){
-		ArrayList<Executable> self = new ArrayList<>();
-		int i = 0;
+        ArrayList<Executable> self = new ArrayList<>();
+        int i = 0;
         for (Span test: span){
             boolean first = i == 0 && begin;
-            self.add(() -> 
-				assertEquals(first, test.isDocumentFirst(), "isFirst")
-			);
+            self.add(() ->
+                assertEquals(first, test.isDocumentFirst(), "isFirst")
+            );
 
             boolean last = i == span.size() - 1 && end;
-            self.add(() -> 
-				assertEquals(last, test.isDocumentLast(), "isLast")
-			);
+            self.add(() ->
+                assertEquals(last, test.isDocumentLast(), "isLast")
+            );
             if (test instanceof SpanNode){
-				self.add(() -> assertLocations((SpanNode<?>) test, 
-					first, last));
+                self.add(() -> assertLocations((SpanNode<?>) test,
+                    first, last));
             }
             i++;
         }
         return () -> assertAll(span.toString(), self);
     }
-    
-    public SpanBranch assertChild(int ... indexes){
-		Span pointer = testDocument;
-		ArrayList<Executable> search = new ArrayList();
-		for (int i: indexes){
-			assertAll("index for " + pointer,
-				() -> assertTrue(pointer instanceof SpanNode, 
-					"not span node"),
-				() -> assertTrue(((SpanNode<?>)pointer).size() > i, 
-					"index"),
-				() -> assertTrue(pointer, (SpanNode<?>)pointer.get(i),
-					() -> "parent of " + pointer.get(i)),
-				() -> assertEquals(testDocument, pointer, pointer.get(i), 
-					() -> "document of " + pointer.get(i))
-			);
-			pointer = ((SpanNode<?>) pointer).get(i);
-		}
-		assertTrue(span instanceof SpanBranch, 
-			() -> "not span branch:" + span);
-		return (SpanBranch) span;
-	}
 
-    public <T extends SpanBranch> T assertChild(Class<T> clazz, 
-			int ... indexes){
+    public SpanBranch assertChild(int ... indexes){
+        Span pointer = testDocument;
+        ArrayList<Executable> search = new ArrayList();
+        for (int i: indexes){
+            assertAll("index for " + pointer,
+                () -> assertTrue(pointer instanceof SpanNode,
+                    "not span node"),
+                () -> assertTrue(((SpanNode<?>)pointer).size() > i,
+                    "index"),
+                () -> assertTrue(pointer, (SpanNode<?>)pointer.get(i),
+                    () -> "parent of " + pointer.get(i)),
+                () -> assertEquals(testDocument, pointer, pointer.get(i),
+                    () -> "document of " + pointer.get(i))
+            );
+            pointer = ((SpanNode<?>) pointer).get(i);
+        }
+        assertTrue(span instanceof SpanBranch,
+            () -> "not span branch:" + span);
+        return (SpanBranch) span;
+    }
+
+    public <T extends SpanBranch> T assertChild(Class<T> clazz,
+            int ... indexes){
         Span child = assertChild(indexes);
-        assertTrue(clazz.isInstance(child), 
-			() -> "Wrong class: " + clazz + ", gotten " +
+        assertTrue(clazz.isInstance(child),
+            () -> "Wrong class: " + clazz + ", gotten " +
             child.getClass() + ": " + child);
         return clazz.cast(child);
 
@@ -123,38 +123,38 @@ public class DocumentAssert {
         System.out.println(testDocument);
     }
 
-    public SpanBranch assertChild(int size, String text, 
-			int ... indexes){
+    public SpanBranch assertChild(int size, String text,
+            int ... indexes){
         SpanBranch test = assertChild(indexes);
-		assertAll("SpanBranch assertChild", 
-			() -> assertEquals(text, test.getRaw(), "text"),
-			() -> assertEquals(size, test.size(),   "size")
-		);
+        assertAll("SpanBranch assertChild",
+            () -> assertEquals(text, test.getRaw(), "text"),
+            () -> assertEquals(size, test.size(),   "size")
+        );
         return test;
     }
 
     private void assertLeaf(int start, int end, String raw,
             StyleInfoLeaf info, int ... indexes){
         Span[] child = assertChild(indexes);
-		
-		assertAll(child.toString(),
-			() -> assertTrue(child instanceof SpanLeaf, "Not leaf"),
-			() -> assertEquals(raw, child.getRaw(),      "text");
-			() -> assertEquals(start,   test.getStart(), "start");
-			() -> assertEquals(end,     test.getEnd(),   "end");
-			() -> assertEquals(info, ((SpanLeaf)child).getLeafStyle(), 
-				"style")
-		);
+
+        assertAll(child.toString(),
+            () -> assertTrue(child instanceof SpanLeaf, "Not leaf"),
+            () -> assertEquals(raw, child.getRaw(),      "text");
+            () -> assertEquals(start,   test.getStart(), "start");
+            () -> assertEquals(end,     test.getEnd(),   "end");
+            () -> assertEquals(info, ((SpanLeaf)child).getLeafStyle(),
+                "style")
+        );
     }
 
 
-    public void assertText(int start, int end, String rawText, 
-			int ... idx){
+    public void assertText(int start, int end, String rawText,
+            int ... idx){
         assertLeaf(start, end, rawText, StyleInfoLeaf.TEXT, idx);
     }
 
-    public void assertKey(int start, int end, String rawText, 
-			int ... idx){
+    public void assertKey(int start, int end, String rawText,
+            int ... idx){
         assertLeaf(start, end, rawText, StyleInfoLeaf.KEYWORD, idx);
     }
 
@@ -162,8 +162,8 @@ public class DocumentAssert {
         assertLeaf(start, end, rawText, StyleInfoLeaf.ID, idx);
     }
 
-    public void assertData(int start, int end, String rawText, 
-			int ... idx){
+    public void assertData(int start, int end, String rawText,
+            int ... idx){
         assertLeaf(start, end, rawText, StyleInfoLeaf.DATA, idx);
     }
 
@@ -172,8 +172,8 @@ public class DocumentAssert {
         assertLeaf(start, end, rawText, StyleInfoLeaf.FIELD, idx);
     }
 
-    public void assertPath(int start, int end, String rawText, 
-			int ... idx){
+    public void assertPath(int start, int end, String rawText,
+            int ... idx){
         assertLeaf(start, end, rawText, StyleInfoLeaf.PATH, idx);
     }
 
@@ -215,16 +215,16 @@ public class DocumentAssert {
         idTester.assertIds(testDocument, show);
         SpanBranch last = testDocument.get(testDocument.size() - 1);
         assertAll("last",
-			() -> assertTrue(last instanceof LastBranch, 
-				"No more text."),
-			() -> assertEquals(raw, last.getRaw())
-		);
+            () -> assertTrue(last instanceof LastBranch,
+                "No more text."),
+            () -> assertEquals(raw, last.getRaw())
+        );
     }
 
     public void assertRest(){
         assertRest(false);
     }
-    
+
     public void assertRest(boolean show){
         idTester.assertIds(testDocument, show);
         assertFalse(testDocument.get(testDocument.size() - 1) instanceof

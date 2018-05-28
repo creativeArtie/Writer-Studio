@@ -70,7 +70,7 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
 
         assertArrayEquals(expectStyles.toArray(),
             span.getBranchStyles().toArray(), "styles");
-    
+
         ArrayList<Executable> catalogue = new ArrayList<>();
         if (isCatalogued){
             catalogue.add(() -> assertTrue(span instanceof Catalogued));
@@ -85,7 +85,7 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         }
         catalogue.add(() -> assertEquals(expectStatus, span.getIdStatus()));
         assertAll("catalogue id", catalogue);
-        
+
         test(span);
         return span;
     }
@@ -93,18 +93,18 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
     protected static <U> T assertClass(SpanBranch span, Class<U> clazz){
         assertEquals(clazz, spanTarget.getClass(), "span class");
         return clazz.cast(spanTarget);
-	}
+    }
 
-    protected <U> void assertSpan(Optional<U> expect, 
-			Supplier<SpanBranch> supplier, String message){
-		Optional<SpanBranch> span = supplier.get();
-		
+    protected <U> void assertSpan(Optional<U> expect,
+            Supplier<SpanBranch> supplier, String message){
+        Optional<SpanBranch> span = supplier.get();
+
         ArrayList<Executable> tests = new ArrayList<>();
         if (expect.isPresent()){
-			tests.add(() -> assertTrue(span.isPresent());
-			tests.add(() -> assertSame(expect.get(), test.orElse(null));
+            tests.add(() -> assertTrue(span.isPresent());
+            tests.add(() -> assertSame(expect.get(), test.orElse(null));
         } else {
-			tests.add(() -> assertFalse(span.isPresent());
+            tests.add(() -> assertFalse(span.isPresent());
         }
         assertAll(message, tests);
     }

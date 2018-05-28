@@ -216,13 +216,13 @@ final class MatterArea extends ForwardingList<Division> {
     private void changeFont(ContentFont font) throws IOException{
         assert font != null: "null font";
         if (! (font instanceof WritingExporter.PdfFont)){
-			return;
-		}
+            return;
+        }
         if (textFont == null || ! font.equals(textFont)){
             contentStream.setNonStrokingColor(font.getColor());
             contentStream.setFont(
-				(PDFont) font.getFont(), font.getSize()
-			);
+                (PDFont) font.getFont(), font.getSize()
+            );
             textFont = font;
         }
     }

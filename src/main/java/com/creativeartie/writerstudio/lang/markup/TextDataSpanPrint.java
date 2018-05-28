@@ -60,7 +60,7 @@ public class TextDataSpanPrint extends TextDataSpan<FormattedSpan>{
     /** Set the text format.
      *
      * @param format
-     * 		setting format
+     *      setting format
      */
     public void setFormat(TextDataType.Format format){
         argumentNotNull(format, "format");
