@@ -96,63 +96,13 @@ public class DocumentAccessDebug{
         raw.append(leafSpan(" Story of nobody", 0, 0, 4, 0, 1));
         raw.append(leafSpan("\n",               0, 0, 5));
 
-        raw.append(leafSpan("!%",                   0, 1, 0, 0));
-        raw.append(leafSpan("Add some random note", 0, 1, 0, 1, 0, 0));
-        raw.append(leafSpan("\n",                   0, 1, 0, 2));
-
-        raw.append(leafSpan("!>",            0, 1, 1, 0));
-        raw.append(leafSpan("in-text",       0, 1, 1, 1, 0));
-        raw.append(leafSpan(":",             0, 1, 1, 2));
-        raw.append(leafSpan("Some sources.", 0, 1, 1, 3, 0, 0));
-        raw.append(leafSpan("\n",            0, 1, 1, 4));
-
-        raw.append(leafSpan("Paragraph ",  0, 2, 0, 0, 0));
-        raw.append(leafSpan("*",           0, 2, 0, 1));
-        raw.append(leafSpan("continue",    0, 2, 0, 2, 0));
-        raw.append(leafSpan("*",           0, 2, 0, 3));
-        raw.append(leafSpan(" from above", 0, 2, 0, 4, 0));
-        raw.append(leafSpan("\n",          0, 2, 1));
-
-        raw.append(leafSpan("***\n", 0, 3, 0));
-
-        raw.append(leafSpan("Text after the break.", 0, 4, 0, 0, 0));
-        raw.append(leafSpan("\n",                    0, 4, 1));
-
-
-        raw.append(leafSpan("=",     1, 0, 0));
-        raw.append(leafSpan("@",     1, 0, 1));
-        raw.append(leafSpan("Ch 2",  1, 0, 2, 0, 0));
-        raw.append(leafSpan(":",     1, 0, 3));
-        raw.append(leafSpan(" More", 1, 0, 4, 0, 0));
-        raw.append(leafSpan("#STUB", 1, 0, 5, 0));
-        raw.append(leafSpan(" abc",  1, 0, 5, 1, 0));
-        raw.append(leafSpan("\\",    1, 0, 5, 1, 1, 0));
-        raw.append(leafSpan("d",     1, 0, 5, 1, 1, 1));
-        raw.append(leafSpan("ee",    1, 0, 5, 1, 2));
-        raw.append(leafSpan("\n",    1, 0, 6));
-
-        raw.append(leafSpan("#",                 1, 1, 0));
-        raw.append(leafSpan("An outline thing.", 1, 1, 1, 0, 0));
-        raw.append(leafSpan("\n",                1, 1, 2));
-
-        raw.append(leafSpan("#",          1, 2, 0));
-        raw.append(leafSpan("See me fly", 1, 2, 1, 0, 0));
-        raw.append(leafSpan("{^",         1, 2, 1, 1, 0));
-        raw.append(leafSpan("random ",    1, 2, 1, 1, 1, 0, 0));
-        raw.append(leafSpan("}",          1, 2, 1, 1, 2));
-        raw.append(leafSpan("\n",         1, 2, 2));
-
-        raw.append(leafSpan("!^",                     1, 3, 0));
-        raw.append(leafSpan("footnote",               1, 3, 1, 0, 0));
-        raw.append(leafSpan(":",                      1, 3, 2));
-        raw.append(leafSpan("text for the foot note", 1, 3, 3, 0, 0));
-        raw.append(leafSpan("\n",                     1, 3, 4));
+        raw.append(leafSpan("***\n", 0, 1, 0));
 
         /// Index after filled document
         data = new TestData();
         data.itemPointer = testData.size() - 1;
         data.useEmpty = false;
-        data.forSpan = new int[]{1, 3, 4};
+        data.forSpan = new int[]{0, 1, 0};
         data.expectColumn = 0;
         data.expectLine = countLine;
         data.testIndex = countIt++;
@@ -224,7 +174,7 @@ public class DocumentAccessDebug{
     @MethodSource
     public void testColumn(int ptr, boolean empty, int[] indexes, int column){
         Document doc = empty? emptyDoc: filledDoc;
-        String size = empty? "[0..0]": "[0..237]";
+        String size = empty? "[0..0]": "[0..35]";
         if (indexes.length > 0 || (empty && ptr == 0) ){
             assertEquals(column, doc.getColumn(ptr));
         } else {
@@ -250,7 +200,7 @@ public class DocumentAccessDebug{
     @MethodSource
     public void testLine(int ptr, boolean empty, int[] indexes, int line){
         Document doc = empty? emptyDoc: filledDoc;
-        String size = empty? "[0..0]": "[0..237]";
+        String size = empty? "[0..0]": "[0..35]";
         if (indexes.length > 0 || (empty && ptr == 0) ){
             assertEquals(line, doc.getLine(ptr));
         } else {
@@ -322,7 +272,7 @@ public class DocumentAccessDebug{
     @MethodSource
     public void testLeafByIndex(int ptr, boolean empty, int[] indexes){
         Document doc = empty? emptyDoc: filledDoc;
-        String size = empty? "[0..0]": "[0..237]";
+        String size = empty? "[0..0]": "[0..35]";
         if (indexes.length == 0 && !(empty && ptr == 0)){
             Throwable thrown = assertThrows(IndexOutOfBoundsException.class,
                 () -> System.out.println(doc.getLeaf(ptr)));
