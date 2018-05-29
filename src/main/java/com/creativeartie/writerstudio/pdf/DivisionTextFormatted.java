@@ -309,7 +309,7 @@ class DivisionTextFormatted extends DivisionText{
             LinedSpanCite cite = citation.get();
 
             /// Add in text citation as footnote
-            if (cite.getFormatTypeField() == InfoFieldType.FOOTNOTE){
+            if (cite.getInfoFieldType() == InfoFieldType.FOOTNOTE){
                 font = font.changeToSuperscript();
                 addFootnote(cite, font);
 
@@ -361,12 +361,7 @@ class DivisionTextFormatted extends DivisionText{
         assert span != null: "null span";
         assert font != null: "null font";
 
-        FormatTypeField type = FormatTypeField.findField(span.getField());
-        if (type == null){
-            appendText(" ", font);
-        }
-
-        switch (type){
+        switch (span.getField()){
         case PAGE_NUMBER:
             if(contentData.isPresent()){
                 appendText(contentData.get().getPageNumber() + "", font);
@@ -381,6 +376,8 @@ class DivisionTextFormatted extends DivisionText{
             } else {
                 appendText(Utilities.round(count), font);
             }
+        default:
+            appendText(" ", font);
         }
     }
 }

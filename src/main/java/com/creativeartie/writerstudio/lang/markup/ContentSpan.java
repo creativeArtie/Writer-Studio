@@ -60,7 +60,7 @@ public final class ContentSpan extends SpanBranch implements BasicText{
      *
      * @return answer
      */
-    public int wordCount(){
+    public int getWordCount(){
         return getLocalCache(wordCount,
             () -> Splitter.on(CharMatcher.whitespace())
                 .omitEmptyStrings()

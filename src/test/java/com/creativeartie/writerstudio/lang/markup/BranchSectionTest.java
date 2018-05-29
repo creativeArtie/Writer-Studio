@@ -1,4 +1,4 @@
-package com.creativeartie.writerstudio.lang.markup;
+/*package com.creativeartie.writerstudio.lang.markup;
 
 import org.junit.jupiter.api.function.*;
 
@@ -31,13 +31,13 @@ public class BranchSectionTest {
             noteTotal = 1;
         }
 
-        /** For {@link NoteCardSpan#getNoteTotal()}  (default: {@code 1}) */
+        /** For {@link NoteCardSpan#getNoteTotal()}  (default: {@code 1}) *
         public NoteCardTest setNoteTotal(int count){
             noteTotal = count;
             return this;
         }
 
-        /** For ??? (default: empty) */
+        /** For ??? (default: empty) *
         public NoteCardTest putData(InfoFieldType key, DocumentAssert doc,
                 int ... idx){
             builder.put(key, doc.getChild(InfoDataSpan.class, idx));
@@ -220,3 +220,4 @@ public class BranchSectionTest {
 
     }
 }
+*/

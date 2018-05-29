@@ -26,7 +26,7 @@ interface BasicText{
 
     /** Get the text with space collapsed, and escape character removed.
      *
-     * Therefore "{@code   12\\3  ad  }" ->  "{@code 123  ad}".
+     * Therefore "{@code   12\\3  ad  }" ->  "{@code   123 ad  }".
      *
      * @return answer
      * @see #getTrimmed() but also trimed

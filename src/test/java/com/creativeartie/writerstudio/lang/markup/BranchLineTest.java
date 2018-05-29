@@ -1,10 +1,11 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.util.Arrays;
-import java.util.Optional;
+import org.junit.jupiter.api.function.*;
+
+import java.util.*;
 import java.util.function.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.DocumentAssert.*;
@@ -17,16 +18,20 @@ public class BranchLineTest {
         private int noteTotal;
         private LinedType linedType;
 
-        public LineTest(Class<T> clazz){
+        public LineTest(Class<T> clazz, int publish, int note){
             super(clazz);
+            publishTotal = publish;
+            noteTotal = note;
         }
 
-        public T setPublishTotal(int count){
+        /** For {@link LinedSpan#getPublishTotal()} (default: depends). */
+        public T setPublish(int count){
             publishTotal = count;
             return cast();
         }
 
-        public T setNoteTotal(int count){
+        /** For {@link LinedSpan#getNoteTotal()} (default: depends). */
+        public T setNote(int count){
             noteTotal = count;
             return cast();
         }
@@ -41,11 +46,14 @@ public class BranchLineTest {
         }
 
         @Override
-        public void test(SpanBranch span){
+        public void test(SpanBranch span, ArrayList<Executable> tests){
             LinedSpan test = (LinedSpan) span;
-            assertEquals(getError("type", span), linedType, test.getLinedType());
-            assertEquals(getError("publish", span), publishTotal, test.getPublishTotal());
-            assertEquals(getError("note", span), noteTotal, test.getNoteTotal());
+            tests.add(() -> assertEquals(linedType, test.getLinedType(),
+                "getLinedType()"));
+            tests.add(() -> assertEquals(publishTotal, test.getPublishTotal(),
+                "getPublishTotal()"));
+            tests.add(() -> assertEquals(noteTotal, test.getNoteTotal(),
+                "getNoteTotal()"));
         }
     }
 
@@ -55,7 +63,7 @@ public class BranchLineTest {
         private Optional<InfoDataSpan> dataSpan;
 
         public CiteLineTest(){
-            super(CiteLineTest.class);
+            super(CiteLineTest.class, 0, 1);
             setLinedType(LinedType.SOURCE);
             dataSpan = Optional.empty();
         }
@@ -80,14 +88,18 @@ public class BranchLineTest {
         }
 
         @Override
-        public void test(SpanBranch span){
-            LinedSpanCite test = assertClass(span, LinedSpanCite.class);
-            assertEquals(getError("field", test), infoType, test.getFormatTypeField());
-            assertSpan("data", span, dataSpan, test.getData());
-            super.test(span);
+        public void test(SpanBranch span, ArrayList<Executable> tests){
+            LinedSpanCite test = assertClass(LinedSpanCite.class);
+
+            tests.add(() -> assertEquals(infoType, test.getInfoFieldType(),
+                "getInfoFieldType()"));
+            tests.add(() -> assertSpan(SpanBranch.class, spanTarget,
+                () -> span.getTarget(), "getTarget()"));
+            super.test(span, tests);
         }
     }
 
+    /** For when the style is just LinedType.*/
     private static class SimpleStyleTest<T extends SimpleStyleTest<T>>
             extends LineTest<T>{
         private LinedType linedType;
@@ -113,51 +125,79 @@ public class BranchLineTest {
     public abstract static class LevelLineTest<T extends SimpleStyleTest<T>>
             extends SimpleStyleTest<T>{
         private int lineLevel;
-        private Optional<FormattedSpan> lineText;
+        private int[] lineText;
 
-        public LevelLineTest(Class<T> clazz){
-            super(clazz, null);
-            lineText = Optional.empty();
+        public LevelLineTest(Class<T> clazz, int publish, int note){
+            super(clazz, null, publish, note);
+        linedLevel = 1;
+            lineText = null;
         }
 
+        /** For {@link LinedSpanLevel#getLevel()} (default: 1)*/
         public T setLevel(int level){
             lineLevel = level;
             return cast();
         }
 
-        public T setFormattedSpan(DocumentAssert doc, int ... idx){
-            lineText = Optional.of(doc.getChild(FormattedSpan.class, idx));
+        /** For {@link LinedSpanLevel#getForamtedSpan()} (no default) */
+        public T setFormattedSpan(int... indexes){
+            lineText = indexes;
             return cast();
         }
 
-        protected abstract LinedSpanLevel testSubclass(SpanBranch span);
+        protected abstract LinedSpanLevel testSubclass(SpanBranch span,
+            ArrayList<Executable> tests);
 
         @Override
-        public void test(SpanBranch span){
-            LinedSpanLevel test = testSubclass(span);
-            assertEquals(getError("level", test), lineLevel, test.getLevel());
-            assertSpan("text", span, lineText, test.getFormattedSpan());
-            super.test(span);
+        public void test(SpanBranch span, ArrayList<Executable> tests){
+            LinedSpanLevel test = testSubclass(span, tests);
+            tests.add(() -> assertEquals(lineLevel, test.getLevel(), "getLevel"));
+            tests.add(() -> assertEquals(FormatedSpan.class, lineTest,
+                () -> test.getFormatedSpan(), "getFormatedSpan()"));
+            super.test(span, tests);
         }
     }
 
     public static class HeadLevelLineTest extends
             LevelLineTest<HeadLevelLineTest>{
 
-        private EditionType edition;
+        private EditionType editionType;
+        private int[] editionSpan;
+        private String lookupText;
 
         public HeadLevelLineTest(){
-            super(HeadLevelLineTest.class);
+            super(HeadLevelLineTest.class, 1, 0);
+        editionType = EditionType.NONE;
+        editionSpan = null;
         }
 
-        public HeadLevelLineTest setEdition(EditionType ed){
-            edition = ed;
+        /** For {@link LinedSpanLevelSection#getEditionType()} (default: NONE)*/
+        public HeadLevelLineTest setEdition(EditionType edition){
+            editionType = edition;
+        lookupText = "";
             return this;
         }
 
-        protected LinedSpanLevel testSubclass(SpanBranch span){
-            LinedSpanLevelSection test = assertClass(span, LinedSpanLevelSection.class);
-            assertEquals(getError("edition", span), edition, test.getEditionType());
+        /** For {@link LinedSpanLevelSection#getEditionSpan()} (no default)*/
+        public HeadLevelLineTest setEditionSpan(int ... indexes){
+            editionSpan = indexes;
+            return this;
+        }
+
+        /** For {@link LinedSpanLevelSection#getLookupText()} (default: "")*/
+        public HeadLevelLineTest setLookupText(String text){
+            lookupText = text;
+            return this;
+        }
+
+        protected LinedSpanLevel testSubclass(SpanBranch span, ArrayList<Executable> tests){
+            LinedSpanLevelSection test = assertClass(LinedSpanLevelSection.class);
+            tests.add(() -> assertEquals(edition, test.getEditionType(),
+                "getEdtionType()"));
+            tests.add(() -> AssertEquals(editionSpan.class, editionSpan, () -> test.getEditionSpan(),
+                "getEditionSpan()"));
+            tests.add(() -> assertEquals(lookupText, test.getLookupText(),
+                "getLookupText()"));
             return test;
         }
     }
@@ -166,23 +206,33 @@ public class BranchLineTest {
                 LevelLineTest<ListLevelLineTest>{
 
         public ListLevelLineTest(){
-            super(ListLevelLineTest.class);
+            super(ListLevelLineTest.class, 1, 0);
         }
 
-        protected LinedSpanLevel testSubclass(SpanBranch span){
-            return assertClass(span, LinedSpanLevelList.class);
+        protected LinedSpanLevel testSubclass(SpanBranch span, ArrayList<Executable> tests){
+            return assertClass(LinedSpanLevelList.class);
         }
     }
 
     public static class PointerLinkTest extends LineTest<PointerLinkTest>{
-        private String path;
+        private String linkPath;
+        private String lookupText;
 
         public PointerLinkTest(){
-            super(PointerLinkTest.class);
+            super(PointerLinkTest.class, 1, 0);
+            linkPath = "";
+            lookupText = "";
         }
 
-        public PointerLinkTest setPath(String str){
-            path = str;
+        /** For {@link LinedSpanPointLink#getPath()} (default: "")*/
+        public PointerLinkTest setPath(String path){
+            linkPath = path;
+            return this;
+        }
+
+        /** For {@link LinedSpanPointLink#getLookupText()} (default: "")*/
+        public PointerLinkTest setLookup(String lookup){
+            lookupText = lookup;
             return this;
         }
 
@@ -193,21 +243,23 @@ public class BranchLineTest {
         }
 
         @Override
-        public void test(SpanBranch span){
+        public void test(SpanBranch span, ArrayList<Executable> tests){
             LinedSpanPointLink test = assertClass(span, LinedSpanPointLink.class);
-            assertEquals(getError("path", test), path, test.getPath());
-            super.test(span);
+            tests.add(() -> assertEquals(linkPath, test.getPath(), "getPath()"));
+            tests.add(() -> assertEquals(lookupText, test.getLookupText(),
+                "getLookupText()"));
+            super.test(span, tests);
         }
     }
 
     public static class BreakLineTest extends SimpleStyleTest<BreakLineTest>{
 
         public BreakLineTest(){
-            super(BreakLineTest.class, LinedType.BREAK);
+            super(BreakLineTest.class, LinedType.BREAK, 0, 0);
         }
 
         @Override
-        public void test(SpanBranch span){
+        public void test(SpanBranch span, ArrayList<Executable> tests){
             super.test(assertClass(span, LinedSpanBreak.class));
         }
     }
@@ -216,19 +268,21 @@ public class BranchLineTest {
         private String agendaLine;
 
         public AgendaLineTest(){
-            super(AgendaLineTest.class, LinedType.AGENDA);
+            super(AgendaLineTest.class, LinedType.AGENDA, 0, 1);
         }
 
+        /** For {@link LinedSpanAgenda#getAgenda()} (default: */
         public AgendaLineTest setAgenda(String agenda){
             agendaLine = agenda;
             return this;
         }
 
         @Override
-        public void test(SpanBranch span){
+        public void test(SpanBranch span, ArrayList<Executable> tests){
             LinedSpanAgenda test = assertClass(span, LinedSpanAgenda.class);
-            assertEquals(getError("agenda", test), agendaLine, test.getAgenda());
-            super.test(span);
+            tests.add(() -> assertEquals(agendaLine, test.getAgenda(),
+                "getAgenda()"));
+            super.test(span, tests);
         }
     }
 
@@ -238,75 +292,103 @@ public class BranchLineTest {
         private Optional<FormattedSpan> lineText;
 
         public ParagraphLineTest(){
-            super(ParagraphLineTest.class, LinedType.PARAGRAPH);
+            super(ParagraphLineTest.class, LinedType.PARAGRAPH, 1, 0);
             lineText = Optional.empty();
         }
 
-        public ParagraphLineTest setFormattedSpan(DocumentAssert doc, int ... idx){
-            lineText = Optional.of(doc.getChild(FormattedSpan.class, idx));
+        /** For {@link LinedSpanParagraph#getFormattedSpan()} (no default)*/
+        public ParagraphLineTest setFormattedSpan(int ... idx){
+            lineText = idx;
             return this;
         }
 
         @Override
-        public void test(SpanBranch span){
-            LinedSpanParagraph test = assertClass(span, LinedSpanParagraph.class);
-            assertSpan("data", span, lineText, test.getFormattedSpan());
-            super.test(span);
+        public void test(SpanBranch span, ArrayList<Executable> tests){
+            LinedSpanParagraph test = assertClass(LinedSpanParagraph.class);
+            tests.add(() -> FormattedSpan.class, lineText, () ->
+                test.getFormattedSpan(), "getFormattedSpan()");
+            super.test(span, tests);
         }
     }
 
     public static class NoteLineTest extends SimpleStyleTest<NoteLineTest>{
 
         private Optional<CatalogueIdentity> buildId;
-        private Optional<FormattedSpan> lineText;
+        private int[] lineText;
+        private String lookupText;
 
         public NoteLineTest(){
-            super(NoteLineTest.class, LinedType.NOTE);
+            super(NoteLineTest.class, LinedType.NOTE, 0, 1);
             buildId = Optional.empty();
             lineText = Optional.empty();
+        lookupText = "";
         }
 
+        /** For {@link LinedSpanNote#buildId()} (default: empty) */
         public NoteLineTest setBuildId(IDBuilder builder){
             buildId = Optional.ofNullable(builder).map(found -> found.build());
             return this;
         }
 
-        public NoteLineTest setFormattedSpan(DocumentAssert doc, int ... idx){
-            lineText = Optional.of(doc.getChild(FormattedSpan.class, idx));
+        /** For {@link LinedSpanNote#getFormattedSpan()} (no default) */
+        public NoteLineTest setFormattedSpan(int ... indexes){
+            lineText = indexes;
+            return this;
+        }
+
+        /** For {@link LinedSpanNote#getLookupText()} (default: "") */
+        public NoteLineTest setLookup(String text){
+            lookupText = text;
             return this;
         }
 
         @Override
-        public void test(SpanBranch span){
-            LinedSpanNote test = assertClass(span, LinedSpanNote.class);
-            assertSpan("data", span, lineText, test.getFormattedSpan());
-            assertEquals(getError("id", span), buildId, test.buildId());
-            super.test(span);
+        public void test(SpanBranch span, ArrayList<Executable> tests){
+            LinedSpanNote test = assertClass(LinedSpanNote.class);
+            tests.add(() -> assertEquals(buildId, test.buildId(), "buildId()"));
+            tests.add(() -> assertEquals(lookupText, test.getLookupText(),
+                "getLookupText()"));
+            tests.add(() -> FormattedSpan.class, linedText,
+                () -> test.getFormattedText(), "getFormattedText()");
+            super.test(span, tests);
         }
     }
 
     public static class PointerNoteTest extends SimpleStyleTest<PointerNoteTest>{
         private Optional<FormattedSpan> lineText;
+        private String lookupText;
 
         public PointerNoteTest(){
             super(PointerNoteTest.class, null);
             lineText = Optional.empty();
+            lookupText = "";
         }
 
-        public PointerNoteTest setFormattedSpan(DocumentAssert doc, int ... idx){
-            lineText = Optional.of(doc.getChild(FormattedSpan.class, idx));
+        /** For {@link LinedSpanPointNote#getFormattedSpan()} (no default) */
+        public PointerNoteTest setFormattedSpan(int ... indexes){
+            lineText = indexes;
+            return this;
+        }
+
+        /** For {@link LinedSpanPointNote#getLookupText()} (default: "")*/
+        public PointerNoteTest setLookup(String lookup){
+            lookupText = lookup;
             return this;
         }
 
         @Override
         public void setup(){
-            setStyles(getLinedType(), getCatalogueStatus());
+            addStyles(getCatalogueStatus());
         }
 
         @Override
-        public void test(SpanBranch span){
+        public void test(SpanBranch span, ArrayList<Executable> tests){
             LinedSpanPointNote test = assertClass(span, LinedSpanPointNote.class);
-            assertSpan("data", span, lineText, test.getFormattedSpan());
+
+            tests.add(() -> FormattedSpan.class, linedText,
+                () -> test.getFormattedText(), "getFormattedText()");
+            tests.add(() -> assertEquals(lookupText, test.getLookupText(),
+                "getLookupText()"));
             super.test(span);
         }
     }
@@ -315,19 +397,22 @@ public class BranchLineTest {
         private Optional<FormattedSpan> lineText;
 
         public QuoteLineTest(){
-            super(QuoteLineTest.class, LinedType.QUOTE);
+            super(QuoteLineTest.class, LinedType.QUOTE, 1, 0);
             lineText = Optional.empty();
         }
 
-        public QuoteLineTest setFormattedSpan(DocumentAssert doc, int ... idx){
-            lineText = Optional.of(doc.getChild(FormattedSpan.class, idx));
+        /** For {@link LinedSpanQuote#getFormattedSpan()} (no default) */
+        public QuoteLineTest setFormattedSpan(int ... indexes){
+            lineText = indexes;
             return this;
         }
 
+
         @Override
-        public void test(SpanBranch span){
+        public void test(SpanBranch span, ArrayList<Executable> tests){
             LinedSpanQuote test = assertClass(span, LinedSpanQuote.class);
-            assertSpan("formatted", span, lineText, test.getFormattedSpan());
+            tests.add(() -> FormattedSpan.class, linedText,
+                () -> test.getFormattedText(), "getFormattedText()");
             super.test(span);
         }
     }

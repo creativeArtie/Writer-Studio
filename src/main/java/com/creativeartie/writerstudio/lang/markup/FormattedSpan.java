@@ -53,8 +53,8 @@ public final class FormattedSpan extends SpanBranch {
         return getLocalCache(cacheNote, () -> getCount(false, true));
     }
 
-    /** Get the total word count. */
-    public int getTotalCount(){
+    /** Get the total word count.*/
+    public int getGrandTotal(){
         return getLocalCache(cacheTotal, () -> getCount(true, true));
     }
 

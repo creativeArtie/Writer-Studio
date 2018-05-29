@@ -91,7 +91,7 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
                     .orElse(0);
             } else {
                 assert getLinedType() == LinedType.OUTLINE: getLinedType();
-                return getFormattedSpan().map(s -> s.getTotalCount())
+                return getFormattedSpan().map(s -> s.getGrandTotal())
                     .orElse(0);
             }
         });

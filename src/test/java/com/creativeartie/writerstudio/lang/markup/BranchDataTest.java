@@ -11,8 +11,8 @@ import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.DocumentAssert.*;
 
 public class BranchDataTest {
-    private static class DataTest<T extends DataTest<T>> extends
-            SpanBranchAssert<T> {
+    private static class DataTest<T extends DataTest<T>>
+            extends SpanBranchAssert<T> {
         /** For {@link InfoDataType#getDataType()}  (overrided)*/
         private InfoDataType dataType;
 
@@ -31,7 +31,7 @@ public class BranchDataTest {
             InfoDataSpan test = (InfoDataSpan) span;
 
             tests.add(() -> assertEquals(dataType, test.getDataType(),
-                "getDataType()");
+                "getDataType()"));
         }
     }
 
@@ -53,7 +53,7 @@ public class BranchDataTest {
             InfoDataSpanFormatted test = assertClass(InfoDataSpanFormatted.class);
 
             tests.add(assertSpan(FormattedSpan.class, spanData,
-                () -> test.getData(), "getData()");
+                () -> test.getData(), "getData()"));
             super.test(span, tests);
         }
     }
@@ -62,8 +62,8 @@ public class BranchDataTest {
         private int[] spanData;
 
         public ContentDataTest(){
-            super(ContentDataTest.class);
-            setType(InfoDataType.TEXT);
+            super(ContentDataTest.class, InfoDataType.TEXT);
+            spanData = null;
         }
 
         /** For {@link InfoDataSpanText#getData()}  (no default). */
@@ -73,12 +73,36 @@ public class BranchDataTest {
         }
 
         @Override
-        public void test(SpanBranch span){
+        public void test(SpanBranch span, ArrayList<Executable> tests){
             InfoDataSpanText test = assertClass(InfoDataSpanText.class);
 
-            tests.add(assertSpan(FormattedSpan.class, spanData,
-                () -> test.getData(), "getData()");
-            super.test(span);
+            tests.add(() -> assertSpan(FormattedSpan.class, spanData,
+                () -> test.getData(), "getData()"));
+            super.test(span, tests);
+        }
+    }
+
+    public static class RefDataTest extends DataTest<RefDataTest>{
+        private int[] spanData;
+
+        public RefDataTest(){
+            super(RefDataTest.class, InfoDataType.TEXT);
+            spanData = null;
+        }
+
+        /** For {@link InfoDataSpanText#getData()}  (no default). */
+        public RefDataTest setData(int ... idx){
+            spanData = idx;
+            return this;
+        }
+
+        @Override
+        public void test(SpanBranch span, ArrayList<Executable> tests){
+            InfoDataSpanRef test = assertClass(InfoDataSpanRef.class);
+
+            tests.add(() -> assertSpan(DirectorySpan.class, spanData,
+                () -> test.getData(), "getData()"));
+            super.test(span, tests);
         }
     }
 }

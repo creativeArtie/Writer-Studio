@@ -95,7 +95,7 @@ class CheatsheetLabel extends Label{
         }
         return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
             (doc, point) -> doc.locateSpan(point, LinedSpanCite.class).map(
-                span -> span.getFormatTypeField() == type
+                span -> span.getInfoFieldType() == type
             ).orElse(false),
             (doc, point) -> doc.locateSpan(point, LinedSpanCite.class)
                 .isPresent()

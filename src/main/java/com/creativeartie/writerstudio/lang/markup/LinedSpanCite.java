@@ -24,7 +24,7 @@ public class LinedSpanCite extends LinedSpan {
         return text.startsWith(LINED_CITE);
     }
 
-    private final CacheKeyMain<InfoFieldType> cacheFormatTypeField;
+    private final CacheKeyMain<InfoFieldType> cacheInfoType;
     private final CacheKeyOptional<InfoDataSpan> cacheData;
     private final CacheKeyList<StyleInfo> cacheStyles;
     private final CacheKeyMain<Integer> cacheNote;
@@ -38,7 +38,7 @@ public class LinedSpanCite extends LinedSpan {
     LinedSpanCite(List<Span> children){
         super(children);
 
-        cacheFormatTypeField = new CacheKeyMain<>(InfoFieldType.class);
+        cacheInfoType = new CacheKeyMain<>(InfoFieldType.class);
         cacheData = new CacheKeyOptional<>(InfoDataSpan.class);
         cacheStyles = new CacheKeyList<>(StyleInfo.class);
         cacheNote = CacheKeyMain.integerKey();
@@ -48,14 +48,11 @@ public class LinedSpanCite extends LinedSpan {
      *
      * @return answer
      */
-    public InfoFieldType getFormatTypeField(){
-        return getLocalCache(cacheFormatTypeField, () -> {
-            Optional<InfoFieldSpan> field = spanFromFirst(InfoFieldSpan.class);
-            if (field.isPresent()){
-                return field.get().getFormatTypeField();
-            }
-            return InfoFieldType.ERROR;
-        });
+    public InfoFieldType getInfoFieldType(){
+        return getLocalCache(cacheInfoType, () ->
+            spanFromFirst(InfoFieldSpan.class)
+            .map(s -> s.getInfoFieldType())
+            .orElse(InfoFieldType.ERROR));
     }
 
     /** Gets the citation field data
@@ -70,7 +67,7 @@ public class LinedSpanCite extends LinedSpan {
     public List<StyleInfo> getBranchStyles(){
         return getLocalCache(cacheStyles, () -> {
             ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
-            builder.addAll(super.getBranchStyles()).add(getFormatTypeField());
+            builder.addAll(super.getBranchStyles()).add(getInfoFieldType());
             if (! getData().isPresent()){
                 builder.add(AuxiliaryType.DATA_ERROR);
             }
@@ -81,7 +78,7 @@ public class LinedSpanCite extends LinedSpan {
     @Override
     public int getNoteTotal(){
         return getLocalCache(cacheNote, () -> {
-            if (getFormatTypeField() != InfoFieldType.ERROR){
+            if (getInfoFieldType() != InfoFieldType.ERROR){
                 return getData().map(this::getCount).orElse(0);
             }
             return 0;
@@ -91,6 +88,7 @@ public class LinedSpanCite extends LinedSpan {
     /** Gets the note count
      *
      * @return answer
+     * @see #getNoteTotal()
      */
     private int getCount(InfoDataSpan span){
         assert span != null: "Null span";
@@ -98,7 +96,7 @@ public class LinedSpanCite extends LinedSpan {
             FormattedSpan data = ((InfoDataSpanFormatted)span).getData();
             return data.getPublishTotal() + data.getNoteTotal();
         } else if (span instanceof InfoDataSpanText){
-            return ((InfoDataSpanText)span).getData().wordCount();
+            return ((InfoDataSpanText)span).getData().getWordCount();
         }
         return 0;
     }

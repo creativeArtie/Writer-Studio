@@ -152,7 +152,7 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
         return Optional.ofNullable(child)
             /// c == LindSpanCite
             .filter(c -> c.getData().isPresent())
-            .map(c -> c.getFormatTypeField())
+            .map(c -> c.getInfoFieldType())
             /// c == InfoFieldType
             .filter(filter)
             .isPresent();

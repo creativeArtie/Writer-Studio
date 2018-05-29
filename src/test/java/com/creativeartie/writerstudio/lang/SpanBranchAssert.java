@@ -43,7 +43,7 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         expectId = Optional.ofNullable(builder).map(found -> found.build());
         expectStatus = status;
         isCatalogued = true;
-        return returnCast();
+        return cast();
     }
 
     public void setCatalogued(){
@@ -128,7 +128,10 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
     protected Executable assertSpan(Class<?> clazz, int[] location,
             Supplier<Optional<SpanBranch>> supplier, String message){
         return () -> {
-            SpanBranch span = assertDoc.assertChild(clazz, location);
+            Optional<SpanBranch> expect = Optional.empty();
+            if (location != null){
+                expect = Optional.of(assertDoc.assertChild(clazz, location));
+            }
             Optional<SpanBranch> test = supplier.get();
 
             ArrayList<Executable> tests = new ArrayList<>();
@@ -139,7 +142,7 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
                 tests.add(() -> assertFalse(test.isPresent()));
             }
             assertAll(message, tests);
-        }
+        };
     }
 
 }

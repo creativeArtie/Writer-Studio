@@ -104,7 +104,7 @@ public class NoteCardDetail extends TitledPane{
         });
 
         span.getInTextLine().ifPresent(line -> {
-            WindowText type = line.getFormatTypeField() == InfoFieldType.FOOTNOTE?
+            WindowText type = line.getInfoFieldType() == InfoFieldType.FOOTNOTE?
                 WindowText.NOTE_CARD_FOOTNOTE: WindowText.NOTE_CARD_IN_TEXT;
             Label label = new Label(type.getText());
             bottom.add(label, 0, 1);

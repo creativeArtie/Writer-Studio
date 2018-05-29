@@ -17,26 +17,26 @@ public class BranchFormatTest {
         FormatSpan test = (FormatSpan) span;
 
         ArrayList<Executable> tests = new ArrayList<>();
-        test.add(() -> Arrays.asList(formats).contains(FormatTypeStyle.BOLD),
-            test.isBold(), "isBold()");
-        test.add(() -> Arrays.asList(formats).contains(FormatTypeStyle.ITALICS),
-            test.isItalics(), "isItalics()");
-        test.add(() -> Arrays.asList(formats).contains(FormatTypeStyle.UNDERLINE),
-            test.isUnderline(), "isUnderline()");
-        test.add(() -> Arrays.asList(formats).contains(FormatTypeStyle.CODED),
-            test.isCoded(), "isCoded()");
+        test.add(() -> assertEquals(Arrays.asList(formats)
+            .contains(FormatTypeStyle.BOLD), test.isBold(), "isBold()"));
+        test.add(() -> assertEquals(Arrays.asList(formats)
+            .contains(FormatTypeStyle.ITALICS), test.isItalics(), "isItalics()"));
+        test.add(() -> assertEquals(Arrays.asList(formats)
+            .contains(FormatTypeStyle.UNDERLINE), test.isUnderline(), "isUnderline()");
+        test.add(() -> assertEquals(Arrays.asList(formats)
+            .contains(FormatTypeStyle.CODED), test.isCoded(), "isCoded()");
         return tests;
     }
 
     public static class FormatNoteTest extends SpanBranchAssert<FormatNoteTest>{
         private DirectoryType idType;
         private FormatTypeStyle[] spanFormats;
-        private Optional<SpanBranch> spanTarget;
+        private int[] spanTarget;
 
-        public FormatNoteTest(){
-            super(FormatNoteTest.class);
+        public FormatNoteTest(DocumentAssert doc){
+            super(FormatNoteTest.class, doc);
             spanFormats = new FormatTypeStyle[0];
-            spanTarget = Optional.empty();
+            spanTarget = null;
             idType = DirectoryType.FOOTNOTE;
         }
 
@@ -44,37 +44,51 @@ public class BranchFormatTest {
          * (default: {@link DirectoryType#FOOTNOTE}).
          */
         public FormatNoteTest setDirectoryType(DirectoryType type){
+            assert type == DirectoryType.RESEARCH ||
+                type == DirectoryType.FOOTNOTE ||
+                type == DirectoryType.ENDNOTE : "Wrong type: " + type;
             idType = type;
             return this;
         }
 
-        /** For {@link FormatSpan formats}  (default: none). */
+        /** For {@link FormatSpan formats}  (default: no formats). */
         public FormatNoteTest setFormats(FormatTypeStyle ... types){
             spanFormats = types;
             return this;
         }
 
-        public FormatTypeStyle[] getFormats(){
-            return spanFormats;
-        }
-
-        public FormatNoteTest setTarget(DocumentAssert doc, int ... idx){
-            spanTarget = Optional.of(doc.getChild(SpanBranch.class, idx));
+        /** For {@link FormatSpanPointId#getTarget()} (no default).*/
+        public FormatNoteTest setTarget(int ... indexes){
+            spanTarget = indexes;
             return this;
         }
 
         @Override
         public void setup(){
             setStyles(idType, getCatalogueStatus());
-            addStyles(getFormats());
+            addStyles(spanFormats);
             setCatalogued();
         }
 
         @Override
-        public void test(SpanBranch span){
+        public void test(SpanBranch span, ArrayList<Executable> tests){
             FormatSpanPointId test = assertClass(FormatSpanPointId.class);
 
             tests.add(() -> assertEquals(idType, test.getIdType(), "getIdType()"));
+            Class<?> clazz;
+            switch (idType){
+                case DirectoryType.RESEARCH:
+                    clazz = NoteCardSpan.class;
+                    break;
+                case DirectoryType.FOOTNOTE:
+                case DirectoryType.ENDNOTE:
+                    clazz = LinedSpanPointNote.class;
+                    break;
+                default:
+                    clazz = SpanBranch.class;
+            }
+            tests.add(() -> assertSpan(clazz, spanTarget, () -> test.getTarget(),
+                "getTarget()"));
             tests.addAll(testFormats(test, spanFormats));
         }
     }
@@ -82,7 +96,7 @@ public class BranchFormatTest {
     public static class FormatKeyTest extends SpanBranchAssert<FormatKeyTest>{
 
         private FormatTypeStyle[] spanFormats;
-        private String keyField;
+        private FormatTypeField keyField;
 
         public FormatKeyTest(){
             super(FormatKeyTest.class);
@@ -91,8 +105,8 @@ public class BranchFormatTest {
         }
 
         /** For {@link FormatSpanPointKey#getField()} (default: {@code ""}). */
-        public FormatKeyTest setField(String str){
-            keyField = str;
+        public FormatKeyTest setField(FormatTypeField key){
+            keyField = key;
             return this;
         }
 
@@ -102,11 +116,6 @@ public class BranchFormatTest {
             return this;
         }
 
-        public FormatTypeStyle[] getFormats(){
-            return spanFormats;
-        }
-
-
         @Override
         public void setup(){
             setStyles(AuxiliaryType.REF_KEY);
@@ -114,51 +123,41 @@ public class BranchFormatTest {
         }
 
         @Override
-        public void test(SpanBranch span){
+        public void test(SpanBranch span, ArrayList<Executable> tests){
             FormatSpanPointKey test = assertClass(FormatSpanPointKey.class);
 
-            assertEquals(keyField, test.getField(), "getField()");
-            testFormats(test, spanFormats);
+            tests.add(() -> assertEquals(keyField, test.getField(), "getField()"));
+            tests.add(() -> testFormats(test, spanFormats));
         }
     }
 
-    public static class FormatLinkTest extends SpanBranchAssert<FormatLinkTest>{
+    private static abstract class FormatLinkTest<T extends SpanBranchAssert>
+            extends SpanBranchAssert<T>{
 
         private FormatTypeStyle[] spanFormats;
-        private Optional<SpanBranch> linkPath;
         private String linkText;
 
-        public FormatLinkTest(){
-            super(FormatLinkTest.class);
+        public FormatLinkTest(Class<T> clazz){
+            super(clazz);
             spanFormats = new FormatTypeStyle[0];
-            linkPath = Optional.empty();
-        }
-
-        /** For {@link FormatSpanLink#getPath()} (default: {@code ""}). */
-        public FormatLinkTest setPath(DocumentAssert doc, int ... idx){
-            linkPath = Optional.of(doc.getChild(SpanBranch.class, idx));
-            return cast();
+            likeText = "";
         }
 
         /** For {@link FormatSpanLink#getText()} (default: {@code ""}). */
-        public FormatLinkTest setText(String str){
+        public T setText(String str){
             linkText = str;
             return cast();
         }
 
         /** For {@link FormatSpan spanFormats} (default: none). */
-        public FormatLinkTest setFormats(FormatTypeStyle ... types){
+        public T setFormats(FormatTypeStyle ... types){
             spanFormats = types;
-            return this;
+            return cast();
         }
-
-        public FormatTypeStyle[] getFormats(){
-            return spanFormats;
-        }
-
 
         @Override
         public void setup(){
+            moreSetup();
             if (isCatalogued()){
                 addStyles(AuxiliaryType.REF_LINK, getCatalogueStatus());
             } else {
@@ -167,17 +166,69 @@ public class BranchFormatTest {
             addStyles(spanFormats);
         }
 
-        @Override
-        public void test(SpanBranch span){
-            if (isCatalogued()){
-                assertClass(span, FormatSpanLinkRef.class);
-            } else {
-                assertClass(span, FormatSpanLinkDirect.class);
-            }
+        protected abstract void moreSetup();
 
+        @Override
+        public void test(SpanBranch span, ArrayList<Executable> tests){
             FormatSpanLink test = (FormatSpanLink) span;
             assertEquals(linkText, test.getText(), "getText()");
             testFormats(test, spanFormats);
+        }
+    }
+
+    public class FormatDirectLinkTest
+            extends FormatLinkTest<FormatDirectLinkTest>{
+
+        private String linkPath;
+
+        public FormatDirectLinkTest(){
+            super(FormatDirectLinkTest.class);
+            linkPath = "";
+        }
+
+        /** For {@link FormatDirectSpanLink#getPath()} (default: {@code ""}). */
+        public FormatDirectLinkTest setText(String path){
+            linkPath = path;
+            return this;
+        }
+
+        public void moreSetup(){}
+
+        @Override
+        public void test(SpanBranch span, ArrayList<Executable> tests){
+            FormatSpanLinkDirect test = assertClass(FormatSpanLinkDirect.class);
+
+            tests.add(() -> assertEquals(linkPath, test.getPath(), "getPath()"));
+            super(span, tests);
+        }
+    }
+
+    public class FormatRefLinkTest extends FormatLinkTest<FormatRefLinkTest>{
+
+        private int[] linkPath;
+
+        public FormatRefLinkTest(){
+            super(FormatRefLinkTest.class);
+            linkPath = null;
+        }
+
+        /** For {@link FormatDirectSpanLink#getPath()} (default: {@code ""}). */
+        public FormatRefLinkTest setText(String path){
+            linkPath = path;
+            return this;
+        }
+
+        public void moreSetup(){
+            setCatalogued();
+        }
+
+        @Override
+        public void test(SpanBranch span, ArrayList<Executable> tests){
+            FormatSpanLinkRef test = assertClass(FormatSpanLinkRef.class);
+
+            tests.add(() -> assertSpan(SpanBranch.class, spanTarget,
+                () -> span.getTarget(), "getTarget()"));
+            super(span, tests);
         }
     }
 
@@ -190,13 +241,10 @@ public class BranchFormatTest {
             spanFormats = new FormatTypeStyle[0];
         }
 
+        /** For {@link FormatSpan spanFormats} (default: none). */
         public FormatContentTest setFormats(FormatTypeStyle... types){
             spanFormats = types;
             return this;
-        }
-
-        public FormatTypeStyle[] getFormats(){
-            return spanFormats;
         }
 
         @Override
@@ -205,10 +253,10 @@ public class BranchFormatTest {
         }
 
         @Override
-        public void test(SpanBranch span){
+        public void test(SpanBranch span, ArrayList<Executable> tests){
             FormatSpanContent test = assertClass(span, FormatSpanContent.class);
-            testFormats(test, spanFormats);
-
+            tests.add(() -> testFormats(test, spanFormats));
+            super.test(span, tests);
         }
     }
 
@@ -216,28 +264,41 @@ public class BranchFormatTest {
     {
         private int publishTotal;
         private int noteTotal;
+        private String parsedText;
+
         public FormattedSpanTest(){
             super(FormattedSpanTest.class);
+            parsedText = "";
+            publishTotal = 1;
+            noteTotal = 0;
         }
 
-        public FormattedSpanTest setPublishTotal(int count){
+        /** For {@link FormattedSpan#getPublishTotal()} (default: {@code 1}). */
+        public FormattedSpanTest setPublish(int count){
             publishTotal = count;
             return this;
         }
 
-        public FormattedSpanTest setNoteTotal(int count){
+        /** For {@link FormattedSpan#getNoteTotal()} (default: {@code 0}). */
+        public FormattedSpanTest setNote(int count){
             noteTotal = count;
             return this;
         }
 
-        @Override
-        protected void test(SpanBranch span) {
-            FormattedSpan test = assertClass(span, FormattedSpan.class);
+        /** For {@link FormattedSpan#getParsedText()} (default: {@code ""}). */
+        public FormattedSpanTest setParsed(String text){
+            parsedText = text;
+        }
 
-            assertEquals(getError("publish", test), publishTotal,
-                test.getPublishTotal());
-            assertEquals(getError("note", test), noteTotal,
-                test.getNoteTotal());
+        @Override
+        protected void test(SpanBranch span, ArrayList<Executable> tests) {
+            FormattedSpan test = assertClass(FormattedSpan.class);
+            tests.add(() -> assertEquals(publishTotal, test.getPublishTotal(),
+                "getPublishTotal()"));
+            tests.add(() -> assertEquals(noteTotal, test.getNoteTotal(),
+                "getNoteTotal()"));
+            tests.add(() -> assertEquals(parsedText, test.getParsedText(),
+                "getParsedText()"));
         }
 
     }

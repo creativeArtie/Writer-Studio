@@ -14,9 +14,9 @@ import static com.creativeartie.writerstudio.lang.DocumentAssert.*;
 public class BranchTest {
 
     static class ContentBasicTest<T extends ContentBasicTest<T>> extends
-        SpanBranchAssert<T>
-    {
+            SpanBranchAssert<T> {
         private String trimText;
+        private String renderText;
         private boolean isBegin;
         private boolean isEnd;
 
@@ -25,11 +25,14 @@ public class BranchTest {
             isBegin = false;
             isEnd = false;
             trimText = "";
+            renderText = "";
         }
 
-        /** For {@link BasicText#getTrimmed()} (default: {@code ""}) */
-        public T setTrimmed(String str){
-            text = str;
+        /** For {@link BasicText#getTrimmed()} and
+         * {@link BasicText#getRendered()} (default: {@code ""}) */
+        public T setBoth(String text){
+            renderText = text;
+            trimText = text.trim();
             return cast();
         }
 
@@ -48,6 +51,7 @@ public class BranchTest {
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){
             BasicText test = (BasicText) span;
+            tests.add(() -> assertEquals(trimText, test.getRendered(),  "getRendered()"));
             tests.add(() -> assertEquals(trimText, test.getTrimmed(),   "getTrimmed()"));
             tests.add(() -> assertEquals(isBegin,  test.isSpaceBegin(), "isSpaceBegin()"));
             tests.add(() -> assertEquals(isEnd,    test.isSpaceEnd(),   "isSpaceEnd()"));
@@ -62,7 +66,7 @@ public class BranchTest {
             wordCount = 1;
         }
 
-        /** For {@link ContentSpan#wordCount()}  (default: {@code 1}) */
+        /** For {@link ContentSpan#getWordCount()}  (default: {@code 1}) */
         public ContentTest setCount(int count){
             size = count;
             return this;
@@ -71,7 +75,7 @@ public class BranchTest {
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){
             ContentSpan test = assertClass(ContentSpan.class);
-            tests.addAll( () -> assertEquals(size, test.wordCount(), "wordCount()"));
+            tests.addAll( () -> assertEquals(size, test.getWordCount(), "getWordCount()"));
             super.test(span, tests);
         }
     }
@@ -89,8 +93,8 @@ public class BranchTest {
         }
 
         /** For {@link BasicTextEscape#getEscape()}  (default: {@code ""}) */
-        public EscapeTest setEscape(String str){
-            escape = str;
+        public EscapeTest setEscape(String escape){
+            textEscape = escape;
             return this;
         }
 
@@ -106,11 +110,13 @@ public class BranchTest {
 
         private DirectoryType idPurpose;
         private CatalogueIdentity produceId;
+        private String lookupText;
 
         public DirectoryTest(){
             super(DirectoryTest.class);
             idPurpose = DirectoryType.LINK;
             produceId = null;
+            lookupText = "";
         }
 
         /** For {@link DirectorySpan#getPurposeType()}
@@ -127,12 +133,19 @@ public class BranchTest {
             return this;
         }
 
+        /** For {@link DirectorySpan#buildId()} (default: {@code ""}). */
+        public DirectoryTest setLookup(String text){
+            lookupText = text;
+        }
+
+
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){
             DirectorySpan test = assertClass(DirectorySpan.class);
 
-            tests.add(() -> assertEquals(idPurpose,  test.getPurposeType(), "idPurpose"));
-            tests.add(() -> assertEquals(produceId, test.buildId(),        "id"));
+            tests.add(() -> assertEquals(idPurpose,  test.getPurposeType(), "getPurposeType()"));
+            tests.add(() -> assertEquals(produceId,  test.buildId(),        "buildId()"));
+            tests.add(() -> assertEquals(lookupText, test.getLookupText(),  "getLookupText()"));
         }
     }
 
