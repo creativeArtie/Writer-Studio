@@ -122,7 +122,7 @@ public class DocumentAssert {
     }
 
     /// Finds a child with this class type
-    public <T extends SpanBranch> T assertChild(Class<T> clazz,
+    <T extends SpanBranch> T assertChild(Class<T> clazz,
             int ... indexes){
         Span child = assertChild(indexes);
         assertTrue(clazz.isInstance(child),

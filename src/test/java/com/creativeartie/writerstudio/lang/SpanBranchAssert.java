@@ -9,6 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /// Group of tests related to SpanBranch
 public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
+
+    /// %Part 1: Fields and Constructor ########################################
+
     private DocumentAssert assertDoc;
     private Optional<CatalogueIdentity> expectId;
     private CatalogueStatus expectStatus;
@@ -26,10 +29,9 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         assertDoc = doc;
     }
 
-    /// cast it self back for nice chain calling.
-    protected T returnCast(){
-        return returnCast.cast(this);
-    }
+
+    /// %Part 2: Setups ########################################################
+    /// %Part 2.1: Set Catalogued ==============================================
 
     /// span is a {@link Catalogued} but without id.
     public T setCatalogued(CatalogueStatus status){
@@ -56,6 +58,8 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         return expectStatus;
     }
 
+    /// %Part 2.2: Style Setup =================================================
+
     public void setStyles(StyleInfo ... styles){
         expectStyles.addAll(Arrays.asList(styles));
     }
@@ -64,13 +68,26 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         expectStyles.addAll(Arrays.asList(styles));
     }
 
+    /// %Part 2.3: Other Setups ================================================
+
     /// Setup other things
     public void setup(){}
+
+    /// cast it self back for nice chain calling.
+    protected T cast(){
+        return returnCast.cast(this);
+    }
+
+    /// %Part 3: Assertion Runs ################################################
+
+    /// %Part 3.1: Main Test ###################################################
 
     /// Main test function
     public SpanBranch test(int size, String rawText, int ... idx){
         setup();
         SpanBranch span = assertDoc.assertChild(size, rawText, idx);
+        spanTarget = span;
+
         ArrayList<Executable> list = new ArrayList<>();
 
         list.add(() -> assertArrayEquals(expectStyles.toArray(),
@@ -98,27 +115,31 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         return span;
     }
 
+    /// Tests related to the class.
+    protected abstract void test(SpanBranch branch, ArrayList<Executable> tests);
+
     /// covert the {@link SpanBranch} to the correct class.
-    protected <U> U assertClass(SpanBranch span, Class<U> clazz){
+    protected <U> U assertClass(Class<U> clazz){
         assertEquals(clazz, spanTarget.getClass(), "span class");
         return clazz.cast(spanTarget);
     }
 
     /// Find a child span
-    protected <U> void assertSpan(Optional<U> expect,
+    protected Executable assertSpan(Class<?> clazz, int[] location,
             Supplier<Optional<SpanBranch>> supplier, String message){
-        Optional<SpanBranch> test = supplier.get();
+        return () -> {
+            SpanBranch span = assertDoc.assertChild(clazz, location);
+            Optional<SpanBranch> test = supplier.get();
 
-        ArrayList<Executable> tests = new ArrayList<>();
-        if (expect.isPresent()){
-            tests.add(() -> assertTrue(test.isPresent()));
-            tests.add(() -> assertSame(expect.get(), test.orElse(null)));
-        } else {
-            tests.add(() -> assertFalse(test.isPresent()));
+            ArrayList<Executable> tests = new ArrayList<>();
+            if (expect.isPresent()){
+                tests.add(() -> assertTrue(test.isPresent()));
+                tests.add(() -> assertSame(expect.get(), test.orElse(null)));
+            } else {
+                tests.add(() -> assertFalse(test.isPresent()));
+            }
+            assertAll(message, tests);
         }
-        assertAll(message, tests);
     }
 
-    /// Tests related to the class.
-    protected abstract void test(SpanBranch branch, ArrayList<Executable> tests);
 }
