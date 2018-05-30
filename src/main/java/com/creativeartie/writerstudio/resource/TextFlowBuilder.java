@@ -22,9 +22,12 @@ public final class TextFlowBuilder {
         if (span.isPresent()){
             LinedSpanLevelSection heading = span.get();
             loadFormatText(node, heading.getFormattedSpan());
-            heading.getEditionSpan().flatMap(child ->
-                newText("(" + child.getEditionType() + ")", "display-edition")
-            ).ifPresent(text -> node.getChildren().add(text));
+            EditionType type = heading.getEditionType();
+            if (type != EditionType.NONE){
+                newText("(" + type + ")", "display-edition").ifPresent(
+                    t -> node.getChildren().add(t)
+                );
+            }
 
         } else {
             Text empty = new Text(WindowText.EMPTY_TEXT.getText());

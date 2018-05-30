@@ -124,15 +124,58 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         return clazz.cast(spanTarget);
     }
 
-    /// Find a child span
-    protected Executable assertSpan(Class<?> clazz, int[] location,
-            Supplier<Optional<SpanBranch>> supplier, String message){
+    protected Executable assertSpan(Class<? extends SpanBranch> clazz,
+            int[] location, Supplier<? extends SpanBranch> supplier,
+            String message)
+    {
         return () -> {
-            Optional<SpanBranch> expect = Optional.empty();
-            if (location != null){
-                expect = Optional.of(assertDoc.assertChild(clazz, location));
+            SpanBranch expect = assertDoc.assertChild(clazz, location);
+            SpanBranch test = supplier.get();
+            assertSame(expect, test, message);
+        };
+    }
+
+    /// Find a child span
+    protected Executable assertChild(Class<? extends SpanBranch> clazz,
+            List<int[]> locations, Supplier<List<? extends SpanBranch>> supplier,
+            String message)
+    {
+        return () ->
+        {
+            ArrayList<? extends SpanBranch> expects = new ArrayList<>();
+            ArrayList<Executable> list = new ArrayList<>();
+            for (int[] location: locations)
+            {
+                list.add(() -> {assertDoc.assertChild(clazz, location);});
             }
-            Optional<SpanBranch> test = supplier.get();
+            assertAll("exepcts", list);
+
+            List<? extends SpanBranch> test = supplier.get();
+            ArrayList<Executable> tests = new ArrayList<>();
+            tests.add(() -> assertEquals(expects.size(), test.size(), "size"));
+            if (expects.size() == test.size()){
+                int i = 0;
+                for(SpanBranch expect: expects){
+                    SpanBranch found = test.get(i);
+                    String pos = "position:" + i;
+                    tests.add(() -> assertSame(expect, found, pos));
+                    i++;
+                }
+            }
+            assertAll(message, tests);
+
+        };
+    }
+
+    protected Executable assertChild(Class<? extends SpanBranch> clazz,
+            int[] location, Supplier<Optional<? extends SpanBranch>> supplier,
+            String message)
+    {
+        return () -> {
+            Optional<? extends SpanBranch> expect = Optional.ofNullable(
+                location != null? null: assertDoc.assertChild(clazz, location)
+            );
+            Optional<? extends SpanBranch> test = supplier.get();
 
             ArrayList<Executable> tests = new ArrayList<>();
             if (expect.isPresent()){

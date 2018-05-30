@@ -16,8 +16,8 @@ public class BranchDataTest {
         /** For {@link InfoDataType#getDataType()}  (overrided)*/
         private InfoDataType dataType;
 
-        public DataTest(Class<T> clazz, InfoDataType type){
-            super(clazz);
+        public DataTest(Class<T> clazz, DocumentAssert doc, InfoDataType type){
+            super(clazz, doc);
             dataType = type;
         }
 
@@ -38,8 +38,8 @@ public class BranchDataTest {
     public static class FormatDataTest extends DataTest<FormatDataTest>{
         private int[] spanData;
 
-        public FormatDataTest(){
-            super(FormatDataTest.class, InfoDataType.FORMATTED);
+        public FormatDataTest(DocumentAssert doc){
+            super(FormatDataTest.class, doc, InfoDataType.FORMATTED);
         }
 
         /** For {@link InfoDataSpanFormatted#getData()}  (no default). */
@@ -52,7 +52,7 @@ public class BranchDataTest {
         public void test(SpanBranch span, ArrayList<Executable> tests){
             InfoDataSpanFormatted test = assertClass(InfoDataSpanFormatted.class);
 
-            tests.add(assertSpan(FormattedSpan.class, spanData,
+            tests.add(() -> assertSpan(FormattedSpan.class, spanData,
                 () -> test.getData(), "getData()"));
             super.test(span, tests);
         }
@@ -61,8 +61,8 @@ public class BranchDataTest {
     public static class ContentDataTest extends DataTest<ContentDataTest>{
         private int[] spanData;
 
-        public ContentDataTest(){
-            super(ContentDataTest.class, InfoDataType.TEXT);
+        public ContentDataTest(DocumentAssert doc){
+            super(ContentDataTest.class, doc, InfoDataType.TEXT);
             spanData = null;
         }
 
@@ -85,8 +85,8 @@ public class BranchDataTest {
     public static class RefDataTest extends DataTest<RefDataTest>{
         private int[] spanData;
 
-        public RefDataTest(){
-            super(RefDataTest.class, InfoDataType.TEXT);
+        public RefDataTest(DocumentAssert doc){
+            super(RefDataTest.class, doc, InfoDataType.TEXT);
             spanData = null;
         }
 

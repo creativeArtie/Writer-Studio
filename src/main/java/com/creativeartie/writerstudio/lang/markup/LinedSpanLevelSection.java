@@ -12,7 +12,7 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
 
     private final CacheKeyMain<String> cacheLookup;
 
-    private final CacheKeyOptional<EditionSpan> cacheEditionSpan;
+    private final CacheKeyMain<String> cacheEditionDetail;
     private final CacheKeyMain<EditionType> cacheEdition;
 
     private final CacheKeyMain<Integer> cachePublish;
@@ -30,7 +30,7 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
         super(children);
         cacheLookup = CacheKeyMain.stringKey();
 
-        cacheEditionSpan = new CacheKeyOptional<>(EditionSpan.class);
+        cacheEditionDetail = CacheKeyMain.stringKey();
         cacheEdition = new CacheKeyMain<>(EditionType.class);
 
         cachePublish = CacheKeyMain.integerKey();
@@ -55,9 +55,9 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
      *
      * @return answer
      */
-    public Optional<EditionSpan> getEditionSpan(){
-        return getLocalCache(cacheEditionSpan, () ->
-            spanFromLast(EditionSpan.class));
+    public String getEditionDetail(){
+        return getLocalCache(cacheEditionDetail, () ->
+            spanFromLast(EditionSpan.class).map(s -> s.getDetail()).orElse(""));
     }
 
     /** Gets the edition status.
@@ -65,11 +65,9 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
      * @return answer
      */
     public EditionType getEditionType(){
-        return getLocalCache(cacheEdition, () -> {
-            Optional<EditionSpan> status = getEditionSpan();
-            return status.isPresent()? status.get().getEditionType():
-                EditionType.NONE;
-        });
+        return getLocalCache(cacheEdition, () ->
+            spanFromLast(EditionSpan.class).map(s -> s.getEditionType()).
+            orElse(EditionType.NONE));
     }
 
     @Override

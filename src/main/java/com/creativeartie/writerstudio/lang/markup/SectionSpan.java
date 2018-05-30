@@ -17,6 +17,7 @@ public abstract class SectionSpan extends SpanBranch {
     private final CacheKeyOptional<LinedSpanLevelSection> cacheHeading;
     private final CacheKeyMain<Integer> cacheLevel;
     private final CacheKeyMain<EditionType> cacheEdition;
+    private final CacheKeyMain<String> cacheDetail;
     private final CacheKeyList<NoteCardSpan> cacheNotes;
     private final CacheKeyList<LinedSpan> cacheLines;
     private final SectionParser spanReparser;
@@ -37,6 +38,7 @@ public abstract class SectionSpan extends SpanBranch {
         cacheHeading = new CacheKeyOptional<>(LinedSpanLevelSection.class);
         cacheLevel = CacheKeyMain.integerKey();
         cacheEdition = new CacheKeyMain<>(EditionType.class);
+        cacheDetail = CacheKeyMain.stringKey();
         cacheNotes = new CacheKeyList<>(NoteCardSpan.class);
         cacheLines = new CacheKeyList<>(LinedSpan.class);
 
@@ -78,6 +80,15 @@ public abstract class SectionSpan extends SpanBranch {
     public final EditionType getEditionType(){
         return getLocalCache(cacheEdition, () -> getHeading()
             .map(s -> s.getEditionType()).orElse(EditionType.NONE));
+    }
+
+    /** Gets the section edtion detail.
+     *
+     * @return answer
+     */
+    public final String getEditionDetail(){
+        return getLocalCache(cacheDetail, () -> getHeading()
+            .map(s -> s.getEditionDetail()).orElse(""));
     }
 
     /** Gets the lines in a section

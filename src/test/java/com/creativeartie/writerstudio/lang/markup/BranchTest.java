@@ -13,15 +13,15 @@ import static com.creativeartie.writerstudio.lang.DocumentAssert.*;
 /** Branch asserts for other {@link SpanBranch}. */
 public class BranchTest {
 
-    static class ContentBasicTest<T extends ContentBasicTest<T>> extends
+    static abstract class ContentBasicTest<T extends ContentBasicTest<T>> extends
             SpanBranchAssert<T> {
         private String trimText;
         private String renderText;
         private boolean isBegin;
         private boolean isEnd;
 
-        protected ContentBasicTest(Class<T> clazz){
-            super(clazz);
+        protected ContentBasicTest(Class<T> clazz, DocumentAssert doc){
+            super(clazz, doc);
             isBegin = false;
             isEnd = false;
             trimText = "";
@@ -48,9 +48,12 @@ public class BranchTest {
             return cast();
         }
 
+        protected abstract BasicText moreTest(SpanBranch span,
+            ArrayList<Executable> tests);
+
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){
-            BasicText test = (BasicText) span;
+            BasicText test = moreTest(span, tests);
             tests.add(() -> assertEquals(trimText, test.getRendered(),  "getRendered()"));
             tests.add(() -> assertEquals(trimText, test.getTrimmed(),   "getTrimmed()"));
             tests.add(() -> assertEquals(isBegin,  test.isSpaceBegin(), "isSpaceBegin()"));
@@ -61,30 +64,31 @@ public class BranchTest {
     public static class ContentTest extends ContentBasicTest<ContentTest>{
         private int wordCount;
 
-        public ContentTest(){
-            super(ContentTest.class);
+        public ContentTest(DocumentAssert doc){
+            super(ContentTest.class, doc);
             wordCount = 1;
         }
 
         /** For {@link ContentSpan#getWordCount()}  (default: {@code 1}) */
         public ContentTest setCount(int count){
-            size = count;
+            wordCount = count;
             return this;
         }
 
         @Override
-        public void test(SpanBranch span, ArrayList<Executable> tests){
+        public BasicText moreTest(SpanBranch span, ArrayList<Executable> tests){
             ContentSpan test = assertClass(ContentSpan.class);
-            tests.addAll( () -> assertEquals(size, test.getWordCount(), "getWordCount()"));
-            super.test(span, tests);
+            tests.add( () -> assertEquals(wordCount, test.getWordCount(),
+                "getWordCount()"));
+            return test;
         }
     }
 
     public static class EscapeTest extends SpanBranchAssert<EscapeTest>{
         private String textEscape;
 
-        public EscapeTest(){
-            super(EscapeTest.class);
+        public EscapeTest(DocumentAssert doc){
+            super(EscapeTest.class, doc);
             textEscape = "";
         }
 
@@ -102,7 +106,8 @@ public class BranchTest {
         public void test(SpanBranch span, ArrayList<Executable> tests){
             BasicTextEscape test = assertClass(BasicTextEscape.class);
 
-            tests.add(() -> assertEquals(escape, test.getEscape(), "getEscape()"));
+            tests.add(() -> assertEquals(textEscape, test.getEscape(),
+                "getEscape()"));
         }
     }
 
@@ -112,8 +117,8 @@ public class BranchTest {
         private CatalogueIdentity produceId;
         private String lookupText;
 
-        public DirectoryTest(){
-            super(DirectoryTest.class);
+        public DirectoryTest(DocumentAssert doc){
+            super(DirectoryTest.class, doc);
             idPurpose = DirectoryType.LINK;
             produceId = null;
             lookupText = "";
@@ -136,6 +141,7 @@ public class BranchTest {
         /** For {@link DirectorySpan#buildId()} (default: {@code ""}). */
         public DirectoryTest setLookup(String text){
             lookupText = text;
+            return this;
         }
 
 
@@ -143,9 +149,12 @@ public class BranchTest {
         public void test(SpanBranch span, ArrayList<Executable> tests){
             DirectorySpan test = assertClass(DirectorySpan.class);
 
-            tests.add(() -> assertEquals(idPurpose,  test.getPurposeType(), "getPurposeType()"));
-            tests.add(() -> assertEquals(produceId,  test.buildId(),        "buildId()"));
-            tests.add(() -> assertEquals(lookupText, test.getLookupText(),  "getLookupText()"));
+            tests.add(() -> assertEquals(idPurpose, test.getPurposeType(),
+                "getPurposeType()"));
+            tests.add(() -> assertEquals(produceId, test.buildId(),
+                "buildId()"));
+            tests.add(() -> assertEquals(lookupText, test.getLookupText(),
+                "getLookupText()"));
         }
     }
 
@@ -154,8 +163,8 @@ public class BranchTest {
         private EditionType editionType;
         private String detailText;
 
-        public EditionTest(){
-            super(EditionTest.class);
+        public EditionTest(DocumentAssert doc){
+            super(EditionTest.class, doc);
             editionType = EditionType.OTHER;
             detailText = "";
         }
@@ -174,15 +183,17 @@ public class BranchTest {
 
         @Override
         public void setup(){
-            setStyles(edition);
+            addStyles(editionType);
         }
 
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){
             EditionSpan test = assertClass(EditionSpan.class);
 
-            tests.add(() -> assertEquals(editionType, test.getEditionType(), "getEditionType()"));
-            tests.add(() -> assertEquals(detailText,  test.getDetail(),      "getDetail()"));
+            tests.add(() -> assertEquals(editionType, test.getEditionType(),
+                "getEditionType()"));
+            tests.add(() -> assertEquals(detailText, test.getDetail(),
+                "getDetail()"));
         }
     }
 
@@ -190,8 +201,8 @@ public class BranchTest {
             SpanBranchAssert<FormatAgendaTest>{
         private String agendaText;
 
-        public FormatAgendaTest(){
-            super(FormatAgendaTest.class);
+        public FormatAgendaTest(DocumentAssert doc){
+            super(FormatAgendaTest.class, doc);
             agendaText = "";
         }
 
@@ -217,8 +228,8 @@ public class BranchTest {
     public static class FieldTest extends SpanBranchAssert<FieldTest>{
         private InfoFieldType fieldType;
 
-        public FieldTest(){
-            super(FieldTest.class);
+        public FieldTest(DocumentAssert doc){
+            super(FieldTest.class, doc);
             fieldType = InfoFieldType.ERROR;
         }
 
@@ -230,15 +241,15 @@ public class BranchTest {
 
         @Override
         public void setup(){
-            setStyles(FormatTypeField);
+            addStyles(fieldType);
         }
 
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){
             InfoFieldSpan test = assertClass(InfoFieldSpan.class);
 
-            tests.add(() -> assertEquals(fieldType, test.getFormatTypeField(),
-                "getFormatTypeField()"));
+            tests.add(() -> assertEquals(fieldType, test.getInfoFieldType(),
+                "getInfoFieldType()"));
         }
     }
 

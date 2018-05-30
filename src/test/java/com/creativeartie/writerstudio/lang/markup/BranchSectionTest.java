@@ -1,4 +1,4 @@
-/*package com.creativeartie.writerstudio.lang.markup;
+package com.creativeartie.writerstudio.lang.markup;
 
 import org.junit.jupiter.api.function.*;
 
@@ -11,7 +11,6 @@ import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.DocumentAssert.*;
 
 
-// TODO Incomplete
 public class BranchSectionTest {
 
     public static SetupParser getParser(){
@@ -20,71 +19,108 @@ public class BranchSectionTest {
 
     public static class NoteCardTest extends SpanBranchAssert<NoteCardTest>{
 
-        private ImmutableMultimap.Builder<InfoFieldType, InfoDataSpan> builder;
-        /// TODO remove sources and replace with its replacements.
-        private Multimap<InfoFieldType, InfoDataSpan> sources;
+        private int[] noteTitle;
+        private ArrayList<int[]> noteContents;
+        private int[] inText;
+        private int[] noteSource;
         private int noteTotal;
+        private String lookupText;
 
-        public NoteCardTest(){
-            super(NoteCardTest.class);
-            builder = ImmutableMultimap.builder();
+        public NoteCardTest(DocumentAssert doc){
+            super(NoteCardTest.class, doc);
+            noteTitle = null;
+            noteContents = new ArrayList<>();
+            inText = null;
+            noteSource = null;
             noteTotal = 1;
+            lookupText = "";
         }
 
-        /** For {@link NoteCardSpan#getNoteTotal()}  (default: {@code 1}) *
-        public NoteCardTest setNoteTotal(int count){
-            noteTotal = count;
+        /** For {@link NoteCardSpan#getTitle()} (no defualt) */
+        public NoteCardTest setTitle(int ... indexes){
+            noteTitle = indexes;
             return this;
         }
 
-        /** For ??? (default: empty) *
-        public NoteCardTest putData(InfoFieldType key, DocumentAssert doc,
-                int ... idx){
-            builder.put(key, doc.getChild(InfoDataSpan.class, idx));
+        /** For {@link NoteCardSpan#getContent()} (no defualt) */
+        public NoteCardTest addContent(int ... indexes){
+            noteContents.add(indexes);
+            return this;
+        }
+
+        /** For {@link NoteCardSpan#getInTextLine()} (no defualt) */
+        public NoteCardTest setInText(int ... indexes){
+            inText = indexes;
+            return this;
+        }
+
+        /** For {@link NoteCardSpan#getInSource()} (no defualt) */
+        public NoteCardTest setSource(int ... indexes){
+            noteSource = indexes;
+            return this;
+        }
+
+        /** For {@link NoteCardSpan#getNoteTotal()} (defualt: 1) */
+        public NoteCardTest setSource(int total){
+            noteTotal = total;
+            return this;
+        }
+
+        /** For {@link NoteCardSpan#getLookupText()} (defualt: "") */
+        public NoteCardTest setSource(String lookup){
+            lookupText = lookup;
             return this;
         }
 
         @Override
         public void setup(){
-            sources = builder.build();
             setStyles(AuxiliaryType.MAIN_NOTE, getCatalogueStatus());
         }
 
         @Override
-        public void test(SpanBranch span){
-            NoteCardSpan test = assertClass(span, NoteCardSpan.class);
+        public void test(SpanBranch span, ArrayList<Executable> tests){
+            NoteCardSpan test = assertClass(NoteCardSpan.class);
+            tests.add(() -> assertChild(FormattedSpan.class, noteTitle,
+                () -> test.getTitle(), "getTitle()"));
+            tests.add(() -> assertChild(FormattedSpan.class, noteContents,
+                () -> test.getContent(), "getContent()"));
+            tests.add(() -> assertChild(LinedSpanCite.class, noteSource,
+                () -> test.getSource(), "getSource()"));
+            tests.add(() -> assertEquals(noteTotal, test.getNoteTotal(),
+                "getNoteTotal()"));
+            tests.add(() -> assertEquals(lookupText, test.getLookupText(),
+                "getLookupText()"));
             assertEquals(noteTotal, test.getNoteTotal(), "getNoteTotal()");
         }
     }
 
 
-    private static class SectionTest<T extends SectionTest>
+    private static abstract class SectionTest<T extends SectionTest>
             extends SpanBranchAssert<T>{
-        private Optional<LinedSpanLevelSection> sectionHeading;
-        private int sectionLevel;
-        private EditionType sectionEdition;
-        private List<LinedSpan> sectionLines;
-        private List<NoteCardSpan> sectionNotes;
+        private int[] sectionHeading ;
+
+        private ArrayList<int[]> sectionLines;
+        private ArrayList<int[]> sectionNotes;
         private int publishCount;
-        private int noteCount;
         private int publishTotal;
+        private int noteCount;
         private int noteTotal;
 
-        public SectionTest(Class<T> clazz){
-            super(clazz);
+        public SectionTest(Class<T> clazz, DocumentAssert doc){
+            super(clazz, doc);
+            sectionHeading = null;
+
             sectionLines = new ArrayList<>();
             sectionNotes = new ArrayList<>();
-            sectionHeading = Optional.empty();
-            sectionLevel = 1;
-            sectionEdition = EditionType.NONE;
+
+            publishCount = 1;
+            publishTotal = 1;
+            noteCount = 0;
+            noteTotal = 0;
         }
 
-        public T setHeading(DocumentAssert doc, int ... idx){
-            LinedSpanLevelSection line = doc.getChild(LinedSpanLevelSection
-                .class, idx);
-            sectionHeading = Optional.of(line);
-            sectionLevel = line.getLevel();
-            sectionEdition = line.getEditionType();
+        public T setHeading(int ... indexes){
+            sectionHeading = indexes;
             return cast();
         }
 
@@ -108,67 +144,84 @@ public class BranchSectionTest {
             return cast();
         }
 
-        public T addLine(DocumentAssert doc, int ... idx){
-            sectionLines.add(doc.getChild(LinedSpan.class, idx));
+        protected T addLine(int ... indexes){
+            sectionLines.add(indexes);
             return cast();
         }
 
-        public T addNote(DocumentAssert doc, int ... idx){
-            sectionNotes.add(doc.getChild(NoteCardSpan.class, idx));
+        public T addNote(int ... indexes){
+            sectionNotes.add(indexes);
             return cast();
         }
 
-        public T setLevel(int level){
-            sectionLevel = level;
-            return cast();
-        }
+        protected abstract SectionSpan moreTest(SpanBranch span,
+            ArrayList<Executable> tests);
 
         @Override
-        public void test(SpanBranch span){
-            SectionSpan test = (SectionSpan) span;
-            assertSpan("heading", span, sectionHeading, test.getHeading());
-            assertEquals(getError("publish", span), publishCount, test.getPublishCount());
-            assertEquals(getError("note", span), noteCount, test.getNoteCount());
-            assertEquals(getError("publish", span), publishTotal, test.getPublishTotal());
-            assertEquals(getError("level", span), sectionLevel, test.getLevel());
-            assertSame(getError("edition", span), sectionEdition,
-                test.getEditionType());
-            assertEquals(getError("lines", span), sectionLines, test.getLines());
-            assertEquals(getError("notes", span), sectionNotes, test.getNotes());
+        public void test(SpanBranch span, ArrayList<Executable> tests){
+            SectionSpan test = moreTest(span, tests);
+
+            tests.add(() -> assertChild(FormattedSpan.class, sectionHeading,
+                () -> test.getHeading(), "getHeading()"));
+
+            Optional<LinedSpanLevelSection> section = test.getHeading();
+            int level = section.map(s -> s.getLevel()).orElse(1);
+            EditionType type = section.map(s -> s.getEditionType()).
+                orElse(EditionType.NONE);
+            String detail = section.map(s -> s.getEditionDetail()).orElse("");
+
+            tests.add(() -> assertEquals(level, test.getLevel(), "getLevel()"));
+            tests.add(() -> assertEquals(type, test.getEditionType(),
+                "getEditionType()"));
+            tests.add(() -> assertEquals(detail, test.getEditionDetail(),
+                "getEditionDetail()"));
+
+            tests.add(() -> assertChild(LinedSpan.class, sectionLines,
+                () -> test.getLines(), "getLines()"));
+            tests.add(() -> assertChild(NoteCardSpan.class, sectionNotes,
+                () -> test.getNotes(), "getNotes()"));
+            tests.add(() -> assertEquals(publishCount, test.getPublishCount(),
+                "getPublishCount()"));
+            tests.add(() -> assertEquals(publishTotal, test.getPublishTotal(),
+                "getPublishTotal()"));
+            tests.add(() -> assertEquals(noteCount, test.getNoteCount(),
+                "getNoteCount()"));
+            tests.add(() -> assertEquals(noteTotal, test.getNoteTotal(),
+                "getNoteTotal()"));
         }
     }
 
     public static class HeadSectionTest extends SectionTest<HeadSectionTest>{
-        private List<SectionSpanHead> spanSections;
-        private List<SectionSpanScene> spanScenes;
-        private List<LinedSpan> allLines;
+        private ArrayList<int[]> spanSections;
+        private ArrayList<int[]> spanScenes;
+        private ArrayList<int[]> allLines;
 
-        public HeadSectionTest(){
-            super(HeadSectionTest.class);
+        public HeadSectionTest(DocumentAssert doc){
+            super(HeadSectionTest.class, doc);
             spanSections = new ArrayList<>();
             spanScenes = new ArrayList<>();
             allLines = new ArrayList<>();
         }
 
-        public HeadSectionTest addSection(DocumentAssert doc, int ... idx){
-            spanSections.add(doc.getChild(SectionSpanHead.class, idx));
+        public HeadSectionTest addSection(int ... idx){
+            spanSections.add(idx);
             return this;
         }
 
-        public HeadSectionTest addScene(DocumentAssert doc, int ... idx){
-            spanScenes.add(doc.getChild(SectionSpanScene.class, idx));
+        public HeadSectionTest addScene(int ... idx){
+            spanScenes.add(idx);
             return this;
         }
 
-        public HeadSectionTest addAllLine(DocumentAssert doc, int ... idx){
-            allLines.add(doc.getChild(LinedSpan.class, idx));
+        public HeadSectionTest addAllLine(int ... idx){
+            allLines.add(idx);
             return this;
         }
 
         @Override
-        public HeadSectionTest addLine(DocumentAssert doc, int ... idx){
-            super.addLine(doc, idx);
-            allLines.add(doc.getChild(LinedSpan.class, idx));
+        public HeadSectionTest addLine(int ... idx){
+            super.addLine(idx);
+            allLines.add(idx);
             return this;
         }
 
@@ -178,26 +231,36 @@ public class BranchSectionTest {
         }
 
         @Override
-        public void test(SpanBranch span){
-            SectionSpanHead test = assertClass(span, SectionSpanHead.class);
-            assertEquals(getError("sections", test), spanSections, test.getSections());
-            assertEquals(getError("scenes", test), spanScenes, test.getScenes());
-            assertEquals(getError("all lines", span), allLines, test.getAllLines());
-            super.test(span);
+        public SectionSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
+            SectionSpanHead test = assertClass(SectionSpanHead.class);
+
+            tests.add(() -> assertChild(LinedSpan.class, allLines,
+                () -> test.getAllLines(), "getAllLines()"));
+            tests.add(() -> assertChild(LinedSpan.class, spanSections,
+                () -> test.getSections(), "getSections()"));
+            tests.add(() -> assertChild(LinedSpan.class, spanScenes,
+                () -> test.getScenes(), "getScenes()"));
+            return test;
         }
     }
 
     public static class SceneSectionTest extends SectionTest<SceneSectionTest>{
-        private SectionSpanHead parentHead;
-        private List<SectionSpanScene> sceneList;
+        private int[] parentHead;
+        private List<int[]> sceneList;
 
-        public SceneSectionTest(){
-            super(SceneSectionTest.class);
+        public SceneSectionTest(DocumentAssert doc){
+            super(SceneSectionTest.class, doc);
+            parentHead = null;
             sceneList = new ArrayList<>();
         }
 
-        public SceneSectionTest setParentHead(DocumentAssert doc, int ... idx){
-            parentHead = doc.getChild(SectionSpanHead.class, idx);
+        public SceneSectionTest setParentHead(int ... indexes){
+            parentHead = indexes;
+            return this;
+        }
+
+        public SceneSectionTest addScene(int ... indexes){
+            sceneList.add(indexes);
             return this;
         }
 
@@ -206,18 +269,16 @@ public class BranchSectionTest {
             setStyles(AuxiliaryType.SECTION_SCENE);
         }
 
-        public SceneSectionTest addScene(DocumentAssert doc, int ... idx){
-            sceneList.add(doc.getChild(SectionSpanScene.class, idx));
-            return this;
-        }
+        @Override
+        public SectionSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
+            SectionSpanScene test = assertClass(SectionSpanScene.class);
 
-        public void test(SpanBranch span){
-            SectionSpanScene test = assertClass(span, SectionSpanScene.class);
-            assertEquals(getError("head", test), parentHead, test.getSection());
-            assertEquals(getError("scenes", test), sceneList, test.getSubscenes());
-            super.test(span);
+            tests.add(() -> assertSpan(LinedSpan.class, parentHead,
+                () -> test.getSection(), "getSection()"));
+            tests.add(() -> assertChild(LinedSpan.class, sceneList,
+                () -> test.getSubscenes(), "getSubscenes()"));
+            return test;
         }
 
     }
 }
-*/
