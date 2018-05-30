@@ -319,7 +319,7 @@ public class DocumentEditTest{
         doc.assertChild(1,   "ad", 0, 0, 0, 0, 1);    /// text
         doc.assertText(2, 4, "ad", 0, 0, 0, 0, 1, 0); /// text Content
         doc.assertKey( 4, 5, "}",  0, 0, 0, 0, 2);
-        doc.addId(FormatAgendaDebug.buildId("0"), 0);
+        doc.addId(FormatAgendaTest.buildId("0"), 0);
         doc.assertRest();
     }
 
@@ -395,8 +395,8 @@ public class DocumentEditTest{
         doc.assertChild(1,   "add",    0, 0, 4, 0, 1, 0); /// ID Content
         doc.assertId(9,   12, "add",   0, 0, 4, 0, 1, 0, 0);
         doc.assertKey(12, 13, "}",     0, 0, 4, 0, 2);
-        doc.addId(LinedLevelHeadDebug.buildId("akbc"), 0);
-        doc.addRef(FormatCurlyDebug.buildNoteId("add"),  1);
+        doc.addId(LinedLevelHeadTest.buildId("akbc"), 0);
+        doc.addRef(FormatCurlyTest.buildNoteId("add"),  1);
         doc.assertRest();
     }
 
@@ -444,7 +444,7 @@ public class DocumentEditTest{
         doc.assertChild(1,  "abc", 0, 0, 2);    /// ID
         doc.assertChild(1,  "abc", 0, 0, 2, 0); /// ID Content
         doc.assertId(2,  5, "abc", 0, 0, 2, 0, 0);
-        doc.addId(LinedLevelHeadDebug.buildId("abc"), 0);
+        doc.addId(LinedLevelHeadTest.buildId("abc"), 0);
         doc.assertRest();
     }
 

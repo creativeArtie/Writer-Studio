@@ -1,0 +1,255 @@
+package com.creativeartie.writerstudio.lang.markup;
+
+import org.junit.jupiter.api.function.*;
+
+import java.util.*;
+
+import com.creativeartie.writerstudio.lang.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+/** Branch asserts for other {@link SpanBranch}. */
+public class BranchBasicAsserts {
+
+    static abstract class ContentBasicAssert<T extends ContentBasicAssert<T>>
+            extends SpanBranchAssert<T> {
+        private String trimText;
+        private String renderText;
+        private boolean isBegin;
+        private boolean isEnd;
+
+        protected ContentBasicAssert(Class<T> clazz, DocumentAssert doc){
+            super(clazz, doc);
+            isBegin = false;
+            isEnd = false;
+            trimText = "";
+            renderText = "";
+        }
+
+        /** For {@link BasicText#getTrimmed()} and
+         * {@link BasicText#getRendered()} (default: {@code ""}) */
+        public T setBoth(String text){
+            renderText = text;
+            trimText = text.trim();
+            return cast();
+        }
+
+        /** For {@link BasicText#isSpaceBegin()} (default: {@code false}) */
+        public T setBegin(boolean b){
+            isBegin = b;
+            return cast();
+        }
+
+        /** For {@link BasicText#isSpaceEnd()}  (default: {@code false}) */
+        public T setEnd(boolean b){
+            isEnd = b;
+            return cast();
+        }
+
+        protected abstract BasicText moreTest(SpanBranch span,
+            ArrayList<Executable> tests);
+
+        @Override
+        public void test(SpanBranch span, ArrayList<Executable> tests){
+            BasicText test = moreTest(span, tests);
+            tests.add(() -> assertEquals(trimText, test.getRendered(),  "getRendered()"));
+            tests.add(() -> assertEquals(trimText, test.getTrimmed(),   "getTrimmed()"));
+            tests.add(() -> assertEquals(isBegin,  test.isSpaceBegin(), "isSpaceBegin()"));
+            tests.add(() -> assertEquals(isEnd,    test.isSpaceEnd(),   "isSpaceEnd()"));
+        }
+    }
+
+    public static class EscapeAssert extends SpanBranchAssert<EscapeAssert>{
+        private String textEscape;
+
+        public EscapeAssert(DocumentAssert doc){
+            super(EscapeAssert.class, doc);
+            textEscape = "";
+        }
+
+        public void setup(){
+            setStyles(AuxiliaryType.ESCAPE);
+        }
+
+        /** For {@link BasicTextEscape#getEscape()}  (default: {@code ""}) */
+        public EscapeAssert setEscape(String escape){
+            textEscape = escape;
+            return this;
+        }
+
+        @Override
+        public void test(SpanBranch span, ArrayList<Executable> tests){
+            BasicTextEscape test = assertClass(BasicTextEscape.class);
+
+            tests.add(() -> assertEquals(textEscape, test.getEscape(),
+                "getEscape()"));
+        }
+    }
+
+    public static class ContentAssert extends ContentBasicAssert<ContentAssert>{
+        private int wordCount;
+
+        public ContentAssert(DocumentAssert doc){
+            super(ContentAssert.class, doc);
+            wordCount = 1;
+        }
+
+        /** For {@link ContentSpan#getWordCount()}  (default: {@code 1}) */
+        public ContentAssert setCount(int count){
+            wordCount = count;
+            return this;
+        }
+
+        @Override
+        public BasicText moreTest(SpanBranch span, ArrayList<Executable> tests){
+            ContentSpan test = assertClass(ContentSpan.class);
+            tests.add( () -> assertEquals(wordCount, test.getWordCount(),
+                "getWordCount()"));
+            return test;
+        }
+    }
+
+    public static class DirectoryAssert extends SpanBranchAssert<DirectoryAssert>{
+
+        private DirectoryType idPurpose;
+        private CatalogueIdentity produceId;
+        private String lookupText;
+
+        public DirectoryAssert(DocumentAssert doc){
+            super(DirectoryAssert.class, doc);
+            idPurpose = DirectoryType.LINK;
+            produceId = null;
+            lookupText = "";
+        }
+
+        /** For {@link DirectorySpan#getPurposeType()}
+         * (default: {@link DirectoyType.LINK})
+         */
+        public DirectoryAssert setPurpose(DirectoryType t){
+            idPurpose = t;
+            return this;
+        }
+
+        /** For {@link DirectorySpan#buildId()} (default: {@code none}). */
+        public DirectoryAssert setIdentity(IDBuilder builder){
+            produceId = builder.build();
+            return this;
+        }
+
+        /** For {@link DirectorySpan#buildId()} (default: {@code ""}). */
+        public DirectoryAssert setLookup(String text){
+            lookupText = text;
+            return this;
+        }
+
+
+        @Override
+        public void test(SpanBranch span, ArrayList<Executable> tests){
+            DirectorySpan test = assertClass(DirectorySpan.class);
+
+            tests.add(() -> assertEquals(idPurpose, test.getPurposeType(),
+                "getPurposeType()"));
+            tests.add(() -> assertEquals(produceId, test.buildId(),
+                "buildId()"));
+            tests.add(() -> assertEquals(lookupText, test.getLookupText(),
+                "getLookupText()"));
+        }
+    }
+
+    public static class EditionAssert extends SpanBranchAssert<EditionAssert>{
+
+        private EditionType editionType;
+        private String detailText;
+
+        public EditionAssert(DocumentAssert doc){
+            super(EditionAssert.class, doc);
+            editionType = EditionType.OTHER;
+            detailText = "";
+        }
+
+        /** For {@link EditionSpan#getEditionType()} (default: {@code OTHER}). */
+        public EditionAssert setEdition(EditionType edition){
+            editionType = edition;
+            return this;
+        }
+
+        /** For {@link EditionSpan#getDetail()} (default: {@code ""}). */
+        public EditionAssert setDetail(String text){
+            detailText = text;
+            return this;
+        }
+
+        @Override
+        public void setup(){
+            addStyles(editionType);
+        }
+
+        @Override
+        public void test(SpanBranch span, ArrayList<Executable> tests){
+            EditionSpan test = assertClass(EditionSpan.class);
+
+            tests.add(() -> assertEquals(editionType, test.getEditionType(),
+                "getEditionType()"));
+            tests.add(() -> assertEquals(detailText, test.getDetail(),
+                "getDetail()"));
+        }
+    }
+
+    public static class FormatAgendaAssert extends
+            SpanBranchAssert<FormatAgendaAssert>{
+        private String agendaText;
+
+        public FormatAgendaAssert(DocumentAssert doc){
+            super(FormatAgendaAssert.class, doc);
+            agendaText = "";
+        }
+
+        /** For {@link EditionSpan#getDetail()} (default: {@code ""}). */
+        public FormatAgendaAssert setAgenda(String agenda){
+            agendaText = agenda;
+            return this;
+        }
+
+        @Override
+        public void setup(){
+            setStyles(AuxiliaryType.AGENDA);
+        }
+
+        @Override
+        public void test(SpanBranch span, ArrayList<Executable> tests){
+            FormatSpanAgenda test = assertClass(FormatSpanAgenda.class);
+
+            assertEquals(agendaText, test.getAgenda(), "getAgenda()");
+        }
+    }
+
+    public static class FieldAssert extends SpanBranchAssert<FieldAssert>{
+        private InfoFieldType fieldType;
+
+        public FieldAssert(DocumentAssert doc){
+            super(FieldAssert.class, doc);
+            fieldType = InfoFieldType.ERROR;
+        }
+
+        /** For {@link EditionSpan#getDetail()} (default: {@code ERROR}). */
+        public FieldAssert setType(InfoFieldType type){
+            fieldType = type;
+            return this;
+        }
+
+        @Override
+        public void setup(){
+            addStyles(fieldType);
+        }
+
+        @Override
+        public void test(SpanBranch span, ArrayList<Executable> tests){
+            InfoFieldSpan test = assertClass(InfoFieldSpan.class);
+
+            tests.add(() -> assertEquals(fieldType, test.getInfoFieldType(),
+                "getInfoFieldType()"));
+        }
+    }
+
+    private BranchBasicAsserts(){}
+}

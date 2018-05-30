@@ -22,7 +22,8 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  * @param <T>
  *      Type of span stored
  */
-public abstract class SpanNode<T extends Span> extends Span implements List<T> {
+public abstract class SpanNode<T extends Span> extends Span implements List<T>
+{
 
     /// %Part 1: Constructor & Fields ##########################################
 
@@ -41,8 +42,9 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
     private boolean editedChild;
     private boolean editedTarget;
 
-    protected SpanNode(){
-
+    /** Creates an instanceof {@linkplain SpanNode}.*/
+    protected SpanNode()
+    {
         spanMainCache = CacheBuilder.newBuilder().build();
         spanOptionalCache = CacheBuilder.newBuilder().build();
         spanListCache = CacheBuilder.newBuilder().build();
@@ -74,7 +76,8 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
      *      new children spans
      * @see #SpanBranch#reparseText(String, SetupParser)
      */
-    final void updateSpan(List<T> spans){
+    final void updateSpan(List<T> spans)
+    {
         setChildren(spans);
         setEdited();
         getParent().updateParent();
@@ -93,13 +96,16 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
      *
      * @see #updateSpan(List);
      */
-    final void updateParent(){
+    final void updateParent()
+    {
         clearSpanCache();
         editedChild = true;
 
-        if (this instanceof SpanBranch){
+        if (this instanceof SpanBranch)
+        {
             getParent().updateParent();
-        } else {
+        } else
+        {
             ((Document)this).updateDoc();
         }
     }
@@ -109,9 +115,11 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
      * @see Document#reparseDocument(String)
      * @see SpanBranch#setChildren(List)
      */
-    final void setRemove(){
+    final void setRemove()
+    {
         getDocument().removeSpan(this);
-        for (T child: this){
+        for (T child: this)
+        {
             if (child instanceof SpanBranch) ((SpanBranch)child).setRemove();
         }
     }
@@ -127,7 +135,8 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
      * @see #updateSpan(List)
      * @see #updateParent()
      */
-    final void clearSpanCache(){
+    final void clearSpanCache()
+    {
         spanMainCache.invalidateAll();
         spanOptionalCache.invalidateAll();
         spanListCache.invalidateAll();
@@ -137,7 +146,8 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
      *
      * @see Document#updateDoc()
      */
-    void clearDocCache(){
+    void clearDocCache()
+    {
         docMainCache.invalidateAll();
         docOptionalCache.invalidateAll();
         docListCache.invalidateAll();
@@ -148,7 +158,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
      * @see #updateDoc()
      */
     final void fireRemoveListeners(){
-        fire(spanRemovedListeners);
+    fire(spanRemovedListeners);
         fire(docEditedListeners);
     }
 
