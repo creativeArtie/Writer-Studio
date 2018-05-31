@@ -40,9 +40,11 @@ public interface SetupParser{
      * @return answer
      */
     public static  SetupParser[] combine(SetupParser[] list1,
-            SetupParser ... list2) {
+        SetupParser ... list2
+    ){
         argumentNotNull(list1, "list1");
         argumentNotNull(list2, "list2");
+
         SetupParser[] res = new SetupParser[list1.length + list2.length];
         System.arraycopy(list1, 0, res, 0, list1.length);
         System.arraycopy(list2, 0, res, list1.length, list2.length);

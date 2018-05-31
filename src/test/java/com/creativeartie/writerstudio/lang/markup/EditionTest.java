@@ -26,6 +26,26 @@ public class EditionTest {
     }
 
     @Test
+    public void stubLowercase(){
+        ///           012345
+        String raw = "#Stub";
+        DocumentAssert doc = assertDoc(1, raw, parsers);
+
+        EditionAssert edition = new EditionAssert(doc)
+            .setEdition(EditionType.OTHER)
+            .setDetail("Stub");
+        ContentAssert content = new ContentAssert(doc)
+            .setBegin(false).setBoth("Stub")
+            .setEnd(false)  .setCount(1);
+
+        edition.test(2,     raw,    0);
+        doc.assertKey( 0, 1, "#",    0, 0);
+        content.test(1,     "Stub", 0, 1);
+        doc.assertText(1, 5, "Stub", 0, 1, 0);
+        doc.assertRest();
+    }
+
+    @Test
     public void basicDraft(){
         ///           0123456
         String raw = "#DRAFT";
@@ -154,7 +174,7 @@ public class EditionTest {
             .setEdition(EditionType.FINAL)
             .setDetail("version 8");
         ContentAssert content = new ContentAssert(doc)
-            .setBegin(true).setBoth("version 8")
+            .setBegin(true).setBoth(" version 8")
             .setEnd(false) .setCount(2);
 
         edition.test(2,       after,       0);
@@ -178,7 +198,7 @@ public class EditionTest {
             .setEdition(EditionType.FINAL)
             .setDetail("k");
         ContentAssert content = new ContentAssert(doc)
-            .setBegin(true).setBoth("k")
+            .setBegin(true).setBoth(" k")
             .setEnd(false) .setCount(1);
 
         edition.test(2,      "#FINAL k", 0);

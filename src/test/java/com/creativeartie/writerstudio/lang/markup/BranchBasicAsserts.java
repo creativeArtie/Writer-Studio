@@ -52,10 +52,10 @@ public class BranchBasicAsserts {
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){
             BasicText test = moreTest(span, tests);
-            tests.add(() -> assertEquals(trimText, test.getRendered(),  "getRendered()"));
-            tests.add(() -> assertEquals(trimText, test.getTrimmed(),   "getTrimmed()"));
-            tests.add(() -> assertEquals(isBegin,  test.isSpaceBegin(), "isSpaceBegin()"));
-            tests.add(() -> assertEquals(isEnd,    test.isSpaceEnd(),   "isSpaceEnd()"));
+            tests.add(() -> assertEquals(renderText, test.getRendered(),  "getRendered()"));
+            tests.add(() -> assertEquals(trimText,   test.getTrimmed(),   "getTrimmed()"));
+            tests.add(() -> assertEquals(isBegin,    test.isSpaceBegin(), "isSpaceBegin()"));
+            tests.add(() -> assertEquals(isEnd,      test.isSpaceEnd(),   "isSpaceEnd()"));
         }
     }
 

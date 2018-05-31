@@ -48,7 +48,7 @@ public final class FormatSpanPointKey extends FormatSpan{
     public List<StyleInfo> getBranchStyles(){
         return getLocalCache(cacheStyles, () -> {
             ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
-            return builder.add(AuxiliaryType.REF_KEY)
+            return builder.add(AuxiliaryType.REF_KEY, getField())
                 .addAll(super.getBranchStyles()).build();
         });
     }

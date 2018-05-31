@@ -9,7 +9,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  * @param T
  *      list value type
  */
-public final class CacheKeyList<T> extends CacheKey<List<?>> {
+public final class CacheKeyList<T> extends CacheKey<List<?>>{
 
     private Class<T> valueCaster;
 

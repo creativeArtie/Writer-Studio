@@ -26,7 +26,7 @@ public class FormatLinkTest {
         ///           012345678901234
         String raw = "<@cat-id|text>";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
-        editRefCommon(doc);
+        commonRefLink(doc);
     }
 
     @Test
@@ -58,7 +58,7 @@ public class FormatLinkTest {
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder);
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.LINK)
-            .setIdentity(builder);
+            .setIdentity(builder).setLookup("cat-id");
         ContentAssert content1 = new ContentAssert(doc)
             .setBegin(false).setBoth("cat")
             .setEnd(false)  .setCount(1);
@@ -93,7 +93,7 @@ public class FormatLinkTest {
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder);
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.LINK)
-            .setIdentity(builder);
+            .setIdentity(builder).setLookup("cat-id");
         ContentAssert content1 = new ContentAssert(doc)
             .setBegin(false).setBoth("cat")
             .setEnd(false)  .setCount(1);
@@ -127,7 +127,7 @@ public class FormatLinkTest {
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder);
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.LINK)
-            .setIdentity(builder);
+            .setIdentity(builder).setLookup("id");
         ContentAssert content = new ContentAssert(doc)
             .setBegin(false).setBoth("id")
             .setEnd(false)  .setCount(1);
@@ -181,7 +181,7 @@ public class FormatLinkTest {
         ///             012345678901234
         String after = "<@cat-id|text>";
         doc.assertDoc(1, after);
-        editRefCommon(doc);
+        commonRefLink(doc);
     }
 
     @Test
@@ -193,11 +193,11 @@ public class FormatLinkTest {
         ///             012345678901234
         String after = "<@cat-id|text>";
         doc.assertDoc(1, after, parsers);
-        editRefCommon(doc);
+        commonRefLink(doc);
     }
 
 
-    public void editRefCommon(DocumentAssert doc){
+    public void commonRefLink(DocumentAssert doc){
         ///           012345678901234
         String raw = "<@cat-id|text>";
 
@@ -209,7 +209,7 @@ public class FormatLinkTest {
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder);
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.LINK)
-            .setIdentity(builder);
+            .setIdentity(builder).setLookup("cat-id");
         ContentAssert content1 = new ContentAssert(doc)
             .setBegin(false).setBoth("cat")
             .setEnd(false)  .setCount(1);

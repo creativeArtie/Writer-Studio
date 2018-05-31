@@ -12,7 +12,100 @@ public class FormatKeyTest {
     private static final SetupParser parser = new FormatParsePointKey(new
         boolean[4]);
 
-    // TODO Stats.PageNumber, Stats.WordCountEst, Error
+    @Test
+    public void statErrorText(){
+        String ref = "Error";
+        String raw = "{%" + ref + "}";
+        DocumentAssert doc = assertDoc(1, raw, parser);
+
+        FormatKeyAssert key = new FormatKeyAssert(doc)
+            .setField(FormatTypeField.ERROR);
+        ContentAssert data = new ContentAssert(doc)
+            .setBegin(false).setBoth(ref)
+            .setEnd(false)  .setCount(1);
+
+        key.test(3,           raw,  0);
+        doc.assertKey(  0, 2, "{%", 0, 0);
+        data.test(1,          ref,  0, 1);
+        doc.assertField(2, 7, ref,  0, 1, 0);
+        doc.assertKey ( 7, 8, "}",  0, 2);
+        doc.assertRest();
+    }
+
+    @Test
+    public void statErrorMisspell(){
+        String ref = "Stats.PagsNumber";
+        String raw = "{%" + ref + "}";
+        DocumentAssert doc = assertDoc(1, raw, parser);
+
+        FormatKeyAssert key = new FormatKeyAssert(doc)
+            .setField(FormatTypeField.ERROR);
+        ContentAssert data = new ContentAssert(doc)
+            .setBegin(false).setBoth(ref)
+            .setEnd(false)  .setCount(1);
+
+        key.test(3,             raw,  0);
+        doc.assertKey(  0,  2,  "{%", 0, 0);
+        data.test(1,            ref,  0, 1);
+        doc.assertField(2,  18, ref,  0, 1, 0);
+        doc.assertKey ( 18, 19, "}",  0, 2);
+        doc.assertRest();
+    }
+
+    @Test
+    public void editWordCount(){
+        String before = "{%ats.WordCountEst  }";
+        DocumentAssert doc = assertDoc(1, before, parser);
+        doc.insert(2, "St", 0);
+        commonWordCount(doc);
+    }
+
+    @Test
+    public void statWordCount(){
+        String before = "{%Stats.WordCountEst  }";
+        DocumentAssert doc = assertDoc(1, before, parser);
+        commonWordCount(doc);
+    }
+
+    private void commonWordCount(DocumentAssert doc){
+        String ref = "Stats.WordCountEst  ";
+        String text = "Stats.WordCountEst ";
+        String raw = "{%" + ref + "}";
+        doc.assertDoc(1, raw);
+
+        FormatKeyAssert key = new FormatKeyAssert(doc)
+            .setField(FormatTypeField.WORD_COUNT);
+        ContentAssert data = new ContentAssert(doc)
+            .setBegin(false).setBoth(text)
+            .setEnd(true)  .setCount(1);
+
+        key.test(3,             raw,  0);
+        doc.assertKey(  0,  2,  "{%", 0, 0);
+        data.test(1,            ref,  0, 1);
+        doc.assertField(2,  22, ref,  0, 1, 0);
+        doc.assertKey ( 22, 23, "}",  0, 2);
+        doc.assertRest();
+    }
+
+    @Test
+    public void statPageNumber(){
+        String ref = "Stats.PageNumber";
+        String raw = "{%" + ref + "}";
+        DocumentAssert doc = assertDoc(1, raw, parser);
+
+        FormatKeyAssert key = new FormatKeyAssert(doc)
+            .setField(FormatTypeField.PAGE_NUMBER);
+        ContentAssert data = new ContentAssert(doc)
+            .setBegin(false).setBoth(ref)
+            .setEnd(false)  .setCount(1);
+
+        key.test(3,             raw,  0);
+        doc.assertKey(  0,  2,  "{%", 0, 0);
+        data.test(1,            ref,  0, 1);
+        doc.assertField(2,  18, ref,  0, 1, 0);
+        doc.assertKey ( 18, 19, "}",  0, 2);
+        doc.assertRest();
+    }
 
     @Test
     public void startOnly(){
@@ -46,7 +139,6 @@ public class FormatKeyTest {
         doc.assertField(2, 5, "a b", 0, 1, 0);
         doc.assertKey ( 5, 6, "}",   0, 2);
         doc.assertRest();
-        doc.assertRest();
     }
 
     @Test
@@ -58,7 +150,7 @@ public class FormatKeyTest {
         FormatKeyAssert key = new FormatKeyAssert(doc)
             .setField(FormatTypeField.ERROR);
         ContentAssert data = new ContentAssert(doc)
-            .setBegin(true).setBoth("")
+            .setBegin(true).setBoth(" ")
             .setEnd(true)  .setCount(0);
 
         key.test(3,           raw,   0);

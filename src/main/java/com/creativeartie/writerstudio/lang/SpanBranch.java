@@ -129,7 +129,7 @@ public abstract class SpanBranch extends SpanNode<Span> {
     final void clearDocCache(){
         super.clearDocCache();
         for (Span child: spanChildren){
-            if (child instanceof SpanBranch) {
+            if (child instanceof SpanBranch){
                 ((SpanBranch)child).clearDocCache();
             }
         }

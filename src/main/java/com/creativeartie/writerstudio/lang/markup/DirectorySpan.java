@@ -1,8 +1,10 @@
 package com.creativeartie.writerstudio.lang.markup;
 
 import java.util.*;
+import java.util.Optional;
 
 import com.google.common.collect.*;
+import com.google.common.base.*;
 
 import com.creativeartie.writerstudio.lang.*;
 
@@ -66,7 +68,10 @@ public final class DirectorySpan extends SpanBranch {
         return getLocalCache(cacheText, () -> {
             StringBuilder builder = new StringBuilder();
             for(Span span: this){
-                builder.append(span.getRaw());
+                /// apply trim on each id part
+                String out = span.getRaw().toLowerCase();
+                out = CharMatcher.whitespace().trimAndCollapseFrom(out, ' ');
+                builder.append(out);
             }
             return builder.toString();
         });

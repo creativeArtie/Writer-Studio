@@ -23,7 +23,8 @@ public class DirectoryTest{
 
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.RESEARCH)
-            .setIdentity(buildId("hello"));
+            .setIdentity(buildId("hello"))
+            .setLookup("hello");
         ContentAssert content = new ContentAssert(doc)
             .setBegin(false).setBoth(raw)
             .setEnd(false)  .setCount(1);
@@ -42,7 +43,8 @@ public class DirectoryTest{
 
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.RESEARCH)
-            .setIdentity(buildId("").addCategory("no"));
+            .setIdentity(buildId("").addCategory("no"))
+            .setLookup("no-");
         ContentAssert content = new ContentAssert(doc)
             .setBoth("no").setBegin(false)
             .setEnd(false).setCount(1);
@@ -62,7 +64,8 @@ public class DirectoryTest{
 
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.RESEARCH)
-            .setIdentity(buildId("hi").addCategory("cat"));
+            .setIdentity(buildId("hi").addCategory("cat"))
+            .setLookup(raw);
         ContentAssert content1 = new ContentAssert(doc)
             .setBegin(false).setBoth("cat")
             .setEnd(false)  .setCount(1);
@@ -94,7 +97,8 @@ public class DirectoryTest{
 
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.RESEARCH)
-            .setIdentity(buildId("name").addCategory("cat", "gory"));
+            .setIdentity(buildId("name").addCategory("cat", "gory"))
+            .setLookup(raw);
         ContentAssert content1 = new ContentAssert(doc)
             .setBegin(false).setBoth("cat")
             .setEnd(false)  .setCount(1);
@@ -125,7 +129,8 @@ public class DirectoryTest{
 
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.RESEARCH)
-            .setIdentity(buildId("see").addCategory(""));
+            .setIdentity(buildId("see").addCategory(""))
+            .setLookup("-see");
         ContentAssert content = new ContentAssert(doc)
             .setBegin(false).setBoth("see")
             .setEnd(false)  .setCount(1);
@@ -145,12 +150,13 @@ public class DirectoryTest{
 
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.RESEARCH)
-            .setIdentity(buildId("wee").addCategory("yes sir" , ""));
+            .setIdentity(buildId("wee").addCategory("yes sir" , ""))
+            .setLookup("yes sir--wee");
         ContentAssert content1 = new ContentAssert(doc)
             .setBegin(false).setBoth("yes sir")
             .setEnd(false)  .setCount(2);
         ContentAssert content2 = new ContentAssert(doc)
-            .setBegin(true) .setBoth("")
+            .setBegin(true) .setBoth(" ")
             .setEnd(true)   .setCount(0);
         ContentAssert content3 = new ContentAssert(doc)
             .setBegin(false).setBoth("WEE")
@@ -176,7 +182,8 @@ public class DirectoryTest{
 
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.RESEARCH)
-            .setIdentity(buildId("-c"));
+            .setIdentity(buildId("-c"))
+            .setLookup("\\-c");
         ContentAssert content = new ContentAssert(doc)
             .setBegin(false).setBoth("-c")
             .setEnd(false)  .setCount(1);
@@ -212,14 +219,15 @@ public class DirectoryTest{
         String raw = "abc" + last + "abc";
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.RESEARCH)
-            .setIdentity(buildId("abc"));
+            .setIdentity(buildId("abc"))
+            .setLookup("abc");
         ContentAssert content = new ContentAssert(doc)
             .setBegin(false).setBoth("abc")
             .setEnd(false)  .setCount(1);
 
-        id.test(1,          "abc", 0);
-        content.test(1,     "abc", 0, 0);
-        doc.assertKey(0, 3, "abc", 0, 0, 0);
+        id.test(1,         "abc", 0);
+        content.test(1,    "abc", 0, 0);
+        doc.assertId(0, 3, "abc", 0, 0, 0);
         doc.assertRest(last + "abc");
     }
 

@@ -255,7 +255,7 @@ public class BranchFormatAsserts {
 
         @Override
         public void setup(){
-            setStyles(AuxiliaryType.REF_KEY);
+            setStyles(AuxiliaryType.REF_KEY, keyField);
             addStyles(spanFormats);
         }
 

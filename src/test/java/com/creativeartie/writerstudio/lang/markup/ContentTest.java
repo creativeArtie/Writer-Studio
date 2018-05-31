@@ -49,7 +49,7 @@ public class ContentTest{
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         ContentAssert content = new ContentAssert(doc)
-            .setBegin(true).setBoth("")
+            .setBegin(true).setBoth(" ")
             .setEnd(true)  .setCount(0);
 
         content.test(1,                 raw, 0);
@@ -64,7 +64,7 @@ public class ContentTest{
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         ContentAssert content = new ContentAssert(doc)
-            .setBegin(true).setBoth("")
+            .setBegin(true).setBoth(" ")
             .setEnd(true)  .setCount(0);
 
         content.test(1,                 raw, 0);
@@ -98,7 +98,7 @@ public class ContentTest{
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         ContentAssert content = new ContentAssert(doc)
-            .setBegin(false).setBoth("abc")
+            .setBegin(false).setBoth("abc ")
             .setEnd(true)   .setCount(1);
         EscapeAssert escape = new EscapeAssert(doc)
             .setEscape("b");
@@ -138,7 +138,7 @@ public class ContentTest{
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         ContentAssert content = new ContentAssert(doc)
-            .setBegin(true).setBoth("")
+            .setBegin(true).setBoth(" ")
             .setEnd(true)  .setCount(0);
         EscapeAssert escape = new EscapeAssert(doc)
             .setEscape(" ");
@@ -157,7 +157,7 @@ public class ContentTest{
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         ContentAssert content = new ContentAssert(doc)
-            .setBegin(true).setBoth("abc")
+            .setBegin(true).setBoth(" abc")
             .setEnd(false) .setCount(1);
         EscapeAssert escape = new EscapeAssert(doc)
             .setEscape("");

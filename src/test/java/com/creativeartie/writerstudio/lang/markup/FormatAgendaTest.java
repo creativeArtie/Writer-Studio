@@ -14,7 +14,8 @@ public class FormatAgendaTest{
     }
 
     private static final SetupParser[] parsers = new SetupParser[]{
-        FormatParseAgenda.PARSER};
+        FormatParseAgenda.PARSER
+    };
 
     @Test
     public void missingNone(){

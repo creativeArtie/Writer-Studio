@@ -38,7 +38,8 @@ public class FormatCurlyTest {
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder);
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.RESEARCH)
-            .setIdentity(builder);
+            .setIdentity(builder)
+            .setLookup("a-\\-bc");
         ContentAssert content1 = new ContentAssert(doc)
             .setBegin(false).setBoth("a")
             .setEnd(false)  .setCount(1);
@@ -76,7 +77,7 @@ public class FormatCurlyTest {
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder);
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.ENDNOTE)
-            .setIdentity(builder);
+            .setIdentity(builder).setLookup("abc");
         ContentAssert content = new ContentAssert(doc)
             .setBegin(false).setBoth("abc")
             .setEnd(false)  .setCount(1);
@@ -104,7 +105,7 @@ public class FormatCurlyTest {
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder);
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.FOOTNOTE)
-            .setIdentity(builder);
+            .setIdentity(builder).setLookup("abc");
         ContentAssert content = new ContentAssert(doc)
             .setBegin(false).setBoth("abc")
             .setEnd(false)  .setCount(1);
@@ -132,7 +133,7 @@ public class FormatCurlyTest {
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder);
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.FOOTNOTE)
-            .setIdentity(builder);
+            .setIdentity(builder).setLookup("abc");
         ContentAssert content = new ContentAssert(doc)
             .setBegin(false).setBoth("abc")
             .setEnd(false)  .setCount(1);
@@ -260,7 +261,8 @@ public class FormatCurlyTest {
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder)
             .setDirectoryType(type);
         DirectoryAssert ptr = new DirectoryAssert(doc)
-            .setPurpose(type).setIdentity(builder);
+            .setPurpose(type).setIdentity(builder)
+            .setLookup("abc-dd");
         ContentAssert cat = new ContentAssert(doc)
             .setBoth("abc").setBegin(false)
             .setEnd(false) .setCount(1);
@@ -298,7 +300,7 @@ public class FormatCurlyTest {
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder);
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.ENDNOTE)
-            .setIdentity(builder);
+            .setIdentity(builder).setLookup("c");
         ContentAssert content = new ContentAssert(doc)
             .setBegin(false).setBoth("c")
             .setEnd(false)  .setCount(1);
