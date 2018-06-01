@@ -60,7 +60,7 @@ public class BranchInfoDataAsserts {
         private int[] spanData;
 
         public RefDataAssert(DocumentAssert doc){
-            super(RefDataAssert.class, doc, InfoDataType.TEXT);
+            super(RefDataAssert.class, doc, InfoDataType.NOTE_REF);
             spanData = null;
         }
 
@@ -80,16 +80,16 @@ public class BranchInfoDataAsserts {
         }
     }
 
-    public static class ContentTextAssert extends DataAssert<ContentTextAssert>{
+    public static class ContentDataAssert extends DataAssert<ContentDataAssert>{
         private int[] spanData;
 
-        public ContentTextAssert(DocumentAssert doc){
-            super(ContentTextAssert.class, doc, InfoDataType.TEXT);
+        public ContentDataAssert(DocumentAssert doc){
+            super(ContentDataAssert.class, doc, InfoDataType.TEXT);
             spanData = null;
         }
 
         /** For {@link InfoDataSpanText#getData()}  (no default). */
-        public ContentTextAssert setData(int ... idx){
+        public ContentDataAssert setData(int ... idx){
             spanData = idx;
             return this;
         }

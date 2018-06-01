@@ -127,6 +127,7 @@ public class BranchLineAsserts {
             super(CiteLineAssert.class, doc, 0, 1);
             setLinedType(LinedType.SOURCE);
             dataSpan = null;
+            infoType = InfoFieldType.ERROR;
         }
 
         public CiteLineAssert setInfoType(InfoFieldType type){
@@ -143,7 +144,7 @@ public class BranchLineAsserts {
         public void setup(){
             setLinedType(LinedType.SOURCE);
             setStyles(LinedType.SOURCE, infoType);
-            if (dataSpan != null){
+            if (dataSpan == null){
                 addStyles(AuxiliaryType.DATA_ERROR);
             }
         }
@@ -233,13 +234,13 @@ public class BranchLineAsserts {
         }
 
         /** For {@link LinedSpanLevelSection#getEditionSpan()} (default: "")*/
-        public HeadLevelLineAssert setEditionSpan(String detail){
+        public HeadLevelLineAssert setDetail(String detail){
             editionDetail = detail;
             return this;
         }
 
         /** For {@link LinedSpanLevelSection#getLookupText()} (default: "")*/
-        public HeadLevelLineAssert setLookupText(String text){
+        public HeadLevelLineAssert setLookup(String text){
             lookupText = text;
             return this;
         }

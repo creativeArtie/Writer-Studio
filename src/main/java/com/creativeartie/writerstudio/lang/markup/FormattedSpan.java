@@ -106,7 +106,7 @@ public final class FormattedSpan extends SpanBranch {
                     text.append("1");
                 }
             }
-            return text.toString();
+            return CharMatcher.whitespace().trimAndCollapseFrom(text, ' ');
         });
     }
 

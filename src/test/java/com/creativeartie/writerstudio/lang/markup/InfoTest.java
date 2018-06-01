@@ -24,7 +24,7 @@ public class InfoTest {
         FormatDataAssert data = new FormatDataAssert(doc)
             .setData(0, 0);
         FormattedSpanAssert format = new FormattedSpanAssert(doc)
-            .setPublish(1).setNote(0);
+            .setPublish(1).setNote(0).setParsed("abcd*efg");
         FormatContentAssert text1 = new FormatContentAssert(doc)
             .setBoth("abcd")   .setBegin(false)
             .setEnd(false);
@@ -54,7 +54,7 @@ public class InfoTest {
         String raw = "*\\*a";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
             InfoDataParser.TEXT);
-        ContentTextAssert data = new ContentTextAssert(doc)
+        ContentDataAssert data = new ContentDataAssert(doc)
             .setData(0, 0);
         ContentAssert text = new ContentAssert(doc)
             .setBoth("**a").setBegin(false)
@@ -69,8 +69,32 @@ public class InfoTest {
         doc.assertKey( 1, 2, "\\",    0, 0, 1, 0);
         doc.assertData(2, 3, "*",     0, 0, 1, 1);
         doc.assertData(3, 4, "a",     0, 0, 2);
-
         doc.assertRest();
+    }
+
+    @Test
+    public void dataRef(){
+        String raw = "abc";
+        DocumentAssert doc = assertDoc(1, raw, InfoDataParser.NOTE_REF);
+
+        IDBuilder builder = FormatCurlyTest.buildNoteId("abc");
+        RefDataAssert data = new RefDataAssert(doc)
+            .setData(0, 0);
+        ContentAssert text = new ContentAssert(doc)
+            .setBoth("abc").setBegin(false)
+            .setEnd(false) .setCount(1);
+        DirectoryAssert id = new DirectoryAssert(doc)
+            .setPurpose(DirectoryType.RESEARCH)
+            .setIdentity(builder)
+            .setLookup("abc");
+
+        data.test(1,       raw, 0);
+        id.test(1,         raw, 0, 0);
+        text.test(1,       raw, 0, 0, 0);
+        doc.assertId(0, 3, raw, 0, 0, 0, 0);
+        doc.assertRest();
+
+
     }
 
     @Test

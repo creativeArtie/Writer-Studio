@@ -23,7 +23,7 @@ public class LinedCiteTest {
             .setDataSpan(0, 3).setNote(1);
         FieldAssert field = new FieldAssert(doc)
             .setType(InfoFieldType.IN_TEXT);
-        ContentTextAssert data = new ContentTextAssert(doc)
+        ContentDataAssert data = new ContentDataAssert(doc)
             .setData(0, 3, 0);
 
         cite.test(4,           raw,       0);
@@ -43,7 +43,7 @@ public class LinedCiteTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         CiteLineAssert cite = new CiteLineAssert(doc)
-            .setInfoType(InfoFieldType.IN_TEXT);
+            .setInfoType(InfoFieldType.IN_TEXT).setNote(0);
         FieldAssert field = new FieldAssert(doc)
             .setType(InfoFieldType.IN_TEXT);
 
@@ -62,7 +62,7 @@ public class LinedCiteTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         CiteLineAssert cite = new CiteLineAssert(doc)
-            .setInfoType(InfoFieldType.IN_TEXT);
+            .setInfoType(InfoFieldType.IN_TEXT).setNote(0);
         FieldAssert field = new FieldAssert(doc)
             .setType(InfoFieldType.IN_TEXT);
 
@@ -79,7 +79,7 @@ public class LinedCiteTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         CiteLineAssert cite = new CiteLineAssert(doc)
-            .setInfoType(InfoFieldType.ERROR);
+            .setInfoType(InfoFieldType.ERROR).setNote(0);
 
         cite.test(4,         raw,  0);
         doc.assertKey( 0, 2, "!>", 0, 0);
@@ -99,7 +99,7 @@ public class LinedCiteTest {
             .setDataSpan(0, 2).setNote(1);
         FieldAssert field = new FieldAssert(doc)
             .setType(InfoFieldType.IN_TEXT);
-        ContentTextAssert data = new ContentTextAssert(doc)
+        ContentDataAssert data = new ContentDataAssert(doc)
             .setData(0, 2, 0);
 
         cite.test(3,           raw,       0);
@@ -119,7 +119,7 @@ public class LinedCiteTest {
         DocumentAssert doc = assertDoc(2, raw, parsers);
 
         CiteLineAssert cite = new CiteLineAssert(doc)
-            .setInfoType(InfoFieldType.ERROR);
+            .setInfoType(InfoFieldType.ERROR).setNote(0);
         FieldAssert field = new FieldAssert(doc)
             .setType(InfoFieldType.ERROR);
 
@@ -136,7 +136,7 @@ public class LinedCiteTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         CiteLineAssert cite = new CiteLineAssert(doc)
-            .setInfoType(InfoFieldType.ERROR);
+            .setInfoType(InfoFieldType.ERROR).setNote(0);
         FieldAssert field = new FieldAssert(doc)
             .setType(InfoFieldType.ERROR);
 
@@ -207,7 +207,7 @@ public class LinedCiteTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         CiteLineAssert cite = new CiteLineAssert(doc)
-            .setInfoType(InfoFieldType.ERROR);
+            .setInfoType(InfoFieldType.ERROR).setNote(0);
         FieldAssert field = new FieldAssert(doc)
             .setType(InfoFieldType.ERROR);
 
@@ -294,7 +294,7 @@ public class LinedCiteTest {
         FormatDataAssert data = new FormatDataAssert(doc)
             .setData(0, 3, 0);
 
-        cite.test(1,           raw,      0);
+        cite.test(5,           raw,      0);
         doc.assertKey(  0,  2, "!>",     0, 0);
         field.test(1,          "source", 0, 1);
         doc.assertField(2,  8, "source", 0, 1, 0);
@@ -349,7 +349,7 @@ public class LinedCiteTest {
             .setDataSpan(0, 3).setNote(1);
         FieldAssert field = new FieldAssert(doc)
             .setType(InfoFieldType.IN_TEXT);
-        ContentTextAssert data = new ContentTextAssert(doc)
+        ContentDataAssert data = new ContentDataAssert(doc)
             .setData(0, 3, 0);
 
         cite.test(4,           after,     0);

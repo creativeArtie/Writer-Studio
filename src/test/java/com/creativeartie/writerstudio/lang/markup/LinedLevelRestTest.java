@@ -23,7 +23,7 @@ public class LinedLevelRestTest {
             .setFormattedSpan(0, 1).setPublish(2)
             .setNote(0);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(2).setNote(0);
+            .setPublish(2).setNote(0).setParsed("@id:Text abc");
 
         numbered.test(3,      raw,           0);
         doc.assertKey( 0,  5, "#####",        0, 0);
@@ -61,7 +61,7 @@ public class LinedLevelRestTest {
             .setFormattedSpan(0, 1).setPublish(2)
             .setNote(0);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(2).setNote(0);
+            .setPublish(2).setNote(0).setParsed("@id:Text abc");
 
         bullet.test(3,        raw,            0);
         doc.assertKey( 0,  5, "-----",        0, 0);
@@ -117,7 +117,7 @@ public class LinedLevelRestTest {
             .setFormattedSpan(0, 1).setPublish(2)
             .setNote(0);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(2).setNote(0);
+            .setPublish(2).setNote(0).setParsed("aaa ddd");
 
         bullet.test(2,         raw,          0);
         doc.assertKey(  0,  6, "------",     0, 0);
@@ -145,7 +145,7 @@ public class LinedLevelRestTest {
             .setFormattedSpan(0, 1).setPublish(1)
             .setNote(0);
         FormattedSpanAssert format = new FormattedSpanAssert(doc)
-            .setPublish(1).setNote(0);
+            .setPublish(1).setNote(0).setParsed("#abc");
 
         numbered.test(3,       raw,       0);
         doc.assertKey(  0,  6, start,     0, 0);
@@ -165,7 +165,7 @@ public class LinedLevelRestTest {
         String before = "--abc";
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(1, "-", 0);
-        editCommon(doc, LinedType.BULLET);
+        commonLevel(doc, LinedType.BULLET);
     }
 
     @Test
@@ -173,7 +173,7 @@ public class LinedLevelRestTest {
         String before = "##abc";
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(1, "#", 0);
-        editCommon(doc, LinedType.NUMBERED);
+        commonLevel(doc, LinedType.NUMBERED);
     }
 
     @Test
@@ -182,10 +182,10 @@ public class LinedLevelRestTest {
         String before = "###ac";
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(4, "b", 0);
-        editCommon(doc, LinedType.NUMBERED);
+        commonLevel(doc, LinedType.NUMBERED);
     }
 
-    private void editCommon(DocumentAssert doc, LinedType type){
+    private void commonLevel(DocumentAssert doc, LinedType type){
         ///                                       0123   0123
         String start = type == LinedType.BULLET? "---": "###";
         ///                     3456
@@ -198,7 +198,7 @@ public class LinedLevelRestTest {
             .setFormattedSpan(0, 1).setPublish(1)
             .setNote(0);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(1).setNote(0);
+            .setPublish(1).setNote(0).setParsed("abc");
 
         bullet.test(2,        after, 0);
         doc.assertKey(  0, 3, start, 0, 0);

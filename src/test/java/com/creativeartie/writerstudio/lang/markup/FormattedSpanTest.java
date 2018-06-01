@@ -18,7 +18,7 @@ public class FormattedSpanTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(1).setNote(0);
+            .setPublish(1).setNote(0).setParsed(raw);
         FormatContentAssert content = new FormatContentAssert(doc)
             .setBegin(false).setEnd(false)
             .setBoth(raw);
@@ -36,7 +36,7 @@ public class FormattedSpanTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(1).setNote(0);
+            .setPublish(1).setNote(0).setParsed("orange");
         FormatContentAssert content1 = new FormatContentAssert(doc)
             .setBegin(false).setEnd(false)
             .setBoth("or");
@@ -45,7 +45,7 @@ public class FormattedSpanTest {
             .setBoth("an")  .setFormats(FormatTypeStyle.BOLD);
         FormatContentAssert content3 = new FormatContentAssert(doc)
             .setBegin(false).setEnd(false)
-            .setBoth("an");
+            .setBoth("ge");
 
         main.test(5,          raw,  0);
         content1.test(1,      "or", 0, 0);
@@ -62,10 +62,10 @@ public class FormattedSpanTest {
     @Test
     public void basicItalics(){
         ///           0123456
-        String raw = "g*ee*n";
+        String raw = "g*ee*n ";
         DocumentAssert doc = assertDoc(1, raw, parsers);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(1).setNote(0);
+            .setPublish(1).setNote(0).setParsed("geen");
         FormatContentAssert content1 = new FormatContentAssert(doc)
             .setBegin(false).setEnd(false)
             .setBoth("g");
@@ -73,8 +73,8 @@ public class FormattedSpanTest {
             .setBegin(false).setEnd(false)
             .setBoth("ee")  .setFormats(FormatTypeStyle.ITALICS);
         FormatContentAssert content3 = new FormatContentAssert(doc)
-            .setBegin(false).setEnd(false)
-            .setBoth("n");
+            .setBegin(false).setEnd(true)
+            .setBoth("n ");
 
         main.test(5,         raw,  0);
         content1.test(1,     "g",  0, 0);
@@ -83,8 +83,8 @@ public class FormattedSpanTest {
         content2.test(1,     "ee", 0, 2);
         doc.assertText(2, 4, "ee", 0, 2, 0);
         doc.assertKey( 4, 5, "*",  0, 3);
-        content3.test(1,     "n",  0, 4);
-        doc.assertText(5, 6, "n",  0, 4, 0);
+        content3.test(1,     "n ", 0, 4);
+        doc.assertText(5, 7, "n ", 0, 4, 0);
         doc.assertRest();
     }
 
@@ -95,7 +95,7 @@ public class FormattedSpanTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(1).setNote(0);
+            .setPublish(1).setNote(0).setParsed("ge_edd");
         FormatContentAssert content1 = new FormatContentAssert(doc)
             .setBegin(false).setEnd(false)
             .setBoth("g");
@@ -131,7 +131,7 @@ public class FormattedSpanTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(1).setNote(0);
+            .setPublish(1).setNote(0).setParsed("1");
         FormatKeyAssert key = new FormatKeyAssert(doc)
             .setField(FormatTypeField.ERROR);
         ContentAssert data = new ContentAssert(doc)
@@ -154,7 +154,7 @@ public class FormattedSpanTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(2).setNote(0);
+            .setPublish(2).setNote(0).setParsed("abc ab");
         FormatContentAssert content = new FormatContentAssert(doc)
             .setBegin(false)  .setEnd(false)
             .setBoth("abc ab").setFormats(FormatTypeStyle.UNDERLINE);
@@ -176,14 +176,14 @@ public class FormattedSpanTest {
             FormatCurlyTest.buildEndnoteId("abc"),
             CatalogueStatus.NOT_FOUND, 0);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(1).setNote(0);
+            .setPublish(1).setNote(0).setParsed("pee");
         FormatNoteAssert cite = new FormatNoteAssert(doc)
             .setDirectoryType(DirectoryType.ENDNOTE)
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder)
             .setFormats(FormatTypeStyle.UNDERLINE);
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.ENDNOTE)
-            .setIdentity(builder);
+            .setIdentity(builder).setLookup("abc");
         ContentAssert idText = new ContentAssert(doc)
             .setBegin(false).setBoth("abc")
             .setEnd(false)  .setCount(1);
@@ -211,7 +211,7 @@ public class FormattedSpanTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(2).setNote(2);
+            .setPublish(2).setNote(2).setParsed("abc ddd");
         /// "{!todo}"
         IDBuilder builder = doc.addId(FormatAgendaTest.buildId("00"), 0);
         FormatAgendaAssert todo1 = new FormatAgendaAssert(doc)
@@ -222,8 +222,8 @@ public class FormattedSpanTest {
             .setEnd(false)  .setCount(1);
         /// "  abc ddd"
         FormatContentAssert content = new FormatContentAssert(doc)
-            .setBoth(text)  .setBegin(false)
-            .setEnd(false);
+            .setBoth(" abc ddd ")  .setBegin(true)
+            .setEnd(true);
         builder = doc.addId(FormatAgendaTest.buildId("17"), 1);
         /// "{!abc}"
         FormatAgendaAssert todo2 = new FormatAgendaAssert(doc)
@@ -255,7 +255,8 @@ public class FormattedSpanTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(6).setNote(1);
+            .setPublish(6).setNote(1)
+            .setParsed("Begin\\ Say's Hi Joy web see");
         /// "Begin\\\\"
         FormatContentAssert text1 = new FormatContentAssert(doc)
             .setBegin(false).setEnd(false)
@@ -265,7 +266,7 @@ public class FormattedSpanTest {
         /// " Say"
         FormatContentAssert text2 = new FormatContentAssert(doc)
             .setBegin(true).setEnd(false)
-            .setBoth("Say").setFormats(FormatTypeStyle.ITALICS);
+            .setBoth(" Say").setFormats(FormatTypeStyle.ITALICS);
         /// "'s"
         FormatContentAssert text3 = new FormatContentAssert(doc)
             .setBegin(false).setEnd(false)
@@ -273,13 +274,14 @@ public class FormattedSpanTest {
         /// " Hi "
         FormatContentAssert text4 = new FormatContentAssert(doc)
             .setBegin(true).setEnd(true)
-            .setBoth("Hi") .setFormats(FormatTypeStyle.BOLD, FormatTypeStyle.ITALICS,
-                                       FormatTypeStyle.UNDERLINE);
+            .setBoth(" Hi ") .setFormats(FormatTypeStyle.BOLD,
+                FormatTypeStyle.ITALICS, FormatTypeStyle.UNDERLINE);
         /// "Joy"
         FormatContentAssert text5 = new FormatContentAssert(doc)
             .setBegin(false).setEnd(false)
-            .setBoth("Joy") .setFormats(FormatTypeStyle.BOLD, FormatTypeStyle.ITALICS,
-                                        FormatTypeStyle.UNDERLINE, FormatTypeStyle.CODED);
+            .setBoth("Joy") .setFormats(FormatTypeStyle.BOLD,
+                FormatTypeStyle.ITALICS, FormatTypeStyle.UNDERLINE,
+                FormatTypeStyle.CODED);
         /// "{@note}"
         IDBuilder builder = doc.addRef(FormatCurlyTest.buildNoteId("note"), 2);
         FormatNoteAssert cite = new FormatNoteAssert(doc)
@@ -288,11 +290,11 @@ public class FormattedSpanTest {
             .setFormats(FormatTypeStyle.ITALICS);
         DirectoryAssert citeId = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.RESEARCH)
-            .setIdentity(builder);
+            .setIdentity(builder).setLookup("note");
         /// " "
         FormatContentAssert text6 = new FormatContentAssert(doc)
             .setBegin(true).setEnd(true)
-            .setBoth("")   .setFormats(FormatTypeStyle.ITALICS);
+            .setBoth(" ")   .setFormats(FormatTypeStyle.ITALICS);
         /// "<@link>"
         builder = doc.addRef(FormatLinkTest.buildLinkId("link"), 1);
         FormatRefLinkAssert ref = new FormatRefLinkAssert(doc)
@@ -300,7 +302,8 @@ public class FormattedSpanTest {
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder)
             .setFormats(FormatTypeStyle.ITALICS);
         DirectoryAssert refId = new DirectoryAssert(doc)
-            .setPurpose(DirectoryType.LINK).setIdentity(builder);
+            .setPurpose(DirectoryType.LINK).setIdentity(builder)
+            .setLookup("link");
         ContentAssert refIdText = new ContentAssert(doc)
             .setBegin(false).setBoth("link")
             .setEnd(false)  .setCount(1);
@@ -312,7 +315,7 @@ public class FormattedSpanTest {
             .setBegin(false).setBoth("a.ca")
             .setEnd(false)  .setCount(1);
         ContentAssert linkText = new ContentAssert(doc)
-            .setBegin(true).setBoth("web")
+            .setBegin(true).setBoth(" web")
             .setEnd(false) .setCount(1);
         /// "{!todo}"
         builder = doc.addId(FormatAgendaTest.buildId("55"), 0);
@@ -324,7 +327,7 @@ public class FormattedSpanTest {
         /// " see"
         FormatContentAssert text7 = new FormatContentAssert(doc)
             .setBegin(true).setEnd(false)
-            .setBoth("see").setFormats(FormatTypeStyle.ITALICS);
+            .setBoth(" see").setFormats(FormatTypeStyle.ITALICS);
 
 
         ///0           1         2         3         4         5         6
@@ -391,19 +394,19 @@ public class FormattedSpanTest {
         String before = "before *bold";
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(7, "*");
-        editCommon(doc);
+        commonText(doc);
     }
 
-    private void editCommon(DocumentAssert doc){
+    private void commonText(DocumentAssert doc){
         ///             01234567890123
         String after = "before **bold";
         doc.assertDoc(1, after);
 
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(2).setNote(0);
+            .setPublish(2).setNote(0).setParsed("before bold");
         FormatContentAssert content1 = new FormatContentAssert(doc)
             .setBegin(false).setEnd(true)
-            .setBoth("before");
+            .setBoth("before ");
         FormatContentAssert content2 = new FormatContentAssert(doc)
             .setBegin(false).setEnd(false)
             .setBoth("bold").setFormats(FormatTypeStyle.BOLD);
