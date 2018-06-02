@@ -332,7 +332,7 @@ public class BranchLineAsserts {
         private String lookupText;
 
         public PointerLinkAssert(DocumentAssert doc){
-            super(PointerLinkAssert.class, doc, 1, 0);
+            super(PointerLinkAssert.class, doc, 0, 0);
             linkPath = "";
             lookupText = "";
         }
@@ -365,12 +365,12 @@ public class BranchLineAsserts {
         }
     }
 
-    public static class PointerNoteAssert extends SimpleStyleAssert<PointerNoteAssert>{
+    public static class PointerNoteAssert extends LineAssert<PointerNoteAssert>{
         private int[] lineText;
         private String lookupText;
 
         public PointerNoteAssert(DocumentAssert doc){
-            super(PointerNoteAssert.class, doc, null, 0, 0);
+            super(PointerNoteAssert.class, doc, 0, 0);
             lineText = null;
             lookupText = "";
         }
@@ -389,7 +389,7 @@ public class BranchLineAsserts {
 
         @Override
         public void setup(){
-            addStyles(getCatalogueStatus());
+            addStyles(getLinedType(), getCatalogueStatus());
         }
 
         @Override

@@ -32,11 +32,11 @@ public class LinedPointerTest{
         IDBuilder id = doc.addId(buildLinkId("reddit"), 0);
 
         PointerLinkAssert link = new PointerLinkAssert(doc)
-            .setPath("www.reddit.com")
+            .setPath("www.reddit.com").setLookup("<@reddit>")
             .setCatalogued(CatalogueStatus.UNUSED, id);
         DirectoryAssert idSpan = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.LINK)
-            .setIdentity(id);
+            .setIdentity(id).setLookup("reddit");;
         ContentAssert content = new ContentAssert(doc)
             .setBoth("www.reddit.com").setBegin(false)
             .setEnd(false).setCount(1);
@@ -57,19 +57,19 @@ public class LinedPointerTest{
     public void linkNoEnd(){
         String raw = "!@reddit:www.reddit.com";
         DocumentAssert doc = assertDoc(1, raw, parsers);
-        editCommonLink(doc);
+        commonLink(doc);
     }
 
-    private void editCommonLink(DocumentAssert doc){
+    private void commonLink(DocumentAssert doc){
         String raw = "!@reddit:www.reddit.com";
         IDBuilder id = doc.addId(buildLinkId("reddit"), 0);
 
         PointerLinkAssert link = new PointerLinkAssert(doc)
-            .setPath("www.reddit.com")
+            .setPath("www.reddit.com").setLookup("<@reddit>")
             .setCatalogued(CatalogueStatus.UNUSED, id);
         DirectoryAssert idSpan = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.LINK)
-            .setIdentity(id);
+            .setIdentity(id).setLookup("reddit");
         ContentAssert content = new ContentAssert(doc)
             .setBoth("www.reddit.com").setBegin(false)
             .setEnd(false).setCount(1);
@@ -95,11 +95,11 @@ public class LinedPointerTest{
         doc.addId(id, 0);
 
         PointerLinkAssert link = new PointerLinkAssert(doc)
-            .setPath("")
+            .setPath("").setLookup("<@reddit>")
             .setCatalogued(CatalogueStatus.UNUSED, id);
         DirectoryAssert idSpan = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.LINK)
-            .setIdentity(id);
+            .setIdentity(id).setLookup("reddit");;
 
         link.test(3,          raw,      0);
         doc.assertKey( 0,  2, "!@",     0, 0);
@@ -119,11 +119,11 @@ public class LinedPointerTest{
         doc.addId(id, 0);
 
         PointerLinkAssert link = new PointerLinkAssert(doc)
-            .setPath("")
+            .setPath("").setLookup("<@reddit>")
             .setCatalogued(CatalogueStatus.UNUSED, id);
         DirectoryAssert idSpan = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.LINK)
-            .setIdentity(id);
+            .setIdentity(id).setLookup("reddit");   ;
 
         link.test(2,          raw,      0);
         doc.assertKey( 0,  2, "!@",     0, 0);
@@ -142,7 +142,7 @@ public class LinedPointerTest{
         ///             01234567890123456 78
         String after = "!*abcdef:**test**\n";
         doc.assertDoc(1, after, parsers);
-        editCommonLink(doc);
+        commonLink(doc);
     }
 
     @Test
@@ -154,7 +154,7 @@ public class LinedPointerTest{
         ///             01234567890123456 78
         String after = "!*abcdef:**test**\n";
         doc.assertDoc(1, after, parsers);
-        editCommonLink(doc);
+        commonLink(doc);
     }
 
     @Test
@@ -184,13 +184,13 @@ public class LinedPointerTest{
 
         PointerNoteAssert note = new PointerNoteAssert(doc)
             .setLinedType(LinedType.ENDNOTE)
-            .setFormattedSpan(0, 3)
+            .setFormattedSpan(0, 3).setLookup("{*abcdef}")
             .setCatalogued(CatalogueStatus.UNUSED, id);
         DirectoryAssert idSpan = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.ENDNOTE)
-            .setIdentity(id);
+            .setIdentity(id).setLookup("abcdef");
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(1).setNote(0);
+            .setPublish(1).setNote(0).setParsed("test");
 
         note.test(5,           raw,      0);
         doc.assertKey(  0,  2, "!*",     0, 0);
@@ -215,11 +215,11 @@ public class LinedPointerTest{
         doc.addId(id, 0);
 
         PointerNoteAssert note = new PointerNoteAssert(doc)
-            .setLinedType(LinedType.ENDNOTE)
+            .setLinedType(LinedType.ENDNOTE).setLookup("{*abcdef}")
             .setCatalogued(CatalogueStatus.UNUSED, id);
         DirectoryAssert idSpan = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.ENDNOTE)
-            .setIdentity(id);
+            .setIdentity(id).setLookup("abcdef");
 
         note.test(3,        raw,      0);
         doc.assertKey(0, 2, "!*",     0, 0);
@@ -239,11 +239,11 @@ public class LinedPointerTest{
         doc.addId(id, 0);
 
         PointerNoteAssert note = new PointerNoteAssert(doc)
-            .setLinedType(LinedType.ENDNOTE)
+            .setLinedType(LinedType.ENDNOTE).setLookup("{*abcdef}")
             .setCatalogued(CatalogueStatus.UNUSED, id);
         DirectoryAssert idSpan = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.ENDNOTE)
-            .setIdentity(id);
+            .setIdentity(id).setLookup("abcdef");
 
         note.test(2,        raw,      0);
         doc.assertKey(0, 2, "!*",     0, 0);
@@ -254,7 +254,7 @@ public class LinedPointerTest{
     }
 
     @Test
-    public void endnoteIDlLess(){
+    public void endnoteIDLess(){
         String raw = "!*:test";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
@@ -262,7 +262,7 @@ public class LinedPointerTest{
             .setLinedType(LinedType.ENDNOTE)
             .setFormattedSpan(0, 2);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(1).setNote(0);
+            .setPublish(1).setNote(0).setParsed("test");
 
         note.test(3,         raw,    0);
         doc.assertKey( 0, 2, "!*",   0, 0);
@@ -283,13 +283,13 @@ public class LinedPointerTest{
 
         PointerNoteAssert note = new PointerNoteAssert(doc)
             .setLinedType(LinedType.FOOTNOTE)
-            .setFormattedSpan(0, 3)
+            .setFormattedSpan(0, 3).setLookup("{^abcdef}")
             .setCatalogued(CatalogueStatus.UNUSED, id);
         DirectoryAssert idSpan = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.FOOTNOTE)
-            .setIdentity(id);
+            .setIdentity(id).setLookup("abcdef");
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(1).setNote(0);
+            .setPublish(1).setNote(0).setParsed("test");
 
         note.test(5,           raw,      0);
         doc.assertKey(  0,  2, "!^",     0, 0);

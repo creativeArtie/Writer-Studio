@@ -71,7 +71,7 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
     /// %Part 2.3: Other Setups ================================================
 
     /// Setup other things
-    public void setup(){}
+    public abstract void setup();
 
     /// cast it self back for nice chain calling.
     protected T cast(){

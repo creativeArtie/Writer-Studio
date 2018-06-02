@@ -25,7 +25,7 @@ public class FormatLinkTest {
     public void refFull(){
         ///           012345678901234
         String raw = "<@cat-id|text>";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
         commonRefLink(doc);
     }
 
@@ -33,7 +33,7 @@ public class FormatLinkTest {
     public void refWithNewline(){
         ///           0  123456
         String raw = "<@\ncat>";
-        DocumentAssert doc = DocumentAssert.assertDoc(2, raw, parsers);
+        DocumentAssert doc = assertDoc(2, raw, parsers);
 
         FormatRefLinkAssert ref = new FormatRefLinkAssert(doc)
             .setText("")
@@ -48,7 +48,7 @@ public class FormatLinkTest {
     public void refEmptyText(){
         ///           01234567890
         String raw = "<@cat-id|>";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
 
         IDBuilder builder = doc.addRef(
             buildLinkId("id").addCategory("cat"),
@@ -83,7 +83,7 @@ public class FormatLinkTest {
     public void refNoText(){
         ///           0123456789
         String raw = "<@cat-id>";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
 
         IDBuilder builder = doc.addRef(
             buildLinkId("id").addCategory("cat"),
@@ -117,7 +117,7 @@ public class FormatLinkTest {
     public void refBasic(){
         ///           012345
         String raw = "<@id>";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
 
         IDBuilder builder = doc.addRef(
             buildLinkRefId("id"),
@@ -145,7 +145,7 @@ public class FormatLinkTest {
     public void refEmpty(){
         ///           0123
         String raw = "<@>";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormatRefLinkAssert ref = new FormatRefLinkAssert(doc)
             .setText("")
@@ -161,7 +161,7 @@ public class FormatLinkTest {
     public void refStart(){
         ///           012
         String raw = "<@";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormatRefLinkAssert ref = new FormatRefLinkAssert(doc)
             .setText("")
@@ -176,7 +176,7 @@ public class FormatLinkTest {
     public void editRefIdContent(){
         ///           012345678901234
         String raw = "<@caat-id|text>";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
         doc.delete(3, 4, 0, 1);
         ///             012345678901234
         String after = "<@cat-id|text>";
@@ -188,7 +188,7 @@ public class FormatLinkTest {
     public void editRefNewContent(){
         ///           012345678901234
         String raw = "<@cat-id>";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
         doc.insert(8, "|text", 0);
         ///             012345678901234
         String after = "<@cat-id|text>";
@@ -239,7 +239,7 @@ public class FormatLinkTest {
     public void linkFull(){
         ///           012345678901
         String raw = "<path|text>";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
         editLinkCommon(doc);
     }
 
@@ -247,7 +247,7 @@ public class FormatLinkTest {
     public void editLinkFill(){
         ///           012345678901
         String raw = "<";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
         doc.insert(1, "path|text>", 0);
         ///             012345678901
         String after = "<path|text>";
@@ -259,7 +259,7 @@ public class FormatLinkTest {
     public void editLinkPath(){
         ///           012345678901
         String raw = "<pth|text>";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
         doc.insert(2, "a", 0);
         ///             012345678901
         String after = "<path|text>";
@@ -271,7 +271,7 @@ public class FormatLinkTest {
     public void linkPath(){
         ///           0123456
         String raw = "<path>";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormatDirectLinkAssert link = new FormatDirectLinkAssert(doc)
             .setText("path").setPath("path");
@@ -291,7 +291,7 @@ public class FormatLinkTest {
     public void linkWithNewline(){
         ///           01234 567
         String raw = "<path\n>";
-        DocumentAssert doc = DocumentAssert.assertDoc(2, raw, parsers);
+        DocumentAssert doc = assertDoc(2, raw, parsers);
 
         FormatDirectLinkAssert link = new FormatDirectLinkAssert(doc)
             .setText("path").setPath("path");
@@ -310,7 +310,7 @@ public class FormatLinkTest {
     public void linkStart(){
         ///           01
         String raw = "<";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormatDirectLinkAssert link = new FormatDirectLinkAssert(doc)
             .setText("");
@@ -324,7 +324,7 @@ public class FormatLinkTest {
     public void linkNoEnd(){
         ///           01234567890
         String raw = "<path|text";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
 
         FormatDirectLinkAssert link = new FormatDirectLinkAssert(doc)
             .setText("text").setPath("path");

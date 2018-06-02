@@ -26,14 +26,14 @@ public class LinedNoteTest {
         IDBuilder createId = buildId("id").addCategory("sub");
         NoteLineAssert line = new NoteLineAssert(doc)
             .setFormattedSpan(0, 4).setNote(1)
-            .setBuildId(createId);
+            .setBuildId(createId).setLookup("{@sub-id}");
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.RESEARCH)
-            .setIdentity(createId);
+            .setIdentity(createId).setLookup("sub-id");
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(1).setNote(0);
+            .setPublish(1).setNote(0).setParsed("Text*");
 
-        line.test(6,           raw,        0);
+        line.test(6,           raw,       0);
         doc.assertKey(  0,  2, "!%",      0, 0);
         doc.assertKey(  2,  8, "     @",  0, 1);
         id.test(3,             "sub-id",  0, 2);
@@ -43,7 +43,7 @@ public class LinedNoteTest {
         doc.assertChild(1,     "id",      0, 2, 2);
         doc.assertId(  12, 14, "id",      0, 2, 2, 0);
         doc.assertKey( 14, 15, ":",       0, 3);
-        main.test(3,           text,       0, 4);
+        main.test(3,           text,      0, 4);
         doc.assertKey( 15, 16, "_",       0, 4, 0);
         doc.assertChild(2,     "Text\\*", 0, 4, 1);
         doc.assertText(16, 20, "Text",    0, 4, 1, 0);
@@ -117,12 +117,12 @@ public class LinedNoteTest {
         IDBuilder createId = buildId("id");
         NoteLineAssert line = new NoteLineAssert(doc)
             .setFormattedSpan(0, 4).setNote(1)
-            .setBuildId(createId);
+            .setBuildId(createId).setLookup("{@id}");
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.RESEARCH)
-            .setIdentity(createId);
+            .setIdentity(createId).setLookup("id");
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(1).setNote(0);
+            .setPublish(1).setNote(0).setParsed("Text");
 
         line.test(5,          raw,    0);
         doc.assertKey( 0,  2, "!%",   0, 0);
@@ -145,10 +145,10 @@ public class LinedNoteTest {
 
         IDBuilder createId = buildId("id");
         NoteLineAssert line = new NoteLineAssert(doc)
-            .setNote(0).setBuildId(createId);
+            .setNote(0).setBuildId(createId).setLookup("{@id}");
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.RESEARCH)
-            .setIdentity(createId);
+            .setIdentity(createId).setLookup("id");
 
         line.test(4,         raw,  0);
         doc.assertKey( 0, 2, "!%", 0, 0);
@@ -167,10 +167,10 @@ public class LinedNoteTest {
 
         IDBuilder createId = buildId("id");
         NoteLineAssert line = new NoteLineAssert(doc)
-            .setNote(0).setBuildId(createId);
+            .setNote(0).setBuildId(createId).setLookup("{@id}");
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.RESEARCH)
-            .setIdentity(createId);
+            .setIdentity(createId).setLookup("id");
 
         line.test(3,          raw,  0);
         doc.assertKey( 0, 2, "!%", 0, 0);
@@ -182,14 +182,14 @@ public class LinedNoteTest {
     }
 
     @Test
-    public void noId(){
+    public void noID(){
         String raw = "!%@:Text";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         NoteLineAssert line = new NoteLineAssert(doc)
             .setFormattedSpan(0, 3).setNote(1);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(1).setNote(0);
+            .setPublish(1).setNote(0).setParsed("Text");
 
         line.test(4,         raw,    0);
         doc.assertKey( 0, 2, "!%",   0, 0);
@@ -203,14 +203,14 @@ public class LinedNoteTest {
 
 
     @Test
-    public void noID(){
+    public void noIdJustText(){
         String raw = "!%Text";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         NoteLineAssert line = new NoteLineAssert(doc)
             .setFormattedSpan(0, 1).setNote(1);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(1).setNote(0);
+            .setPublish(1).setNote(0).setParsed("Text");
 
         line.test(2,         raw,    0);
         doc.assertKey( 0, 2, "!%",   0, 0);

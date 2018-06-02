@@ -19,7 +19,7 @@ public class SectionTest {
     @Test
     public void sectionWithStuff(){
         DocumentAssert doc = assertDoc(2, COMMON_DOC, PARSER);
-        testSections(doc);
+        commonSections(doc);
     }
 
 
@@ -31,7 +31,7 @@ public class SectionTest {
         DocumentAssert doc = assertDoc(2, raw, PARSER);
         doc.delete(11, 12, 0, 1);
         doc.assertDoc(2, COMMON_DOC, PARSER);
-        testSections(doc);
+        commonSections(doc);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class SectionTest {
         DocumentAssert doc = assertDoc(2, raw, PARSER);
         doc.insert(39, "#", 0, 1);
         doc.assertDoc(2, COMMON_DOC, PARSER);
-        testSections(doc);
+        commonSections(doc);
     }
 
     @Test
@@ -56,47 +56,49 @@ public class SectionTest {
         /// Note that the edited span is Chapter 1 -> Section 1 -> (Scene 1)
         doc.delete(39, 40, 0, 1, 2);
         doc.assertDoc(2, COMMON_DOC, PARSER);
-        testSections(doc);
+        commonSections(doc);
     }
 
     @Test
     public void editSection6(){
         ///            012345678
         String raw  = "======ac";
-        String text = "======abc";
 
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, PARSER);
+        DocumentAssert doc = assertDoc(1, raw, PARSER);
         ///                1, 2, 3, 4, 5, 6, l
         doc.insert(7, "b", 0, 0, 0, 0, 0, 0, 0);
 
+        String text = "======abc";
+        doc.assertDoc(1, text);
+
         HeadSectionAssert head1 = new HeadSectionAssert(doc)
-            .setPublishCount(0)                  .setNoteCount(0)
-            .addSection(0, 0)               .setPublishTotal(2)
+            .setPublishCount(0)             .setNoteCount(0)
+            .addSection(0, 0)               .setPublishTotal(1)
             .addAllLine(0, 0, 0, 0, 0, 0, 0).setNoteTotal(0);
         HeadSectionAssert head2 = new HeadSectionAssert(doc)
-            .setPublishCount(0)                  .setNoteCount(0)
-            .addSection(0, 0, 0)            .setPublishTotal(2)
+            .setPublishCount(0).setLevel(2) .setNoteCount(0)
+            .addSection(0, 0, 0)            .setPublishTotal(1)
             .addAllLine(0, 0, 0, 0, 0, 0, 0).setNoteTotal(0);
         HeadSectionAssert head3 = new HeadSectionAssert(doc)
-            .setPublishCount(0)                  .setNoteCount(0)
-            .addSection(0, 0, 0, 0)         .setPublishTotal(2)
+            .setPublishCount(0).setLevel(3) .setNoteCount(0)
+            .addSection(0, 0, 0, 0)         .setPublishTotal(1)
             .addAllLine(0, 0, 0, 0, 0, 0, 0).setNoteTotal(0);
         HeadSectionAssert head4 = new HeadSectionAssert(doc)
-            .setPublishCount(0)                  .setNoteCount(0)
-            .addSection(0, 0, 0, 0, 0)      .setPublishTotal(2)
+            .setPublishCount(0).setLevel(4) .setNoteCount(0)
+            .addSection(0, 0, 0, 0, 0)      .setPublishTotal(1)
             .addAllLine(0, 0, 0, 0, 0, 0, 0).setNoteTotal(0);
         HeadSectionAssert head5 = new HeadSectionAssert(doc)
-            .setPublishCount(0)                  .setNoteCount(0)
-            .addSection(0, 0, 0, 0, 0, 0)   .setPublishTotal(2)
+            .setPublishCount(0).setLevel(5) .setNoteCount(0)
+            .addSection(0, 0, 0, 0, 0, 0)   .setPublishTotal(1)
             .addAllLine(0, 0, 0, 0, 0, 0, 0).setNoteTotal(0);
         HeadSectionAssert head6 = new HeadSectionAssert(doc)
-            .setPublishCount(1)                  .setNoteCount(0)
-            .addLine(   0, 0, 0, 0, 0, 0, 0).setPublishTotal(2)
+            .setPublishCount(1).setLevel(6) .setNoteCount(0)
+            .addLine(   0, 0, 0, 0, 0, 0, 0).setPublishTotal(1)
             .setHeading(0, 0, 0, 0, 0, 0, 0).setNoteTotal(0);
         HeadLevelLineAssert line = new HeadLevelLineAssert(doc)
         ///                        1, 2, 3, 4, 5, 6, l, f
             .setFormattedSpan(0, 0, 0, 0, 0, 0, 0, 1)
-                      .setEdition(EditionType.NONE)
+            .setEdition(EditionType.NONE).setLevel(6)
             .setPublish(1)   .setNote(0)
             .setLinedType(LinedType.HEADING);
 
@@ -109,7 +111,7 @@ public class SectionTest {
         line.test( 2, text, 0, 0, 0, 0, 0, 0, 0);
     }
 
-    private void testSections(DocumentAssert doc){
+    private void commonSections(DocumentAssert doc){
         String[] lines = new String[]{
             /// Section 1:
             "=Chapter 1\n",
@@ -133,20 +135,20 @@ public class SectionTest {
             .addAllLine(0, 1, 1)
             .addAllLine(0, 1, 2, 0);
         HeadLevelLineAssert line0 = new HeadLevelLineAssert(doc) ///0, 0
-                      .setEdition(EditionType.NONE)
+            .setEdition(EditionType.NONE)
             .setPublish(2)   .setNote(0)
             .setFormattedSpan(0, 0, 1)
             .setLinedType(LinedType.HEADING);
 
         HeadSectionAssert head1_1 = new HeadSectionAssert(doc) /// 0, 1
-            .setPublishCount(5)      .setNoteCount(0)
-            .setPublishTotal(5)      .setNoteTotal(1)
-            .addLine(   0, 1, 0).addLine(0, 1, 1)
-            .addScene(  0, 1, 2).setHeading(0, 1, 0)
-            .addAllLine(0, 1, 2, 0);
+            .setPublishCount(5)    .setNoteCount(0)
+            .setPublishTotal(5)    .setNoteTotal(1)
+            .addLine(   0, 1, 0)   .addLine(0, 1, 1)
+            .addScene(  0, 1, 2)   .setHeading(0, 1, 0)
+            .addAllLine(0, 1, 2, 0).setLevel(2);
         HeadLevelLineAssert line1 = new HeadLevelLineAssert(doc) ///0, 1, 0
-                       .setEdition(EditionType.NONE)
-            .setPublish(2)    .setNote(0)
+            .setEdition(EditionType.NONE)
+            .setPublish(2)    .setNote(0).setLevel(2)
             .setFormattedSpan(0, 1, 0, 1)
             .setLinedType(LinedType.HEADING);
         ParagraphLineAssert line2 = new ParagraphLineAssert(doc) /// 0, 1, 1
@@ -154,25 +156,27 @@ public class SectionTest {
             .setFormattedSpan(0, 1, 1, 0);
 
         SceneSectionAssert head1_1_1 = new SceneSectionAssert(doc) /// 0, 1, 2
-            .setPublishCount(0)      .setNoteCount(1)
+            .setPublishCount(0) .setNoteCount(1)
+            .setPublishTotal(0) .setNoteTotal(1)
             .setParentHead(0, 1).setHeading(0, 1, 2, 0)
-            .addLine(0, 1, 2, 0);
+            .addLine(0, 1, 2, 0).setLevel(1);
         HeadLevelLineAssert line3 = new HeadLevelLineAssert(doc)/// 0, 1, 2, 0
-                         .setEdition(EditionType.NONE)
+            .setEdition(EditionType.NONE)
             .setPublish(0)      .setNote(1)
             .setFormattedSpan(0, 1, 2, 0, 1)
             .setLinedType(LinedType.OUTLINE);
 
         HeadSectionAssert head2 = new HeadSectionAssert(doc) /// 1
-            .setPublishTotal(4)   .setNoteTotal(0)
-            .setHeading(1, 0).addLine(1, 0)
+            .setPublishCount(4).setNoteCount(0)
+            .setPublishTotal(4).setNoteTotal(0)
+            .setHeading(1, 0)  .addLine(1, 0)
             .addLine(1, 1)   ;
-        HeadLevelLineAssert line4 = new HeadLevelLineAssert(doc) //1, 0
-                      .setEdition(EditionType.NONE)
+        HeadLevelLineAssert line4 = new HeadLevelLineAssert(doc) /// 1, 0
+            .setEdition(EditionType.NONE)
             .setPublish(2)   .setNote(0)
             .setFormattedSpan(1, 0, 1)
             .setLinedType(LinedType.HEADING);
-        ParagraphLineAssert line5 = new ParagraphLineAssert(doc)// 1, 1
+        ParagraphLineAssert line5 = new ParagraphLineAssert(doc)/// 1, 1
             .setPublish(2).setNote(0)
             .setFormattedSpan(1, 1, 0);
 
@@ -265,6 +269,7 @@ public class SectionTest {
         IDBuilder builder = doc.addId(NoteCardTest.buildId(true, "0"), 0);
 
         HeadSectionAssert head = new HeadSectionAssert(doc)
+            .setPublishCount(0).setNoteCount(1)
             .setPublishTotal(0).setNoteTotal(1)
             .addNote(0, 0);
         NoteCardAssert note = new NoteCardAssert(doc).setNote(1)
@@ -283,17 +288,23 @@ public class SectionTest {
         DocumentAssert doc = assertDoc(1, full, PARSER);
 
          HeadSectionAssert head = new HeadSectionAssert(doc)
+            .setPublishCount(0).setNoteCount(0)
             .setPublishTotal(2).setNoteTotal(2)
             .addScene(0, 0)
             .addAllLine(0, 0, 0, 0).addAllLine(0, 0, 0, 1);
          SceneSectionAssert out1 = new SceneSectionAssert(doc)
-            .addScene(0, 0, 0)     .setParentHead(0);
+            .setPublishCount(0).setNoteCount(0)
+            .setPublishTotal(2).setNoteTotal(2)
+            .addScene(0, 0, 0) .setParentHead(0);
          SceneSectionAssert out2 = new SceneSectionAssert(doc)
+            .setPublishCount(2)    .setNoteCount(2)
+            .setPublishTotal(2)    .setNoteTotal(2)
             .setHeading(0, 0, 0, 0).setParentHead(0)
-            .addLine(0, 0, 0, 0)   .addLine(0, 0, 0, 1);
+            .addLine(0, 0, 0, 0)   .addLine(0, 0, 0, 1)
+            .setLevel(2);
         HeadLevelLineAssert child1 = new HeadLevelLineAssert(doc)
-                   .setEdition(EditionType.NONE)
-            .setPublish(0).setNote(2)
+            .setEdition(EditionType.NONE)
+            .setPublish(0).setNote(2).setLevel(2)
             .setFormattedSpan(0, 0, 0, 0, 1)
             .setLinedType(LinedType.OUTLINE);
         ParagraphLineAssert child2 = new ParagraphLineAssert(doc)
@@ -316,16 +327,18 @@ public class SectionTest {
         DocumentAssert doc = assertDoc(1, full, PARSER);
 
         HeadSectionAssert head1 = new HeadSectionAssert(doc)
-            .setPublishTotal(0)      .setNoteTotal(0)
+            .setPublishCount(0).setNoteCount(0)
+            .setPublishTotal(4).setNoteTotal(0)
             .addSection(0, 0)
             .addAllLine(0, 0, 0).addAllLine(0, 0, 1);
          HeadSectionAssert head2 = new HeadSectionAssert(doc)
-            .setPublishTotal(4)      .setNoteTotal(0)
-            .setHeading(0, 0, 0)
+            .setPublishCount(4) .setNoteCount(0)
+            .setPublishTotal(4) .setNoteTotal(0)
+            .setHeading(0, 0, 0).setLevel(2)
             .addLine(0, 0, 0)   .addLine(0, 0, 1);
         HeadLevelLineAssert child1 = new HeadLevelLineAssert(doc)
-                      .setEdition(EditionType.NONE)
-            .setPublish(2)   .setNote(0)
+            .setEdition(EditionType.NONE)
+            .setPublish(2).setNote(0).setLevel(2)
             .setLinedType(LinedType.HEADING)
             .setFormattedSpan(0, 0, 0, 1);
         ParagraphLineAssert child2 = new ParagraphLineAssert(doc)
@@ -347,6 +360,7 @@ public class SectionTest {
         DocumentAssert doc = assertDoc(1, full, PARSER);
 
         HeadSectionAssert head = new HeadSectionAssert(doc)
+            .setPublishCount(4).setNoteCount(0)
             .setPublishTotal(4).setNoteTotal(0)
             .setHeading(0, 0)
             .addLine(0, 0).addLine(0, 1);
@@ -373,6 +387,7 @@ public class SectionTest {
         DocumentAssert doc = assertDoc(1, full, PARSER);
 
         HeadSectionAssert head = new HeadSectionAssert(doc)
+            .setPublishCount(5).setNoteCount(0)
             .setPublishTotal(5).setNoteTotal(0)
             .addLine(0, 0).addLine(0, 1);
         ParagraphLineAssert child1 = new ParagraphLineAssert(doc)

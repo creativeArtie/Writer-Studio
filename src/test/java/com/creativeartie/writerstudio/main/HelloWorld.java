@@ -3,10 +3,10 @@ package com.creativeartie.writerstudio.main;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.*;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 /** The hello world test class. */
 @DisplayName("Basic System")
@@ -18,7 +18,7 @@ public class HelloWorld{
     public void helloWorld(){
         assertTrue(true);
     }
-    
+
     /** Find a resource test. */
     @Test
     @DisplayName("File search")
@@ -26,12 +26,12 @@ public class HelloWorld{
         File f = new File("build.gradle");
         assertTrue(f.exists());
     }
-    
+
     @ParameterizedTest(name = "Parameter check {index}.")
-    @DisplayName("Parameter check") 
+    @DisplayName("Parameter check")
     @ValueSource(ints = { 1, 2, 3 })
     public void parameterRun(int value){
         assertTrue(true);
     }
-    
+
 }

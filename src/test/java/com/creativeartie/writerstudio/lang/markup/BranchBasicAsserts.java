@@ -100,6 +100,8 @@ public class BranchBasicAsserts {
             return this;
         }
 
+        @Override public void setup(){}
+
         @Override
         public BasicText moreTest(SpanBranch span, ArrayList<Executable> tests){
             ContentSpan test = assertClass(ContentSpan.class);
@@ -142,6 +144,7 @@ public class BranchBasicAsserts {
             return this;
         }
 
+        @Override public void setup(){}
 
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){

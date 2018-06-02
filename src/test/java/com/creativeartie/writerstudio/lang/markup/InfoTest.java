@@ -18,7 +18,7 @@ public class InfoTest {
     public void dataFormatted(){
         ///           01234 5678901
         String raw = "abcd*\\*efg*";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
+        DocumentAssert doc = assertDoc(1, raw,
             InfoDataParser.FORMATTED);
 
         FormatDataAssert data = new FormatDataAssert(doc)
@@ -52,7 +52,7 @@ public class InfoTest {
     public void dataText(){
         ///           0 1234
         String raw = "*\\*a";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,
+        DocumentAssert doc = assertDoc(1, raw,
             InfoDataParser.TEXT);
         ContentDataAssert data = new ContentDataAssert(doc)
             .setData(0, 0);
@@ -101,7 +101,7 @@ public class InfoTest {
     public void fieldSource(){
         ///           0123456
         String raw = "source";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, FIELD_PARSER);
+        DocumentAssert doc = assertDoc(1, raw, FIELD_PARSER);
 
         FieldAssert field = new FieldAssert(doc).setType(InfoFieldType.SOURCE);
 
@@ -115,7 +115,7 @@ public class InfoTest {
     public void fieldInText(){
         ///           01234567
         String raw = "in-text";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, FIELD_PARSER);
+        DocumentAssert doc = assertDoc(1, raw, FIELD_PARSER);
 
         FieldAssert field = new FieldAssert(doc).setType(InfoFieldType.IN_TEXT);
 
@@ -129,7 +129,7 @@ public class InfoTest {
     public void fieldFootnote(){
         ///           012345678
         String raw = "footnote";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, FIELD_PARSER);
+        DocumentAssert doc = assertDoc(1, raw, FIELD_PARSER);
         FieldAssert field = new FieldAssert(doc)
             .setType(InfoFieldType.FOOTNOTE);
 
@@ -143,7 +143,7 @@ public class InfoTest {
     public void fieldError(){
         ///           012345
         String raw = "error";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, FIELD_PARSER);
+        DocumentAssert doc = assertDoc(1, raw, FIELD_PARSER);
 
         FieldAssert field = new FieldAssert(doc).setType(InfoFieldType.ERROR);
 
@@ -155,7 +155,7 @@ public class InfoTest {
     public void fieldErrorRandom(){
         ///           012345
         String raw = "p-ges";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw,FIELD_PARSER);
+        DocumentAssert doc = assertDoc(1, raw,FIELD_PARSER);
 
         FieldAssert field = new FieldAssert(doc).setType(InfoFieldType.ERROR);
 

@@ -1,33 +1,28 @@
 package com.creativeartie.writerstudio.lang.markup;
-/*
-import static org.junit.Assert.*;
 
-import org.junit.*;
-import org.junit.runner.*;
-import org.junit.runners.*;
+import org.junit.jupiter.api.*;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.charset.StandardCharsets;
-import java.util.Optional;
-import java.time.LocalDateTime;
-import java.time.Duration;
+import java.nio.file.*;
+import java.nio.charset.*;
+import java.util.*;
+import java.time.*;
+
+import com.google.common.base.*;
+
 import com.creativeartie.writerstudio.lang.*;
 
-import java.util.List;
-import com.google.common.base.Joiner;
-
+import static org.junit.jupiter.api.Assertions.*;
 
 public class WritingTest {
 
     @Test
-    // @Ignore("Because it will cause an timeout error.")
+    @Tag("heavy")
     public void reallyLarge() throws Exception{
-        String raw = new String(Files.readAllBytes(Paths.get("build/resources/test/stressTest.txt")),
+        String raw = new String(Files.readAllBytes(Paths.get(
+            "build/resources/test/pdf-stress.txt")),
             StandardCharsets.UTF_8);
-        LocalDateTime from = LocalDateTime.now();
-        new WritingText(raw);
-        System.out.println(Duration.between(from, LocalDateTime.now()));
+        assertTimeout(Duration.ofSeconds(60), () -> new WritingText(raw),
+            "Over 60 seconds");
     }
 
     private String[] spans = {
@@ -48,10 +43,8 @@ public class WritingTest {
     public void getCount(){
         String text = Joiner.on("").join(spans);
         WritingText doc = new WritingText(text);
-        assertEquals(SpanBranchAssert.getError("publish count", doc), 16,
-            doc.getPublishTotal());
-        assertEquals(SpanBranchAssert.getError("note count", doc), 4,
-            doc.getNoteTotal());
+        assertEquals(16, doc.getPublishTotal(), "publish count");
+        assertEquals(4, doc.getNoteTotal(), "note count");
     }
 
     @Test
@@ -72,4 +65,4 @@ public class WritingTest {
         }
     }
 }
-*/
+

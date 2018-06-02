@@ -21,7 +21,7 @@ public class LinedRestTest {
     public void breakBasic(){
         String raw = "***\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
-        breakEditCommon(doc);
+        commonBreak(doc);
     }
 
     @Test
@@ -30,10 +30,10 @@ public class LinedRestTest {
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(1, "*");
         doc.assertDoc(1, "***\n", parsers);
-        breakEditCommon(doc);
+        commonBreak(doc);
     }
 
-    private void breakEditCommon(DocumentAssert doc){
+    private void commonBreak(DocumentAssert doc){
         String raw = "***\n";
         BreakLineAssert line = new BreakLineAssert(doc);
 
@@ -90,7 +90,7 @@ public class LinedRestTest {
         String raw = "!!abc**ab";
         DocumentAssert doc = assertDoc(1, raw, parsers);
         doc.assertDoc(1, "!!abc**ab", parsers);
-        agendaEditCommon(doc);
+        commonAgenda(doc);
     }
 
     @Test
@@ -100,7 +100,7 @@ public class LinedRestTest {
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(5, "**a", 0);
         doc.assertDoc(1, "!!abc**ab");
-        agendaEditCommon(doc);
+        commonAgenda(doc);
     }
 
     @Test
@@ -110,10 +110,10 @@ public class LinedRestTest {
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(1, "!");
         doc.assertDoc(1, "!!abc**ab");
-        agendaEditCommon(doc);
+        commonAgenda(doc);
     }
 
-    private void agendaEditCommon(DocumentAssert doc){
+    private void commonAgenda(DocumentAssert doc){
         String text = "abc**ab";
         String raw = "!!" + text;
         IDBuilder id = doc.addId(buildAgendaId("0"), 0);
@@ -139,7 +139,7 @@ public class LinedRestTest {
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.delete(0, 2);
         doc.assertDoc(1, "abc");
-        paragraphEditCommon(doc);
+        commonParagraph(doc);
     }
 
 
@@ -170,7 +170,7 @@ public class LinedRestTest {
             .setAgenda("").setNote(0)
             .setCatalogued(CatalogueStatus.UNUSED, id);
         ContentAssert content = new ContentAssert(doc)
-            .setBoth("") .setBegin(true)
+            .setBoth(" ") .setBegin(true)
             .setEnd(true).setCount(0);
 
         agenda.test(3,       raw,  0);
@@ -233,7 +233,7 @@ public class LinedRestTest {
     public void quoteBasic(){
         String raw = ">>@id:Text abc\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
-        quoteEditCommon(doc);
+        commonQuote(doc);
     }
 
     @Test
@@ -243,7 +243,7 @@ public class LinedRestTest {
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(5, ":Tex", 0);
         doc.assertDoc(1, ">>@id:Text abc\n");
-        quoteEditCommon(doc);
+        commonQuote(doc);
     }
 
     @Test
@@ -253,17 +253,17 @@ public class LinedRestTest {
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(0, ">>");
         doc.assertDoc(1, ">>@id:Text abc\n");
-        quoteEditCommon(doc);
+        commonQuote(doc);
     }
 
-    private void quoteEditCommon(DocumentAssert doc){
+    private void commonQuote(DocumentAssert doc){
         String text = ">@id:Text abc";
         String raw = ">" + text + "\n";
         QuoteLineAssert quote = new QuoteLineAssert(doc)
             .setFormattedSpan(0, 1)
             .setPublish(2).setNote(0);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(2).setNote(0);
+            .setPublish(2).setNote(0).setParsed(text);
 
         quote.test(3,         raw,  0);
         doc.assertKey( 0,  1, ">",  0, 0);
@@ -281,7 +281,7 @@ public class LinedRestTest {
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.delete(0, 1);
         doc.assertDoc(1, "abc");
-        paragraphEditCommon(doc);
+        commonParagraph(doc);
     }
 
     @Test
@@ -294,7 +294,7 @@ public class LinedRestTest {
             .setPublish(1).setNote(0)
             .setFormattedSpan(0, 0);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(1).setNote(0);
+            .setPublish(1).setNote(0).setParsed("ddHi\\");
 
         paragraph.test(2,    raw,    0);
         main.test(1,         text,   0, 0);
@@ -311,7 +311,7 @@ public class LinedRestTest {
     public void paragraphBasic(){
         String raw = "abc";
         DocumentAssert doc = assertDoc(1, raw, parsers);
-        paragraphEditCommon(doc);
+        commonParagraph(doc);
     }
 
     @Test
@@ -320,17 +320,17 @@ public class LinedRestTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
         doc.insert(1, "b", 0);
         doc.assertDoc(1, "abc");
-        paragraphEditCommon(doc);
+        commonParagraph(doc);
     }
 
-    private void paragraphEditCommon(DocumentAssert doc){
+    private void commonParagraph(DocumentAssert doc){
         String raw = "abc";
 
         ParagraphLineAssert paragraph = new ParagraphLineAssert(doc)
             .setPublish(1).setNote(0)
             .setFormattedSpan(0, 0);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
-            .setPublish(1).setNote(0);
+            .setPublish(1).setNote(0).setParsed("abc");
 
         paragraph.test(1,    raw,   0);
         main.test(1,         "abc", 0, 0);

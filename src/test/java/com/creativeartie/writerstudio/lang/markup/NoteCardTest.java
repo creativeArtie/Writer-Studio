@@ -45,10 +45,10 @@ public class NoteCardTest {
         doc.addId(builder, 0);
 
         NoteCardAssert note = new NoteCardAssert(doc).setNote(1)
-            .setCatalogued(CatalogueStatus.UNUSED, builder);
+            .setCatalogued(CatalogueStatus.UNUSED, builder).setLookup("{@id}");
         NoteLineAssert line = new NoteLineAssert(doc)
             .setFormattedSpan(0, 0, 4).setNote(1)
-            .setBuildId(builder);
+            .setBuildId(builder).setLookup("{@id}");
 
         note.test(1, raw, 0);
         line.test(5, raw, 0, 0);
@@ -62,10 +62,10 @@ public class NoteCardTest {
     public void noteBasic(){
         DocumentAssert doc = assertDoc(1, COMMON_NOTE_BASE, PARSER);
 
-        testNoteBasic(doc);
+        commonNoteBasic(doc);
     }
 
-    private void testNoteBasic(DocumentAssert doc){
+    private void commonNoteBasic(DocumentAssert doc){
         String raw1 = "!%@see:Note Heading\n";
         String raw2 = "!%some note content\\\n\n";
         String raw3 = "!>in-text: Smith, p3";
@@ -74,11 +74,11 @@ public class NoteCardTest {
         IDBuilder builder = doc.addId(buildId(false, "see"), 0);
 
         NoteCardAssert note = new NoteCardAssert(doc).setNote(7)
-            .setInText(0, 2, 3)
+            .setInText(0, 2, 3).setLookup("{@see}")
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         NoteLineAssert line1 = new NoteLineAssert(doc)
             .setNote(2).setFormattedSpan(0, 0, 4)
-            .setBuildId(builder);
+            .setBuildId(builder).setLookup("{@see}");
         NoteLineAssert line2 = new NoteLineAssert(doc)
             .setNote(3).setFormattedSpan(0, 1, 1);
         CiteLineAssert line3 = new CiteLineAssert(doc)
@@ -97,10 +97,10 @@ public class NoteCardTest {
         String raw = "!%basic note \n!%@ed:data\n";
         DocumentAssert doc = assertDoc(2, raw, PARSER);
 
-        testNoteDouble(doc);
+        commonNoteDouble(doc);
     }
 
-    private void testNoteDouble(DocumentAssert doc){
+    private void commonNoteDouble(DocumentAssert doc){
         String raw1 = "!%basic note \n";
         String raw2 = "!%@ed:data\n";
         String full = raw1 + raw2;
@@ -115,10 +115,10 @@ public class NoteCardTest {
             .setNote(2);
         NoteCardAssert note2 = new NoteCardAssert(doc)
             .setCatalogued(CatalogueStatus.UNUSED, builder2)
-            .setNote(1);
+            .setNote(1).setLookup("{@ed}");
         NoteLineAssert line2 = new NoteLineAssert(doc)
             .setFormattedSpan(1, 0, 4)
-            .setNote(1).setBuildId(builder2);
+            .setNote(1).setBuildId(builder2).setLookup("{@ed}");
 
         note1.test(1, raw1, 0);
         line1.test(3, raw1, 0, 0);
@@ -213,7 +213,7 @@ public class NoteCardTest {
         DocumentAssert doc = assertDoc(1, raw, PARSER);
         doc.insert(16, "@");
 
-        testNoteDouble(doc);
+        commonNoteDouble(doc);
     }
 
     @Test
@@ -225,7 +225,7 @@ public class NoteCardTest {
         DocumentAssert doc = assertDoc(1, raw, PARSER);
         doc.insert(39, "\\\n", 0, 1);
         doc.assertDoc(1, COMMON_NOTE_BASE);
-        testNoteBasic(doc);
+        commonNoteBasic(doc);
     }
 
     @Test
@@ -236,6 +236,6 @@ public class NoteCardTest {
         DocumentAssert doc = assertDoc(1, raw, PARSER);
         doc.insert(22, "some ", 0, 1);
         doc.assertDoc(1, COMMON_NOTE_BASE);
-        testNoteBasic(doc);
+        commonNoteBasic(doc);
     }
 }

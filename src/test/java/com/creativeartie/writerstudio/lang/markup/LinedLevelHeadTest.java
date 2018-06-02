@@ -19,7 +19,7 @@ public class LinedLevelHeadTest {
     @Test
     public void basicHeading(){
         String raw = "===@sub-id:W_Under_#abc";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
         IDBuilder builder = doc.addId(buildId("id").addCategory("sub"), 0);
 
         HeadLevelLineAssert heading = new HeadLevelLineAssert(doc)
@@ -63,7 +63,7 @@ public class LinedLevelHeadTest {
     @Test
     public void basicOutline(){
         String raw = "!#@id:b {!todo   } #DRAFT #1";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
 
         IDBuilder builder = doc.addId(buildId("id"), 1);
 
@@ -111,7 +111,7 @@ public class LinedLevelHeadTest {
     @Test
     public void basicTripleHeading(){
         String raw = "=abc\n=Chapter 2\n=Chapter 3";
-        DocumentAssert doc = DocumentAssert.assertDoc(3, raw, parsers);
+        DocumentAssert doc = assertDoc(3, raw, parsers);
 
         HeadLevelLineAssert heading1 = new HeadLevelLineAssert(doc)
             .setFormattedSpan(0, 1).setLinedType(LinedType.HEADING)
@@ -158,7 +158,7 @@ public class LinedLevelHeadTest {
     public void basicSpacedHeading(){
         String raw = "===   @id:Title #abc";
 
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
 
         IDBuilder builder = doc.addId(buildId("id"), 0);
 
@@ -197,7 +197,7 @@ public class LinedLevelHeadTest {
     public void missingStatus(){
         String raw = "===@id:Title";
 
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
 
         IDBuilder builder = doc.addId(buildId("id"), 0);
 
@@ -230,7 +230,7 @@ public class LinedLevelHeadTest {
     public void missingTitle(){
         String raw = "===@id:#abc";
 
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
 
         IDBuilder builder = doc.addId(buildId("id"), 0);
 
@@ -262,7 +262,7 @@ public class LinedLevelHeadTest {
     public void missingIdColon(){
         String raw = "===@id";
 
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
 
         IDBuilder builder = doc.addId(buildId("id"), 0);
 
@@ -289,7 +289,7 @@ public class LinedLevelHeadTest {
     public void misingId(){
         String raw = "===Title#abc";
 
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
 
         HeadLevelLineAssert heading = new HeadLevelLineAssert(doc)
            .setFormattedSpan(0, 1).setLinedType(LinedType.HEADING)
@@ -317,7 +317,7 @@ public class LinedLevelHeadTest {
     public void missingIdTitle(){
         String raw = "===#abc";
 
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
 
         HeadLevelLineAssert heading = new HeadLevelLineAssert(doc)
            .setLinedType(LinedType.HEADING)
@@ -338,7 +338,7 @@ public class LinedLevelHeadTest {
     @Test
     public void levelHeading6(){
         String raw = "======abc\n";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
 
         HeadLevelLineAssert heading = new HeadLevelLineAssert(doc)
            .setFormattedSpan(0, 1).setLinedType(LinedType.HEADING)
@@ -359,7 +359,7 @@ public class LinedLevelHeadTest {
     @Test
     public void levelHeading1(){
         String raw = "=abc\n";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, parsers);
+        DocumentAssert doc = assertDoc(1, raw, parsers);
 
         HeadLevelLineAssert heading = new HeadLevelLineAssert(doc)
            .setFormattedSpan(0, 1).setLinedType(LinedType.HEADING)
@@ -380,7 +380,7 @@ public class LinedLevelHeadTest {
     @Test
     public void editHeadingLevel(){
         String before = "===abc#DRAFT text\n";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, before, parsers);
+        DocumentAssert doc = assertDoc(1, before, parsers);
         doc.delete(0, 1);
         commonHeading(doc, LinedType.HEADING);
     }
@@ -389,7 +389,7 @@ public class LinedLevelHeadTest {
     public void editContent(){
         ///              012345678901234567
         String before = "==ac#DRAFT text\n";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, before, parsers);
+        DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(3, "b", 0);
         commonHeading(doc, LinedType.HEADING);
     }
@@ -398,7 +398,7 @@ public class LinedLevelHeadTest {
     public void editLevelByContent(){
         ///              012345678901234567
         String before = "=abc#DRAFT text\n";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, before, parsers);
+        DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(1, "=", 0);
         commonHeading(doc, LinedType.HEADING);
     }
@@ -406,7 +406,7 @@ public class LinedLevelHeadTest {
     @Test
     public void editOutlineLevel(){
         String before = "!##abc#DRAFT text\n";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, before, parsers);
+        DocumentAssert doc = assertDoc(1, before, parsers);
         doc.delete(1, 2);
         commonHeading(doc, LinedType.OUTLINE);
     }
@@ -415,7 +415,7 @@ public class LinedLevelHeadTest {
     public void editEdition(){
         ///              01234567890123
         String before = "==abc#DRAFT t\n";
-        DocumentAssert doc = DocumentAssert.assertDoc(1, before, parsers);
+        DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(12, "tex", 0, 2);
         commonHeading(doc, LinedType.HEADING);
     }

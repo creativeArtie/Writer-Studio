@@ -15,7 +15,6 @@ public abstract class SectionSpan extends SpanBranch {
 
     /// %Part 1: Constructor & Fields ##########################################
     private final CacheKeyOptional<LinedSpanLevelSection> cacheHeading;
-    private final CacheKeyMain<Integer> cacheLevel;
     private final CacheKeyMain<EditionType> cacheEdition;
     private final CacheKeyMain<String> cacheDetail;
     private final CacheKeyList<NoteCardSpan> cacheNotes;
@@ -36,7 +35,6 @@ public abstract class SectionSpan extends SpanBranch {
         spanReparser = argumentNotNull(reparser, "reparser");
 
         cacheHeading = new CacheKeyOptional<>(LinedSpanLevelSection.class);
-        cacheLevel = CacheKeyMain.integerKey();
         cacheEdition = new CacheKeyMain<>(EditionType.class);
         cacheDetail = CacheKeyMain.stringKey();
         cacheNotes = new CacheKeyList<>(NoteCardSpan.class);
@@ -61,17 +59,7 @@ public abstract class SectionSpan extends SpanBranch {
      *
      * @return answer
      */
-    public final int getLevel(){
-        return getLocalCache(cacheLevel, () ->{
-            Optional<? extends SectionSpan> span;
-            if (this instanceof SectionSpanHead) {
-                span = getParent(SectionSpanHead.class);
-            }else {
-                span = getParent(SectionSpanScene.class);
-            }
-            return span.map(s -> s.getLevel() + 1).orElse(1);
-        });
-    }
+    public abstract int getLevel();
 
     /** Gets the section edtion type.
      *

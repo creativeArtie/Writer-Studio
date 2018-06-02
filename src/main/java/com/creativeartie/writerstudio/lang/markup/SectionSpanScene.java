@@ -11,6 +11,9 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 public final class SectionSpanScene extends SectionSpan {
     private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(
         AuxiliaryType.SECTION_SCENE);
+
+    private final CacheKeyMain<Integer> cacheLevel;
+
     private final CacheKeyMain<SectionSpanHead> cacheHead;
     private final CacheKeyList<SectionSpanScene> cacheScenes;
 
@@ -27,6 +30,7 @@ public final class SectionSpanScene extends SectionSpan {
      */
     SectionSpanScene(List<Span> children, SectionParser reparser){
         super(children, reparser);
+        cacheLevel = CacheKeyMain.integerKey();
 
         cacheHead = new CacheKeyMain<>(SectionSpanHead.class);
         cacheScenes = new CacheKeyList<>(SectionSpanScene.class);
@@ -57,6 +61,12 @@ public final class SectionSpanScene extends SectionSpan {
     public List<SectionSpanScene> getSubscenes(){
         return getLocalCache(cacheScenes, () ->
             getChildren(SectionSpanScene.class));
+    }
+
+    @Override
+    public int getLevel(){
+        return getLocalCache(cacheLevel, () -> getParent(SectionSpanScene.class)
+            .map(s -> s.getLevel() + 1).orElse(1));
     }
 
     @Override

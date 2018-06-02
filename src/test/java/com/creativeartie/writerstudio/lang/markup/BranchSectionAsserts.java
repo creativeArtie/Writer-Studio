@@ -64,7 +64,7 @@ public class BranchSectionAsserts {
         }
 
         /** For {@link NoteCardSpan#getLookupText()} (defualt: "") */
-        public NoteCardAssert setSource(String lookup){
+        public NoteCardAssert setLookup(String lookup){
             lookupText = lookup;
             return this;
         }
@@ -98,14 +98,18 @@ public class BranchSectionAsserts {
 
         private ArrayList<int[]> sectionLines;
         private ArrayList<int[]> sectionNotes;
+
         private int publishCount;
         private int publishTotal;
         private int noteCount;
         private int noteTotal;
 
+        private int sectionLevel;
+
         public SectionAssert(Class<T> clazz, DocumentAssert doc){
             super(clazz, doc);
             sectionHeading = null;
+            sectionLevel = 1;
 
             sectionLines = new ArrayList<>();
             sectionNotes = new ArrayList<>();
@@ -114,6 +118,7 @@ public class BranchSectionAsserts {
             publishTotal = 1;
             noteCount = 0;
             noteTotal = 0;
+
         }
 
         public T setHeading(int ... indexes){
@@ -151,6 +156,11 @@ public class BranchSectionAsserts {
             return cast();
         }
 
+        public T setLevel(int level){
+            sectionLevel = level;
+            return cast();
+        }
+
         protected abstract SectionSpan moreTest(SpanBranch span,
             ArrayList<Executable> tests);
 
@@ -162,12 +172,12 @@ public class BranchSectionAsserts {
                 () -> test.getHeading(), "getHeading()"));
 
             Optional<LinedSpanLevelSection> section = test.getHeading();
-            int level = section.map(s -> s.getLevel()).orElse(1);
             EditionType type = section.map(s -> s.getEditionType()).
                 orElse(EditionType.NONE);
             String detail = section.map(s -> s.getEditionDetail()).orElse("");
 
-            tests.add(() -> assertEquals(level, test.getLevel(), "getLevel()"));
+            tests.add(() -> assertEquals(sectionLevel, test.getLevel(),
+                "getLevel()"));
             tests.add(() -> assertEquals(type, test.getEditionType(),
                 "getEditionType()"));
             tests.add(() -> assertEquals(detail, test.getEditionDetail(),

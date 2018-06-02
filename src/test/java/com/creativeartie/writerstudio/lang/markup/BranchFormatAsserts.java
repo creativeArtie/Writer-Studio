@@ -299,6 +299,8 @@ public class BranchFormatAsserts {
             return this;
         }
 
+        @Override public void setup(){}
+
         @Override
         protected void test(SpanBranch span, ArrayList<Executable> tests) {
             FormattedSpan test = assertClass(FormattedSpan.class);
