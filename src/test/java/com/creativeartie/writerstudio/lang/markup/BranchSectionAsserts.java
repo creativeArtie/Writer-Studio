@@ -71,7 +71,7 @@ public class BranchSectionAsserts {
 
         @Override
         public void setup(){
-            setStyles(AuxiliaryType.MAIN_NOTE, getCatalogueStatus());
+            addStyles(AuxiliaryType.MAIN_NOTE, getCatalogueStatus());
         }
 
         @Override

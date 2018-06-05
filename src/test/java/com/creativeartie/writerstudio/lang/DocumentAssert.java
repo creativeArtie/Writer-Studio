@@ -2,6 +2,7 @@ package com.creativeartie.writerstudio.lang;
 
 import org.junit.jupiter.api.function.*;
 
+import java.time.*;
 import java.util.*;
 import java.util.function.*;
 
@@ -64,8 +65,8 @@ public class DocumentAssert {
 
     public DocumentAssert assertDoc(int size, String raw){
         ArrayList<Executable> doc = new ArrayList<>();
-        doc.add(() -> assertEquals(raw, testDocument.getRaw(), "text"));
-        doc.add(() -> assertEquals(size, testDocument.size(), "size"));
+        doc.add(() -> assertEquals(raw, testDocument.getRaw(), "getRaw()"));
+        doc.add(() -> assertEquals(size, testDocument.size(), "size()"));
         doc.add(() -> assertLocations(testDocument, true, true));
         assertAll("document", doc);
         return this;
@@ -80,12 +81,12 @@ public class DocumentAssert {
         for (Span test: span){
             boolean first = i == 0 && begin;
             self.add(() ->
-                assertEquals(first, test.isDocumentFirst(), "isFirst")
+                assertEquals(first, test.isDocumentFirst(), "isDocumentFirst()")
             );
 
             boolean last = i == span.size() - 1 && end;
             self.add(() ->
-                assertEquals(last, test.isDocumentLast(), "isLast")
+                assertEquals(last, test.isDocumentLast(), "isDocumentLast()")
             );
 
             /// Also test for children spans
@@ -138,8 +139,8 @@ public class DocumentAssert {
         Span test = assertChild(indexes);
         assertAll("SpanBranch assertChild",
             () -> assertTrue(test instanceof SpanBranch,        "class"),
-            () -> assertEquals(text, test.getRaw(),             "text"),
-            () -> assertEquals(size, ((SpanBranch)test).size(), "size")
+            () -> assertEquals(text, test.getRaw(),             "getRaw()"),
+            () -> assertEquals(size, ((SpanBranch)test).size(), "size()")
         );
         return (SpanBranch) test;
     }
@@ -153,11 +154,11 @@ public class DocumentAssert {
 
         assertAll(child.toString(),
             () -> assertTrue(child instanceof SpanLeaf, "Not leaf"),
-            () -> assertEquals(raw,   child.getRaw(),   "text"),
-            () -> assertEquals(start, child.getStart(), "start"),
-            () -> assertEquals(end,   child.getEnd(),   "end"),
+            () -> assertEquals(raw,   child.getRaw(),   "getRaw()"),
+            () -> assertEquals(start, child.getStart(), "getStatrt()"),
+            () -> assertEquals(end,   child.getEnd(),   "getEnd()"),
             () -> assertEquals(info, ((SpanLeaf)child).getLeafStyle(),
-                "style")
+                "getLeafStyle()")
         );
     }
 
@@ -275,18 +276,39 @@ public class DocumentAssert {
         edit.testRest();
     }
 
-    public void call(Consumer<SpanNode<?>> caller, int ... idx) {
-        call(false, caller, idx);
+    public <T extends SpanBranch> void call(Class<T> clazz,
+            Consumer<T> caller, int ... idx) {
+        call(false, () -> getChild(clazz, idx), caller, idx);
     }
 
-    public void call(boolean verbose, Consumer<SpanNode<?>> caller, int ... idx) {
-        Span target = assertChild(idx);
-        assertTrue(target instanceof SpanNode, () -> "Target not branch: " +
-            target);
-        EditAssert edit = new EditAssert(testDocument, (SpanBranch) target,
-            verbose);
-        caller.accept((SpanBranch) target);
-        edit.testRest();
+    public <T extends SpanBranch> void call(boolean verbose, Class<T> clazz,
+            Consumer<T> caller, int ... idx) {
+        call(verbose, () -> getChild(clazz, idx), caller, idx);
+    }
+
+    public <T extends SpanBranch> void call(Supplier<T> supplier,
+            Consumer<T> caller, int ... idx) {
+        call(false, supplier, caller, idx);
+    }
+
+    public <T extends SpanBranch> void call(boolean verbose,
+            Supplier<T> supplier, Consumer<T> caller, int ... idx) {
+        assertAll("runCommand", () -> {
+            Span target = assertChild(idx);
+            assertTrue(target instanceof SpanBranch, "Not Branch: " +
+                target.getClass());
+            EditAssert edit = new EditAssert(testDocument, (SpanBranch) target,
+                verbose);
+            caller.accept(supplier.get());
+            edit.testRest();
+        });
+    }
+
+    public <T extends SpanBranch> T getChild(Class<T> clazz,
+            int ... indexes){
+        Span target = assertChild(indexes);
+        assertEquals(clazz, target.getClass(), "class");
+        return clazz.cast(target);
     }
 
     private EditAssert createAssert(boolean verbose, int ... indexes){

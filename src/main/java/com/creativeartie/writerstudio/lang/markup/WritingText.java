@@ -11,7 +11,7 @@ import com.google.common.base.*;
 import com.google.common.io.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import com.creativeartie.writerstudio.main.Checker;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** Main document that contain the content.
  *
@@ -30,7 +30,7 @@ public class WritingText extends Document{
      * @see WritingFile#newSampleFile(File)
      */
     WritingText(File file) throws IOException{
-        this(Files.asCharSource(Checker.checkNotNull(file, "textFile"),
+        this(Files.asCharSource(argumentNotNull(file, "textFile"),
             Charsets.UTF_8).read());
     }
 

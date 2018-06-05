@@ -7,7 +7,8 @@ import com.google.common.collect.*;
 import com.creativeartie.writerstudio.lang.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.Checker.*;
+
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** A text with formats. */
 public abstract class FormatSpan extends SpanBranch {
@@ -24,7 +25,7 @@ public abstract class FormatSpan extends SpanBranch {
      */
     FormatSpan(List<Span> children, boolean[] formats){
         super(children);
-        checkEqual(formats.length, "formats.length", FORMAT_TYPES);
+        indexEquals(formats.length, "formats.length", FORMAT_TYPES);
         spanFormats = Arrays.copyOf(formats, formats.length);
 
         cacheStyles = new CacheKeyList<>(StyleInfo.class);

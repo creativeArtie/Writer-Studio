@@ -57,6 +57,7 @@ public final class SetupPointer{
     private int matchMarker; /// match from
     private int nextMarker; /// correct to
 
+
     /** Creates a {@link SetupPointer}.
      *
      * @param raw
@@ -234,7 +235,7 @@ public final class SetupPointer{
         argumentNotNull(children, "children");
         argumentNotNull(style, "style");
         argumentNotNull(matcher, "matcher");
-        assert matcher != null: "Null matcher";
+
         int next = matchMarker;
         for (; rawText.length() > next; next++){
             if (! matcher.matches(rawText.charAt(next))){
@@ -517,4 +518,5 @@ public final class SetupPointer{
         }
         return ptr + "(end)";
     }
+
 }

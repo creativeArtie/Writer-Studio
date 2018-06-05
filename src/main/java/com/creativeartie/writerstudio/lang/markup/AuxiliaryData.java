@@ -238,8 +238,8 @@ public final class AuxiliaryData{
     public static final String FORMAT_UNDERLINE = "_" ;
     public static final String FORMAT_CODED     = "`" ;
 
-    /** Number of format types: from 
-     * {@link FormatTypeStyle}{@code .values().length()} 
+    /** Number of format types: from
+     * {@link FormatTypeStyle}{@code .values().length()}
      */
     public static final int FORMAT_TYPES = FormatTypeStyle.values().length;
 
@@ -443,12 +443,28 @@ public final class AuxiliaryData{
         return builder.build();
     }
 
+    /// %Part 4: Statistical Data ##############################################
+
+    public static final String STAT_SEPARATOR = "|";
+
+    public static final String STAT_PUBLISH_COUNT = "publish-count";
+    public static final String STAT_NOTE_COUNT = "note-count";
+    public static final String STAT_TIME_COUNT = "time-count";
+    public static final String STAT_PUBLISH_GOAL = "publish-goal";
+    public static final String STAT_TIME_GOAL = "time-goal";
+    public static final String STAT_DATA_SEP = ":";
+
+    public static final String STAT_DATE_SEP = "-";
+    public static final String STAT_DATE_END = "\n";
+
+
     /// ========================================================================
     /// @Part 4: Writing Data
 
     private static final String META         = "meta-";
     /** PDF file property  for author:        {@value} */
     public static final String META_AUTHOR   = META   + "author  |";
+    /** PDF file property  for keywords:      {@value} */
     /** PDF file property  for keywords:      {@value} */
     public static final String META_KEYWORDS = META   + "keywords|";
     /** PDF file property  for subject:       {@value} */

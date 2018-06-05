@@ -193,7 +193,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
 
     /// %Part 3: Get Span ######################################################
 
-    /** Gets a list of children.
+    /** Gets a list of children {@link SpanBranch}.
      *
      * @param clazz
      *      span class
@@ -278,6 +278,48 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
         }
         /// Not found or no children
         return Optional.empty();
+    }
+
+    /** Gets the previous sibling {@link SpanBranch}.
+     *
+     * @param clazz
+     *      span class
+     * @return answer
+     */
+    public final <U extends SpanBranch> Optional<U> spanBefore(Class<U> clazz){
+        argumentNotNull(clazz, "clazz");
+        int current = getParent().indexOf(this);
+        int i = 0;
+        for (Span search: getParent()){
+            if (i == current){
+                return Optional.empty();
+            }
+            if (clazz.isInstance(search)){
+                return Optional.of(clazz.cast(search));
+            }
+            i++;
+        }
+        assert false: "span is not a child.";
+        return null;
+
+    }
+
+    /** Gets a list of children {@link SpanLeaf}.
+     *
+     * @param info
+     *      leaf info
+     * @return answer
+     */
+    protected final List<SpanLeaf> getChildren(StyleInfoLeaf info){
+        ImmutableList.Builder<SpanLeaf> builder = ImmutableList.builder();
+        for (Span span: this){
+            if (span instanceof SpanLeaf &&
+                ((SpanLeaf)span).getLeafStyle() == info
+            ){
+                builder.add((SpanLeaf) span);
+            }
+        }
+        return builder.build();
     }
 
     /** Get the fist leaf span if it a has the style of {@code info}.

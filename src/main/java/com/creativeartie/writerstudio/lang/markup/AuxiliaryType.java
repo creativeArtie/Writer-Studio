@@ -26,5 +26,9 @@ public enum AuxiliaryType implements StyleInfo{
     /** {@linkplain StyleInfo} for {@link SectionSpanHead}. */
     SECTION_HEAD,
     /** {@linkplain StyleInfo} for {@link NoteCardSpan}. */
-    MAIN_NOTE;
+    MAIN_NOTE,
+    /** {@linkplain StyleInfo} for {@link StatSpanDate}. */
+    STAT_DATE,
+    /** {@linkplain StyleInfo} for unknown {@link StatSpanData}. */
+    STAT_UNKNOWN;
 }
