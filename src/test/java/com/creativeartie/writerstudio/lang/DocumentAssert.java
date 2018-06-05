@@ -111,7 +111,8 @@ public class DocumentAssert {
                 null;
             assertAll("index for " + pointer,
                 () -> assertTrue(test != null, "not span node"),
-                () -> assertTrue(test.size() > i, "index"),
+                () -> assertTrue(test.size() > i,
+                    () -> "out of range, not: " + test.size() + ">" + i),
                 () -> assertEquals(parent, test.get(i).getParent(),
                     () -> "parent of " + test.get(i)),
                 () -> assertEquals(testDocument, test.get(i).getDocument(),
@@ -291,14 +292,30 @@ public class DocumentAssert {
         call(false, supplier, caller, idx);
     }
 
+    public <T extends SpanBranch> void call(Supplier<T> supplier,
+            Consumer<T> caller, Supplier<SpanNode<?>[]> children){
+        call(false, supplier, caller, children);
+    }
+    public <T extends SpanBranch> void call(boolean verbose, Supplier<T> supplier,
+            Consumer<T> caller, Supplier<SpanNode<?>[]> children){
+        assertAll("runCommand", () -> {
+            assertAll("use spans", () -> children.get(),
+                () -> supplier.get());
+            SpanNode[] targets = children.get();
+            EditAssert edit = new EditAssert(verbose, testDocument, targets);
+            assertAll("function", () -> caller.accept(supplier.get()));
+            assertAll("listeners", () -> edit.testRest());
+        });
+    }
+
     public <T extends SpanBranch> void call(boolean verbose,
             Supplier<T> supplier, Consumer<T> caller, int ... idx) {
         assertAll("runCommand", () -> {
             Span target = assertChild(idx);
             assertTrue(target instanceof SpanBranch, "Not Branch: " +
                 target.getClass());
-            EditAssert edit = new EditAssert(testDocument, (SpanBranch) target,
-                verbose);
+            EditAssert edit = new EditAssert(verbose, testDocument,
+                (SpanBranch) target);
             caller.accept(supplier.get());
             edit.testRest();
         });
@@ -315,7 +332,7 @@ public class DocumentAssert {
         Span child = assertChild(indexes);
         assertTrue(child instanceof SpanNode, () -> "Target not branch: " +
             child);
-        return new EditAssert(testDocument, (SpanNode<?>) child, verbose);
+        return new EditAssert(verbose, testDocument, (SpanNode<?>) child);
 
     }
 

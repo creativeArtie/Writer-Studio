@@ -11,48 +11,58 @@ public class EditAssert{
 
     /// %Part 1: Setup tests ###################################################
 
-    private boolean showEdits;
+    private final boolean showEdits;
 
-    private SpanNode<?> expectedEdited;
-    private ArrayList<SpanNode<?>> actualEdited;
+    private final Document useDoc;
 
-    private ArrayList<SpanNode<?>> expectedParents;
-    private ArrayList<SpanNode<?>> actualParents;
+    private final ArrayList<SpanNode<?>> expectedEdited;
+    private final ArrayList<SpanNode<?>> actualEdited;
 
-    private ArrayList<SpanNode<?>> expectedSpans;
-    private ArrayList<SpanNode<?>> actualSpans;
+    private final ArrayList<SpanNode<?>> expectedParents;
+    private final ArrayList<SpanNode<?>> actualParents;
 
-    private ArrayList<SpanNode<?>> expectedRemoves;
-    private ArrayList<SpanNode<?>> actualRemoves;
+    private final ArrayList<SpanNode<?>> expectedSpans;
+    private final ArrayList<SpanNode<?>> actualSpans;
 
-    EditAssert(Document doc, SpanNode<?> edited){
-        this(doc, edited, false);
-    }
+    private final ArrayList<SpanNode<?>> expectedRemoves;
+    private final ArrayList<SpanNode<?>> actualRemoves;
 
-    EditAssert(Document doc, SpanNode<?> edited, boolean show){
+    EditAssert(boolean show, Document doc, SpanNode<?> ... edits){
         showEdits = show;
+        useDoc = doc;
 
-        expectedEdited = edited;
+        expectedEdited = new ArrayList<>();
         actualEdited = new ArrayList<>();
 
+        expectedParents = new ArrayList<>();
+        actualParents = new ArrayList<>();
+
+        expectedSpans = new ArrayList<>();
+        actualSpans = new ArrayList<>();
+
+        expectedRemoves = new ArrayList<>();
+        actualRemoves = new ArrayList<>();
+
+        for (SpanNode<?> edit: edits){
+            addEdited(edit);
+        }
+    }
+
+    void addEdited(SpanNode<?> edited){
+        expectedEdited.add(edited);
         SpanNode<?> ptr = edited; /// For parent and span list
 
-        expectedParents = new ArrayList<>();
         while (ptr instanceof SpanBranch){
             ptr = ptr.getParent();
             expectedParents.add(ptr);
         }
-        actualParents = new ArrayList<>();
 
-        assert ptr instanceof Document;
-        expectedSpans = addAll(ptr);
-        expectedSpans.add(ptr);
-        actualSpans = new ArrayList<>();
+        expectedSpans.addAll(addAll(useDoc));
+        expectedSpans.add(useDoc);
 
-        expectedRemoves = addAll(edited);
-        actualRemoves = new ArrayList<>();
+        expectedRemoves.addAll(addAll(edited));
 
-        addListeners(doc);
+        addListeners(useDoc);
     }
 
     /// Add the children and grade children to the list
@@ -100,38 +110,42 @@ public class EditAssert{
 
     /// %Part 3: Assertion Calls ###############################################
 
+    private void printSpans(List<SpanNode<?>> expected, List<SpanNode<?>> actual){
+            int i = 1;
+            for (Span span : expected){
+                System.out.println("expect[" + i + "]: " + span);
+                i++;
+            }
+            i = 1;
+            for (Span span : actual){
+                System.out.println("actual[" + i + "]: " + span);
+                i++;
+            }
+    }
+
     void testRest(){
         if (showEdits) {
-            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++");
-            System.out.println(expectedEdited.getDocument());
-            System.out.println(expectedEdited);
+            System.out.println("##############################################");
+            System.out.println("Document======================================");
+            System.out.println(useDoc);
 
-            System.out.println("Edits-----------------");
-            System.out.println(expectedEdited);
-            System.out.println(actualEdited);
+            System.out.println("Edits----------------------------------------");
+            printSpans(expectedEdited, actualEdited);
 
             System.out.println("Parents-----------------");
-            System.out.println(expectedParents);
-            System.out.println(actualParents);
+            printSpans(expectedParents, actualParents);
 
             System.out.println("Spans-----------------");
-            System.out.println(expectedSpans);
-            System.out.println(actualSpans);
+            printSpans(expectedSpans, actualSpans);
 
             System.out.println("Removes-----------------");
-            System.out.println(expectedRemoves);
-            System.out.println(actualRemoves);
+            printSpans(expectedRemoves, actualRemoves);
         }
 
         ArrayList<Executable> tests = new ArrayList<>();
 
         /// Tests
-        tests.add(() -> assertAll("edited",
-            () -> assertEquals(actualEdited.size(), 1,
-                () -> "esize: " + actualEdited),
-            () -> assertSame(expectedEdited, actualEdited.get(0),
-                () -> "span: " + actualEdited.get(0))
-        ));
+        tests.add(search("edited", expectedEdited, actualEdited));
 
         tests.add(search("parent", expectedParents, actualParents));
 
@@ -146,11 +160,13 @@ public class EditAssert{
     private Executable search(String name, List<SpanNode<?>> expect,
             List<SpanNode<?>> actual){
         ArrayList<Executable> list = new ArrayList<>();
+        ArrayList<SpanNode<?>> called = new ArrayList<>();
         for (SpanNode<?> got: actual){
             list.add(() -> {
-                assertTrue(expect.contains(got),
+                assertTrue(expect.contains(got) || called.contains(got),
                     () -> "Unexpected: "  + got);
                 expect.remove(got);
+                called.add(got);
             });
         }
 

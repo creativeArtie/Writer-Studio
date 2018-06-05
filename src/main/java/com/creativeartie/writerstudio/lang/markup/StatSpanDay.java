@@ -68,11 +68,13 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     private Duration getDurationData(StatTypeData type){
+        System.out.println(type);
         List<StatSpanDataTime> spans = getChildren(StatSpanDataTime.class);
         for (StatSpanDataTime span: spans){
             if (span.getDataType() == type){
                 return span.getData();
             }
+                System.out.println(span);
         }
         return Duration.ofSeconds(0);
     }
@@ -161,6 +163,8 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     private void setTimeData(StatTypeData type, Duration data){
+        System.out.println("hello");
+
         for (StatSpanDataTime child: getChildren(StatSpanDataTime.class)){
             if (child.getDataType() == type){
                 child.setData(data);

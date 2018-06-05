@@ -23,7 +23,7 @@ public class StatsTest {
     }
 
 
-    @Test
+    @Test@Disabled
     public void basicPublishTotal(){
         String raw = getDate() + "|publish-count:2|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
@@ -39,7 +39,8 @@ public class StatsTest {
         publish.test(4, "publish-count:2|", 0, 6);
     }
 
-    @Test
+    @Test@Disabled
+    @DisplayName("StatSpanDay#setPublishGoal() by inserting")
     public void addPublishGoal(){
         String raw = getDate() + "\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
@@ -49,7 +50,8 @@ public class StatsTest {
         commonPublishGoal(doc);
     }
 
-    @Test
+    @Test@Disabled
+    @DisplayName("StatSpanDay#setPublishGoal() by updating")
     public void editPublishGoal(){
         String raw = getDate() + "|publish-goal:12|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
@@ -59,7 +61,7 @@ public class StatsTest {
         commonPublishGoal(doc);
     }
 
-    @Test
+    @Test@Disabled
     public void basicPublishGoal(){
         String raw = getDate() + "|publish-goal:20|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
@@ -81,7 +83,8 @@ public class StatsTest {
         publish.test(4, "publish-goal:20|", 0, 6);
     }
 
-    @Test
+    @Test@Disabled
+    @DisplayName("StatSpanDataInt#setData(int)")
     public void setIntData(){
         String raw = getDate() + "|note-count:2|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
@@ -89,7 +92,7 @@ public class StatsTest {
         commonNote(doc);
     }
 
-    @Test
+    @Test@Disabled
     public void basicNoteTotal(){
         String raw = getDate() + "|note-count:20|\n";
         commonNote(assertDoc(1, raw, PARSER));
@@ -111,7 +114,7 @@ public class StatsTest {
         note.test(4, "note-count:20|", 0, 6);
     }
 
-    @Test
+    @Test@Disabled
     public void basicUnknown(){
         String raw = getDate() + "|note-goal:20|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
@@ -127,7 +130,7 @@ public class StatsTest {
         note.test(4, "note-goal:20|", 0, 6);
     }
 
-    @Test
+    @Test@Disabled
     public void basicTimeTotal(){
         String raw = getDate() + "|time-count:PT20S|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
@@ -143,8 +146,20 @@ public class StatsTest {
         time.test(4, "time-count:PT20S|", 0, 6);
     }
 
-    @Test
-    public void setTimeGoal(){
+    @Test@Disabled
+    @DisplayName("StatSpanDay#setTimeGoal() by inserting")
+    public void addTimeGoal(){
+        String raw = getDate() + "\n";
+        DocumentAssert doc = assertDoc(1, raw, PARSER);
+        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
+            s -> s.setTimeGoal(Duration.ofSeconds(20)),
+            0);
+        commonTimeGoal(doc);
+    }
+
+    @Test@Disabled
+    @DisplayName("StatSpanDay#setTimeGoal() by updating")
+    public void editTimeGoal(){
         String raw = getDate() + "|time-goal:PT2S|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
@@ -153,7 +168,8 @@ public class StatsTest {
         commonTimeGoal(doc);
     }
 
-    @Test
+    @Test@Disabled
+    @DisplayName("StatSpanDataTime#setData(Duration)")
     public void setTimeData(){
         String raw = getDate() + "|time-goal:PT2S|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
@@ -162,7 +178,7 @@ public class StatsTest {
         commonTimeGoal(doc);
     }
 
-    @Test
+    @Test@Disabled
     public void basicTimeGoal(){
         String raw = getDate() + "|time-goal:PT20S|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
@@ -183,7 +199,7 @@ public class StatsTest {
         time.test(4, "time-goal:PT20S|", 0, 6);
     }
 
-    @Test
+    @Test@Disabled
     public void basicDoubleData(){
         String raw = getDate() + "|time-goal:PT20S|note-count:20|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
@@ -204,10 +220,36 @@ public class StatsTest {
         note.test(4, "note-count:20|",  0, 7);
     }
 
-    @Test
+    @Test@Disabled
     public void basicTripleData(){
         String raw = getDate() + "|time-count:PT20S|note-count:20|publish-count:20|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
+        commonWordCounter(doc);
+    }
+
+    @Test
+    public void editText() throws Exception{
+        String raw = getDate() + "|time-count:PT18S|note-count:2|publish-count:20|\n";
+        DocumentAssert doc = assertDoc(1, raw, PARSER);
+        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
+            s -> s.startWriting(20, 2), () -> new SpanNode<?>[]{
+                doc.getChild(StatSpanDataInt.class, 0, 7),
+                doc.getChild(StatSpanDataInt.class, 0, 8)
+        });
+        Thread.sleep(2000);
+        doc.call(true, () -> doc.getChild(StatSpanDay.class, 0),
+            s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
+                doc.getChild(StatSpanDataTime.class, 0, 6),
+                doc.getChild(StatSpanDataInt.class, 0, 7),
+                doc.getChild(StatSpanDataInt.class, 0, 8)
+        });
+        commonWordCounter(doc);
+
+    }
+
+    private void commonWordCounter(DocumentAssert doc){
+        String raw = getDate() + "|time-count:PT20S|note-count:20|publish-count:20|\n";
+        doc.assertDoc(1, raw);
 
         StatMainAssert date = new StatMainAssert(doc)
             .setTimeGoal(Duration.ofSeconds(20))
