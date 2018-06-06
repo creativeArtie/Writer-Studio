@@ -231,11 +231,12 @@ public class StatsTest {
     public void editText() throws Exception{
         String raw = getDate() + "|time-count:PT18S|note-count:2|publish-count:20|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
-        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
+        doc.call(true, () -> doc.getChild(StatSpanDay.class, 0),
             s -> s.startWriting(20, 2), () -> new SpanNode<?>[]{
                 doc.getChild(StatSpanDataInt.class, 0, 7),
                 doc.getChild(StatSpanDataInt.class, 0, 8)
         });
+        doc.printDocument();
         Thread.sleep(2000);
         doc.call(true, () -> doc.getChild(StatSpanDay.class, 0),
             s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{

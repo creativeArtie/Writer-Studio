@@ -301,10 +301,16 @@ public class DocumentAssert {
         assertAll("runCommand", () -> {
             assertAll("use spans", () -> children.get(),
                 () -> supplier.get());
-            SpanNode[] targets = children.get();
-            EditAssert edit = new EditAssert(verbose, testDocument, targets);
+            SpanNode<?>[] targets = children.get();
+            EditAssert[] edits = new EditAssert[targets.length];
+            int i = 0;
+            for (SpanNode<?> target: targets){
+                edits[i++] = new EditAssert(testDocument, target, verbose);
+            }
             assertAll("function", () -> caller.accept(supplier.get()));
-            assertAll("listeners", () -> edit.testRest());
+            for (EditAssert edit: edits){
+                assertAll("listeners", () -> edit.testRest());
+            }
         });
     }
 
@@ -312,10 +318,10 @@ public class DocumentAssert {
             Supplier<T> supplier, Consumer<T> caller, int ... idx) {
         assertAll("runCommand", () -> {
             Span target = assertChild(idx);
-            assertTrue(target instanceof SpanBranch, "Not Branch: " +
+            assertTrue(target instanceof SpanNode, "Not Branch: " +
                 target.getClass());
-            EditAssert edit = new EditAssert(verbose, testDocument,
-                (SpanBranch) target);
+            EditAssert edit = new EditAssert(testDocument, (SpanBranch) target,
+                verbose);
             caller.accept(supplier.get());
             edit.testRest();
         });
@@ -332,7 +338,7 @@ public class DocumentAssert {
         Span child = assertChild(indexes);
         assertTrue(child instanceof SpanNode, () -> "Target not branch: " +
             child);
-        return new EditAssert(verbose, testDocument, (SpanNode<?>) child);
+        return new EditAssert(testDocument, (SpanNode<?>) child, verbose);
 
     }
 
