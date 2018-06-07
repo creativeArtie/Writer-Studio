@@ -28,6 +28,13 @@ DataArea = ("head-", ("top     |" | "centre  |" | "bottom  |") ) |
 DataMeta =  "meta-", ("author  |" | "keywords|" | "subject |" | "title   |";
 DataType = "right |" | "left  |" | "center|" | "text  |";
 
+Stat = StatRecord, {StatRecord};
+StatRecord = StatDay. "|", {StatData, } "\n";
+StatDay = \#, \#, \#, \#, "-",  (* year *)
+          ["1"]?, \#, "-", (* month *)
+          ["1" | "2" | "3"]?, \#, "-"; (* day *)
+StatData = -\?, ":", \-?, "|";
+
 Manuscript = (SectionHead1), [{\n, (SectionHead)}], [\n];
 
 (* Heading simplification: SectionHead1's LevelLinedHeading == level 1 *)
@@ -116,4 +123,5 @@ Escape = "\", ?any unicode character?;
 \n     = ? new line ?
 \t     = ? new tab ?
 \?     = ? next terminal string ?
+\#     = ? any digit ?
 Spaces = [{? white space ?}];

@@ -126,7 +126,10 @@ public class WritingStat extends Document{
 
     public void stopWriting(WritingText text){
         setFireReady(false);
-        getRecord().stopWriting(text.getPublishTotal(), text.getNoteTotal());
+        int publish = text.getPublishTotal();
+        int note = text.getNoteTotal();
+        checkDay(publish, note);
+        getRecord().stopWriting(publish, note);
         setFireReady(true);
     }
 }

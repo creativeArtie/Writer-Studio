@@ -9,10 +9,15 @@ import com.creativeartie.writerstudio.lang.*;
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/** A span to store data. */
+/** A span to store {@linkplain String} data. */
 public class StatSpanDataString extends StatSpanData<String>{
     private final CacheKeyMain<String> cacheData;
 
+    /** Creates an instance of {@linkplain StatSpanDataString}.
+     *
+     * @param children
+     *      span children
+     */
     public StatSpanDataString(List<Span> children){
         super(children);
         cacheData = new CacheKeyMain<>(String.class);

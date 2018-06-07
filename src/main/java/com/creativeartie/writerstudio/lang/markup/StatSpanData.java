@@ -15,7 +15,12 @@ public abstract class StatSpanData<T> extends SpanBranch{
     private CacheKeyList<StyleInfo> cacheInfoStyle;
     private CacheKeyMain<StatTypeData> cacheType;
 
-    public StatSpanData(List<Span> children){
+    /** Creates an instance of {@linkplain StatSpanData}.
+     *
+     * @param children
+     *      span children
+     */
+    StatSpanData(List<Span> children){
         super(children);
         cacheInfoStyle = new CacheKeyList<>(StyleInfo.class);
         cacheType = new CacheKeyMain<>(StatTypeData.class);
@@ -23,7 +28,7 @@ public abstract class StatSpanData<T> extends SpanBranch{
 
     public final StatTypeData getDataType(){
         return getLocalCache(cacheType, () -> leafFromFirst(StyleInfoLeaf.FIELD)
-            .map( s -> StatTypeData.parse(s.getRaw()) )
+            .map( s -> StatTypeData.parse(s.getRaw().trim()) )
             .orElse(StatTypeData.UNKNOWN)
         );
     }
