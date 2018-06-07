@@ -68,13 +68,11 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     private Duration getDurationData(StatTypeData type){
-        System.out.println(type);
         List<StatSpanDataTime> spans = getChildren(StatSpanDataTime.class);
         for (StatSpanDataTime span: spans){
             if (span.getDataType() == type){
                 return span.getData();
             }
-                System.out.println(span);
         }
         return Duration.ofSeconds(0);
     }
@@ -163,15 +161,13 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     private void setTimeData(StatTypeData type, Duration data){
-        System.out.println("hello");
-
         for (StatSpanDataTime child: getChildren(StatSpanDataTime.class)){
             if (child.getDataType() == type){
                 child.setData(data);
                 return;
             }
         }
-        addNewLine(type, data);
+        addNewColumn(type, data);
     }
 
     private void setIntegerData(StatTypeData type, int data){
@@ -181,15 +177,16 @@ public final class StatSpanDay extends SpanBranch{
                 return;
             }
         }
-        addNewLine(type, data);
+        addNewColumn(type, data);
     }
 
-    private void addNewLine(StatTypeData type, Object data){
+    private void addNewColumn(StatTypeData type, Object data){
         String symbol = StatParseData.values()[type.ordinal()].getSymbol();
+        /// (getRaw() - "\n") + symbol + ":" + data + "|" + "\n"
         runCommand(() -> getRaw().substring(
                 0, getRaw().length() - STAT_DATE_END.length()
             ) +
-            STAT_SEPARATOR + symbol + STAT_DATA_SEP + data + STAT_SEPARATOR +
+            symbol + STAT_DATA_SEP + data + STAT_SEPARATOR +
             STAT_DATE_END);
     }
 
@@ -204,11 +201,13 @@ public final class StatSpanDay extends SpanBranch{
     void startWriting(int publish, int note){
         argumentAtLeast(publish, "publish", 0);
         argumentAtLeast(note, "note", 0);
+        setFireReady(false);
 
         if (! timeStarted.isPresent()){
             timeStarted = Optional.of(LocalTime.now());
         }
         updateRecord(publish, note);
+        setFireReady(true);
     }
 
     /** Stops the record time (as needed) and update counts.
@@ -222,6 +221,7 @@ public final class StatSpanDay extends SpanBranch{
     void stopWriting(int publish, int note){
         argumentAtLeast(publish, "publish", 0);
         argumentAtLeast(note, "note", 0);
+        setFireReady(false);
 
         timeStarted.ifPresent(time ->
             setTimeData(StatTypeData.TIME_TOTAL,
@@ -230,6 +230,7 @@ public final class StatSpanDay extends SpanBranch{
         );
         timeStarted = Optional.empty();
         updateRecord(publish, note);
+        setFireReady(true);
     }
 
     /** Updates the record with publish and note count

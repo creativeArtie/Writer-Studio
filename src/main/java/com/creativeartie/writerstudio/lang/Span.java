@@ -168,6 +168,14 @@ public abstract class Span{
         return false;
     }
 
+    /** Set if the document is ready to fire listeners.
+     *
+     * If {@code true} listeners will also be fired at the same time as set
+     */
+    protected void setFireReady(boolean b){
+        getDocument().setFireReady(b);
+    }
+
     /// %Part 4.2: Index Pointer ===============================================
 
     /** Get the start and end of this span in relation the the document.

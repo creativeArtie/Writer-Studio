@@ -59,14 +59,14 @@ dependencies {
     compile group: 'com.google.guava', name: 'guava', version: '23.5-jre'
     compile group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.9.0'
     compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.9'
-
-    // compile 'org.bitbucket.shemnon.javafxplugin:gradle-javafx-plugin:8.1.1'
 }
 
 test {
     // Enable JUnit 5 (Gradle 4.6+).
     useJUnitPlatform(){
-        excludeTags 'heavy'
+        // "heavy" tests will take a long time to complete
+        // "timed" tests requires exact timing, which possibly never happens
+        excludeTags "heavy", "timed"
     }
 
     enableAssertions = 'true'

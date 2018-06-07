@@ -302,15 +302,10 @@ public class DocumentAssert {
             assertAll("use spans", () -> children.get(),
                 () -> supplier.get());
             SpanNode<?>[] targets = children.get();
-            EditAssert[] edits = new EditAssert[targets.length];
+            EditAssert edits = new EditAssert(verbose, testDocument, targets);
             int i = 0;
-            for (SpanNode<?> target: targets){
-                edits[i++] = new EditAssert(testDocument, target, verbose);
-            }
             assertAll("function", () -> caller.accept(supplier.get()));
-            for (EditAssert edit: edits){
-                assertAll("listeners", () -> edit.testRest());
-            }
+            assertAll("listeners", () -> edits.testRest());
         });
     }
 
@@ -320,8 +315,8 @@ public class DocumentAssert {
             Span target = assertChild(idx);
             assertTrue(target instanceof SpanNode, "Not Branch: " +
                 target.getClass());
-            EditAssert edit = new EditAssert(testDocument, (SpanBranch) target,
-                verbose);
+            EditAssert edit = new EditAssert(verbose, testDocument,
+                (SpanBranch) target);
             caller.accept(supplier.get());
             edit.testRest();
         });
@@ -338,7 +333,7 @@ public class DocumentAssert {
         Span child = assertChild(indexes);
         assertTrue(child instanceof SpanNode, () -> "Target not branch: " +
             child);
-        return new EditAssert(testDocument, (SpanNode<?>) child, verbose);
+        return new EditAssert(verbose, testDocument, (SpanNode<?>) child);
 
     }
 

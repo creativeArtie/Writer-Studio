@@ -10,10 +10,10 @@ insert(int, String)
 	<-	[pass]
 		[fail] -> {reparseDocument(String)}
 	[others]
-		-> edit(...)
+		-> {edit(...)}
 
 delete(...)
-	-> edit(...)
+	-> {edit(...)}
 
 SpanBranch#runCommand(...)
 	[text = ""]

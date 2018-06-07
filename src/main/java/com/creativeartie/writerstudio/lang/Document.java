@@ -24,6 +24,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     /// %Part 1: Constructors and Fields #######################################
 
     private SetupParser[] documentParsers;
+    private boolean fireReady;
     private ArrayList<SpanNode<?>> removeSpan;
 
     private final Cache<Span, Range<Integer>> spanRanges;
@@ -45,6 +46,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     protected Document(String raw, SetupParser ... parsers){
         argumentNotNull(raw, "raw");
         documentParsers = argumentNotEmpty(parsers, "parser");
+        fireReady = true;
         removeSpan = new ArrayList<>();
 
         spanRanges = CacheBuilder.newBuilder().weakKeys().build();
@@ -285,14 +287,29 @@ public abstract class Document extends SpanNode<SpanBranch>{
         catalogueMap.clear();
         loadMap(this);
 
-        /// fire listeners
-        for (SpanNode<?> span: removeSpan){
-            span.fireRemoveListeners();
-        }
-        removeSpan.clear();
-        fireListeners();
+        if (fireReady) fireAll();
     }
 
+    @Override
+    protected void setFireReady(boolean b){
+        fireReady = b;
+        if (b) fireAll();
+    }
+
+    /** Fire all listeners
+     *
+     * @see #updateDoc()
+     * @see #setFireReady(boolean)
+     */
+    private void fireAll(){
+            /// fire listeners
+            for (SpanNode<?> span: removeSpan){
+                span.fireRemoveListeners();
+            }
+            removeSpan.clear();
+            fireListeners();
+
+    }
 
     /**
      * Recursively reload the catalogue {@link Span spans}.

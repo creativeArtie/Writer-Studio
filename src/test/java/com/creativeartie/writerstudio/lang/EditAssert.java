@@ -9,47 +9,55 @@ import static org.junit.jupiter.api.Assertions.*;
 /// Tests for listeners
 public class EditAssert{
 
-    /// %Part 1: Setup tests ###################################################
+    /// %Part 1: Listup tests ###################################################
 
     private boolean showEdits;
+    private final Document useDoc;
 
-    private SpanNode<?> expectedEdited;
-    private ArrayList<SpanNode<?>> actualEdited;
+    private final ArrayList<SpanNode<?>> expectedEdited;
+    private final ArrayList<SpanNode<?>> actualEdited;
 
-    private ArrayList<SpanNode<?>> expectedParents;
-    private ArrayList<SpanNode<?>> actualParents;
+    private final ArrayList<SpanNode<?>> expectedParents;
+    private final ArrayList<SpanNode<?>> actualParents;
 
-    private ArrayList<SpanNode<?>> expectedSpans;
-    private ArrayList<SpanNode<?>> actualSpans;
+    private final ArrayList<SpanNode<?>> expectedSpans;
+    private final ArrayList<SpanNode<?>> actualSpans;
 
-    private ArrayList<SpanNode<?>> expectedRemoves;
-    private ArrayList<SpanNode<?>> actualRemoves;
+    private final ArrayList<SpanNode<?>> expectedRemoves;
+    private final ArrayList<SpanNode<?>> actualRemoves;
 
-    EditAssert(Document doc, SpanNode<?> edited){
-        this(doc, edited, false);
-    }
-
-    EditAssert(Document doc, SpanNode<?> edited, boolean show){
+    EditAssert(boolean show, Document doc, SpanNode<?> ... edits){
         showEdits = show;
+        useDoc = doc;
 
-        expectedEdited = edited;
+        expectedEdited = new ArrayList<>();
+        for (SpanNode<?> edit: edits){
+            expectedEdited.add(edit);
+        }
         actualEdited = new ArrayList<>();
 
-        SpanNode<?> ptr = edited; /// For parent and span list
-
         expectedParents = new ArrayList<>();
-        while (ptr instanceof SpanBranch){
-            ptr = ptr.getParent();
-            expectedParents.add(ptr);
+        for (SpanNode<?> edit: edits){
+            SpanNode<?> ptr = edit;
+            while (ptr instanceof SpanBranch){
+                ptr = ptr.getParent();
+                if (! expectedParents.contains(ptr)) expectedParents.add(ptr);
+            }
         }
         actualParents = new ArrayList<>();
 
-        assert ptr instanceof Document;
-        expectedSpans = addAll(ptr);
-        expectedSpans.add(ptr);
+        expectedSpans = addAll(doc);
+        expectedSpans.add(doc);
         actualSpans = new ArrayList<>();
 
-        expectedRemoves = addAll(edited);
+        expectedRemoves = new ArrayList<>();
+        for (SpanNode<?> edit: edits){
+            for (SpanNode<?> span: addAll(edit)){
+                if (! expectedRemoves.contains(span)) expectedRemoves.add(span);
+                expectedParents.remove(span);
+                expectedEdited.remove(span);
+            }
+        }
         actualRemoves = new ArrayList<>();
 
         addListeners(doc);
@@ -103,11 +111,11 @@ public class EditAssert{
     void testRest(){
         if (showEdits) {
             System.out.println("+++++++++++++++++++++++++++++++++++++++++++++");
-            System.out.println(expectedEdited.getDocument());
+            System.out.println(useDoc);
             System.out.println(expectedEdited);
 
             System.out.println("Edits-----------------");
-            print(Arrays.asList(expectedEdited), actualEdited);
+            print(expectedEdited, actualEdited);
 
             System.out.println("Parents-----------------");
             print(expectedParents, actualParents);
@@ -122,12 +130,7 @@ public class EditAssert{
         ArrayList<Executable> tests = new ArrayList<>();
 
         /// Tests
-        tests.add(() -> assertAll("edited",
-            () -> assertEquals(actualEdited.size(), 1,
-                () -> "size: " + actualEdited),
-            () -> assertSame(expectedEdited, actualEdited.get(0),
-                () -> "span: " + actualEdited.get(0))
-        ));
+        tests.add(search("edited", expectedEdited, actualEdited));
 
         tests.add(search("parent", expectedParents, actualParents));
 
@@ -143,13 +146,13 @@ public class EditAssert{
         print("actual", actual);
     }
 
-    private void print(String type, List<SpanNode<?>> list){
-        if (list.isEmpty()){
-            System.out.println("[]");
-        }
+    private void print(String type, Iterable<SpanNode<?>> list){
         int i = 1;
         for (SpanNode<?> span: list){
             System.out.println(type + "[" + i++ + "]" + span);
+        }
+        if (i == 1){
+            System.out.println("[]");
         }
     }
 

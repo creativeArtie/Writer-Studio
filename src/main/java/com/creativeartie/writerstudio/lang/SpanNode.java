@@ -350,7 +350,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      */
     protected Optional<SpanLeaf> leafFromLast(StyleInfoLeaf info){
         argumentNotNull(info, "info");
-        for(int i = size() - 1; i >= 0; i++){
+        for(int i = size() - 1; i >= 0; i--){
             Span span = get(i);
             if (span instanceof SpanLeaf){
                 SpanLeaf found = (SpanLeaf) span;

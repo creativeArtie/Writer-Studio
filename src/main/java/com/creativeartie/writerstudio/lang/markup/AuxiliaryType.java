@@ -29,6 +29,4 @@ public enum AuxiliaryType implements StyleInfo{
     MAIN_NOTE,
     /** {@linkplain StyleInfo} for {@link StatSpanDate}. */
     STAT_DATE,
-    /** {@linkplain StyleInfo} for unknown {@link StatSpanData}. */
-    STAT_UNKNOWN;
 }
