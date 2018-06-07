@@ -24,7 +24,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     /// %Part 1: Constructors and Fields #######################################
 
     private SetupParser[] documentParsers;
-    private boolean fireReady;
+    private int fireReady;
     private ArrayList<SpanNode<?>> removeSpan;
 
     private final Cache<Span, Range<Integer>> spanRanges;
@@ -46,7 +46,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     protected Document(String raw, SetupParser ... parsers){
         argumentNotNull(raw, "raw");
         documentParsers = argumentNotEmpty(parsers, "parser");
-        fireReady = true;
+        fireReady = 0;
         removeSpan = new ArrayList<>();
 
         spanRanges = CacheBuilder.newBuilder().weakKeys().build();
@@ -287,13 +287,18 @@ public abstract class Document extends SpanNode<SpanBranch>{
         catalogueMap.clear();
         loadMap(this);
 
-        if (fireReady) fireAll();
+        fireAll();
     }
 
     @Override
     protected void setFireReady(boolean b){
-        fireReady = b;
-        if (b) fireAll();
+        if (b && fireReady >= 0){
+            throw new IllegalStateException(
+                "setFireReady() is already set to ready."
+            );
+        }
+        fireReady += b? 1: -1;
+        fireAll();
     }
 
     /** Fire all listeners
@@ -302,13 +307,14 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * @see #setFireReady(boolean)
      */
     private void fireAll(){
+        if (fireReady == 0){
             /// fire listeners
             for (SpanNode<?> span: removeSpan){
                 span.fireRemoveListeners();
             }
             removeSpan.clear();
             fireListeners();
-
+        }
     }
 
     /**

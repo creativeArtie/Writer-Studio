@@ -50,18 +50,19 @@ public class WritingStat extends Document{
         cacheMonths = new TreeMap<>();
         cacheToday = new CacheKeyMain<>(StatSpanDay.class);
 
-        checkDay();
+        checkDay(getRecord().getPublishTotal(), getRecord().getNoteTotal());
     }
 
     /** Add record if this is not today.
      *
      * @see #WritingStat(String)
      */
-    private void checkDay(){
+    private void checkDay(int publish, int note){
         Optional<LocalDate> date = spanFromLast(StatSpanDay.class)
             .map(s -> s.getRecordDate())
             .filter(d -> LocalDate.now().equals(d));
         if (! date.isPresent()){
+            getRecord().stopWriting(publish, note);
             runCommand(() -> getRaw() + createNewDay());
         }
     }
@@ -87,7 +88,7 @@ public class WritingStat extends Document{
             /// d = LocalDate
             .map( d -> YearMonth.of(d.getYear(), d.getMonth()) )
             .orElseThrow(() -> new IllegalStateException(
-                "Unexcepted null date for: " + span));
+                "Unexpected null date for: " + span));
     }
 
     public List<StatSpanDay> getMonth(YearMonth month){
@@ -104,6 +105,29 @@ public class WritingStat extends Document{
                 .filter(s -> month.equals(getYearMonth(Optional.of(s))))
                 .iterator()
             ));
-     }
+    }
+
+    public StatSpanDay getRecord(){
+        return getLocalCache(cacheToday, () -> spanFromLast(StatSpanDay.class)
+            .orElseThrow(() ->
+                new IllegalStateException("Unexpected empty file.")
+            )
+        );
+    }
+
+    public void startWriting(WritingText text){
+        setFireReady(false);
+        int publish = text.getPublishTotal();
+        int note = text.getNoteTotal();
+        checkDay(publish, note);
+        getRecord().stopWriting(publish, note);
+        setFireReady(true);
+    }
+
+    public void stopWriting(WritingText text){
+        setFireReady(false);
+        getRecord().stopWriting(text.getPublishTotal(), text.getNoteTotal());
+        setFireReady(true);
+    }
 }
 
