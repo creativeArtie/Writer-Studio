@@ -68,8 +68,8 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     private Duration getDurationData(StatTypeData type){
-        List<StatSpanDataTime> spans = getChildren(StatSpanDataTime.class);
-        for (StatSpanDataTime span: spans){
+        List<SpecStatDataTime> spans = getChildren(SpecStatDataTime.class);
+        for (SpecStatDataTime span: spans){
             if (span.getDataType() == type){
                 return span.getData();
             }
@@ -129,8 +129,8 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     private int getIntData(StatTypeData type){
-        List<StatSpanDataInt> spans = getChildren(StatSpanDataInt.class);
-        for (StatSpanDataInt span: spans){
+        List<SpecStatDataInt> spans = getChildren(SpecStatDataInt.class);
+        for (SpecStatDataInt span: spans){
             if (span.getDataType() == type){
                 return span.getData();
             }
@@ -161,7 +161,7 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     private void setTimeData(StatTypeData type, Duration data){
-        for (StatSpanDataTime child: getChildren(StatSpanDataTime.class)){
+        for (SpecStatDataTime child: getChildren(SpecStatDataTime.class)){
             if (child.getDataType() == type){
                 child.setData(data);
                 return;
@@ -171,7 +171,7 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     private void setIntegerData(StatTypeData type, int data){
-        for (StatSpanDataInt child: getChildren(StatSpanDataInt.class)){
+        for (SpecStatDataInt child: getChildren(SpecStatDataInt.class)){
             if (child.getDataType() == type){
                 child.setData(data);
                 return;
@@ -181,7 +181,7 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     private void addNewColumn(StatTypeData type, Object data){
-        String symbol = StatParseData.values()[type.ordinal()].getSymbol();
+        String symbol = SpecParseData.values()[type.ordinal()].getSymbol();
         /// (getRaw() - "\n") + symbol + ":" + data + "|" + "\n"
         runCommand(() -> getRaw().substring(
                 0, getRaw().length() - STAT_DATE_END.length()

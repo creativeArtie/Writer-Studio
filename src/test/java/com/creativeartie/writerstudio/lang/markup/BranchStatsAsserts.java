@@ -36,11 +36,11 @@ public class BranchStatsAsserts {
             addStyles(statType);
         }
 
-        protected abstract StatSpanData castTest(SpanBranch span);
+        protected abstract SpecStatData castTest(SpanBranch span);
 
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){
-            StatSpanData test = castTest(span);
+            SpecStatData test = castTest(span);
             tests.add(() -> assertEquals(statType, test.getDataType()));
             tests.add(() -> assertEquals(statData, test.getData()));
         }
@@ -53,8 +53,8 @@ public class BranchStatsAsserts {
         }
 
         @Override
-        protected StatSpanData castTest(SpanBranch span){
-            return assertClass(StatSpanDataInt.class);
+        protected SpecStatData castTest(SpanBranch span){
+            return assertClass(SpecStatDataInt.class);
         }
     }
 
@@ -66,8 +66,8 @@ public class BranchStatsAsserts {
         }
 
         @Override
-        protected StatSpanData castTest(SpanBranch span){
-            return assertClass(StatSpanDataTime.class);
+        protected SpecStatData castTest(SpanBranch span){
+            return assertClass(SpecStatDataTime.class);
         }
     }
 
@@ -78,8 +78,8 @@ public class BranchStatsAsserts {
             super(StringStatAssert.class, doc);
         }
         @Override
-        protected StatSpanData castTest(SpanBranch span){
-            return assertClass(StatSpanDataString.class);
+        protected SpecStatData castTest(SpanBranch span){
+            return assertClass(SpecStatDataString.class);
         }
     }
 

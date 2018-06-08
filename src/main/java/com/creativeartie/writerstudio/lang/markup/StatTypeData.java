@@ -16,7 +16,7 @@ public enum StatTypeData implements StyleInfo{
         if (key == null){
             return StatTypeData.UNKNOWN;
         }
-        for (StatParseData parser: StatParseData.values()){
+        for (SpecParseData parser: SpecParseData.values()){
             if (parser.getSymbol().equals(key)){
                 return values()[parser.ordinal()];
             }

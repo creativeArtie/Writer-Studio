@@ -7,7 +7,7 @@ import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
-enum StatParseData implements SetupParser{
+enum SpecParseData implements SetupParser{
 
     PUBLISH_TOTAL(STAT_PUBLISH_COUNT), PUBLISH_GOAL(STAT_PUBLISH_GOAL),
     NOTE_TOTAL(STAT_NOTE_COUNT),
@@ -16,7 +16,7 @@ enum StatParseData implements SetupParser{
 
     private String dataSymbol;
 
-    private StatParseData(String symbol){
+    private SpecParseData(String symbol){
         dataSymbol = symbol;
     }
 
@@ -35,7 +35,7 @@ enum StatParseData implements SetupParser{
             pointer.getTo(children, StyleInfoLeaf.DATA, STAT_SEPARATOR);
             pointer.startsWith(children, STAT_SEPARATOR);
 
-            return Optional.of(new StatSpanDataString(children));
+            return Optional.of(new SpecStatDataString(children));
         }
         if (pointer.startsWith(children, StyleInfoLeaf.FIELD, dataSymbol)){
             pointer.startsWith(children, STAT_DATA_SEP);
@@ -44,9 +44,9 @@ enum StatParseData implements SetupParser{
             pointer.startsWith(children, STAT_SEPARATOR);
 
             if (ordinal() < TIME_TOTAL.ordinal()){
-                return Optional.of(new StatSpanDataInt(children));
+                return Optional.of(new SpecStatDataInt(children));
             } else {
-                return Optional.of(new StatSpanDataTime(children));
+                return Optional.of(new SpecStatDataTime(children));
             }
         }
         return Optional.empty();

@@ -9,24 +9,24 @@ import com.creativeartie.writerstudio.lang.*;
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/** A span to store {@linkplain String} data. */
-public class StatSpanDataString extends StatSpanData<String>{
-    private final CacheKeyMain<String> cacheData;
+/** A span to store {@linkplain Duration} data. */
+public class SpecStatDataTime extends SpecStatData<Duration>{
+    private final CacheKeyMain<Duration> cacheData;
 
-    /** Creates an instance of {@linkplain StatSpanDataString}.
+    /** Creates an instance of {@linkplain SpecStatDataTime}.
      *
      * @param children
      *      span children
      */
-    public StatSpanDataString(List<Span> children){
+    public SpecStatDataTime(List<Span> children){
         super(children);
-        cacheData = new CacheKeyMain<>(String.class);
+        cacheData = new CacheKeyMain<>(Duration.class);
     }
 
     @Override
-    public String getData(){
+    public Duration getData(){
         return getLocalCache(cacheData, () -> leafFromLast(StyleInfoLeaf.DATA)
-            .map(s -> s.getRaw()).orElse("")
+            .map(s -> Duration.parse(s.getRaw())).orElse(Duration.ofSeconds(0))
         );
     }
 }

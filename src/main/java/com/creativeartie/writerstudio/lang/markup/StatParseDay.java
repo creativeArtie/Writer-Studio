@@ -21,7 +21,7 @@ public enum StatParseDay implements SetupParser{
 
         while (! pointer.startsWith(children, STAT_DATE_END) &&
                 pointer.hasNext()){
-            for (StatParseData data: StatParseData.values()){
+            for (SpecParseData data: SpecParseData.values()){
                 if (data.parse(pointer, children)){
                     break;
                 }
