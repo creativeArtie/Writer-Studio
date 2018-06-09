@@ -16,11 +16,17 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  */
 public class WritingStat extends Document{
 
-    private static String createNewDay(){
+    private static String createNewDay(StatSpanDay last){
         LocalDate today = LocalDate.now();
 
-        return today.getYear() + STAT_DATA_SEP + today.getMonth().getValue() +
-            STAT_DATA_SEP + today.getDayOfMonth() + STAT_SEPARATOR +
+        String count = StatParseData.PUBLISH_GOAL.getSymbol() + STAT_DATA_SEP +
+            (last != null? last.getPublishGoal(): "50") + STAT_SEPARATOR;
+
+        String time =  StatParseData.TIME_GOAL.getSymbol() + STAT_DATA_SEP +
+            (last != null? last.getTimeGoal(): Duration.ofMinutes(30)) +
+            STAT_SEPARATOR;
+
+        return today.format(STAT_DATE) + STAT_SEPARATOR + count + time +
             STAT_DATE_END;
     }
 
@@ -34,7 +40,7 @@ public class WritingStat extends Document{
      * @see WritingFile#newFile()
      */
     WritingStat(){
-        this(createNewDay());
+        this(createNewDay(null));
     }
 
     /** Creates a {@linkplain WritingText}.
@@ -58,12 +64,12 @@ public class WritingStat extends Document{
      * @see #WritingStat(String)
      */
     private void checkDay(int publish, int note){
-        Optional<LocalDate> date = spanFromLast(StatSpanDay.class)
-            .map(s -> s.getRecordDate())
-            .filter(d -> LocalDate.now().equals(d));
-        if (! date.isPresent()){
-            getRecord().stopWriting(publish, note);
-            runCommand(() -> getRaw() + createNewDay());
+        StatSpanDay last = getRecord();
+        if (! LocalDate.now().equals(last.getRecordDate())){
+            System.out.println(last.getTimeGoal());
+            last.stopWriting(publish, note);
+            System.out.println(last.getTimeGoal());
+            runCommand(() -> getRaw() + createNewDay(last));
         }
     }
 

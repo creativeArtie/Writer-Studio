@@ -15,13 +15,11 @@ public enum StatParseDay implements SetupParser{
         argumentNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
 
-        getParsePartDate(pointer, children, STAT_DATE_SEP); /// year
-        getParsePartDate(pointer, children, STAT_DATE_SEP); /// month
-        getParsePartDate(pointer, children, STAT_SEPARATOR); /// day
+        getParsePartDate(pointer, children, STAT_SEPARATOR);
 
         while (! pointer.startsWith(children, STAT_DATE_END) &&
                 pointer.hasNext()){
-            for (SpecParseData data: SpecParseData.values()){
+            for (StatParseData data: StatParseData.values()){
                 if (data.parse(pointer, children)){
                     break;
                 }

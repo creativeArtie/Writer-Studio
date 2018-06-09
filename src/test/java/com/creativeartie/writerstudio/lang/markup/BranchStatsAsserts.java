@@ -36,11 +36,11 @@ public class BranchStatsAsserts {
             addStyles(statType);
         }
 
-        protected abstract SpecStatData castTest(SpanBranch span);
+        protected abstract SpecSpanData castTest(SpanBranch span);
 
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){
-            SpecStatData test = castTest(span);
+            SpecSpanData test = castTest(span);
             tests.add(() -> assertEquals(statType, test.getDataType()));
             tests.add(() -> assertEquals(statData, test.getData()));
         }
@@ -53,8 +53,8 @@ public class BranchStatsAsserts {
         }
 
         @Override
-        protected SpecStatData castTest(SpanBranch span){
-            return assertClass(SpecStatDataInt.class);
+        protected SpecSpanData castTest(SpanBranch span){
+            return assertClass(SpecSpanDataInt.class);
         }
     }
 
@@ -66,8 +66,8 @@ public class BranchStatsAsserts {
         }
 
         @Override
-        protected SpecStatData castTest(SpanBranch span){
-            return assertClass(SpecStatDataTime.class);
+        protected SpecSpanData castTest(SpanBranch span){
+            return assertClass(SpecSpanDataTime.class);
         }
     }
 
@@ -78,8 +78,8 @@ public class BranchStatsAsserts {
             super(StringStatAssert.class, doc);
         }
         @Override
-        protected SpecStatData castTest(SpanBranch span){
-            return assertClass(SpecStatDataString.class);
+        protected SpecSpanData castTest(SpanBranch span){
+            return assertClass(SpecSpanDataString.class);
         }
     }
 
@@ -161,7 +161,7 @@ public class BranchStatsAsserts {
                 "getWriteTime()"));
             tests.add(() -> assertEquals(publishGoal, test.getPublishGoal(),
                 "getPublishGoal()"));
-            tests.add(() -> assertEquals(publishGoal, test.getPublishTotal(),
+            tests.add(() -> assertEquals(publishTotal, test.getPublishTotal(),
                 "getPublishTotal()"));
             tests.add(() -> assertEquals(noteTotal, test.getNoteTotal(),
                 "getNoteTotal()"));
@@ -171,4 +171,5 @@ public class BranchStatsAsserts {
                 "getPublishWritten()"));
         }
     }
+
 }

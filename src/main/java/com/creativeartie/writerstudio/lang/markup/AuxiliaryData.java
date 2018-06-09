@@ -1,5 +1,6 @@
 package com.creativeartie.writerstudio.lang.markup;
 
+import java.time.format.*;
 import java.util.*;
 
 import com.google.common.collect.*;
@@ -447,6 +448,9 @@ public final class AuxiliaryData{
 
     public static final String STAT_SEPARATOR = "|";
 
+    public static final DateTimeFormatter STAT_DATE = DateTimeFormatter
+        .ISO_LOCAL_DATE;
+
     public static final String STAT_PUBLISH_COUNT = "publish-count";
     public static final String STAT_NOTE_COUNT = "note-count";
     public static final String STAT_TIME_COUNT = "time-count";
@@ -454,7 +458,6 @@ public final class AuxiliaryData{
     public static final String STAT_TIME_GOAL = "time-goal";
     public static final String STAT_DATA_SEP = ":";
 
-    public static final String STAT_DATE_SEP = "-";
     public static final String STAT_DATE_END = "\n";
 
 

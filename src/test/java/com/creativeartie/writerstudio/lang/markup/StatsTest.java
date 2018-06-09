@@ -6,7 +6,6 @@ import java.time.*;
 
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.BranchStatsAsserts.*;
-import com.creativeartie.writerstudio.lang.markup.BranchSectionAsserts.*;
 
 import static com.creativeartie.writerstudio.lang.DocumentAssert.*;
 
@@ -18,8 +17,7 @@ public class StatsTest {
     }
 
     private String getDate(LocalDate time){
-        return time.getYear() + "-" + time.getMonth().getValue() + "-" +
-            time.getDayOfMonth();
+        return time.format(AuxiliaryData.STAT_DATE);
     }
 
     @Test
@@ -27,7 +25,7 @@ public class StatsTest {
         String raw = getDate() + "|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
         StatMainAssert data = new StatMainAssert(doc);
-        data.test(7, raw, 0);
+        data.test(3, raw, 0);
     }
 
 
@@ -37,14 +35,14 @@ public class StatsTest {
         DocumentAssert doc = assertDoc(1, raw, PARSER);
 
         StatMainAssert date = new StatMainAssert(doc)
-            .setPublishTotal(2);
+            .setPublishTotal(2).setGrand(2).setWritten(2);
 
          IntStatAssert publish = new IntStatAssert(doc)
             .setType(StatTypeData.PUBLISH_TOTAL)
             .setData(2);
 
-        date.test(8,    raw,       0);
-        publish.test(4, "publish-count:2|", 0, 6);
+        date.test(4,    raw,       0);
+        publish.test(4, "publish-count:2|", 0, 2);
     }
 
     @Test
@@ -65,7 +63,7 @@ public class StatsTest {
         DocumentAssert doc = assertDoc(1, raw, PARSER);
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.setPublishGoal(20),
-            0, 6);
+            0, 2);
         commonPublishGoal(doc);
     }
 
@@ -87,16 +85,16 @@ public class StatsTest {
             .setType(StatTypeData.PUBLISH_GOAL)
             .setData(20);
 
-        date.test(8,    raw,        0);
-        publish.test(4, "publish-goal:20|", 0, 6);
+        date.test(4,    raw,                0);
+        publish.test(4, "publish-goal:20|", 0, 2);
     }
 
     @Test
-    @DisplayName("SpecStatDataInt#setData(int)")
+    @DisplayName("SpecSpanDataInt#setData(int)")
     public void setIntData(){
         String raw = getDate() + "|note-count:2|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
-        doc.call(SpecStatDataInt.class, s -> s.setData(20), 0, 6);
+        doc.call(SpecSpanDataInt.class, s -> s.setData(20), 0, 2);
         commonNote(doc);
     }
 
@@ -112,14 +110,14 @@ public class StatsTest {
         doc.assertDoc(1, raw);
 
         StatMainAssert date = new StatMainAssert(doc)
-            .setNoteTotal(20);
+            .setNoteTotal(20).setGrand(20);
 
         IntStatAssert note = new IntStatAssert(doc)
             .setType(StatTypeData.NOTE_TOTAL)
             .setData(20);
 
-        date.test(8, raw,       0);
-        note.test(4, "note-count:20|", 0, 6);
+        date.test(4, raw,              0);
+        note.test(4, "note-count:20|", 0, 2);
     }
 
     @Test
@@ -127,15 +125,14 @@ public class StatsTest {
         String raw = getDate() + "|note-goal:20|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
 
-        StatMainAssert date = new StatMainAssert(doc)
-            .setNoteTotal(20);
+        StatMainAssert date = new StatMainAssert(doc);
 
         StringStatAssert note = new StringStatAssert(doc)
             .setType(StatTypeData.UNKNOWN)
             .setData("20");
 
-        date.test(8, raw,       0);
-        note.test(4, "note-goal:20|", 0, 6);
+        date.test(4, raw,       0);
+        note.test(4, "note-goal:20|", 0, 2);
     }
 
     @Test
@@ -150,8 +147,8 @@ public class StatsTest {
             .setType(StatTypeData.TIME_TOTAL)
             .setData(Duration.ofSeconds(20));
 
-        date.test(8, raw,       0);
-        time.test(4, "time-count:PT20S|", 0, 6);
+        date.test(4, raw,       0);
+        time.test(4, "time-count:PT20S|", 0, 2);
     }
 
     @Test
@@ -172,17 +169,17 @@ public class StatsTest {
         DocumentAssert doc = assertDoc(1, raw, PARSER);
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.setTimeGoal(Duration.ofSeconds(20)),
-            0, 6);
+            0, 2);
         commonTimeGoal(doc);
     }
 
     @Test
-    @DisplayName("SpecStatDataTime#setData(Duration)")
+    @DisplayName("SpecSpanDataTime#setData(Duration)")
     public void setTimeData(){
         String raw = getDate() + "|time-goal:PT2S|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
-        doc.call(SpecStatDataTime.class,s -> s.setData(Duration.ofSeconds(20)),
-            0, 6);
+        doc.call(SpecSpanDataTime.class,s -> s.setData(Duration.ofSeconds(20)),
+            0, 2);
         commonTimeGoal(doc);
     }
 
@@ -203,8 +200,8 @@ public class StatsTest {
         TimeStatAssert time = new TimeStatAssert(doc)
             .setType(StatTypeData.TIME_GOAL)
             .setData(Duration.ofSeconds(20));
-        date.test(8, raw,       0);
-        time.test(4, "time-goal:PT20S|", 0, 6);
+        date.test(4, raw,                0);
+        time.test(4, "time-goal:PT20S|", 0, 2);
     }
 
     @Test
@@ -214,7 +211,7 @@ public class StatsTest {
 
         StatMainAssert date = new StatMainAssert(doc)
             .setTimeGoal(Duration.ofSeconds(20))
-            .setNoteTotal(20);
+            .setNoteTotal(20).setGrand(20);
 
         TimeStatAssert time = new TimeStatAssert(doc)
             .setType(StatTypeData.TIME_GOAL)
@@ -223,9 +220,9 @@ public class StatsTest {
             .setType(StatTypeData.NOTE_TOTAL)
             .setData(20);
 
-        date.test(9, raw,         0);
-        time.test(4, "time-goal:PT20S|", 0, 6);
-        note.test(4, "note-count:20|",  0, 7);
+        date.test(5, raw,         0);
+        time.test(4, "time-goal:PT20S|", 0, 2);
+        note.test(4, "note-count:20|",  0, 3);
     }
 
     @Test
@@ -242,15 +239,15 @@ public class StatsTest {
         DocumentAssert doc = assertDoc(1, raw, PARSER);
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.startWriting(20, 2), () -> new SpanNode<?>[]{
-                doc.getChild(SpecStatDataInt.class, 0, 7),
-                doc.getChild(SpecStatDataInt.class, 0, 8)
+                doc.getChild(SpecSpanDataInt.class, 0, 7),
+                doc.getChild(SpecSpanDataInt.class, 0, 8)
         });
         Thread.sleep(2000);
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
-                doc.getChild(SpecStatDataTime.class, 0, 6),
-                doc.getChild(SpecStatDataInt.class, 0, 7),
-                doc.getChild(SpecStatDataInt.class, 0, 8)
+                doc.getChild(SpecSpanDataTime.class, 0, 6),
+                doc.getChild(SpecSpanDataInt.class, 0, 7),
+                doc.getChild(SpecSpanDataInt.class, 0, 8)
         });
         commonWordCounter(doc);
     }
@@ -262,15 +259,15 @@ public class StatsTest {
         DocumentAssert doc = assertDoc(1, raw, PARSER);
         doc.call(true, () -> doc.getChild(StatSpanDay.class, 0),
             s -> s.startWriting(20, 2), () -> new SpanNode<?>[]{
-                doc.getChild(SpecStatDataInt.class, 0, 7),
+                doc.getChild(SpecSpanDataInt.class, 0, 7),
                 doc.getChild(StatSpanDay.class, 0)
         });
         Thread.sleep(2000);
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
-                doc.getChild(SpecStatDataTime.class, 0, 6),
-                doc.getChild(SpecStatDataInt.class, 0, 7),
-                doc.getChild(SpecStatDataInt.class, 0, 8)
+                doc.getChild(SpecSpanDataTime.class, 0, 6),
+                doc.getChild(SpecSpanDataInt.class, 0, 7),
+                doc.getChild(SpecSpanDataInt.class, 0, 8)
         });
         commonWordCounter(doc);
     }
@@ -293,8 +290,8 @@ public class StatsTest {
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
                 doc.getChild(StatSpanDay.class, 0),
-                doc.getChild(SpecStatDataInt.class, 0, 6),
-                doc.getChild(SpecStatDataInt.class, 0, 7)
+                doc.getChild(SpecSpanDataInt.class, 0, 6),
+                doc.getChild(SpecSpanDataInt.class, 0, 7)
         });
 
         raw = base + "publish-count:20|note-count:20|time-count:PT20S|\n";
@@ -314,7 +311,7 @@ public class StatsTest {
             .setType(StatTypeData.TIME_TOTAL)
             .setData(Duration.ofSeconds(20));
 
-        date.test(10, raw,                 0);
+        date.test(6, raw,                 0);
         out.test( 4, "publish-count:20|",  0, 6);
         note.test(4, "note-count:20|",     0, 7);
         time.test(4, "time-count:PT20S|",  0, 8);
@@ -342,7 +339,7 @@ public class StatsTest {
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
                 doc.getChild(StatSpanDay.class, 0),
-                doc.getChild(SpecStatDataInt.class, 0, 7)
+                doc.getChild(SpecSpanDataInt.class, 0, 3)
         });
         commonWordCounter(doc);
     }
@@ -355,8 +352,8 @@ public class StatsTest {
 
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.startWriting(20, 20), () -> new SpanNode<?>[]{
-                doc.getChild(SpecStatDataInt.class, 0, 7),
-                doc.getChild(SpecStatDataInt.class, 0, 8),
+                doc.getChild(SpecSpanDataInt.class, 0, 3),
+                doc.getChild(SpecSpanDataInt.class, 0, 4),
         });
         commonWordCounter(doc);
     }
@@ -378,8 +375,9 @@ public class StatsTest {
         doc.assertDoc(1, raw);
 
         StatMainAssert date = new StatMainAssert(doc)
-            .setTimeGoal(Duration.ofSeconds(20))
-            .setNoteTotal(20).setPublishTotal(20);
+            .setWriteTime(Duration.ofSeconds(20))
+            .setNoteTotal(20).setPublishTotal(20)
+            .setGrand(40).setWritten(20);
 
         TimeStatAssert time = new TimeStatAssert(doc)
             .setType(StatTypeData.TIME_TOTAL)
@@ -391,9 +389,9 @@ public class StatsTest {
             .setType(StatTypeData.NOTE_TOTAL)
             .setData(20);
 
-        date.test(10, raw,                 0);
-        time.test(4, "time-count:PT20S|",  0, 6);
-        out.test( 4, "publish-count:20|",  0, 7);
-        note.test(4, "note-count:20|",     0, 8);
+        date.test(6, raw,                 0);
+        time.test(4, "time-count:PT20S|",  0, 2);
+        out.test( 4, "publish-count:20|",  0, 3);
+        note.test(4, "note-count:20|",     0, 4);
     }
 }

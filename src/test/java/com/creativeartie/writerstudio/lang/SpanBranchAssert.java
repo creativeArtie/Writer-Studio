@@ -110,8 +110,11 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         catalogue.add(() -> assertEquals(expectStatus, span.getIdStatus()));
         list.add(() -> assertAll("catalogue id", catalogue));
 
-        list.add(() -> assertAll("gets", () -> test(span, new ArrayList<>()) ));
+        ArrayList<Executable> gets = new ArrayList<>();
+        list.add(() -> test(span, gets));
+        list.add(() -> assertAll("gets", gets));
         assertAll(span.toString(), list);
+        System.out.println(list.size());
         return span;
     }
 

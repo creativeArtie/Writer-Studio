@@ -38,13 +38,10 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     public LocalDate getRecordDate(){
-        return getLocalCache(cacheDate, () -> {
-            List<SpanLeaf> dates = getChildren(StyleInfoLeaf.DATA);
-            int year = Integer.parseInt(dates.get(0).getRaw());
-            int month = Integer.parseInt(dates.get(1).getRaw());
-            int day = Integer.parseInt(dates.get(2).getRaw());
-            return LocalDate.of(year, month, day);
-        });
+        return getLocalCache(cacheDate, () -> leafFromFirst(StyleInfoLeaf.DATA)
+            .map(s -> LocalDate.parse(s.getRaw(), STAT_DATE))
+            .orElseThrow(() -> new IllegalStateException("Corrupted date."))
+        );
     }
 
     /// %Part 2.3: Duration Goals ==============================================
@@ -55,7 +52,7 @@ public final class StatSpanDay extends SpanBranch{
      */
     public Duration getTimeGoal(){
         return getLocalCache(cacheTimeGoal, () ->
-            getDurationData(StatTypeData.TIME_TOTAL));
+            getDurationData(StatTypeData.TIME_GOAL));
     }
 
     /** Gets the write time.
@@ -68,8 +65,8 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     private Duration getDurationData(StatTypeData type){
-        List<SpecStatDataTime> spans = getChildren(SpecStatDataTime.class);
-        for (SpecStatDataTime span: spans){
+        List<SpecSpanDataTime> spans = getChildren(SpecSpanDataTime.class);
+        for (SpecSpanDataTime span: spans){
             if (span.getDataType() == type){
                 return span.getData();
             }
@@ -129,8 +126,8 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     private int getIntData(StatTypeData type){
-        List<SpecStatDataInt> spans = getChildren(SpecStatDataInt.class);
-        for (SpecStatDataInt span: spans){
+        List<SpecSpanDataInt> spans = getChildren(SpecSpanDataInt.class);
+        for (SpecSpanDataInt span: spans){
             if (span.getDataType() == type){
                 return span.getData();
             }
@@ -161,7 +158,7 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     private void setTimeData(StatTypeData type, Duration data){
-        for (SpecStatDataTime child: getChildren(SpecStatDataTime.class)){
+        for (SpecSpanDataTime child: getChildren(SpecSpanDataTime.class)){
             if (child.getDataType() == type){
                 child.setData(data);
                 return;
@@ -171,7 +168,7 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     private void setIntegerData(StatTypeData type, int data){
-        for (SpecStatDataInt child: getChildren(SpecStatDataInt.class)){
+        for (SpecSpanDataInt child: getChildren(SpecSpanDataInt.class)){
             if (child.getDataType() == type){
                 child.setData(data);
                 return;
@@ -181,7 +178,7 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     private void addNewColumn(StatTypeData type, Object data){
-        String symbol = SpecParseData.values()[type.ordinal()].getSymbol();
+        String symbol = StatParseData.values()[type.ordinal()].getSymbol();
         /// (getRaw() - "\n") + symbol + ":" + data + "|" + "\n"
         runCommand(() -> getRaw().substring(
                 0, getRaw().length() - STAT_DATE_END.length()

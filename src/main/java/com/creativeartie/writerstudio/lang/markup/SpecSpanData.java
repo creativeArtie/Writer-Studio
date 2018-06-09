@@ -11,16 +11,16 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
 /** A single data about the day. */
-public abstract class SpecStatData<T> extends SpanBranch{
+public abstract class SpecSpanData<T> extends SpanBranch{
     private CacheKeyList<StyleInfo> cacheInfoStyle;
     private CacheKeyMain<StatTypeData> cacheType;
 
-    /** Creates an instance of {@linkplain SpecStatData}.
+    /** Creates an instance of {@linkplain SpecSpanData}.
      *
      * @param children
      *      span children
      */
-    SpecStatData(List<Span> children){
+    SpecSpanData(List<Span> children){
         super(children);
         cacheInfoStyle = new CacheKeyList<>(StyleInfo.class);
         cacheType = new CacheKeyMain<>(StatTypeData.class);
@@ -43,12 +43,12 @@ public abstract class SpecStatData<T> extends SpanBranch{
     public abstract T getData();
 
     void setData(T data){
-        runCommand(() -> ((SpecParseData)getParser("")).getSymbol() +
+        runCommand(() -> ((StatParseData)getParser("")).getSymbol() +
             STAT_DATA_SEP + data + STAT_SEPARATOR);
     }
 
     @Override
     protected final SetupParser getParser(String text){
-        return SpecParseData.values()[getDataType().ordinal()];
+        return StatParseData.values()[getDataType().ordinal()];
     }
 }
