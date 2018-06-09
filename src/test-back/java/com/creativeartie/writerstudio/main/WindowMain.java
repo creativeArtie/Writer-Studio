@@ -40,7 +40,7 @@ public class WindowMain extends Main{
     private void testChildWindows(Stage stage) throws Exception{
         Button button1 = new Button("Stats");
         SceneStatsControl pane = new SceneStatsControl();
-        pane.setStatTable(RecordList.build(new File("build/resources/test/record3.txt")));
+        pane.setStatTable(WritingStat.build(new File("build/resources/test/record3.txt")));
         Stage stats = SceneStatsControl.createStage(pane);
         button1.setOnAction(event -> stats.show());
 

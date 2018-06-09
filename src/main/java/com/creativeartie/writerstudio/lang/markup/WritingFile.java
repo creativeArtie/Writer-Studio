@@ -27,7 +27,7 @@ public final class WritingFile {
 
     /// file name and extension for {@link #open(File)} and {@link #save()}
     private static final String TEXT = "manuscript";
-    private static final String RECORDS = "records";
+    private static final String STATS = "word-count";
     private static final String META = "meta";
     private static final String EXTENSION = ".txt";
 
@@ -39,9 +39,9 @@ public final class WritingFile {
     public static WritingFile open(File file) throws IOException{
         argumentNotNull(file, "file");
 
-        /// {@link #WritingFile(File,WritingText, RecordList} params:
+        /// {@link #WritingFile(File, WritingText, WritingStat} params:
         WritingText doc = null;
-        RecordList record = null;
+        WritingStat record = null;
         WritingData data = null;
 
         try (ZipFile input = new ZipFile(file)) {
@@ -58,8 +58,8 @@ public final class WritingFile {
                 }
 
                 /// For goal and stats
-                if (entry.getName().equals(RECORDS + EXTENSION)){
-                    record = new RecordList(text);
+                if (entry.getName().equals(STATS + EXTENSION)){
+                    record = new WritingStat(text);
                 }
 
                 /// For meta data
@@ -83,7 +83,7 @@ public final class WritingFile {
      * @return answer
      */
     public static WritingFile newFile() {
-        return new WritingFile(null, new WritingText(), new RecordList(),
+        return new WritingFile(null, new WritingText(), new WritingStat(),
             new WritingData());
     }
 
@@ -125,14 +125,14 @@ public final class WritingFile {
             "meta-title   |text  |Some Novel Title"
         ));
         WritingFile ans = new WritingFile(null, new WritingText(file),
-            new RecordList(), new WritingData(data));
+            new WritingStat(), new WritingData(data));
         return ans;
     }
 
     /// %Part 1.2: Private Constructors and Fields =============================
 
     private final WritingText documentText;
-    private final RecordList recordsFile;
+    private final WritingStat recordsFile;
     private Optional<File> zipFile;
     private final WritingData metaData;
 
@@ -148,7 +148,7 @@ public final class WritingFile {
      *      writing meta data
      */
     private WritingFile(File file, WritingText doc,
-            RecordList table, WritingData data) {
+            WritingStat table, WritingData data) {
         assert doc != null: "Null doc";
         assert table != null: "Null table";
         assert data != null: "Null data";
@@ -184,9 +184,9 @@ public final class WritingFile {
 
         try (ZipOutputStream writeTo = new ZipOutputStream(new FileOutputStream
                 (zipFile.get()))){
-            save(writeTo, TEXT + EXTENSION, documentText.getRaw());
-            save(writeTo, RECORDS + EXTENSION, recordsFile.getSaveText());
-            save(writeTo, META + EXTENSION, metaData.getRaw());
+            save(writeTo, TEXT  + EXTENSION, documentText.getRaw());
+            save(writeTo, STATS + EXTENSION, recordsFile.getRaw());
+            save(writeTo, META  + EXTENSION, metaData.getRaw());
         }
     }
 
@@ -245,7 +245,7 @@ public final class WritingFile {
      *
      * @return answer
      */
-    public RecordList getRecords(){
+    public WritingStat getRecords(){
         return recordsFile;
     }
 

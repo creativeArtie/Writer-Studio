@@ -193,7 +193,7 @@ public final class StatSpanDay extends SpanBranch{
      *      the publish word count
      * @param note
      *      the note word count
-     * @see RecordList#startWriting(WritingText)
+     * @see WritingStat#startWriting(WritingText)
      */
     void startWriting(int publish, int note){
         argumentAtLeast(publish, "publish", 0);
@@ -213,7 +213,7 @@ public final class StatSpanDay extends SpanBranch{
      *      the publish word count
      * @param note
      *      the note word count
-     * @see RecordList#stopWriting(WritingText)
+     * @see WritingStat#stopWriting(WritingText)
      */
     void stopWriting(int publish, int note){
         argumentAtLeast(publish, "publish", 0);

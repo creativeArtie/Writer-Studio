@@ -10,7 +10,6 @@ import com.creativeartie.writerstudio.lang.markup.BranchStatsAsserts.*;
 import com.creativeartie.writerstudio.lang.markup.BranchSectionAsserts.*;
 
 import static com.creativeartie.writerstudio.lang.DocumentAssert.*;
-
 public class StatFileTest {
 
     private class Stat{
@@ -117,7 +116,7 @@ public class StatFileTest {
         }
     }
 
-    @Test@Disabled
+    @Test
     @DisplayName("Create new")
     public void assertNew(){
         WritingStat test = new WritingStat();
@@ -125,7 +124,7 @@ public class StatFileTest {
         assertAll(expect, test);
     }
 
-    @Test@Disabled
+    @Test
     @DisplayName("Reopen file")
     public void reopen(){
         List<Stat> expect = Arrays.asList(new Stat(LocalDate.now()));
@@ -133,7 +132,7 @@ public class StatFileTest {
         assertAll(expect, test);
     }
 
-    @Test@Disabled
+    @Test
     @DisplayName("Set goal")
     public void setGoal(){
         WritingStat test = new WritingStat();
@@ -145,7 +144,7 @@ public class StatFileTest {
         assertAll(expect, test);
     }
 
-    @Test@Disabled
+    @Test
     @DisplayName("Old file")
     public void openOld(){
         ArrayList<Stat> expect = new ArrayList<>();
@@ -157,7 +156,7 @@ public class StatFileTest {
         assertAll(expect, test);
     }
 
-    @Test@Disabled
+    @Test
     @DisplayName("Old goal file")
     public void openOldGoal(){
         ArrayList<Stat> expect = new ArrayList<>();
@@ -170,9 +169,39 @@ public class StatFileTest {
         assertAll(expect, test);
     }
 
+    /// situations: new, from yesterday, open today
+    /// goal: defaults, edited, changed
+    /// writing: new, over night, same day
+
     @Test
-    @DisplayName("Update count Last")
-    public void updateCount1(){
-        ArrayList<Stat>
+    @Disabled("Test not ready")
+    @DisplayName("Update today count")
+    public void updateDay() throws InterruptedException{
+        ArrayList<Stat> expect = new ArrayList<>();
+        Stat today = new Stat(LocalDate.now())
+            .setPublishTotal(20).setNoteTotal(50).setTimeTotal(19);
+        expect.add(today);
+        WritingStat test = new WritingStat(buildRaw(expect));
+        /// test.startWriting(WritingText);
+        Thread.currentThread().sleep(1);
+        /// test.stopWriting(WritingText);
+        today.setPublishTotal(40).setNoteTotal(50).setTimeTotal(20);
+        assertAll(expect, test);
+
     }
+
+    @Test
+    @Disabled("Test not ready")
+    @DisplayName("Pass over today.")
+    public void updateYestday(){}
+
+    @Test
+    @Disabled("Test not ready")
+    @DisplayName("mutiple startWriting calls")
+    public void mulitpleStart(){}
+
+    @Test
+    @Disabled("Test not ready")
+    @DisplayName("mutiple stopWriting calls")
+    public void mulitpleEnd(){}
 }

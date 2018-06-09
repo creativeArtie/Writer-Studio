@@ -20,7 +20,7 @@ abstract class PaneMonthDayView extends AnchorPane{
     private Label localDay;
     private Label imageIcon;
     private Tooltip statsTip;
-    private SimpleObjectProperty<Record> storedRecord;
+    private SimpleObjectProperty<StatSpanDay> storedRecord;
     private SimpleObjectProperty<LocalDate> readDay;
 
     public PaneMonthDayView(){
@@ -95,7 +95,7 @@ abstract class PaneMonthDayView extends AnchorPane{
         imageIcon.setTooltip(statsTip);
     }
 
-    void withRecord(Record record){
+    void withRecord(StatSpanDay record){
         readDay.setValue(record.getRecordDate());
         int written = record.getPublishWritten();
         int goal = record.getPublishGoal();

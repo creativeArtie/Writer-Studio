@@ -21,7 +21,7 @@ public class WriterSceneControl extends WriterSceneView {
     private long restyleTime;
 
     private WritingText currentDoc;
-    private RecordList currentRecords;
+    private WritingStat currentRecords;
 
     public WriterSceneControl(javafx.stage.Stage window){
         super(window);

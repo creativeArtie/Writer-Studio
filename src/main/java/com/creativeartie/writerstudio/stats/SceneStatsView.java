@@ -28,7 +28,7 @@ public abstract class SceneStatsView extends BorderPane{
         return ans;
     }
 
-    private SimpleObjectProperty<RecordList> statTable;
+    private SimpleObjectProperty<WritingStat> statTable;
     private PaneMonthControl calendar;
     private Spinner<Integer> wordGoal;
     private Spinner<Integer> hourGoal;
@@ -101,20 +101,20 @@ public abstract class SceneStatsView extends BorderPane{
 
 
     /// Node Properties
-    public ObjectProperty<RecordList> statTableProperty(){
+    public ObjectProperty<WritingStat> statTableProperty(){
         return statTable;
     }
 
-    public RecordList getStatTable(){
+    public WritingStat getStatTable(){
         return statTable.getValue();
     }
 
-    public void setStatTable(RecordList doc){
+    public void setStatTable(WritingStat doc){
         statTable.setValue(doc);
     }
 
     /// Control Methods
-    protected abstract void listenTable(RecordList table);
+    protected abstract void listenTable(WritingStat table);
 
     protected abstract void listenWord(boolean value);
 

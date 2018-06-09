@@ -10,7 +10,7 @@ import com.creativeartie.writerstudio.resource.*;
 
 public class PaneMonthControl extends PaneMonthView{
 
-    protected void listenRecords(RecordList value){
+    protected void listenRecords(WritingStat value){
         YearMonth last = value.getEndMonth();
         updateStartEnd(value.getStartMonth(), last);
         setYearMonth(last);
@@ -26,7 +26,7 @@ public class PaneMonthControl extends PaneMonthView{
             getDayPane(i).clearDay();
         }
 
-        Iterator<Record> it = getRecordList().getMonth(value);
+        Iterator<StatSpanDay> it = getRecordList().getMonth(value).iterator();
         YearMonth check = getRecordList().getStartMonth();
         BiConsumer<Integer, LocalDate> noRecord = (i, date) ->
             getDayPane(i).noRecord(date);
@@ -46,14 +46,14 @@ public class PaneMonthControl extends PaneMonthView{
         }
     }
 
-    private int loadRecord(Iterator<Record> it,
+    private int loadRecord(Iterator<StatSpanDay> it,
         BiConsumer<Integer, LocalDate> before,
         BiConsumer<Integer, LocalDate> after, LocalDate day, int ptr)
     {
         /// code comment out to show different sub stages
         Month check = day.getMonth();
         if (it.hasNext()){
-            Record record = it.next();
+            StatSpanDay record = it.next();
 
             /// Before first record
             while (! day.equals(record.getRecordDate())){
