@@ -67,9 +67,7 @@ public class BranchBasicAsserts {
             textEscape = "";
         }
 
-        public void setup(){
-            setStyles(AuxiliaryType.ESCAPE);
-        }
+        public void setup(){}
 
         /** For {@link BasicTextEscape#getEscape()}  (default: {@code ""}) */
         public EscapeAssert setEscape(String escape){
@@ -183,9 +181,7 @@ public class BranchBasicAsserts {
         }
 
         @Override
-        public void setup(){
-            addStyles(editionType);
-        }
+        public void setup(){}
 
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){
@@ -214,9 +210,7 @@ public class BranchBasicAsserts {
         }
 
         @Override
-        public void setup(){
-            setStyles(AuxiliaryType.AGENDA);
-        }
+        public void setup(){}
 
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){
@@ -241,9 +235,7 @@ public class BranchBasicAsserts {
         }
 
         @Override
-        public void setup(){
-            addStyles(fieldType);
-        }
+        public void setup(){}
 
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){

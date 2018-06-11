@@ -86,11 +86,6 @@ public final class DirectorySpan extends SpanBranch {
     }
 
     @Override
-    public List<StyleInfo> getBranchStyles(){
-        return ImmutableList.of();
-    }
-
-    @Override
     protected SetupParser getParser(String text){
         argumentNotNull(text, "text");
         return spanReparser.canParse(text)? spanReparser: null;

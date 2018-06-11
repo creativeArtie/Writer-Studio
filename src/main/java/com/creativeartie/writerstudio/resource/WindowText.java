@@ -16,6 +16,16 @@ public enum WindowText {
     EMPTY_NA("CommonText.NA"),
     NO_ID("CommonText.NoId"),
 
+    LINED_HEADING("LinedName.Heading"),   LINED_OUTLINE("LinedName.Outline"),
+    LINED_NUMBERED("LinedName.Numbered"), LINED_BULLET("LinedName.Bullet"),
+
+    LINED_FOOTNOTE("LinedName.Footnote"), LINED_ENDNOTE("LinedName.Endnote"),
+    LINED_LINK("LinedName.Link"),         LINED_NOTE("LinedName.Note"),
+
+    LINED_AGENDA("LinedName.Agenda"), LINED_QUOTE("LinedName.Quote"),
+    LINED_BREAK("LinedName.Break"),   LINED_SOURCE("LinedName.Cite"),
+    PARAGRAPH("LinedName.Paragraph"),
+
     MENU_FILE("MainMenu.File"),             MENU_FILE_NEW("MainMenu.FileCreate"),
     MENU_FILE_SAVE("MainMenu.FileSave"),    MENU_FILE_OPEN("MainMenu.FileOpen"),
     MENU_FILE_EXPORT("MainMenu.ExportPdf"), MENU_FILE_EXIT("MainMenu.FileExit"),
@@ -110,10 +120,6 @@ public enum WindowText {
         return getDisplay(getText("RefereceData.Example", area.name()));
     }
 
-    public static String getString(LinedType type){
-        return getDisplay(getText("LineType.", type.name()));
-    }
-
     public static String getString(TextDataType.Meta meta){
         return getDisplay(getText("DocData.Field", meta.name()));
     }
@@ -129,12 +135,45 @@ public enum WindowText {
     public static String getText(Month month){
         return getDisplay(getText("Calendar.", month.name()));
     }
+
     public static String getText(DayOfWeek day){
         return getDisplay(getText("Calendar.", day.name()));
     }
 
     public static String getText(EditionType type){
         return getDisplay(getText("DisplayHeading.Edition", type.name()));
+    }
+
+    public static String getText(LinedSpan span){
+        if (span instanceof LinedSpanLevelSection){
+            LinedSpanLevelSection line = (LinedSpanLevelSection) span;
+            return (line.isHeading()? LINED_HEADING: LINED_OUTLINE).getText() +
+                " " + line.getLevel();
+        } else if( span instanceof  LinedSpanLevelList){
+            LinedSpanLevelList line = (LinedSpanLevelList) span;
+            return (line.isNumbered()? LINED_NUMBERED: LINED_BULLET).getText() +
+                " " + line.getLevel();
+        } else if (span instanceof LinedSpanPointNote){
+            return ((LinedSpanPointNote) span).getDirectoryType() ==
+                DirectoryType.FOOTNOTE?
+                LINED_FOOTNOTE.getText(): LINED_ENDNOTE.getText();
+        } else if (span instanceof LinedSpanPointLink){
+            return LINED_LINK.getText();
+        } else if (span instanceof LinedSpanNote){
+            return LINED_NOTE.getText();
+        } else if (span instanceof LinedSpanAgenda){
+            return LINED_AGENDA.getText();
+        } else if (span instanceof LinedSpanQuote){
+            return LINED_QUOTE.getText();
+        } else if (span instanceof LinedSpanBreak){
+            return LINED_BREAK.getText();
+        } else if (span instanceof LinedSpanCite){
+            return LINED_SOURCE.getText();
+        } else if (span instanceof LinedSpanParagraph){
+            return PARAGRAPH.getText();
+        }
+        assert false: "Missing code for: " + span.getClass();
+        return "";
     }
 
     private static String getText(String base, String name){

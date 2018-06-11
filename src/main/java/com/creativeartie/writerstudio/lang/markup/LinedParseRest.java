@@ -44,7 +44,7 @@ enum LinedParseRest implements SetupParser {
 
             /// Create the data span
             if (! (used.isPresent() && used.get().parse(pointer, children))){
-                pointer.getTo(children, StyleInfoLeaf.TEXT, LINED_END);
+                pointer.getTo(children, SpanLeafStyle.TEXT, LINED_END);
             }
 
             /// Create non dat text

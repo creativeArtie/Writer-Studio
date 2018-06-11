@@ -9,7 +9,6 @@ import com.creativeartie.writerstudio.lang.*;
 /** Name for fields that store {@link InfoDataSpan data}. */
 public final class InfoFieldSpan extends SpanBranch{
 
-    private final CacheKeyList<StyleInfo> cacheStyles;
     private final CacheKeyMain<InfoFieldType> cacheField;
 
     /** Creates a {@linkplain InfoFieldSpan}.
@@ -20,7 +19,6 @@ public final class InfoFieldSpan extends SpanBranch{
      */
     InfoFieldSpan(List<Span> children){
         super(children);
-        cacheStyles = new CacheKeyList<>(StyleInfo.class);
         cacheField = new CacheKeyMain<>(InfoFieldType.class);
     }
 
@@ -30,18 +28,12 @@ public final class InfoFieldSpan extends SpanBranch{
      */
     public InfoFieldType getInfoFieldType(){
         return getLocalCache(cacheField, () -> {
-            Optional<SpanLeaf> found = leafFromFirst(StyleInfoLeaf.FIELD);
+            Optional<SpanLeaf> found = leafFromFirst(SpanLeafStyle.FIELD);
             if (found.isPresent()){
                 return InfoFieldType.getType(found.get().getRaw());
             }
             return InfoFieldType.ERROR;
         });
-    }
-
-    @Override
-    public List<StyleInfo> getBranchStyles(){
-        return getLocalCache(cacheStyles, () -> ImmutableList
-            .of(getInfoFieldType()));
     }
 
     @Override

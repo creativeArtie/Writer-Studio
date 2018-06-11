@@ -2,7 +2,7 @@ package com.creativeartie.writerstudio.lang;
 
 /** Information about {@link SpanLeaf}.
  */
-public enum StyleInfoLeaf implements StyleInfo{
+public enum SpanLeafStyle{
     /** Type of text for formating and parsing information.*/
     KEYWORD,
     /** Type of text for pointing to or naming a span of text. */

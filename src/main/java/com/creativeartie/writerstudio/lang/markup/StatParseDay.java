@@ -32,7 +32,7 @@ public enum StatParseDay implements SetupParser{
     private void getParsePartDate(SetupPointer pointer,
         ArrayList<Span> children, String ender
     ){
-        pointer.getTo(children, StyleInfoLeaf.DATA, ender);
+        pointer.getTo(children, SpanLeafStyle.DATA, ender);
         pointer.startsWith(children, ender);
     }
 }

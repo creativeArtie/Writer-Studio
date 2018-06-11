@@ -70,9 +70,7 @@ public class BranchSectionAsserts {
         }
 
         @Override
-        public void setup(){
-            addStyles(AuxiliaryType.MAIN_NOTE, getCatalogueStatus());
-        }
+        public void setup(){}
 
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){
@@ -233,9 +231,7 @@ public class BranchSectionAsserts {
         }
 
         @Override
-        public void setup(){
-            setStyles(AuxiliaryType.SECTION_HEAD);
-        }
+        public void setup(){}
 
         @Override
         public SectionSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
@@ -272,9 +268,7 @@ public class BranchSectionAsserts {
         }
 
         @Override
-        public void setup(){
-            setStyles(AuxiliaryType.SECTION_SCENE);
-        }
+        public void setup(){}
 
         @Override
         public SectionSpan moreTest(SpanBranch span, ArrayList<Executable> tests){

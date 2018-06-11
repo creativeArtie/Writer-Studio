@@ -106,23 +106,25 @@ public class MetaDataEditWindow extends Stage{
     }
 
     private CheatsheetLabel[] initHintLabels(GridPane parent){
-        CheatsheetLabel[] format = new CheatsheetLabel[4];
-        int i = 0;
-        for (FormatTypeStyle type: FormatTypeStyle.values()){
-            format[i++] = CheatsheetLabel.getLabel(type);
-        }
+        CheatsheetLabel[] format = new CheatsheetLabel[]{
+            CheatsheetLabel.getLabel(CheatsheetText.FORMAT_BOLD),
+            CheatsheetLabel.getLabel(CheatsheetText.FORMAT_ITALICS),
+            CheatsheetLabel.getLabel(CheatsheetText.FORMAT_UNDERLINE),
+            CheatsheetLabel.getLabel(CheatsheetText.FORMAT_CODED),
+        };
         CheatsheetLabel[] labels = new CheatsheetLabel[]{
-            CheatsheetLabel.getLabel(AuxiliaryType.AGENDA),
-            CheatsheetLabel.getLabel(AuxiliaryType.ESCAPE),
-            CheatsheetLabel.getLabel(AuxiliaryType.REF_KEY),
-            CheatsheetLabel.getLabel(AuxiliaryType.DIRECT_LINK),
-            CheatsheetLabel.getLabel(AuxiliaryType.REF_LINK),
+
+            CheatsheetLabel.getLabel(CheatsheetText.FORMAT_AGENDA),
+            CheatsheetLabel.getLabel(CheatsheetText.OTHER_ESCAPE),
+            CheatsheetLabel.getLabel(CheatsheetText.FORMAT_REF_KEY),
+            CheatsheetLabel.getLabel(CheatsheetText.FORMAT_DIRECT_LINK),
+            CheatsheetLabel.getLabel(CheatsheetText.FORMAT_REF_LINK),
             format[0], format[1], format[2], format[3]
         };
 
         GridPane pane = new GridPane();
         pane.getStyleClass().add("border");
-        i = 0;
+        int i = 0;
         for (int row = 0; row < 3; row++){
             setPrecentWidth(pane, 33.333333);
             for (int col = 0; col < 3; col++){

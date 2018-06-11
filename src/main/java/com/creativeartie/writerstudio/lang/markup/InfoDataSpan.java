@@ -11,8 +11,6 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 /** A span to store data. */
 public abstract class InfoDataSpan extends SpanBranch{
 
-    private final List<StyleInfo> infoStyle;
-
     private final InfoDataType dataType;
 
     /** Creates a {@linkplain InfoDataSpan}.
@@ -25,7 +23,6 @@ public abstract class InfoDataSpan extends SpanBranch{
     protected InfoDataSpan(List<Span> children, InfoDataType type){
         super(children);
         dataType = argumentNotNull(type, "type");
-        infoStyle = ImmutableList.of(dataType);
     }
 
     /** Gets the data type.
@@ -41,11 +38,6 @@ public abstract class InfoDataSpan extends SpanBranch{
      * @return answer
      */
     public abstract SpanBranch getData();
-
-    @Override
-    public final List<StyleInfo> getBranchStyles(){
-        return infoStyle;
-    }
 
     @Override
     public String toString(){

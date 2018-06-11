@@ -19,9 +19,8 @@ public class LinedLevelRestTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         ListLevelLineAssert numbered = new ListLevelLineAssert(doc)
-            .setLinedType(LinedType.NUMBERED).setLevel(5)
-            .setFormattedSpan(0, 1).setPublish(2)
-            .setNote(0);
+            .setLevel(5)           .setNote(0)
+            .setFormattedSpan(0, 1).setPublish(2);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
             .setPublish(2).setNote(0).setParsed("@id:Text abc");
 
@@ -40,8 +39,8 @@ public class LinedLevelRestTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         ListLevelLineAssert bullet = new ListLevelLineAssert(doc)
-            .setLinedType(LinedType.BULLET).setLevel(5)
-            .setPublish(0).setNote(0);
+            .setPublish(0).setNote(0)
+            .setLevel(5).setNumbered(false);
 
         bullet.test(2,      raw,            0);
         doc.assertKey(0, 5, "-----",    0, 0);
@@ -57,7 +56,7 @@ public class LinedLevelRestTest {
         SpanBranch content = doc.assertChild(1, "@id:Text abc", 0, 1);
 
         ListLevelLineAssert bullet = new ListLevelLineAssert(doc)
-            .setLinedType(LinedType.BULLET).setLevel(5)
+            .setNumbered(false).setLevel(5)
             .setFormattedSpan(0, 1).setPublish(2)
             .setNote(0);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
@@ -83,7 +82,7 @@ public class LinedLevelRestTest {
         doc.addId(FormatAgendaTest.buildId("09"), 0);
 
         ListLevelLineAssert bullet = new ListLevelLineAssert(doc)
-            .setLinedType(LinedType.BULLET).setLevel(1)
+            .setNumbered(false).setLevel(1)
             .setFormattedSpan(0, 1).setPublish(0)
             .setNote(1);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
@@ -113,7 +112,7 @@ public class LinedLevelRestTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         ListLevelLineAssert bullet = new ListLevelLineAssert(doc)
-            .setLinedType(LinedType.BULLET).setLevel(6)
+            .setNumbered(false).setLevel(6)
             .setFormattedSpan(0, 1).setPublish(2)
             .setNote(0);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
@@ -141,9 +140,8 @@ public class LinedLevelRestTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         ListLevelLineAssert numbered = new ListLevelLineAssert(doc)
-            .setLinedType(LinedType.NUMBERED).setLevel(6)
-            .setFormattedSpan(0, 1).setPublish(1)
-            .setNote(0);
+            .setLevel(6)           .setNote(0)
+            .setFormattedSpan(0, 1).setPublish(1);
         FormattedSpanAssert format = new FormattedSpanAssert(doc)
             .setPublish(1).setNote(0).setParsed("#abc");
 
@@ -165,7 +163,7 @@ public class LinedLevelRestTest {
         String before = "--abc";
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(1, "-", 0);
-        commonLevel(doc, LinedType.BULLET);
+        commonLevel(doc, false);
     }
 
     @Test
@@ -173,7 +171,7 @@ public class LinedLevelRestTest {
         String before = "##abc";
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(1, "#", 0);
-        commonLevel(doc, LinedType.NUMBERED);
+        commonLevel(doc, true);
     }
 
     @Test
@@ -182,21 +180,21 @@ public class LinedLevelRestTest {
         String before = "###ac";
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(4, "b", 0);
-        commonLevel(doc, LinedType.NUMBERED);
+        commonLevel(doc, true);
     }
 
-    private void commonLevel(DocumentAssert doc, LinedType type){
+    private void commonLevel(DocumentAssert doc, boolean numbered){
         ///                                       0123   0123
-        String start = type == LinedType.BULLET? "---": "###";
+        String start = numbered?  "###":"---";
         ///                     3456
         String after = start + "abc";
 
         doc.assertDoc(1, after);
 
         ListLevelLineAssert bullet = new ListLevelLineAssert(doc)
-            .setLinedType(type).setLevel(3)
             .setFormattedSpan(0, 1).setPublish(1)
-            .setNote(0);
+            .setNote(0).setNumbered(numbered)
+            .setLevel(3);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
             .setPublish(1).setNote(0).setParsed("abc");
 

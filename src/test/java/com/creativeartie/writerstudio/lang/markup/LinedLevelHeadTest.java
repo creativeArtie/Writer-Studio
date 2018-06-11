@@ -23,10 +23,9 @@ public class LinedLevelHeadTest {
         IDBuilder builder = doc.addId(buildId("id").addCategory("sub"), 0);
 
         HeadLevelLineAssert heading = new HeadLevelLineAssert(doc)
-            .setFormattedSpan(0, 4).setLinedType(LinedType.HEADING)
+            .setFormattedSpan(0, 4).setLookup("<@sub-id>")
             .setLevel(3).setEdition(EditionType.OTHER)
             .setPublish(1).setNote(0).setDetail("abc")
-            .setLookup("<@sub-id>")
             .setCatalogued(CatalogueStatus.UNUSED, builder);
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.LINK)
@@ -68,7 +67,7 @@ public class LinedLevelHeadTest {
         IDBuilder builder = doc.addId(buildId("id"), 1);
 
         HeadLevelLineAssert heading = new HeadLevelLineAssert(doc)
-           .setFormattedSpan(0, 4).setLinedType(LinedType.OUTLINE)
+            .setFormattedSpan(0, 4).setHeading(false)
             .setLevel(1).setEdition(EditionType.DRAFT).setDetail("#1")
             .setPublish(0).setNote(2).setLookup("<@id>")
             .setCatalogued(CatalogueStatus.UNUSED, builder);
@@ -114,7 +113,7 @@ public class LinedLevelHeadTest {
         DocumentAssert doc = assertDoc(3, raw, parsers);
 
         HeadLevelLineAssert heading1 = new HeadLevelLineAssert(doc)
-            .setFormattedSpan(0, 1).setLinedType(LinedType.HEADING)
+            .setFormattedSpan(0, 1).setHeading(true)
             .setLevel(1).setEdition(EditionType.NONE)
             .setPublish(1).setNote(0);
         FormattedSpanAssert content1 = new FormattedSpanAssert(doc)
@@ -122,13 +121,13 @@ public class LinedLevelHeadTest {
 
         HeadLevelLineAssert heading2 = new HeadLevelLineAssert(doc)
             .setLevel(1)       .setFormattedSpan(1, 1)
-            .setPublish(2).setLinedType(LinedType.HEADING)
+            .setPublish(2).setHeading(true)
             .setNote(0)   .setEdition(EditionType.NONE);
         FormattedSpanAssert content2 = new FormattedSpanAssert(doc)
             .setPublish(2).setNote(0).setParsed("Chapter 2");
 
         HeadLevelLineAssert heading3 = new HeadLevelLineAssert(doc)
-           .setFormattedSpan(2, 1).setLinedType(LinedType.HEADING)
+           .setFormattedSpan(2, 1).setHeading(true)
             .setLevel(1).setEdition(EditionType.NONE)
             .setPublish(2).setNote(0);
         FormattedSpanAssert content3 = new FormattedSpanAssert(doc)
@@ -163,7 +162,7 @@ public class LinedLevelHeadTest {
         IDBuilder builder = doc.addId(buildId("id"), 0);
 
         HeadLevelLineAssert heading = new HeadLevelLineAssert(doc)
-           .setFormattedSpan(0, 4).setLinedType(LinedType.HEADING)
+           .setFormattedSpan(0, 4).setHeading(true)
             .setLevel(3).setEdition(EditionType.OTHER).setDetail("abc")
             .setPublish(1).setNote(0).setLookup("<@id>")
             .setCatalogued(CatalogueStatus.UNUSED, builder);
@@ -202,7 +201,7 @@ public class LinedLevelHeadTest {
         IDBuilder builder = doc.addId(buildId("id"), 0);
 
         HeadLevelLineAssert heading = new HeadLevelLineAssert(doc)
-           .setFormattedSpan(0, 4).setLinedType(LinedType.HEADING)
+            .setFormattedSpan(0, 4).setHeading(true)
             .setLevel(3).setEdition(EditionType.NONE)
             .setPublish(1).setNote(0).setLookup("<@id>")
             .setCatalogued(CatalogueStatus.UNUSED, builder);
@@ -235,7 +234,6 @@ public class LinedLevelHeadTest {
         IDBuilder builder = doc.addId(buildId("id"), 0);
 
         HeadLevelLineAssert heading = new HeadLevelLineAssert(doc)
-           .setLinedType(LinedType.HEADING)
            .setLevel(3).setEdition(EditionType.OTHER).setDetail("abc")
            .setPublish(0).setNote(0).setLookup("<@id>")
            .setCatalogued(CatalogueStatus.UNUSED, builder);
@@ -267,7 +265,6 @@ public class LinedLevelHeadTest {
         IDBuilder builder = doc.addId(buildId("id"), 0);
 
         HeadLevelLineAssert heading = new HeadLevelLineAssert(doc)
-           .setLinedType(LinedType.HEADING)
             .setLevel(3).setEdition(EditionType.NONE)
             .setPublish(0).setNote(0).setLookup("<@id>")
             .setCatalogued(CatalogueStatus.UNUSED, builder);
@@ -292,7 +289,7 @@ public class LinedLevelHeadTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         HeadLevelLineAssert heading = new HeadLevelLineAssert(doc)
-           .setFormattedSpan(0, 1).setLinedType(LinedType.HEADING)
+           .setFormattedSpan(0, 1).setHeading(true)
             .setLevel(3).setEdition(EditionType.OTHER).setDetail("abc")
             .setPublish(1).setNote(0);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
@@ -320,7 +317,6 @@ public class LinedLevelHeadTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         HeadLevelLineAssert heading = new HeadLevelLineAssert(doc)
-           .setLinedType(LinedType.HEADING)
             .setLevel(3).setEdition(EditionType.OTHER).setDetail("abc")
             .setPublish(0).setNote(0);
         EditionAssert edition = new EditionAssert(doc)
@@ -341,7 +337,7 @@ public class LinedLevelHeadTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         HeadLevelLineAssert heading = new HeadLevelLineAssert(doc)
-           .setFormattedSpan(0, 1).setLinedType(LinedType.HEADING)
+           .setFormattedSpan(0, 1).setHeading(true)
             .setLevel(6).setEdition(EditionType.NONE)
             .setPublish(1).setNote(0);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
@@ -362,7 +358,7 @@ public class LinedLevelHeadTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         HeadLevelLineAssert heading = new HeadLevelLineAssert(doc)
-           .setFormattedSpan(0, 1).setLinedType(LinedType.HEADING)
+            .setFormattedSpan(0, 1).setHeading(true)
             .setLevel(1).setEdition(EditionType.NONE)
             .setPublish(1).setNote(0);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
@@ -382,7 +378,7 @@ public class LinedLevelHeadTest {
         String before = "===abc#DRAFT text\n";
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.delete(0, 1);
-        commonHeading(doc, LinedType.HEADING);
+        commonHeading(doc, true);
     }
 
     @Test
@@ -391,7 +387,7 @@ public class LinedLevelHeadTest {
         String before = "==ac#DRAFT text\n";
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(3, "b", 0);
-        commonHeading(doc, LinedType.HEADING);
+        commonHeading(doc, true);
     }
 
     @Test
@@ -400,7 +396,7 @@ public class LinedLevelHeadTest {
         String before = "=abc#DRAFT text\n";
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(1, "=", 0);
-        commonHeading(doc, LinedType.HEADING);
+        commonHeading(doc, true);
     }
 
     @Test
@@ -408,7 +404,7 @@ public class LinedLevelHeadTest {
         String before = "!##abc#DRAFT text\n";
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.delete(1, 2);
-        commonHeading(doc, LinedType.OUTLINE);
+        commonHeading(doc, false);
     }
 
     @Test
@@ -417,13 +413,13 @@ public class LinedLevelHeadTest {
         String before = "==abc#DRAFT t\n";
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(12, "tex", 0, 2);
-        commonHeading(doc, LinedType.HEADING);
+        commonHeading(doc, true);
     }
 
-    private void commonHeading(DocumentAssert doc, LinedType type){
+    private void commonHeading(DocumentAssert doc, boolean head){
         String starter;
         int level, publish, note;
-        if (type == LinedType.HEADING){
+        if (head){
             starter = "==";
             level = 2;
             publish = 1;
@@ -439,7 +435,7 @@ public class LinedLevelHeadTest {
         doc.assertDoc(1, after);
 
         HeadLevelLineAssert heading = new HeadLevelLineAssert(doc)
-            .setFormattedSpan(0, 1).setLinedType(type)
+            .setFormattedSpan(0, 1).setHeading(head)
             .setLevel(level).setEdition(EditionType.DRAFT).setDetail("text")
             .setPublish(publish).setNote(note);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)

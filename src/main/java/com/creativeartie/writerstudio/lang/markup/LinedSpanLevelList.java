@@ -9,6 +9,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 /** A bullet or numbered line item. */
 public class LinedSpanLevelList extends LinedSpanLevel {
     private LinedParseLevel spanReparser;
+    private final CacheKeyMain<Boolean> cacheType;
     private final CacheKeyMain<Integer> cachePublish;
     private final CacheKeyMain<Integer> cacheNote;
 
@@ -20,8 +21,21 @@ public class LinedSpanLevelList extends LinedSpanLevel {
      */
     LinedSpanLevelList(List<Span> children){
         super(children);
+        cacheType = CacheKeyMain.booleanKey();
         cachePublish = CacheKeyMain.integerKey();
         cacheNote = CacheKeyMain.integerKey();
+    }
+
+    /** Check if list is numbered.
+     *
+     * @return answer
+     */
+    public boolean isNumbered(){
+        return getLocalCache(cacheType, () -> leafFromFirst(SpanLeafStyle.KEYWORD)
+            .map(s -> s.getRaw().startsWith(
+                LEVEL_STARTERS.get(LinedParseLevel.NUMBERED).get(0))
+            ).orElse(false)
+        );
     }
 
     @Override

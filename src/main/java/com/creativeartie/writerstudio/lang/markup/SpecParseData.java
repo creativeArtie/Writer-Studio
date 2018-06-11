@@ -27,15 +27,15 @@ interface SpecParseData extends SetupParser{
             pointer.matches(children, SPEC_KEY);
             pointer.startsWith(children, SPEC_KEY_DATA);
 
-            pointer.getTo(children, StyleInfoLeaf.DATA, SPEC_SEPARATOR);
+            pointer.getTo(children, SpanLeafStyle.DATA, SPEC_SEPARATOR);
             pointer.startsWith(children, SPEC_SEPARATOR);
 
             return Optional.of(new SpecSpanDataString(children));
         }
-        if (pointer.startsWith(children, StyleInfoLeaf.FIELD, getSymbol())){
+        if (pointer.startsWith(children, SpanLeafStyle.FIELD, getSymbol())){
             pointer.startsWith(children, SPEC_KEY_DATA);
 
-            pointer.getTo(children, StyleInfoLeaf.DATA, SPEC_SEPARATOR);
+            pointer.getTo(children, SpanLeafStyle.DATA, SPEC_SEPARATOR);
             pointer.startsWith(children, SPEC_SEPARATOR);
 
             switch (getDataType()){

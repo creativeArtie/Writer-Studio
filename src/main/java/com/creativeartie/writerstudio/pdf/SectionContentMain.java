@@ -40,24 +40,23 @@ class SectionContentMain extends SectionContent<LinedSpan> {
         checkNotNull(span, "span");
         boolean clear = true;
         DivisionText line = null;
-        switch(span.getLinedType()){
-        case BREAK:
+        if (span instanceof LinedSpanBreak){
             addBreak();
             return null;
-        case BULLET:
-            line = parseBullet((LinedSpanLevelList) span);
-            break;
-        case NUMBERED:
-            line = parseNumber((LinedSpanLevelList) span);
-            clear = false;
-            break;
-        case HEADING:
+        } else if (span instanceof LinedSpanLevelList){
+            LinedSpanLevelList list = (LinedSpanLevelList) span;
+            if (list.isNumbered()){
+                line = parseNumber(list);
+                clear = false;
+            } else {
+                line = parseBullet(list);
+            }
+        } else if (span instanceof LinedSpanLevelSection &&
+            ((LinedSpanLevelSection) span).isHeading()){
             line = parse((LinedSpanLevelSection) span);
-            break;
-        case PARAGRAPH:
+        } else if (span instanceof LinedSpanParagraph){
             line = parse((LinedSpanParagraph) span);
-            break;
-        case QUOTE:
+        } else if (span instanceof LinedSpanQuote){
             line = parse((LinedSpanQuote) span);
         }
         /// reset list numbering as needed

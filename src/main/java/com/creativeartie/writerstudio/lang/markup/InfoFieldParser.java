@@ -80,7 +80,7 @@ enum InfoFieldParser implements SetupParser{
 
         /// Different for error
         if (this == InfoFieldParser.ERROR){
-            if (pointer.getTo(children, StyleInfoLeaf.FIELD, LINED_DATA,
+            if (pointer.getTo(children, SpanLeafStyle.FIELD, LINED_DATA,
                     LINED_END)){
                 return Optional.of(new InfoFieldSpan(children));
             }
@@ -90,7 +90,7 @@ enum InfoFieldParser implements SetupParser{
         assert fieldName.isPresent(): "Empty fieldName";
 
         /// For all others fields
-        if(pointer.trimStartsWith(children, StyleInfoLeaf.FIELD,
+        if(pointer.trimStartsWith(children, SpanLeafStyle.FIELD,
                 fieldName.get())){
             return Optional.of(new InfoFieldSpan(children));
         }

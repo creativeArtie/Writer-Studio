@@ -36,24 +36,24 @@ public class SetupPointerTest{
         @DisplayName("Token")
         public void trimStartsWithToken(){
             found(":", (p, c) -> p.trimStartsWith(c, ":"), ":",
-                StyleInfoLeaf.KEYWORD);
+                SpanLeafStyle.KEYWORD);
         }
 
         @Test
         @DisplayName("Space + Token")
         public void trimStartsWithSpaceToken(){
             found("  :", (p, c) -> p.trimStartsWith(c, ":"), "  :",
-                StyleInfoLeaf.KEYWORD);
+                SpanLeafStyle.KEYWORD);
         }
 
         @Test
         @DisplayName("Space + Token + More")
         public void trimStartsWithNext(){
             SetupPointer ptr = found("  :1", (p, c) ->  p.trimStartsWith(c, ":"),
-                "  :", StyleInfoLeaf.KEYWORD);
+                "  :", SpanLeafStyle.KEYWORD);
             wrong(ptr, (p, c) ->  p.trimStartsWith(c, ":"));
-            found(ptr, (p, c) ->  p.trimStartsWith(c, StyleInfoLeaf.DATA, "1"),
-                "1", StyleInfoLeaf.DATA);
+            found(ptr, (p, c) ->  p.trimStartsWith(c, SpanLeafStyle.DATA, "1"),
+                "1", SpanLeafStyle.DATA);
         }
 
         @Test
@@ -75,17 +75,17 @@ public class SetupPointerTest{
         @Test
         @DisplayName("Token")
         public void startWithStringTrue(){
-            found(":", (p, c) -> p.startsWith(c, ":"), ":", StyleInfoLeaf.KEYWORD);
+            found(":", (p, c) -> p.startsWith(c, ":"), ":", SpanLeafStyle.KEYWORD);
         }
 
         @Test
         @DisplayName("Token + Text")
         public void startWithStringNext(){
             SetupPointer ptr = found(":1", (p, c) ->  p.startsWith(c, ":"), ":",
-                StyleInfoLeaf.KEYWORD);
+                SpanLeafStyle.KEYWORD);
             wrong(ptr, (p, c) ->  p.startsWith(c, ":"));
-            found(ptr, (p, c) ->  p.startsWith(c, StyleInfoLeaf.DATA, "1"),
-                "1", StyleInfoLeaf.DATA);
+            found(ptr, (p, c) ->  p.startsWith(c, SpanLeafStyle.DATA, "1"),
+                "1", SpanLeafStyle.DATA);
         }
 
         @Test
@@ -114,17 +114,17 @@ public class SetupPointerTest{
         @DisplayName("Token")
         public void matchSimple(){
             found("abcd", (p, c) -> p.matches(c, LETTER), "abcd",
-                StyleInfoLeaf.DATA);
+                SpanLeafStyle.KEYWORD);
         }
 
         @Test
         @DisplayName("Token + Text")
         public void matchesExtra(){
             SetupPointer ptr = found("abcd1",
-                (p, c) -> p.matches(c, LETTER), "abcd", StyleInfoLeaf.DATA);
+                (p, c) -> p.matches(c, LETTER), "abcd", SpanLeafStyle.DATA);
             wrong(ptr, (p, c) -> p.matches(c, LETTER));
             found(ptr, (p, c) -> p.matches(c, DIGIT), "1",
-                StyleInfoLeaf.DATA);
+                SpanLeafStyle.KEYWORD);
         }
 
         @Test
@@ -140,31 +140,31 @@ public class SetupPointerTest{
         @Test
         @DisplayName("Text")
         public void getToAll(){
-            found("abc", (p, c) -> p.getTo(c, StyleInfoLeaf.TEXT, ":", ";"), "abc",
-                StyleInfoLeaf.TEXT);
+            found("abc", (p, c) -> p.getTo(c, SpanLeafStyle.TEXT, ":", ";"), "abc",
+                SpanLeafStyle.TEXT);
         }
 
         @Test
         @DisplayName("Text + Token[0]")
         public void getToPart1(){
             found("abc:", (p, c) -> p.getTo(c, ":", ";"), "abc",
-                StyleInfoLeaf.KEYWORD);
+                SpanLeafStyle.KEYWORD);
         }
 
         @Test
         @DisplayName("Text + Token[1]")
         public void getToPart2(){
             found("abc;", (p, c) -> p.getTo(c, ":", ";"), "abc",
-                StyleInfoLeaf.KEYWORD);
+                SpanLeafStyle.KEYWORD);
         }
 
         @Test
         @DisplayName("Text + Token")
         public void getToExtra(){
             SetupPointer ptr = found("abc:", (p, c) -> p.getTo(c, ":"), "abc",
-                StyleInfoLeaf.KEYWORD);
+                SpanLeafStyle.KEYWORD);
             wrong(ptr, (p, c) -> p.getTo(c, ":", ";"));
-            found(ptr, (p, c) -> p.getTo(c, ";"), ":", StyleInfoLeaf.KEYWORD);
+            found(ptr, (p, c) -> p.getTo(c, ";"), ":", SpanLeafStyle.KEYWORD);
             wrong(ptr, (p, c) -> p.getTo(c, ":", ";"));
         }
 
@@ -181,16 +181,16 @@ public class SetupPointerTest{
         @Test
         @DisplayName("All")
         public void nextCharsAlll(){
-            found("abcde", (p, c) -> p.nextChars(c, 5), "abcde", StyleInfoLeaf.KEYWORD);
+            found("abcde", (p, c) -> p.nextChars(c, 5), "abcde", SpanLeafStyle.KEYWORD);
         }
 
         @Test
         @DisplayName("3 tokens")
         public void nextCharsSplit(){
             SetupPointer ptr = found("abcdef", (p, c) -> p.nextChars(c, 2), "ab",
-                StyleInfoLeaf.KEYWORD);
-            found(ptr, (p, c) -> p.nextChars(c, 2), "cd", StyleInfoLeaf.KEYWORD);
-            found(ptr, (p, c) -> p.nextChars(c, 2), "ef", StyleInfoLeaf.KEYWORD);
+                SpanLeafStyle.KEYWORD);
+            found(ptr, (p, c) -> p.nextChars(c, 2), "cd", SpanLeafStyle.KEYWORD);
+            found(ptr, (p, c) -> p.nextChars(c, 2), "ef", SpanLeafStyle.KEYWORD);
             wrong(ptr, (p, c) -> p.nextChars(c, 2));
         }
 
@@ -215,9 +215,9 @@ public class SetupPointerTest{
         public void rollBackBegin(){
             SetupPointer ptr = makePointer("abc*po*av");
             ptr.mark();
-            found(ptr, (p, c) -> p.getTo(c, "*"), "abc", StyleInfoLeaf.KEYWORD);
+            found(ptr, (p, c) -> p.getTo(c, "*"), "abc", SpanLeafStyle.KEYWORD);
             ptr.rollBack();
-            found(ptr, (p, c) -> p.getTo(c, "*"), "abc", StyleInfoLeaf.KEYWORD);
+            found(ptr, (p, c) -> p.getTo(c, "*"), "abc", SpanLeafStyle.KEYWORD);
         }
 
         @Test
@@ -225,10 +225,10 @@ public class SetupPointerTest{
         public void rollBackBeginLate(){
             SetupPointer ptr = makePointer("abc*po*av");
             ptr.mark();
-            found(ptr, (p, c) -> p.getTo(c, "*"), "abc", StyleInfoLeaf.KEYWORD);
-            found(ptr, (p, c) -> p.startsWith(c, "*"), "*", StyleInfoLeaf.KEYWORD);
+            found(ptr, (p, c) -> p.getTo(c, "*"), "abc", SpanLeafStyle.KEYWORD);
+            found(ptr, (p, c) -> p.startsWith(c, "*"), "*", SpanLeafStyle.KEYWORD);
             ptr.rollBack();
-            found(ptr, (p, c) -> p.getTo(c, "*"), "abc", StyleInfoLeaf.KEYWORD);
+            found(ptr, (p, c) -> p.getTo(c, "*"), "abc", SpanLeafStyle.KEYWORD);
         }
 
         @Test
@@ -236,23 +236,23 @@ public class SetupPointerTest{
         public void rollBackBeginEnd(){
             SetupPointer ptr = makePointer("abc*po");
             ptr.mark();
-            found(ptr, (p, c) -> p.getTo(c, "*"), "abc", StyleInfoLeaf.KEYWORD);
-            found(ptr, (p, c) -> p.startsWith(c, "*"), "*", StyleInfoLeaf.KEYWORD);
-            found(ptr, (p, c) -> p.getTo(c, "*"), "po", StyleInfoLeaf.KEYWORD);
+            found(ptr, (p, c) -> p.getTo(c, "*"), "abc", SpanLeafStyle.KEYWORD);
+            found(ptr, (p, c) -> p.startsWith(c, "*"), "*", SpanLeafStyle.KEYWORD);
+            found(ptr, (p, c) -> p.getTo(c, "*"), "po", SpanLeafStyle.KEYWORD);
             ptr.rollBack();
-            found(ptr, (p, c) -> p.getTo(c, "*"), "abc", StyleInfoLeaf.KEYWORD);
+            found(ptr, (p, c) -> p.getTo(c, "*"), "abc", SpanLeafStyle.KEYWORD);
         }
 
         @Test
         @DisplayName("Middle to Middle")
         public void rollBackMiddle(){
             SetupPointer ptr = makePointer("abc*po*av");
-            found(ptr, (p, c) -> p.getTo(c, "*"), "abc", StyleInfoLeaf.KEYWORD);
-            found(ptr, (p, c) -> p.startsWith(c, "*"), "*", StyleInfoLeaf.KEYWORD);
+            found(ptr, (p, c) -> p.getTo(c, "*"), "abc", SpanLeafStyle.KEYWORD);
+            found(ptr, (p, c) -> p.startsWith(c, "*"), "*", SpanLeafStyle.KEYWORD);
             ptr.mark();
-            found(ptr, (p, c) -> p.getTo(c, "*"), "po", StyleInfoLeaf.KEYWORD);
+            found(ptr, (p, c) -> p.getTo(c, "*"), "po", SpanLeafStyle.KEYWORD);
             ptr.rollBack();
-            found(ptr, (p, c) -> p.getTo(c, "*"), "po", StyleInfoLeaf.KEYWORD);
+            found(ptr, (p, c) -> p.getTo(c, "*"), "po", SpanLeafStyle.KEYWORD);
         }
     }
 
@@ -273,13 +273,13 @@ public class SetupPointerTest{
 
     /// Create new {@link SpanBranch}, from first
     private SetupPointer found(String text, BiPredicate<SetupPointer,
-            ArrayList<Span>> tester, String raw, StyleInfoLeaf style){
+            ArrayList<Span>> tester, String raw, SpanLeafStyle style){
         return found(makePointer(text), tester, raw, style);
     }
 
     /// Create new {@link SpanBranch}, from middle
     private SetupPointer found(SetupPointer ptr, BiPredicate<SetupPointer,
-            ArrayList<Span>> tester, String raw, StyleInfoLeaf style){
+            ArrayList<Span>> tester, String raw, SpanLeafStyle style){
         ArrayList<Span> test = new ArrayList<>();
 
         assertTrue(tester.test(ptr, test), "main");

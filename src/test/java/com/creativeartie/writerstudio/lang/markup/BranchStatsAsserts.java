@@ -32,9 +32,7 @@ public class BranchStatsAsserts {
         }
 
         @Override
-        public void setup(){
-            addStyles(statType);
-        }
+        public void setup(){}
 
         protected abstract SpecSpanData castTest(SpanBranch span);
 
@@ -146,9 +144,7 @@ public class BranchStatsAsserts {
         }
 
         @Override
-        public void setup(){
-            addStyles(AuxiliaryType.STAT_DATE);
-        }
+        public void setup(){}
 
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){

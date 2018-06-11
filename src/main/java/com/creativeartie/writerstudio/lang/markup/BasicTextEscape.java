@@ -9,9 +9,6 @@ import com.google.common.collect.*;
 /** Escaped character with the {@link AuxiliaryData#TOKEN_ESCAPE}. */
 public final class BasicTextEscape extends SpanBranch{
 
-    private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(
-        AuxiliaryType.ESCAPE);
-
     private final CacheKeyMain<String> cacheEscape;
 
     /** Creates a {@linkplain BasicTextEscape}.
@@ -32,11 +29,6 @@ public final class BasicTextEscape extends SpanBranch{
     public String getEscape(){
         return getLocalCache(cacheEscape, () -> size() == 2? get(1).getRaw():
             "");
-    }
-
-    @Override
-    public List<StyleInfo> getBranchStyles(){
-        return BRANCH_STYLE;
     }
 
     @Override

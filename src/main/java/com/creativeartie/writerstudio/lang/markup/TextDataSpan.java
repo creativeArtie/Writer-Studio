@@ -13,7 +13,6 @@ public abstract class TextDataSpan<T extends SpanBranch> extends SpanBranch{
 
     private final CacheKeyOptional<T> cacheData;
     private final CacheKeyMain<TextDataType.Type> cacheType;
-    private final CacheKeyList<StyleInfo> cacheStyles;
 
     /** Create a {@link TextDataSpan}.
      *
@@ -24,7 +23,6 @@ public abstract class TextDataSpan<T extends SpanBranch> extends SpanBranch{
 
         cacheData = new CacheKeyOptional<>(getDataClass());
         cacheType = new CacheKeyMain<>(TextDataType.Type.class);
-        cacheStyles = new CacheKeyList<>(StyleInfo.class);
     }
 
     /** Gets the data.
@@ -70,12 +68,6 @@ public abstract class TextDataSpan<T extends SpanBranch> extends SpanBranch{
      * @return answer
      */
     public abstract TextDataType.Format getFormat();
-
-    @Override
-    public final List<StyleInfo> getBranchStyles(){
-        return getLocalCache(cacheStyles, () -> ImmutableList.of(
-            (StyleInfo) getType(), (StyleInfo) getFormat()));
-    }
 
     @Override
     protected final SetupParser getParser(String text){

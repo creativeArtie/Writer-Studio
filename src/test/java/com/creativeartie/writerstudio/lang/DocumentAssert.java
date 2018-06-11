@@ -20,9 +20,6 @@ public class DocumentAssert {
             super(children);
         }
 
-        @Override public List<StyleInfo> getBranchStyles(){
-            return new ArrayList<>();
-        }
         @Override protected SetupParser getParser(String text){
             return null;
         }
@@ -150,7 +147,7 @@ public class DocumentAssert {
 
     /// {@link SpanLeaf} tests.
     private void assertLeaf(int start, int end, String raw,
-            StyleInfoLeaf info, int ... indexes){
+            SpanLeafStyle info, int ... indexes){
         Span child = assertChild(indexes);
 
         assertAll(child.toString(),
@@ -165,31 +162,31 @@ public class DocumentAssert {
 
     public void assertText(int start, int end, String rawText,
             int ... idx){
-        assertLeaf(start, end, rawText, StyleInfoLeaf.TEXT, idx);
+        assertLeaf(start, end, rawText, SpanLeafStyle.TEXT, idx);
     }
 
     public void assertKey(int start, int end, String rawText,
             int ... idx){
-        assertLeaf(start, end, rawText, StyleInfoLeaf.KEYWORD, idx);
+        assertLeaf(start, end, rawText, SpanLeafStyle.KEYWORD, idx);
     }
 
     public void assertId(int start, int end, String rawText, int ... idx){
-        assertLeaf(start, end, rawText, StyleInfoLeaf.ID, idx);
+        assertLeaf(start, end, rawText, SpanLeafStyle.ID, idx);
     }
 
     public void assertData(int start, int end, String rawText,
             int ... idx){
-        assertLeaf(start, end, rawText, StyleInfoLeaf.DATA, idx);
+        assertLeaf(start, end, rawText, SpanLeafStyle.DATA, idx);
     }
 
     public void assertField(int start, int end, String rawText,
             int ... idx){
-        assertLeaf(start, end, rawText, StyleInfoLeaf.FIELD, idx);
+        assertLeaf(start, end, rawText, SpanLeafStyle.FIELD, idx);
     }
 
     public void assertPath(int start, int end, String rawText,
             int ... idx){
-        assertLeaf(start, end, rawText, StyleInfoLeaf.PATH, idx);
+        assertLeaf(start, end, rawText, SpanLeafStyle.PATH, idx);
     }
 
     /// %Part 6: IDAssertion Methods ###########################################

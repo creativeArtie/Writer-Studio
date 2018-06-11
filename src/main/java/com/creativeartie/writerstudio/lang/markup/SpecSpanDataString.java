@@ -25,7 +25,7 @@ public class SpecSpanDataString extends SpecSpanData<String>{
 
     @Override
     public String getData(){
-        return getLocalCache(cacheData, () -> leafFromLast(StyleInfoLeaf.DATA)
+        return getLocalCache(cacheData, () -> leafFromLast(SpanLeafStyle.DATA)
             .map(s -> s.getRaw()).orElse("")
         );
     }

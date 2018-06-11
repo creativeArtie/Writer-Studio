@@ -23,7 +23,6 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
 
     private final CacheKeyMain<String> cacheLookup;
     private final CacheKeyOptional<CatalogueIdentity> cacheId;
-    private final CacheKeyList<StyleInfo> cacheStyles;
 
     /** Creates a {@linkplain NoteCardSpan}.
      *
@@ -43,7 +42,6 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
 
         cacheLookup = CacheKeyMain.stringKey();
         cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
-        cacheStyles = new CacheKeyList<>(StyleInfo.class);
     }
 
     /** Gets the formatted note title
@@ -199,12 +197,6 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
                     new CatalogueIdentity(Arrays.asList(TYPE_NOTE), this)
                 )
         ));
-    }
-
-    @Override
-    public List<StyleInfo> getBranchStyles(){
-        return getLocalCache(cacheStyles, () ->
-            ImmutableList.of(AuxiliaryType.MAIN_NOTE, getIdStatus()));
     }
 
     @Override

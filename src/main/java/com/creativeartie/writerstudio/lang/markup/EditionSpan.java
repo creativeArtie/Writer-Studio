@@ -13,7 +13,6 @@ public final class EditionSpan extends SpanBranch{
 
     private final CacheKeyMain<EditionType> cacheEdition;
     private final CacheKeyMain<String> cacheDetail;
-    private final CacheKeyList<StyleInfo> cacheBranchStyles;
 
     /** Creates a {@linkplain EditionSpan}.
      *
@@ -25,7 +24,6 @@ public final class EditionSpan extends SpanBranch{
         super(children);
         cacheEdition = new CacheKeyMain<>(EditionType.class);
         cacheDetail = CacheKeyMain.stringKey();
-        cacheBranchStyles = new CacheKeyList<>(StyleInfo.class);
     }
 
     /** Get the edition describing the section.
@@ -55,12 +53,6 @@ public final class EditionSpan extends SpanBranch{
             .map(span -> span.getTrimmed())
             .orElse("")
         );
-    }
-
-    @Override
-    public List<StyleInfo> getBranchStyles(){
-        return getLocalCache(cacheBranchStyles, () ->
-            (List<StyleInfo>) ImmutableList.of((StyleInfo) getEditionType()));
     }
 
     @Override

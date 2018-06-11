@@ -5,7 +5,7 @@ import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
 /** Statstics key for {@link FormatSpanPointKey}.*/
-public enum FormatTypeField implements StyleInfo{
+public enum FormatTypeField{
     /** To show the current page number */
     PAGE_NUMBER("Stats.PageNumber"),
     /** To show the word count round to the significate digit*/

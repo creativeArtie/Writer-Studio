@@ -147,7 +147,7 @@ public final class AuxiliaryData{
     public static final String LINED_DATA = ":";
 
     /// "Special" Line begin token  part 1
-    private static final String LINED_BEGIN = "!";
+    public static final String LINED_BEGIN = "!";
     /// "Special" Line begin tokens part 2
     /** Agenda line starter:                    {@value}*/
     public static final String LINED_AGENDA   = LINED_BEGIN + "!"; /// aka: !!
@@ -319,72 +319,72 @@ public final class AuxiliaryData{
 
     /** A {@link ContentParser} for simple text.
      *
-     * This set leaf style as {@link StyleInfoLeaf.TEXT}.
+     * This set leaf style as {@link SpanLeafStyle.TEXT}.
      *
      * @see EditionParser
      * @see LinedParseRest.AGENDA
      * @see TextDataParser
      */
     static final ContentParser CONTENT_BASIC = new ContentParser(
-        StyleInfoLeaf.TEXT);
+        SpanLeafStyle.TEXT);
 
     /** A {@link ContentParser} for agenda text.
      *
-     * This set leaf style as {@link StyleInfoLeaf.TEXT} and adds a ender
+     * This set leaf style as {@link SpanLeafStyle.TEXT} and adds a ender
      * "{@value CURLY_END}".
      *
      * @see FormatParseAgenda
      */
     static final ContentParser CONTENT_AGENDA = new ContentParser(
-        StyleInfoLeaf.TEXT, CURLY_END);
+        SpanLeafStyle.TEXT, CURLY_END);
 
     /** A {@link ContentParser} for reference field text
      *
-     * This set leaf style as {@link StyleInfoLeaf.FIELD} and adds a ender
+     * This set leaf style as {@link SpanLeafStyle.FIELD} and adds a ender
      * "{@value CURLY_END}".
      *
      * @see FormatParsePointKey
      */
     static final ContentParser CONTENT_KEY = new ContentParser(
-        StyleInfoLeaf.FIELD, CURLY_END);
+        SpanLeafStyle.FIELD, CURLY_END);
 
     /** A {@link ContentParser} for hyperlink text.
      *
-     * This set leaf style as {@link StyleInfoLeaf.TEXT} and adds a ender
+     * This set leaf style as {@link SpanLeafStyle.TEXT} and adds a ender
      * "{@value LINK_END}".
      *
      * @see FormatParseLink
      */
     static final ContentParser CONTENT_LINK = new ContentParser(
-        StyleInfoLeaf.TEXT, LINK_END);
+        SpanLeafStyle.TEXT, LINK_END);
 
     /** A {@link ContentParser} for contntData text.
      *
-     * This set leaf style as {@link StyleInfoLeaf.Data}.
+     * This set leaf style as {@link SpanLeafStyle.Data}.
      *
      * @see InfoDataParser.TEXT
      */
     static final ContentParser CONTENT_DATA = new ContentParser(
-        StyleInfoLeaf.DATA);
+        SpanLeafStyle.DATA);
 
     /** A {@link ContentParser} for link line text.
      *
-     * This set leaf style as {@link StyleInfoLeaf.PATH}.
+     * This set leaf style as {@link SpanLeafStyle.PATH}.
      *
      * @see LinedParsePointer#HYPERLINK
      */
     static final ContentParser CONTENT_DIR_LINK  = new ContentParser(
-        StyleInfoLeaf.PATH);
+        SpanLeafStyle.PATH);
 
     /** A {@link ContentParser} for direct link text.
      *
-     * This set leaf style as {@link StyleInfoLeaf.PATH} and adds a ender
+     * This set leaf style as {@link SpanLeafStyle.PATH} and adds a ender
      * "{@value LINK_TEXT}" and "{@value LINK_END}".
      *
      * @see LinedParsePointer#HYPERLINK
      */
     static final ContentParser CONTENT_LINE_LINK = new ContentParser(
-        StyleInfoLeaf.PATH, LINK_TEXT, LINK_END);
+        SpanLeafStyle.PATH, LINK_TEXT, LINK_END);
 
     /// For ContentParser for DirectoryParser see the class itself
 
@@ -392,7 +392,7 @@ public final class AuxiliaryData{
 
     /** A {@link ContentParser} for note text.
      *
-     * This set leaf style as {@link StyleInfoLeaf.TEXT}, and allows notes.
+     * This set leaf style as {@link SpanLeafStyle.TEXT}, and allows notes.
      *
      * @see LinedParsePointer#FOOTNOTE
      * @see LinedParsePointer#ENDNOTE
@@ -400,36 +400,36 @@ public final class AuxiliaryData{
      * @see LinedParseRest#PARAGRAPH
      */
     static final FormattedParser FORMATTED_TEXT = new FormattedParser(
-        StyleInfoLeaf.TEXT, true);
+        SpanLeafStyle.TEXT, true);
 
     /** A {@link ContentParser} for note text and other document matters.
      *
-     * This set leaf style as {@link StyleInfoLeaf.TEXT}, and not allows notes.
+     * This set leaf style as {@link SpanLeafStyle.TEXT}, and not allows notes.
      *
      * @see LinedParseRest#NOTE
      * @see TextDataParser
      */
     static final FormattedParser NOTE_TEXT = new FormattedParser(
-        StyleInfoLeaf.TEXT, false);
+        SpanLeafStyle.TEXT, false);
 
     /** A {@link ContentParser} for citations.
      *
-     * This set leaf style as {@link StyleInfoLeaf.DATA}, and not allows notes.
+     * This set leaf style as {@link SpanLeafStyle.DATA}, and not allows notes.
      *
      * @see InfoDataParser#FORMATTED
      */
     static final FormattedParser FORMATTED_DATA = new FormattedParser(
-        StyleInfoLeaf.DATA, false);
+        SpanLeafStyle.DATA, false);
 
     /** A {@link ContentParser} for heading text.
      *
-     * This set leaf style as {@link StyleInfoLeaf.PATH}, allows notes, and
+     * This set leaf style as {@link SpanLeafStyle.PATH}, allows notes, and
      * adds a ender "{@value EDITION_BEGIN}".
      *
      * @see LinedParseLevel
      */
     static final FormattedParser FORMATTED_HEADER = new FormattedParser(
-        StyleInfoLeaf.TEXT, true, EDITION_BEGIN);
+        SpanLeafStyle.TEXT, true, EDITION_BEGIN);
 
     /// %Part 3.3: Main Section Line Parsers ===================================
 

@@ -9,6 +9,8 @@ import java.util.function.*;
 
 import java.util.*;
 
+import com.google.common.collect.*;
+
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.resource.*;
@@ -21,47 +23,145 @@ import com.creativeartie.writerstudio.main.*;
  * <li>if the span type is the same as the hint</li>
  * <li>if the span can be add here</li>
  * </ul>
+ *
  */
 class CheatsheetLabel extends Label{
 
     /**
      * Check if FormatSpanContent class is found. Helper method of
      * getLabel(FormatTypeStyle), getLabel(DirectoryType) and
-     * getLabel(AuxiliaryType).
+     *
+     * @see #getOtherFormatLabel(CheatsheetText)
      */
     private static boolean findContent(Document doc, Integer point){
         return doc.locateSpan(point, FormattedSpan.class).isPresent();
     }
 
-    /**
-     * Get lines hints labels.
-     */
-    static CheatsheetLabel getLabel(LinedType type){
-        return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
-            (doc, point) -> doc.locateSpan(point, LinedSpan.class)
-                .map(span -> span.getLinedType() == type)
+    static CheatsheetLabel getLabel(CheatsheetText text){
+        int ordinal = text.ordinal();
+        if (check(ordinal, CheatsheetText.LINED_HEADING,
+                CheatsheetText.LINED_OUTLINE)){
+            return getLinedHeadLabel(text);
+        }
+
+        if (check(ordinal, CheatsheetText.LINED_FOOTNOTE,
+                CheatsheetText.LINED_ENDNOTE)){
+            return getLinedNoteLabel(text);
+        }
+
+        if (check(ordinal, CheatsheetText.LINED_NUMBERED,
+                CheatsheetText.LINED_BULLET)){
+            return getLinedListLabel(text);
+        }
+
+        if (check(ordinal, CheatsheetText.LINED_PARAGRAPH,
+                CheatsheetText.LINED_NOTE)){
+            return getLinedRestLabel(text);
+        }
+
+        if (check(ordinal, CheatsheetText.EDITION_STUB,
+                CheatsheetText.EDITION_OTHER)){
+            return getEditionLabel(text);
+        }
+        if (check(ordinal, CheatsheetText.FIELD_SOURCE,
+                CheatsheetText.FIELD_REF)){
+            return getInfoLabel(text);
+        }
+
+        if (check(ordinal, CheatsheetText.FORMAT_BOLD,
+                CheatsheetText.FORMAT_CODED)){
+            return getFormatLabel(text);
+        }
+        if (text == CheatsheetText.OTHER_ID){
+            return getIdentityLabel();
+        }
+        if (check(ordinal, CheatsheetText.FORMAT_CITE, CheatsheetText.FIELD_REF)){
+            return getFormatIDLabel(text);
+        }
+        return getOtherFormatLabel(text);
+    }
+
+    private static boolean check(int ordinal, CheatsheetText begin,
+            CheatsheetText end){
+        return Range.closed(begin.ordinal(), end.ordinal()).contains(ordinal);
+    }
+
+    private static CheatsheetLabel getLinedHeadLabel(CheatsheetText text){
+        boolean head = text == CheatsheetText.LINED_HEADING;
+        return new CheatsheetLabel(text.getLabel(),
+            (doc, point) -> doc.locateSpan(point, LinedSpanLevelSection.class)
+                .map(s -> head == s.isHeading())
+                .orElse(false),
+            (doc, point) -> true
+        );
+    }
+
+    private static CheatsheetLabel getLinedListLabel(CheatsheetText text){
+        boolean head = text == CheatsheetText.LINED_HEADING;
+        return new CheatsheetLabel(text.getLabel(),
+            (doc, point) -> doc.locateSpan(point, LinedSpanLevelList.class)
+                .map(s -> head == s.isNumbered())
+                .orElse(false),
+            (doc, point) -> true
+        );
+    }
+
+    private static CheatsheetLabel getLinedNoteLabel(CheatsheetText text){
+        DirectoryType type = text == CheatsheetText.LINED_ENDNOTE?
+            DirectoryType.ENDNOTE: DirectoryType.FOOTNOTE;
+        return new CheatsheetLabel(text.getLabel(),
+            (doc, point) -> doc.locateSpan(point, LinedSpanPointNote.class)
+                .map(s -> s.getDirectoryType() == type)
                 .orElse(false),
             (doc, point) -> true
         );
     }
 
     /**
-     * Get format hints labels.
+     * Get lines hints labels.
      */
-    static CheatsheetLabel getLabel(FormatTypeStyle type){
-        return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
-            (doc, point) -> doc.locateSpan(point, FormatSpan.class)
-                .map(span -> span.isFormat(type))
-                .orElse(false),
-            CheatsheetLabel::findContent
+    private static CheatsheetLabel getLinedRestLabel(CheatsheetText text){
+        Class<?> set;
+        switch (text){
+        case LINED_PARAGRAPH:
+            set = LinedSpanParagraph.class;
+            break;
+        case LINED_QUOTE:
+            set = LinedSpanQuote.class;
+            break;
+        case LINED_BREAK:
+            set = LinedSpanBreak.class;
+            break;
+        case LINED_AGENDA:
+            set = LinedSpanAgenda.class;
+            break;
+        case LINED_LINK:
+            set = LinedSpanPointLink.class;
+            break;
+        case LINED_CITE:
+            set = LinedSpanCite.class;
+            break;
+        case LINED_NOTE:
+            set = LinedSpanNote.class;
+            break;
+        default:
+            assert false: "Unexpected type:" + text;
+            set = null;
+        }
+        return new CheatsheetLabel(text.getLabel(),
+            (doc, point) -> doc.locateSpan(point, set).isPresent(),
+            (doc, point) -> true
         );
     }
 
     /**
      * Get edition hints labels.
      */
-    static CheatsheetLabel getLabel(EditionType type){
-        return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
+    private static CheatsheetLabel getEditionLabel(CheatsheetText text){
+        EditionType type = EditionType.values()[
+            CheatsheetText.LINED_NOTE.ordinal() - text.ordinal()
+        ];
+        return new CheatsheetLabel(text.getLabel(),
             (doc, point) -> doc.locateSpan(point, EditionSpan.class)
                 .map(span -> span.getEditionType() == type)
                 .orElse(false),
@@ -71,13 +171,29 @@ class CheatsheetLabel extends Label{
     }
 
     /**
+     * Get format hints labels.
+     */
+    private static CheatsheetLabel getFormatLabel(CheatsheetText text){
+        FormatTypeStyle type = FormatTypeStyle.values()[
+            CheatsheetText.FORMAT_BOLD.ordinal() - text.ordinal()
+        ];
+        return new CheatsheetLabel(text.getLabel(),
+            (doc, point) -> doc.locateSpan(point, FormatSpan.class)
+                .map(span -> span.isFormat(type))
+                .orElse(false),
+            CheatsheetLabel::findContent
+        );
+    }
+
+
+    /**
      * Get in line reference spans (footnote, endnote, and note) hints labels.
      */
-    static CheatsheetLabel getLabel(DirectoryType type){
-        if (type == DirectoryType.NOTE || type == DirectoryType.LINK){
-            throw new IllegalArgumentException("Unsupported type: " + type);
-        }
-        return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
+    private static CheatsheetLabel getFormatIDLabel(CheatsheetText text){
+        DirectoryType type = DirectoryType.values()[
+            CheatsheetText.FORMAT_CODED.ordinal() - text.ordinal()
+        ];
+        return new CheatsheetLabel(text.getLabel(),
             (doc, point) -> doc.locateSpan(point, FormatSpanPointId.class)
                 .map(span -> span.getIdType() == type)
                 .orElse(false),
@@ -89,11 +205,14 @@ class CheatsheetLabel extends Label{
     /**
      * Get citition field names labels
      */
-    static CheatsheetLabel getLabel(InfoFieldType type){
+    private static CheatsheetLabel getInfoLabel(CheatsheetText text){
+        InfoFieldType type = InfoFieldType.values()[
+            CheatsheetText.FIELD_FOOTNOTE.ordinal() - text.ordinal()
+        ];
         if (type == InfoFieldType.ERROR){
             throw new IllegalArgumentException("Unsupported type: " + type);
         }
-        return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
+        return new CheatsheetLabel(text.getLabel(),
             (doc, point) -> doc.locateSpan(point, LinedSpanCite.class).map(
                 span -> span.getInfoFieldType() == type
             ).orElse(false),
@@ -105,8 +224,8 @@ class CheatsheetLabel extends Label{
     /**
      * Get identity syntax hint label
      */
-    static CheatsheetLabel getIdentityLabel(){
-        return new CheatsheetLabel(SyntaxHintText.LABEL.getIdText(),
+    private static CheatsheetLabel getIdentityLabel(){
+        return new CheatsheetLabel(CheatsheetText.OTHER_ID.getLabel(),
             (doc, point) -> doc.locateSpan(point, DirectorySpan.class)
                 .isPresent(),
             (doc, point) ->
@@ -118,32 +237,29 @@ class CheatsheetLabel extends Label{
         );
     }
 
-    /**
-     * Get the other syntax hints labels.
-     */
-    static CheatsheetLabel getLabel(AuxiliaryType type){
+    private static CheatsheetLabel getOtherFormatLabel(CheatsheetText type){
         Class<?> setup = null;
         switch (type){
-            case ESCAPE:
+            case OTHER_ESCAPE:
                 setup = BasicTextEscape.class;
                 break;
-            case AGENDA:
+            case FORMAT_AGENDA:
                 setup = FormatSpanAgenda.class;
                 break;
-            case DIRECT_LINK:
+            case FORMAT_DIRECT_LINK:
                 setup = FormatSpanLinkDirect.class;
                 break;
-            case REF_LINK:
+            case FORMAT_REF_LINK:
                 setup = FormatSpanLinkRef.class;
                 break;
-            case REF_KEY:
+            case FORMAT_REF_KEY:
                 setup = FormatSpanPointKey.class;
                 break;
             default:
-                throw new IllegalArgumentException("Unsupported type: " + type);
+                assert false: "Unsupported type: " + type;
         }
         final Class<?> test = setup;
-        return new CheatsheetLabel(SyntaxHintText.LABEL.getText(type),
+        return new CheatsheetLabel(type.getLabel(),
             (doc, point) -> doc.locateSpan(point, test).isPresent(),
             CheatsheetLabel::findContent
         );

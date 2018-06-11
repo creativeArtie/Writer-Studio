@@ -14,7 +14,6 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 public abstract class FormatSpan extends SpanBranch {
 
     private final boolean[] spanFormats;
-    private final CacheKeyList<StyleInfo> cacheStyles;
 
     /** Creates an instance of {@linkplain FormatSpan}.
      *
@@ -27,8 +26,6 @@ public abstract class FormatSpan extends SpanBranch {
         super(children);
         indexEquals(formats.length, "formats.length", FORMAT_TYPES);
         spanFormats = Arrays.copyOf(formats, formats.length);
-
-        cacheStyles = new CacheKeyList<>(StyleInfo.class);
     }
 
     /** Checks if text has the fromat type.
@@ -71,22 +68,6 @@ public abstract class FormatSpan extends SpanBranch {
      */
     public final boolean isCoded(){
         return spanFormats[FormatTypeStyle.CODED.ordinal()];
-    }
-
-    @Override
-    public List<StyleInfo> getBranchStyles(){
-        return getLocalCache(cacheStyles, () -> {
-            ImmutableList.Builder<StyleInfo> list = ImmutableList.builder();
-            int i = 0;
-            FormatTypeStyle[] values = FormatTypeStyle.values();
-            for (boolean format: spanFormats){
-                if (format){
-                    list.add(values[i]);
-                }
-                i++;
-            }
-            return list.build();
-        });
     }
 
     @Override

@@ -10,8 +10,6 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** Section with optional heading. */
 public final class SectionSpanHead extends SectionSpan {
-    private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(
-            AuxiliaryType.SECTION_HEAD);
 
     private final CacheKeyMain<Integer> cacheLevel;
 
@@ -142,11 +140,6 @@ public final class SectionSpanHead extends SectionSpan {
             return true;
         }
         return allowChild(text, getLevel() - 1, true);
-    }
-
-    @Override
-    public List<StyleInfo> getBranchStyles(){
-        return BRANCH_STYLE;
     }
 
     @Override

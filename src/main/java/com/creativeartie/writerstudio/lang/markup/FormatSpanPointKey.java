@@ -11,7 +11,6 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 /** A formatted reference text, mainly to docuement statistics. */
 public final class FormatSpanPointKey extends FormatSpan{
     private final FormatParsePointKey spanReparser;
-    private final CacheKeyList<StyleInfo> cacheStyles;
     private final CacheKeyMain<FormatTypeField> cacheField;
     private final CacheKeyMain<String> cacheValue;
 
@@ -32,7 +31,6 @@ public final class FormatSpanPointKey extends FormatSpan{
 
         cacheField = new CacheKeyMain<>(FormatTypeField.class);
         cacheValue = CacheKeyMain.stringKey();
-        cacheStyles = new CacheKeyList<>(StyleInfo.class);
     }
 
     public FormatTypeField getField(){
@@ -42,15 +40,6 @@ public final class FormatSpanPointKey extends FormatSpan{
             /// s == String
             .map(s -> FormatTypeField.findField(s))
             .orElse(FormatTypeField.ERROR));
-    }
-
-    @Override
-    public List<StyleInfo> getBranchStyles(){
-        return getLocalCache(cacheStyles, () -> {
-            ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
-            return builder.add(AuxiliaryType.REF_KEY, getField())
-                .addAll(super.getBranchStyles()).build();
-        });
     }
 
     @Override

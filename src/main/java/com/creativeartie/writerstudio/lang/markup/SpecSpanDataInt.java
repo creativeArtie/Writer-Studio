@@ -26,7 +26,7 @@ public final class SpecSpanDataInt extends SpecSpanData<Integer>{
 
     @Override
     public Integer getData(){
-        return getLocalCache(cacheData, () -> leafFromLast(StyleInfoLeaf.DATA)
+        return getLocalCache(cacheData, () -> leafFromLast(SpanLeafStyle.DATA)
             .map( s -> Integer.parseInt(s.getRaw()) ).orElse(0)
         );
     }

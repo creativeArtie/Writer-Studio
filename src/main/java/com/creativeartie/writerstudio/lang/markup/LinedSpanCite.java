@@ -26,7 +26,6 @@ public class LinedSpanCite extends LinedSpan {
 
     private final CacheKeyMain<InfoFieldType> cacheInfoType;
     private final CacheKeyOptional<InfoDataSpan> cacheData;
-    private final CacheKeyList<StyleInfo> cacheStyles;
     private final CacheKeyMain<Integer> cacheNote;
 
     /** Creates a {@linkplain LinedSpanCite}.
@@ -40,7 +39,6 @@ public class LinedSpanCite extends LinedSpan {
 
         cacheInfoType = new CacheKeyMain<>(InfoFieldType.class);
         cacheData = new CacheKeyOptional<>(InfoDataSpan.class);
-        cacheStyles = new CacheKeyList<>(StyleInfo.class);
         cacheNote = CacheKeyMain.integerKey();
     }
 
@@ -61,18 +59,6 @@ public class LinedSpanCite extends LinedSpan {
      */
     public Optional<InfoDataSpan> getData(){
         return getLocalCache(cacheData, () -> spanFromLast(InfoDataSpan.class));
-    }
-
-    @Override
-    public List<StyleInfo> getBranchStyles(){
-        return getLocalCache(cacheStyles, () -> {
-            ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
-            builder.addAll(super.getBranchStyles()).add(getInfoFieldType());
-            if (! getData().isPresent()){
-                builder.add(AuxiliaryType.DATA_ERROR);
-            }
-            return builder.build();
-        });
     }
 
     @Override

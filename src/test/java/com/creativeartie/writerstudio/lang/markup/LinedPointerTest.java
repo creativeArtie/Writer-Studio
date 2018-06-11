@@ -183,7 +183,7 @@ public class LinedPointerTest{
         doc.addId(id, 0);
 
         PointerNoteAssert note = new PointerNoteAssert(doc)
-            .setLinedType(LinedType.ENDNOTE)
+            .setType(DirectoryType.ENDNOTE)
             .setFormattedSpan(0, 3).setLookup("{*abcdef}")
             .setCatalogued(CatalogueStatus.UNUSED, id);
         DirectoryAssert idSpan = new DirectoryAssert(doc)
@@ -215,7 +215,7 @@ public class LinedPointerTest{
         doc.addId(id, 0);
 
         PointerNoteAssert note = new PointerNoteAssert(doc)
-            .setLinedType(LinedType.ENDNOTE).setLookup("{*abcdef}")
+            .setType(DirectoryType.ENDNOTE).setLookup("{*abcdef}")
             .setCatalogued(CatalogueStatus.UNUSED, id);
         DirectoryAssert idSpan = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.ENDNOTE)
@@ -239,7 +239,7 @@ public class LinedPointerTest{
         doc.addId(id, 0);
 
         PointerNoteAssert note = new PointerNoteAssert(doc)
-            .setLinedType(LinedType.ENDNOTE).setLookup("{*abcdef}")
+            .setType(DirectoryType.ENDNOTE).setLookup("{*abcdef}")
             .setCatalogued(CatalogueStatus.UNUSED, id);
         DirectoryAssert idSpan = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.ENDNOTE)
@@ -259,7 +259,7 @@ public class LinedPointerTest{
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         PointerNoteAssert note = new PointerNoteAssert(doc)
-            .setLinedType(LinedType.ENDNOTE)
+            .setType(DirectoryType.ENDNOTE)
             .setFormattedSpan(0, 2);
         FormattedSpanAssert main = new FormattedSpanAssert(doc)
             .setPublish(1).setNote(0).setParsed("test");
@@ -282,7 +282,7 @@ public class LinedPointerTest{
         doc.addId(id, 0);
 
         PointerNoteAssert note = new PointerNoteAssert(doc)
-            .setLinedType(LinedType.FOOTNOTE)
+            .setType(DirectoryType.FOOTNOTE)
             .setFormattedSpan(0, 3).setLookup("{^abcdef}")
             .setCatalogued(CatalogueStatus.UNUSED, id);
         DirectoryAssert idSpan = new DirectoryAssert(doc)

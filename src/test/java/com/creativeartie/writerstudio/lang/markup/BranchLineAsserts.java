@@ -14,7 +14,6 @@ public class BranchLineAsserts {
 
         private int publishTotal;
         private int noteTotal;
-        private LinedType linedType;
 
         public LineAssert(Class<T> clazz, DocumentAssert doc,
                 int publish, int note){
@@ -35,23 +34,12 @@ public class BranchLineAsserts {
             return cast();
         }
 
-        public T setLinedType(LinedType type){
-            linedType = type;
-            return cast();
-        }
-
-        LinedType getLinedType(){
-            return linedType;
-        }
-
         protected abstract LinedSpan moreTest(SpanBranch span,
                 ArrayList<Executable> tests);
 
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){
             LinedSpan test = moreTest(span, tests);
-            tests.add(() -> assertEquals(linedType, test.getLinedType(),
-                "getLinedType()"));
             tests.add(() -> assertEquals(publishTotal, test.getPublishTotal(),
                 "getPublishTotal()"));
             tests.add(() -> assertEquals(noteTotal, test.getNoteTotal(),
@@ -59,36 +47,11 @@ public class BranchLineAsserts {
         }
     }
 
-    /** For when the style is just LinedType.*/
-    private static abstract class SimpleStyleAssert<T extends SimpleStyleAssert<T>>
-            extends LineAssert<T>{
-        private LinedType linedType;
-
-        public SimpleStyleAssert(Class<T> clazz, DocumentAssert doc,
-                LinedType type, int publish, int note){
-            super(clazz, doc, publish, note);
-            linedType = type;
-        }
-
-        public T setLinedType(LinedType type){
-            linedType = type;
-            return super.setLinedType(type);
-        }
-
-        @Override
-        public void setup(){
-            setLinedType(linedType);
-            setStyles(linedType);
-        }
-    }
-
-    public static class AgendaLineAssert
-        extends SimpleStyleAssert<AgendaLineAssert>
-    {
+    public static class AgendaLineAssert extends LineAssert<AgendaLineAssert> {
         private String agendaLine;
 
         public AgendaLineAssert(DocumentAssert doc){
-            super(AgendaLineAssert.class, doc, LinedType.AGENDA, 0, 1);
+            super(AgendaLineAssert.class, doc, 0, 1);
         }
 
         /** For {@link LinedSpanAgenda#getAgenda()} (default: */
@@ -96,6 +59,9 @@ public class BranchLineAsserts {
             agendaLine = agenda;
             return this;
         }
+
+        @Override
+        public void setup(){}
 
         @Override
         public LinedSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
@@ -106,11 +72,14 @@ public class BranchLineAsserts {
         }
     }
 
-    public static class BreakLineAssert extends SimpleStyleAssert<BreakLineAssert>{
+    public static class BreakLineAssert extends LineAssert<BreakLineAssert>{
 
         public BreakLineAssert(DocumentAssert doc){
-            super(BreakLineAssert.class, doc, LinedType.BREAK, 0, 0);
+            super(BreakLineAssert.class, doc, 0, 0);
         }
+
+        @Override
+        public void setup(){}
 
         @Override
         public LinedSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
@@ -125,7 +94,6 @@ public class BranchLineAsserts {
 
         public CiteLineAssert(DocumentAssert doc){
             super(CiteLineAssert.class, doc, 0, 1);
-            setLinedType(LinedType.SOURCE);
             dataSpan = null;
             infoType = InfoFieldType.ERROR;
         }
@@ -141,13 +109,7 @@ public class BranchLineAsserts {
         }
 
         @Override
-        public void setup(){
-            setLinedType(LinedType.SOURCE);
-            setStyles(LinedType.SOURCE, infoType);
-            if (dataSpan == null){
-                addStyles(AuxiliaryType.DATA_ERROR);
-            }
-        }
+        public void setup(){}
 
         @Override
         public LinedSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
@@ -161,15 +123,15 @@ public class BranchLineAsserts {
         }
     }
 
-    public abstract static class LevelLineAssert
-        <T extends SimpleStyleAssert<T>> extends SimpleStyleAssert<T>
-    {
+    public abstract static class LevelLineAssert<T extends LineAssert<T>>
+        extends LineAssert<T>{
+
         private int lineLevel;
         private int[] lineText;
 
         public LevelLineAssert(Class<T> clazz, DocumentAssert doc, int publish,
                 int note){
-            super(clazz, doc, null, publish, note);
+            super(clazz, doc, publish, note);
             lineLevel = 1;
             lineText = null;
         }
@@ -186,13 +148,17 @@ public class BranchLineAsserts {
             return cast();
         }
 
+
+        @Override
+        public void setup(){}
+
         protected abstract LinedSpanLevel testSubclass(SpanBranch span,
             ArrayList<Executable> tests);
 
         @Override
         public LinedSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
             LinedSpanLevel test = testSubclass(span, tests);
-            tests.add(() -> assertEquals(lineLevel, test.getLevel(), "getLevel"));
+            tests.add(() -> assertEquals(lineLevel, test.getLevel(), "getLevel()"));
             tests.add(() -> assertChild(FormattedSpan.class, lineText,
                 () -> test.getFormattedSpan(), "getFormatedSpan()"));
             return test;
@@ -202,14 +168,25 @@ public class BranchLineAsserts {
     public static class ListLevelLineAssert extends
         LevelLineAssert<ListLevelLineAssert>
     {
+        private boolean isNumbered;
 
         public ListLevelLineAssert(DocumentAssert doc){
             super(ListLevelLineAssert.class, doc, 1, 0);
+            isNumbered = true;
+        }
+
+        /** For {@link LinedSpanLevelList#isNumbererd()} (default {@code true}) */
+        public ListLevelLineAssert setNumbered(boolean numbered){
+            isNumbered = numbered;
+            return this;
         }
 
         protected LinedSpanLevel testSubclass(SpanBranch span,
                 ArrayList<Executable> tests){
-            return assertClass(LinedSpanLevelList.class);
+            LinedSpanLevelList test = assertClass(LinedSpanLevelList.class);
+            tests.add(() -> assertEquals(isNumbered, test.isNumbered(),
+                "isNumbered()"));
+            return test;
         }
     }
 
@@ -219,17 +196,19 @@ public class BranchLineAsserts {
         private EditionType editionType;
         private String editionDetail;
         private String lookupText;
+        private boolean isHeading;
 
         public HeadLevelLineAssert(DocumentAssert doc){
             super(HeadLevelLineAssert.class, doc, 1, 0);
             editionType = EditionType.NONE;
             editionDetail = "";
+            lookupText = "";
+            isHeading = true;
         }
 
         /** For {@link LinedSpanLevelSection#getEditionType()} (default: NONE)*/
         public HeadLevelLineAssert setEdition(EditionType edition){
             editionType = edition;
-            lookupText = "";
             return this;
         }
 
@@ -245,9 +224,16 @@ public class BranchLineAsserts {
             return this;
         }
 
+        /** For {@link LinedSpanLevelSection#isHeading()} (default: {@code true)*/
+        public HeadLevelLineAssert setHeading(boolean heading){
+            isHeading = heading;
+            return this;
+        }
+
         @Override
         protected LinedSpanLevel testSubclass(SpanBranch span,
                 ArrayList<Executable> tests){
+            System.out.println(lookupText);
             LinedSpanLevelSection test = assertClass(LinedSpanLevelSection.class);
             tests.add(() -> assertEquals(editionType, test.getEditionType(),
                 "getEdtionType()"));
@@ -255,18 +241,20 @@ public class BranchLineAsserts {
                 "getEditionDetail()"));
             tests.add(() -> assertEquals(lookupText, test.getLookupText(),
                 "getLookupText()"));
+            tests.add(() -> assertEquals(isHeading, test.isHeading(),
+                "isHeading()"));
             return test;
         }
     }
 
-    public static class NoteLineAssert extends SimpleStyleAssert<NoteLineAssert>{
+    public static class NoteLineAssert extends LineAssert<NoteLineAssert>{
 
         private Optional<CatalogueIdentity> buildId;
         private int[] lineText;
         private String lookupText;
 
         public NoteLineAssert(DocumentAssert doc){
-            super(NoteLineAssert.class, doc, LinedType.NOTE, 0, 1);
+            super(NoteLineAssert.class, doc, 0, 1);
             buildId = Optional.empty();
             lineText = null;
             lookupText = "";
@@ -291,6 +279,9 @@ public class BranchLineAsserts {
         }
 
         @Override
+        public void setup(){}
+
+        @Override
         public LinedSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
             LinedSpanNote test = assertClass(LinedSpanNote.class);
             tests.add(() -> assertEquals(buildId, test.buildId(), "buildId()"));
@@ -302,12 +293,12 @@ public class BranchLineAsserts {
         }
     }
     public static class ParagraphLineAssert
-            extends SimpleStyleAssert<ParagraphLineAssert>{
+            extends LineAssert<ParagraphLineAssert>{
 
         private int[] lineText;
 
         public ParagraphLineAssert(DocumentAssert doc){
-            super(ParagraphLineAssert.class, doc, LinedType.PARAGRAPH, 1, 0);
+            super(ParagraphLineAssert.class, doc, 1, 0);
             lineText = null;
         }
 
@@ -316,6 +307,9 @@ public class BranchLineAsserts {
             lineText = idx;
             return this;
         }
+
+        @Override
+        public void setup(){}
 
         @Override
         public LinedSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
@@ -350,10 +344,7 @@ public class BranchLineAsserts {
         }
 
         @Override
-        public void setup(){
-            setLinedType(LinedType.LINK);
-            setStyles(getLinedType(), getCatalogueStatus());
-        }
+        public void setup(){}
 
         @Override
         public LinedSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
@@ -368,11 +359,13 @@ public class BranchLineAsserts {
     public static class PointerNoteAssert extends LineAssert<PointerNoteAssert>{
         private int[] lineText;
         private String lookupText;
+        private DirectoryType idType;
 
         public PointerNoteAssert(DocumentAssert doc){
             super(PointerNoteAssert.class, doc, 0, 0);
             lineText = null;
             lookupText = "";
+            idType = DirectoryType.ENDNOTE;
         }
 
         /** For {@link LinedSpanPointNote#getFormattedSpan()} (no default) */
@@ -387,10 +380,13 @@ public class BranchLineAsserts {
             return this;
         }
 
-        @Override
-        public void setup(){
-            addStyles(getLinedType(), getCatalogueStatus());
+        public PointerNoteAssert setType(DirectoryType type){
+            idType = type;
+            return this;
         }
+
+        @Override
+        public void setup(){}
 
         @Override
         public LinedSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
@@ -400,15 +396,17 @@ public class BranchLineAsserts {
                 () -> test.getFormattedSpan(), "getFormattedSpan()"));
             tests.add(() -> assertEquals(lookupText, test.getLookupText(),
                 "getLookupText()"));
+            tests.add(() -> assertEquals(idType, test.getDirectoryType(),
+                "getDirectoryType()"));
             return test;
         }
     }
 
-    public static class QuoteLineAssert extends SimpleStyleAssert<QuoteLineAssert>{
+    public static class QuoteLineAssert extends LineAssert<QuoteLineAssert>{
         private int[] lineText;
 
         public QuoteLineAssert(DocumentAssert doc){
-            super(QuoteLineAssert.class, doc, LinedType.QUOTE, 1, 0);
+            super(QuoteLineAssert.class, doc, 1, 0);
             lineText = null;
         }
 
@@ -418,6 +416,8 @@ public class BranchLineAsserts {
             return this;
         }
 
+        @Override
+        public void setup(){}
 
         @Override
         public LinedSpan moreTest(SpanBranch span, ArrayList<Executable> tests){

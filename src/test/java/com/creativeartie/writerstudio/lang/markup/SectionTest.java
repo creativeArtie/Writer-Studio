@@ -99,8 +99,7 @@ public class SectionTest {
         ///                        1, 2, 3, 4, 5, 6, l, f
             .setFormattedSpan(0, 0, 0, 0, 0, 0, 0, 1)
             .setEdition(EditionType.NONE).setLevel(6)
-            .setPublish(1)   .setNote(0)
-            .setLinedType(LinedType.HEADING);
+            .setPublish(1)   .setNote(0);
 
         head1.test(1, text, 0);
         head2.test(1, text, 0, 0);
@@ -137,8 +136,7 @@ public class SectionTest {
         HeadLevelLineAssert line0 = new HeadLevelLineAssert(doc) ///0, 0
             .setEdition(EditionType.NONE)
             .setPublish(2)   .setNote(0)
-            .setFormattedSpan(0, 0, 1)
-            .setLinedType(LinedType.HEADING);
+            .setFormattedSpan(0, 0, 1);
 
         HeadSectionAssert head1_1 = new HeadSectionAssert(doc) /// 0, 1
             .setPublishCount(5)    .setNoteCount(0)
@@ -149,8 +147,7 @@ public class SectionTest {
         HeadLevelLineAssert line1 = new HeadLevelLineAssert(doc) ///0, 1, 0
             .setEdition(EditionType.NONE)
             .setPublish(2)    .setNote(0).setLevel(2)
-            .setFormattedSpan(0, 1, 0, 1)
-            .setLinedType(LinedType.HEADING);
+            .setFormattedSpan(0, 1, 0, 1);
         ParagraphLineAssert line2 = new ParagraphLineAssert(doc) /// 0, 1, 1
             .setPublish(3)    .setNote(0)
             .setFormattedSpan(0, 1, 1, 0);
@@ -164,7 +161,7 @@ public class SectionTest {
             .setEdition(EditionType.NONE)
             .setPublish(0)      .setNote(1)
             .setFormattedSpan(0, 1, 2, 0, 1)
-            .setLinedType(LinedType.OUTLINE);
+            .setHeading(false);
 
         HeadSectionAssert head2 = new HeadSectionAssert(doc) /// 1
             .setPublishCount(4).setNoteCount(0)
@@ -174,8 +171,7 @@ public class SectionTest {
         HeadLevelLineAssert line4 = new HeadLevelLineAssert(doc) /// 1, 0
             .setEdition(EditionType.NONE)
             .setPublish(2)   .setNote(0)
-            .setFormattedSpan(1, 0, 1)
-            .setLinedType(LinedType.HEADING);
+            .setFormattedSpan(1, 0, 1);
         ParagraphLineAssert line5 = new ParagraphLineAssert(doc)/// 1, 1
             .setPublish(2).setNote(0)
             .setFormattedSpan(1, 1, 0);
@@ -219,22 +215,22 @@ public class SectionTest {
             .setFormattedSpan(0, 0, 1)
             .setPublish(1).setNote(0);
         ListLevelLineAssert line2 = new ListLevelLineAssert(doc)
-            .setLinedType(LinedType.NUMBERED)
+            .setNumbered(true)
             .setFormattedSpan(0, 1, 1).setPublish(1)
             .setNote(0);
         ListLevelLineAssert line3 = new ListLevelLineAssert(doc)
-            .setLinedType(LinedType.BULLET)
+            .setNumbered(false)
             .setFormattedSpan(0, 2, 1).setPublish(1)
             .setNote(0);
         PointerLinkAssert line4 = new PointerLinkAssert(doc)
             .setPath("http://google.com")
             .setCatalogued(CatalogueStatus.UNUSED, linkId);
         PointerNoteAssert line5 = new PointerNoteAssert(doc)
-            .setLinedType(LinedType.FOOTNOTE)
+            .setType(DirectoryType.FOOTNOTE)
             .setFormattedSpan(0, 4, 3)
             .setCatalogued(CatalogueStatus.UNUSED, footnoteId);
         PointerNoteAssert line6 = new PointerNoteAssert(doc)
-            .setLinedType(LinedType.ENDNOTE)
+            .setType(DirectoryType.ENDNOTE)
             .setFormattedSpan(0, 5, 3)
             .setCatalogued(CatalogueStatus.UNUSED, endnoteId);
         AgendaLineAssert line7 = new AgendaLineAssert(doc)
@@ -306,7 +302,7 @@ public class SectionTest {
             .setEdition(EditionType.NONE)
             .setPublish(0).setNote(2).setLevel(2)
             .setFormattedSpan(0, 0, 0, 0, 1)
-            .setLinedType(LinedType.OUTLINE);
+            .setHeading(false);
         ParagraphLineAssert child2 = new ParagraphLineAssert(doc)
             .setPublish(2) .setNote(0)
             .setFormattedSpan(0, 0, 0, 1, 0);
@@ -339,7 +335,6 @@ public class SectionTest {
         HeadLevelLineAssert child1 = new HeadLevelLineAssert(doc)
             .setEdition(EditionType.NONE)
             .setPublish(2).setNote(0).setLevel(2)
-            .setLinedType(LinedType.HEADING)
             .setFormattedSpan(0, 0, 0, 1);
         ParagraphLineAssert child2 = new ParagraphLineAssert(doc)
             .setPublish(2)   .setNote(0)
@@ -367,7 +362,6 @@ public class SectionTest {
         HeadLevelLineAssert child1 = new HeadLevelLineAssert(doc)
             .setEdition(EditionType.NONE)
             .setPublish(2).setNote(0)
-            .setLinedType(LinedType.HEADING)
             .setFormattedSpan(0, 0, 1);
         ParagraphLineAssert child2 = new ParagraphLineAssert(doc)
             .setPublish(2).setNote(0)

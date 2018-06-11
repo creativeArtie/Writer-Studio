@@ -9,8 +9,6 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** Section with a outline as a heading*/
 public final class SectionSpanScene extends SectionSpan {
-    private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(
-        AuxiliaryType.SECTION_SCENE);
 
     private final CacheKeyMain<Integer> cacheLevel;
 
@@ -89,11 +87,6 @@ public final class SectionSpanScene extends SectionSpan {
     protected boolean checkStart(String text){
         argumentNotNull(text, "text");
         return allowChild(text, getLevel() - 1, false);
-    }
-
-    @Override
-    public List<StyleInfo> getBranchStyles(){
-        return BRANCH_STYLE;
     }
 
     @Override

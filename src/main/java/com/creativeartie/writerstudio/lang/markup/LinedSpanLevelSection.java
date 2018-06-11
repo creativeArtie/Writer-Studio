@@ -10,6 +10,8 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 public final class LinedSpanLevelSection extends LinedSpanLevel
         implements Catalogued{
 
+    private final CacheKeyMain<Boolean> cacheType;
+
     private final CacheKeyMain<String> cacheLookup;
 
     private final CacheKeyMain<String> cacheEditionDetail;
@@ -28,6 +30,7 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
      */
     LinedSpanLevelSection(List<Span> children){
         super(children);
+        cacheType = CacheKeyMain.booleanKey();
         cacheLookup = CacheKeyMain.stringKey();
 
         cacheEditionDetail = CacheKeyMain.stringKey();
@@ -37,6 +40,18 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
         cacheNote = CacheKeyMain.integerKey();
 
         cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
+    }
+
+    /** Is line is a heading?
+     *
+     * @return answer
+     */
+    public boolean isHeading(){
+        return getLocalCache(cacheType, () -> leafFromFirst(SpanLeafStyle.KEYWORD)
+            .map(s -> s.getRaw().startsWith(
+                LEVEL_STARTERS.get(LinedParseLevel.HEADING).get(0)
+            )).orElse(false)
+        );
     }
 
     /** Gets the user reference help text.
@@ -73,7 +88,7 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
     @Override
     public int getPublishTotal(){
         return getLocalCache(cachePublish, () -> {
-            if (getLinedType() == LinedType.HEADING){
+            if (isHeading()){
                 return getFormattedSpan().map(s -> s.getPublishTotal())
                     .orElse(0);
             }
@@ -84,11 +99,10 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
     @Override
     public int getNoteTotal(){
         return getLocalCache(cacheNote, () -> {
-            if (getLinedType() == LinedType.HEADING){
+            if (isHeading()){
                 return getFormattedSpan().map(s -> s.getNoteTotal())
                     .orElse(0);
             } else {
-                assert getLinedType() == LinedType.OUTLINE: getLinedType();
                 return getFormattedSpan().map(s -> s.getGrandTotal())
                     .orElse(0);
             }
@@ -116,7 +130,7 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
         }
 
         /// Gets the starting token and check it
-        LinedParseLevel parser = getLinedType() == LinedType.HEADING?
+        LinedParseLevel parser = isHeading()?
             LinedParseLevel.HEADING: LinedParseLevel.OUTLINE;
         return text.startsWith(LEVEL_STARTERS.get(parser).get(getLevel() - 1))?
             parser: null;

@@ -87,7 +87,7 @@ enum DirectoryParser implements SetupParser{
         System.arraycopy(enders, 0, init, 0, enders.length);
         init[enders.length] = DIRECTORY_CATEGORY;
 
-        idContent = new ContentParser(StyleInfoLeaf.ID, init);
+        idContent = new ContentParser(SpanLeafStyle.ID, init);
         reparseEnders = enders;
     }
 

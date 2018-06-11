@@ -310,7 +310,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      *      leaf info
      * @return answer
      */
-    protected final List<SpanLeaf> getChildren(StyleInfoLeaf info){
+    protected final List<SpanLeaf> getChildren(SpanLeafStyle info){
         ImmutableList.Builder<SpanLeaf> builder = ImmutableList.builder();
         for (Span span: this){
             if (span instanceof SpanLeaf &&
@@ -328,7 +328,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      *      leaf info
      * @return answer
      */
-    protected Optional<SpanLeaf> leafFromFirst(StyleInfoLeaf info){
+    protected Optional<SpanLeaf> leafFromFirst(SpanLeafStyle info){
         argumentNotNull(info, "info");
         for (Span span: this){
             if (span instanceof SpanLeaf){
@@ -348,7 +348,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      *      leaf info
      * @return answer
      */
-    protected Optional<SpanLeaf> leafFromLast(StyleInfoLeaf info){
+    protected Optional<SpanLeaf> leafFromLast(SpanLeafStyle info){
         argumentNotNull(info, "info");
         for(int i = size() - 1; i >= 0; i--){
             Span span = get(i);

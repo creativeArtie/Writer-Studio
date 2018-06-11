@@ -38,11 +38,6 @@ public final class FormattedSpan extends SpanBranch {
         cacheText = CacheKeyMain.stringKey();
     }
 
-    @Override
-    public List<StyleInfo> getBranchStyles(){
-        return ImmutableList.of();
-    }
-
     /** Get the word count of publishing text.*/
     public int getPublishTotal(){
         return getLocalCache(cachePublish, () -> getCount(true, false));

@@ -137,12 +137,6 @@ public abstract class SpanBranch extends SpanNode<Span> {
 
     /// %Part 3: Common Get Methods ############################################
 
-    /** Get style information about this {@linkplain SpanBranch}.
-     *
-     * @return answer
-     */
-    public abstract List<StyleInfo> getBranchStyles();
-
     /** Get the catalogue status.
      *
      * @return answer

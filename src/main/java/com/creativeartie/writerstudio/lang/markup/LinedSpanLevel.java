@@ -40,7 +40,7 @@ public abstract class LinedSpanLevel extends LinedSpan {
     public int getLevel(){
         return getLocalCache(cacheLevel, () -> {
             /// Where only outline line has an extra "!"
-            int extras = getLinedType() == LinedType.OUTLINE? 1: 0;
+            int extras = getRaw().startsWith(LINED_BEGIN)? 1: 0;
             /// for everything else is just the length of text
             return get(0).getRaw().length() - extras;
         });

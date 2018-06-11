@@ -20,9 +20,7 @@ public class BranchInfoDataAsserts {
         }
 
         @Override
-        public void setup(){
-            setStyles(dataType);
-        }
+        public void setup(){}
 
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){

@@ -42,9 +42,7 @@ public class BranchFormatAsserts {
         }
 
         @Override
-        public void setup(){
-            addStyles(spanFormats);
-        }
+        public void setup(){}
 
         @Override
         public BasicText moreTest(SpanBranch span, ArrayList<Executable> tests){
@@ -81,12 +79,6 @@ public class BranchFormatAsserts {
         @Override
         public void setup(){
             moreSetup();
-            if (isCatalogued()){
-                addStyles(AuxiliaryType.REF_LINK, getCatalogueStatus());
-            } else {
-                addStyles(AuxiliaryType.DIRECT_LINK);
-            }
-            addStyles(spanFormats);
         }
 
         protected abstract void moreSetup();
@@ -202,8 +194,6 @@ public class BranchFormatAsserts {
 
         @Override
         public void setup(){
-            setStyles(idType, getCatalogueStatus());
-            addStyles(spanFormats);
             setCatalogued();
         }
 
@@ -254,10 +244,7 @@ public class BranchFormatAsserts {
         }
 
         @Override
-        public void setup(){
-            setStyles(AuxiliaryType.REF_KEY, keyField);
-            addStyles(spanFormats);
-        }
+        public void setup(){}
 
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){

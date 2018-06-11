@@ -12,8 +12,6 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 
 /** Stores a day's record. */
 public final class StatSpanDay extends SpanBranch{
-    private static final List<StyleInfo> infoStyle = ImmutableList
-        .of(AuxiliaryType.STAT_DATE);
     private final CacheKeyMain<LocalDate> cacheDate;
     private final CacheKeyMain<Integer> cachePublishGoal;
     private final CacheKeyMain<Integer> cachePublishTotal;
@@ -38,7 +36,7 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     public LocalDate getRecordDate(){
-        return getLocalCache(cacheDate, () -> leafFromFirst(StyleInfoLeaf.DATA)
+        return getLocalCache(cacheDate, () -> leafFromFirst(SpanLeafStyle.DATA)
             .map(s -> LocalDate.parse(s.getRaw(), STAT_DATE))
             .orElseThrow(() -> new IllegalStateException("Corrupted date."))
         );
@@ -245,11 +243,6 @@ public final class StatSpanDay extends SpanBranch{
 
         setIntegerData(StatTypeData.PUBLISH_TOTAL, publish);
         setIntegerData(StatTypeData.NOTE_TOTAL, note);
-    }
-
-    @Override
-    public List<StyleInfo> getBranchStyles(){
-        return infoStyle;
     }
 
     @Override

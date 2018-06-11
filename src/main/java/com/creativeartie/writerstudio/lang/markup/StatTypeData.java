@@ -6,7 +6,7 @@ import com.creativeartie.writerstudio.lang.*;
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-public enum StatTypeData implements StyleInfo{
+public enum StatTypeData{
     PUBLISH_TOTAL, PUBLISH_GOAL,
     NOTE_TOTAL,
     TIME_TOTAL, TIME_GOAL,

@@ -8,11 +8,11 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  *
  * The value order is set by:
  * <ul>
- * <li>{@link InfoFieldParser} through </li>
- * <li>{@link #getType(String)}</li>
+ * <li>{@link InfoFieldParser} through {@link #getType(String)}</li>
+ * <li>{@link CheatsheetText} through (@link CheatsheetLabel#getLabel(CheatsheetText)}</li>
  * </ul>
  */
-public enum InfoFieldType implements StyleInfo{
+public enum InfoFieldType{
     /** The full citation text. */
     SOURCE,
     /** The in line citation text. */

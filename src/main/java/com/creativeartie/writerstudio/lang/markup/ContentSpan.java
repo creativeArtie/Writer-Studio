@@ -69,11 +69,6 @@ public final class ContentSpan extends SpanBranch implements BasicText{
     }
 
     @Override
-    public List<StyleInfo> getBranchStyles(){
-        return ImmutableList.of();
-    }
-
-    @Override
     protected SetupParser getParser(String text){
         return null;
     }

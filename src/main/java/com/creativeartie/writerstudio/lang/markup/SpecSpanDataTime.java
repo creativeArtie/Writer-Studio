@@ -25,7 +25,7 @@ public class SpecSpanDataTime extends SpecSpanData<Duration>{
 
     @Override
     public Duration getData(){
-        return getLocalCache(cacheData, () -> leafFromLast(StyleInfoLeaf.DATA)
+        return getLocalCache(cacheData, () -> leafFromLast(SpanLeafStyle.DATA)
             .map(s -> Duration.parse(s.getRaw())).orElse(Duration.ofSeconds(0))
         );
     }

@@ -10,7 +10,7 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 public class TextDataType{
 
     /** Basic {@link TextDataSpan} type.*/
-    public interface Type extends StyleInfo{
+    public interface Type{
         /** Gets the key name in the file.
          *
          * @return answer
@@ -113,7 +113,7 @@ public class TextDataType{
      * <li>{@link #isAlignType()}</li>
      * </ul>
      */
-    public enum Format implements StyleInfo{
+    public enum Format {
         /** Align text to the left. */
         LEFT(ALIGN_LEFT),
         /** Align text to the center. */

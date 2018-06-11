@@ -15,7 +15,6 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
     private DocumentAssert assertDoc;
     private Optional<CatalogueIdentity> expectId;
     private CatalogueStatus expectStatus;
-    private ArrayList<StyleInfo> expectStyles;
     private boolean isCatalogued;
     private Class<T> returnCast;
     private SpanBranch spanTarget;
@@ -25,7 +24,6 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         expectStatus = CatalogueStatus.NO_ID;
         isCatalogued = false;
         expectId = Optional.empty();
-        expectStyles = new ArrayList<>();
         assertDoc = doc;
     }
 
@@ -58,16 +56,6 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         return expectStatus;
     }
 
-    /// %Part 2.2: Style Setup =================================================
-
-    public void setStyles(StyleInfo ... styles){
-        expectStyles.addAll(Arrays.asList(styles));
-    }
-
-    public void addStyles(StyleInfo ... styles){
-        expectStyles.addAll(Arrays.asList(styles));
-    }
-
     /// %Part 2.3: Other Setups ================================================
 
     /// Setup other things
@@ -90,9 +78,6 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
 
         ArrayList<Executable> list = new ArrayList<>();
 
-        list.add(() -> assertArrayEquals(expectStyles.toArray(),
-            span.getBranchStyles().toArray(), "getBranchStyles()"));
-
         /// catalogue testing
         ArrayList<Executable> catalogue = new ArrayList<>();
         if (isCatalogued){
@@ -114,7 +99,6 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         list.add(() -> test(span, gets));
         list.add(() -> assertAll("gets", gets));
         assertAll(span.toString(), list);
-        System.out.println(list.size());
         return span;
     }
 
