@@ -24,19 +24,19 @@ interface SpecParseData extends SetupParser{
         argumentNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
         if (isUnknown()){
-            pointer.getTo(children, StyleInfoLeaf.FIELD, STAT_DATA_SEP);
-            pointer.startsWith(children, STAT_DATA_SEP);
+            pointer.matches(children, SPEC_KEY);
+            pointer.startsWith(children, SPEC_KEY_DATA);
 
-            pointer.getTo(children, StyleInfoLeaf.DATA, STAT_SEPARATOR);
-            pointer.startsWith(children, STAT_SEPARATOR);
+            pointer.getTo(children, StyleInfoLeaf.DATA, SPEC_SEPARATOR);
+            pointer.startsWith(children, SPEC_SEPARATOR);
 
             return Optional.of(new SpecSpanDataString(children));
         }
         if (pointer.startsWith(children, StyleInfoLeaf.FIELD, getSymbol())){
-            pointer.startsWith(children, STAT_DATA_SEP);
+            pointer.startsWith(children, SPEC_KEY_DATA);
 
-            pointer.getTo(children, StyleInfoLeaf.DATA, STAT_SEPARATOR);
-            pointer.startsWith(children, STAT_SEPARATOR);
+            pointer.getTo(children, StyleInfoLeaf.DATA, SPEC_SEPARATOR);
+            pointer.startsWith(children, SPEC_SEPARATOR);
 
             switch (getDataType()){
             case INTEGER:

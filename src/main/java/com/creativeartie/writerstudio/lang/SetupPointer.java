@@ -203,7 +203,7 @@ public final class SetupPointer{
     /** Next {@link SpanLeaf} has characters matches {@link CharMatcher}.
      *
      * The leaf's {@link StyleInfoLeaf} sets to
-     * {@link StyleInfoLeaf#DATA}.
+     * {@link StyleInfoLeaf#KEYWORDS}.
      *
      * @param children
      *      adding children list
@@ -215,7 +215,7 @@ public final class SetupPointer{
         argumentNotNull(children, "children");
         argumentNotNull(matcher, "matcher");
 
-        return matches(children, StyleInfoLeaf.DATA, matcher);
+        return matches(children, StyleInfoLeaf.KEYWORD, matcher);
     }
 
 
@@ -239,7 +239,7 @@ public final class SetupPointer{
         int next = matchMarker;
         for (; rawText.length() > next; next++){
             if (! matcher.matches(rawText.charAt(next))){
-                // get to the last char + 1 that matches the matcher
+                /// get to the last char + 1 that matches the matcher
                 if (next != matchMarker){
                     nextMarker = next;
                     return addChild(children, style);
@@ -249,9 +249,9 @@ public final class SetupPointer{
             }
         }
 
-        // End of document
+        /// End of document
         if (next != matchMarker){
-            //matchMarker has moved
+            /// matchMarker has moved
             nextMarker = next;
             return addChild(children, style);
         }

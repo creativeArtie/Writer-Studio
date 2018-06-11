@@ -3,6 +3,7 @@ package com.creativeartie.writerstudio.lang.markup;
 import java.time.format.*;
 import java.util.*;
 
+import com.google.common.base.*;
 import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.lang.*;
@@ -446,7 +447,12 @@ public final class AuxiliaryData{
 
     /// %Part 4: Statistical Data ##############################################
 
-    public static final String STAT_SEPARATOR = "|";
+    public static final String SPEC_KEY_DATA = ":";
+    public static final String SPEC_SEPARATOR = "|";
+    public static final String SPEC_ROW_END = "\n";
+    public static final CharMatcher SPEC_KEY = CharMatcher.inRange('A', 'Z')
+        .or(CharMatcher.inRange('a', 'z')).or(CharMatcher.is('-'))
+        .precomputed();
 
     public static final DateTimeFormatter STAT_DATE = DateTimeFormatter
         .ISO_LOCAL_DATE;
@@ -456,9 +462,7 @@ public final class AuxiliaryData{
     public static final String STAT_TIME_COUNT = "time-count";
     public static final String STAT_PUBLISH_GOAL = "publish-goal";
     public static final String STAT_TIME_GOAL = "time-goal";
-    public static final String STAT_DATA_SEP = ":";
 
-    public static final String STAT_DATE_END = "\n";
 
 
     /// ========================================================================

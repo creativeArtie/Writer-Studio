@@ -19,15 +19,15 @@ public class WritingStat extends Document{
     private static String createNewDay(StatSpanDay last){
         LocalDate today = LocalDate.now();
 
-        String count = StatParseData.PUBLISH_GOAL.getSymbol() + STAT_DATA_SEP +
-            (last != null? last.getPublishGoal(): "50") + STAT_SEPARATOR;
+        String count = StatParseData.PUBLISH_GOAL.getSymbol() + SPEC_KEY_DATA +
+            (last != null? last.getPublishGoal(): "50") + SPEC_SEPARATOR;
 
-        String time =  StatParseData.TIME_GOAL.getSymbol() + STAT_DATA_SEP +
+        String time =  StatParseData.TIME_GOAL.getSymbol() + SPEC_KEY_DATA +
             (last != null? last.getTimeGoal(): Duration.ofMinutes(30)) +
-            STAT_SEPARATOR;
+            SPEC_SEPARATOR;
 
-        return today.format(STAT_DATE) + STAT_SEPARATOR + count + time +
-            STAT_DATE_END;
+        return today.format(STAT_DATE) + SPEC_SEPARATOR + count + time +
+            SPEC_ROW_END;
     }
 
     private final CacheKeyMain<YearMonth> cacheStart;
@@ -126,7 +126,7 @@ public class WritingStat extends Document{
         int publish = text.getPublishTotal();
         int note = text.getNoteTotal();
         checkDay(publish, note);
-        getRecord().stopWriting(publish, note);
+        getRecord().startWriting(publish, note);
         setFireReady(true);
     }
 

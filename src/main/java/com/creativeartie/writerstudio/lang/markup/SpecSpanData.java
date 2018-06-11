@@ -44,7 +44,7 @@ public abstract class SpecSpanData<T> extends SpanBranch{
 
     void setData(T data){
         runCommand(() -> ((StatParseData)getParser("")).getSymbol() +
-            STAT_DATA_SEP + data + STAT_SEPARATOR);
+            SPEC_KEY_DATA + data + SPEC_SEPARATOR);
     }
 
     @Override

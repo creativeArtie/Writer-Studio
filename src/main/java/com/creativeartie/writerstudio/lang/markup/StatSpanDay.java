@@ -181,10 +181,10 @@ public final class StatSpanDay extends SpanBranch{
         String symbol = StatParseData.values()[type.ordinal()].getSymbol();
         /// (getRaw() - "\n") + symbol + ":" + data + "|" + "\n"
         runCommand(() -> getRaw().substring(
-                0, getRaw().length() - STAT_DATE_END.length()
+                0, getRaw().length() - SPEC_ROW_END.length()
             ) +
-            symbol + STAT_DATA_SEP + data + STAT_SEPARATOR +
-            STAT_DATE_END);
+            symbol + SPEC_KEY_DATA + data + SPEC_SEPARATOR +
+            SPEC_ROW_END);
     }
 
     /** Starts the record time (as needed) and update counts.

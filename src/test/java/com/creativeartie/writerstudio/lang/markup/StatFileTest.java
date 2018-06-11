@@ -30,7 +30,7 @@ public class StatFileTest {
             publishTotal = 0;
             noteTotal = 0;
             timeGoal = Duration.ofMinutes(30);
-            timeTotal = Duration.ofMinutes(0);
+            timeTotal = Duration.ofSeconds(0);
         }
 
         private Stat setPublishGoal(int count){
@@ -56,7 +56,7 @@ public class StatFileTest {
         }
 
         private Stat setTimeTotal(int time){
-            timeTotal = Duration.ofMinutes(time);
+            timeTotal = Duration.ofSeconds(time);
             timeSet = true;
             return this;
         }
@@ -174,34 +174,96 @@ public class StatFileTest {
     /// writing: new, over night, same day
 
     @Test
-    @Disabled("Test not ready")
+    @Tag("timed")
     @DisplayName("Update today count")
     public void updateDay() throws InterruptedException{
         ArrayList<Stat> expect = new ArrayList<>();
         Stat today = new Stat(LocalDate.now())
-            .setPublishTotal(20).setNoteTotal(50).setTimeTotal(19);
+            .setPublishTotal(2).setNoteTotal(0).setTimeTotal(19);
         expect.add(today);
         WritingStat test = new WritingStat(buildRaw(expect));
-        /// test.startWriting(WritingText);
-        Thread.currentThread().sleep(1);
-        /// test.stopWriting(WritingText);
-        today.setPublishTotal(40).setNoteTotal(50).setTimeTotal(20);
         assertAll(expect, test);
 
+        WritingText before = new WritingText("Hello World!");
+        WritingText after = new WritingText("Hello World! One two Three");
+
+        test.startWriting(before);
+        Thread.currentThread().sleep(1000);
+        test.stopWriting(after);
+
+        today.setPublishTotal(5).setTimeTotal(20);
+        assertAll(expect, test);
     }
 
     @Test
     @Disabled("Test not ready")
+    @DisplayName("Started yesterday")
+    public void startedYesterday() throws InterruptedException{}
+
+    @Test
+    @Tag("timed")
     @DisplayName("Pass over today.")
-    public void updateYestday(){}
+    public void returningToday() throws InterruptedException {
+
+        ArrayList<Stat> expect = new ArrayList<>();
+        expect.add(new Stat(LocalDate.now().minusDays(1))
+            .setPublishTotal(2).setNoteTotal(0).setTimeTotal(20));
+        Stat today = new Stat(LocalDate.now())
+            .setPublishTotal(0).setNoteTotal(0).setTimeTotal(0);
+        expect.add(today);
+        WritingStat test = new WritingStat(buildRaw(expect));
+        assertAll(expect, test);
+
+        WritingText before = new WritingText("");
+        WritingText after = new WritingText("Hello World! One two Three");
+
+        test.startWriting(before);
+        Thread.currentThread().sleep(1000);
+        test.stopWriting(after);
+
+        today.setPublishTotal(5).setTimeTotal(1);
+        assertAll(expect, test);
+    }
 
     @Test
-    @Disabled("Test not ready")
     @DisplayName("mutiple startWriting calls")
-    public void mulitpleStart(){}
+    public void mulitpleStart() throws InterruptedException{
+        ArrayList<Stat> expect = new ArrayList<>();
+        Stat today = new Stat(LocalDate.now())
+            .setPublishTotal(0).setNoteTotal(0).setTimeTotal(0);
+        expect.add(today);
+        WritingStat test = new WritingStat(buildRaw(expect));
+        assertAll(expect, test);
+
+        WritingText before = new WritingText("");
+        WritingText after = new WritingText("Hello World! One two Three");
+
+        test.startWriting(before);
+        Thread.currentThread().sleep(1000);
+        test.startWriting(after);
+
+        today.setPublishTotal(5);
+        assertAll(expect, test);
+    }
 
     @Test
-    @Disabled("Test not ready")
     @DisplayName("mutiple stopWriting calls")
-    public void mulitpleEnd(){}
+    public void mulitpleEnd() throws InterruptedException{
+        ArrayList<Stat> expect = new ArrayList<>();
+        Stat today = new Stat(LocalDate.now())
+            .setPublishTotal(0).setNoteTotal(0).setTimeTotal(0);
+        expect.add(today);
+        WritingStat test = new WritingStat(buildRaw(expect));
+        assertAll(expect, test);
+
+        WritingText before = new WritingText("");
+        WritingText after = new WritingText("Hello World! One two Three");
+
+        test.stopWriting(before);
+        Thread.currentThread().sleep(1000);
+        test.stopWriting(after);
+
+        today.setPublishTotal(5);
+        assertAll(expect, test);
+    }
 }
