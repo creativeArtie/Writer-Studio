@@ -9,5 +9,7 @@ public enum InfoDataType{
     /** Data type of {@link DirectorySpan} for {@link DirectoryType#RESEARCH}. */
     NOTE_REF,
     /** Data type of {@link ContentSpan} */
-    TEXT;
+    TEXT,
+    /** Unknown data type. */
+    ERROR;
 }

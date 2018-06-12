@@ -24,8 +24,9 @@ public class LinedSpanCite extends LinedSpan {
         return text.startsWith(LINED_CITE);
     }
 
-    private final CacheKeyMain<InfoFieldType> cacheInfoType;
-    private final CacheKeyOptional<InfoDataSpan> cacheData;
+    private final CacheKeyMain<InfoFieldType> cacheField;
+    private final CacheKeyMain<InfoDataType> cacheType;
+    private final CacheKeyOptional<SpanBranch> cacheData;
     private final CacheKeyMain<Integer> cacheNote;
 
     /** Creates a {@linkplain LinedSpanCite}.
@@ -37,8 +38,9 @@ public class LinedSpanCite extends LinedSpan {
     LinedSpanCite(List<Span> children){
         super(children);
 
-        cacheInfoType = new CacheKeyMain<>(InfoFieldType.class);
-        cacheData = new CacheKeyOptional<>(InfoDataSpan.class);
+        cacheField = new CacheKeyMain<>(InfoFieldType.class);
+        cacheType = new CacheKeyMain<>(InfoDataType.class);
+        cacheData = new CacheKeyOptional<>(SpanBranch.class);
         cacheNote = CacheKeyMain.integerKey();
     }
 
@@ -47,18 +49,22 @@ public class LinedSpanCite extends LinedSpan {
      * @return answer
      */
     public InfoFieldType getInfoFieldType(){
-        return getLocalCache(cacheInfoType, () ->
+        return getLocalCache(cacheField, () ->
             spanFromFirst(InfoFieldSpan.class)
             .map(s -> s.getInfoFieldType())
             .orElse(InfoFieldType.ERROR));
+    }
+
+    public InfoDataType getInfoDataType(){
+        return getLocalCache(cacheType, () -> getInfoFieldType().getDataType());
     }
 
     /** Gets the citation field data
      *
      * @return answer
      */
-    public Optional<InfoDataSpan> getData(){
-        return getLocalCache(cacheData, () -> spanFromLast(InfoDataSpan.class));
+    public Optional<SpanBranch> getData(){
+        return getLocalCache(cacheData, () -> spanFromLast(SpanBranch.class));
     }
 
     @Override
@@ -76,13 +82,13 @@ public class LinedSpanCite extends LinedSpan {
      * @return answer
      * @see #getNoteTotal()
      */
-    private int getCount(InfoDataSpan span){
+    private int getCount(SpanBranch span){
         assert span != null: "Null span";
-        if (span instanceof InfoDataSpanFormatted){
-            FormattedSpan data = ((InfoDataSpanFormatted)span).getData();
+        if (span instanceof FormattedSpan){
+            FormattedSpan data = (FormattedSpan)span;
             return data.getPublishTotal() + data.getNoteTotal();
-        } else if (span instanceof InfoDataSpanText){
-            return ((InfoDataSpanText)span).getData().getWordCount();
+        } else if (span instanceof ContentSpan){
+            return ((ContentSpan)span).getWordCount();
         }
         return 0;
     }

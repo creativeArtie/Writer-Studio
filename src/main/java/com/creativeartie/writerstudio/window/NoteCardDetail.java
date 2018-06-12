@@ -109,7 +109,10 @@ public class NoteCardDetail extends TitledPane{
             Label label = new Label(type.getText());
             bottom.add(label, 0, 1);
             bottom.add(new ScrollPane(new Text(
-                    ((ContentSpan)line.getData().get().getData()).getTrimmed()
+                    line.getData()
+                        .filter(s -> s instanceof ContentSpan)
+                        .map(s -> ((ContentSpan)s).getTrimmed())
+                        .orElse("")
                 )), 1, 1);
         });
 

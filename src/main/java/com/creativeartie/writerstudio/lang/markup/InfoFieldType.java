@@ -34,15 +34,29 @@ public enum InfoFieldType{
     static InfoFieldType getType(String text){
         argumentNotNull(text, "text");
 
-        for (InfoFieldParser type: InfoFieldParser.values()){
-            if (type == InfoFieldParser.ERROR){
-                return InfoFieldType.ERROR;
+        for (LinedParseCite type: LinedParseCite.values()){
+            if (type == LinedParseCite.ERROR){
+                return ERROR;
             }
             if (type.getFieldName().equals(text)){
                 return values()[type.ordinal()];
             }
         }
         assert false: "unreachable";
-        return InfoFieldType.ERROR;
+        return ERROR;
+    }
+
+    public InfoDataType getDataType(){
+        switch (this){
+        case SOURCE:
+        case FOOTNOTE:
+            return InfoDataType.FORMATTED;
+        case IN_TEXT:
+            return InfoDataType.TEXT;
+        case REF:
+            return InfoDataType.NOTE_REF;
+        default:
+            return InfoDataType.ERROR;
+        }
     }
 }
