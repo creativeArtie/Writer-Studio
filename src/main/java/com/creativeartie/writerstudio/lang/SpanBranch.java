@@ -108,9 +108,10 @@ public abstract class SpanBranch extends SpanNode<Span> {
             getDocument());
         Optional<SpanBranch> span = parser.parse(pointer);
         /// There are text left over.
-        if (pointer.hasNext()){
-            throw new IllegalStateException("Has left over characters.");
-        }
+        stateCheck(! pointer.hasNext(),
+            "Has left over characters when reparsing: " +
+            getClass().getSimpleName()
+        );
         assert span.isPresent(): "Null span";
         updateSpan((List<Span>)span.get());
     }

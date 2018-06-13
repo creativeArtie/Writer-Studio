@@ -111,19 +111,21 @@ public class EditAssert{
     void testRest(){
         if (showEdits) {
             System.out.println("+++++++++++++++++++++++++++++++++++++++++++++");
+            System.out.println("Document Edited------------------------------");
             System.out.println(useDoc);
+            System.out.println("SpanBranch Edited----------------------------");
             System.out.println(expectedEdited);
 
-            System.out.println("Edits-----------------");
+            System.out.println("Edits----------------------------------------");
             print(expectedEdited, actualEdited);
 
-            System.out.println("Parents-----------------");
+            System.out.println("Parents--------------------------------------");
             print(expectedParents, actualParents);
 
-            System.out.println("Spans-----------------");
+            System.out.println("Spans----------------------------------------");
             print(expectedSpans, actualSpans);
 
-            System.out.println("Removes-----------------");
+            System.out.println("Removes--------------------------------------");
             print(expectedRemoves, actualRemoves);
         }
 
@@ -149,7 +151,7 @@ public class EditAssert{
     private void print(String type, Iterable<SpanNode<?>> list){
         int i = 1;
         for (SpanNode<?> span: list){
-            System.out.println(type + "[" + i++ + "]" + span);
+            System.out.println(type + "[" + i++ + "]:\t" + span);
         }
         if (i == 1){
             System.out.println("[]");

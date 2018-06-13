@@ -60,7 +60,6 @@ public enum LinedParseCite implements SetupParser{
     private Optional<SpanBranch> parseRest(SetupPointer pointer,
             ArrayList<Span> children, SpanLeafStyle last){
         pointer.trimStartsWith(children, LINED_DATA);
-        System.out.println(dataParser);
         if (dataParser != null){
             dataParser.parse(pointer, children);
         }
@@ -74,8 +73,12 @@ public enum LinedParseCite implements SetupParser{
     }
 
     static LinedParseCite getParser(String text){
+        argumentNotNull(text, "text");
         text = text.substring(LINED_CITE.length());
         for (LinedParseCite cite: values()){
+            if (cite == ERROR){
+                return cite;
+            }
             if (text.startsWith(cite.getFieldName())){
                 return cite;
             }

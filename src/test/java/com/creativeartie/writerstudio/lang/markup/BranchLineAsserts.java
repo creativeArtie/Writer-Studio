@@ -272,7 +272,6 @@ public class BranchLineAsserts {
         @Override
         protected LinedSpanLevel testSubclass(SpanBranch span,
                 ArrayList<Executable> tests){
-            System.out.println(lookupText);
             LinedSpanLevelSection test = assertClass(LinedSpanLevelSection.class);
             tests.add(() -> assertEquals(editionType, test.getEditionType(),
                 "getEdtionType()"));

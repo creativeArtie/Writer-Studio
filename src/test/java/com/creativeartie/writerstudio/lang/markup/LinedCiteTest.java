@@ -334,9 +334,46 @@ public class LinedCiteTest {
         doc.delete(0, 1);
         ///             01234567890123
         String after = ">in-text:abec";
-        doc.assertDoc(1, after, parsers);
+        doc.assertDoc(1, after);
 
         doc.assertRest(after);
+    }
+
+    @Test
+    public void editInsertField(){
+        ///              0123
+        String before = "!>";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.insert(2, "f", 0);
+        String after = "!>f";
+
+        CiteLineAssert cite = new CiteLineAssert(doc)
+            .setInfoType(InfoFieldType.ERROR)
+            .setNote(0);
+
+        doc.assertDoc(1,      after);
+        cite.test(2,          after, 0);
+        doc.assertKey(  0, 2, "!>", 0, 0);
+        doc.assertField(2, 3, "f",  0, 1);
+        doc.assertRest();
+    }
+
+    @Test
+    public void editRemoveField(){
+        ///              0123
+        String before = "!>f";
+        DocumentAssert doc = assertDoc(1, before, parsers);
+        doc.delete(2, 3, 0);
+        String after = "!>";
+
+        CiteLineAssert cite = new CiteLineAssert(doc)
+            .setInfoType(InfoFieldType.ERROR)
+            .setNote(0);
+
+        doc.assertDoc(1,      after);
+        cite.test(1,          after, 0);
+        doc.assertKey( 0, 2,  "!>",  0, 0);
+        doc.assertRest();
     }
 
     private void commonIntext(DocumentAssert doc){

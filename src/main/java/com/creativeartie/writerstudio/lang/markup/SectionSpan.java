@@ -194,6 +194,7 @@ public abstract class SectionSpan extends SpanBranch {
                 return heading? true : allowed < i + 1;
             }
         }
+        if (! heading) return false;
 
         /// check heading
         starters = LEVEL_STARTERS.get(LinedParseLevel.HEADING);

@@ -44,8 +44,8 @@ class CheatsheetLabel extends Label{
             return getLinedHeadLabel(text);
         }
 
-        if (check(ordinal, CheatsheetText.LINED_FOOTNOTE,
-                CheatsheetText.LINED_ENDNOTE)){
+        if (check(ordinal, CheatsheetText.LINED_ENDNOTE,
+                CheatsheetText.LINED_FOOTNOTE)){
             return getLinedNoteLabel(text);
         }
 
@@ -72,11 +72,12 @@ class CheatsheetLabel extends Label{
                 CheatsheetText.FORMAT_CODED)){
             return getFormatLabel(text);
         }
+
+        if (check(ordinal, CheatsheetText.FORMAT_CITE, CheatsheetText.FORMAT_ENDNOTE)){
+            return getFormatIDLabel(text);
+        }
         if (text == CheatsheetText.OTHER_ID){
             return getIdentityLabel();
-        }
-        if (check(ordinal, CheatsheetText.FORMAT_CITE, CheatsheetText.FIELD_REF)){
-            return getFormatIDLabel(text);
         }
         return getOtherFormatLabel(text);
     }
@@ -97,7 +98,7 @@ class CheatsheetLabel extends Label{
     }
 
     private static CheatsheetLabel getLinedListLabel(CheatsheetText text){
-        boolean head = text == CheatsheetText.LINED_HEADING;
+        boolean head = text == CheatsheetText.LINED_NUMBERED;
         return new CheatsheetLabel(text.getLabel(),
             (doc, point) -> doc.locateSpan(point, LinedSpanLevelList.class)
                 .map(s -> head == s.isNumbered())
@@ -159,7 +160,7 @@ class CheatsheetLabel extends Label{
      */
     private static CheatsheetLabel getEditionLabel(CheatsheetText text){
         EditionType type = EditionType.values()[
-            CheatsheetText.LINED_NOTE.ordinal() - text.ordinal()
+            text.ordinal() - CheatsheetText.EDITION_STUB.ordinal()
         ];
         return new CheatsheetLabel(text.getLabel(),
             (doc, point) -> doc.locateSpan(point, EditionSpan.class)
@@ -175,7 +176,7 @@ class CheatsheetLabel extends Label{
      */
     private static CheatsheetLabel getFormatLabel(CheatsheetText text){
         FormatTypeStyle type = FormatTypeStyle.values()[
-            CheatsheetText.FORMAT_BOLD.ordinal() - text.ordinal()
+            text.ordinal() - CheatsheetText.FORMAT_BOLD.ordinal()
         ];
         return new CheatsheetLabel(text.getLabel(),
             (doc, point) -> doc.locateSpan(point, FormatSpan.class)
@@ -191,7 +192,7 @@ class CheatsheetLabel extends Label{
      */
     private static CheatsheetLabel getFormatIDLabel(CheatsheetText text){
         DirectoryType type = DirectoryType.values()[
-            CheatsheetText.FORMAT_CODED.ordinal() - text.ordinal()
+            text.ordinal() - CheatsheetText.FORMAT_CODED.ordinal()
         ];
         return new CheatsheetLabel(text.getLabel(),
             (doc, point) -> doc.locateSpan(point, FormatSpanPointId.class)
@@ -207,7 +208,7 @@ class CheatsheetLabel extends Label{
      */
     private static CheatsheetLabel getInfoLabel(CheatsheetText text){
         InfoFieldType type = InfoFieldType.values()[
-            CheatsheetText.FIELD_FOOTNOTE.ordinal() - text.ordinal()
+            text.ordinal() - CheatsheetText.FIELD_SOURCE.ordinal()
         ];
         if (type == InfoFieldType.ERROR){
             throw new IllegalArgumentException("Unsupported type: " + type);

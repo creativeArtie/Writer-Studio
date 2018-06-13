@@ -109,15 +109,15 @@ public enum WindowText {
     WORK_CITED("ExportText.WorkCited");
 
     public static String getNameText(FormatTypeField area){
-        return getDisplay(getText("RefereceData.Name", area.name()));
+        return getDisplay(getText("ReferenceData.Name", area.name()));
     }
 
     public static String getDescriptionText(FormatTypeField area){
-        return getDisplay(getText("RefereceData.Description", area.name()));
+        return getDisplay(getText("ReferenceData.Description", area.name()));
     }
 
     public static String getExampleText(FormatTypeField area){
-        return getDisplay(getText("RefereceData.Example", area.name()));
+        return getDisplay(getText("ReferenceData.Example", area.name()));
     }
 
     public static String getString(TextDataType.Meta meta){

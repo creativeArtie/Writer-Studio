@@ -22,6 +22,24 @@ public class SectionTest {
         commonSections(doc);
     }
 
+    @Test
+    public void editRemoveOutline(){
+        String text = "!#";
+        DocumentAssert doc = assertDoc(1, text, PARSER);
+        doc.delete(1, 2, 0);
+
+        doc.assertDoc(1, "!");
+
+        HeadSectionAssert head = new HeadSectionAssert(doc)
+            .setPublishCount(1).setNoteCount(0)
+            .addSection(0, 0)  .setPublishTotal(1)
+            .setNoteTotal(0);
+        ParagraphLineAssert line = new ParagraphLineAssert(doc)
+            .setPublish(1).setFormattedSpan(0, 0, 0);
+
+        head.test(1, "!", 0);
+        line.test(1, "!", 0, 0);
+    }
 
     @Test
     public void editChangeSection1_1(){
@@ -53,8 +71,8 @@ public class SectionTest {
         String raw = "=Chapter 1\n==Section 1\nsection 1 text\n!## outline\n" +
             "=Chapter 2\nsome text\n";
         DocumentAssert doc = assertDoc(2, raw, PARSER);
-        /// Note that the edited span is Chapter 1 -> Section 1 -> (Scene 1)
-        doc.delete(39, 40, 0, 1, 2);
+        /// Note that the edited span is Chapter 1 -> Section 1
+        doc.delete(39, 40, 0, 1);
         doc.assertDoc(2, COMMON_DOC, PARSER);
         commonSections(doc);
     }

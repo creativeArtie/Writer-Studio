@@ -33,8 +33,8 @@ public enum CheatsheetText {
     FIELD_SOURCE("FieldSource"),     FIELD_IN_TEXT("FieldInText"),
     FIELD_FOOTNOTE("FieldFootnote"), FIELD_REF("FieldRef"),
 
-    FORMAT_BOLD("FormatBold"),   FORMAT_ITALICS("FormatItalics"),
-    FORMAT_CODED("FormatCoded"), FORMAT_UNDERLINE("FormatUnderline"),
+    FORMAT_BOLD("FormatBold"),          FORMAT_ITALICS("FormatItalics"),
+    FORMAT_UNDERLINE("FormatUnderline"),FORMAT_CODED("FormatCoded"),
 
     FORMAT_CITE("PointResearch"),   FORMAT_FOOTNOTE("PointFootnote"),
     FORMAT_ENDNOTE("PointEndnote"),
@@ -43,7 +43,6 @@ public enum CheatsheetText {
 
     FORMAT_REF_LINK("OtherRefLink"), FORMAT_DIRECT_LINK("OtherDirectLink"),
     FORMAT_AGENDA("FormatAgenda"),   FORMAT_REF_KEY("OtherRefKey");
-
 
     private static final String LABEL   = "LabelText.";
     private static final String TOOLTIP = "TooltipText.";

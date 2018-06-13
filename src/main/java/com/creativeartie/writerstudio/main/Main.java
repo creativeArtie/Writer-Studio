@@ -3,6 +3,7 @@ package com.creativeartie.writerstudio.main;
 import java.io.*; // IOException;
 import javafx.application.*;  // Appplication;
 import javafx.scene.*; // Scene
+import javafx.scene.control.*;
 import javafx.stage.*; // Stage
 
 import com.creativeartie.writerstudio.lang.markup.*; // WritingFile;
@@ -38,7 +39,13 @@ public class Main extends Application{
         assert exception != null: "Null exception";
         try {
             exception.printStackTrace();
-            writeFile.dumpFile();
+            File f = writeFile.dumpFile();
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Writer Studio had crushed. :(");
+            error.setHeaderText("You file had been save to: \n\t" + f.getCanonicalPath());
+            error.setContentText("Error message for developer: " + exception.getMessage());
+            error.showAndWait();
+
         } catch (Exception ex){
             /// An exception in default exception handling!!!
             ex.printStackTrace();

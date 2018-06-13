@@ -80,15 +80,21 @@ class TextPaneControl extends TextPaneView {
         getTextArea().requestFocus();
     }
 
+    static boolean test = true;
+
     @Override
     void updatePosition(ReadOnlyIntegerWrapper caret){
         if (isReady()){
             caret.setValue(getTextArea().getCaretPosition());
-            writingText.flatMap(w -> w.getLeaf(caret.getValue()))
+            getLineTypeLabel().setText(writingText
+                .flatMap(w -> w.getLeaf(caret.getValue()))
                 /// s = SpanLeaf
                 .flatMap(s -> s.getParent(LinedSpan.class))
                 /// s = LinedSpan
-                .ifPresent(s -> WindowText.getText(s));
+                .map(s -> WindowText.getText(s))
+                /// s = String
+                .orElse("")
+            );
         }
     }
 }
