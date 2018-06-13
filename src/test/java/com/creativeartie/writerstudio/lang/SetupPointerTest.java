@@ -121,7 +121,7 @@ public class SetupPointerTest{
         @DisplayName("Token + Text")
         public void matchesExtra(){
             SetupPointer ptr = found("abcd1",
-                (p, c) -> p.matches(c, LETTER), "abcd", SpanLeafStyle.DATA);
+                (p, c) -> p.matches(c, LETTER), "abcd", SpanLeafStyle.KEYWORD);
             wrong(ptr, (p, c) -> p.matches(c, LETTER));
             found(ptr, (p, c) -> p.matches(c, DIGIT), "1",
                 SpanLeafStyle.KEYWORD);

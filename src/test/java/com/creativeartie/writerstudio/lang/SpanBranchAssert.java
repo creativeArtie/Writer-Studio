@@ -18,6 +18,7 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
     private boolean isCatalogued;
     private Class<T> returnCast;
     private SpanBranch spanTarget;
+    private boolean isId;
 
     public SpanBranchAssert(Class<T> self, DocumentAssert doc){
         returnCast = self;
@@ -25,6 +26,7 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         isCatalogued = false;
         expectId = Optional.empty();
         assertDoc = doc;
+        isId = false;
     }
 
 
@@ -44,8 +46,14 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         return cast();
     }
 
-    public void setCatalogued(){
+    public T setCatalogued(){
         isCatalogued = true;
+        return cast();
+    }
+
+    public T setId(boolean id){
+        isId = id;
+        return cast();
     }
 
     public boolean isCatalogued(){
@@ -91,6 +99,10 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
             } else {
                 catalogue.add(() -> assertFalse(test.isPresent()));
             }
+            catalogue.add(() -> assertEquals(isId, ((Catalogued) span).isId(),
+                "isId()"));
+        } else {
+            catalogue.add(() -> assertFalse(span instanceof Catalogued));
         }
         catalogue.add(() -> assertEquals(expectStatus, span.getIdStatus()));
         list.add(() -> assertAll("catalogue id", catalogue));

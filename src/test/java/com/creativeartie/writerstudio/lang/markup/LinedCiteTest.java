@@ -4,14 +4,17 @@ import org.junit.jupiter.api.*;
 
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.BranchBasicAsserts.*;
-import com.creativeartie.writerstudio.lang.markup.BranchInfoDataAsserts.*;
+import com.creativeartie.writerstudio.lang.markup.BranchFormatAsserts.*;
 import com.creativeartie.writerstudio.lang.markup.BranchLineAsserts.*;
 
 import static com.creativeartie.writerstudio.lang.DocumentAssert.*;
 public class LinedCiteTest {
 
-    private static final SetupParser[] parsers = new SetupParser[]{
-            LinedParseRest.CITE};
+    private static IDBuilder buildId(String name){
+        return new IDBuilder().addCategory("note").setId(name);
+    }
+
+    private static final SetupParser[] parsers = LinedParseCite.values();
 
     @Test
     public void basicInText(){
@@ -20,20 +23,18 @@ public class LinedCiteTest {
 
         CiteLineAssert cite = new CiteLineAssert(doc)
             .setInfoType(InfoFieldType.IN_TEXT)
-            .setDataSpan(0, 3).setNote(1);
-        FieldAssert field = new FieldAssert(doc)
-            .setType(InfoFieldType.IN_TEXT);
-        ContentDataAssert data = new ContentDataAssert(doc)
-            .setData(0, 3, 0);
+            .setDataSpan(0, 3).setNote(1)
+            .setDataClass(ContentSpan.class);
+        ContentAssert data = new ContentAssert(doc)
+            .setBegin(false).setEnd(false)
+            .setBoth("a").setCount(1);
 
         cite.test(4,           raw,       0);
         doc.assertKey(  0,  2, "!>",      0, 0);
-        field.test(1,          "in-text", 0, 1);
-        doc.assertField(2,  9, "in-text", 0, 1, 0);
+        doc.assertField(2,  9, "in-text", 0, 1);
         doc.assertKey(  9, 10, ":",       0, 2);
         data.test(1,           "a",       0, 3);
-        doc.assertChild(1,     "a",       0, 3, 0);
-        doc.assertData(10, 11, "a",       0, 3, 0, 0);
+        doc.assertData(10, 11, "a",       0, 3, 0);
         doc.assertRest();
     }
 
@@ -44,15 +45,12 @@ public class LinedCiteTest {
 
         CiteLineAssert cite = new CiteLineAssert(doc)
             .setInfoType(InfoFieldType.IN_TEXT).setNote(0);
-        FieldAssert field = new FieldAssert(doc)
-            .setType(InfoFieldType.IN_TEXT);
 
         cite.test(4,           raw,       0);
         doc.assertKey(  0,  2, "!>",      0, 0);
-        field.test(1,          "in-text", 0, 1);
-        doc.assertField(2,  9, "in-text", 0, 1, 0);
+        doc.assertField(2,  9, "in-text", 0, 1);
         doc.assertKey(  9, 10, ":",       0, 2);
-        doc.assertKey( 10, 11, "\n",       0, 3);
+        doc.assertKey( 10, 11, "\n",      0, 3);
         doc.assertRest();
     }
 
@@ -63,13 +61,10 @@ public class LinedCiteTest {
 
         CiteLineAssert cite = new CiteLineAssert(doc)
             .setInfoType(InfoFieldType.IN_TEXT).setNote(0);
-        FieldAssert field = new FieldAssert(doc)
-            .setType(InfoFieldType.IN_TEXT);
 
         cite.test(2,          raw,       0);
         doc.assertKey(  0, 2, "!>",      0, 0);
-        field.test(1,         "in-text", 0, 1);
-        doc.assertField(2, 9, "in-text", 0, 1, 0);
+        doc.assertField(2, 9, "in-text", 0, 1);
         doc.assertRest();
     }
 
@@ -96,19 +91,17 @@ public class LinedCiteTest {
 
         CiteLineAssert cite = new CiteLineAssert(doc)
             .setInfoType(InfoFieldType.IN_TEXT)
-            .setDataSpan(0, 2).setNote(1);
-        FieldAssert field = new FieldAssert(doc)
-            .setType(InfoFieldType.IN_TEXT);
-        ContentDataAssert data = new ContentDataAssert(doc)
-            .setData(0, 2, 0);
+            .setDataSpan(0, 2).setNote(1)
+            .setDataClass(ContentSpan.class);
+        ContentAssert data = new ContentAssert(doc)
+            .setBegin(false).setEnd(false)
+            .setBoth("a").setCount(1);
 
         cite.test(3,           raw,       0);
         doc.assertKey(  0,  2, "!>",      0, 0);
-        field.test(1,          "in-text", 0, 1);
-        doc.assertField(2,  9, "in-text", 0, 1, 0);
+        doc.assertField(2,  9, "in-text", 0, 1);
         data.test(1,           "a",       0, 2);
-        doc.assertChild(1,     "a",       0, 2, 0);
-        doc.assertData( 9, 10, "a",       0, 2, 0, 0);
+        doc.assertData( 9, 10, "a",       0, 2, 0);
         doc.assertRest();
     }
 
@@ -120,8 +113,6 @@ public class LinedCiteTest {
 
         CiteLineAssert cite = new CiteLineAssert(doc)
             .setInfoType(InfoFieldType.ERROR).setNote(0);
-        FieldAssert field = new FieldAssert(doc)
-            .setType(InfoFieldType.ERROR);
 
         cite.test(2,         "!>\n", 0);
         doc.assertKey(0,  2, "!>",   0, 0);
@@ -137,13 +128,10 @@ public class LinedCiteTest {
 
         CiteLineAssert cite = new CiteLineAssert(doc)
             .setInfoType(InfoFieldType.ERROR).setNote(0);
-        FieldAssert field = new FieldAssert(doc)
-            .setType(InfoFieldType.ERROR);
 
         cite.test(2,           raw,    0);
         doc.assertKey(  0,  2, "!>",   0, 0);
-        field.test(1,          "sdaf", 0, 1);
-        doc.assertField(2,  6, "sdaf", 0, 1, 0);
+        doc.assertField(2,  6, "sdaf", 0, 1);
         doc.assertRest();
     }
 
@@ -154,12 +142,9 @@ public class LinedCiteTest {
 
         CiteLineAssert cite = new CiteLineAssert(doc)
             .setInfoType(InfoFieldType.ERROR);
-        FieldAssert field = new FieldAssert(doc)
-            .setType(InfoFieldType.ERROR);
 
         doc.assertKey(  0, 2, "!>",   0, 0);
-        field.test(1,         "sdaf", 0, 1);
-        doc.assertField(2, 6, "sdaf", 0, 1, 0);
+        doc.assertField(2, 6, "sdaf", 0, 1);
         doc.assertKey(  6, 7, "\n",   0, 2);
         doc.assertRest();
     }
@@ -171,12 +156,9 @@ public class LinedCiteTest {
 
         CiteLineAssert cite = new CiteLineAssert(doc)
             .setInfoType(InfoFieldType.ERROR);
-        FieldAssert field = new FieldAssert(doc)
-            .setType(InfoFieldType.ERROR);
 
         doc.assertKey(  0, 2, "!>",   0, 0);
-        field.test(1,         "sdaf", 0, 1);
-        doc.assertField(2, 6, "sdaf", 0, 1, 0);
+        doc.assertField(2, 6, "sdaf", 0, 1);
         doc.assertKey(  6, 7, ":",    0, 2);
         doc.assertKey(  7, 8, "\n",   0, 3);
         doc.assertRest();
@@ -189,15 +171,12 @@ public class LinedCiteTest {
 
         CiteLineAssert cite = new CiteLineAssert(doc)
             .setInfoType(InfoFieldType.ERROR);
-        FieldAssert field = new FieldAssert(doc)
-            .setType(InfoFieldType.ERROR);
 
         doc.assertKey(  0,  2, "!>",   0, 0);
-        field.test(1,          "sdaf", 0, 1);
-        doc.assertField(2,  6, "sdaf", 0, 1, 0);
+        doc.assertField(2,  6, "sdaf", 0, 1);
         doc.assertKey(  6,  7, ":",    0, 2);
         doc.assertText( 7,  9, "  ",   0, 3);
-        doc.assertKey(  9, 10, "\n",  0, 4);
+        doc.assertKey(  9, 10, "\n",   0, 4);
         doc.assertRest();
     }
 
@@ -208,13 +187,10 @@ public class LinedCiteTest {
 
         CiteLineAssert cite = new CiteLineAssert(doc)
             .setInfoType(InfoFieldType.ERROR).setNote(0);
-        FieldAssert field = new FieldAssert(doc)
-            .setType(InfoFieldType.ERROR);
 
         cite.test(5,           raw,     0);
         doc.assertKey(  0,  2, "!>",    0, 0);
-        field.test(1,          "error", 0, 1);
-        doc.assertField(2,  7, "error", 0, 1, 0);
+        doc.assertField(2,  7, "error", 0, 1);
         doc.assertKey(  7,  8, ":",     0, 2);
         doc.assertText( 8, 12, "text",  0, 3);
         doc.assertKey( 12, 13, "\n",    0, 4);
@@ -228,24 +204,22 @@ public class LinedCiteTest {
 
         CiteLineAssert cite = new CiteLineAssert(doc)
             .setInfoType(InfoFieldType.FOOTNOTE)
-            .setDataSpan(0, 3).setNote(1);
-        FieldAssert field = new FieldAssert(doc)
-            .setType(InfoFieldType.FOOTNOTE);
-        FormatDataAssert data = new FormatDataAssert(doc)
-            .setData(0, 3, 0);
+            .setDataSpan(0, 3).setNote(1)
+            .setDataClass(FormattedSpan.class);
+        FormattedSpanAssert data = new FormattedSpanAssert(doc)
+            .setPublish(1).setNote(0)
+            .setParsed("abc");
 
         cite.test(4,           raw,        0);
         doc.assertKey(  0,  2, "!>",       0, 0);
-        field.test(1,          "footnote", 0, 1);
-        doc.assertField(2, 10, "footnote", 0, 1, 0);
+        doc.assertField(2, 10, "footnote", 0, 1);
         doc.assertKey( 10, 11, ":",        0, 2);
         data.test(1,           "abc\\\n",  0, 3);
-        doc.assertChild(1,     "abc\\\n",  0, 3, 0);
-        doc.assertChild(2,     "abc\\\n",  0, 3, 0, 0);
-        doc.assertData(11, 14, "abc",      0, 3, 0, 0, 0);
-        doc.assertChild(2,     "\\\n",     0, 3, 0, 0, 1);
-        doc.assertKey( 14, 15, "\\",       0, 3, 0, 0, 1, 0);
-        doc.assertData(15, 16, "\n",       0, 3, 0, 0, 1, 1);
+        doc.assertChild(2,     "abc\\\n",  0, 3, 0);
+        doc.assertData(11, 14, "abc",      0, 3, 0, 0);
+        doc.assertChild(2,     "\\\n",     0, 3, 0, 1);
+        doc.assertKey( 14, 15, "\\",       0, 3, 0, 1, 0);
+        doc.assertData(15, 16, "\n",       0, 3, 0, 1, 1);
         doc.assertRest();
     }
 
@@ -257,25 +231,23 @@ public class LinedCiteTest {
 
         CiteLineAssert cite = new CiteLineAssert(doc)
             .setInfoType(InfoFieldType.SOURCE)
-            .setDataSpan(0, 3).setNote(2);
-        FieldAssert field = new FieldAssert(doc)
-            .setType(InfoFieldType.SOURCE);
-        FormatDataAssert data = new FormatDataAssert(doc)
-            .setData(0, 3, 0);
+            .setDataSpan(0, 3).setNote(2)
+            .setDataClass(FormattedSpan.class);
+        FormattedSpanAssert data = new FormattedSpanAssert(doc)
+            .setPublish(2).setNote(0)
+            .setParsed("Henry Reads");
 
         cite.test(5,           raw,      0);
         doc.assertKey(  0,  2, "!>",     0, 0);
-        field.test(1,          "source", 0, 1);
-        doc.assertField(2,  8, "source", 0, 1, 0);
+        doc.assertField(2,  8, "source", 0, 1);
         doc.assertKey(  8,  9, ":",      0, 2);
-        data.test(1,           find,     0, 3);
-        doc.assertChild(4,     find,     0, 3, 0);
-        doc.assertChild(1,     "Henry",  0, 3, 0, 0);
-        doc.assertData( 9, 14, "Henry",  0, 3, 0, 0, 0);
-        doc.assertKey( 14, 16, "**",     0, 3, 0, 1);
-        doc.assertChild(1,     " Reads", 0, 3, 0, 2);
-        doc.assertData(16, 22, " Reads", 0, 3, 0, 2, 0);
-        doc.assertKey( 22, 24, "**",     0, 3, 0, 3);
+        data.test(4,           find,     0, 3);
+        doc.assertChild(1,     "Henry",  0, 3, 0);
+        doc.assertData( 9, 14, "Henry",  0, 3, 0, 0);
+        doc.assertKey( 14, 16, "**",     0, 3, 1);
+        doc.assertChild(1,     " Reads", 0, 3, 2);
+        doc.assertData(16, 22, " Reads", 0, 3, 2, 0);
+        doc.assertKey( 22, 24, "**",     0, 3, 3);
         doc.assertKey( 24, 25, "\n",     0, 4);
         doc.assertRest();
     }
@@ -288,21 +260,49 @@ public class LinedCiteTest {
 
         CiteLineAssert cite = new CiteLineAssert(doc)
             .setInfoType(InfoFieldType.SOURCE)
-            .setDataSpan(0, 3).setNote(1);
-        FieldAssert field = new FieldAssert(doc)
-            .setType(InfoFieldType.SOURCE);
-        FormatDataAssert data = new FormatDataAssert(doc)
-            .setData(0, 3, 0);
+            .setDataSpan(0, 3).setNote(1)
+            .setDataClass(FormattedSpan.class);
+        FormattedSpanAssert data = new FormattedSpanAssert(doc)
+            .setPublish(1).setNote(0)
+            .setParsed("{@abc}");
 
         cite.test(5,           raw,      0);
         doc.assertKey(  0,  2, "!>",     0, 0);
-        field.test(1,          "source", 0, 1);
-        doc.assertField(2,  8, "source", 0, 1, 0);
+        doc.assertField(2,  8, "source", 0, 1);
         doc.assertKey(  8,  9, ":",      0, 2);
-        data.test(1,           find,     0, 3);
-        doc.assertChild(1,     find,     0, 3, 0);
-        doc.assertData( 9, 15, find,     0, 3, 0, 0, 0);
+        data.test(1,           find,     0, 3); /// FormattedSpan
+        doc.assertChild(1,     find,     0, 3, 0); /// FormatSpanContent
+        doc.assertData( 9, 15, find,     0, 3, 0, 0);
         doc.assertKey( 15, 16, "\n",     0, 4);
+        doc.assertRest();
+    }
+
+    @Test
+    public void refID(){
+        String find = "qwerty";
+        String raw = "!> ref  :" + find + "\n";
+        DocumentAssert doc = assertDoc(1, raw, parsers);
+
+        IDBuilder builder = doc.addRef(buildId(find),
+            CatalogueStatus.NOT_FOUND, 0);
+        CiteLineAssert cite = new CiteLineAssert(doc)
+            .setInfoType(InfoFieldType.REF)
+            .setDataSpan(0, 3).setNote(0)
+            .setDataClass(FormattedSpan.class)
+            .setCatalogued(CatalogueStatus.NOT_FOUND, builder);
+        DirectoryAssert data = new DirectoryAssert(doc)
+            .setPurpose(DirectoryType.RESEARCH)
+            .setLookup(find)
+            .setIdentity(builder);
+
+        cite.test(5,           raw,    0);
+        doc.assertKey(  0,  2, "!>",   0, 0);
+        doc.assertField(2,  6, " ref", 0, 1);
+        doc.assertKey(  6,  9, "  :",  0, 2);
+        data.test(1,           find,   0, 3);       /// DirectorySpan
+        doc.assertChild(1,     find,   0, 3, 0);    /// ContentSpan
+        doc.assertId(   9, 15, find,   0, 3, 0, 0);
+        doc.assertKey( 15, 16, "\n",   0, 4);
         doc.assertRest();
     }
 
@@ -311,7 +311,7 @@ public class LinedCiteTest {
         String before = "!>:abc";
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(2, "in-text", 0);
-        editCommon(doc);
+        commonIntext(doc);
     }
 
     @Test
@@ -323,7 +323,7 @@ public class LinedCiteTest {
         ///             01234567890123
         String after = "!>in-text:abc";
         doc.assertDoc(1, after, parsers);
-        editCommon(doc);
+        commonIntext(doc);
     }
 
     @Test
@@ -339,27 +339,25 @@ public class LinedCiteTest {
         doc.assertRest(after);
     }
 
-    private void editCommon(DocumentAssert doc){
+    private void commonIntext(DocumentAssert doc){
         ///             01234567890123
         String after = "!>in-text:abc";
         doc.assertDoc(1, after);
 
         CiteLineAssert cite = new CiteLineAssert(doc)
             .setInfoType(InfoFieldType.IN_TEXT)
-            .setDataSpan(0, 3).setNote(1);
-        FieldAssert field = new FieldAssert(doc)
-            .setType(InfoFieldType.IN_TEXT);
-        ContentDataAssert data = new ContentDataAssert(doc)
-            .setData(0, 3, 0);
+            .setDataSpan(0, 3).setNote(1)
+            .setDataClass(ContentSpan.class);
+        ContentAssert data = new ContentAssert(doc)
+            .setBegin(false).setEnd(false)
+            .setBoth("abc").setCount(1);
 
         cite.test(4,           after,     0);
         doc.assertKey(  0,  2, "!>",      0, 0);
-        field.test(1,          "in-text", 0, 1);
-        doc.assertField(2,  9, "in-text", 0, 1, 0);
+        doc.assertField(2,  9, "in-text", 0, 1);
         doc.assertKey(  9, 10, ":",       0, 2);
         data.test(1,           "abc",     0, 3);
-        doc.assertChild(1,     "abc",     0, 3, 0);
-        doc.assertData(10, 13, "abc",     0, 3, 0, 0);
+        doc.assertData(10, 13, "abc",     0, 3, 0);
         doc.assertRest();
     }
 }

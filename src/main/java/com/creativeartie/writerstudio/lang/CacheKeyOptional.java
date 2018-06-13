@@ -11,6 +11,10 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  */
 public final class CacheKeyOptional<T> extends CacheKey<Optional<?>>{
 
+    public static CacheKeyOptional<CatalogueIdentity> idKey(){
+        return new CacheKeyOptional<>(CatalogueIdentity.class);
+    }
+
     private Class<T> valueCaster;
 
     /** Creates a {@linkplain CacheKey}.

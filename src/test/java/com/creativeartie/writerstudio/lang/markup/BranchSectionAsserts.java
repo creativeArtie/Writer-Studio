@@ -14,7 +14,8 @@ public class BranchSectionAsserts {
         return SectionParseHead.SECTION_1;
     }
 
-    public static class NoteCardAssert extends SpanBranchAssert<NoteCardAssert>{
+    public static final class NoteCardAssert
+            extends SpanBranchAssert<NoteCardAssert>{
 
         private int[] noteTitle;
         private ArrayList<int[]> noteContents;
@@ -70,7 +71,10 @@ public class BranchSectionAsserts {
         }
 
         @Override
-        public void setup(){}
+        public void setup(){
+            setCatalogued();
+            setId(true);
+        }
 
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){
@@ -119,27 +123,27 @@ public class BranchSectionAsserts {
 
         }
 
-        public T setHeading(int ... indexes){
+        public final T setHeading(int ... indexes){
             sectionHeading = indexes;
             return cast();
         }
 
-        public T setPublishCount(int count){
+        public final T setPublishCount(int count){
             publishCount = count;
             return cast();
         }
 
-        public T setNoteCount(int count){
+        public final T setNoteCount(int count){
             noteCount = count;
             return cast();
         }
 
-        public T setPublishTotal(int count){
+        public final T setPublishTotal(int count){
             publishTotal = count;
             return cast();
         }
 
-        public T setNoteTotal(int count){
+        public final T setNoteTotal(int count){
             noteTotal = count;
             return cast();
         }
@@ -149,18 +153,22 @@ public class BranchSectionAsserts {
             return cast();
         }
 
-        public T addNote(int ... indexes){
+        public final T addNote(int ... indexes){
             sectionNotes.add(indexes);
             return cast();
         }
 
-        public T setLevel(int level){
+        public final T setLevel(int level){
             sectionLevel = level;
             return cast();
         }
 
-        protected abstract SectionSpan moreTest(SpanBranch span,
-            ArrayList<Executable> tests);
+        @Override
+        public void setup(){
+            moreSetup();
+        }
+
+        protected abstract void moreSetup();
 
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){
@@ -194,9 +202,13 @@ public class BranchSectionAsserts {
             tests.add(() -> assertEquals(noteTotal, test.getNoteTotal(),
                 "getNoteTotal()"));
         }
+
+        protected abstract SectionSpan moreTest(SpanBranch span,
+            ArrayList<Executable> tests);
     }
 
-    public static class HeadSectionAssert extends SectionAssert<HeadSectionAssert>{
+    public static final class HeadSectionAssert
+            extends SectionAssert<HeadSectionAssert>{
         private ArrayList<int[]> spanSections;
         private ArrayList<int[]> spanScenes;
         private ArrayList<int[]> allLines;
@@ -231,7 +243,7 @@ public class BranchSectionAsserts {
         }
 
         @Override
-        public void setup(){}
+        public void moreSetup(){}
 
         @Override
         public SectionSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
@@ -247,7 +259,8 @@ public class BranchSectionAsserts {
         }
     }
 
-    public static class SceneSectionAssert extends SectionAssert<SceneSectionAssert>{
+    public static final class SceneSectionAssert
+            extends SectionAssert<SceneSectionAssert>{
         private int[] parentHead;
         private List<int[]> sceneList;
 
@@ -268,7 +281,7 @@ public class BranchSectionAsserts {
         }
 
         @Override
-        public void setup(){}
+        public void moreSetup(){}
 
         @Override
         public SectionSpan moreTest(SpanBranch span, ArrayList<Executable> tests){

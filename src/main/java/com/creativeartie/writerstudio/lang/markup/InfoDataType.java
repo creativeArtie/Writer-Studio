@@ -5,11 +5,21 @@ import com.creativeartie.writerstudio.lang.*;
 /** Describe data type. */
 public enum InfoDataType{
     /** Data type of {@link FormattedSpan} */
-    FORMATTED,
+    FORMATTED(FormattedSpan.class),
     /** Data type of {@link DirectorySpan} for {@link DirectoryType#RESEARCH}. */
-    NOTE_REF,
+    NOTE_REF(DirectorySpan.class),
     /** Data type of {@link ContentSpan} */
-    TEXT,
+    TEXT(ContentSpan.class),
     /** Unknown data type. */
-    ERROR;
+    ERROR(null);
+
+    private Class<? extends SpanBranch> dataClass;
+
+    private InfoDataType(Class<? extends SpanBranch> clazz){
+        dataClass = clazz;
+    }
+
+    public Class<? extends SpanBranch> getDataClass(){
+        return dataClass;
+    }
 }

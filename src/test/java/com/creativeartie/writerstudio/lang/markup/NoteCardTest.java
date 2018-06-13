@@ -83,7 +83,8 @@ public class NoteCardTest {
             .setNote(3).setFormattedSpan(0, 1, 1);
         CiteLineAssert line3 = new CiteLineAssert(doc)
             .setNote(2).setDataSpan(0, 2, 3)
-            .setInfoType(InfoFieldType.IN_TEXT);
+            .setInfoType(InfoFieldType.IN_TEXT)
+            .setDataClass(ContentSpan.class);
 
         note.test( 3, full, 0);
         line1.test(6, raw1, 0, 0);
@@ -145,10 +146,12 @@ public class NoteCardTest {
             .setNote(0);
         CiteLineAssert line2 = new CiteLineAssert(doc)
             .setDataSpan(0, 1, 3).setNote(2)
-            .setInfoType(InfoFieldType.IN_TEXT);
+            .setInfoType(InfoFieldType.IN_TEXT)
+            .setDataClass(ContentSpan.class);
         CiteLineAssert line3 = new CiteLineAssert(doc)
             .setInfoType(InfoFieldType.IN_TEXT)
-            .setDataSpan(0, 2, 3).setNote(2);
+            .setDataSpan(0, 2, 3).setNote(2)
+            .setDataClass(ContentSpan.class);
 
         note.test( 3, full, 0);
         line1.test(3, raw1, 0, 0);

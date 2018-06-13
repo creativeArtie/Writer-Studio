@@ -10,7 +10,7 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** A citation for "Cite Worked" page, footnote or in-text. */
-public class LinedSpanCite extends LinedSpan {
+public class LinedSpanCite extends LinedSpan implements Catalogued{
 
     /** Check if the line start with {@link LINED_CITE}.
      *
@@ -27,6 +27,7 @@ public class LinedSpanCite extends LinedSpan {
     private final CacheKeyMain<InfoFieldType> cacheField;
     private final CacheKeyMain<InfoDataType> cacheType;
     private final CacheKeyOptional<SpanBranch> cacheData;
+    private final CacheKeyOptional<CatalogueIdentity> cacheId;
     private final CacheKeyMain<Integer> cacheNote;
 
     /** Creates a {@linkplain LinedSpanCite}.
@@ -42,6 +43,7 @@ public class LinedSpanCite extends LinedSpan {
         cacheType = new CacheKeyMain<>(InfoDataType.class);
         cacheData = new CacheKeyOptional<>(SpanBranch.class);
         cacheNote = CacheKeyMain.integerKey();
+        cacheId = CacheKeyOptional.idKey();
     }
 
     /** Gets the citation field type
@@ -50,8 +52,8 @@ public class LinedSpanCite extends LinedSpan {
      */
     public InfoFieldType getInfoFieldType(){
         return getLocalCache(cacheField, () ->
-            spanFromFirst(InfoFieldSpan.class)
-            .map(s -> s.getInfoFieldType())
+            leafFromFirst(SpanLeafStyle.FIELD)
+            .map(s -> InfoFieldType.getType(s.getRaw().trim()))
             .orElse(InfoFieldType.ERROR));
     }
 
@@ -64,7 +66,9 @@ public class LinedSpanCite extends LinedSpan {
      * @return answer
      */
     public Optional<SpanBranch> getData(){
-        return getLocalCache(cacheData, () -> spanFromLast(SpanBranch.class));
+        return getLocalCache(cacheData, () ->
+            spanFromLast(SpanBranch.class)
+        );
     }
 
     @Override
@@ -94,9 +98,22 @@ public class LinedSpanCite extends LinedSpan {
     }
 
     @Override
+    public boolean isId(){
+        return false;
+    }
+
+    @Override
+    public Optional<CatalogueIdentity> getSpanIdentity(){
+        return getDocCache(cacheId, () -> spanFromLast(DirectorySpan.class)
+            .map(span -> span.buildId())
+        );
+    }
+
+    @Override
     protected SetupParser getParser(String text){
         argumentNotNull(text, "text");
+
         return checkLine(text) && AuxiliaryChecker.checkLineEnd(text, isDocumentLast())?
-            LinedParseRest.CITE: null;
+            LinedParseCite.getParser(text): null;
     }
 }

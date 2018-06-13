@@ -28,26 +28,30 @@ public class BranchBasicAsserts {
 
         /** For {@link BasicText#getTrimmed()} and
          * {@link BasicText#getRendered()} (default: {@code ""}) */
-        public T setBoth(String text){
+        public final T setBoth(String text){
             renderText = text;
             trimText = text.trim();
             return cast();
         }
 
         /** For {@link BasicText#isSpaceBegin()} (default: {@code false}) */
-        public T setBegin(boolean b){
+        public final T setBegin(boolean b){
             isBegin = b;
             return cast();
         }
 
         /** For {@link BasicText#isSpaceEnd()}  (default: {@code false}) */
-        public T setEnd(boolean b){
+        public final T setEnd(boolean b){
             isEnd = b;
             return cast();
         }
 
-        protected abstract BasicText moreTest(SpanBranch span,
-            ArrayList<Executable> tests);
+        @Override
+        public final void setup(){
+            moreSetup();
+        }
+
+        protected abstract void moreSetup();
 
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){
@@ -57,9 +61,12 @@ public class BranchBasicAsserts {
             tests.add(() -> assertEquals(isBegin,    test.isSpaceBegin(), "isSpaceBegin()"));
             tests.add(() -> assertEquals(isEnd,      test.isSpaceEnd(),   "isSpaceEnd()"));
         }
+
+        protected abstract BasicText moreTest(SpanBranch span,
+            ArrayList<Executable> tests);
     }
 
-    public static class EscapeAssert extends SpanBranchAssert<EscapeAssert>{
+    public static final class EscapeAssert extends SpanBranchAssert<EscapeAssert>{
         private String textEscape;
 
         public EscapeAssert(DocumentAssert doc){
@@ -84,7 +91,8 @@ public class BranchBasicAsserts {
         }
     }
 
-    public static class ContentAssert extends ContentBasicAssert<ContentAssert>{
+    public static final class ContentAssert extends
+            ContentBasicAssert<ContentAssert>{
         private int wordCount;
 
         public ContentAssert(DocumentAssert doc){
@@ -98,7 +106,7 @@ public class BranchBasicAsserts {
             return this;
         }
 
-        @Override public void setup(){}
+        @Override public void moreSetup(){}
 
         @Override
         public BasicText moreTest(SpanBranch span, ArrayList<Executable> tests){
@@ -109,7 +117,8 @@ public class BranchBasicAsserts {
         }
     }
 
-    public static class DirectoryAssert extends SpanBranchAssert<DirectoryAssert>{
+    public static final class DirectoryAssert
+            extends SpanBranchAssert<DirectoryAssert>{
 
         private DirectoryType idPurpose;
         private CatalogueIdentity produceId;
@@ -157,7 +166,8 @@ public class BranchBasicAsserts {
         }
     }
 
-    public static class EditionAssert extends SpanBranchAssert<EditionAssert>{
+    public static final class EditionAssert
+            extends SpanBranchAssert<EditionAssert>{
 
         private EditionType editionType;
         private String detailText;
@@ -194,7 +204,7 @@ public class BranchBasicAsserts {
         }
     }
 
-    public static class FormatAgendaAssert extends
+    public static final class FormatAgendaAssert extends
             SpanBranchAssert<FormatAgendaAssert>{
         private String agendaText;
 
@@ -210,39 +220,16 @@ public class BranchBasicAsserts {
         }
 
         @Override
-        public void setup(){}
+        public void setup(){
+            setCatalogued();
+            setId(true);
+        }
 
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){
             FormatSpanAgenda test = assertClass(FormatSpanAgenda.class);
 
             assertEquals(agendaText, test.getAgenda(), "getAgenda()");
-        }
-    }
-
-    public static class FieldAssert extends SpanBranchAssert<FieldAssert>{
-        private InfoFieldType fieldType;
-
-        public FieldAssert(DocumentAssert doc){
-            super(FieldAssert.class, doc);
-            fieldType = InfoFieldType.ERROR;
-        }
-
-        /** For {@link EditionSpan#getDetail()} (default: {@code ERROR}). */
-        public FieldAssert setType(InfoFieldType type){
-            fieldType = type;
-            return this;
-        }
-
-        @Override
-        public void setup(){}
-
-        @Override
-        public void test(SpanBranch span, ArrayList<Executable> tests){
-            InfoFieldSpan test = assertClass(InfoFieldSpan.class);
-
-            tests.add(() -> assertEquals(fieldType, test.getInfoFieldType(),
-                "getInfoFieldType()"));
         }
     }
 

@@ -135,7 +135,7 @@ public class DocumentAssert {
     public SpanBranch assertChild(int size, String text,
             int ... indexes){
         Span test = assertChild(indexes);
-        assertAll("SpanBranch assertChild",
+        assertAll("assertChild: " + test.toString(),
             () -> assertTrue(test instanceof SpanBranch,        "class"),
             () -> assertEquals(text, test.getRaw(),             "getRaw()"),
             () -> assertEquals(size, ((SpanBranch)test).size(), "size()")

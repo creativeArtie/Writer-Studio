@@ -23,28 +23,35 @@ public class BranchLineAsserts {
         }
 
         /** For {@link LinedSpan#getPublishTotal()} (default: depends). */
-        public T setPublish(int count){
+        public final T setPublish(int count){
             publishTotal = count;
             return cast();
         }
 
         /** For {@link LinedSpan#getNoteTotal()} (default: depends). */
-        public T setNote(int count){
+        public final T setNote(int count){
             noteTotal = count;
             return cast();
         }
 
-        protected abstract LinedSpan moreTest(SpanBranch span,
-                ArrayList<Executable> tests);
+        @Override
+        public final void setup(){
+            moreSetup();
+        }
+
+        protected abstract void moreSetup();
 
         @Override
-        public void test(SpanBranch span, ArrayList<Executable> tests){
+        public final void test(SpanBranch span, ArrayList<Executable> tests){
             LinedSpan test = moreTest(span, tests);
             tests.add(() -> assertEquals(publishTotal, test.getPublishTotal(),
                 "getPublishTotal()"));
             tests.add(() -> assertEquals(noteTotal, test.getNoteTotal(),
                 "getNoteTotal()"));
         }
+
+        protected abstract LinedSpan moreTest(SpanBranch span,
+                ArrayList<Executable> tests);
     }
 
     public static class AgendaLineAssert extends LineAssert<AgendaLineAssert> {
@@ -61,7 +68,10 @@ public class BranchLineAsserts {
         }
 
         @Override
-        public void setup(){}
+        public void moreSetup(){
+            setCatalogued();
+            setId(true);
+        }
 
         @Override
         public LinedSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
@@ -72,14 +82,15 @@ public class BranchLineAsserts {
         }
     }
 
-    public static class BreakLineAssert extends LineAssert<BreakLineAssert>{
+    public static final class BreakLineAssert
+            extends LineAssert<BreakLineAssert>{
 
         public BreakLineAssert(DocumentAssert doc){
             super(BreakLineAssert.class, doc, 0, 0);
         }
 
         @Override
-        public void setup(){}
+        public void moreSetup(){}
 
         @Override
         public LinedSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
@@ -87,15 +98,18 @@ public class BranchLineAsserts {
         }
     }
 
-    public static class CiteLineAssert extends LineAssert<CiteLineAssert>{
+    public static final class CiteLineAssert extends LineAssert<CiteLineAssert>{
 
         private InfoFieldType infoType;
         private int[] dataSpan;
+        private Class<? extends SpanBranch> dataClass;
 
         public CiteLineAssert(DocumentAssert doc){
             super(CiteLineAssert.class, doc, 0, 1);
             dataSpan = null;
             infoType = InfoFieldType.ERROR;
+            dataClass = null;
+
         }
 
         public CiteLineAssert setInfoType(InfoFieldType type){
@@ -108,8 +122,18 @@ public class BranchLineAsserts {
             return this;
         }
 
+        public CiteLineAssert setDataClass(Class<? extends SpanBranch> clazz){
+            dataClass = clazz;
+            return this;
+        }
+
         @Override
-        public void setup(){}
+        public void moreSetup(){
+            assert (dataClass == null && dataSpan == null) ||
+                (dataClass != null && dataSpan != null);
+            setCatalogued();
+            setId(false);
+        }
 
         @Override
         public LinedSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
@@ -117,7 +141,10 @@ public class BranchLineAsserts {
 
             tests.add(() -> assertEquals(infoType, test.getInfoFieldType(),
                 "getInfoFieldType()"));
-            tests.add(() -> assertChild(SpanBranch.class, dataSpan,
+
+            Class<? extends SpanBranch> clazz = dataClass == null?
+                SpanBranch.class : dataClass;
+            tests.add(() -> assertChild(clazz, dataSpan,
                 () -> test.getData(), "getData()"));
             return test;
         }
@@ -137,20 +164,23 @@ public class BranchLineAsserts {
         }
 
         /** For {@link LinedSpanLevel#getLevel()} (default: 1)*/
-        public T setLevel(int level){
+        public final T setLevel(int level){
             lineLevel = level;
             return cast();
         }
 
         /** For {@link LinedSpanLevel#getForamtedSpan()} (no default) */
-        public T setFormattedSpan(int... indexes){
+        public final T setFormattedSpan(int... indexes){
             lineText = indexes;
             return cast();
         }
 
-
         @Override
-        public void setup(){}
+        public void moreSetup(){
+            setupSubclass();
+        }
+
+        protected abstract void setupSubclass();
 
         protected abstract LinedSpanLevel testSubclass(SpanBranch span,
             ArrayList<Executable> tests);
@@ -165,9 +195,8 @@ public class BranchLineAsserts {
         }
     }
 
-    public static class ListLevelLineAssert extends
-        LevelLineAssert<ListLevelLineAssert>
-    {
+    public static final class ListLevelLineAssert extends
+            LevelLineAssert<ListLevelLineAssert>{
         private boolean isNumbered;
 
         public ListLevelLineAssert(DocumentAssert doc){
@@ -181,6 +210,10 @@ public class BranchLineAsserts {
             return this;
         }
 
+        @Override
+        protected void setupSubclass(){}
+
+        @Override
         protected LinedSpanLevel testSubclass(SpanBranch span,
                 ArrayList<Executable> tests){
             LinedSpanLevelList test = assertClass(LinedSpanLevelList.class);
@@ -190,7 +223,7 @@ public class BranchLineAsserts {
         }
     }
 
-    public static class HeadLevelLineAssert extends
+    public static final class HeadLevelLineAssert extends
             LevelLineAssert<HeadLevelLineAssert>{
 
         private EditionType editionType;
@@ -231,6 +264,12 @@ public class BranchLineAsserts {
         }
 
         @Override
+        protected void setupSubclass(){
+            setCatalogued();
+            setId(true);
+        }
+
+        @Override
         protected LinedSpanLevel testSubclass(SpanBranch span,
                 ArrayList<Executable> tests){
             System.out.println(lookupText);
@@ -247,7 +286,7 @@ public class BranchLineAsserts {
         }
     }
 
-    public static class NoteLineAssert extends LineAssert<NoteLineAssert>{
+    public static final class NoteLineAssert extends LineAssert<NoteLineAssert>{
 
         private Optional<CatalogueIdentity> buildId;
         private int[] lineText;
@@ -279,7 +318,7 @@ public class BranchLineAsserts {
         }
 
         @Override
-        public void setup(){}
+        public void moreSetup(){}
 
         @Override
         public LinedSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
@@ -292,7 +331,7 @@ public class BranchLineAsserts {
             return test;
         }
     }
-    public static class ParagraphLineAssert
+    public static final class ParagraphLineAssert
             extends LineAssert<ParagraphLineAssert>{
 
         private int[] lineText;
@@ -309,7 +348,7 @@ public class BranchLineAsserts {
         }
 
         @Override
-        public void setup(){}
+        public void moreSetup(){}
 
         @Override
         public LinedSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
@@ -321,7 +360,8 @@ public class BranchLineAsserts {
     }
 
 
-    public static class PointerLinkAssert extends LineAssert<PointerLinkAssert>{
+    public static final class PointerLinkAssert
+            extends LineAssert<PointerLinkAssert>{
         private String linkPath;
         private String lookupText;
 
@@ -344,7 +384,10 @@ public class BranchLineAsserts {
         }
 
         @Override
-        public void setup(){}
+        public void moreSetup(){
+            setCatalogued();
+            setId(true);
+        }
 
         @Override
         public LinedSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
@@ -356,7 +399,8 @@ public class BranchLineAsserts {
         }
     }
 
-    public static class PointerNoteAssert extends LineAssert<PointerNoteAssert>{
+    public static final class PointerNoteAssert
+            extends LineAssert<PointerNoteAssert>{
         private int[] lineText;
         private String lookupText;
         private DirectoryType idType;
@@ -386,7 +430,10 @@ public class BranchLineAsserts {
         }
 
         @Override
-        public void setup(){}
+        public void moreSetup(){
+            setCatalogued();
+            setId(true);
+        }
 
         @Override
         public LinedSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
@@ -417,7 +464,7 @@ public class BranchLineAsserts {
         }
 
         @Override
-        public void setup(){}
+        public void moreSetup(){}
 
         @Override
         public LinedSpan moreTest(SpanBranch span, ArrayList<Executable> tests){

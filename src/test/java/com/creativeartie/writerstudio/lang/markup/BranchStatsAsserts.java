@@ -17,7 +17,7 @@ public class BranchStatsAsserts {
         private U statData;
 
         public StatAssert(Class<T> cast, DocumentAssert doc){
-            super(cast,doc );
+            super(cast, doc);
             statType = StatTypeData.TIME_TOTAL;
         }
 
@@ -32,31 +32,39 @@ public class BranchStatsAsserts {
         }
 
         @Override
-        public void setup(){}
+        public void setup(){
+            moreSetup();
+        }
 
-        protected abstract SpecSpanData castTest(SpanBranch span);
+        protected abstract void moreSetup();
 
         @Override
         public void test(SpanBranch span, ArrayList<Executable> tests){
-            SpecSpanData test = castTest(span);
+            SpecSpanData test = moreTest(span);
             tests.add(() -> assertEquals(statType, test.getDataType()));
             tests.add(() -> assertEquals(statData, test.getData()));
         }
+
+        protected abstract SpecSpanData moreTest(SpanBranch span);
     }
 
-    public static class IntStatAssert extends StatAssert<IntStatAssert, Integer>{
+    public static final class IntStatAssert
+            extends StatAssert<IntStatAssert, Integer>{
 
         public IntStatAssert(DocumentAssert doc){
             super(IntStatAssert.class, doc);
         }
 
         @Override
-        protected SpecSpanData castTest(SpanBranch span){
+        protected void moreSetup(){}
+
+        @Override
+        protected SpecSpanData moreTest(SpanBranch span){
             return assertClass(SpecSpanDataInt.class);
         }
     }
 
-    public static class TimeStatAssert extends StatAssert<TimeStatAssert,
+    public static final class TimeStatAssert extends StatAssert<TimeStatAssert,
             Duration>{
 
         public TimeStatAssert(DocumentAssert doc){
@@ -64,24 +72,32 @@ public class BranchStatsAsserts {
         }
 
         @Override
-        protected SpecSpanData castTest(SpanBranch span){
+        protected void moreSetup(){}
+
+        @Override
+        protected SpecSpanData moreTest(SpanBranch span){
             return assertClass(SpecSpanDataTime.class);
         }
     }
 
-    public static class StringStatAssert
+    public static final class StringStatAssert
             extends StatAssert<StringStatAssert, String>{
 
         public StringStatAssert(DocumentAssert doc){
             super(StringStatAssert.class, doc);
         }
+
         @Override
-        protected SpecSpanData castTest(SpanBranch span){
+        protected void moreSetup(){}
+
+        @Override
+        protected SpecSpanData moreTest(SpanBranch span){
             return assertClass(SpecSpanDataString.class);
         }
     }
 
-    public static class StatMainAssert extends SpanBranchAssert<StatMainAssert>{
+    public static final class StatMainAssert
+            extends SpanBranchAssert<StatMainAssert>{
         private LocalDate recordDate;
         private Duration timeGoal;
         private Duration timeTotal;

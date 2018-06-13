@@ -316,9 +316,9 @@ class DivisionTextFormatted extends DivisionText{
             /// Add in text citation into the main text
             } else {
                 appendText(cite.getData()
-                    /// s = InfoDataSpan
-                    .filter(s -> s instanceof InfoDataSpanText)
-                    .map(s -> ((InfoDataSpanText)s).getData())
+                    /// s = SpanBranch
+                    .filter(s -> s instanceof ContentSpan)
+                    .map(s -> ((ContentSpan)s))
                     /// s = ContentSpan
                     .map(s -> s.getRendered()).orElse("")
                 , font);

@@ -25,35 +25,6 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  * </ul>
  */
 enum LinedParseRest implements SetupParser {
-    /** Implements {@code design/ebnf.txt LinedCite}. */
-    CITE(pointer -> {
-        assert pointer != null: "Null pointer";
-        ArrayList<Span> children = new ArrayList<>();
-
-        if (pointer.startsWith(children, LINED_CITE)){
-            /// Create field span
-            Optional<InfoDataParser> used = Optional.empty();
-            for (InfoFieldParser parser: InfoFieldParser.values()){
-                if (parser.parse(pointer, children)){
-                    used = parser.getDataParser();
-                    break;
-                }
-            }
-
-            pointer.trimStartsWith(children, LINED_DATA);
-
-            /// Create the data span
-            if (! (used.isPresent() && used.get().parse(pointer, children))){
-                pointer.getTo(children, SpanLeafStyle.TEXT, LINED_END);
-            }
-
-            /// Create non dat text
-            pointer.startsWith(children, LINED_END);
-
-            return Optional.of(new LinedSpanCite(children));
-        }
-        return Optional.empty();
-    }),
     /** Implements {@code design/ebnf.txt LinedNote}. */
     NOTE(pointer -> {
         assert pointer != null: "Null pointer.";
