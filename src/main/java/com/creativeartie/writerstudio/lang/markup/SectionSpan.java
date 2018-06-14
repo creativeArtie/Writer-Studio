@@ -194,6 +194,8 @@ public abstract class SectionSpan extends SpanBranch {
                 return heading? true : allowed < i + 1;
             }
         }
+
+        /// if (outline) { don't check heading; }
         if (! heading) return false;
 
         /// check heading
