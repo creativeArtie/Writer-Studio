@@ -1,4 +1,4 @@
-package com.creativeartie.writerstudio.lang.markup;
+/*package com.creativeartie.writerstudio.lang.markup;
 
 import org.junit.jupiter.api.*;
 
@@ -395,3 +395,4 @@ public class StatsTest {
         note.test(4, "note-count:20|",     0, 4);
     }
 }
+*/

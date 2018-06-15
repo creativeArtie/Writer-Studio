@@ -533,6 +533,8 @@ public final class AuxiliaryData{
     public static final String ALIGN_CENTER = "center|";
     /** Data type text:                       {@value} */
     public static final String ALIGN_TEXT   = "text  |";
+    public static final String TEXT_ALIGN = "align";
+    public static final String Text_DATA_START = "|>";
 
 
     /// ========================================================================
