@@ -447,10 +447,10 @@ public final class AuxiliaryData{
 
     /// %Part 4: Statistical Data ##############################################
 
-    public static final String SPEC_KEY_DATA = ":";
-    public static final String SPEC_SEPARATOR = "|";
-    public static final String SPEC_ROW_END = "\n";
-    public static final CharMatcher SPEC_KEY = CharMatcher.inRange('A', 'Z')
+    public static final String STAT_KEY_DATA = ":";
+    public static final String STAT_SEPARATOR = "|";
+    public static final String STAT_ROW_END = "\n";
+    public static final CharMatcher STAT_KEY_TEXT = CharMatcher.inRange('A', 'Z')
         .or(CharMatcher.inRange('a', 'z')).or(CharMatcher.is('-'))
         .precomputed();
 
@@ -533,9 +533,6 @@ public final class AuxiliaryData{
     public static final String ALIGN_CENTER = "center|";
     /** Data type text:                       {@value} */
     public static final String ALIGN_TEXT   = "text  |";
-    public static final String TEXT_ALIGN = "align";
-    public static final String Text_DATA_START = "|>";
-
 
     /// ========================================================================
     /// @Part-4: Private Constructor ==========================================-

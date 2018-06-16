@@ -1,4 +1,4 @@
-/*package com.creativeartie.writerstudio.lang.markup;
+package com.creativeartie.writerstudio.lang.markup;
 
 import org.junit.jupiter.api.*;
 
@@ -90,11 +90,11 @@ public class StatsTest {
     }
 
     @Test
-    @DisplayName("SpecSpanDataInt#setData(int)")
+    @DisplayName("StatSpanDataInt#setData(int)")
     public void setIntData(){
         String raw = getDate() + "|note-count:2|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
-        doc.call(SpecSpanDataInt.class, s -> s.setData(20), 0, 2);
+        doc.call(StatSpanDataInt.class, s -> s.setData(20), 0, 2);
         commonNote(doc);
     }
 
@@ -174,11 +174,11 @@ public class StatsTest {
     }
 
     @Test
-    @DisplayName("SpecSpanDataTime#setData(Duration)")
+    @DisplayName("StatSpanDataTime#setData(Duration)")
     public void setTimeData(){
         String raw = getDate() + "|time-goal:PT2S|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
-        doc.call(SpecSpanDataTime.class,s -> s.setData(Duration.ofSeconds(20)),
+        doc.call(StatSpanDataTime.class,s -> s.setData(Duration.ofSeconds(20)),
             0, 2);
         commonTimeGoal(doc);
     }
@@ -239,15 +239,15 @@ public class StatsTest {
         DocumentAssert doc = assertDoc(1, raw, PARSER);
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.startWriting(20, 2), () -> new SpanNode<?>[]{
-                doc.getChild(SpecSpanDataInt.class, 0, 7),
-                doc.getChild(SpecSpanDataInt.class, 0, 8)
+                doc.getChild(StatSpanDataInt.class, 0, 7),
+                doc.getChild(StatSpanDataInt.class, 0, 8)
         });
         Thread.sleep(2000);
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
-                doc.getChild(SpecSpanDataTime.class, 0, 6),
-                doc.getChild(SpecSpanDataInt.class, 0, 7),
-                doc.getChild(SpecSpanDataInt.class, 0, 8)
+                doc.getChild(StatSpanDataTime.class, 0, 6),
+                doc.getChild(StatSpanDataInt.class, 0, 7),
+                doc.getChild(StatSpanDataInt.class, 0, 8)
         });
         commonWordCounter(doc);
     }
@@ -259,15 +259,15 @@ public class StatsTest {
         DocumentAssert doc = assertDoc(1, raw, PARSER);
         doc.call(true, () -> doc.getChild(StatSpanDay.class, 0),
             s -> s.startWriting(20, 2), () -> new SpanNode<?>[]{
-                doc.getChild(SpecSpanDataInt.class, 0, 7),
+                doc.getChild(StatSpanDataInt.class, 0, 7),
                 doc.getChild(StatSpanDay.class, 0)
         });
         Thread.sleep(2000);
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
-                doc.getChild(SpecSpanDataTime.class, 0, 6),
-                doc.getChild(SpecSpanDataInt.class, 0, 7),
-                doc.getChild(SpecSpanDataInt.class, 0, 8)
+                doc.getChild(StatSpanDataTime.class, 0, 6),
+                doc.getChild(StatSpanDataInt.class, 0, 7),
+                doc.getChild(StatSpanDataInt.class, 0, 8)
         });
         commonWordCounter(doc);
     }
@@ -290,8 +290,8 @@ public class StatsTest {
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
                 doc.getChild(StatSpanDay.class, 0),
-                doc.getChild(SpecSpanDataInt.class, 0, 6),
-                doc.getChild(SpecSpanDataInt.class, 0, 7)
+                doc.getChild(StatSpanDataInt.class, 0, 6),
+                doc.getChild(StatSpanDataInt.class, 0, 7)
         });
 
         raw = base + "publish-count:20|note-count:20|time-count:PT20S|\n";
@@ -339,7 +339,7 @@ public class StatsTest {
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
                 doc.getChild(StatSpanDay.class, 0),
-                doc.getChild(SpecSpanDataInt.class, 0, 3)
+                doc.getChild(StatSpanDataInt.class, 0, 3)
         });
         commonWordCounter(doc);
     }
@@ -352,8 +352,8 @@ public class StatsTest {
 
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.startWriting(20, 20), () -> new SpanNode<?>[]{
-                doc.getChild(SpecSpanDataInt.class, 0, 3),
-                doc.getChild(SpecSpanDataInt.class, 0, 4),
+                doc.getChild(StatSpanDataInt.class, 0, 3),
+                doc.getChild(StatSpanDataInt.class, 0, 4),
         });
         commonWordCounter(doc);
     }
@@ -395,4 +395,3 @@ public class StatsTest {
         note.test(4, "note-count:20|",     0, 4);
     }
 }
-*/

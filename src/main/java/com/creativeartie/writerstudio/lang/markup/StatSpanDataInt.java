@@ -10,16 +10,16 @@ import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** A span to store integer data. */
-public final class SpecSpanDataInt extends SpecSpanData<Integer>{
+public final class StatSpanDataInt extends StatSpanData<Integer>{
 
     private final CacheKeyMain<Integer> cacheData;
 
-    /** Creates an instance of {@linkplain SpecSpanDataInt}.
+    /** Creates an instance of {@linkplain StatSpanDataInt}.
      *
      * @param children
      *      span children
      */
-    public SpecSpanDataInt(List<Span> children){
+    public StatSpanDataInt(List<Span> children){
         super(children);
         cacheData = new CacheKeyMain<>(Integer.class);
     }

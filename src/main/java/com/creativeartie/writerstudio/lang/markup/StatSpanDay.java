@@ -63,8 +63,8 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     private Duration getDurationData(StatTypeData type){
-        List<SpecSpanDataTime> spans = getChildren(SpecSpanDataTime.class);
-        for (SpecSpanDataTime span: spans){
+        List<StatSpanDataTime> spans = getChildren(StatSpanDataTime.class);
+        for (StatSpanDataTime span: spans){
             if (span.getDataType() == type){
                 return span.getData();
             }
@@ -124,8 +124,8 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     private int getIntData(StatTypeData type){
-        List<SpecSpanDataInt> spans = getChildren(SpecSpanDataInt.class);
-        for (SpecSpanDataInt span: spans){
+        List<StatSpanDataInt> spans = getChildren(StatSpanDataInt.class);
+        for (StatSpanDataInt span: spans){
             if (span.getDataType() == type){
                 return span.getData();
             }
@@ -156,7 +156,7 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     private void setTimeData(StatTypeData type, Duration data){
-        for (SpecSpanDataTime child: getChildren(SpecSpanDataTime.class)){
+        for (StatSpanDataTime child: getChildren(StatSpanDataTime.class)){
             if (child.getDataType() == type){
                 child.setData(data);
                 return;
@@ -166,7 +166,7 @@ public final class StatSpanDay extends SpanBranch{
     }
 
     private void setIntegerData(StatTypeData type, int data){
-        for (SpecSpanDataInt child: getChildren(SpecSpanDataInt.class)){
+        for (StatSpanDataInt child: getChildren(StatSpanDataInt.class)){
             if (child.getDataType() == type){
                 child.setData(data);
                 return;
@@ -179,10 +179,10 @@ public final class StatSpanDay extends SpanBranch{
         String symbol = StatParseData.values()[type.ordinal()].getSymbol();
         /// (getRaw() - "\n") + symbol + ":" + data + "|" + "\n"
         runCommand(() -> getRaw().substring(
-                0, getRaw().length() - SPEC_ROW_END.length()
+                0, getRaw().length() - STAT_ROW_END.length()
             ) +
-            symbol + SPEC_KEY_DATA + data + SPEC_SEPARATOR +
-            SPEC_ROW_END);
+            symbol + STAT_KEY_DATA + data + STAT_SEPARATOR +
+            STAT_ROW_END);
     }
 
     /** Starts the record time (as needed) and update counts.
