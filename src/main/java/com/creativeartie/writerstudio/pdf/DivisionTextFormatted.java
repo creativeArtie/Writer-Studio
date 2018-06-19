@@ -16,7 +16,7 @@ import static com.creativeartie.writerstudio.main.Checker.*;
  */
 class DivisionTextFormatted extends DivisionText{
 
-    /** Create new lines with a list of {@link TextDataSpanPrint} with a
+    /** Create new lines with a list of {@link TextSpanMatter} with a
      * {@link SectionContennt}.
      * @param section
      *      for section
@@ -26,13 +26,13 @@ class DivisionTextFormatted extends DivisionText{
      * @see newPrintLines(float, writing, List)
      */
     static List<DivisionTextFormatted> newPrintLines(SectionContent<?> section,
-            List<TextDataSpanPrint> spans) throws IOException{
+            List<TextSpanMatter> spans) throws IOException{
         checkNotNull(section, "section");
         checkNotEmpty(spans, "spans");
         return newPrintLines(() -> new DivisionTextFormatted(section), spans);
     }
 
-    /** Create new lines with a list of {@link TextDataSpanPrint} without a
+    /** Create new lines with a list of {@link TextSpanMatter} without a
      * {@link SectionContent)
      * @param width
      *      page width
@@ -44,7 +44,7 @@ class DivisionTextFormatted extends DivisionText{
      * @see newPrintLines(SectionContent, List)
      */
     static List<DivisionTextFormatted> newPrintLines(float width,
-            WritingExporter writing, List<TextDataSpanPrint> spans)
+            WritingExporter writing, List<TextSpanMatter> spans)
             throws IOException{
         checkNotNull(writing, "writing");
         checkNotEmpty(spans, "spans");
@@ -52,7 +52,7 @@ class DivisionTextFormatted extends DivisionText{
             spans);
     }
 
-    /** Create new lines with a list of {@link TextDataSpanPrint}
+    /** Create new lines with a list of {@link TextSpanMatter}
      * @param width
      *      page width
      * @param writing
@@ -65,7 +65,7 @@ class DivisionTextFormatted extends DivisionText{
      */
     private static final List<DivisionTextFormatted> newPrintLines(
             Supplier<DivisionTextFormatted> supplier,
-            List<TextDataSpanPrint> spans) throws IOException{
+            List<TextSpanMatter> spans) throws IOException{
         checkNotNull(supplier, "supplier");
         checkNotEmpty(spans, "spans");
 
@@ -75,10 +75,10 @@ class DivisionTextFormatted extends DivisionText{
         float leading = 1f;
         line.setLeading(1f);
 
-        for (TextDataSpanPrint span: spans){
+        for (TextSpanMatter span: spans){
 
             /// set LineAlignment
-            switch (span.getFormat()){
+            switch (span.getDataType()){
             case RIGHT:
                 line.setLineAlignment(LineAlignment.RIGHT);
                 break;

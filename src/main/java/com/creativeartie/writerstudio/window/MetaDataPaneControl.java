@@ -10,20 +10,20 @@ class MetaDataPaneControl extends MetaDataPaneView{
 
     @Override
     protected void loadMetaData(WritingData data){
-        for (TextDataType.Meta meta: TextDataType.Meta.values()){
-            getTextField(meta).setText(data.getMetaText(meta));
+        for (TextTypeInfo meta: TextTypeInfo.values()){
+            getTextField(meta).setText(data.getInfo(meta));
         }
     }
 
     @Override
-    protected void updateMeta(TextDataType.Meta meta, String text){
+    protected void updateMeta(TextTypeInfo meta, String text){
         if (isDocumentLoaded()){
-            getMetaData().setMetaText(meta, text);
+            getMetaData().setInfo(meta, text);
         }
     }
 
     @Override
-    protected void updateArea(TextDataType.Area area){
+    protected void updateArea(TextTypeMatter area){
         new MetaDataEditWindow(area, getMetaData()).show();
     }
 }

@@ -27,12 +27,12 @@ abstract class MetaDataPaneView extends VBox{
         documentLoaded = new ReadOnlyBooleanWrapper(this, "documentLoaded",
             false);
 
-        for (TextDataType.Meta meta: TextDataType.Meta.values()){
+        for (TextTypeInfo meta: TextTypeInfo.values()){
             metaFields.get(meta.ordinal()).textProperty()
                 .addListener( (d, o, n) -> updateMeta(meta, n));
         }
 
-        for (TextDataType.Area area: TextDataType.Area.values()){
+        for (TextTypeMatter area: TextTypeMatter.values()){
             frontMatter.get(area.ordinal()).setOnAction(e -> updateArea(area));
         }
     }
@@ -42,7 +42,7 @@ abstract class MetaDataPaneView extends VBox{
         ArrayList<TextField> list = new ArrayList<>();
         GridPane pane = initGridPane(WindowText.DATA_META, 0);
         int i = 1;
-        for (TextDataType.Meta meta: TextDataType.Meta.values()){
+        for (TextTypeInfo meta: TextTypeInfo.values()){
             pane.add(new Label(WindowText.getString(meta)), 0, i);
             TextField field = new TextField();
             list.add(field);
@@ -56,7 +56,7 @@ abstract class MetaDataPaneView extends VBox{
         ArrayList<Button> list = new ArrayList<>();
         GridPane pane = initGridPane(WindowText.DATA_AREA, 1);
         int i = 1;
-        for (TextDataType.Area area: TextDataType.Area.values()){
+        for (TextTypeMatter area: TextTypeMatter.values()){
             pane.add(new Label(WindowText.getString(area)), 0, i);
             Button button = new Button(WindowText.DATA_EDIT.getText());
             list.add(button);
@@ -77,7 +77,7 @@ abstract class MetaDataPaneView extends VBox{
     }
 
     /// Getters
-    TextField getTextField(TextDataType.Meta meta){
+    TextField getTextField(TextTypeInfo meta){
         return metaFields.get(meta.ordinal());
     }
 
@@ -110,7 +110,7 @@ abstract class MetaDataPaneView extends VBox{
 
     protected abstract void loadMetaData(WritingData data);
 
-    protected abstract void updateMeta(TextDataType.Meta meta, String text);
+    protected abstract void updateMeta(TextTypeInfo meta, String text);
 
-    protected abstract void updateArea(TextDataType.Area area);
+    protected abstract void updateArea(TextTypeMatter area);
 }

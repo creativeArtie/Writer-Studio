@@ -52,10 +52,10 @@ public final class TextFlowBuilder {
         });
     }
 
-    public static TextFlow loadMetaText(TextDataSpanPrint print){
+    public static TextFlow loadMetaText(TextSpanMatter print){
         TextFlow node = new TextFlow();
         String align;
-        switch(print.getFormat()){
+        switch(print.getDataType()){
         case RIGHT:
             node.getStyleClass().add("display-right");
             break;

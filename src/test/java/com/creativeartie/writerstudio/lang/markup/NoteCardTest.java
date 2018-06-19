@@ -55,6 +55,40 @@ public class NoteCardTest {
         doc.assertRest();
     }
 
+    @Test
+    public void noteLooped(){
+        String line1 = "!%@loop:Heading\n";
+        String line2 = "!>ref:loop\n";
+        String line3 = "!>in-text:done";
+        String raw = line1 + line2 + line3;
+
+        DocumentAssert doc = assertDoc(1, raw, PARSER);
+        IDBuilder builder = doc.addId(buildId(false, "loop"),
+            CatalogueStatus.READY, 0);
+
+        NoteCardAssert card = new NoteCardAssert(doc)
+            .setNote(2).setLookup("{@loop}")
+            .setCatalogued(CatalogueStatus.READY, builder);
+        NoteLineAssert note = new NoteLineAssert(doc)
+            .setNote(1).setFormattedSpan(0, 0, 4)
+            .setLookup("{@loop}").setBuildId(builder);
+        CiteLineAssert cite1 = new CiteLineAssert(doc)
+            .setNote(0).setDataSpan(0, 1, 4)
+            .setInfoType(InfoFieldType.REF)
+            .setCatalogued(CatalogueStatus.READY, builder)
+            .setDataClass(DirectorySpan.class);
+        CiteLineAssert cite2 = new CiteLineAssert(doc)
+            .setNote(1).setDataSpan(0, 1, 4)
+            .setInfoType(InfoFieldType.IN_TEXT)
+            .setDataClass(ContentSpan.class);
+
+        card.test(3, raw,   0);
+        note.test(6, line1, 0, 0);
+        cite1.test(5, line2, 0, 1);
+        cite2.test(4, line3, 0, 2);
+        doc.assertRest();
+    }
+
     private static String COMMON_NOTE_BASE = "!%@see:Note Heading\n" +
             "!%some note content\\\n\n" + "!>in-text: Smith, p3";
 
@@ -226,7 +260,7 @@ public class NoteCardTest {
         String raw = "!%@see:Note Heading\n!%some note content\n" +
             "!>in-text: Smith, p3";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
-        doc.insert(39, "\\\n", 0, 1);
+        doc.insert(true, 39, "\\\n", 0, 1);
         doc.assertDoc(1, COMMON_NOTE_BASE);
         commonNoteBasic(doc);
     }

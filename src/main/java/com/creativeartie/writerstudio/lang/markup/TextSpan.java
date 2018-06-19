@@ -9,20 +9,20 @@ import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** A line of text in the {@link WritingData}. */
-public abstract class TextDataSpan<T extends SpanBranch> extends SpanBranch{
+public abstract class TextSpan<T extends SpanBranch> extends SpanBranch{
 
     private final CacheKeyOptional<T> cacheData;
-    private final CacheKeyMain<TextDataType.Type> cacheType;
+    private final CacheKeyMain<TextType> cacheType;
 
-    /** Create a {@link TextDataSpan}.
+    /** Create a {@link TextSpan}.
      *
      * @param children
      */
-    TextDataSpan(List<Span> children){
+    TextSpan(List<Span> children){
         super(children);
 
         cacheData = new CacheKeyOptional<>(getDataClass());
-        cacheType = new CacheKeyMain<>(TextDataType.Type.class);
+        cacheType = new CacheKeyMain<>(TextType.class);
     }
 
     /** Gets the data.
@@ -44,15 +44,19 @@ public abstract class TextDataSpan<T extends SpanBranch> extends SpanBranch{
      *
      * @return answer
      */
-    public final TextDataType.Type getType(){
+    public final TextType getRowType(){
         return getLocalCache(cacheType, () -> {
+            if (TextSpan.this instanceof TextSpanUnkown){
+                return TextSpanUnkown.TYPE;
+            }
             String raw = getRaw();
-            for (TextDataType.Type type: listTypes()){
+            for (TextType type: listTypes()){
                 if (raw.startsWith(type.getKeyName())){
                     return type;
                 }
             }
-            throw new IllegalStateException("Data type not found.");
+            assert false: "Unreachable code";
+            return null;
         });
     }
 
@@ -61,19 +65,19 @@ public abstract class TextDataSpan<T extends SpanBranch> extends SpanBranch{
      * @return answer
      * @see #getType()
      */
-    protected abstract TextDataType.Type[] listTypes();
+    protected abstract TextType[] listTypes();
 
     /** Get the content format
      *
      * @return answer
      */
-    public abstract TextDataType.Format getFormat();
+    public abstract TextDataType getDataType();
 
     @Override
     protected final SetupParser getParser(String text){
         argumentNotNull(text, "text");
         return AuxiliaryChecker.checkLineEnd(text, isDocumentLast())?
-            TextDataParser.PARSER: null;
+            TextParser.PARSER: null;
     }
 
 }

@@ -18,7 +18,7 @@ import com.creativeartie.writerstudio.lang.markup.*;
 public class PdfTest{
 
     private static final String RESOURCE = "build/resources/test/";
-    private static final String OUT = "build/outputs/pdf";
+    private static final String OUT = "build/outputs/";
 
     @BeforeAll
     public static void beforeAll(){
@@ -38,9 +38,9 @@ public class PdfTest{
                 "/data/fonts/FreeSerif.ttf"));
 
             contentStream.beginText();
-            contentStream.newLineAtOffset(100, 50);
+            contentStream.newLineAtOffset(100, 500);
             contentStream.setFont(font, 12);
-            contentStream.showText("⁰¹²³⁴⁵⁶⁷⁸⁹ⁱᵛˣˡᶜᵈᵐ");
+            contentStream.showText("ab⁰¹²³⁴⁵⁶⁷⁸⁹ⁱᵛˣˡᶜᵈᵐ cd");
             contentStream.close();
             doc.save(OUT + "test-font.pdf");
             doc.close();

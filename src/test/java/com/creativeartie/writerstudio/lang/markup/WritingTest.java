@@ -17,10 +17,12 @@ public class WritingTest {
 
     @Test
     @Tag("heavy")
+    @Disabled("This test takes too long to run.")
     public void reallyLarge() throws Exception{
         String raw = new String(Files.readAllBytes(Paths.get(
             "build/resources/test/pdf-stress.txt")),
             StandardCharsets.UTF_8);
+        System.out.println(raw.length());
         assertTimeout(Duration.ofSeconds(60), () -> new WritingText(raw),
             "Over 60 seconds");
     }

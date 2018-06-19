@@ -323,7 +323,7 @@ public final class AuxiliaryData{
      *
      * @see EditionParser
      * @see LinedParseRest.AGENDA
-     * @see TextDataParser
+     * @see TextParser
      */
     static final ContentParser CONTENT_BASIC = new ContentParser(
         SpanLeafStyle.TEXT);
@@ -388,7 +388,7 @@ public final class AuxiliaryData{
 
     /// For ContentParser for DirectoryParser see the class itself
 
-    /// %Part 3.2: Formatted Span Parsers =======================================
+    /// %Part 3.2: Formatted Span Parsers ======================================
 
     /** A {@link ContentParser} for note text.
      *
@@ -407,7 +407,7 @@ public final class AuxiliaryData{
      * This set leaf style as {@link SpanLeafStyle.TEXT}, and not allows notes.
      *
      * @see LinedParseRest#NOTE
-     * @see TextDataParser
+     * @see TextParser
      */
     static final FormattedParser NOTE_TEXT = new FormattedParser(
         SpanLeafStyle.TEXT, false);
@@ -463,39 +463,51 @@ public final class AuxiliaryData{
     public static final String STAT_PUBLISH_GOAL = "publish-goal";
     public static final String STAT_TIME_GOAL = "time-goal";
 
+    /// %Part 4: Meta and Matter Texts #########################################
 
+    /// %Part 4.1: Common Constants ============================================
 
-    /// ========================================================================
-    /// @Part 4: Writing Data
+    private static final String TEXT_SUB = "-";
+    public static final String TEXT_SEPARATOR = "|";
+    public static final CharMatcher TEXT_KEY_TEXT = STAT_KEY_TEXT;
+
+    /// %Part 4.2: Meta Text ===================================================
 
     private static final String META         = "meta-";
     /** PDF file property  for author:        {@value} */
-    public static final String META_AUTHOR   = META   + "author  |";
+    public static final String META_AUTHOR   = META   + "author";
     /** PDF file property  for keywords:      {@value} */
     /** PDF file property  for keywords:      {@value} */
-    public static final String META_KEYWORDS = META   + "keywords|";
+    public static final String META_KEYWORDS = META   + "keywords";
     /** PDF file property  for subject:       {@value} */
-    public static final String META_SUBJECT  = META   + "subject |";
+    public static final String META_SUBJECT  = META   + "subject";
     /** PDF file property  for title:         {@value} */
-    public static final String META_TITLE    = META   + "title   |";
+    public static final String META_TITLE    = META   + "title";
 
+    /// %Part 4.3: Matter Texts ================================================
     private static final String AREA         = "-";
-    private static final String AREA_STARTER = AREA  + "starter |";
-    private static final String AREA_HEADER  = AREA  + "header  |";
-    private static final String AREA_BREAK   = AREA  + "break   |";
-    private static final String AREA_FOOTER  = AREA  + "footer  |";
-    private static final String AREA_ENDER   = AREA  + "ender   |";
-    private static final String TEXT        = "text";
+    private static final String AREA_STARTER = AREA  + "starter";
+    private static final String AREA_HEADER  = AREA  + "header";
+    private static final String AREA_BREAK   = AREA  + "break";
+    private static final String AREA_FOOTER  = AREA  + "footer";
+    private static final String AREA_ENDER   = AREA  + "ender";
+
+    /// %Part 4.3.1: Main Content Text -----------------------------------------
+
+    private static final String MAIN        = "text";
     /** Text at the start of the main content. */
-    public static final String TEXT_STARTER = TEXT + AREA_STARTER;
+    public static final String MAIN_STARTER = MAIN + AREA_STARTER;
     /** Text for the top of each main content page. */
-    public static final String TEXT_HEADER  = TEXT + AREA_HEADER;
+    public static final String MAIN_HEADER  = MAIN + AREA_HEADER;
     /** Text for section break in the main content */
-    public static final String TEXT_BREAK   = TEXT + AREA_BREAK;
+    public static final String MAIN_BREAK   = MAIN + AREA_BREAK;
     /** Text for the bottom of each main content page. */
-    public static final String TEXT_FOOTER  = TEXT + AREA_FOOTER;
+    public static final String MAIN_FOOTER  = MAIN + AREA_FOOTER;
     /** Text for the end of the main content. */
-    public static final String TEXT_ENDER   = TEXT + AREA_ENDER;
+    public static final String MAIN_ENDER   = MAIN + AREA_ENDER;
+
+    /// %Part 4.3.3: Endnote Page Text -----------------------------------------
+
     private static final String END         = "end";
     /** Text for start of the endnote content. */
     public static final String END_STARTER  = END + AREA_STARTER;
@@ -505,6 +517,9 @@ public final class AuxiliaryData{
     public static final String END_FOOTER   = END + AREA_FOOTER;
     /** Text for the end of the endnote content. */
     public static final String END_ENDER    = END + AREA_ENDER;
+
+    /// %Part 4.3.4: Work Cited Text -------------------------------------------
+
     private static final String CITE        = "cite";
     /** Text for start of the work(s) cited content. */
     public static final String CITE_STARTER = CITE + AREA_STARTER;
@@ -515,26 +530,28 @@ public final class AuxiliaryData{
     /** Text for the end of the work(s) cited content. */
     public static final String CITE_ENDER   = CITE + AREA_ENDER;
 
+    /// %Part 4.3.5: Title Page Text -------------------------------------------
+
     private static final String TITLE         = "head-";
     /** At top    of a  title  page:          {@value} */
-    public static final String TITLE_TOP     = TITLE  + "top     |";
+    public static final String TITLE_TOP     = TITLE  + "top";
     /** At center of a  title  page:          {@value} */
-    public static final String TITLE_CENTER  = TITLE  + "centre  |";
+    public static final String TITLE_CENTER  = TITLE  + "centre";
     /** At bottom of a  title  page:          {@value} */
-    public static final String TITLE_BOTTOM  = TITLE  + "bottom  |";
+    public static final String TITLE_BOTTOM  = TITLE  + "bottom";
 
-    /** Length of second field:  {@code "{@value TITLE}"#length()} */
-    public static final int ALIGN_START     = TITLE_TOP.length();
+    /// %Part 4.4 Data type and alignment ======================================
+
     /** Alignment right:                      {@value} */
-    public static final String ALIGN_RIGHT  = "right |";
+    public static final String ALIGN_RIGHT  = "right";
     /** Alignment left:                       {@value} */
-    public static final String ALIGN_LEFT   = "left  |";
+    public static final String ALIGN_LEFT   = "left";
     /** Alignment center:                     {@value} */
-    public static final String ALIGN_CENTER = "center|";
+    public static final String ALIGN_CENTER = "center";
     /** Data type text:                       {@value} */
-    public static final String ALIGN_TEXT   = "text  |";
+    public static final String ALIGN_TEXT   = "text";
 
-    /// ========================================================================
-    /// @Part-4: Private Constructor ==========================================-
+    /// @Part.5: Private Constructor ###########################################
+
     private AuxiliaryData(){}
 }

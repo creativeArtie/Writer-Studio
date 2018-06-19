@@ -274,26 +274,26 @@ public class DocumentAssert {
         edit.testRest();
     }
 
-    public <T extends SpanBranch> void call(Class<T> clazz,
+    public <T extends SpanNode<?>> void call(Class<T> clazz,
             Consumer<T> caller, int ... idx) {
         call(false, () -> getChild(clazz, idx), caller, idx);
     }
 
-    public <T extends SpanBranch> void call(boolean verbose, Class<T> clazz,
+    public <T extends SpanNode<?>> void call(boolean verbose, Class<T> clazz,
             Consumer<T> caller, int ... idx) {
         call(verbose, () -> getChild(clazz, idx), caller, idx);
     }
 
-    public <T extends SpanBranch> void call(Supplier<T> supplier,
+    public <T extends SpanNode<?>> void call(Supplier<T> supplier,
             Consumer<T> caller, int ... idx) {
         call(false, supplier, caller, idx);
     }
 
-    public <T extends SpanBranch> void call(Supplier<T> supplier,
+    public <T extends SpanNode<?>> void call(Supplier<T> supplier,
             Consumer<T> caller, Supplier<SpanNode<?>[]> children){
         call(false, supplier, caller, children);
     }
-    public <T extends SpanBranch> void call(boolean verbose, Supplier<T> supplier,
+    public <T extends SpanNode<?>> void call(boolean verbose, Supplier<T> supplier,
             Consumer<T> caller, Supplier<SpanNode<?>[]> children){
         assertAll("runCommand", () -> {
             assertAll("use spans", () -> children.get(),
@@ -306,20 +306,20 @@ public class DocumentAssert {
         });
     }
 
-    public <T extends SpanBranch> void call(boolean verbose,
+    public <T extends SpanNode<?>> void call(boolean verbose,
             Supplier<T> supplier, Consumer<T> caller, int ... idx) {
         assertAll("runCommand", () -> {
             Span target = assertChild(idx);
             assertTrue(target instanceof SpanNode, "Not Branch: " +
                 target.getClass());
             EditAssert edit = new EditAssert(verbose, testDocument,
-                (SpanBranch) target);
+                (SpanNode<?>) target);
             caller.accept(supplier.get());
             edit.testRest();
         });
     }
 
-    public <T extends SpanBranch> T getChild(Class<T> clazz,
+    public <T extends SpanNode<?>> T getChild(Class<T> clazz,
             int ... indexes){
         Span target = assertChild(indexes);
         assertEquals(clazz, target.getClass(), "class");

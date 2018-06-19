@@ -39,6 +39,10 @@ jfx {
     // minimal requirement for jfxNative-task
     vendor = 'CreativeArtie'
     nativeReleaseVersion = "${version}"
+
+    bundleArguments = [
+        licenseFile: 'LICENSE.md'
+    ]
 }
 
 compileJava {

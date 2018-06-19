@@ -114,7 +114,7 @@ public class EditAssert{
             System.out.println("Document Edited------------------------------");
             System.out.println(useDoc);
             System.out.println("SpanBranch Edited----------------------------");
-            System.out.println(expectedEdited);
+            print("intial", expectedEdited);
 
             System.out.println("Edits----------------------------------------");
             print(expectedEdited, actualEdited);
@@ -151,12 +151,14 @@ public class EditAssert{
     private void print(String type, Iterable<SpanNode<?>> list){
         int i = 1;
         for (SpanNode<?> span: list){
-            System.out.println(type + "[" + i++ + "]:\t" + span);
+            System.out.println(type + "[" + i++ + "](" +
+                span.getClass().getSimpleName() + "):\t" + span);
         }
         if (i == 1){
             System.out.println("[]");
         }
     }
+
 
     private Executable search(String name, List<SpanNode<?>> expect,
             List<SpanNode<?>> actual){

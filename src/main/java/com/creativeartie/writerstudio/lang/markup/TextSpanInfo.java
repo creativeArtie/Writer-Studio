@@ -9,16 +9,16 @@ import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
-/**  A {@link TextDataSpan} for meta data in the PDF properties. */
-public class TextDataSpanMeta extends TextDataSpan<ContentSpan>{
+/**  A {@link TextSpan} for meta data in the PDF properties. */
+public final class TextSpanInfo extends TextSpan<ContentSpan>{
 
-    /** Creates a {@link TextDataSpanMeta}.
+    /** Creates a {@link TextSpanInfo}.
      *
      * @param children
      *      span children
-     * @see TextDataParser#parse(SetupPointer)
+     * @see TextParser#parse(SetupPointer)
      */
-    TextDataSpanMeta(List<Span> children){
+    TextSpanInfo(List<Span> children){
         super(children);
     }
 
@@ -28,13 +28,13 @@ public class TextDataSpanMeta extends TextDataSpan<ContentSpan>{
     }
 
     @Override
-    public TextDataType.Type[] listTypes(){
-        return TextDataType.Meta.values();
+    protected TextType[] listTypes(){
+        return TextTypeInfo.values();
     }
 
     @Override
-    public TextDataType.Format getFormat(){
-        return TextDataType.Format.TEXT;
+    public TextDataType getDataType(){
+        return TextDataType.TEXT;
     }
 
     /** Edit the text
@@ -44,7 +44,8 @@ public class TextDataSpanMeta extends TextDataSpan<ContentSpan>{
      */
     public void editText(String text){
         argumentNotNull(text, "text");
-        runCommand(() -> getType().getKeyName() + getFormat().getKeyName() +
+        runCommand(() -> getRowType().getKeyName() + TEXT_SEPARATOR +
+            getDataType().getKeyName() + TEXT_SEPARATOR +
             escapeText(text) + LINED_END);
     }
 
@@ -53,7 +54,7 @@ public class TextDataSpanMeta extends TextDataSpan<ContentSpan>{
      * @param text
      *      text to escape
      * @see #editText(String)
-     * @see WritingData#setMetaText(TextDataType.Meta)
+     * @see WritingData#setMetaText(TextTypeInfo)
      */
     static String escapeText(String text){
         text = CharMatcher.whitespace().trimAndCollapseFrom(text, ' ');

@@ -30,7 +30,7 @@ class SectionContentMain extends SectionContent<LinedSpan> {
         checkNotNull(data, "data");
         MatterArea header = new MatterArea(getPage(), PageAlignment.TOP);
         header.addAll(DivisionTextFormatted.newPrintLines(this,
-            data.getMetaData().getPrint(TextDataType.Area.MAIN_HEADER)
+            data.getMetaData().getMatter(TextTypeMatter.TEXT_HEADER)
         ));
         return header;
     }
@@ -72,8 +72,8 @@ class SectionContentMain extends SectionContent<LinedSpan> {
      * @see #parseSpan(LinedSpan)
      */
     private void addBreak() throws IOException{
-        addLines(getOutputData().getMetaData().getPrint(TextDataType.Area.
-            MAIN_BREAK));
+        addLines(getOutputData().getMetaData().getMatter(TextTypeMatter.
+            TEXT_BREAK));
         paraFirst = true;
     }
 

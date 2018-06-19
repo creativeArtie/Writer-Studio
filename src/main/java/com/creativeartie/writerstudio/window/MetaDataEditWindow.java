@@ -19,16 +19,16 @@ import com.creativeartie.writerstudio.resource.*;
 
 public class MetaDataEditWindow extends Stage{
     private final WritingData writingData;
-    private final TextDataType.Area showType;
+    private final TextTypeMatter showType;
 
     private final InlineCssTextArea textArea;
     private final VBox previewText;
-    private final TreeMap<Integer, ComboBox<TextDataType.Format>> alignChoices;
+    private final TreeMap<Integer, ComboBox<TextDataType>> alignChoices;
     protected static int WIDTH = 650;
     protected static int HEIGHT = 500;
     protected static int AREA_HEIGHT = (500 / 2) - 10;
 
-    public MetaDataEditWindow(TextDataType.Area type, WritingData data){
+    public MetaDataEditWindow(TextTypeMatter type, WritingData data){
         writingData = data;
         showType = type;
         alignChoices = new TreeMap<>();
@@ -48,21 +48,7 @@ public class MetaDataEditWindow extends Stage{
 
         textArea.plainTextChanges().subscribe(value -> {
             String text = textArea.getText();
-            try {
-                writingData.setPrintText(showType, text);
-            } catch (TextAreaLineException except){
-                text = text.substring(0, AuxiliaryData.TOKEN_ESCAPE.length());
-                // TODO better alert dialogue
-                Alert error = new Alert(Alert.AlertType.ERROR);
-                error.setTitle("Text Setting Error");
-                error.setHeaderText("Text cannot ends with a '\\'");
-                error.setContentText("The text will be set as: " + text);
-                try {
-                    writingData.setPrintText(showType, text);
-                } catch (TextAreaLineException ex){
-                    throw new RuntimeException(ex);
-                }
-            }
+            writingData.setMatter(showType, text);
             updatePreview();
         });
 
@@ -73,7 +59,7 @@ public class MetaDataEditWindow extends Stage{
     private InlineCssTextArea initTextArea(GridPane pane){
         InlineCssTextArea area = new InlineCssTextArea();
         String text = "";
-        for (TextDataSpanPrint print: writingData.getPrint(showType)){
+        for (TextSpanMatter print: writingData.getMatter(showType)){
             if (! text.isEmpty()){
                 text += "\n";
             }
@@ -85,10 +71,10 @@ public class MetaDataEditWindow extends Stage{
         return area;
     }
 
-    private Node initCombobox(TextDataSpanPrint line){
-        TextDataType.Format ans = line.getFormat();
-        ComboBox<TextDataType.Format> box = new ComboBox<>();
-        box.getItems().addAll(TextDataType.Format.listAligns());
+    private Node initCombobox(TextSpanMatter line){
+        TextDataType ans = line.getDataType();
+        ComboBox<TextDataType> box = new ComboBox<>();
+        box.getItems().addAll(TextDataType.listAligns());
         box.getSelectionModel().select(ans);
         box.getSelectionModel().selectedItemProperty().addListener((b, o, n) ->{
             line.setFormat(n);
@@ -154,7 +140,7 @@ public class MetaDataEditWindow extends Stage{
 
     private void updatePreview(){
         previewText.getChildren().clear();
-        for (TextDataSpanPrint print: writingData.getPrint(showType)){
+        for (TextSpanMatter print: writingData.getMatter(showType)){
             BorderPane line = new BorderPane();
             line.setLeft(initCombobox(print));
             line.setCenter(TextFlowBuilder.loadMetaText(print));

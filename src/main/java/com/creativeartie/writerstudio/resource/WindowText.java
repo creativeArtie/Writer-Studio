@@ -120,11 +120,11 @@ public enum WindowText {
         return getDisplay(getText("ReferenceData.Example", area.name()));
     }
 
-    public static String getString(TextDataType.Meta meta){
+    public static String getString(TextTypeInfo meta){
         return getDisplay(getText("DocData.Field", meta.name()));
     }
 
-    public static String getString(TextDataType.Area area){
+    public static String getString(TextTypeMatter area){
         return getDisplay(getText("DocData.Matter", area.name()));
     }
 

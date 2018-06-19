@@ -49,7 +49,7 @@ public class WindowMain extends Main{
         button2.setOnAction(event -> about.show());
 
         Button button3 = new Button("Meta Area");
-        Stage meta = new MetaDataEditWindow(TextDataType.Area.FRONT_BOTTOM,
+        Stage meta = new MetaDataEditWindow(TextTypeMatter.FRONT_BOTTOM,
             getStartFile().getMetaData());
         button3.setOnAction(event -> meta.show());
         button3.setDefaultButton(true);

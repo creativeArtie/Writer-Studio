@@ -170,8 +170,8 @@ public final class WritingExporter implements AutoCloseable{
             }
 
             /// Add the document ending lines
-            content.addLines(data.getMetaData().getPrint(TextDataType.Area.
-                MAIN_ENDER));
+            content.addLines(data.getMetaData().getMatter(TextTypeMatter.
+                TEXT_ENDER));
         }
 
         /// Add endnotes pages

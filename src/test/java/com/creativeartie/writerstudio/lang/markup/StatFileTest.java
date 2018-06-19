@@ -12,7 +12,7 @@ import com.creativeartie.writerstudio.lang.markup.BranchSectionAsserts.*;
 import static com.creativeartie.writerstudio.lang.DocumentAssert.*;
 public class StatFileTest {
 
-    private class Stat{
+    private class StatAssert{
 
         private LocalDate recordDate;
         private int publishGoal;
@@ -24,7 +24,7 @@ public class StatFileTest {
         private boolean timeSet = false;
         private Duration timeTotal;
 
-        private Stat(LocalDate date){
+        private StatAssert(LocalDate date){
             recordDate = date;
             publishGoal = 50;
             publishTotal = 0;
@@ -33,29 +33,29 @@ public class StatFileTest {
             timeTotal = Duration.ofSeconds(0);
         }
 
-        private Stat setPublishGoal(int count){
+        private StatAssert setPublishGoal(int count){
             publishGoal = count;
             return this;
         }
 
-        private Stat setPublishTotal(int count){
+        private StatAssert setPublishTotal(int count){
             publishTotal = count;
             publishSet = true;
             return this;
         }
 
-        private Stat setNoteTotal(int count){
+        private StatAssert setNoteTotal(int count){
             noteTotal = count;
             noteSet = true;
             return this;
         }
 
-        private Stat setTimeGoal(int time){
+        private StatAssert setTimeGoal(int time){
             timeGoal = Duration.ofMinutes(time);
             return this;
         }
 
-        private Stat setTimeTotal(int time){
+        private StatAssert setTimeTotal(int time){
             timeTotal = Duration.ofSeconds(time);
             timeSet = true;
             return this;
@@ -65,7 +65,7 @@ public class StatFileTest {
             return publishTotal + noteTotal;
         }
 
-        private int getPublishWritten(Stat last){
+        private int getPublishWritten(StatAssert last){
             return publishTotal - (last == null? 0: last.publishTotal);
         }
 
@@ -84,7 +84,7 @@ public class StatFileTest {
                 ) + "\n";
         }
 
-        void test(DocumentAssert doc, Stat last, int ... indexes){
+        void test(DocumentAssert doc, StatAssert last, int ... indexes){
             int size = 5;
             if (noteSet) size++;
             if (publishSet) size++;
@@ -99,17 +99,17 @@ public class StatFileTest {
         }
     }
 
-    private String buildRaw(List<Stat> stats){
+    private String buildRaw(List<StatAssert> stats){
         StringBuilder raw = new StringBuilder();
         stats.stream().forEach(s -> raw.append(s.getRaw()));
         return raw.toString();
     }
 
-    private void assertAll(List<Stat> expects, WritingStat test){
+    private void assertAll(List<StatAssert> expects, WritingStat test){
         DocumentAssert doc = assertDoc(expects.size(), buildRaw(expects), test);
-        Stat last = null;
+        StatAssert last = null;
         int index = 0;
-        for (Stat expect: expects){
+        for (StatAssert expect: expects){
             expect.test(doc, last, index);
             last = expect;
             index++;
@@ -120,14 +120,14 @@ public class StatFileTest {
     @DisplayName("Create new")
     public void assertNew(){
         WritingStat test = new WritingStat();
-        List<Stat> expect = Arrays.asList(new Stat(LocalDate.now()));
+        List<StatAssert> expect = Arrays.asList(new StatAssert(LocalDate.now()));
         assertAll(expect, test);
     }
 
     @Test
     @DisplayName("Reopen file")
     public void reopen(){
-        List<Stat> expect = Arrays.asList(new Stat(LocalDate.now()));
+        List<StatAssert> expect = Arrays.asList(new StatAssert(LocalDate.now()));
         WritingStat test = new WritingStat(buildRaw(expect));
         assertAll(expect, test);
     }
@@ -139,7 +139,7 @@ public class StatFileTest {
         test.getRecord().setPublishGoal(1000);
         test.getRecord().setTimeGoal(Duration.ofMinutes(45));
 
-        List<Stat> expect = Arrays.asList(new Stat(LocalDate.now())
+        List<StatAssert> expect = Arrays.asList(new StatAssert(LocalDate.now())
             .setPublishGoal(1000).setTimeGoal(45));
         assertAll(expect, test);
     }
@@ -147,24 +147,24 @@ public class StatFileTest {
     @Test
     @DisplayName("Old file")
     public void openOld(){
-        ArrayList<Stat> expect = new ArrayList<>();
-        Stat first = new Stat(LocalDate.now().minusDays(3));
+        ArrayList<StatAssert> expect = new ArrayList<>();
+        StatAssert first = new StatAssert(LocalDate.now().minusDays(3));
         expect.add(first);
         WritingStat test = new WritingStat(buildRaw(expect));
         first.setPublishTotal(0).setNoteTotal(0);
-        expect.add(new Stat(LocalDate.now()));
+        expect.add(new StatAssert(LocalDate.now()));
         assertAll(expect, test);
     }
 
     @Test
     @DisplayName("Old goal file")
     public void openOldGoal(){
-        ArrayList<Stat> expect = new ArrayList<>();
-        Stat first = new Stat(LocalDate.now().minusDays(3));
+        ArrayList<StatAssert> expect = new ArrayList<>();
+        StatAssert first = new StatAssert(LocalDate.now().minusDays(3));
         expect.add(first.setPublishGoal(20).setTimeGoal(45));
         WritingStat test = new WritingStat(buildRaw(expect));
         first.setPublishTotal(0).setNoteTotal(0);
-        expect.add(new Stat(LocalDate.now())
+        expect.add(new StatAssert(LocalDate.now())
             .setPublishGoal(20).setTimeGoal(45));
         assertAll(expect, test);
     }
@@ -177,8 +177,8 @@ public class StatFileTest {
     @Tag("timed")
     @DisplayName("Update today count")
     public void updateDay() throws InterruptedException{
-        ArrayList<Stat> expect = new ArrayList<>();
-        Stat today = new Stat(LocalDate.now())
+        ArrayList<StatAssert> expect = new ArrayList<>();
+        StatAssert today = new StatAssert(LocalDate.now())
             .setPublishTotal(2).setNoteTotal(0).setTimeTotal(19);
         expect.add(today);
         WritingStat test = new WritingStat(buildRaw(expect));
@@ -205,10 +205,10 @@ public class StatFileTest {
     @DisplayName("Pass over today.")
     public void returningToday() throws InterruptedException {
 
-        ArrayList<Stat> expect = new ArrayList<>();
-        expect.add(new Stat(LocalDate.now().minusDays(1))
+        ArrayList<StatAssert> expect = new ArrayList<>();
+        expect.add(new StatAssert(LocalDate.now().minusDays(1))
             .setPublishTotal(2).setNoteTotal(0).setTimeTotal(20));
-        Stat today = new Stat(LocalDate.now())
+        StatAssert today = new StatAssert(LocalDate.now())
             .setPublishTotal(0).setNoteTotal(0).setTimeTotal(0);
         expect.add(today);
         WritingStat test = new WritingStat(buildRaw(expect));
@@ -228,8 +228,8 @@ public class StatFileTest {
     @Test
     @DisplayName("mutiple startWriting calls")
     public void mulitpleStart() throws InterruptedException{
-        ArrayList<Stat> expect = new ArrayList<>();
-        Stat today = new Stat(LocalDate.now())
+        ArrayList<StatAssert> expect = new ArrayList<>();
+        StatAssert today = new StatAssert(LocalDate.now())
             .setPublishTotal(0).setNoteTotal(0).setTimeTotal(0);
         expect.add(today);
         WritingStat test = new WritingStat(buildRaw(expect));
@@ -249,8 +249,8 @@ public class StatFileTest {
     @Test
     @DisplayName("mutiple stopWriting calls")
     public void mulitpleEnd() throws InterruptedException{
-        ArrayList<Stat> expect = new ArrayList<>();
-        Stat today = new Stat(LocalDate.now())
+        ArrayList<StatAssert> expect = new ArrayList<>();
+        StatAssert today = new StatAssert(LocalDate.now())
             .setPublishTotal(0).setNoteTotal(0).setTimeTotal(0);
         expect.add(today);
         WritingStat test = new WritingStat(buildRaw(expect));

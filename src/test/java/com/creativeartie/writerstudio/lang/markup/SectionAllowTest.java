@@ -45,7 +45,7 @@ public class SectionAllowTest {
     @Test
     public void outlineAllowOthers(){
         String text = "abc";
-        assertTrue(SectionSpan.allowChild(text, 3, false));
+        assertFalse(SectionSpan.allowChild(text, 3, false));
     }
 
     @Test

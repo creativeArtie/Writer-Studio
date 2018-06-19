@@ -96,11 +96,10 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
     final void updateParent(){
         clearSpanCache();
         editedChild = true;
-
-        if (this instanceof SpanBranch){
-            getParent().updateParent();
-        } else {
+        if (this instanceof Document){
             ((Document)this).updateDoc();
+        } else {
+            getParent().updateParent();
         }
     }
 
@@ -148,7 +147,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      * @see #updateDoc()
      */
     final void fireRemoveListeners(){
-    fire(spanRemovedListeners);
+        fire(spanRemovedListeners);
         fire(docEditedListeners);
     }
 
