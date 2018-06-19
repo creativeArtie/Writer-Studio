@@ -452,6 +452,7 @@ public final class AuxiliaryData{
     public static final String STAT_ROW_END = "\n";
     public static final CharMatcher STAT_KEY_TEXT = CharMatcher.inRange('A', 'Z')
         .or(CharMatcher.inRange('a', 'z')).or(CharMatcher.is('-'))
+        .or(CharMatcher.whitespace())
         .precomputed();
 
     public static final DateTimeFormatter STAT_DATE = DateTimeFormatter

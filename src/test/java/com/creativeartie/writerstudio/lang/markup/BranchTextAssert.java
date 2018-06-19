@@ -61,6 +61,29 @@ public class BranchTextAssert {
             SpanBranch span, ArrayList<Executable> tests);
     }
 
+    public static final class UnknownAssert
+            extends TextLineAssert<UnknownAssert>{
+
+
+        public UnknownAssert(TextFileTest.TextFileAssert doc){
+            this(doc.getAsserter());
+        }
+
+        public UnknownAssert(DocumentAssert doc){
+            super(UnknownAssert.class, doc, ContentSpan.class);
+            setRow(TextSpanUnkown.TYPE);
+        }
+
+        @Override
+        protected void moreSetup(){}
+
+        @Override
+        protected TextSpanUnkown moreTest(SpanBranch span,
+                ArrayList<Executable> tests){
+            return assertClass(TextSpanUnkown.class);
+        }
+    }
+
     public static final class InfoLineAssert
             extends TextLineAssert<InfoLineAssert>{
 

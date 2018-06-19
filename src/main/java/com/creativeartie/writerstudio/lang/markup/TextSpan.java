@@ -49,7 +49,7 @@ public abstract class TextSpan<T extends SpanBranch> extends SpanBranch{
             if (TextSpan.this instanceof TextSpanUnkown){
                 return TextSpanUnkown.TYPE;
             }
-            String raw = getRaw();
+            String raw = getRaw().trim();
             for (TextType type: listTypes()){
                 if (raw.startsWith(type.getKeyName())){
                     return type;
@@ -78,6 +78,16 @@ public abstract class TextSpan<T extends SpanBranch> extends SpanBranch{
         argumentNotNull(text, "text");
         return AuxiliaryChecker.checkLineEnd(text, isDocumentLast())?
             TextParser.PARSER: null;
+    }
+
+    @Override
+    public final String toString(){
+        String type = this instanceof TextSpanUnkown?
+            leafFromFirst(SpanLeafStyle.FIELD).map(s -> s.getRaw() + "?")
+                .orElse("???"):
+            getRowType().toString();
+        return type + "(" + getDataType().toString() + "):" +
+            getData().toString() + "\n";
     }
 
 }

@@ -23,7 +23,7 @@ enum TextParser implements SetupParser {
         TextType type = null;
         for (TextTypeMatter base: TextTypeMatter.values()){
             /// data to be add to the actual document
-            if (pointer.startsWith(children, SpanLeafStyle.FIELD,
+            if (pointer.trimStartsWith(children, SpanLeafStyle.FIELD,
                     base.getKeyName())){
                 type = base;
                 break;
@@ -32,7 +32,7 @@ enum TextParser implements SetupParser {
         if (type == null){
             for (TextTypeInfo base: TextTypeInfo.values()){
                 /// data to add to the meta properties
-                if (pointer.startsWith(children, SpanLeafStyle.FIELD,
+                if (pointer.trimStartsWith(children, SpanLeafStyle.FIELD,
                         base.getKeyName())){
                     type = base;
                     break;
@@ -48,7 +48,9 @@ enum TextParser implements SetupParser {
 
         /// Get the format type
         for (TextDataType format: TextDataType.values()){
-            if (pointer.startsWith(children, SpanLeafStyle.DATA,
+            if (format == TextDataType.UNKNOWN){
+                pointer.matches(children, SpanLeafStyle.DATA, TEXT_KEY_TEXT);
+            } else if (pointer.trimStartsWith(children, SpanLeafStyle.DATA,
                     format.getKeyName())){
                 break;
             }

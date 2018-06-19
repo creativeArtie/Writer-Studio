@@ -25,7 +25,9 @@ public enum TextDataType{
     /** Align text to the right. */
     RIGHT(ALIGN_RIGHT),
     /** Data is a text type. */
-    TEXT(ALIGN_TEXT);
+    TEXT(ALIGN_TEXT),
+    /** Data type is unkown. */
+    UNKNOWN("");
 
     /** List the text alignment. */
     public static TextDataType[] listAligns(){

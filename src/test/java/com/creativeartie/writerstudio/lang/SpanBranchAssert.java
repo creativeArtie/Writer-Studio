@@ -135,17 +135,16 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
     }
 
     /// Find a child span
-    protected Executable assertChild(Class<? extends SpanBranch> clazz,
+    protected void assertChild(Class<? extends SpanBranch> clazz,
             List<int[]> locations, Supplier<List<? extends SpanBranch>> supplier,
             String message)
     {
-        return () ->
-        {
-            ArrayList<? extends SpanBranch> expects = new ArrayList<>();
+        assertAll(message, () -> {
+
+            ArrayList<SpanBranch> expects = new ArrayList<>();
             ArrayList<Executable> list = new ArrayList<>();
-            for (int[] location: locations)
-            {
-                list.add(() -> {assertDoc.assertChild(clazz, location);});
+            for (int[] location: locations) {
+                expects.add(assertDoc.assertChild(clazz, location));
             }
             assertAll("exepcts", list);
 
@@ -161,30 +160,24 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
                     i++;
                 }
             }
-            assertAll(message, tests);
+            assertAll("main", tests);
 
-        };
+        });
     }
 
-    protected Executable assertChild(Class<? extends SpanBranch> clazz,
+    protected void assertChild(Class<? extends SpanBranch> clazz,
             int[] location, Supplier<Optional<? extends SpanBranch>> supplier,
             String message)
     {
-        return () -> {
-            Optional<? extends SpanBranch> expect = Optional.ofNullable(
-                location != null? null: assertDoc.assertChild(clazz, location)
-            );
-            Optional<? extends SpanBranch> test = supplier.get();
-
-            ArrayList<Executable> tests = new ArrayList<>();
-            if (expect.isPresent()){
-                tests.add(() -> assertTrue(test.isPresent()));
-                tests.add(() -> assertSame(expect.get(), test.orElse(null)));
-            } else {
-                tests.add(() -> assertFalse(test.isPresent()));
-            }
-            assertAll(message, tests);
+        List<int[]> locations = new ArrayList<>();
+        locations.add(location);
+        Supplier<List<? extends SpanBranch>> suppliers = () ->{
+            ArrayList<SpanBranch> ans = new ArrayList<>();
+            Optional<? extends SpanBranch> found = supplier.get();
+            found.ifPresent(s -> ans.add(s));
+            return ans;
         };
+        assertChild(clazz, locations, suppliers, message);
     }
 
 }

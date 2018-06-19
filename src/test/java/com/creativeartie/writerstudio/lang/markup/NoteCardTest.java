@@ -260,7 +260,7 @@ public class NoteCardTest {
         String raw = "!%@see:Note Heading\n!%some note content\n" +
             "!>in-text: Smith, p3";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
-        doc.insert(true, 39, "\\\n", 0, 1);
+        doc.insert(39, "\\\n", 0, 1);
         doc.assertDoc(1, COMMON_NOTE_BASE);
         commonNoteBasic(doc);
     }
