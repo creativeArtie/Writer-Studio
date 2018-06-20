@@ -174,7 +174,7 @@ public class BranchSectionAsserts {
         public void test(SpanBranch span, ArrayList<Executable> tests){
             SectionSpan test = moreTest(span, tests);
 
-            tests.add(() -> assertChild(FormattedSpan.class, sectionHeading,
+            tests.add(() -> assertChild(LinedSpanLevelSection.class, sectionHeading,
                 () -> test.getHeading(), "getHeading()"));
 
             Optional<LinedSpanLevelSection> section = test.getHeading();
@@ -251,9 +251,9 @@ public class BranchSectionAsserts {
 
             tests.add(() -> assertChild(LinedSpan.class, allLines,
                 () -> test.getAllLines(), "getAllLines()"));
-            tests.add(() -> assertChild(LinedSpan.class, spanSections,
+            tests.add(() -> assertChild(SectionSpanHead.class, spanSections,
                 () -> test.getSections(), "getSections()"));
-            tests.add(() -> assertChild(LinedSpan.class, spanScenes,
+            tests.add(() -> assertChild(SectionSpanScene.class, spanScenes,
                 () -> test.getScenes(), "getScenes()"));
             return test;
         }
@@ -287,9 +287,9 @@ public class BranchSectionAsserts {
         public SectionSpan moreTest(SpanBranch span, ArrayList<Executable> tests){
             SectionSpanScene test = assertClass(SectionSpanScene.class);
 
-            tests.add(() -> assertSpan(LinedSpan.class, parentHead,
+            tests.add(() -> assertSpan(SectionSpanHead.class, parentHead,
                 () -> test.getSection(), "getSection()"));
-            tests.add(() -> assertChild(LinedSpan.class, sceneList,
+            tests.add(() -> assertChild(SectionSpanScene.class, sceneList,
                 () -> test.getSubscenes(), "getSubscenes()"));
             return test;
         }

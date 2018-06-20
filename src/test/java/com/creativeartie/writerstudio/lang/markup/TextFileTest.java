@@ -2,6 +2,8 @@ package com.creativeartie.writerstudio.lang.markup;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.*;
+import org.junit.jupiter.params.*;
+import org.junit.jupiter.params.provider.*;
 
 import java.util.*;
 import java.time.*;
@@ -268,7 +270,7 @@ public class TextFileTest {
     public void matterSpaces(){
         String key = "   text-break";
         String text = "  lo  ";
-        String raw = key + "   |center   |" + text + "\n";
+        String raw = key + "   |centre   |" + text + "\n";
 
         TextFileAssert doc = new TextFileAssert(1, raw);
         doc.addMatter(TextTypeMatter.TEXT_BREAK, 0);
@@ -285,7 +287,7 @@ public class TextFileTest {
         info.test(6,             raw,     0);
         main.assertField(0, 13,  key,     0, 0);
         main.assertKey( 13, 17, "   |",      0, 1);
-        main.assertData(17, 23, "center", 0, 2);
+        main.assertData(17, 23, "centre", 0, 2);
         main.assertKey( 23, 27, "   |",   0, 3);
         data.test(1,             text,    0, 4);
         main.assertChild(1,     "  lo  ", 0, 4, 0);
@@ -296,7 +298,7 @@ public class TextFileTest {
 
     @Test
     public void matterBasic(){
-        String raw = "text-break|center|Hello *WORLD*!\n";
+        String raw = "text-break|centre|Hello *WORLD*!\n";
         TextFileAssert doc = new TextFileAssert(1, raw);
         commonMatterSingle(doc);
     }
@@ -321,7 +323,7 @@ public class TextFileTest {
 
     @Test
     public void editMatterEdited(){
-        String raw = "text-break|center|abc\n";
+        String raw = "text-break|centre|abc\n";
         TextFileAssert doc = new TextFileAssert(1, raw);
         doc.getAsserter().call(() -> doc.getDocument(),
             s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Hello *WORLD*!"), 0);
@@ -330,7 +332,7 @@ public class TextFileTest {
 
     @Test
     public void editMatterEditedEscape(){
-        String raw = "text-break|center|abc\n";
+        String raw = "text-break|centre|abc\n";
         TextFileAssert doc = new TextFileAssert(1, raw);
         doc.getAsserter().call(() -> doc.getDocument(),
             s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Hello *WORLD*!\\"), 0);
@@ -349,7 +351,7 @@ public class TextFileTest {
     private void commonMatterSingle(TextFileAssert doc){
         String key = "text-break";
         String text = "Hello *WORLD*!";
-        String raw = key + "|center|" + text + "\n";
+        String raw = key + "|centre|" + text + "\n";
 
         doc.addMatter(TextTypeMatter.TEXT_BREAK, 0);
         MatterLineAssert info = new MatterLineAssert(doc)
@@ -365,7 +367,7 @@ public class TextFileTest {
         info.test(6,             raw,     0);
         main.assertField(0, 10,  key,     0, 0);
         main.assertKey( 10, 11, "|",      0, 1);
-        main.assertData(11, 17, "center", 0, 2);
+        main.assertData(11, 17, "centre", 0, 2);
         main.assertKey( 17, 18, "|",      0, 3);
         data.test(5,             text,    0, 4);
         main.assertChild(1,     "Hello ", 0, 4, 0);
@@ -382,8 +384,8 @@ public class TextFileTest {
 
     @Test
     public void matterDouble(){
-        String raw = "text-break|center|Abc\\*\n" +
-                     "text-break|center|Hello\n";
+        String raw = "text-break|centre|Abc\\*\n" +
+                     "text-break|centre|Hello\n";
         TextFileAssert doc = new TextFileAssert(2, raw);
         commonMatterDouble(doc);
     }
@@ -406,7 +408,7 @@ public class TextFileTest {
 
     @Test
     public void matterDouble1Line(){
-        String raw = "text-break|center|Abc\\*\n";
+        String raw = "text-break|centre|Abc\\*\n";
         TextFileAssert doc = new TextFileAssert(1, raw);
         doc.getAsserter().call(() -> doc.getDocument(),
             s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Abc\\*\nHello"),
@@ -419,8 +421,8 @@ public class TextFileTest {
 
     @Test
     public void matterDouble2Line(){
-        String line1 = "text-break|center|Joy\n";
-        String line2 = "text-break|center|Fun\n";
+        String line1 = "text-break|centre|Joy\n";
+        String line2 = "text-break|centre|Fun\n";
         String raw = line1 + line2;
         TextFileAssert doc = new TextFileAssert(2, raw);
         doc.getAsserter().call(() -> doc.getDocument(),
@@ -434,8 +436,8 @@ public class TextFileTest {
 
     @Test
     public void matterDouble2LineExtra(){
-        String line1 = "text-break|center|Joy\n";
-        String line2 = "text-break|center|Fun\n";
+        String line1 = "text-break|centre|Joy\n";
+        String line2 = "text-break|centre|Fun\n";
         String raw = line1 + line2;
         TextFileAssert doc = new TextFileAssert(2, raw);
         doc.getAsserter().call(() -> doc.getDocument(),
@@ -449,9 +451,9 @@ public class TextFileTest {
 
     @Test
     public void matterDouble3Line(){
-        String line1 = "text-break|center|Joy\n";
-        String line2 = "text-break|center|Fun\n";
-        String line3 = "text-break|center|Cool\n";
+        String line1 = "text-break|centre|Joy\n";
+        String line2 = "text-break|centre|Fun\n";
+        String line3 = "text-break|centre|Cool\n";
         String raw = line1 + line2 + line3;
         TextFileAssert doc = new TextFileAssert(3, raw);
         doc.getAsserter().call(() -> doc.getDocument(),
@@ -468,8 +470,8 @@ public class TextFileTest {
         String key = "text-break";
         String text1 = "Abc\\*";
         String text2 = "Hello";
-        String line1 = key + "|center|" + text1 + "\n";
-        String line2 = key + "|center|" + text2 + "\n";
+        String line1 = key + "|centre|" + text1 + "\n";
+        String line2 = key + "|centre|" + text2 + "\n";
         String raw = line1 + line2;
 
         doc.addMatter(TextTypeMatter.TEXT_BREAK, 0);
@@ -495,7 +497,7 @@ public class TextFileTest {
         matter1.test(6,          line1,    0);
         main.assertField( 0, 10, key,      0, 0);
         main.assertKey(  10, 11, "|",      0, 1);
-        main.assertData( 11, 17, "center", 0, 2);
+        main.assertData( 11, 17, "centre", 0, 2);
         main.assertKey(  17, 18,  "|",     0, 3);
         data1.test(1,           text1,     0, 4);
         main.assertChild(2,     text1,     0, 4, 0);
@@ -507,7 +509,7 @@ public class TextFileTest {
         matter2.test(6,         line2,     1);
         main.assertField(24, 34, key,      1, 0);
         main.assertKey(  34, 35, "|",      1, 1);
-        main.assertData( 35, 41, "center", 1, 2);
+        main.assertData( 35, 41, "centre", 1, 2);
         main.assertKey(  41, 42, "|",      1, 3);
         data2.test(1,           text2,     1, 4);
         main.assertChild(1,     text2,     1, 4, 0);
@@ -518,35 +520,186 @@ public class TextFileTest {
 
     //TODO mix tests
 
-    private void mixed(TextFileAssert doc){
+    @Test
+    public void manyMixed(){
+        String line1 = "head-centre|left|Title\n";
+        String line2 = "meta-author|text|First, last\n";
+        String line3 = "new-version|joy|new-data\n";
+        String line4 = "head-centre|centre|Today date\n";
+
+        String raw = line1 + line2 + line3 + line4;
+        TextFileAssert doc = new TextFileAssert(4, raw);
+        commonMixed(doc);
+    }
+
+    @Test
+    public void editMixed(){
+        String line1 = "head-centre|left|Title\n";
+        String line2 = "meta-author|text|First, last\n";
+        String line3 = "new-version|joy|new-data\n";
+
+        String raw = line1 + line2 + line3;
+        TextFileAssert doc = new TextFileAssert(3, raw);
+
+        doc.getAsserter().call(() -> doc.getDocument(),
+            s -> s.setMatter(TextTypeMatter.FRONT_CENTER, "Title\nToday date"),
+            () -> new SpanNode[]{
+                doc.getDocument(),
+                doc.getDocument().get(0),
+                doc.getDocument().get(2)
+            });
+        commonMixed(doc);
+    }
+
+
+    private void commonMixed(TextFileAssert doc){
+        String key1  = "head-centre";
+        String key2  = "meta-author";
+        String key3  = "new-version";
+
         String text1 = "Title";
         String text2 = "First, last";
         String text3 = "new-data";
         String text4 = "Today date";
-        String line1 = "head-center|left|"  + text1 + "\n";
-        String line2 = "meta-author|text|"   + text2 + "\n";
-        String line3 = "new-version|joy|"    + text3 + "\n";
-        String line4 = "head-center|center|" + text4 + "\n";
+
+        String centre = "centre";
+
+        String line1 = key1 + "|left|"          + text1 + "\n";
+        String line2 = key2 + "|text|"          + text2 + "\n";
+        String line3 = key3 + "|joy|"           + text3 + "\n";
+        String line4 = key1 + "|" + centre +"|" + text4 + "\n";
 
         String raw = line1 + line2 + line3 + line4;
+
         doc.addMatter(TextTypeMatter.FRONT_CENTER, 0);
-        doc.addInfo(  TextTypeInfo.  AUTHOR,       text2);
+        doc.addInfo(TextTypeInfo.AUTHOR, text2);
         doc.addMatter(TextTypeMatter.FRONT_CENTER, 3);
 
         MatterLineAssert matter1 = new MatterLineAssert(doc)
             .setRow(TextTypeMatter.FRONT_CENTER)
-            .setType(TextDataType.CENTER)
-            .setData(0, 5).setIndex(0);
+            .setType(TextDataType.LEFT)
+            .setData(0, 4).setIndex(0);
         FormattedSpanAssert data1 = new FormattedSpanAssert(doc.getAsserter())
             .setPublish(1).setNote(0)
-            .setParsed("Abc*");
+            .setParsed(text1);
+
+        InfoLineAssert info = new InfoLineAssert(doc)
+            .setRow(TextTypeInfo.AUTHOR)
+            .setData(1, 4);
+        ContentAssert data2 = new ContentAssert(doc.getAsserter())
+            .setBegin(false).setBoth(text2)
+            .setEnd(false)  .setCount(2);
+
+        UnknownAssert unknown = new UnknownAssert(doc)
+            .setType(TextDataType.TEXT)
+            .setData(2, 4);
+        ContentAssert data3 = new ContentAssert(doc.getAsserter())
+            .setBegin(false).setBoth(text3)
+            .setEnd(false)  .setCount(1);
+
         MatterLineAssert matter2 = new MatterLineAssert(doc)
             .setRow(TextTypeMatter.FRONT_CENTER)
             .setType(TextDataType.CENTER)
-            .setData(1, 5).setIndex(2);
-        FormattedSpanAssert data2 = new FormattedSpanAssert(doc.getAsserter())
-            .setPublish(1).setNote(0)
-            .setParsed("Hello");
+            .setData(3, 4).setIndex(1);
+        FormattedSpanAssert data4 = new FormattedSpanAssert(doc.getAsserter())
+            .setPublish(2).setNote(0)
+            .setParsed(text4);
 
+        DocumentAssert main = doc.getAsserter();
+
+        doc.test(4,               raw);
+        matter1.test(6,           line1,  0);
+        main.assertField( 0,  11, key1,   0, 0);
+        main.assertKey(  11,  12, "|",    0, 1);
+        main.assertData( 12,  16, "left", 0, 2);
+        main.assertKey(  16,  17, "|",    0, 3);
+        data1.test(1,             text1,  0, 4);
+        main.assertChild(1,       text1,  0, 4, 0);
+        main.assertText(17,  22,  text1,  0, 4, 0, 0);
+        main.assertKey( 22,  23, "\n",    0, 5);
+
+        info.test(6,             line2,  1);
+        main.assertField(23,  34, key2,   1, 0);
+        main.assertKey(  34,  35, "|",    1, 1);
+        main.assertData( 35,  39, "text", 1, 2);
+        main.assertKey(  39,  40, "|",    1, 3);
+        data2.test(1,             text2,  1, 4);
+        main.assertText(40,  51,  text2,  1, 4, 0);
+        main.assertKey( 51,  52, "\n",    1, 5);
+
+        unknown.test(6,           line3,  2);
+        main.assertField(52,  63, key3,   2, 0);
+        main.assertKey(  63,  64, "|",    2, 1);
+        main.assertData( 64,  67, "joy",  2, 2);
+        main.assertKey(  67,  68, "|",    2, 3);
+        data3.test(1,             text3,  2, 4);
+        main.assertText(68,   76, text3,  2, 4, 0);
+        main.assertKey( 76,   77, "\n",    2, 5);
+
+        matter2.test(6,           line4,  3);
+        main.assertField(77,  88, key1,   3, 0);
+        main.assertKey(  88,  89, "|",    3, 1);
+        main.assertData( 89,  95, centre, 3, 2);
+        main.assertKey(  95,  96, "|",    3, 3);
+        data4.test(1,             text4,  3, 4);
+        main.assertChild(1,       text4,  3, 4, 0);
+        main.assertText( 96, 106, text4,  3, 4, 0, 0);
+        main.assertKey( 106, 107, "\n",    3, 5);
+    }
+
+    @ParameterizedTest(name = "TextTypeInfo.{2}")
+    @CsvSource({ "author,Jane Doe,AUTHOR",
+        "keywords,'test1, manuscript',KEYWORDS",
+        "subject,test file,SUBJECT",
+        "title,Some Novel,TITLE"
+    })
+    public void infoTest(String name, String data, String base){
+        String raw = "meta-" + name + "|text|" + data + "\n";
+        TextTypeInfo type = TextTypeInfo.valueOf(base);
+
+        TextFileAssert doc = new TextFileAssert(1, raw);
+        DocumentAssert main = doc.getAsserter();
+
+        doc.addInfo(type, data);
+        InfoLineAssert info = new InfoLineAssert(doc)
+            .setRow(type)
+            .setData(0, 4);
+        ContentAssert content = new ContentAssert(main)
+            .setBegin(false).setBoth(data)
+            .setEnd(false)  .setCount(2);
+
+        doc.test(1, raw);
+        info.test(6, raw, 0);
+        content.test(1, data, 0, 4);
+    }
+
+    @ParameterizedTest(name = "TextTypeMatter.{2}")
+    @CsvSource({ "head-top,Hello,FRONT_TOP",
+        "head-centre,Hello,FRONT_CENTER",
+        "head-bottom,Hello,FRONT_BOTTOM",
+        "text-header,Hello,TEXT_HEADER",
+        "text-break,Hello,TEXT_BREAK",
+        "text-ender,Hello,TEXT_ENDER",
+        "cite-starter,Hello,SOURCE_STARTER"
+    })
+    public void matterTest(String name, String data, String base){
+        String raw = name + "|centre|" + data + "\n";
+        TextTypeMatter type = TextTypeMatter.valueOf(base);
+
+        TextFileAssert doc = new TextFileAssert(1, raw);
+        DocumentAssert main = doc.getAsserter();
+
+        doc.addMatter(type, 0);
+        MatterLineAssert matter = new MatterLineAssert(doc)
+            .setRow(type)
+            .setType(TextDataType.CENTER)
+            .setData(0, 4).setIndex(0);
+        FormattedSpanAssert content = new FormattedSpanAssert(main)
+            .setPublish(1).setNote(0)
+            .setParsed(data);
+
+        doc.test(1, raw);
+        matter.test(6, raw, 0);
+        content.test(1, data, 0, 4);
     }
 }

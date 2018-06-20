@@ -288,7 +288,7 @@ public class LinedCiteTest {
         CiteLineAssert cite = new CiteLineAssert(doc)
             .setInfoType(InfoFieldType.REF)
             .setDataSpan(0, 3).setNote(0)
-            .setDataClass(FormattedSpan.class)
+            .setDataClass(DirectorySpan.class)
             .setCatalogued(CatalogueStatus.NOT_FOUND, builder);
         DirectoryAssert data = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.RESEARCH)

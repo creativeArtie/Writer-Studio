@@ -27,7 +27,8 @@ public class NoteCardTest {
         doc.addId(FormatAgendaTest.buildId("06"), 0);
 
         NoteCardAssert note = new NoteCardAssert(doc).setNote(2)
-            .setCatalogued(CatalogueStatus.UNUSED, builder);
+            .setCatalogued(CatalogueStatus.UNUSED, builder)
+            .setTitle(0, 0, 1);
         NoteLineAssert line = new NoteLineAssert(doc)
             .setFormattedSpan(0, 0, 1).setNote(2);
 
@@ -45,7 +46,8 @@ public class NoteCardTest {
         doc.addId(builder, 0);
 
         NoteCardAssert note = new NoteCardAssert(doc).setNote(1)
-            .setCatalogued(CatalogueStatus.UNUSED, builder).setLookup("{@id}");
+            .setCatalogued(CatalogueStatus.UNUSED, builder).setLookup("{@id}")
+            .setTitle(0, 0, 4);
         NoteLineAssert line = new NoteLineAssert(doc)
             .setFormattedSpan(0, 0, 4).setNote(1)
             .setBuildId(builder).setLookup("{@id}");
@@ -68,17 +70,18 @@ public class NoteCardTest {
 
         NoteCardAssert card = new NoteCardAssert(doc)
             .setNote(2).setLookup("{@loop}")
-            .setCatalogued(CatalogueStatus.READY, builder);
+            .setCatalogued(CatalogueStatus.READY, builder)
+            .setTitle(0, 0, 4);
         NoteLineAssert note = new NoteLineAssert(doc)
             .setNote(1).setFormattedSpan(0, 0, 4)
             .setLookup("{@loop}").setBuildId(builder);
         CiteLineAssert cite1 = new CiteLineAssert(doc)
-            .setNote(0).setDataSpan(0, 1, 4)
+            .setNote(0).setDataSpan(0, 1, 3)
             .setInfoType(InfoFieldType.REF)
             .setCatalogued(CatalogueStatus.READY, builder)
             .setDataClass(DirectorySpan.class);
         CiteLineAssert cite2 = new CiteLineAssert(doc)
-            .setNote(1).setDataSpan(0, 1, 4)
+            .setNote(1).setDataSpan(0, 2, 3)
             .setInfoType(InfoFieldType.IN_TEXT)
             .setDataClass(ContentSpan.class);
 
@@ -109,7 +112,8 @@ public class NoteCardTest {
 
         NoteCardAssert note = new NoteCardAssert(doc).setNote(7)
             .setInText(0, 2, 3).setLookup("{@see}")
-            .setCatalogued(CatalogueStatus.UNUSED, builder);
+            .setCatalogued(CatalogueStatus.UNUSED, builder)
+            .setTitle(0, 0, 4).addContent(0, 1, 1);
         NoteLineAssert line1 = new NoteLineAssert(doc)
             .setNote(2).setFormattedSpan(0, 0, 4)
             .setBuildId(builder).setLookup("{@see}");
@@ -144,13 +148,13 @@ public class NoteCardTest {
 
         NoteCardAssert note1 = new NoteCardAssert(doc)
             .setCatalogued(CatalogueStatus.UNUSED, builder1)
-            .setNote(2);
+            .setNote(2).setTitle(0, 0, 1);
         NoteLineAssert line1 = new NoteLineAssert(doc)
             .setFormattedSpan(0, 0, 1)
             .setNote(2);
         NoteCardAssert note2 = new NoteCardAssert(doc)
             .setCatalogued(CatalogueStatus.UNUSED, builder2)
-            .setNote(1).setLookup("{@ed}");
+            .setNote(1).setLookup("{@ed}").setTitle(1, 0, 4);
         NoteLineAssert line2 = new NoteLineAssert(doc)
             .setFormattedSpan(1, 0, 4)
             .setNote(1).setBuildId(builder2).setLookup("{@ed}");
@@ -204,7 +208,8 @@ public class NoteCardTest {
         IDBuilder builder = doc.addId(buildId(true, "00"), 0);
 
         NoteCardAssert note = new NoteCardAssert(doc).setNote(3)
-            .setCatalogued(CatalogueStatus.UNUSED, builder);
+            .setCatalogued(CatalogueStatus.UNUSED, builder)
+            .setTitle(0, 0, 1).addContent(0, 1, 1);
         NoteLineAssert line1 = new NoteLineAssert(doc)
             .setFormattedSpan(0, 0, 1).setNote(2);
         NoteLineAssert line2 = new NoteLineAssert(doc)
@@ -230,7 +235,8 @@ public class NoteCardTest {
         IDBuilder builder = doc.addId(buildId(true, "00"), 0);
 
         NoteCardAssert note = new NoteCardAssert(doc).setNote(2)
-            .setCatalogued(CatalogueStatus.UNUSED, builder);
+            .setCatalogued(CatalogueStatus.UNUSED, builder)
+            .setTitle(0, 0, 1);
         NoteLineAssert line1 = new NoteLineAssert(doc)
             .setFormattedSpan(0, 0, 1).setNote(2);
 
@@ -254,7 +260,7 @@ public class NoteCardTest {
     }
 
     @Test
-    public void editAddEscepNewline(){
+    public void editAddEscpeNewline(){
         ///           0000000000111111111122222222223333333333 4
         ///           0123456789012345678901234567890123456789 0
         String raw = "!%@see:Note Heading\n!%some note content\n" +

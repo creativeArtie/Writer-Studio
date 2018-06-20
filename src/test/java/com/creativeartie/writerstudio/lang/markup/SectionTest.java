@@ -32,8 +32,8 @@ public class SectionTest {
 
         HeadSectionAssert head = new HeadSectionAssert(doc)
             .setPublishCount(1).setNoteCount(0)
-            .addSection(0, 0)  .setPublishTotal(1)
-            .setNoteTotal(0);
+            .setPublishTotal(1).setNoteTotal(0)
+            .addLine(0, 0);
         ParagraphLineAssert line = new ParagraphLineAssert(doc)
             .setPublish(1).setFormattedSpan(0, 0, 0);
 
@@ -287,7 +287,8 @@ public class SectionTest {
             .setPublishTotal(0).setNoteTotal(1)
             .addNote(0, 0);
         NoteCardAssert note = new NoteCardAssert(doc).setNote(1)
-            .setCatalogued(CatalogueStatus.UNUSED, builder);
+            .setCatalogued(CatalogueStatus.UNUSED, builder)
+            .setTitle(0, 0, 0, 1);
 
         head.test(1, raw, 0);
         note.test(1, raw, 0, 0);

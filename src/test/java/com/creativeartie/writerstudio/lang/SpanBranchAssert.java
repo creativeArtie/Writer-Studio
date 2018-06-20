@@ -89,22 +89,28 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
         /// catalogue testing
         ArrayList<Executable> catalogue = new ArrayList<>();
         if (isCatalogued){
-            catalogue.add(() -> assertTrue(span instanceof Catalogued));
+            catalogue.add(() -> assertTrue(span instanceof Catalogued,
+                "Not Catalogued"));
             /// Set empty if fail before
             Optional<CatalogueIdentity> test = span instanceof Catalogued?
                 ((Catalogued)span).getSpanIdentity(): Optional.empty();
             if (expectId.isPresent()){
-                catalogue.add(() -> assertTrue(test.isPresent()));
-                catalogue.add(() -> assertEquals(expectId.get(), test.get()));
+                catalogue.add(() -> assertTrue(test.isPresent(),
+                    () -> "Not found: " + expectId.get()));
+                catalogue.add(() -> assertEquals(expectId.get(), test.get(),
+                    "Not match"));
             } else {
-                catalogue.add(() -> assertFalse(test.isPresent()));
+                catalogue.add(() -> assertFalse(test.isPresent(),
+                    () -> "Unexpected: " + test.get()));
             }
             catalogue.add(() -> assertEquals(isId, ((Catalogued) span).isId(),
                 "isId()"));
         } else {
-            catalogue.add(() -> assertFalse(span instanceof Catalogued));
+            catalogue.add(() -> assertFalse(span instanceof Catalogued,
+                () -> "Unexpected Catalogued"));
         }
-        catalogue.add(() -> assertEquals(expectStatus, span.getIdStatus()));
+        catalogue.add(() -> assertEquals(expectStatus, span.getIdStatus(),
+            "getIdStatus()"));
         list.add(() -> assertAll("catalogue id", catalogue));
 
         ArrayList<Executable> gets = new ArrayList<>();
@@ -144,7 +150,16 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
             ArrayList<SpanBranch> expects = new ArrayList<>();
             ArrayList<Executable> list = new ArrayList<>();
             for (int[] location: locations) {
-                expects.add(assertDoc.assertChild(clazz, location));
+                if (location == null){
+                    list.add(null);
+                } else {
+                    expects.add(assertDoc.assertChild(clazz, location));
+                }
+            }
+            if (expects.isEmpty()){
+                assertTrue(supplier.get().isEmpty(),
+                    () -> "Unexpected: " + supplier.get());
+                return;
             }
             assertAll("exepcts", list);
 
@@ -160,6 +175,7 @@ public abstract class SpanBranchAssert<T extends SpanBranchAssert>{
                     i++;
                 }
             }
+
             assertAll("main", tests);
 
         });

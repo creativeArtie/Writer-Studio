@@ -136,7 +136,7 @@ public class DocumentAssert {
             int ... indexes){
         Span test = assertChild(indexes);
         assertAll("assertChild: " + test.toString(),
-            () -> assertTrue(test instanceof SpanBranch,        "class"),
+            () -> assertTrue(test instanceof SpanBranch,        "instanceof"),
             () -> assertEquals(text, test.getRaw(),             "getRaw()"),
             () -> assertEquals(size, ((SpanBranch)test).size(), "size()")
         );
@@ -310,7 +310,7 @@ public class DocumentAssert {
             Supplier<T> supplier, Consumer<T> caller, int ... idx) {
         assertAll("runCommand", () -> {
             Span target = assertChild(idx);
-            assertTrue(target instanceof SpanNode, "Not Branch: " +
+            assertTrue(target instanceof SpanNode, "Traget not Branch: " +
                 target.getClass());
             EditAssert edit = new EditAssert(verbose, testDocument,
                 (SpanNode<?>) target);

@@ -20,7 +20,7 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 public enum TextDataType{
     /** Align text to the left. */
     LEFT(ALIGN_LEFT),
-    /** Align text to the center. */
+    /** Align text to the centre. */
     CENTER(ALIGN_CENTER),
     /** Align text to the right. */
     RIGHT(ALIGN_RIGHT),

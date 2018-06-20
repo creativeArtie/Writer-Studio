@@ -536,7 +536,7 @@ public final class AuxiliaryData{
     private static final String TITLE         = "head-";
     /** At top    of a  title  page:          {@value} */
     public static final String TITLE_TOP     = TITLE  + "top";
-    /** At center of a  title  page:          {@value} */
+    /** At centre of a  title  page:          {@value} */
     public static final String TITLE_CENTER  = TITLE  + "centre";
     /** At bottom of a  title  page:          {@value} */
     public static final String TITLE_BOTTOM  = TITLE  + "bottom";
@@ -547,8 +547,8 @@ public final class AuxiliaryData{
     public static final String ALIGN_RIGHT  = "right";
     /** Alignment left:                       {@value} */
     public static final String ALIGN_LEFT   = "left";
-    /** Alignment center:                     {@value} */
-    public static final String ALIGN_CENTER = "center";
+    /** Alignment centre:                     {@value} */
+    public static final String ALIGN_CENTER = "centre";
     /** Data type text:                       {@value} */
     public static final String ALIGN_TEXT   = "text";
 
