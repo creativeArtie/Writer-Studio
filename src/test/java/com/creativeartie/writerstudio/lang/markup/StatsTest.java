@@ -227,55 +227,56 @@ public class StatsTest {
 
     @Test
     public void basicTripleData(){
-        String raw = getDate() + "|time-count:PT20S|publish-count:20|note-count:20|\n";
+        String raw = getDate() + "|publish-count:20|note-count:20|time-count:PT2S|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
-        commonWordCounter(doc);
+        commonWordCounter(doc, false);
     }
 
     @Test
     @Tag("timed")
     public void editText1() throws Exception{
-        String raw = getDate() + "|time-count:PT18S|publish-count:20|note-count:2|\n";
+        String raw = getDate() + "|publish-count:20|note-count:2|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.startWriting(20, 2), () -> new SpanNode<?>[]{
-                doc.getChild(StatSpanDataInt.class, 0, 7),
-                doc.getChild(StatSpanDataInt.class, 0, 8)
+                doc.getChild(StatSpanDataInt.class, 0, 2),
+                doc.getChild(StatSpanDataInt.class, 0, 3)
         });
+        doc.printDocument();
         Thread.sleep(2000);
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
-                doc.getChild(StatSpanDataTime.class, 0, 6),
-                doc.getChild(StatSpanDataInt.class, 0, 7),
-                doc.getChild(StatSpanDataInt.class, 0, 8)
+                doc.getChild(StatSpanDay.class, 0),
+                doc.getChild(StatSpanDataInt.class, 0, 2),
+                doc.getChild(StatSpanDataInt.class, 0, 3)
         });
-        commonWordCounter(doc);
+        commonWordCounter(doc, false);
     }
 
     @Test
     @Tag("timed")
     public void editText2() throws Exception{
-        String raw = getDate() + "|time-count:PT18S|publish-count:2|\n";
+        String raw = getDate() + "|time-count:PT1S|publish-count:2|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
         doc.call(true, () -> doc.getChild(StatSpanDay.class, 0),
             s -> s.startWriting(20, 2), () -> new SpanNode<?>[]{
-                doc.getChild(StatSpanDataInt.class, 0, 7),
+                doc.getChild(StatSpanDataInt.class, 0, 3),
                 doc.getChild(StatSpanDay.class, 0)
         });
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
-                doc.getChild(StatSpanDataTime.class, 0, 6),
-                doc.getChild(StatSpanDataInt.class, 0, 7),
-                doc.getChild(StatSpanDataInt.class, 0, 8)
+                doc.getChild(StatSpanDataTime.class, 0, 2),
+                doc.getChild(StatSpanDataInt.class, 0, 3),
+                doc.getChild(StatSpanDataInt.class, 0, 4)
         });
-        commonWordCounter(doc);
+        commonWordCounter(doc, true);
     }
 
     @Test
     @Tag("timed")
     @Tag("heavy")
-    @DisplayName("Add all data")
+    @DisplayName("Add from nothing")
     public void editAllNew1() throws Exception{
         String base = getDate() + "|";
         String raw = base + "\n";
@@ -286,102 +287,83 @@ public class StatsTest {
                 doc.getChild(StatSpanDay.class, 0),
         });
 
-        Thread.sleep(20000);
-        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
-            s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
-                doc.getChild(StatSpanDay.class, 0),
-                doc.getChild(StatSpanDataInt.class, 0, 6),
-                doc.getChild(StatSpanDataInt.class, 0, 7)
-        });
-
-        raw = base + "publish-count:20|note-count:20|time-count:PT20S|\n";
-        doc.assertDoc(1, raw);
-
-        StatMainAssert date = new StatMainAssert(doc)
-            .setTimeGoal(Duration.ofSeconds(20))
-            .setNoteTotal(20).setPublishTotal(20);
-
-        IntStatAssert out = new IntStatAssert(doc)
-            .setType(StatTypeData.PUBLISH_TOTAL)
-            .setData(20);
-        IntStatAssert note = new IntStatAssert(doc)
-            .setType(StatTypeData.NOTE_TOTAL)
-            .setData(20);
-        TimeStatAssert time = new TimeStatAssert(doc)
-            .setType(StatTypeData.TIME_TOTAL)
-            .setData(Duration.ofSeconds(20));
-
-        date.test(6, raw,                 0);
-        out.test( 4, "publish-count:20|",  0, 6);
-        note.test(4, "note-count:20|",     0, 7);
-        time.test(4, "time-count:PT20S|",  0, 8);
-    }
-
-    @Test
-    @DisplayName("Add all data")
-    public void editAllNew2() throws Exception{
-        String raw = getDate() + "|time-count:PT20S|\n";
-        DocumentAssert doc = assertDoc(1, raw, PARSER);
-
-        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
-            s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
-                doc.getChild(StatSpanDay.class, 0),
-        });
-        commonWordCounter(doc);
-    }
-
-    @Test
-    @DisplayName("Update & add data.")
-    public void editStopCall() throws Exception{
-        String raw = getDate() + "|time-count:PT20S|publish-count:2|\n";
-        DocumentAssert doc = assertDoc(1, raw, PARSER);
-
+        Thread.sleep(2000);
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
                 doc.getChild(StatSpanDay.class, 0),
                 doc.getChild(StatSpanDataInt.class, 0, 3)
         });
-        commonWordCounter(doc);
+
+        commonWordCounter(doc, false);
     }
 
     @Test
-    @DisplayName("Update all data.")
+    @DisplayName("Add all data")
+    public void editAllNew2() throws Exception{
+        String raw = getDate() + "|time-count:PT2S|\n";
+        DocumentAssert doc = assertDoc(1, raw, PARSER);
+
+        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
+            s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
+                doc.getChild(StatSpanDay.class, 0),
+        });
+        commonWordCounter(doc, true);
+    }
+
+    @Test
+    public void editStopCall() throws Exception{
+        String raw = getDate() + "|publish-count:2|note-count:2|time-count:PT2S|\n";
+        DocumentAssert doc = assertDoc(1, raw, PARSER);
+
+        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
+            s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
+                doc.getChild(StatSpanDataInt.class, 0, 2),
+                doc.getChild(StatSpanDataInt.class, 0, 3)
+        });
+        commonWordCounter(doc, false);
+    }
+
+    @Test
     public void editStartCall() throws Exception{
-        String raw = getDate() + "|time-count:PT20S|publish-count:20|note-count:2|\n";
+        String raw = getDate() + "|publish-count:20|note-count:2|time-count:PT2S|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
 
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.startWriting(20, 20), () -> new SpanNode<?>[]{
+                doc.getChild(StatSpanDataInt.class, 0, 2),
                 doc.getChild(StatSpanDataInt.class, 0, 3),
-                doc.getChild(StatSpanDataInt.class, 0, 4),
         });
-        commonWordCounter(doc);
+        commonWordCounter(doc, false);
     }
 
     @Test
     public void editBothAdded() throws Exception{
-        String raw = getDate() + "|time-count:PT20S|\n";
+        String raw = getDate() + "|time-count:PT2S|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
 
         doc.call(() -> doc.getChild(StatSpanDay.class, 0),
             s -> s.startWriting(20, 20), () -> new SpanNode<?>[]{
                 doc.getChild(StatSpanDay.class, 0)
         });
-        commonWordCounter(doc);
+        commonWordCounter(doc, true);
     }
 
-    private void commonWordCounter(DocumentAssert doc){
-        String raw = getDate() + "|time-count:PT20S|publish-count:20|note-count:20|\n";
+    private void commonWordCounter(DocumentAssert doc, boolean has){
+        String in = "time-count:PT2S|";
+        String data = (has? in: "") +
+            "publish-count:20|note-count:20|" +
+            (has? "": in);
+        String raw = getDate() + "|" + data + "\n";
         doc.assertDoc(1, raw);
 
         StatMainAssert date = new StatMainAssert(doc)
-            .setWriteTime(Duration.ofSeconds(20))
+            .setWriteTime(Duration.ofSeconds(2))
             .setNoteTotal(20).setPublishTotal(20)
             .setGrand(40).setWritten(20);
 
         TimeStatAssert time = new TimeStatAssert(doc)
             .setType(StatTypeData.TIME_TOTAL)
-            .setData(Duration.ofSeconds(20));
+            .setData(Duration.ofSeconds(2));
         IntStatAssert out = new IntStatAssert(doc)
             .setType(StatTypeData.PUBLISH_TOTAL)
             .setData(20);
@@ -390,8 +372,8 @@ public class StatsTest {
             .setData(20);
 
         date.test(6, raw,                 0);
-        time.test(4, "time-count:PT20S|",  0, 2);
-        out.test( 4, "publish-count:20|",  0, 3);
-        note.test(4, "note-count:20|",     0, 4);
+        out.test( 4, "publish-count:20|", 0, (has? 3: 2));
+        note.test(4, "note-count:20|",    0, (has? 4: 3));
+        time.test(4, "time-count:PT2S|",  0, (has? 2: 4));
     }
 }

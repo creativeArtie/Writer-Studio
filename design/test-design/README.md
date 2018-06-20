@@ -13,7 +13,7 @@ for (int i = 1; i <= FILE_SIZE; i++){
 }
 ~~~
 
-The resulting file is then input into [section_debug.py](section_debug.py). The bash script 
+The resulting file is then input into [section_debug.py](section_debug.py). The bash script
 [test_section_debug_py.sh](test_section_debug_py.sh) will do this part automatically.
 
 Once done, the file will needed to be copy into
@@ -21,3 +21,9 @@ Once done, the file will needed to be copy into
 
 # File for test file [pdf-stress.txt](src/test/resources/pdf-stress.txt)
 This file is made from repeating [stressTestBase.txt](), (maybe).
+
+# Manual Tests For `src.creativeartie.writerstudio.window` package
+
+List of tests
+[ ] add each line
+[ ] create heading and select

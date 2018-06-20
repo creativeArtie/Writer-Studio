@@ -129,86 +129,33 @@ public abstract class SectionSpan extends SpanBranch {
 
     @Override
     protected final SetupParser getParser(String text){
-        argumentNotNull(text, "text");
-        if (AuxiliaryChecker.checkSectionEnd(text, isDocumentLast()) &&
-                checkStart(text)){
+        if (AuxiliaryChecker.checkSectionEnd(text, isDocumentLast())){
+            boolean join = false;
+            boolean first = true;
+            for (String line: Splitter.on(LINED_END).split(text)){
+                System.out.println(line);
+                if (first){
+                    boolean pass = line.startsWith(spanReparser.getStarter()) ||
+                        (isDocumentFirst() &&
+                        spanReparser == SectionParseHead.SECTION_1
+                        );
+                    System.out.println(line.startsWith(spanReparser.getStarter()));
+                    System.out.println(isDocumentFirst() && spanReparser == SectionParseHead.SECTION_1);
+                    if (! pass) return null;
+                    first = false;
+                } else if (join) join = false;
+                else if (! checkChildLine(line, spanReparser)) return null;
 
-            /// Line per line checking
-            boolean checking = true;
-            for (String str: Splitter.on(LINED_END).split(text)){
-                if (checking){
-                    /// already checked or last line ends with escape
-                    checking = false;
-                    continue;
-                }
-                if (! allowChild(str, getLevel(), this instanceof
-                        SectionSpanHead)){
-                    /// not descendant
-                    return null;
-                }
-                if (str.endsWith(TOKEN_ESCAPE)){
-                    checking = true;
+                if (line.endsWith(TOKEN_ESCAPE)){
+                    join = true;
                 }
             }
-
-        /// returns
-        } else {
-            return null;
+            return spanReparser;
         }
-        return spanReparser;
+        return null;
     }
 
-    /** Check if the first line can be this span's child.
-     *
-     * The child classes will call {@link #allowChild(String, int, boolean)}
-     * accept for heading 1.
-     *
-     * @param text
-     *      new text
-     * @return anwser
-     * @see #getParser(String)
-     */
-    protected abstract boolean checkStart(String text);
-
-    /** Check if the line can be this span's child.
-     *
-     * @param text
-     *      new text
-     * @param allowed
-     *      high allowed level
-     * @param heading
-     *      is heading
-     * @return answer
-     * @see #checkStart(String)
-     * @see #getPaser(String)
-     */
-    static final boolean allowChild(String text, int allowed, boolean heading){
-        argumentNotNull(text, "text");
-        argumentClose(allowed, "allowed", 0, LEVEL_MAX - 1);
-
-        /// check outline
-        List<String> starters = LEVEL_STARTERS.get(LinedParseLevel.OUTLINE);
-        for (int i = LEVEL_MAX - 1; i >= 0; i--){
-            if (text.startsWith(starters.get(i))){
-                /// if (text == outline)
-                return heading? true : allowed < i + 1;
-            }
-        }
-
-        /// if (outline) { don't check heading; }
-        if (! heading) return false;
-
-        /// check heading
-        starters = LEVEL_STARTERS.get(LinedParseLevel.HEADING);
-        for (int i = LEVEL_MAX - 1; i >= 0; i--){
-            if (text.startsWith(starters.get(i))){
-                /// if (text == heading)
-                return heading? allowed < i + 1: false;
-            }
-        }
-        /// if (text == others)
-        return true;
-    }
+    protected abstract boolean checkChildLine(String text, SectionParser parser);
 
     /// %Part 4: To String Function ############################################
 

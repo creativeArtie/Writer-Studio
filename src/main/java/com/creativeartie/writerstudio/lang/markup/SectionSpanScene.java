@@ -84,9 +84,14 @@ public final class SectionSpanScene extends SectionSpan {
     }
 
     @Override
-    protected boolean checkStart(String text){
-        argumentNotNull(text, "text");
-        return allowChild(text, getLevel() - 1, false);
+    protected boolean checkChildLine(String line, SectionParser parser){
+        SectionParseScene check = (SectionParseScene) parser;
+        for (int i = check.ordinal(); i >= 0;i--){
+            if ( line.startsWith(SectionParseScene.values()[i].getStarter()) ){
+                return false;
+            }
+        }
+        return ! line.startsWith(SectionParseHead.SECTION_1.getStarter());
     }
 
     @Override

@@ -132,14 +132,14 @@ public final class SectionSpanHead extends SectionSpan {
     }
 
     @Override
-    protected boolean checkStart(String text){
-        argumentNotNull(text, "text");
-
-        if (getLevel() == 1 && isDocumentFirst()){
-            /// Skipping checking when this is the first
-            return true;
+    protected boolean checkChildLine(String line, SectionParser parser){
+        SectionParseHead check = (SectionParseHead) parser;
+        for (int i = check.ordinal(); i <= 0;i--){
+            if ( line.startsWith(SectionParseHead.values()[i].getStarter()) ){
+                return false;
+            }
         }
-        return allowChild(text, getLevel() - 1, true);
+        return true;
     }
 
     @Override

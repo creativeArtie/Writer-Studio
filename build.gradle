@@ -43,6 +43,8 @@ jfx {
     bundleArguments = [
         licenseFile: 'LICENSE.md'
     ]
+
+    // runAppParameter = '--test=base'
 }
 
 compileJava {

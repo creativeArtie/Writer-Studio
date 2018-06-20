@@ -26,7 +26,7 @@ public class EditAssert{
     private final ArrayList<SpanNode<?>> expectedRemoves;
     private final ArrayList<SpanNode<?>> actualRemoves;
 
-    EditAssert(boolean show, Document doc, SpanNode<?> ... edits){
+    public EditAssert(boolean show, Document doc, SpanNode<?> ... edits){
         showEdits = show;
         useDoc = doc;
 
@@ -108,7 +108,7 @@ public class EditAssert{
 
     /// %Part 3: Assertion Calls ###############################################
 
-    void testRest(){
+    public void testRest(){
         if (showEdits) {
             System.out.println("+++++++++++++++++++++++++++++++++++++++++++++");
             System.out.println("Document Edited------------------------------");

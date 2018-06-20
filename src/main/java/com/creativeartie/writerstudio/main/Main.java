@@ -1,6 +1,7 @@
 package com.creativeartie.writerstudio.main;
 
 import java.io.*; // IOException;
+import java.util.*;
 import javafx.application.*;  // Appplication;
 import javafx.scene.*; // Scene
 import javafx.scene.control.*;
@@ -53,6 +54,7 @@ public class Main extends Application{
             /// Proper program shut down
             mainStage.close();
             Platform.exit();
+            System.exit(-1);
         }
     }
 
