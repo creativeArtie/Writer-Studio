@@ -13,9 +13,6 @@ public class SectionTest {
     private static String COMMON_DOC = "=Chapter 1\n==Section 1\n" +
         "section 1 text\n!# outline\n=Chapter 2\nsome text\n";
 
-    /// TODO? test SectionSpan#checkStart() but it is a simplish method with
-    ///     loads of tests for the methods used in this method
-
     @Test
     public void sectionWithStuff(){
         DocumentAssert doc = assertDoc(2, COMMON_DOC, PARSER);

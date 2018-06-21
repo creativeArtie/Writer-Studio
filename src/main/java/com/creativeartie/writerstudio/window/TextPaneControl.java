@@ -71,7 +71,9 @@ class TextPaneControl extends TextPaneView {
         if (position == getTextArea().getLength()){
             getTextArea().end(NavigationActions.SelectionPolicy.CLEAR);
         } else {
-            getTextArea().moveTo(position);
+            char found = writingText.map(w -> w.getRaw().charAt(position))
+                .orElse((char) 0);
+            getTextArea().moveTo(position - (found == '\n'? 1: 0));
         }
     }
 

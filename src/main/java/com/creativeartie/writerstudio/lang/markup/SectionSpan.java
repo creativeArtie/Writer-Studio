@@ -133,15 +133,8 @@ public abstract class SectionSpan extends SpanBranch {
             boolean join = false;
             boolean first = true;
             for (String line: Splitter.on(LINED_END).split(text)){
-                System.out.println(line);
                 if (first){
-                    boolean pass = line.startsWith(spanReparser.getStarter()) ||
-                        (isDocumentFirst() &&
-                        spanReparser == SectionParseHead.SECTION_1
-                        );
-                    System.out.println(line.startsWith(spanReparser.getStarter()));
-                    System.out.println(isDocumentFirst() && spanReparser == SectionParseHead.SECTION_1);
-                    if (! pass) return null;
+                    if (! checkFirst(line, spanReparser)) return null;
                     first = false;
                 } else if (join) join = false;
                 else if (! checkChildLine(line, spanReparser)) return null;
@@ -155,6 +148,7 @@ public abstract class SectionSpan extends SpanBranch {
         return null;
     }
 
+    protected abstract boolean checkFirst(String text, SectionParser parser);
     protected abstract boolean checkChildLine(String text, SectionParser parser);
 
     /// %Part 4: To String Function ############################################

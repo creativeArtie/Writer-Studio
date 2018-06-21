@@ -25,5 +25,22 @@ This file is made from repeating [stressTestBase.txt](), (maybe).
 # Manual Tests For `src.creativeartie.writerstudio.window` package
 
 List of tests
-[ ] add each line
-[ ] create heading and select
+
+[ ] create the following things, then (1) select them; and (2) edit and reselect.
+    [ ] heading
+    [ ] note (select by clicking edit)
+    [ ] agenda
+    [ ] links/bookmarks
+    [ ] footnote
+    [ ] endnote
+[ ] delete all lines
+[ ] add character...
+    [ ] from empty document
+    [ ] at the beginning of the document
+    [ ] at the middle of the document
+    [ ] at the end of the document
+[ ] create 2 notes and select one and edit the other
+[ ] (more combination of editing and selecting)
+
+No need to test each type of span as there is a customized test suite that does
+this automatically by `./gradlew testAll`.
