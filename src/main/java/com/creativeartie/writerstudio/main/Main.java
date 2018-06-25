@@ -9,7 +9,7 @@ import javafx.stage.*; // Stage
 
 import com.creativeartie.writerstudio.lang.markup.*; // WritingFile;
 import com.creativeartie.writerstudio.resource.*; // WindowText
-import com.creativeartie.writerstudio.window.*; // WriterSceneControl;
+import com.creativeartie.writerstudio.fxgui.*; // WriterSceneControl;
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
@@ -88,6 +88,7 @@ public class Main extends Application{
      * @return answer
      */
     protected WritingFile getStartFile() throws IOException{
-        return WritingFile.newFile();
+        return WritingFile.newSampleFile(new File("../../../src/back/resources/help-text.txt"));
+        //return WritingFile.newFile();
     }
 }
