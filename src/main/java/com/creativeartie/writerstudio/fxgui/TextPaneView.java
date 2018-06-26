@@ -27,6 +27,7 @@ abstract class TextPaneView extends BorderPane {
     private final SimpleObjectProperty<WritingText> writingText;
     private final SimpleObjectProperty<WritingStat> writingStat;
     private final SimpleBooleanProperty textReady;
+    private final SimpleObjectProperty<SpanBranch> lastSelected;
 
     private final ReadOnlyObjectWrapper<PlainTextChange> textChanged;
     private final ReadOnlyIntegerWrapper caretPosition;
@@ -39,6 +40,7 @@ abstract class TextPaneView extends BorderPane {
         writingText = new SimpleObjectProperty<>(this, "writingText");
         writingStat = new SimpleObjectProperty<>(this, "writingStat");
         textReady = new SimpleBooleanProperty(this, "textReady");
+        lastSelected = new SimpleObjectProperty<>(this, "lastSelected");
 
         textChanged = new ReadOnlyObjectWrapper<>(this, "textChanged");
         caretPosition = new ReadOnlyIntegerWrapper(this, "caretPosition");
@@ -147,6 +149,19 @@ abstract class TextPaneView extends BorderPane {
     public boolean isTextReady(){
         return textReady.getValue();
     }
+
+    public SimpleObjectProperty<SpanBranch> lastSelectedProperty(){
+        return lastSelected;
+    }
+
+    public SpanBranch getLastSelected(){
+        return lastSelected.getValue();
+    }
+
+    public void setLastSelected(SpanBranch span){
+        lastSelected.setValue(span);
+    }
+
 
     public ReadOnlyObjectProperty<PlainTextChange> textChangedProperty(){
         return textChanged.getReadOnlyProperty();

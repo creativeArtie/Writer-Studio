@@ -1,10 +1,7 @@
-package com.creativeartie.writerstudio.window;
+package com.creativeartie.writerstudio.fxgui;
 
-import java.util.*;
-import javafx.collections.*;
 import javafx.beans.property.*;
 
-import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.resource.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.CURLY_KEY;

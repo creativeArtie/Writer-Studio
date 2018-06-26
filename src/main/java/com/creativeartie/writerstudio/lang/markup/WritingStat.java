@@ -66,9 +66,7 @@ public class WritingStat extends Document{
     private void checkDay(int publish, int note){
         StatSpanDay last = getRecord();
         if (! LocalDate.now().equals(last.getRecordDate())){
-            System.out.println(last.getTimeGoal());
             last.stopWriting(publish, note);
-            System.out.println(last.getTimeGoal());
             runCommand(() -> getRaw() + createNewDay(last));
         }
     }

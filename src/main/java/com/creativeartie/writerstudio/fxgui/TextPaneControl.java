@@ -5,6 +5,8 @@ import java.time.format.*;
 import java.util.*;
 import javafx.animation.*;
 
+import org.fxmisc.richtext.*;
+
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.resource.*;
@@ -28,6 +30,7 @@ final class TextPaneControl extends TextPaneView {
         caretPositionProperty().addListener(
             (d, o, n) -> updatePosition(n.intValue())
         );
+        lastSelectedProperty().addListener((d, o, n) -> updatePosition(n));
         new AnimationTimer(){
             @Override public void handle(long now) {updateTime();}
         }.start();
@@ -74,9 +77,25 @@ final class TextPaneControl extends TextPaneView {
         }
     }
 
+    private void updatePosition(SpanBranch location){
+        if (location == null) return;
+        if (! isTextReady()) return;
+        setTextReady(false);
+        int position = location.getEnd();
+        if (position == getTextArea().getLength()){
+            getTextArea().end(NavigationActions.SelectionPolicy.CLEAR);
+        } else {
+            WritingText text = getWritingText();
+            char found = text == null? (char) 0: text.getRaw().charAt(position - 1);
+            getTextArea().moveTo(position - (found == '\n'? 1: 0));
+        }
+        returnFocus();
+        setTextReady(true);
+        updatePosition(position);
+    }
+
     private void updatePosition(int location){
         if (! isTextReady()) return;
-
         setTextReady(false);
         getLineTypeLabel().setText(Optional.ofNullable(getWritingText())
             .flatMap(w -> w.getLeaf(location))

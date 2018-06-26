@@ -1,20 +1,13 @@
 package com.creativeartie.writerstudio.fxgui;
 
 import javafx.scene.control.*;
-import javafx.scene.text.*;
-import javafx.scene.layout.*;
-import javafx.beans.property.*;
-import javafx.beans.binding.*;
 import java.util.function.*;
-
-import java.util.*;
 
 import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.resource.*;
-import com.creativeartie.writerstudio.main.*;
 
 /**
  * A label that show hints and can change style base on the position of the

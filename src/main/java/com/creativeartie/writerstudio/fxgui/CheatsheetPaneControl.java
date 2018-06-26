@@ -1,17 +1,8 @@
 package com.creativeartie.writerstudio.fxgui;
 
-import javafx.scene.control.*;
-import javafx.scene.text.*;
-import javafx.scene.layout.*;
-import javafx.beans.property.*;
-import javafx.beans.binding.*;
-
 import java.util.*;
 
-import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.main.*;
-import com.creativeartie.writerstudio.resource.*;
 
 /**
  * Controller for the Cheatsheet Pane

@@ -8,7 +8,9 @@ import javafx.beans.property.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
 
+import com.google.common.collect.*;
 
+import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.resource.*;
 
@@ -16,12 +18,14 @@ abstract class WriterSceneView extends BorderPane{
     private MenuBarMainControl mainMenuBar;
     private TextPaneControl textPane;
     private CheatsheetPaneControl cheatsheetPane;
+    private List<TableDataControl<?>> tableTabs;
 
-    private final SimpleObjectProperty<WritingFile> writingFile;
+    private final ReadOnlyObjectWrapper<WritingFile> writingFile;
     private final ReadOnlyObjectWrapper<WritingText> writingText;
     private final ReadOnlyObjectWrapper<WritingStat> writingStat;
     private final ReadOnlyBooleanWrapper textReady;
     private final ReadOnlyIntegerWrapper caretPosition;
+    private final SimpleObjectProperty<SpanBranch> lastSelected;
 
     WriterSceneView(Stage window){
         getStylesheets().add(FileResources.getMainCss());
@@ -29,12 +33,14 @@ abstract class WriterSceneView extends BorderPane{
         setTop(buildMainMenu(window));
         setCenter(buildMainSplitPane());
 
-        writingFile = new SimpleObjectProperty<>(this, "writingFile");
+        writingFile = new ReadOnlyObjectWrapper<>(this, "writingFile");
         writingStat = new ReadOnlyObjectWrapper<>(this, "writingStat");
         writingText = new ReadOnlyObjectWrapper<>(this, "writingText");
         caretPosition = new ReadOnlyIntegerWrapper(this, "caretPosition");
         textReady = new ReadOnlyBooleanWrapper(this, "textReady");
+        lastSelected = new SimpleObjectProperty<>(this, "lastSelected");
 
+        writingFile.bind(mainMenuBar.writingFileProperty());
         writingStat.bind(Bindings.createObjectBinding(
             () -> Optional.ofNullable(getWritingFile())
                 .map(f -> f.getRecords())
@@ -72,7 +78,33 @@ abstract class WriterSceneView extends BorderPane{
 
     private final TabPane buildTopTabs(){
         TabPane top = buildCommonTab();
+        ImmutableList.Builder<TableDataControl<?>> builder = ImmutableList
+            .builder();
+        ArrayList<Tab> tabs = new ArrayList<>();
+        tabs.add(buildTab(
+            new TableAgendaPane(), WindowText.TAB_AGENDA, builder
+        ));
+        tabs.add(buildTab(
+            new TableLinkPane(), WindowText.TAB_LINK, builder
+        ));
+        tabs.add(buildTab(
+            new TableNotePane(DirectoryType.FOOTNOTE), WindowText.TAB_FOOTNOTE,
+            builder
+        ));
+        tabs.add(buildTab(
+            new TableNotePane(DirectoryType.ENDNOTE), WindowText.TAB_ENDNOTE,
+            builder
+        ));
+        top.getTabs().addAll(tabs);
+        tableTabs = builder.build();
         return top;
+    }
+
+    private static final Tab buildTab(TableDataControl<?> tab, WindowText title,
+            ImmutableList.Builder<TableDataControl<?>> builder){
+        Tab ans = new Tab(title.getText(), tab);
+        builder.add(tab);
+        return ans;
     }
 
     /// %Part 2.2.1: Bottom pane
@@ -120,8 +152,8 @@ abstract class WriterSceneView extends BorderPane{
 
     /// %Part 4: Properties
 
-    public ObjectProperty<WritingFile> writingFileProperty(){
-        return writingFile;
+    public ReadOnlyObjectProperty<WritingFile> writingFileProperty(){
+        return writingFile.getReadOnlyProperty();
     }
 
     public WritingFile getWritingFile(){
@@ -129,7 +161,7 @@ abstract class WriterSceneView extends BorderPane{
     }
 
     public void setWritingFile(WritingFile file){
-        writingFile.setValue(file);
+        mainMenuBar.setWritingFile(file);
     }
 
     public ReadOnlyObjectProperty<WritingText> writingTextProperty(){
@@ -164,10 +196,25 @@ abstract class WriterSceneView extends BorderPane{
         return caretPosition.getValue();
     }
 
+    public SimpleObjectProperty<SpanBranch> lastSelectedProperty(){
+        return lastSelected;
+    }
+
+    public SpanBranch getLastSelected(){
+        return lastSelected.getValue();
+    }
+
+    public void setLastSelected(SpanBranch span){
+        lastSelected.setValue(span);
+    }
+
     /// %Part 5: Get Child Methods
 
     MenuBarMainControl getMainMenuBar(){
         return mainMenuBar;
+    }
+    protected List<TableDataControl<?>> getTableTabs(){
+        return tableTabs;
     }
 
     TextPaneControl getTextPane(){
