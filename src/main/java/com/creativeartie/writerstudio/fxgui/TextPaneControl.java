@@ -24,13 +24,23 @@ final class TextPaneControl extends TextPaneView {
         getTextArea().requestFocus();
     }
 
-    protected void addListeners(){
+    protected void addBindings(){
         writingTextProperty().addListener((d, o, n) -> loadDocument(n));
         writingStatProperty().addListener((d, o, n) -> updateStats(n));
+
+        getTextArea().plainTextChanges().subscribe(v ->
+            getTextChangedProperty().setValue(v)
+        );
+
+        getEditorFocusedProperty().bind(getTextArea().focusedProperty());
+
+        getCaretPositionProperty().bind(getTextArea().caretPositionProperty());
         caretPositionProperty().addListener(
             (d, o, n) -> updatePosition(n.intValue())
         );
+
         lastSelectedProperty().addListener((d, o, n) -> updatePosition(n));
+
         new AnimationTimer(){
             @Override public void handle(long now) {updateTime();}
         }.start();

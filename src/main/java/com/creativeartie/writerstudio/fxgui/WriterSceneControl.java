@@ -1,5 +1,7 @@
 package com.creativeartie.writerstudio.fxgui;
 
+import javafx.beans.binding.*;
+import javafx.scene.*;
 import javafx.stage.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
@@ -10,15 +12,33 @@ public class WriterSceneControl extends WriterSceneView {
         super(window);
     }
 
-
     @Override
-    protected void addListeners(Stage window){
+    protected void addBindings(Stage window){
+        window.sceneProperty().addListener((p, o, n) -> prepFoucsListener(n));
+        window.setOnShowing(e -> getTextPane().returnFocus());
+
+        getWritingFileProperty().bind(getMainMenuBar().writingFileProperty());
+        getWritingTextProperty().bind(Bindings.createObjectBinding(
+            this::loadWritingText, getWritingFileProperty()
+        ));
+        getWritingStatProperty().bind(Bindings.createObjectBinding(
+            this::loadWritingStat, getWritingFileProperty()
+        ));
+
+        getCaretPositionProperty().bind(getTextPane().caretPositionProperty());
+        getTextReadyProperty().bind(getTextPane().textReadyProperty());
+
+        // TODO bind refocusText
+
+
+        getNoteCardPane().writingTextProperty().bind(writingTextProperty());
+        getNoteCardPane().goToNoteProperty().addListener((d, o, n) -> setLastSelected(n));
+
         for (TableDataControl<?> tab: getTableTabs()){
             tab.writingTextProperty().bind(writingTextProperty());
             tab.caretPositionProperty().bind(caretPositionProperty());
             tab.textReadyProperty().bind(textReadyProperty());
             tab.itemSelectedProperty().addListener((d, o, n) -> setLastSelected(n));
-            tab.changedCountProperty().addListener((d, o, n) -> returnFocus());
         }
 
         getTextPane().writingTextProperty().bind(writingTextProperty());
@@ -28,12 +48,32 @@ public class WriterSceneControl extends WriterSceneView {
         getCheatsheetPane().writingTextProperty().bind(writingTextProperty());
         getCheatsheetPane().caretPositionProperty().bind(caretPositionProperty());
 
-        window.setOnShowing(e -> getTextPane().returnFocus());
+    }
 
+    private WritingText loadWritingText(){
+        WritingFile file = getWritingFile();
+        return file == null? null: file.getDocument();
+    }
+
+    private WritingStat loadWritingStat(){
+        WritingFile file = getWritingFile();
+        return file == null? null: file.getRecords();
+    }
+
+    private void prepFoucsListener(Scene scene){
+        if (scene != null){
+            scene.focusOwnerProperty().addListener((p, o, n) -> refocusText(n));
+        }
+    }
+
+    private void refocusText(Node owner){
+        System.out.println(owner);
+        if (isRefocusText()){
+            setRefocusText(false);
+        }
     }
 
     public void returnFocus(){
-        System.out.println("returnFocus()");
         getTextPane().returnFocus();
     }
 }

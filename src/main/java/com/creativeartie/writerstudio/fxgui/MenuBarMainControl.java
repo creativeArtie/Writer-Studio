@@ -20,7 +20,7 @@ class MenuBarMainControl extends MenuBarMainView{
     }
 
     @Override
-    protected void addListeners(){
+    protected void addBindings(){
         getCreateItem().setOnAction(e -> newFile());
         // getOpenItem().setOnAction(e -> openFile());
         // getExportItem().setOnAction(e -> exportFile());

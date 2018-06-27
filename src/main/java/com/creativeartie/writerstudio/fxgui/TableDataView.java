@@ -1,7 +1,6 @@
 package com.creativeartie.writerstudio.fxgui;
 
 import javafx.scene.control.*;
-import javafx.beans.binding.*;
 import javafx.beans.property.*;
 
 import java.util.*;
@@ -24,7 +23,7 @@ abstract class TableDataView<T extends TableData> extends TableView<T>{
     private final SimpleObjectProperty<WritingText> writingText;
     private final SimpleIntegerProperty caretPosition;
     private final SimpleBooleanProperty textReady;
-    private final SimpleIntegerProperty changedCount;
+    private final SimpleBooleanProperty refocusText;
 
     public TableDataView(WindowText empty){
         setFixedCellSize(30);
@@ -36,28 +35,25 @@ abstract class TableDataView<T extends TableData> extends TableView<T>{
         writingText = new SimpleObjectProperty<>(this, "writingText");
         caretPosition = new ReadOnlyIntegerWrapper(this, "caretPosition");
         textReady = new SimpleBooleanProperty(this, "textReady");
-        changedCount = new SimpleIntegerProperty(this, "changedCount", 0);
+        refocusText = new SimpleBooleanProperty(this, "refocusText");
 
-        ReadOnlyObjectProperty<T> selected = getSelectionModel()
-            .selectedItemProperty();
-        itemSelected.bind(Bindings.createObjectBinding(() -> Optional
-            .ofNullable(selected.get()) /// Maybe null
-            .map(data -> data.getTargetSpan()) /// get target if found
-            .orElse(null), selected));
-
-        addListeners();
+        addBindings();
     }
 
     /// %Part 2: Layout
     protected abstract void buildColumns();
 
-    /// %Part 3: Abstract Methods
+    /// %Part 3: Listener Methods
 
-    protected abstract void addListeners();
+    protected abstract void addBindings();
 
     /// %Part 4: Properties
     ReadOnlyObjectProperty<SpanBranch> itemSelectedProperty(){
-         return itemSelected.getReadOnlyProperty();
+        return itemSelected.getReadOnlyProperty();
+    }
+
+    protected ReadOnlyObjectWrapper<SpanBranch> getItemSelectedProperty(){
+        return itemSelected;
     }
 
     SpanBranch getItemSelected(){
@@ -100,16 +96,16 @@ abstract class TableDataView<T extends TableData> extends TableView<T>{
         return textReady.getValue();
     }
 
-    public IntegerProperty changedCountProperty(){
-        return changedCount;
+    public BooleanProperty refocusTextProperty(){
+        return refocusText;
     }
 
-    public int getChangedCount(){
-        return changedCount.getValue();
+    public boolean isRefocusText(){
+        return refocusText.getValue();
     }
 
-    public void setChangedCount(int value){
-        changedCount.setValue(value);
+    public void setRefocusText(boolean value){
+        refocusText.setValue(value);
     }
 
     /// %Part 5: Get Child Methods

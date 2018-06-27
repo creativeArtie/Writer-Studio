@@ -4,7 +4,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.*;
 import javafx.beans.property.*;
-import javafx.animation.*;
 import javafx.geometry.*;
 
 import org.fxmisc.richtext.*;
@@ -46,12 +45,8 @@ abstract class TextPaneView extends BorderPane {
         caretPosition = new ReadOnlyIntegerWrapper(this, "caretPosition");
         editorFocused = new ReadOnlyBooleanWrapper(this, "editorFocused");
 
-        textArea.plainTextChanges().subscribe(v -> textChanged.setValue(v));
-        caretPosition.bind(textArea.caretPositionProperty());
-        editorFocused.bind(textArea.focusedProperty());
 
-
-        addListeners();
+        addBindings();
     }
 
     /// %Part 2: Layout
@@ -121,8 +116,8 @@ abstract class TextPaneView extends BorderPane {
         pane.getColumnConstraints().add(column);
     }
 
-    /// %Part 3: Abstract Methods
-    protected abstract void addListeners();
+    /// %Part 3: Listener Methods
+    protected abstract void addBindings();
 
     /// %Part 4: Properties
 
@@ -162,9 +157,12 @@ abstract class TextPaneView extends BorderPane {
         lastSelected.setValue(span);
     }
 
-
     public ReadOnlyObjectProperty<PlainTextChange> textChangedProperty(){
         return textChanged.getReadOnlyProperty();
+    }
+
+    protected ReadOnlyObjectWrapper<PlainTextChange> getTextChangedProperty(){
+        return textChanged;
     }
 
     public PlainTextChange getTextChanged(){
@@ -175,12 +173,20 @@ abstract class TextPaneView extends BorderPane {
         return caretPosition.getReadOnlyProperty();
     }
 
+    protected ReadOnlyIntegerWrapper getCaretPositionProperty(){
+        return caretPosition;
+    }
+
     public int getCaretPosition(){
         return caretPosition.getValue();
     }
 
     public ReadOnlyBooleanProperty editorFocusedProperty(){
         return editorFocused.getReadOnlyProperty();
+    }
+
+    protected ReadOnlyBooleanWrapper getEditorFocusedProperty(){
+        return editorFocused;
     }
 
     public boolean isEditorFocused(){

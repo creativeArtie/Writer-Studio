@@ -11,7 +11,7 @@ import com.creativeartie.writerstudio.lang.markup.*;
  */
 final class CheatsheetPaneControl extends CheatsheetPaneView{
 
-    protected void addListeners(){
+    protected void addBindings(){
         writingTextProperty().addListener(
             (d, o, n) -> updateLabels(n, getCaretPosition())
         );

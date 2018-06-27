@@ -1,7 +1,6 @@
 package com.creativeartie.writerstudio.fxgui;
 
 import java.util.*;
-import javafx.beans.binding.*;
 import javafx.stage.*;
 import javafx.scene.layout.*;
 import javafx.beans.property.*;
@@ -18,6 +17,7 @@ abstract class WriterSceneView extends BorderPane{
     private MenuBarMainControl mainMenuBar;
     private TextPaneControl textPane;
     private CheatsheetPaneControl cheatsheetPane;
+    private NoteCardControl noteCardPane;
     private List<TableDataControl<?>> tableTabs;
 
     private final ReadOnlyObjectWrapper<WritingFile> writingFile;
@@ -26,6 +26,7 @@ abstract class WriterSceneView extends BorderPane{
     private final ReadOnlyBooleanWrapper textReady;
     private final ReadOnlyIntegerWrapper caretPosition;
     private final SimpleObjectProperty<SpanBranch> lastSelected;
+    private final SimpleBooleanProperty refocusText;
 
     WriterSceneView(Stage window){
         getStylesheets().add(FileResources.getMainCss());
@@ -39,22 +40,9 @@ abstract class WriterSceneView extends BorderPane{
         caretPosition = new ReadOnlyIntegerWrapper(this, "caretPosition");
         textReady = new ReadOnlyBooleanWrapper(this, "textReady");
         lastSelected = new SimpleObjectProperty<>(this, "lastSelected");
+        refocusText = new SimpleBooleanProperty(this, "refocusText");
 
-        writingFile.bind(mainMenuBar.writingFileProperty());
-        writingStat.bind(Bindings.createObjectBinding(
-            () -> Optional.ofNullable(getWritingFile())
-                .map(f -> f.getRecords())
-                .orElse(null)
-        , writingFile));
-        writingText.bind(Bindings.createObjectBinding(
-            () -> Optional.ofNullable(getWritingFile())
-                .map(f -> f.getDocument())
-                .orElse(null)
-        , writingFile));
-        caretPosition.bind(getTextPane().caretPositionProperty());
-        textReady.bind(getTextPane().textReadyProperty());
-
-        addListeners(window);
+        addBindings(window);
     }
 
     /// %Part 2: Layout
@@ -81,6 +69,10 @@ abstract class WriterSceneView extends BorderPane{
         ImmutableList.Builder<TableDataControl<?>> builder = ImmutableList
             .builder();
         ArrayList<Tab> tabs = new ArrayList<>();
+
+        noteCardPane = new NoteCardControl();
+        tabs.add(new Tab(WindowText.TAB_NOTE_CARD.getText(), noteCardPane));
+
         tabs.add(buildTab(
             new TableAgendaPane(), WindowText.TAB_AGENDA, builder
         ));
@@ -146,9 +138,9 @@ abstract class WriterSceneView extends BorderPane{
     }
 
 
-    /// %Part 3: Abstract Methods
+    /// %Part 3: Listener Methods
 
-    protected abstract void addListeners(Stage window);
+    protected abstract void addBindings(Stage window);
 
     /// %Part 4: Properties
 
@@ -160,12 +152,20 @@ abstract class WriterSceneView extends BorderPane{
         return writingFile.getValue();
     }
 
+    protected ReadOnlyObjectWrapper<WritingFile> getWritingFileProperty(){
+        return writingFile;
+    }
+
     public void setWritingFile(WritingFile file){
         mainMenuBar.setWritingFile(file);
     }
 
     public ReadOnlyObjectProperty<WritingText> writingTextProperty(){
         return writingText.getReadOnlyProperty();
+    }
+
+    protected ReadOnlyObjectWrapper<WritingText> getWritingTextProperty(){
+        return writingText;
     }
 
     public WritingText getWritingText(){
@@ -176,6 +176,10 @@ abstract class WriterSceneView extends BorderPane{
         return writingStat.getReadOnlyProperty();
     }
 
+    protected ReadOnlyObjectWrapper<WritingStat> getWritingStatProperty(){
+        return writingStat;
+    }
+
     public WritingStat getWritingStat(){
         return writingStat.getValue();
     }
@@ -184,12 +188,24 @@ abstract class WriterSceneView extends BorderPane{
         return textReady.getReadOnlyProperty();
     }
 
+    protected ReadOnlyBooleanWrapper getTextReadyProperty(){
+        return textReady;
+    }
+
     public boolean getTextReady(){
         return textReady.getValue();
     }
 
     public ReadOnlyIntegerProperty caretPositionProperty(){
         return caretPosition.getReadOnlyProperty();
+    }
+
+    protected ReadOnlyIntegerWrapper getCaretPositionProperty(){
+        return caretPosition;
+    }
+
+    protected ReadOnlyIntegerWrapper caretPlacedProperty(){
+        return caretPosition;
     }
 
     public int getCaretPosition(){
@@ -208,11 +224,27 @@ abstract class WriterSceneView extends BorderPane{
         lastSelected.setValue(span);
     }
 
-    /// %Part 5: Get Child Methods
+    public BooleanProperty refocusTextProperty(){
+        return refocusText;
+    }
 
+    public boolean isRefocusText(){
+        return refocusText.getValue();
+    }
+
+    public void setRefocusText(boolean value){
+        refocusText.setValue(value);
+    }
+
+    /// %Part 5: Get Child Methods
     MenuBarMainControl getMainMenuBar(){
         return mainMenuBar;
     }
+
+    NoteCardControl getNoteCardPane(){
+        return noteCardPane;
+    }
+
     protected List<TableDataControl<?>> getTableTabs(){
         return tableTabs;
     }

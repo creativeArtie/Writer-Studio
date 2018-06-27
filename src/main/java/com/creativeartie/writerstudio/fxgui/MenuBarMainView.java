@@ -24,7 +24,7 @@ abstract class MenuBarMainView extends MenuBar{
 
         writingFile = new SimpleObjectProperty<>(this, "writingFile");
 
-        addListeners();
+        addBindings();
     }
 
     /// %Part 2: Layout
@@ -57,7 +57,7 @@ abstract class MenuBarMainView extends MenuBar{
 
     /// %Part 3: Listener Methods
 
-    protected abstract void addListeners();
+    protected abstract void addBindings();
 
     /// %Part 4: Properties
 

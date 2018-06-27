@@ -1,5 +1,6 @@
 package com.creativeartie.writerstudio.fxgui;
 
+import javafx.beans.binding.*;
 import javafx.collections.*;
 
 import java.util.*;
@@ -20,9 +21,18 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
     }
 
     @Override
-    protected void addListeners(){
-        writingTextProperty().addListener((d, o, n) -> loadList(n));
+    protected void addBindings(){
+        getItemSelectedProperty().bind(Bindings.createObjectBinding(
+            this::bindItemSelection, getSelectionModel().selectedItemProperty()));
+
         caretPositionProperty().addListener((d, o, n) -> updateLocation());
+
+        writingTextProperty().addListener((d, o, n) -> loadList(n));
+    }
+
+    private SpanBranch bindItemSelection(){
+        ObservableList<T> data = getSelectionModel().getSelectedItems();
+        return data.isEmpty()? null : data.get(0).getTargetSpan();
     }
 
     private void updateLocation(){
@@ -52,7 +62,7 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
         }
         /// Nothing is found:
         getSelectionModel().clearSelection();
-        setChangedCount(getChangedCount() + 1);
+        setRefocusText(true);
      }
 
 
@@ -78,9 +88,9 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
         updateLocation();
     }
 
-     protected abstract List<Class<? extends SpanBranch>> getTargetClass();
+    protected abstract List<Class<? extends SpanBranch>> getTargetClass();
 
-     protected abstract String getCategory();
+    protected abstract String getCategory();
 
-     protected abstract T buildSpan(SpanBranch span);
+    protected abstract T buildSpan(SpanBranch span);
 }

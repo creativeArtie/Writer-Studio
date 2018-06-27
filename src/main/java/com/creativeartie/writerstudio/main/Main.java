@@ -74,7 +74,6 @@ public class Main extends Application{
         /// set scene
         Scene scene = new Scene(writer, 800, 600);
         stage.setScene(scene);
-
         /// set stage info
         stage.setTitle(WindowText.PROGRAM_NAME.getText());
         stage.setMaximized(true);

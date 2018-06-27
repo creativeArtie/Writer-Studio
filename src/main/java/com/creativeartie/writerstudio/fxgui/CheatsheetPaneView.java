@@ -82,7 +82,7 @@ abstract class CheatsheetPaneView extends GridPane{
         writingText = new ReadOnlyObjectWrapper<>(this, "writingText");
         caretPosition = new ReadOnlyIntegerWrapper(this, "caretPosition");
 
-        addListeners();
+        addBindings();
     }
 
     /// %Part 2: Layout
@@ -119,8 +119,8 @@ abstract class CheatsheetPaneView extends GridPane{
     }
 
 
-    /// %Part 3: Abstract Methods
-    protected abstract void addListeners();
+    /// %Part 3: Listener Methods
+    protected abstract void addBindings();
 
     /// %Part 4: Properties
     SimpleObjectProperty<WritingText> writingTextProperty(){
