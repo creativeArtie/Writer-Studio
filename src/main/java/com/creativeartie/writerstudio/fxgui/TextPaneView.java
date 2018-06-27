@@ -121,7 +121,13 @@ abstract class TextPaneView extends BorderPane {
 
     /// %Part 4: Properties
 
-    SimpleObjectProperty<WritingText> writingTextProperty(){
+    /// %Part 4.1: WritingText
+
+    public ObjectProperty<WritingText> writingTextProperty(){
+        return writingText;
+    }
+
+    protected SimpleObjectProperty<WritingText> getWritingTextProperty(){
         return writingText;
     }
 
@@ -133,7 +139,13 @@ abstract class TextPaneView extends BorderPane {
         writingText.setValue(value);
     }
 
+    /// %Part 4.2: Text Ready
+
     public BooleanProperty textReadyProperty(){
+        return textReady;
+    }
+
+    protected SimpleBooleanProperty getTextReadyProperty(){
         return textReady;
     }
 
@@ -145,7 +157,13 @@ abstract class TextPaneView extends BorderPane {
         return textReady.getValue();
     }
 
-    public SimpleObjectProperty<SpanBranch> lastSelectedProperty(){
+    /// %Part 4.3: Last Selected
+
+    public ObjectProperty<SpanBranch> lastSelectedProperty(){
+        return lastSelected;
+    }
+
+    protected SimpleObjectProperty<SpanBranch> getLastSelectedProperty(){
         return lastSelected;
     }
 
@@ -156,6 +174,8 @@ abstract class TextPaneView extends BorderPane {
     public void setLastSelected(SpanBranch span){
         lastSelected.setValue(span);
     }
+
+    /// %Part 4.4: Text Changed
 
     public ReadOnlyObjectProperty<PlainTextChange> textChangedProperty(){
         return textChanged.getReadOnlyProperty();
@@ -169,6 +189,8 @@ abstract class TextPaneView extends BorderPane {
         return textChanged.getValue();
     }
 
+    /// %Part 4.5: Caret Position
+
     public ReadOnlyIntegerProperty caretPositionProperty(){
         return caretPosition.getReadOnlyProperty();
     }
@@ -180,6 +202,8 @@ abstract class TextPaneView extends BorderPane {
     public int getCaretPosition(){
         return caretPosition.getValue();
     }
+
+    /// %Part 4.5: Editor Focused
 
     public ReadOnlyBooleanProperty editorFocusedProperty(){
         return editorFocused.getReadOnlyProperty();
@@ -193,7 +217,13 @@ abstract class TextPaneView extends BorderPane {
         return editorFocused.getValue();
     }
 
-    public SimpleObjectProperty<WritingStat> writingStatProperty(){
+    /// %Part 4.6: Writing Stat
+
+    public ObjectProperty<WritingStat> writingStatProperty(){
+        return writingStat;
+    }
+
+    protected SimpleObjectProperty<WritingStat> getWritingStatProperty(){
         return writingStat;
     }
 

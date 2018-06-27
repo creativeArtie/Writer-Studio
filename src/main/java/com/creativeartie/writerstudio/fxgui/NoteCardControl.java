@@ -12,10 +12,14 @@ class NoteCardControl extends NoteCardView{
     @Override
     protected void addBindings(){
         writingTextProperty().addListener((d, o, n) -> loadCards(n));
-        showNoteProperty().bind(Bindings.createObjectBinding(this::bindShowNote,
+        getShowNoteProperty().bind(Bindings.createObjectBinding(
+            this::bindShowNote,
             getNoteTable().getSelectionModel().selectedItemProperty()
         ));
+        getNoteTable().getSelectionModel().selectedItemProperty().addListener(
+            (d, o, n) -> System.out.println(n));
         getNoteCardDetail().showNoteProperty().bind(showNoteProperty());
+        getGoToNoteProperty().bind(getNoteCardDetail().goToNoteProperty());
     }
 
     private void loadCards(WritingText doc){
@@ -54,6 +58,7 @@ class NoteCardControl extends NoteCardView{
     private NoteCardSpan bindShowNote(){
         List<NoteCardData> selecteds = getNoteTable().getSelectionModel()
             .getSelectedItems();
+        System.out.println(selecteds);
         return selecteds.isEmpty()? null: selecteds.get(0).getTargetSpan();
     }
 }

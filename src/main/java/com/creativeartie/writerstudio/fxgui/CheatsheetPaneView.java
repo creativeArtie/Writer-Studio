@@ -123,7 +123,14 @@ abstract class CheatsheetPaneView extends GridPane{
     protected abstract void addBindings();
 
     /// %Part 4: Properties
-    SimpleObjectProperty<WritingText> writingTextProperty(){
+
+    /// %Part 4.1: WritingText
+
+    public ObjectProperty<WritingText> writingTextProperty(){
+        return writingText;
+    }
+
+    protected SimpleObjectProperty<WritingText> getWritingTextProperty(){
         return writingText;
     }
 
@@ -135,7 +142,13 @@ abstract class CheatsheetPaneView extends GridPane{
         writingText.setValue(value);
     }
 
+    /// %Part 4.2: Caret Position
+
     public IntegerProperty caretPositionProperty(){
+        return caretPosition;
+    }
+
+    protected SimpleIntegerProperty getCaretPositionProperty(){
         return caretPosition;
     }
 

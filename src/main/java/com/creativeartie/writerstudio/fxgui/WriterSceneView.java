@@ -144,21 +144,25 @@ abstract class WriterSceneView extends BorderPane{
 
     /// %Part 4: Properties
 
+    /// %Part 4.1: WritingFile
+
     public ReadOnlyObjectProperty<WritingFile> writingFileProperty(){
         return writingFile.getReadOnlyProperty();
-    }
-
-    public WritingFile getWritingFile(){
-        return writingFile.getValue();
     }
 
     protected ReadOnlyObjectWrapper<WritingFile> getWritingFileProperty(){
         return writingFile;
     }
 
+    public WritingFile getWritingFile(){
+        return writingFile.getValue();
+    }
+
     public void setWritingFile(WritingFile file){
         mainMenuBar.setWritingFile(file);
     }
+
+    /// %Part 4.2: WritingText
 
     public ReadOnlyObjectProperty<WritingText> writingTextProperty(){
         return writingText.getReadOnlyProperty();
@@ -172,6 +176,8 @@ abstract class WriterSceneView extends BorderPane{
         return writingText.getValue();
     }
 
+    /// %Part 4.3: WritingStat
+
     public ReadOnlyObjectProperty<WritingStat> writingStatProperty(){
         return writingStat.getReadOnlyProperty();
     }
@@ -183,6 +189,8 @@ abstract class WriterSceneView extends BorderPane{
     public WritingStat getWritingStat(){
         return writingStat.getValue();
     }
+
+    /// %Part 4.4: Text Ready
 
     public ReadOnlyBooleanProperty textReadyProperty(){
         return textReady.getReadOnlyProperty();
@@ -196,6 +204,8 @@ abstract class WriterSceneView extends BorderPane{
         return textReady.getValue();
     }
 
+    /// %Part 4.5: Caret Position
+
     public ReadOnlyIntegerProperty caretPositionProperty(){
         return caretPosition.getReadOnlyProperty();
     }
@@ -204,7 +214,7 @@ abstract class WriterSceneView extends BorderPane{
         return caretPosition;
     }
 
-    protected ReadOnlyIntegerWrapper caretPlacedProperty(){
+    public ReadOnlyIntegerWrapper caretPlacedProperty(){
         return caretPosition;
     }
 
@@ -212,7 +222,13 @@ abstract class WriterSceneView extends BorderPane{
         return caretPosition.getValue();
     }
 
-    public SimpleObjectProperty<SpanBranch> lastSelectedProperty(){
+    /// %Part 4.6: Last Selected
+
+    public ObjectProperty<SpanBranch> lastSelectedProperty(){
+        return lastSelected;
+    }
+
+    protected SimpleObjectProperty<SpanBranch> getLastSelectedProperty(){
         return lastSelected;
     }
 
@@ -224,7 +240,13 @@ abstract class WriterSceneView extends BorderPane{
         lastSelected.setValue(span);
     }
 
+    /// %Part 4.7: Refoucs Text
+
     public BooleanProperty refocusTextProperty(){
+        return refocusText;
+    }
+
+    protected SimpleBooleanProperty getRefocusTextProperty(){
         return refocusText;
     }
 

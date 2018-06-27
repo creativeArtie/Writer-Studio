@@ -16,10 +16,10 @@ public abstract class NoteCardView extends GridPane{
     /// %Part 1: Constructor and Class Fields
 
     private TableView<NoteCardData> noteTable;
-    private NoteCardDetail noteDetail;
+    private NoteCardDetailControl noteDetail;
 
     private SimpleObjectProperty<WritingText> writingText;
-    private SimpleObjectProperty<NoteCardSpan> showNote;
+    private ReadOnlyObjectWrapper<NoteCardSpan> showNote;
     private ReadOnlyObjectWrapper<NoteCardSpan> goToNote;
 
     public NoteCardView(){
@@ -28,10 +28,8 @@ public abstract class NoteCardView extends GridPane{
         add(buildNoteDetail(), 1, 0);
 
         writingText = new SimpleObjectProperty<>(this, "writingText");
-        showNote = new SimpleObjectProperty<>(this, "showNote");
+        showNote = new ReadOnlyObjectWrapper<>(this, "showNote");
         goToNote = new ReadOnlyObjectWrapper<>(this, "goToNote");
-
-        goToNote.bind(noteDetail.goToNoteProperty());
 
         addBindings();
     }
@@ -64,8 +62,8 @@ public abstract class NoteCardView extends GridPane{
         return noteTable;
     }
 
-    private NoteCardDetail buildNoteDetail(){
-        noteDetail = new NoteCardDetail();
+    private NoteCardDetailControl buildNoteDetail(){
+        noteDetail = new NoteCardDetailControl();
         noteDetail.prefWidthProperty().bind(widthProperty().multiply(.3));
         noteDetail.prefHeightProperty().bind(heightProperty());
         return noteDetail;
@@ -77,7 +75,13 @@ public abstract class NoteCardView extends GridPane{
 
     /// %Part 4: Properties
 
-    SimpleObjectProperty<WritingText> writingTextProperty(){
+    /// %Part 4.1: WritingText
+
+    public ObjectProperty<WritingText> writingTextProperty(){
+        return writingText;
+    }
+
+    protected SimpleObjectProperty<WritingText> getWritingTextProperty(){
         return writingText;
     }
 
@@ -89,8 +93,13 @@ public abstract class NoteCardView extends GridPane{
         writingText.setValue(value);
     }
 
+    /// %Part 4.2: Show Note
 
-    public ObjectProperty<NoteCardSpan> showNoteProperty(){
+    public ReadOnlyObjectProperty<NoteCardSpan> showNoteProperty(){
+        return showNote.getReadOnlyProperty();
+    }
+
+    protected ReadOnlyObjectWrapper<NoteCardSpan> getShowNoteProperty(){
         return showNote;
     }
 
@@ -102,7 +111,13 @@ public abstract class NoteCardView extends GridPane{
         showNote.setValue(value);
     }
 
-    public SimpleObjectProperty<NoteCardSpan> goToNoteProperty(){
+    /// %Part 4.3: Go To Note
+
+    public ReadOnlyObjectProperty<NoteCardSpan> goToNoteProperty(){
+        return goToNote.getReadOnlyProperty();
+    }
+
+    protected ReadOnlyObjectWrapper<NoteCardSpan> getGoToNoteProperty(){
         return goToNote;
     }
 
@@ -120,7 +135,7 @@ public abstract class NoteCardView extends GridPane{
         return noteTable;
     }
 
-    NoteCardDetail getNoteCardDetail(){
+    NoteCardDetailControl getNoteCardDetail(){
         return noteDetail;
     }
 }

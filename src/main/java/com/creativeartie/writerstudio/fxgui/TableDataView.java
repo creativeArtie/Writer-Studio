@@ -48,7 +48,10 @@ abstract class TableDataView<T extends TableData> extends TableView<T>{
     protected abstract void addBindings();
 
     /// %Part 4: Properties
-    ReadOnlyObjectProperty<SpanBranch> itemSelectedProperty(){
+
+    /// %Part 4.1 Item Selected
+
+    public ReadOnlyObjectProperty<SpanBranch> itemSelectedProperty(){
         return itemSelected.getReadOnlyProperty();
     }
 
@@ -56,11 +59,17 @@ abstract class TableDataView<T extends TableData> extends TableView<T>{
         return itemSelected;
     }
 
-    SpanBranch getItemSelected(){
+    public SpanBranch getItemSelected(){
         return itemSelected.getValue();
     }
 
-    SimpleObjectProperty<WritingText> writingTextProperty(){
+    /// %Part 4.2: WritingText
+
+    public ObjectProperty<WritingText> writingTextProperty(){
+        return writingText;
+    }
+
+    protected SimpleObjectProperty<WritingText> getWritingTextProperty(){
         return writingText;
     }
 
@@ -72,7 +81,13 @@ abstract class TableDataView<T extends TableData> extends TableView<T>{
         writingText.setValue(value);
     }
 
+    /// %Part 4.3: Caret Position
+
     public IntegerProperty caretPositionProperty(){
+        return caretPosition;
+    }
+
+    protected SimpleIntegerProperty getCaretPositionProperty(){
         return caretPosition;
     }
 
@@ -84,7 +99,13 @@ abstract class TableDataView<T extends TableData> extends TableView<T>{
         caretPosition.setValue(value);
     }
 
+    /// %Part 4.4: Text Ready
+
     public BooleanProperty textReadyProperty(){
+        return textReady;
+    }
+
+    protected SimpleBooleanProperty getTextReadyProperty(){
         return textReady;
     }
 
@@ -96,7 +117,13 @@ abstract class TableDataView<T extends TableData> extends TableView<T>{
         return textReady.getValue();
     }
 
-    public BooleanProperty refocusTextProperty(){
+    /// %Part 4.4: Refocus Text
+
+    public SimpleBooleanProperty refocusTextProperty(){
+        return refocusText;
+    }
+
+    protected SimpleBooleanProperty getRefocusTextProperty(){
         return refocusText;
     }
 

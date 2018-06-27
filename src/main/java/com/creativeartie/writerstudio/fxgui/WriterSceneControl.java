@@ -17,37 +17,40 @@ public class WriterSceneControl extends WriterSceneView {
         window.sceneProperty().addListener((p, o, n) -> prepFoucsListener(n));
         window.setOnShowing(e -> getTextPane().returnFocus());
 
-        getWritingFileProperty().bind(getMainMenuBar().writingFileProperty());
+        /// writingFile
+        getWritingFileProperty().bind(getMainMenuBar().getWritingFileProperty());
+        /// writingText
         getWritingTextProperty().bind(Bindings.createObjectBinding(
             this::loadWritingText, getWritingFileProperty()
         ));
+        /// writingStat
         getWritingStatProperty().bind(Bindings.createObjectBinding(
             this::loadWritingStat, getWritingFileProperty()
         ));
-
-        getCaretPositionProperty().bind(getTextPane().caretPositionProperty());
-        getTextReadyProperty().bind(getTextPane().textReadyProperty());
+        /// textReady
+        getTextReadyProperty().bind(getTextPane().getTextReadyProperty());
+        /// caretPosition
+        getCaretPositionProperty().bind(getTextPane().getCaretPositionProperty());
 
         // TODO bind refocusText
 
 
-        getNoteCardPane().writingTextProperty().bind(writingTextProperty());
-        getNoteCardPane().goToNoteProperty().addListener((d, o, n) -> setLastSelected(n));
+        getNoteCardPane().getWritingTextProperty().bind(getWritingTextProperty());
+        getNoteCardPane().getGoToNoteProperty().addListener((d, o, n) -> setLastSelected(n));
 
         for (TableDataControl<?> tab: getTableTabs()){
-            tab.writingTextProperty().bind(writingTextProperty());
-            tab.caretPositionProperty().bind(caretPositionProperty());
-            tab.textReadyProperty().bind(textReadyProperty());
-            tab.itemSelectedProperty().addListener((d, o, n) -> setLastSelected(n));
+            tab.getWritingTextProperty().bind(getWritingTextProperty());
+            tab.getCaretPositionProperty().bind(getCaretPositionProperty());
+            tab.getTextReadyProperty().bind(getTextReadyProperty());
+            tab.getItemSelectedProperty().addListener((d, o, n) -> setLastSelected(n));
         }
 
-        getTextPane().writingTextProperty().bind(writingTextProperty());
-        getTextPane().writingStatProperty().bind(writingStatProperty());
-        getTextPane().lastSelectedProperty().bind(lastSelectedProperty());
+        getTextPane().getWritingTextProperty().bind(getWritingTextProperty());
+        getTextPane().getWritingStatProperty().bind(getWritingStatProperty());
+        getTextPane().getLastSelectedProperty().bind(getLastSelectedProperty());
 
-        getCheatsheetPane().writingTextProperty().bind(writingTextProperty());
-        getCheatsheetPane().caretPositionProperty().bind(caretPositionProperty());
-
+        getCheatsheetPane().getWritingTextProperty().bind(getWritingTextProperty());
+        getCheatsheetPane().getCaretPositionProperty().bind(getCaretPositionProperty());
     }
 
     private WritingText loadWritingText(){
@@ -67,7 +70,7 @@ public class WriterSceneControl extends WriterSceneView {
     }
 
     private void refocusText(Node owner){
-        System.out.println(owner);
+        // System.out.println(owner);
         if (isRefocusText()){
             setRefocusText(false);
         }

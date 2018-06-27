@@ -10,9 +10,7 @@ import javafx.beans.property.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.resource.*;
 
-class NoteCardDetail extends TitledPane{
-    /// %Part 1: Constructor and Class Fields
-
+class NoteCardDetailControl extends NoteCardDetailView{
     private final Label footnoteLabel;
     private final Label inTextLabel;
     private final Label sourceLabel;
@@ -23,14 +21,9 @@ class NoteCardDetail extends TitledPane{
     private final Label noTitleTextLabel;
     private final Label noContentTextLabel;
 
-    private final Button goToButton;
+    private Button goToButton;
 
-    private SimpleObjectProperty<NoteCardSpan> showNote;
-    private ReadOnlyObjectWrapper<NoteCardSpan> goToNote;
-
-    NoteCardDetail(){
-        setCollapsible(false);
-
+    NoteCardDetailControl(){
         sourceLabel = new Label(WindowText.NOTE_CARD_SOURCE.getText());
         footnoteLabel = new Label(WindowText.NOTE_CARD_FOOTNOTE.getText());
         inTextLabel = new Label(WindowText.NOTE_CARD_IN_TEXT.getText());
@@ -44,30 +37,26 @@ class NoteCardDetail extends TitledPane{
         noContentTextLabel = new Label(WindowText.NOTE_CARD_EMTPY_DETAIL
             .getText());
 
-        goToButton = new Button(WindowText.NOTE_CARD_EDIT.getText());
-
         StyleClass.NOT_FOUND.addClass(noCardTitleLabel);
         StyleClass.NOT_FOUND.addClass(noCardDetailLabel);
         StyleClass.NO_TEXT.addClass(noTitleTextLabel);
-
-        showNote = new SimpleObjectProperty<>(this, "showNote");
-        goToNote = new ReadOnlyObjectWrapper<>(this, "goToNote");
-
-        goToButton.setOnAction(evt -> goToNote.setValue(getShowNote()));
-        showNote.addListener((d, o, n) -> updateNote(n));
-
-        clearContent();
     }
 
-    /// %Part 2: Layout
+    @Override
+    protected void addBindings(){
+        goToButton = new Button(WindowText.NOTE_CARD_EDIT.getText());
 
-    /// %Part 3: Listener Methods
+        goToButton.setOnAction(evt -> getGoToNoteProperty().setValue(getShowNote()));
+        getShowNoteProperty().addListener((d, o, n) -> updateNote(n));
+    }
+
 
     private void updateNote(NoteCardSpan note){
         if (note == null) clearContent(); else showNote(note);
     }
 
-    private void clearContent(){
+    @Override
+    protected void clearContent(){
         setGraphic(noCardTitleLabel);
         setContent(noCardDetailLabel);
     }
@@ -146,29 +135,4 @@ class NoteCardDetail extends TitledPane{
         ans.setBottom(bottom);
         setContent(ans);
     }
-
-    /// %Part 4: Properties
-
-    public ObjectProperty<NoteCardSpan> showNoteProperty(){
-        return showNote;
-    }
-
-    public NoteCardSpan getShowNote(){
-        return showNote.getValue();
-    }
-
-    public void setShowNote(NoteCardSpan value){
-        showNote.setValue(value);
-        goToNote.setValue(null);
-    }
-
-    public ReadOnlyObjectProperty<NoteCardSpan> goToNoteProperty(){
-        return goToNote.getReadOnlyProperty();
-    }
-
-    public NoteCardSpan getGoToNote(){
-        return goToNote.getValue();
-    }
-
-    /// %Part 5: Get Child Methods
 }

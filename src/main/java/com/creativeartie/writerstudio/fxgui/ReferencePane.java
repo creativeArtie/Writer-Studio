@@ -12,12 +12,12 @@ class ReferencePane extends TableView<ReferenceData>{
 
     ReferencePane(){
         setFixedCellSize(30);
-        initColumns();
+        buildColumns();
         fillRows();
     }
 
     @SuppressWarnings("unchecked") /// For getColumns().addAdd(TableColumn ...)
-    private void initColumns(){
+    private void buildColumns(){
         TableColumn<ReferenceData, String> name = TableDataHelper
             .getTextColumn(WindowText.REF_NAME, d ->
                 d.referenceNameProperty(), WindowText.EMPTY_NA);
