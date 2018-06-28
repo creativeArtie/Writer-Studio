@@ -11,22 +11,27 @@ class NoteCardControl extends NoteCardView{
 
     @Override
     protected void addBindings(){
-        writingTextProperty().addListener((d, o, n) -> loadCards(n));
-        getShowNoteProperty().bind(Bindings.createObjectBinding(
-            this::bindShowNote,
-            getNoteTable().getSelectionModel().selectedItemProperty()
-        ));
         getNoteTable().getSelectionModel().selectedItemProperty().addListener(
-            (d, o, n) -> System.out.println(n));
-        getNoteCardDetail().showNoteProperty().bind(showNoteProperty());
-        getGoToNoteProperty().bind(getNoteCardDetail().goToNoteProperty());
+            (d, o, n) -> getNoteCardDetail().setShowNote(n));
     }
 
-    private void loadCards(WritingText doc){
-        if (doc != null){
-            doc.addDocEdited(span -> updateCards());
-            updateCards();
-        }
+    public NoteCardControl setWritingTextProperty(
+            ObjectProperty<WritingText> text){
+        text.addListener((d, o, n) -> {
+            if (doc != null){
+                doc.addDocEdited(span -> updateCards());
+                updateCards();
+            }
+        });
+        return this;
+    }
+
+    public NoteCardControl setLastSelectedProperty(
+            ObjectProperty<SpanBranch> selected){
+        getNoteCardDetail().goToNoteProperty().addListener(
+            (d, o, n) -> selected.setValue(n);
+        );
+        return this;
     }
 
     private void updateCards(){
@@ -53,12 +58,5 @@ class NoteCardControl extends NoteCardView{
         if (selected != null){
             getNoteTable().getSelectionModel().select(selected);
         }
-    }
-
-    private NoteCardSpan bindShowNote(){
-        List<NoteCardData> selecteds = getNoteTable().getSelectionModel()
-            .getSelectedItems();
-        System.out.println(selecteds);
-        return selecteds.isEmpty()? null: selecteds.get(0).getTargetSpan();
     }
 }

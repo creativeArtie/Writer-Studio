@@ -34,15 +34,14 @@ public class WriterSceneControl extends WriterSceneView {
 
         // TODO bind refocusText
 
-
-        getNoteCardPane().getWritingTextProperty().bind(getWritingTextProperty());
-        getNoteCardPane().getGoToNoteProperty().addListener((d, o, n) -> setLastSelected(n));
+        getNoteCardPane().setWritingTextProperty(writingTextProperty())
+            .setLastSelectedProperty(lastSelectedProperty());
 
         for (TableDataControl<?> tab: getTableTabs()){
-            tab.getWritingTextProperty().bind(getWritingTextProperty());
-            tab.getCaretPositionProperty().bind(getCaretPositionProperty());
-            tab.getTextReadyProperty().bind(getTextReadyProperty());
-            tab.getItemSelectedProperty().addListener((d, o, n) -> setLastSelected(n));
+            tab.setWritingTextProperty(writingTextProperty())
+                .setCaretPositionProperty(caretPositionProperty());
+                .setTextReadyProperty(textReadyProperty());
+                .setItemSelectedProperty(lastSelectedProperty());
         }
 
         getTextPane().getWritingTextProperty().bind(getWritingTextProperty());

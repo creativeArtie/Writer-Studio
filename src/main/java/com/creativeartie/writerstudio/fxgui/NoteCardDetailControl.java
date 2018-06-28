@@ -50,11 +50,6 @@ class NoteCardDetailControl extends NoteCardDetailView{
         getShowNoteProperty().addListener((d, o, n) -> updateNote(n));
     }
 
-
-    private void updateNote(NoteCardSpan note){
-        if (note == null) clearContent(); else showNote(note);
-    }
-
     @Override
     protected void clearContent(){
         setGraphic(noCardTitleLabel);
