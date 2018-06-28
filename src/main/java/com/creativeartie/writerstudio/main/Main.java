@@ -9,7 +9,7 @@ import javafx.stage.*; // Stage
 
 import com.creativeartie.writerstudio.lang.markup.*; // WritingFile;
 import com.creativeartie.writerstudio.resource.*; // WindowText
-import com.creativeartie.writerstudio.fxgui.*; // WriterSceneControl;
+import com.creativeartie.writerstudio.javafx.*; // WriterSceneControl;
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
@@ -69,7 +69,7 @@ public class Main extends Application{
 
         /// create main pane
         WriterSceneControl writer = new WriterSceneControl(stage);
-        writer.setWritingFile(writeFile);
+        // writer.setWritingFile(writeFile);
 
         /// set scene
         Scene scene = new Scene(writer, 800, 600);
@@ -78,7 +78,7 @@ public class Main extends Application{
         stage.setTitle(WindowText.PROGRAM_NAME.getText());
         stage.setMaximized(true);
         stage.show();
-        writer.returnFocus();
+        // writer.returnFocus();
     }
 
     /** Create start file.
