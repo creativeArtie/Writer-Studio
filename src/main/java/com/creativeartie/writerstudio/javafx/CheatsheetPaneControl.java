@@ -1,17 +1,6 @@
 package com.creativeartie.writerstudio.javafx;
 
-import javafx.scene.control.*;
-import javafx.scene.text.*;
-import javafx.scene.layout.*;
-import javafx.beans.property.*;
-import javafx.beans.binding.*;
-
-import java.util.*;
-
-import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.main.*;
-import com.creativeartie.writerstudio.resource.*;
 
 /**
  * Controller for the Cheatsheet Pane
@@ -23,30 +12,36 @@ class CheatsheetPaneControl extends CheatsheetPaneView{
     private WritingText writingText;
     private int caretPosition;
 
-    public void setWritingText(ReadOnlyObjectProperty<WritingText> prop){
-        prop.addListener((d, o, n) -> {
-            writingText = n;
-            updateLabels();
-        });
+    protected void setupChildern(WriterSceneControl control){
+        control.writingTextProperty().addListener((d, o, n) -> loadText(n));
+
+        control.caretPositionProperty().addListener(
+            (d, o, n) -> setPosition(n.intValue())
+        );
     }
 
-    public void setCaretPosition(ReadOnlyIntegerProperty prop){
-        prop.addListener((d, o, n) -> {
-            caretPosition = n.intValue();
-            updateLabels();
-        });
+    /// %Part 1: WriterSceneControl#writingTextProperty()
+
+    private void loadText(WritingText text){
+        writingText = text;
+        if (text != null) updateLabels();
+    }
+
+    /// %Part 2: WriterSceneControl#caretPositionProperty()
+
+    private void setPosition(int position){
+        caretPosition = position;
+        if (writingText != null) updateLabels();
     }
 
      /** Updates the labels base on the cursor movements. */
     public void updateLabels(){
-        if (writingText == null ||
-            ! writingText.getRange().contains(caretPosition) ||
-            writingText.getEnd() != caretPosition
+        if (writingText.getRange().contains(caretPosition) ||
+            writingText.getEnd() == caretPosition
         ){
-            return;
-        }
-        for (CheatsheetLabel label: getLabels()){
-            label.updateLabelStatus(writingText, caretPosition);
+            for (CheatsheetLabel label: getHintLabels()){
+                label.updateLabelStatus(writingText, caretPosition);
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ package com.creativeartie.writerstudio.javafx;
 
 import java.util.*;
 import javafx.scene.layout.*;
+import javafx.beans.binding.*;
 import javafx.beans.property.*;
 import javafx.stage.*;
 import java.time.*;
@@ -19,6 +20,40 @@ public class WriterSceneControl extends WriterSceneView {
         super(window);
     }
 
-    protected void addBindings(){
+    @Override
+    protected void bindWritingText(ReadOnlyObjectWrapper<WritingText> prop){
+        prop.bind(Bindings.createObjectBinding(
+            () -> Optional.ofNullable(getWritingFile())
+                .map(f -> f.getDocument())
+                .orElse(null)
+        , writingFileProperty()));
+    }
+
+    @Override
+    protected void bindWritingStat(ReadOnlyObjectWrapper<WritingStat> prop){
+        prop.bind(Bindings.createObjectBinding(
+            () -> Optional.ofNullable(getWritingFile())
+                .map(f -> f.getRecords())
+                .orElse(null)
+        , writingFileProperty()));
+    }
+
+    @Override
+    protected void bindWritingData(ReadOnlyObjectWrapper<WritingData> prop){
+        prop.bind(Bindings.createObjectBinding(
+            () -> Optional.ofNullable(getWritingFile())
+                .map(f -> f.getMetaData())
+                .orElse(null)
+        , writingFileProperty()));
+    }
+
+    @Override
+    protected void bindChildren(){
+        getTextPane().setupProperties(this);
+
+        getMainMenuBar().setupProperties(this);
+        getMetaDataPane().setupProperties(this);
+        getCheatsheetPane().setupProperties(this);
+
     }
 }

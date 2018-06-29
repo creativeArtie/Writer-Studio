@@ -154,6 +154,18 @@ public final class ParameterChecker {
      * @param field
      *      field/argument name
      */
+    public static <T> T stateNotNull(T item, String field){
+        stateCheck(item != null, field, " is null.");
+        return item;
+    }
+
+    /** Check if the argument is null.
+     *
+     * @param item
+     *      checking item
+     * @param field
+     *      field/argument name
+     */
     public static <T> T argumentNotNull(T item, String field){
         argumentCheck(item != null, field, " is null.");
         return item;
@@ -277,6 +289,11 @@ public final class ParameterChecker {
             Range<Integer> range){
         argumentCheck(range.contains(index), field, outOfRange(index, range));
         return index;
+    }
+
+    private static void stateCheck(boolean test, String field, String postfix){
+        field = createStart(field);
+        if (! test) throw new IllegalArgumentException(field + postfix);
     }
 
     private static String createStart(String field){

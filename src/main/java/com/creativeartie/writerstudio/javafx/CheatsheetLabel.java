@@ -1,20 +1,13 @@
 package com.creativeartie.writerstudio.javafx;
 
-import javafx.scene.control.*;
-import javafx.scene.text.*;
-import javafx.scene.layout.*;
-import javafx.beans.property.*;
-import javafx.beans.binding.*;
 import java.util.function.*;
-
-import java.util.*;
+import javafx.scene.control.*;
 
 import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.resource.*;
-import com.creativeartie.writerstudio.main.*;
 
 /**
  * A label that show hints and can change style base on the position of the
@@ -27,13 +20,15 @@ import com.creativeartie.writerstudio.main.*;
  */
 class CheatsheetLabel extends Label{
 
+    /// %Part 1: Static Constructors
+
     /**
      * Check if FormatSpanContent class is found. Helper method of
      * getLabel(FormatTypeStyle), getLabel(DirectoryType) and
      *
      * @see #getOtherFormatLabel(CheatsheetText)
      */
-    private static boolean findContent(Document doc, Integer point){
+    private static boolean findContent(WritingText doc, Integer point){
         return doc.locateSpan(point, FormattedSpan.class).isPresent();
     }
 
@@ -266,11 +261,13 @@ class CheatsheetLabel extends Label{
         );
     }
 
-    private final BiPredicate<Document, Integer> testSetted;
-    private final BiPredicate<Document, Integer> testAllow;
+    /// %Part 2: Instance Methods, Fields, and Construtor
 
-    private CheatsheetLabel(String text, BiPredicate<Document, Integer> set,
-            BiPredicate<Document, Integer> allow){
+    private final BiPredicate<WritingText, Integer> testSetted;
+    private final BiPredicate<WritingText, Integer> testAllow;
+
+    private CheatsheetLabel(String text, BiPredicate<WritingText, Integer> set,
+            BiPredicate<WritingText, Integer> allow){
         super(text);
         testSetted = set;
         testAllow = allow;
@@ -281,7 +278,7 @@ class CheatsheetLabel extends Label{
      * Update Label status with the information gather from document and the
      * current position.
      */
-    void updateLabelStatus(Document doc, int point){
+    void updateLabelStatus(WritingText doc, int point){
         StyleClass.setHintClass(this, testSetted.test(doc, point),
             testAllow.test(doc, point));
     }

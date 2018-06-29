@@ -69,7 +69,8 @@ public class Main extends Application{
 
         /// create main pane
         WriterSceneControl writer = new WriterSceneControl(stage);
-        // writer.setWritingFile(writeFile);
+        writer.setupProperties();
+        writer.setWritingFile(writeFile);
 
         /// set scene
         Scene scene = new Scene(writer, 800, 600);
