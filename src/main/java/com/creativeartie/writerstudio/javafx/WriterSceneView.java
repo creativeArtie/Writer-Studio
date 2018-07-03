@@ -6,6 +6,7 @@ import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.beans.property.*;
 import javafx.beans.binding.*;
+import javafx.beans.value.*;
 import javafx.scene.control.*;
 import org.fxmisc.richtext.model.*;
 import javafx.animation.*;
@@ -28,11 +29,13 @@ abstract class WriterSceneView extends BorderPane{
     private CheatsheetPaneControl cheatsheetPane;
     private TextPaneControl textPane;
     private MetaDataPaneControl metaDataPane;
+    private List<TableDataControl<?>> dataTables;
 
     private ReadOnlyObjectWrapper<WritingText> writingText;
     private ReadOnlyObjectWrapper<WritingStat> writingStat;
     private ReadOnlyObjectWrapper<WritingData> writingData;
     private SimpleObjectProperty<SpanBranch> lastSelected;
+    private SimpleBooleanProperty refoucsText;
 
     WriterSceneView(Stage window){
         getStylesheets().add(FileResources.getMainCss());
@@ -42,6 +45,8 @@ abstract class WriterSceneView extends BorderPane{
         writingText = new ReadOnlyObjectWrapper<>(this, "writingText");
         writingStat = new ReadOnlyObjectWrapper<>(this, "writingStat");
         writingData = new ReadOnlyObjectWrapper<>(this, "writingData");
+        lastSelected = new SimpleObjectProperty<>(this, "lastSelected");
+        refoucsText = new SimpleBooleanProperty(this, "refoucsText");
     }
 
     /// %Part 2: Layout
@@ -61,8 +66,25 @@ abstract class WriterSceneView extends BorderPane{
     private TabPane buildTopTabs(){
         TabPane top = buildTabPane();
         Tab ref = buildTab(WindowText.TAB_NOTE_CARD, new ReferencePane());
-        top.getTabs().addAll(ref);
+
+        ImmutableList.Builder<TableDataControl<?>> builder =
+            ImmutableList.builder();
+        ArrayList<Tab> notes = new ArrayList<>();
+        notes.add(buildTab(
+            new TableAgendaPane(), WindowText.TAB_AGENDA, builder)
+        );
+        dataTables = builder.build();
+
+        top.getTabs().addAll(notes);
+        top.getTabs().add(ref);
         return top;
+    }
+
+    private static final Tab buildTab(TableDataControl<?> tab, WindowText title,
+            ImmutableList.Builder<TableDataControl<?>> builder){
+        Tab ans = new Tab(title.getText(), tab);
+        builder.add(tab);
+        return ans;
     }
 
     private BorderPane buildContent(){
@@ -83,8 +105,8 @@ abstract class WriterSceneView extends BorderPane{
 
     private TabPane buildLeftTabs(){
         metaDataPane = new MetaDataPaneControl();
-
         TabPane left = buildTabPane();
+
         Tab meta = buildTab(WindowText.TAB_META, metaDataPane);
         left.getTabs().addAll(meta);
         return left;
@@ -102,11 +124,11 @@ abstract class WriterSceneView extends BorderPane{
 
     /// %Part 3: Setup Properties
 
-    public void setupProperties(){
+    public void setupProperties(Scene scene){
         bindWritingText(writingText);
         bindWritingStat(writingStat);
         bindWritingData(writingData);
-        bindChildren();
+        bindChildren(scene);
     }
 
 
@@ -119,7 +141,7 @@ abstract class WriterSceneView extends BorderPane{
     protected abstract void bindWritingData(
         ReadOnlyObjectWrapper<WritingData> data);
 
-    protected abstract void bindChildren();
+    protected abstract void bindChildren(Scene scene);
 
     /// %Part 4: Properties
 
@@ -164,17 +186,7 @@ abstract class WriterSceneView extends BorderPane{
         return writingData.getValue();
     }
 
-    /// %Part 4.3: CaretPosition
-
-    public ReadOnlyIntegerProperty caretPositionProperty(){
-        return textPane.caretPositionProperty();
-    }
-
-    public int getCaretPosition(){
-        return textPane.getCaretPosition();
-    }
-
-    /// %Part 4.4: LastSelected
+    /// %Part 4.3: LastSelected
 
     public ObjectProperty<SpanBranch> lastSelectedProperty(){
         return lastSelected;
@@ -186,6 +198,18 @@ abstract class WriterSceneView extends BorderPane{
 
     public void setLastSelected(SpanBranch value){
         lastSelected.setValue(value);
+    }
+
+    public BooleanProperty refoucsTextProperty(){
+        return refoucsText;
+    }
+
+    public boolean isRefocusText(){
+        return refoucsText.getValue();
+    }
+
+    public void setRefocusText(boolean value){
+        refoucsText.setValue(value);
     }
 
     /// %Part 5: Get Child Methods
@@ -203,5 +227,9 @@ abstract class WriterSceneView extends BorderPane{
 
     TextPaneControl getTextPane(){
         return textPane;
+    }
+
+    List<TableDataControl<?>> getDataTables(){
+        return dataTables;
     }
 }

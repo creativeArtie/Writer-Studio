@@ -1,5 +1,6 @@
 package com.creativeartie.writerstudio.javafx;
 
+import javafx.beans.property.*;
 import javafx.scene.control.*;
 import javafx.scene.text.*;
 import javafx.scene.layout.*;
@@ -20,6 +21,8 @@ import com.creativeartie.writerstudio.main.*;
 abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
     private WritingText writingText;
     private int caretPosition;
+    private ObjectProperty<SpanBranch> lastSelected;
+    private ReadOnlyBooleanProperty textReady;
 
     TableDataControl(WindowText text){
         super(text);
@@ -28,9 +31,13 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
     @Override
     protected void setupChildern(WriterSceneControl control){
         control.writingTextProperty().addListener((d, o, n) -> setText(n));
-        control.caretPositionProperty().addListener(
+        control.getTextPane().getTextArea().caretPositionProperty().addListener(
             (d, o, n) -> setCaret(n.intValue())
         );
+        lastSelected = control.lastSelectedProperty();
+        getSelectionModel().selectedItemProperty().addListener((d, o, n) ->
+            newSelection(n));
+        textReady = control.getTextPane().textReadyProperty();
     }
 
     /// %Part 1: control#writingTextProperty()
@@ -52,10 +59,18 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
         updateSelection();
     }
 
-    /// %Part 3: Utilities
-    /// %Part 3.1: Update list with abstract methods
+    /// %Part 3: control.lastSelectedProperty()
 
-    public void updateItems(){
+    private void newSelection(TableData data){
+        if (data != null){
+            lastSelected.setValue(data.getTargetSpan());
+        }
+    }
+
+    /// %Part 4: Utilities
+    /// %Part 4.1: Update list with abstract methods
+
+    private void updateItems(){
         ArrayList<T> list = new ArrayList<>();
         for (SpanBranch span: writingText.getCatalogue().getIds(getCategory())){
             for (Class<? extends SpanBranch> clazz: getTargetClass()){
@@ -77,6 +92,8 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
     /// %Part 3.2: select item
 
     private void updateSelection(){
+        if (! textReady.getValue()) return; ///Already called, stop before error
+
         if (writingText == null || writingText.isEmpty()){
             return;
         }
@@ -84,7 +101,6 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
             /// TODO Select the last item (if there is one)
             return;
         }
-
         for (Class<? extends SpanBranch> clazz: getTargetClass()) {
             Optional<? extends SpanBranch> span = writingText
                 .locateSpan(caretPosition, clazz);
@@ -92,12 +108,13 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
                  int ptr = 0;
                  for(TableData data: getItems()){
                      if (data.getTargetSpan().equals(span.get())){
-                         getSelectionModel().select(ptr);
-                         return;
+                        getSelectionModel().select(ptr);
+                        return;
                      }
                      ptr++;
                  }
             }
+
         }
         /// Nothing is found:
         getSelectionModel().clearSelection();

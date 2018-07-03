@@ -4,6 +4,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.*;
 import javafx.beans.property.*;
+import javafx.beans.value.*;
 import javafx.animation.*;
 import javafx.geometry.*;
 
@@ -105,13 +106,10 @@ abstract class TextPaneView extends BorderPane {
 
     public void setupProperties(WriterSceneControl control){
         setTextReadyProperty(textReady);
-        setCaretPositionProperty(caretPosition);
         setupChildern(control);
     }
 
     protected abstract void setTextReadyProperty(ReadOnlyBooleanWrapper prop);
-
-    protected abstract void setCaretPositionProperty(ReadOnlyIntegerWrapper prop);
 
     protected abstract void setupChildern(WriterSceneControl control);
 
@@ -124,14 +122,6 @@ abstract class TextPaneView extends BorderPane {
 
     public boolean isTextReady(){
         return textReady.getValue();
-    }
-
-    public ReadOnlyIntegerProperty caretPositionProperty(){
-        return caretPosition.getReadOnlyProperty();
-    }
-
-    public int getCaretPosition(){
-        return caretPosition.getValue();
     }
 
     /// %Part 5: Get Child Methods

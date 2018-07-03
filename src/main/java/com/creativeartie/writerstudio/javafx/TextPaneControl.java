@@ -46,9 +46,22 @@ class TextPaneControl extends TextPaneView {
     }
 
     @Override
-    protected void setCaretPositionProperty(ReadOnlyIntegerWrapper prop){
-        prop.bind(getTextArea().caretPositionProperty());
-        prop.addListener((d, o, n) -> caretMoved(n.intValue()));
+    protected void setupChildern(WriterSceneControl control){
+        new AnimationTimer(){
+            @Override
+            public void handle(long now) {updateTime(now); }
+        }.start();
+
+        control.writingTextProperty().addListener((d, o, n) -> loadText(n));
+
+        control.writingStatProperty().addListener((d, o, n) -> loadStat(n));
+
+        control.lastSelectedProperty().addListener((d, o, n) -> spanSelected(n));
+
+        getTextArea().caretPositionProperty().addListener((d, o, n) ->
+            caretMoved(n.intValue()));
+        getTextArea().plainTextChanges().subscribe(this::textChanged);
+
     }
 
     private void caretMoved(int position){
@@ -62,21 +75,6 @@ class TextPaneControl extends TextPaneView {
                 .orElse("")
             );
         }
-    }
-
-    @Override
-    protected void setupChildern(WriterSceneControl control){
-        new AnimationTimer(){
-            @Override
-            public void handle(long now) {updateTime(now); }
-        }.start();
-
-        control.writingTextProperty().addListener((d, o, n) -> loadText(n));
-
-        control.writingStatProperty().addListener((d, o, n) -> loadStat(n));
-
-        getTextArea().plainTextChanges().subscribe(this::textChanged);
-
     }
 
     /// %Part 1: Animation Timer
@@ -115,6 +113,22 @@ class TextPaneControl extends TextPaneView {
         writingStat = stat;
         textReady.setValue(stat != null);
         setStatLabel();
+    }
+
+    private void spanSelected(SpanBranch span){
+        if (span == null) return;
+        if (! isTextReady()) return;
+
+        textReady.setValue(false);
+        int position = span.getEnd();
+        if (position == getTextArea().getLength()){
+            getTextArea().end(NavigationActions.SelectionPolicy.CLEAR);
+        } else {
+            char found = writingText == null? (char) 0:
+                writingText.getRaw().charAt(position - 1);
+            getTextArea().moveTo(position - (found == '\n'? 1: 0));
+        }
+        textReady.setValue(true);
     }
 
     /// %Part 4: plainTextChanges

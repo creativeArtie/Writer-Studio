@@ -15,7 +15,7 @@ class CheatsheetPaneControl extends CheatsheetPaneView{
     protected void setupChildern(WriterSceneControl control){
         control.writingTextProperty().addListener((d, o, n) -> loadText(n));
 
-        control.caretPositionProperty().addListener(
+        control.getTextPane().getTextArea().caretPositionProperty().addListener(
             (d, o, n) -> setPosition(n.intValue())
         );
     }

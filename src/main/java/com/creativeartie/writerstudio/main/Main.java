@@ -44,7 +44,7 @@ public class Main extends Application{
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Writer Studio had crushed. :(");
             error.setHeaderText("You file had been save to: \n\t" + f.getCanonicalPath());
-            error.setContentText("Error message for developer: " + exception.getMessage());
+            error.setContentText("Error message for developer: " + exception);
             error.showAndWait();
 
         } catch (Exception ex){
@@ -69,16 +69,18 @@ public class Main extends Application{
 
         /// create main pane
         WriterSceneControl writer = new WriterSceneControl(stage);
-        writer.setupProperties();
-        writer.setWritingFile(writeFile);
 
         /// set scene
         Scene scene = new Scene(writer, 800, 600);
         stage.setScene(scene);
+        writer.setupProperties(scene);
+
         /// set stage info
         stage.setTitle(WindowText.PROGRAM_NAME.getText());
         stage.setMaximized(true);
         stage.show();
+
+        writer.setWritingFile(writeFile);
         // writer.returnFocus();
     }
 

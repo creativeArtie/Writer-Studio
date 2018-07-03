@@ -1,5 +1,6 @@
 package com.creativeartie.writerstudio.javafx;
 
+import javafx.scene.*;
 import java.util.*;
 import javafx.scene.layout.*;
 import javafx.beans.binding.*;
@@ -48,12 +49,18 @@ public class WriterSceneControl extends WriterSceneView {
     }
 
     @Override
-    protected void bindChildren(){
+    protected void bindChildren(Scene scene){
         getTextPane().setupProperties(this);
-
         getMainMenuBar().setupProperties(this);
         getMetaDataPane().setupProperties(this);
         getCheatsheetPane().setupProperties(this);
+        for (TableDataControl<?> tab: getDataTables()){
+            tab.setupProperties(this);
+        }
+        scene.focusOwnerProperty().addListener((d, o, n) -> refoucs(n));
+    }
 
+    private void refoucs(Node node){
+        System.out.println(node);
     }
 }
