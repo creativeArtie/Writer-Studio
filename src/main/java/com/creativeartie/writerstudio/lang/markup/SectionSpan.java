@@ -129,27 +129,8 @@ public abstract class SectionSpan extends SpanBranch {
 
     @Override
     protected final SetupParser getParser(String text){
-        if (AuxiliaryChecker.checkSectionEnd(text, isDocumentLast())){
-            boolean join = false;
-            boolean first = true;
-            for (String line: Splitter.on(LINED_END).split(text)){
-                if (first){
-                    if (! checkFirst(line, spanReparser)) return null;
-                    first = false;
-                } else if (join) join = false;
-                else if (! checkChildLine(line, spanReparser)) return null;
-
-                if (line.endsWith(TOKEN_ESCAPE)){
-                    join = true;
-                }
-            }
-            return spanReparser;
-        }
         return null;
     }
-
-    protected abstract boolean checkFirst(String text, SectionParser parser);
-    protected abstract boolean checkChildLine(String text, SectionParser parser);
 
     /// %Part 4: To String Function ############################################
 

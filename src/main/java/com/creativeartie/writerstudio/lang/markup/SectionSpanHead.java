@@ -132,40 +132,6 @@ public final class SectionSpanHead extends SectionSpan {
     }
 
     @Override
-    protected boolean checkFirst(String line, SectionParser parser){
-        if (parser != SectionParseHead.SECTION_6){
-            SectionParseHead check =(SectionParseHead) parser;
-            check = SectionParseHead.values()[check.ordinal() + 1];
-
-            if (line.startsWith(check.getStarter())){
-                return true; /// is child
-            }
-        }
-
-        if (line.startsWith(parser.getStarter())){
-            return true; /// correct start
-        }
-
-        if (isDocumentFirst() && parser == SectionParseHead.SECTION_1){
-            return true; /// is the top section
-        }
-        return false;
-    }
-
-    @Override
-    protected boolean checkChildLine(String line, SectionParser parser){
-        int level = ((SectionParseHead) parser).ordinal();
-        for (SectionParseHead check:
-                ImmutableList.copyOf(SectionParseHead.values()).reverse()
-            ){
-            if (line.startsWith(check.getStarter())){
-                return level < check.ordinal();
-            }
-        }
-        return true;
-    }
-
-    @Override
     public String toString(){
         return "HEAD " + getLevel() + "{" + super.toString() + "}";
     }

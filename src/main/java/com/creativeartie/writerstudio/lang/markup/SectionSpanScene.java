@@ -84,40 +84,6 @@ public final class SectionSpanScene extends SectionSpan {
     }
 
     @Override
-    protected boolean checkFirst(String line, SectionParser parser){
-        if (parser != SectionParseScene.SCENE_6){
-            SectionParseScene check =(SectionParseScene) parser;
-            check = SectionParseScene.values()[check.ordinal() + 1];
-
-            if (line.startsWith(check.getStarter())){
-                return true; /// is child
-            }
-        }
-
-        if (line.startsWith(parser.getStarter())){
-            return true; /// correct start
-        }
-
-        return false;
-    }
-
-    @Override
-    protected boolean checkChildLine(String line, SectionParser parser){
-        int level = ((SectionParseScene) parser).ordinal();
-        for (SectionParseScene check:
-                ImmutableList.copyOf(SectionParseScene.values()).reverse()
-            ){
-            if (line.startsWith(check.getStarter())){
-                return level < check.ordinal();
-            }
-        }
-
-        /// check for heading, knowing that:
-        /// - matching heading 1 matches all child heading
-        return ! line.startsWith(SectionParseHead.SECTION_1.getStarter());
-    }
-
-    @Override
     public String toString(){
         return "SCENE " + getLevel() + "{" + super.toString() + "}";
     }

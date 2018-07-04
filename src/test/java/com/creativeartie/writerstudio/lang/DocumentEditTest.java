@@ -48,8 +48,8 @@ public class DocumentEditTest{
     public void addEscape(){
         String raw = "abc";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, build(raw));
-        ///            Doc, S
-        doc.insert(2, "\\", 0);
+        ///            Doc
+        doc.insert(2, "\\");
 
         String done = "ab\\c";
         doc.assertDoc(1, done);
@@ -69,8 +69,8 @@ public class DocumentEditTest{
     public void addBeforeEscape(){
         String raw = "ab\\c";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, build(raw));
-        ///           Doc  S
-        doc.insert(0, "k", 0);
+        ///           Doc
+        doc.insert(0, "k");
 
         String done = "kab\\c";
         doc.assertDoc(1, done);
@@ -202,8 +202,8 @@ public class DocumentEditTest{
     public void mergeLineByDelete(){
         String raw = "=asdf\n jkl; #abc";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, build(raw));
-        ///         Doc, S
-        doc.delete(5, 6, 0);
+        ///         Doc
+        doc.delete(5, 6);
 
         String done = "=asdf jkl; #abc";
         String content = "asdf jkl; ";
@@ -247,8 +247,8 @@ public class DocumentEditTest{
     public void mergeLineByEscape(){
         String raw = "#321\nmore text";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, build(raw));
-        ///           Doc,  0
-        doc.insert(4, "\\", 0);
+        ///           Doc
+        doc.insert(4, "\\");
 
         String done = "#321\\\nmore text";
         String content = "321\\\nmore text";
