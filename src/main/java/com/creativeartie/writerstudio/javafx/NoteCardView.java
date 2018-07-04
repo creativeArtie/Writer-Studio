@@ -1,4 +1,4 @@
-package com.creativeartie.writerstudio.fxgui;
+package com.creativeartie.writerstudio.javafx;
 
 import java.util.*;
 import javafx.scene.control.*;
@@ -22,8 +22,6 @@ public abstract class NoteCardView extends GridPane{
 
         add(buildNoteTable(), 0, 0);
         add(buildNoteDetail(), 1, 0);
-
-        addBindings();
     }
 
     /// %Part 2: Layout
@@ -63,7 +61,11 @@ public abstract class NoteCardView extends GridPane{
 
     /// %Part 3: Listener Methods
 
-    protected abstract void addBindings();
+    public void setupProperties(WriterSceneControl control){
+        setupChildern(control);
+    }
+
+    protected abstract void setupChildern(WriterSceneControl control);
 
     /// %Part 4: Properties
 

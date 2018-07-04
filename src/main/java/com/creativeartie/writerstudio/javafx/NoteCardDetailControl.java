@@ -1,4 +1,4 @@
-package com.creativeartie.writerstudio.fxgui;
+package com.creativeartie.writerstudio.javafx;
 
 import java.util.*;
 import javafx.scene.*;
@@ -8,9 +8,13 @@ import javafx.scene.layout.*;
 import javafx.beans.property.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
+import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.resource.*;
 
 class NoteCardDetailControl extends NoteCardDetailView{
+    private ObjectProperty<SpanBranch> lastSelected;
+    private BooleanProperty refocusText;
+
     private final Label footnoteLabel;
     private final Label inTextLabel;
     private final Label sourceLabel;
@@ -21,7 +25,7 @@ class NoteCardDetailControl extends NoteCardDetailView{
     private final Label noTitleTextLabel;
     private final Label noContentTextLabel;
 
-    private Button goToButton;
+    private final Button goToButton;
 
     NoteCardDetailControl(){
         sourceLabel = new Label(WindowText.NOTE_CARD_SOURCE.getText());
@@ -37,21 +41,39 @@ class NoteCardDetailControl extends NoteCardDetailView{
         noContentTextLabel = new Label(WindowText.NOTE_CARD_EMTPY_DETAIL
             .getText());
 
+        goToButton = new Button(WindowText.NOTE_CARD_EDIT.getText());
+
         StyleClass.NOT_FOUND.addClass(noCardTitleLabel);
         StyleClass.NOT_FOUND.addClass(noCardDetailLabel);
         StyleClass.NO_TEXT.addClass(noTitleTextLabel);
     }
 
     @Override
-    protected void addBindings(){
-        goToButton = new Button(WindowText.NOTE_CARD_EDIT.getText());
+    protected void setupChildern(WriterSceneControl control){
+        lastSelected = control.lastSelectedProperty();
+        refocusText = control.refocusTextProperty();
 
-        goToButton.setOnAction(evt -> getGoToNoteProperty().setValue(getShowNote()));
-        getShowNoteProperty().addListener((d, o, n) -> updateNote(n));
+        goToButton.setOnAction(evt -> goToNote());
+
+        showNoteProperty().addListener((d, o, n) -> updateNote(n));
+
+        clearContent();
     }
 
-    @Override
-    protected void clearContent(){
+    private void goToNote(){
+        lastSelected.setValue(getShowNote());
+        refocusText.setValue(true);
+    }
+
+    private void updateNote(NoteCardSpan show){
+        if (show == null){
+            clearContent();
+        } else {
+            showNote(show);
+        }
+    }
+
+    private void clearContent(){
         setGraphic(noCardTitleLabel);
         setContent(noCardDetailLabel);
     }

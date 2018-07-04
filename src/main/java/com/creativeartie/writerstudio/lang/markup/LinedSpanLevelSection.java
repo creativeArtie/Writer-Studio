@@ -132,8 +132,15 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
         /// Gets the starting token and check it
         LinedParseLevel parser = isHeading()?
             LinedParseLevel.HEADING: LinedParseLevel.OUTLINE;
-        return text.startsWith(LEVEL_STARTERS.get(parser).get(getLevel() - 1))?
-            parser: null;
+        String base = LEVEL_STARTERS.get(parser).get(getLevel() - 1);
+        if (getLevel() != 6){
+            String next = LEVEL_STARTERS.get(parser).get(getLevel());
+            if (text.startsWith(next)){
+                return null;
+            }
+        }
+        return text.startsWith(base)? parser: null;
+
     }
 
 }

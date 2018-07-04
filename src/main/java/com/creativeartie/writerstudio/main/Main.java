@@ -78,10 +78,12 @@ public class Main extends Application{
         /// set stage info
         stage.setTitle(WindowText.PROGRAM_NAME.getText());
         stage.setMaximized(true);
-        stage.show();
 
         writer.setWritingFile(writeFile);
-        // writer.returnFocus();
+        writer.setRefocusText(true);
+
+        stage.show();
+
     }
 
     /** Create start file.

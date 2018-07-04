@@ -1,4 +1,4 @@
-package com.creativeartie.writerstudio.fxgui;
+package com.creativeartie.writerstudio.javafx;
 
 import java.util.*;
 import javafx.scene.*;
@@ -14,26 +14,20 @@ abstract class NoteCardDetailView extends TitledPane{
     /// %Part 1: Constructor and Class Fields
 
     private SimpleObjectProperty<NoteCardSpan> showNote;
-    private ReadOnlyObjectWrapper<NoteCardSpan> goToNote;
 
     NoteCardDetailView(){
         setCollapsible(false);
 
         showNote = new SimpleObjectProperty<>(this, "showNote");
-        goToNote = new ReadOnlyObjectWrapper<>(this, "goToNote");
-
-        addBindings();
-
-        clearContent();
     }
 
-    /// %Part 2: Layout
+    /// %Part 3: Setup Properties
 
-    /// %Part 3: Listener Methods
+    public void setupProperties(WriterSceneControl control){
+        setupChildern(control);
+    }
 
-    protected abstract void addBindings();
-
-    protected abstract void clearContent();
+    protected abstract void setupChildern(WriterSceneControl control);
 
     /// %Part 4: Properties
 
@@ -43,31 +37,12 @@ abstract class NoteCardDetailView extends TitledPane{
         return showNote;
     }
 
-    public SimpleObjectProperty<NoteCardSpan> getShowNoteProperty(){
-        return showNote;
-    }
-
     public NoteCardSpan getShowNote(){
         return showNote.getValue();
     }
 
     public void setShowNote(NoteCardSpan value){
         showNote.setValue(value);
-        goToNote.setValue(null);
-    }
-
-    /// %Part 4.2: Go To Note
-
-    public ReadOnlyObjectProperty<NoteCardSpan> goToNoteProperty(){
-        return goToNote.getReadOnlyProperty();
-    }
-
-    public ReadOnlyObjectWrapper<NoteCardSpan> getGoToNoteProperty(){
-        return goToNote;
-    }
-
-    public NoteCardSpan getGoToNote(){
-        return goToNote.getValue();
     }
 
     /// %Part 5: Get Child Methods

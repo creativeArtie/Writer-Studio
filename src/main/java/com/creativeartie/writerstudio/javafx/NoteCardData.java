@@ -1,4 +1,4 @@
-package com.creativeartie.writerstudio.fxgui;
+package com.creativeartie.writerstudio.javafx;
 
 import java.util.*;
 import javafx.beans.property.*;

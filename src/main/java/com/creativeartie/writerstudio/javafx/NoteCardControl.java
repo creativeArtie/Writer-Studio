@@ -1,7 +1,8 @@
-package com.creativeartie.writerstudio.fxgui;
+package com.creativeartie.writerstudio.javafx;
 
 import java.util.*;
 import javafx.beans.binding.*;
+import javafx.beans.property.*;
 import javafx.collections.*;
 
 import com.creativeartie.writerstudio.lang.*;
@@ -9,43 +10,44 @@ import com.creativeartie.writerstudio.lang.markup.*;
 
 class NoteCardControl extends NoteCardView{
 
+    private WritingText writingText;
+
     @Override
-    protected void addBindings(){
+    protected void setupChildern(WriterSceneControl control){
+        getNoteCardDetail().setupProperties(control);
+        control.writingTextProperty().addListener((d, o, n) -> setText(n));
+
         getNoteTable().getSelectionModel().selectedItemProperty().addListener(
-            (d, o, n) -> getNoteCardDetail().setShowNote(n));
+            (d, o, n) -> showNote(n));
     }
 
-    public NoteCardControl setWritingTextProperty(
-            ObjectProperty<WritingText> text){
-        text.addListener((d, o, n) -> {
-            if (doc != null){
-                doc.addDocEdited(span -> updateCards());
-                updateCards();
-            }
-        });
-        return this;
+    /// %Part 2.1: getNoteTable().getSelectionModel().selectedItemProperty()
+    private void showNote(NoteCardData data){
+        if (data != null){
+            getNoteCardDetail().setShowNote(data.getTargetSpan());
+        }
+
     }
 
-    public NoteCardControl setLastSelectedProperty(
-            ObjectProperty<SpanBranch> selected){
-        getNoteCardDetail().goToNoteProperty().addListener(
-            (d, o, n) -> selected.setValue(n);
-        );
-        return this;
+    private void setText(WritingText text){
+        writingText = text;
+        if (text != null){
+            text.addDocEdited(span -> updateCards());
+            updateCards();
+        }
     }
 
     private void updateCards(){
-        WritingText text = getWritingText();
-        if (text == null){
+        if (writingText == null){
             getNoteTable().setItems(FXCollections.emptyObservableList());
             return;
         }
-        CatalogueMap map = text.getCatalogue();
+        CatalogueMap map = writingText.getCatalogue();
         TreeSet<SpanBranch> set = map.getIds(AuxiliaryData.TYPE_NOTE);
         set.addAll(map.getIds(AuxiliaryData.TYPE_RESEARCH));
         ArrayList<NoteCardData> data = new ArrayList<>();
 
-        NoteCardSpan last = getShowNote();
+        NoteCardSpan last = getNoteCardDetail().getShowNote();
         NoteCardData selected = null;
         for(SpanBranch span: set){
             NoteCardData item = new NoteCardData((NoteCardSpan)span);

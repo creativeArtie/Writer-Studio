@@ -87,7 +87,7 @@ public enum WindowText {
 
     HEADING_TITLE("HeadingTree.HeadingTitle"),
     OUTLINE_TITLE("HeadingTree.OutlineTitle"),
-    PLACEHOLDER_HEADING("HeadingTree.HeadingPlaceholder"),
+    PLACEHOLDER_OUTLINE("HeadingTree.OutlinePlaceholder"),
 
     GOALS_TITLE("StatsScreen.Title"),   GOAL_WORD_TEXT("StatsScreen.WordGoal"),
     GOALS_TIME_TEXT("StatsScreen.TimeGoal"), HOUR_UNIT("StatsScreen.HourUnit"),

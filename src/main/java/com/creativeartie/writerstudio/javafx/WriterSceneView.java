@@ -25,17 +25,19 @@ abstract class WriterSceneView extends BorderPane{
     private static final double[] VER_DIVIDER = new double[]{.2, .8};
     private static final double[] HOR_DIVIDER = new double[]{.0, 1.0};
 
+    private NoteCardControl noteCardPane;
     private MenuBarMainControl mainMenuBar;
     private CheatsheetPaneControl cheatsheetPane;
     private TextPaneControl textPane;
     private MetaDataPaneControl metaDataPane;
     private List<TableDataControl<?>> dataTables;
+    private HeadingsControl headingsPane;
 
     private ReadOnlyObjectWrapper<WritingText> writingText;
     private ReadOnlyObjectWrapper<WritingStat> writingStat;
     private ReadOnlyObjectWrapper<WritingData> writingData;
     private SimpleObjectProperty<SpanBranch> lastSelected;
-    private SimpleBooleanProperty refoucsText;
+    private SimpleBooleanProperty refocusText;
 
     WriterSceneView(Stage window){
         getStylesheets().add(FileResources.getMainCss());
@@ -46,7 +48,7 @@ abstract class WriterSceneView extends BorderPane{
         writingStat = new ReadOnlyObjectWrapper<>(this, "writingStat");
         writingData = new ReadOnlyObjectWrapper<>(this, "writingData");
         lastSelected = new SimpleObjectProperty<>(this, "lastSelected");
-        refoucsText = new SimpleBooleanProperty(this, "refoucsText");
+        refocusText = new SimpleBooleanProperty(this, "refocusText");
     }
 
     /// %Part 2: Layout
@@ -65,18 +67,25 @@ abstract class WriterSceneView extends BorderPane{
 
     private TabPane buildTopTabs(){
         TabPane top = buildTabPane();
-        Tab ref = buildTab(WindowText.TAB_NOTE_CARD, new ReferencePane());
+
+        ArrayList<Tab> tabs = new ArrayList<>();
+
+        noteCardPane = new NoteCardControl();
+        tabs.add(new Tab(WindowText.TAB_NOTE_CARD.getText(), noteCardPane));
 
         ImmutableList.Builder<TableDataControl<?>> builder =
             ImmutableList.builder();
-        ArrayList<Tab> notes = new ArrayList<>();
-        notes.add(buildTab(
-            new TableAgendaPane(), WindowText.TAB_AGENDA, builder)
-        );
+        tabs.add(buildTab(new TableAgendaPane(), WindowText.TAB_AGENDA, builder));
+        tabs.add(buildTab(new TableLinkPane(), WindowText.TAB_LINK, builder));
+        tabs.add(buildTab(new TableNotePane(DirectoryType.FOOTNOTE),
+            WindowText.TAB_FOOTNOTE, builder));
+        tabs.add(buildTab(new TableNotePane(DirectoryType.ENDNOTE),
+            WindowText.TAB_ENDNOTE, builder));
         dataTables = builder.build();
 
-        top.getTabs().addAll(notes);
-        top.getTabs().add(ref);
+        tabs.add(buildTab(WindowText.TAB_REFERENCE, new ReferencePane()));
+
+        top.getTabs().addAll(tabs);
         return top;
     }
 
@@ -107,8 +116,11 @@ abstract class WriterSceneView extends BorderPane{
         metaDataPane = new MetaDataPaneControl();
         TabPane left = buildTabPane();
 
+        headingsPane = new HeadingsControl();
+        Tab tree = new Tab(WindowText.TAB_CONTENT.getText(), headingsPane);
+
         Tab meta = buildTab(WindowText.TAB_META, metaDataPane);
-        left.getTabs().addAll(meta);
+        left.getTabs().addAll(tree, meta);
         return left;
     }
 
@@ -200,21 +212,25 @@ abstract class WriterSceneView extends BorderPane{
         lastSelected.setValue(value);
     }
 
-    public BooleanProperty refoucsTextProperty(){
-        return refoucsText;
+    public BooleanProperty refocusTextProperty(){
+        return refocusText;
     }
 
     public boolean isRefocusText(){
-        return refoucsText.getValue();
+        return refocusText.getValue();
     }
 
     public void setRefocusText(boolean value){
-        refoucsText.setValue(value);
+        refocusText.setValue(value);
     }
 
     /// %Part 5: Get Child Methods
     MenuBarMainControl getMainMenuBar(){
         return mainMenuBar;
+    }
+
+    NoteCardControl getNoteCardPane(){
+        return noteCardPane;
     }
 
     CheatsheetPaneControl getCheatsheetPane(){
@@ -227,6 +243,10 @@ abstract class WriterSceneView extends BorderPane{
 
     TextPaneControl getTextPane(){
         return textPane;
+    }
+
+    HeadingsControl getHeadingsPane(){
+        return headingsPane;
     }
 
     List<TableDataControl<?>> getDataTables(){

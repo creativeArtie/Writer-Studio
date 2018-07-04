@@ -23,6 +23,7 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
     private int caretPosition;
     private ObjectProperty<SpanBranch> lastSelected;
     private ReadOnlyBooleanProperty textReady;
+    private BooleanProperty refocusText;
 
     TableDataControl(WindowText text){
         super(text);
@@ -38,6 +39,7 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
         getSelectionModel().selectedItemProperty().addListener((d, o, n) ->
             newSelection(n));
         textReady = control.getTextPane().textReadyProperty();
+        refocusText = control.refocusTextProperty();
     }
 
     /// %Part 1: control#writingTextProperty()
@@ -65,6 +67,7 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
         if (data != null){
             lastSelected.setValue(data.getTargetSpan());
         }
+        refocusText.setValue(true);
     }
 
     /// %Part 4: Utilities

@@ -1,22 +1,10 @@
-package com.creativeartie.writerstudio.window;
+package com.creativeartie.writerstudio.javafx;
 
 import java.util.*;
-import java.util.Optional;
-import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.text.*;
-import javafx.scene.layout.*;
 import javafx.beans.property.*;
-import javafx.collections.*;
-import javafx.scene.control.cell.*;
 
-import com.creativeartie.writerstudio.main.*;
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.resource.*;
-
-import com.google.common.base.*;
-import com.google.common.collect.*;
 
 /**
  * Stores a list of user notes, hypernotes.

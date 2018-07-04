@@ -54,13 +54,23 @@ public class WriterSceneControl extends WriterSceneView {
         getMainMenuBar().setupProperties(this);
         getMetaDataPane().setupProperties(this);
         getCheatsheetPane().setupProperties(this);
+        getHeadingsPane().setupProperties(this);
         for (TableDataControl<?> tab: getDataTables()){
             tab.setupProperties(this);
         }
-        scene.focusOwnerProperty().addListener((d, o, n) -> refoucs(n));
+        getNoteCardPane().setupProperties(this);
+        scene.focusOwnerProperty().addListener((d, o, n) -> refocus(n));
+        refocusTextProperty().addListener((d, o, n) ->
+            refocus(scene.getFocusOwner())
+        );
     }
 
-    private void refoucs(Node node){
-        System.out.println(node);
+    private void refocus(Node node){
+        if (isRefocusText()){
+            InlineCssTextArea area = getTextPane().getTextArea();
+            area.requestFollowCaret();
+            area.requestFocus();
+            setRefocusText(false);
+        }
     }
 }

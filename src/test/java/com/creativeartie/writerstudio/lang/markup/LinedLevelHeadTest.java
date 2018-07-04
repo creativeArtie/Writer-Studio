@@ -405,7 +405,7 @@ public class LinedLevelHeadTest {
         ///              012345678901234567
         String before = "=abc#DRAFT text\n";
         DocumentAssert doc = assertDoc(1, before, parsers);
-        doc.insert(1, "=", 0);
+        doc.insert(1, "=");
         commonHeading(doc, true);
     }
 
