@@ -13,16 +13,18 @@ import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.main.*;
 import com.creativeartie.writerstudio.resource.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 
 abstract class WindowStatDayView extends AnchorPane{
     /// %Part 1: Constructor and Class Fields
     private Label dayLabel;
     private Label statLabel;
-    private Tooltip statsTip;
+    private Tooltip statTip;
 
     private SimpleObjectProperty<StatSpanDay> dayRecord;
     private SimpleObjectProperty<LocalDate> showDate;
+    private SimpleBooleanProperty inSeason;
 
     WindowStatDayView(){
         setMaxWidth(WindowStatView.WIDTH / 7);
@@ -33,6 +35,7 @@ abstract class WindowStatDayView extends AnchorPane{
 
         dayRecord = new SimpleObjectProperty<>();
         showDate = new SimpleObjectProperty<>();
+        inSeason = new SimpleBooleanProperty();
     }
 
     /// %Part 2: Layout
@@ -47,8 +50,8 @@ abstract class WindowStatDayView extends AnchorPane{
 
     private Label buildStatLabel(){
         statLabel = new Label();
-        statsTip = new Tooltip();
-        statLabel.setTooltip(statsTip);
+        statTip = new Tooltip();
+        statLabel.setTooltip(statTip);
 
         setTopAnchor(statLabel, 5.0);
         setRightAnchor(statLabel, 0.0);
@@ -87,7 +90,23 @@ abstract class WindowStatDayView extends AnchorPane{
     }
 
     public void setDayRecord(StatSpanDay value){
+        if (value != null){
+            LocalDate date = showDate.getValue();
+            argumentEquals(value.getRecordDate(), "value#getRecordDate()", date);
+        }
         dayRecord.setValue(value);
+    }
+
+    public SimpleBooleanProperty inSeasonProperty(){
+        return inSeason;
+    }
+
+    public boolean isInSeason(){
+        return inSeason.getValue();
+    }
+
+    public void setInSeason(boolean value){
+        inSeason.setValue(value);
     }
 
     /// %Part 5: Get Child Methods
@@ -99,8 +118,8 @@ abstract class WindowStatDayView extends AnchorPane{
         return statLabel;
     }
 
-    Tooltip getStatsTip(){
-        return statsTip;
+    Tooltip getStatTip(){
+        return statTip;
     }
 
 }

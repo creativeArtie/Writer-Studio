@@ -119,6 +119,16 @@ public class WritingStat extends Document{
         );
     }
 
+    public Optional<StatSpanDay> getRecord(LocalDate date){
+        return stream().map(s -> (StatSpanDay) s)
+            .filter(s -> s.getRecordDate().equals(date))
+            .findFirst();
+    }
+
+    public StatSpanDay getFirstRecord(){
+        return (StatSpanDay) get(0);
+    }
+
     public void startWriting(WritingText text){
         setFireReady(false);
         int publish = text.getPublishTotal();

@@ -44,7 +44,30 @@ class WindowStatMonthControl extends WindowStatMonthView{
             boolean first = writingStat.getStartMonth().equals(month);
             getFirstButton().setDisable(first);
             getPastButton().setDisable(first);
+        } else {
+            return;
         }
+
+        LocalDate date = month.atDay(1);
+        Iterator<WindowStatDayControl> panes = getDayPanes().iterator();
+        for (DayOfWeek day: DayOfWeek.values()){
+            if (day == date.getDayOfWeek()){
+                break;
+            }
+            panes.next().setShowDay(null);
+        }
+
+        while (date.getMonth() == month.getMonth() &&
+                date.getYear() == month.getYear()){
+            panes.next().setShowDay(date);
+            date = date.plusDays(1);
+        }
+
+        while (panes.hasNext()){
+            panes.next().setShowDay(null);
+        }
+
+
     }
 
     private void toFirstMonth(){

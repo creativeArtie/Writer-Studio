@@ -126,11 +126,12 @@ public final class WritingFile {
         ));
 
         String stats = String.join("\n", Arrays.asList(
-            "2018-05-12|publish-goal:3|time-goal:PT10M|publish-count:1|note-count:1|time-count:PT20M|",
+            "2018-04-11|publish-goal:3|time-goal:PT10M|publish-count:1|note-count:1|time-count:PT20M|",
+            "2018-04-12|publish-goal:3|time-goal:PT10M|publish-count:0|note-count:0|time-count:PT1M|",
             "2018-06-14|publish-goal:3|time-goal:PT10M|publish-count:10|note-count:2|time-count:PT31M|",
             "2018-06-16|publish-goal:3|time-goal:PT10M|publish-count:3|note-count:3|time-count:PT12M|",
             "2018-06-17|publish-goal:6|time-goal:PT10M|publish-count:12|note-count:4|time-count:PT18M|",
-            "2018-07-03|publish-goal:10|time-goal:PT10M|publish-count:18|note-count:5|time-count:PT1M|"
+            "2018-07-03|publish-goal:10|time-goal:PT10M|publish-count:18|note-count:5|time-count:PT1M|\n"
         ));
         WritingFile ans = new WritingFile(null, new WritingText(file),
             new WritingStat(stats), new WritingData(data));

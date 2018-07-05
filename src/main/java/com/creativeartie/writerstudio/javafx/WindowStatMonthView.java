@@ -14,9 +14,15 @@ import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.main.*;
 
+import com.google.common.collect.*;
+
 import com.creativeartie.writerstudio.resource.*;
 
 abstract class WindowStatMonthView extends GridPane{
+    private static int DAY_OF_WEEK = DayOfWeek.values().length;
+    private static int SHOW_WEEKS = 6;
+    private static int DAY_PANES = DAY_OF_WEEK * SHOW_WEEKS;
+
     /// %Part 1: Constructor and Class Fields
 
     private Button firstButton;
@@ -24,7 +30,7 @@ abstract class WindowStatMonthView extends GridPane{
     private Button nextButton;
     private Button endButton;
     private Label yearMonthLabel;
-    private WindowStatDayControl[] dayPanes;
+    private List<WindowStatDayControl> dayPanes;
 
     private SimpleObjectProperty<YearMonth> currentMonth;
 
@@ -98,15 +104,18 @@ abstract class WindowStatMonthView extends GridPane{
     }
 
     private void buildDayPanes(){
-        dayPanes = new WindowStatDayControl[7 * 6];
-        for (int i = 0; i < dayPanes.length; i++){
-            dayPanes[i] = new WindowStatDayControl();
+        ImmutableList.Builder<WindowStatDayControl> builder = ImmutableList
+            .builder();
+        for (int i = 0; i < DAY_PANES; i++){
+            builder.add(new WindowStatDayControl());
         }
 
-        int ptr = 0;
-        for (int i = 0; i < 6; i++){
-            for (int j = 0; j < 7; j++){
-                add(dayPanes[ptr++], j, i + 2);
+        dayPanes = builder.build();
+        Iterator<WindowStatDayControl> it = dayPanes.iterator();
+
+        for(int i = 0; i < SHOW_WEEKS; i++){
+            for (int j = 0; j < DAY_OF_WEEK; j++){
+                add(it.next(), j, i + 2); /// + 2 heading rows
             }
         }
     }
@@ -154,7 +163,7 @@ abstract class WindowStatMonthView extends GridPane{
         return yearMonthLabel;
     }
 
-    WindowStatDayControl[] getDayPanes(){
+    List<WindowStatDayControl> getDayPanes(){
         return dayPanes;
     }
 }
