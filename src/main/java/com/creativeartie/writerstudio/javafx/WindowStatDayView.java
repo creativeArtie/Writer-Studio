@@ -81,34 +81,6 @@ abstract class WindowStatDayView extends AnchorPane{
         showDate.setValue(value);
     }
 
-    public SimpleObjectProperty<StatSpanDay> dayRecordProperty(){
-        return dayRecord;
-    }
-
-    public StatSpanDay getDayRecord(){
-        return dayRecord.getValue();
-    }
-
-    public void setDayRecord(StatSpanDay value){
-        if (value != null){
-            LocalDate date = showDate.getValue();
-            argumentEquals(value.getRecordDate(), "value#getRecordDate()", date);
-        }
-        dayRecord.setValue(value);
-    }
-
-    public SimpleBooleanProperty inSeasonProperty(){
-        return inSeason;
-    }
-
-    public boolean isInSeason(){
-        return inSeason.getValue();
-    }
-
-    public void setInSeason(boolean value){
-        inSeason.setValue(value);
-    }
-
     /// %Part 5: Get Child Methods
     Label getDayLabel(){
         return dayLabel;
