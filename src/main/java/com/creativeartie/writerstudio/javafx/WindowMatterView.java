@@ -41,7 +41,6 @@ abstract class WindowMatterView extends Stage{
 
     /// %Part 2: Layout
 
-
     private Scene buildScene(){
         Scene scene = new Scene(createMainPane(), WIDTH, HEIGHT);
         scene.getStylesheets().add(FileResources.getPrintCss());

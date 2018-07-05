@@ -13,13 +13,14 @@ import com.creativeartie.writerstudio.pdf.*;
 class MenuBarMainControl extends MenuBarMainView{
 
     private WindowAbout aboutWindow;
+    private WindowStatControl statsWindow;
     private FileChooser fileChooser;
     private Stage mainWindow; /// For fileChooser dialogs
 
     public MenuBarMainControl(Stage window){
         super(window);
         aboutWindow = new WindowAbout();
-
+        statsWindow = new WindowStatControl();
         fileChooser = new FileChooser();
         fileChooser.setTitle(WindowText.MENU_CHOOSER_TITLE.getText());
         mainWindow = window;
@@ -27,10 +28,13 @@ class MenuBarMainControl extends MenuBarMainView{
 
     @Override
     protected void setupChildern(WriterSceneControl control){
+        statsWindow.setupProperties(control);
+
         getCreateItem().setOnAction(e -> newFile());
         getOpenItem().setOnAction(e -> openFile());
         getExportItem().setOnAction(e -> exportPdf());
-        getAboutItem().setOnAction(evt -> aboutWindow.show());
+        getAboutItem().setOnAction(e -> aboutWindow.show());
+        getGoalsItem().setOnAction(e -> statsWindow.show());
         getExitItem().setOnAction(e -> exit());
     }
 

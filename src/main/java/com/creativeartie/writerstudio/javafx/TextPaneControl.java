@@ -111,6 +111,9 @@ class TextPaneControl extends TextPaneView {
     private void loadStat(WritingStat stat){
         textReady.setValue(false);
         writingStat = stat;
+        if (stat != null){
+            stat.addDocEdited(s -> setStatLabel());
+        }
         textReady.setValue(stat != null);
         setStatLabel();
     }

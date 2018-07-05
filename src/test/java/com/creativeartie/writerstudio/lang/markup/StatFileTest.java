@@ -192,6 +192,7 @@ public class StatFileTest {
         test.stopWriting(after);
 
         today.setPublishTotal(5).setTimeTotal(20);
+
         assertAll(expect, test);
     }
 
