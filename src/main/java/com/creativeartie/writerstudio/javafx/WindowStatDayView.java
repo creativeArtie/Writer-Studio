@@ -1,20 +1,12 @@
 package com.creativeartie.writerstudio.javafx;
 
+import java.time.*;
+import java.util.*;
 import javafx.scene.control.*;
-import javafx.scene.text.*;
 import javafx.scene.layout.*;
 import javafx.beans.property.*;
-import javafx.scene.image.*;
 
-import java.util.*;
-import java.time.*;
-
-import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.main.*;
-import com.creativeartie.writerstudio.resource.*;
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
-
 
 abstract class WindowStatDayView extends AnchorPane{
     /// %Part 1: Constructor and Class Fields

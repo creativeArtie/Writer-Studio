@@ -1,11 +1,11 @@
 package com.creativeartie.writerstudio.javafx;
 
-import javafx.scene.layout.*;
-import javafx.scene.control.*;
-import javafx.geometry.*;
-import javafx.stage.*;
-import javafx.scene.*;
 import java.net.*;
+import javafx.geometry.*;
+import javafx.scene.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.*;
 
 import com.google.common.io.*;
 import com.google.common.base.*;

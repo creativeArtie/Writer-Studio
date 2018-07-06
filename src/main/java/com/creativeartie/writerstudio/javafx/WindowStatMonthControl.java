@@ -2,9 +2,7 @@ package com.creativeartie.writerstudio.javafx;
 
 import java.time.*;
 import java.util.*;
-import java.util.function.*;
 
-import com.creativeartie.writerstudio.main.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.resource.*;
 

@@ -4,8 +4,8 @@ import java.util.*;
 import javafx.scene.control.*;
 
 import com.creativeartie.writerstudio.lang.*;
-import com.creativeartie.writerstudio.resource.*;
 import com.creativeartie.writerstudio.lang.markup.*;
+import com.creativeartie.writerstudio.resource.*;
 
 /**
  * A data object for Agenda.

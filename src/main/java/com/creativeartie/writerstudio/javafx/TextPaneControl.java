@@ -1,22 +1,19 @@
 package com.creativeartie.writerstudio.javafx;
 
-import java.util.*;
-import java.util.Optional;
 import java.time.*;
 import java.time.format.*;
-import javafx.scene.control.*;
-import javafx.beans.property.*;
+import java.util.*;
 import javafx.animation.*;
+import javafx.beans.property.*;
 
 import org.fxmisc.richtext.*;
 import org.fxmisc.richtext.model.*;
 
-import com.google.common.base.*;
-
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.resource.*;
+
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /**
  * Controller for the main text area.

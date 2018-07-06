@@ -1,16 +1,9 @@
 package com.creativeartie.writerstudio.javafx;
 
-import javafx.beans.property.*;
-import javafx.scene.control.*;
-import javafx.scene.text.*;
-import javafx.scene.layout.*;
-
-import java.util.*;
 import java.time.*;
+import javafx.beans.property.*;
 
-import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.main.*;
 
 class WindowStatControl extends WindowStatView{
     private WritingStat writingStat;

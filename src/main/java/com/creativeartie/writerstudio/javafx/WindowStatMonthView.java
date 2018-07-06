@@ -1,18 +1,11 @@
 package com.creativeartie.writerstudio.javafx;
 
-import javafx.scene.control.*;
-import javafx.scene.text.*;
-import javafx.beans.binding.*;
-import javafx.beans.property.*;
-import javafx.scene.layout.*;
-import javafx.geometry.*;
-import java.time.*;
-
 import java.util.*;
-
-import com.creativeartie.writerstudio.lang.*;
-import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.main.*;
+import java.time.*;
+import javafx.geometry.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.beans.property.*;
 
 import com.google.common.collect.*;
 

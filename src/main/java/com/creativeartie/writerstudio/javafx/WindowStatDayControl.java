@@ -1,8 +1,8 @@
 package com.creativeartie.writerstudio.javafx;
 
-import javafx.scene.image.*;
 import java.util.*;
 import java.time.*;
+import javafx.scene.image.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.resource.*;

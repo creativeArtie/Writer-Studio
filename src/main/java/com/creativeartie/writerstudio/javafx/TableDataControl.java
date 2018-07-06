@@ -1,17 +1,12 @@
 package com.creativeartie.writerstudio.javafx;
 
+import java.util.*;
 import javafx.beans.property.*;
-import javafx.scene.control.*;
-import javafx.scene.text.*;
-import javafx.scene.layout.*;
 import javafx.collections.*;
 
-import java.util.*;
-
 import com.creativeartie.writerstudio.lang.*;
-import com.creativeartie.writerstudio.resource.*;
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.main.*;
+import com.creativeartie.writerstudio.resource.*;
 
 /**
  * Controller for Agenda Pane.

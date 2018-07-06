@@ -1,8 +1,6 @@
 package com.creativeartie.writerstudio.javafx;
 
 import java.util.*;
-import javafx.beans.binding.*;
-import javafx.beans.property.*;
 import javafx.collections.*;
 
 import com.creativeartie.writerstudio.lang.*;

@@ -2,7 +2,6 @@ package com.creativeartie.writerstudio.javafx;
 
 import java.io.*;
 import javafx.application.*;
-import javafx.beans.property.*;
 import javafx.scene.control.*;
 import javafx.stage.*;
 

@@ -1,14 +1,9 @@
 package com.creativeartie.writerstudio.javafx;
 
-import java.util.*;
-import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.scene.text.*;
-import javafx.scene.layout.*;
 import javafx.beans.property.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.resource.*;
 
 abstract class NoteCardDetailView extends TitledPane{
     /// %Part 1: Constructor and Class Fields

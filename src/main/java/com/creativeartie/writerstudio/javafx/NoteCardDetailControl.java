@@ -3,12 +3,12 @@ package com.creativeartie.writerstudio.javafx;
 import java.util.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.scene.text.*;
 import javafx.scene.layout.*;
 import javafx.beans.property.*;
+import javafx.scene.text.*;
 
-import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.lang.*;
+import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.resource.*;
 
 class NoteCardDetailControl extends NoteCardDetailView{

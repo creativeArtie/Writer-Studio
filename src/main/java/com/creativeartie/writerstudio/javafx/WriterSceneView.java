@@ -1,23 +1,18 @@
 package com.creativeartie.writerstudio.javafx;
 
 import java.util.*;
-import javafx.stage.*;
+import javafx.beans.property.*;
+import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
-import javafx.beans.property.*;
-import javafx.beans.binding.*;
-import javafx.beans.value.*;
+import javafx.stage.*;
 import javafx.scene.control.*;
-import org.fxmisc.richtext.model.*;
-import javafx.animation.*;
-import javafx.geometry.*;
 
-import com.creativeartie.writerstudio.main.*;
+import com.google.common.collect.*;
+
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.resource.*;
-
-import com.google.common.collect.*;
 
 abstract class WriterSceneView extends BorderPane{
     /// %Part 1: Constructor and Class Fields

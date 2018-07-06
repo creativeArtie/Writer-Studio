@@ -1,21 +1,15 @@
 package com.creativeartie.writerstudio.javafx;
 
 import java.util.*;
-import java.time.*;
 import javafx.beans.property.*;
-import javafx.scene.layout.*;
-import javafx.collections.*;
-import javafx.scene.control.*;
-import javafx.geometry.*;
-import javafx.stage.*;
-import javafx.scene.text.*;
 import javafx.scene.*;
-import java.io.*;
+import javafx.scene.layout.*;
+import javafx.scene.control.*;
+import javafx.stage.*;
 
 import org.fxmisc.richtext.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.main.*;
 import com.creativeartie.writerstudio.resource.*;
 
 abstract class WindowMatterView extends Stage{

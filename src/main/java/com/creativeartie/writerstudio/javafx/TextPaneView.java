@@ -1,19 +1,12 @@
 package com.creativeartie.writerstudio.javafx;
 
+import javafx.beans.property.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.*;
-import javafx.beans.property.*;
-import javafx.beans.value.*;
-import javafx.animation.*;
 import javafx.geometry.*;
 
 import org.fxmisc.richtext.*;
 import org.fxmisc.richtext.model.*;
-
-import com.creativeartie.writerstudio.lang.*;
-import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.resource.*;
 
 /**
  * A rict text fx text area that show the text
