@@ -62,16 +62,14 @@ class TextPaneControl extends TextPaneView {
     }
 
     private void caretMoved(int position){
-        if (isTextReady()){
-            getLineTypeLabel().setText(writingText.getLeaf(position)
-                /// s = SpanLeaf
-                .flatMap(s -> s.getParent(LinedSpan.class))
-                /// s = LinedSpan
-                .map(s -> WindowText.getText(s))
-                /// s = String
-                .orElse("")
-            );
-        }
+        getLineTypeLabel().setText(writingText.getLeaf(position)
+            /// s = SpanLeaf
+            .flatMap(s -> s.getParent(LinedSpan.class))
+            /// s = LinedSpan
+            .map(s -> WindowText.getText(s))
+            /// s = String
+            .orElse("")
+        );
     }
 
     /// %Part 1: Animation Timer

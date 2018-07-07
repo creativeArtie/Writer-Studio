@@ -99,7 +99,7 @@
     - -> textChanged()
 - caretMoved()
     - -> lineTypeLabel.text
-- 
+- updateTime
 
 # MainMenuBar
 - writingFile
