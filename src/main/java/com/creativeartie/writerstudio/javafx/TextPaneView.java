@@ -19,14 +19,12 @@ abstract class TextPaneView extends BorderPane {
     private Label timeLabel;
 
     private ReadOnlyBooleanWrapper textReady;
-    private ReadOnlyIntegerWrapper caretPosition;
 
     TextPaneView(){
         setCenter(buildTextArea());
         setBottom(buildBottomPane());
 
         textReady = new ReadOnlyBooleanWrapper(this, "textReady");
-        caretPosition = new ReadOnlyIntegerWrapper(this, "caretPosition");
     }
 
     /// %Part 2: Layout

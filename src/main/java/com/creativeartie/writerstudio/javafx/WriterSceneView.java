@@ -151,18 +151,6 @@ abstract class WriterSceneView extends BorderPane{
     protected abstract void bindChildren(Scene scene);
 
     /// %Part 4: Properties
-
-    public ObjectProperty<WritingFile> writingFileProperty(){
-        return mainMenuBar.writingFileProperty();
-    }
-
-    public WritingFile getWritingFile(){
-        return mainMenuBar.getWritingFile();
-    }
-
-    public void setWritingFile(WritingFile value){
-        mainMenuBar.setWritingFile(value);
-    }
     /// %Part 4.2: WritingText
 
     public ReadOnlyObjectProperty<WritingText> writingTextProperty(){

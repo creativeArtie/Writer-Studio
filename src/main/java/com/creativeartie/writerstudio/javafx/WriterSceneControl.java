@@ -20,31 +20,35 @@ public class WriterSceneControl extends WriterSceneView {
         super(window);
     }
 
+    public void setWritingFile(WritingFile file){
+        getMainMenuBar().setWritingFile(file);
+    }
+
     @Override
     protected void bindWritingText(ReadOnlyObjectWrapper<WritingText> prop){
         prop.bind(Bindings.createObjectBinding(
-            () -> Optional.ofNullable(getWritingFile())
+            () -> Optional.ofNullable(getMainMenuBar().getWritingFile())
                 .map(f -> f.getDocument())
                 .orElse(null)
-        , writingFileProperty()));
+        , getMainMenuBar().writingFileProperty()));
     }
 
     @Override
     protected void bindWritingStat(ReadOnlyObjectWrapper<WritingStat> prop){
         prop.bind(Bindings.createObjectBinding(
-            () -> Optional.ofNullable(getWritingFile())
+            () -> Optional.ofNullable(getMainMenuBar().getWritingFile())
                 .map(f -> f.getRecords())
                 .orElse(null)
-        , writingFileProperty()));
+        , getMainMenuBar().writingFileProperty()));
     }
 
     @Override
     protected void bindWritingData(ReadOnlyObjectWrapper<WritingData> prop){
         prop.bind(Bindings.createObjectBinding(
-            () -> Optional.ofNullable(getWritingFile())
+            () -> Optional.ofNullable(getMainMenuBar().getWritingFile())
                 .map(f -> f.getMetaData())
                 .orElse(null)
-        , writingFileProperty()));
+        , getMainMenuBar().writingFileProperty()));
     }
 
     @Override

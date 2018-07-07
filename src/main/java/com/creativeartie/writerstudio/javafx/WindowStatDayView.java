@@ -14,9 +14,7 @@ abstract class WindowStatDayView extends AnchorPane{
     private Label statLabel;
     private Tooltip statTip;
 
-    private SimpleObjectProperty<StatSpanDay> dayRecord;
     private SimpleObjectProperty<LocalDate> showDate;
-    private SimpleBooleanProperty inSeason;
 
     WindowStatDayView(){
         setMaxWidth(WindowStatView.WIDTH / 7);
@@ -25,9 +23,7 @@ abstract class WindowStatDayView extends AnchorPane{
 
         getChildren().addAll(buildDayLabel(), buildStatLabel());
 
-        dayRecord = new SimpleObjectProperty<>();
         showDate = new SimpleObjectProperty<>();
-        inSeason = new SimpleBooleanProperty();
     }
 
     /// %Part 2: Layout
