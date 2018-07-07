@@ -1,9 +1,13 @@
 # WritingScene
 - writingText
+    - -> TextPane.loadText()
 - writingStat
     - => WritingScene.writingStat
+    - -> TextPane.loadStat()
 - writingData
+    - -> WindowMatter.setData()
 - lastSelected
+    - -> TextPane.spanSelected()
 - refocusText 
     - -> refocus()
 - scene.focusOwner
@@ -17,6 +21,7 @@
 - writingStat
     - -> setStat
     - -> WindowStatMonth.setStat
+    - -> WindowStatDay.setStat
 - wordSpinner.value
     - -> editWord
 - hourSpinner.value
@@ -64,6 +69,37 @@
 - -> toEndMonth()
     - currentMonth
 
+# WindowStatDay
+- showDay
+   - -> setDay() 
+- setStat()
+    - -> setDay()
+- setStat()
+    - -> statLabel.graphic
+    - -> statTip.text
+
+# WindowMatter
+- showMatter
+    - -> showMatter()
+    - -> textArea.plainText
+- textArea.plainText
+    - -> updateText()
+- updateText()
+    - -> updatePreview()
+- updatePreview() 
+    - -> previewText.children
+
+# TextPane
+- (timer)
+    -> updateTime()
+- textReady
+- textArea.position 
+    - -> caretMoved()
+- textArea.plainText 
+    - -> textChanged()
+- caretMoved()
+    - -> lineTypeLabel.text
+- 
 
 # MainMenuBar
 - writingFile
