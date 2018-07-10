@@ -1,12 +1,14 @@
+answers to https://www.kickstarter.com/help/handbook/your_story
+
 #Who are you?
 - grew up and lives in Vancouver, BC
-- recovering mental health issues
-- has a computer science dialopma
+- recovering mental health illnesses, creates projects to maintain my mental health
+- has a computer science diploma
 - worked on smaller project, upload on GitHub, GitLab
 
 #What are you planning to make?
 
-## For Kickstarter:
+## For Kickstarter (printer idea):
 
 1. an all inclusive writing program that can handle project, like
     - a novel and letters to publishers/agents
@@ -15,22 +17,73 @@
     - personal letters sent by slow but homely snail mail
 2. do the above with professional printing and sending with a single click of a button
 
+## For Kickstarter (Launching to Android)
+
+1. an all inclusive app on Android with plugins
+    -
+
 ## Beyond Kickstarter
 
 1. launch the project into Android
-2. free to use with paid plugins that you didn't know you'd want (I hope)
-3. cloud backup and maybe sent to home CD backup
+2. paid plugins for more complex things (ie. advance citation system, story anaylsising)
+3. sending scented romantic letters
 4. (even more ideas!)
+
+## Will continue to make even if the kickstarter project success or fails
+
+1. Modes separating between writing, and editing.
+2. Version control and document management, allowing note sharing with all files
+   in a single project.
+3. A standard graphical user interface mode along with the program's customized
+   markup language
+4. Formatting template for different type of documents
 
 # Where did this project come from?
 
-Tell people how you got the idea, and how much you’ve accomplished so far. Sharing the project’s history helps others understand the kind of work you do, and how you go about it.
-What’s your plan, and what’s your schedule?
+- From the need of making a word processor for my own writing
+- From wanting to develop something I could make all by myself that I can share
+  and be useful to others
+- letting the project take shape and discovering it's purpose:
+    - a writing program that allow you make a writing project from the
+      beginning to the the end
+    - free to use base program, paid addons for specific domains
+- became one of my many projects that I wished to see success out in the wild
+- the project spends it time first on my laptop
 
-Lay out a clear, specific timeline for what backers can expect.
-What’s your budget?
+# What’s your plan, and what’s your schedule?
 
-A simple breakdown lets people know you’ve thought things through and have a workable plan, so they can trust you to use funds wisely.
-Why do you care?
+- making formatting template and printing system by the October; this would
+  fulfil the main goal of this Kickstarter advanture
+- implements the folder management and grahic user interface by Decemeber; this
+  would let people to use the program as they would use Word
 
-Tell people why you’re passionate about your project and committed to making it happen.
+
+# What’s your budget?
+
+## Printer Idea
+
+|Needs                                |Price  |
+|-------------------------------------|-------|
+|Communical printer                   |$2,000 |
+|Envelope Inserters or human mailer   |$6,000 |
+|Rewards                              |$1,000 |
+|Other random stuff, supporting myself|$10,000|
+|Total                                |$17,000|
+
+## Launching to Andriod
+
+|Needs                                    |Price  |
+|-----------------------------------------|-------|
+|A laptop that run Andriod Studio smoothly|$2,000 |
+|Rewards                                  |$1,000 |
+|Other random stuff, supporting myself    |$10,000|
+|Total                                    |$13,000|
+
+
+# Why do you care?
+
+## Printer Idea
+- allow everyone to use a easy-to-use writing program that produce professional
+  formatting and do everything all-in-one
+- sending professional mails (and manuscripts) easily with just one click of a
+  button
