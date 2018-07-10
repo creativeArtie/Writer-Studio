@@ -1,6 +1,7 @@
 package com.creativeartie.writerstudio.javafx;
 
 import java.util.*;
+import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.beans.binding.*;
@@ -70,10 +71,12 @@ public class WriterSceneControl extends WriterSceneView {
 
     private void refocus(Node node){
         if (isRefocusText()){
-            InlineCssTextArea area = getTextPane().getTextArea();
-            area.requestFollowCaret();
-            area.requestFocus();
-            setRefocusText(false);
+            Platform.runLater( () -> {
+                InlineCssTextArea area = getTextPane().getTextArea();
+                area.requestFollowCaret();
+                area.requestFocus();
+                setRefocusText(false);
+            });
         }
     }
 }

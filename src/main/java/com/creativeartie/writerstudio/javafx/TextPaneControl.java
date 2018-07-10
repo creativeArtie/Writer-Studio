@@ -32,6 +32,7 @@ class TextPaneControl extends TextPaneView {
     private long restyleTime;
 
     private ReadOnlyBooleanWrapper textReady;
+    private BooleanProperty refocusText;
 
     TextPaneControl(){
         stopTime = STOP;
@@ -59,6 +60,7 @@ class TextPaneControl extends TextPaneView {
             caretMoved(n.intValue()));
         getTextArea().plainTextChanges().subscribe(this::textChanged);
 
+        refocusText = control.refocusTextProperty();
     }
 
     private void caretMoved(int position){
@@ -116,6 +118,8 @@ class TextPaneControl extends TextPaneView {
     private void spanSelected(SpanBranch span){
         if (span == null) return;
         if (! isTextReady()) return;
+        refocusText.setValue(true);
+        if (span.getRange().contains(getTextArea().getCaretPosition())) return;
 
         textReady.setValue(false);
         int position = span.getEnd();

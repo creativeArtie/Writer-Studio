@@ -3,6 +3,7 @@ package com.creativeartie.writerstudio.javafx;
 import java.util.*;
 import javafx.beans.property.*;
 import javafx.scene.control.*;
+import javafx.scene.input.*;
 
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
@@ -87,21 +88,22 @@ final class HeadingsControl extends HeadingsView{
         if (textReady.getValue() && head != null){
             lastSelected.setValue(head.getValue());
             selectHeading(head.getValue().getStart());
-            refocusText.setValue(true);
         }
+        refocusText.setValue(true);
     }
 
     /// %Part 2.3: getOutlineTree().getSelectionModel().selectedItemProperty()
     private void listenOutline(TreeItem<SectionSpanScene> scene){
         if (textReady.getValue() && scene != null){
             lastSelected.setValue(scene.getValue());
-            refocusText.setValue(true);
         }
+        refocusText.setValue(true);
     }
 
     /// %Part 2.3: control.getTextPane().getTextArea().caretPositionProperty()
 
     private void selectHeading(int position){
+        if (! textReady.getValue()) return;
         if (writingText == null) return;
         Optional<SectionSpanHead> head = writingText.locateLeaf(position)
             .flatMap(s -> s.getParent(SectionSpanHead.class));

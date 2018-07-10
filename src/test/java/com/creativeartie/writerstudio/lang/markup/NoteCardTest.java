@@ -169,8 +169,8 @@ public class NoteCardTest {
     @Test
     public void noteSourceError(){
         String raw1 = "!>dsaf\n";
-        String raw2 = "!>in-text: Doe, p40\n";
-        String raw3 = "!>in-text: Smith, p3";
+        String raw2 = "!>source|in-text: Doe, p40\n";
+        String raw3 = "!>source|in-text: Smith, p3";
         String full = raw1 + raw2 + raw3;
         DocumentAssert doc = assertDoc(1, full, PARSER);
         IDBuilder builder = doc.addId(buildId(true, "00"), 0);
@@ -264,7 +264,7 @@ public class NoteCardTest {
         ///           0000000000111111111122222222223333333333 4
         ///           0123456789012345678901234567890123456789 0
         String raw = "!%@see:Note Heading\n!%some note content\n" +
-            "!>in-text: Smith, p3";
+            "!>source|in-text: Smith, p3";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
         doc.insert(39, "\\\n", 0, 1);
         doc.assertDoc(1, COMMON_NOTE_BASE);
@@ -275,7 +275,7 @@ public class NoteCardTest {
     public void editContent(){
         ///           012345678901234567890123
         String raw = "!%@see:Note Heading\n!%note content\\\n\n" +
-            "!>in-text: Smith, p3";
+            "!>source|in-text: Smith, p3";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
         doc.insert(22, "some ", 0, 1);
         doc.assertDoc(1, COMMON_NOTE_BASE);

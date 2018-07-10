@@ -5,6 +5,7 @@ answers to https://www.kickstarter.com/help/handbook/your_story
 - recovering mental health illnesses, creates projects to maintain my mental health
 - has a computer science diploma
 - worked on smaller project, upload on GitHub, GitLab
+- honestly, the project is bigger then my confidence can handle
 
 #What are you planning to make?
 
@@ -16,15 +17,10 @@ answers to https://www.kickstarter.com/help/handbook/your_story
     - job search with targeting cover letters and resumes
     - personal letters sent by slow but homely snail mail
 2. do the above with professional printing and sending with a single click of a button
-
-## For Kickstarter (Launching to Android)
-
-1. an all inclusive app on Android with plugins
-    -
+3. an all inclusive app on Android with plugins
 
 ## Beyond Kickstarter
 
-1. launch the project into Android
 2. paid plugins for more complex things (ie. advance citation system, story anaylsising)
 3. sending scented romantic letters
 4. (even more ideas!)
@@ -48,7 +44,9 @@ answers to https://www.kickstarter.com/help/handbook/your_story
       beginning to the the end
     - free to use base program, paid addons for specific domains
 - became one of my many projects that I wished to see success out in the wild
-- the project spends it time first on my laptop
+- the project idea started 5-6 years ago, with some phototype.
+- the current version started last year when I needed some project for mental
+  wellness
 
 # What’s your plan, and what’s your schedule?
 
@@ -57,28 +55,18 @@ answers to https://www.kickstarter.com/help/handbook/your_story
 - implements the folder management and grahic user interface by Decemeber; this
   would let people to use the program as they would use Word
 
-
 # What’s your budget?
 
 ## Printer Idea
 
-|Needs                                |Price  |
-|-------------------------------------|-------|
-|Communical printer                   |$2,000 |
-|Envelope Inserters or human mailer   |$6,000 |
-|Rewards                              |$1,000 |
-|Other random stuff, supporting myself|$10,000|
-|Total                                |$17,000|
-
-## Launching to Andriod
-
 |Needs                                    |Price  |
 |-----------------------------------------|-------|
+|Communical printer                       |$2,000 |
 |A laptop that run Andriod Studio smoothly|$2,000 |
+|Envelope Inserters or human mailer       |$6,000 |
 |Rewards                                  |$1,000 |
 |Other random stuff, supporting myself    |$10,000|
-|Total                                    |$13,000|
-
+|Total                                    |$21,000|
 
 # Why do you care?
 

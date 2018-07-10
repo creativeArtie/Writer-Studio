@@ -279,13 +279,15 @@ public final class AuxiliaryData{
     /// %Part 1.9 Citation Field Names #########################################
 
     /** Citation in-text  field:                 {@value}*/
-    public static final String SOURCE_IN_TEXT   = "in-text";
+    private static final String SOURCE          = "source";
+    /** Citation in-text  field:                 {@value}*/
+    public static final String SOURCE_IN_TEXT   = SOURCE + "|in-text";
     /** Citation footnote field:                  {@value}*/
-    public static final String SOURCE_FOOTNOTE  = "footnote";
+    public static final String SOURCE_FOOTNOTE  = SOURCE + "|footnote";
     /** Citation last page field:                 {@value}*/
-    public static final String SOURCE_MAIN      = "source";
+    public static final String SOURCE_MAIN      = SOURCE + "|work-cited";
     /** Citation error field    :                 {@value}*/
-    public static final String SOURCE_REFERENCE = "ref";
+    public static final String SOURCE_REFERENCE = SOURCE + "|reference";
 
     /// %Part 2: Catalougue Categories #########################################
 
