@@ -18,7 +18,7 @@ class CheatsheetPaneControl extends CheatsheetPaneView{
         control.writingTextProperty().addListener((d, o, n) -> loadText(n));
 
         control.getTextPane().getTextArea().caretPositionProperty().addListener(
-            (d, o, n) -> setPosition(n.intValue())
+            (d, o, n) -> loadPosition(n.intValue())
         );
     }
 
@@ -26,25 +26,25 @@ class CheatsheetPaneControl extends CheatsheetPaneView{
 
     private void loadText(WritingText text){
         writingText = text;
-        if (text != null) updateLabels();
+        if (text != null) showStatus();
     }
 
     /// %Part 1.2: WriterSceneControl#caretPositionProperty()
 
-    private void setPosition(int position){
+    private void loadPosition(int position){
         caretPosition = position;
-        if (writingText != null) updateLabels();
+        if (writingText != null) showStatus();
     }
 
     /// %Part 2: Utilities
 
      /** Updates the labels base on the cursor movements. */
-    public void updateLabels(){
+    private void showStatus(){
         if (writingText.getRange().contains(caretPosition) ||
             writingText.getEnd() == caretPosition
         ){
             for (CheatsheetLabel label: getHintLabels()){
-                label.updateLabelStatus(writingText, caretPosition);
+                label.showStatus(writingText, caretPosition);
             }
         }
     }

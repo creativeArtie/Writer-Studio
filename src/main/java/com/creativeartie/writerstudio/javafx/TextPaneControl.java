@@ -47,23 +47,23 @@ class TextPaneControl extends TextPaneView {
     protected void setupChildern(WriterSceneControl control){
         new AnimationTimer(){
             @Override
-            public void handle(long now) {updateTime(now); }
+            public void handle(long now) {showTime(now); }
         }.start();
 
         control.writingTextProperty().addListener((d, o, n) -> loadText(n));
 
         control.writingStatProperty().addListener((d, o, n) -> loadStat(n));
 
-        control.lastSelectedProperty().addListener((d, o, n) -> spanSelected(n));
+        control.lastSelectedProperty().addListener((d, o, n) -> loadSelected(n));
 
         getTextArea().caretPositionProperty().addListener((d, o, n) ->
-            caretMoved(n.intValue()));
+            showPosition(n.intValue()));
         getTextArea().plainTextChanges().subscribe(this::textChanged);
 
         refocusText = control.refocusTextProperty();
     }
 
-    private void caretMoved(int position){
+    private void showPosition(int position){
         getLineTypeLabel().setText(writingText.getLeaf(position)
             /// s = SpanLeaf
             .flatMap(s -> s.getParent(LinedSpan.class))
@@ -76,7 +76,7 @@ class TextPaneControl extends TextPaneView {
 
     /// %Part 1: Animation Timer
 
-    private void updateTime(long now){
+    private void showTime(long now){
         getTimeLabel().setText(
             DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalTime.now()
         ));
@@ -86,7 +86,7 @@ class TextPaneControl extends TextPaneView {
         } else if (stopTime != STOP){
             if (stopTime < now && textReady.getValue()){
                 writingStat.stopWriting(writingText);
-                setStatLabel();
+                showStats();
                 stopTime = STOP;
             }
         }
@@ -100,7 +100,7 @@ class TextPaneControl extends TextPaneView {
         getTextArea().replaceText(text.getRaw());
         setStyle(text.getLeaves());
         textReady.setValue(text != null);
-        caretMoved(getTextArea().getCaretPosition());
+        showPosition(getTextArea().getCaretPosition());
     }
 
     /// %Part 3: WritingDataProperty
@@ -109,13 +109,13 @@ class TextPaneControl extends TextPaneView {
         textReady.setValue(false);
         writingStat = stat;
         if (stat != null){
-            stat.addDocEdited(s -> setStatLabel());
+            stat.addDocEdited(s -> showStats());
         }
         textReady.setValue(stat != null);
-        setStatLabel();
+        showStats();
     }
 
-    private void spanSelected(SpanBranch span){
+    private void loadSelected(SpanBranch span){
         if (span == null) return;
         if (! isTextReady()) return;
         refocusText.setValue(true);
@@ -155,7 +155,7 @@ class TextPaneControl extends TextPaneView {
         writingStat.startWriting(writingText);
 
         textReady.setValue(true);
-        setStatLabel();
+        showStats();
     }
 
     /// %Part 4: Utilities
@@ -168,7 +168,7 @@ class TextPaneControl extends TextPaneView {
         }
     }
 
-    private void setStatLabel(){
+    private void showStats(){
         if (textReady.getValue()){
             StatSpanDay record = writingStat.getRecord();
             int word = record.getPublishWritten();

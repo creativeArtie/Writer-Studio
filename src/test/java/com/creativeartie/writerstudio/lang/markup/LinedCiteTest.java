@@ -8,6 +8,7 @@ import com.creativeartie.writerstudio.lang.markup.BranchFormatAsserts.*;
 import com.creativeartie.writerstudio.lang.markup.BranchLineAsserts.*;
 
 import static com.creativeartie.writerstudio.lang.DocumentAssert.*;
+
 public class LinedCiteTest {
 
     private static IDBuilder buildId(String name){
@@ -41,31 +42,33 @@ public class LinedCiteTest {
 
     @Test
     public void inTextColonNewline(){
-        String raw = "!>source|in-text:\n";
+        String field = "source|in-text";
+        String raw = "!>" + field + ":\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         CiteLineAssert cite = new CiteLineAssert(doc)
             .setInfoType(InfoFieldType.IN_TEXT).setNote(0);
 
-        cite.test(4,           raw,       0);
-        doc.assertKey(  0,  2, "!>",      0, 0);
-        doc.assertField(2,  9, "in-text", 0, 1);
-        doc.assertKey(  9, 10, ":",       0, 2);
-        doc.assertKey( 10, 11, "\n",      0, 3);
+        cite.test(4,           raw,   0);
+        doc.assertKey(  0,  2, "!>",  0, 0);
+        doc.assertField(2, 16, field, 0, 1);
+        doc.assertKey( 16, 17, ":",   0, 2);
+        doc.assertKey( 17, 18, "\n",  0, 3);
         doc.assertRest();
     }
 
     @Test
     public void inTextNoColon(){
-        String raw = "!>source|in-text";
+        String field = "source|in-text";
+        String raw = "!>" + field;
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         CiteLineAssert cite = new CiteLineAssert(doc)
             .setInfoType(InfoFieldType.IN_TEXT).setNote(0);
 
-        cite.test(2,          raw,       0);
-        doc.assertKey(  0, 2, "!>",      0, 0);
-        doc.assertField(2, 9, "in-text", 0, 1);
+        cite.test(2,           raw,   0);
+        doc.assertKey(  0,  2, "!>",  0, 0);
+        doc.assertField(2, 16, field, 0, 1);
         doc.assertRest();
     }
 
@@ -87,7 +90,8 @@ public class LinedCiteTest {
 
     @Test
     public void inTextNoColonData(){
-        String raw = "!>source|in-texta";
+        String field = "source|in-text";
+        String raw = "!>" + field + "a";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         CiteLineAssert cite = new CiteLineAssert(doc)
@@ -98,11 +102,11 @@ public class LinedCiteTest {
             .setBegin(false).setEnd(false)
             .setBoth("a").setCount(1);
 
-        cite.test(3,           raw,       0);
-        doc.assertKey(  0,  2, "!>",      0, 0);
-        doc.assertField(2,  9, "in-text", 0, 1);
-        data.test(1,           "a",       0, 2);
-        doc.assertData( 9, 10, "a",       0, 2, 0);
+        cite.test(3,           raw,   0);
+        doc.assertKey(  0,  2, "!>",  0, 0);
+        doc.assertField(2, 16, field, 0, 1);
+        data.test(1,           "a",   0, 2);
+        doc.assertData(16, 17, "a",   0, 2, 0);
         doc.assertRest();
     }
 
@@ -246,19 +250,19 @@ public class LinedCiteTest {
         doc.assertKey( 19, 20, ":",      0, 2);
         data.test(4,           find,     0, 3);
         doc.assertChild(1,     "Henry",  0, 3, 0);
-        doc.assertData(20, 14, "Henry",  0, 3, 0, 0);
-        doc.assertKey( 14, 16, "**",     0, 3, 1);
+        doc.assertData(20, 25, "Henry",  0, 3, 0, 0);
+        doc.assertKey( 25, 27, "**",     0, 3, 1);
         doc.assertChild(1,     " Reads", 0, 3, 2);
-        doc.assertData(16, 22, " Reads", 0, 3, 2, 0);
-        doc.assertKey( 22, 24, "**",     0, 3, 3);
-        doc.assertKey( 24, 25, "\n",     0, 4);
+        doc.assertData(27, 33, " Reads", 0, 3, 2, 0);
+        doc.assertKey( 33, 35, "**",     0, 3, 3);
+        doc.assertKey( 35, 36, "\n",     0, 4);
         doc.assertRest();
     }
 
     @Test
     public void sourceWithNote(){
         String find = "{@abc}";
-        String field = "source:work-cited";
+        String field = "source|work-cited";
         String raw = "!>" + field + ":" + find + "\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
@@ -270,21 +274,22 @@ public class LinedCiteTest {
             .setPublish(1).setNote(0)
             .setParsed("{@abc}");
 
-        cite.test(5,           raw,      0);
-        doc.assertKey(  0,  2, "!>",     0, 0);
-        doc.assertField(2,  8, field, 0, 1);
-        doc.assertKey(  8,  9, ":",      0, 2);
-        data.test(1,           find,     0, 3); /// FormattedSpan
-        doc.assertChild(1,     find,     0, 3, 0); /// FormatSpanContent
-        doc.assertData( 9, 15, find,     0, 3, 0, 0);
-        doc.assertKey( 15, 16, "\n",     0, 4);
+        cite.test(5,           raw,   0);
+        doc.assertKey(  0,  2, "!>",  0, 0);
+        doc.assertField(2, 19, field, 0, 1);
+        doc.assertKey( 19, 20, ":",   0, 2);
+        data.test(1,           find,  0, 3); /// FormattedSpan
+        doc.assertChild(1,     find,  0, 3, 0); /// FormatSpanContent
+        doc.assertData(20, 26, find,  0, 3, 0, 0);
+        doc.assertKey( 26, 27, "\n",  0, 4);
         doc.assertRest();
     }
 
     @Test
     public void refID(){
         String find = "qwerty";
-        String raw = "!> source|reference  :" + find + "\n";
+        String field = "  source|reference";
+        String raw = "!>" + field + "  :" + find + "\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
         IDBuilder builder = doc.addRef(buildId(find),
@@ -301,12 +306,12 @@ public class LinedCiteTest {
 
         cite.test(5,           raw,    0);
         doc.assertKey(  0,  2, "!>",   0, 0);
-        doc.assertField(2,  6, " ref", 0, 1);
-        doc.assertKey(  6,  9, "  :",  0, 2);
+        doc.assertField(2, 20, field, 0, 1);
+        doc.assertKey( 20, 23, "  :",  0, 2);
         data.test(1,           find,   0, 3);       /// DirectorySpan
         doc.assertChild(1,     find,   0, 3, 0);    /// ContentSpan
-        doc.assertId(   9, 15, find,   0, 3, 0, 0);
-        doc.assertKey( 15, 16, "\n",   0, 4);
+        doc.assertId(  23, 29, find,   0, 3, 0, 0);
+        doc.assertKey( 29, 30, "\n",   0, 4);
         doc.assertRest();
     }
 
@@ -320,10 +325,11 @@ public class LinedCiteTest {
 
     @Test
     public void editContent(){
-        ///              0123456789012
+        /// -------------0000000000111111111122
+        /// -------------0123456789012345678901
         String before = "!>source|in-text:abec";
         DocumentAssert doc = assertDoc(1, before, parsers);
-        doc.delete(12, 13, 0);
+        doc.delete(19, 20, 0);
         ///             01234567890123
         String after = "!>source|in-text:abc";
         doc.assertDoc(1, after, parsers);
@@ -332,7 +338,8 @@ public class LinedCiteTest {
 
     @Test
     public void editRemoveCite(){
-        ///              0123456789012
+        /// -------------0000000000111111122222
+        /// -------------0123456789012345601234
         String before = "!>source|in-text:abec";
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.delete(0, 1);
@@ -394,12 +401,12 @@ public class LinedCiteTest {
             .setBegin(false).setEnd(false)
             .setBoth("abc").setCount(1);
 
-        cite.test(4,           after,     0);
-        doc.assertKey(  0,  2, "!>",      0, 0);
-        doc.assertField(2,  9, "source|in-text", 0, 1);
-        doc.assertKey(  9, 10, ":",       0, 2);
-        data.test(1,           "abc",     0, 3);
-        doc.assertData(10, 13, "abc",     0, 3, 0);
+        cite.test(4,           after, 0);
+        doc.assertKey(  0,  2, "!>",  0, 0);
+        doc.assertField(2, 16, field, 0, 1);
+        doc.assertKey( 16, 17, ":",   0, 2);
+        data.test(1,           "abc", 0, 3);
+        doc.assertData(17, 20, "abc", 0, 3, 0);
         doc.assertRest();
     }
 }

@@ -153,7 +153,7 @@ public class DocumentAssert {
         assertAll(child.toString(),
             () -> assertTrue(child instanceof SpanLeaf, "Not leaf"),
             () -> assertEquals(raw,   child.getRaw(),   "getRaw()"),
-            () -> assertEquals(start, child.getStart(), "getStatrt()"),
+            () -> assertEquals(start, child.getStart(), "getStart()"),
             () -> assertEquals(end,   child.getEnd(),   "getEnd()"),
             () -> assertEquals(info, ((SpanLeaf)child).getLeafStyle(),
                 "getLeafStyle()")

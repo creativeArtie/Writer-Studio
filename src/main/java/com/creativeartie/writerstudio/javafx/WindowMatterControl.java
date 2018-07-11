@@ -15,7 +15,7 @@ class WindowMatterControl extends WindowMatterView{
     private WritingData writingData;
 
     protected void setupChildern(WriterSceneControl control){
-        control.writingDataProperty().addListener((d, o, n) -> setData(n));
+        control.writingDataProperty().addListener((d, o, n) -> loadData(n));
         showMatterProperty().addListener((d, o, n) -> showMatter(n));
         getTextArea().plainTextChanges().subscribe(this::updateText);
         // getTextArea().caretPositionProperty().addListener((d, o, n) ->
@@ -24,7 +24,7 @@ class WindowMatterControl extends WindowMatterView{
 
     /// %Part 1: control.writingDataProperty()
 
-    private void setData(WritingData data){
+    private void loadData(WritingData data){
         writingData = data;
     }
 
@@ -44,7 +44,7 @@ class WindowMatterControl extends WindowMatterView{
             }
             getTextArea().replaceText(text);
         }
-        updatePreview();
+        showPreview();
     }
 
     /// %Part 3: getTextArea().plainTextChanges()
@@ -55,7 +55,7 @@ class WindowMatterControl extends WindowMatterView{
 
         String text = getTextArea().getText();
         writingData.setMatter(getShowMatter(), text);
-        updatePreview();
+        showPreview();
     }
 
     /// %Part 4: getTextArea().caretPositionProperty()
@@ -64,13 +64,13 @@ class WindowMatterControl extends WindowMatterView{
         if (writingData == null) return;
 
         for (CheatsheetLabel label: getHintLabels()){
-            label.updateLabelStatus(writingData, position);
+            label.showStatus(writingData, position);
         }
     }
 
     /// %Part update preview
 
-    private void updatePreview(){
+    private void showPreview(){
         if (writingData == null) return;
         if (getShowMatter() == null) return;
 
@@ -90,7 +90,7 @@ class WindowMatterControl extends WindowMatterView{
         box.getSelectionModel().select(ans);
         box.getSelectionModel().selectedItemProperty().addListener((b, o, n) ->{
             line.setFormat(n);
-            updatePreview();
+                showPreview();
         });
         return box;
     }

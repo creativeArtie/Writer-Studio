@@ -11,8 +11,8 @@ class WindowStatMonthControl extends WindowStatMonthView{
 
     @Override
     protected void setupChildern(WindowStatControl control){
-        control.writingStatProperty().addListener((d, o, n) -> setStat(n));
-        currentMonthProperty().addListener((d, o, n) -> setMonth(n));
+        control.writingStatProperty().addListener((d, o, n) -> loadStat(n));
+        currentMonthProperty().addListener((d, o, n) -> showMonth(n));
         getFirstButton().setOnAction(e -> toFirstMonth());
         getPastButton().setOnAction(e -> toPastMonth());
         getNextButton().setOnAction(e -> toNextMonth());
@@ -23,14 +23,14 @@ class WindowStatMonthControl extends WindowStatMonthView{
         }
     }
 
-    private void setStat(WritingStat stats){
+    private void loadStat(WritingStat stats){
         writingStat = stats;
         if (stats != null){
             setCurrentMonth(stats.getEndMonth());
         }
     }
 
-    private void setMonth(YearMonth month){
+    private void showMonth(YearMonth month){
         String header = WindowText.getText(month.getMonth());
         getYearMonthLabel().setText(header + " " + month.getYear());
 

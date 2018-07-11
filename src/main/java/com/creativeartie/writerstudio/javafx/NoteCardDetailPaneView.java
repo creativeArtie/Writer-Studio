@@ -5,15 +5,15 @@ import javafx.beans.property.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
 
-abstract class NoteCardDetailView extends TitledPane{
+abstract class NoteCardDetailPaneView extends TitledPane{
     /// %Part 1: Constructor and Class Fields
 
-    private SimpleObjectProperty<NoteCardSpan> showNote;
+    private SimpleObjectProperty<NoteCardSpan> showCard;
 
-    NoteCardDetailView(){
+    NoteCardDetailPaneView(){
         setCollapsible(false);
 
-        showNote = new SimpleObjectProperty<>(this, "showNote");
+        showCard = new SimpleObjectProperty<>(this, "showCard");
     }
 
     /// %Part 3: Setup Properties
@@ -28,16 +28,16 @@ abstract class NoteCardDetailView extends TitledPane{
 
     /// %Part 4.1: Show Note
 
-    public ObjectProperty<NoteCardSpan> showNoteProperty(){
-        return showNote;
+    public ObjectProperty<NoteCardSpan> showCardProperty(){
+        return showCard;
     }
 
-    public NoteCardSpan getShowNote(){
-        return showNote.getValue();
+    public NoteCardSpan getShowCard(){
+        return showCard.getValue();
     }
 
-    public void setShowNote(NoteCardSpan value){
-        showNote.setValue(value);
+    public void setShowCard(NoteCardSpan value){
+        showCard.setValue(value);
     }
 
     /// %Part 5: Get Child Methods

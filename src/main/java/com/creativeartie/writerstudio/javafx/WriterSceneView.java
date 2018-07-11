@@ -20,13 +20,13 @@ abstract class WriterSceneView extends BorderPane{
     private static final double[] VER_DIVIDER = new double[]{.2, .8};
     private static final double[] HOR_DIVIDER = new double[]{.0, 1.0};
 
-    private NoteCardControl noteCardPane;
+    private NoteCardPaneControl noteCardPane;
     private MenuBarMainControl mainMenuBar;
     private CheatsheetPaneControl cheatsheetPane;
     private TextPaneControl textPane;
     private MetaDataPaneControl metaDataPane;
     private List<TableDataControl<?>> dataTables;
-    private HeadingsControl headingsPane;
+    private HeadingsPaneControl headingsPane;
 
     private ReadOnlyObjectWrapper<WritingText> writingText;
     private ReadOnlyObjectWrapper<WritingStat> writingStat;
@@ -65,7 +65,7 @@ abstract class WriterSceneView extends BorderPane{
 
         ArrayList<Tab> tabs = new ArrayList<>();
 
-        noteCardPane = new NoteCardControl();
+        noteCardPane = new NoteCardPaneControl();
         tabs.add(new Tab(WindowText.TAB_NOTE_CARD.getText(), noteCardPane));
 
         ImmutableList.Builder<TableDataControl<?>> builder =
@@ -111,7 +111,7 @@ abstract class WriterSceneView extends BorderPane{
         metaDataPane = new MetaDataPaneControl();
         TabPane left = buildTabPane();
 
-        headingsPane = new HeadingsControl();
+        headingsPane = new HeadingsPaneControl();
         Tab tree = new Tab(WindowText.TAB_CONTENT.getText(), headingsPane);
 
         Tab meta = buildTab(WindowText.TAB_META, metaDataPane);
@@ -212,7 +212,7 @@ abstract class WriterSceneView extends BorderPane{
         return mainMenuBar;
     }
 
-    NoteCardControl getNoteCardPane(){
+    NoteCardPaneControl getNoteCardPane(){
         return noteCardPane;
     }
 
@@ -228,7 +228,7 @@ abstract class WriterSceneView extends BorderPane{
         return textPane;
     }
 
-    HeadingsControl getHeadingsPane(){
+    HeadingsPaneControl getHeadingsPane(){
         return headingsPane;
     }
 

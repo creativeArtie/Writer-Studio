@@ -29,7 +29,7 @@ class MenuBarMainControl extends MenuBarMainView{
     protected void setupChildern(WriterSceneControl control){
         statsWindow.setupProperties(control);
 
-        getCreateItem().setOnAction(e -> newFile());
+        getCreateItem().setOnAction(e -> createFile());
         getOpenItem().setOnAction(e -> openFile());
         getExportItem().setOnAction(e -> exportPdf());
         getAboutItem().setOnAction(e -> aboutWindow.show());
@@ -37,7 +37,7 @@ class MenuBarMainControl extends MenuBarMainView{
         getExitItem().setOnAction(e -> exit());
     }
 
-    private void newFile(){
+    private void createFile(){
         setWritingFile(WritingFile.newFile());
     }
 

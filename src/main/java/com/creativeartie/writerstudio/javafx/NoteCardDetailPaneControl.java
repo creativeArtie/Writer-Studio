@@ -11,7 +11,7 @@ import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.resource.*;
 
-class NoteCardDetailControl extends NoteCardDetailView{
+class NoteCardDetailPaneControl extends NoteCardDetailPaneView{
     private ObjectProperty<SpanBranch> lastSelected;
     private BooleanProperty refocusText;
 
@@ -27,7 +27,7 @@ class NoteCardDetailControl extends NoteCardDetailView{
 
     private final Button goToButton;
 
-    NoteCardDetailControl(){
+    NoteCardDetailPaneControl(){
         sourceLabel = new Label(WindowText.NOTE_CARD_SOURCE.getText());
         footnoteLabel = new Label(WindowText.NOTE_CARD_FOOTNOTE.getText());
         inTextLabel = new Label(WindowText.NOTE_CARD_IN_TEXT.getText());
@@ -53,23 +53,23 @@ class NoteCardDetailControl extends NoteCardDetailView{
         lastSelected = control.lastSelectedProperty();
         refocusText = control.refocusTextProperty();
 
-        goToButton.setOnAction(evt -> goToNote());
+        goToButton.setOnAction(evt -> goToCard());
 
-        showNoteProperty().addListener((d, o, n) -> updateNote(n));
+        showCardProperty().addListener((d, o, n) -> showCard(n));
 
         clearContent();
     }
 
-    private void goToNote(){
-        lastSelected.setValue(getShowNote());
+    private void goToCard(){
+        lastSelected.setValue(getShowCard());
         refocusText.setValue(true);
     }
 
-    private void updateNote(NoteCardSpan show){
+    private void showCard(NoteCardSpan show){
         if (show == null){
             clearContent();
         } else {
-            showNote(show);
+            showContent(show);
         }
     }
 
@@ -78,7 +78,7 @@ class NoteCardDetailControl extends NoteCardDetailView{
         setContent(noCardDetailLabel);
     }
 
-    private void showNote(NoteCardSpan span){
+    private void showContent(NoteCardSpan span){
         assert span != null: "Null span";
         /// Add the title
         Optional<FormattedSpan> title = span.getTitle();

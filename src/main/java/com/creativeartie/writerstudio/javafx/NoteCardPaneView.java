@@ -11,13 +11,13 @@ import com.creativeartie.writerstudio.resource.*;
 /**
  * Stores a list of user notes, hyperlinks.
  */
-public abstract class NoteCardView extends GridPane{
+public abstract class NoteCardPaneView extends GridPane{
     /// %Part 1: Constructor and Class Fields
 
     private TableView<NoteCardData> noteTable;
-    private NoteCardDetailControl noteDetail;
+    private NoteCardDetailPaneControl noteDetail;
 
-    public NoteCardView(){
+    public NoteCardPaneView(){
 
         add(buildNoteTable(), 0, 0);
         add(buildNoteDetail(), 1, 0);
@@ -51,8 +51,8 @@ public abstract class NoteCardView extends GridPane{
         return noteTable;
     }
 
-    private NoteCardDetailControl buildNoteDetail(){
-        noteDetail = new NoteCardDetailControl();
+    private NoteCardDetailPaneControl buildNoteDetail(){
+        noteDetail = new NoteCardDetailPaneControl();
         noteDetail.prefWidthProperty().bind(widthProperty().multiply(.3));
         noteDetail.prefHeightProperty().bind(heightProperty());
         return noteDetail;
@@ -74,7 +74,7 @@ public abstract class NoteCardView extends GridPane{
         return noteTable;
     }
 
-    NoteCardDetailControl getNoteCardDetail(){
+    NoteCardDetailPaneControl getNoteCardDetail(){
         return noteDetail;
     }
 }

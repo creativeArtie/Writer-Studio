@@ -11,7 +11,7 @@ import com.creativeartie.writerstudio.lang.markup.*;
 /**
  * A pane with two {@link HeadingTreeControl} objects that
  */
-final class HeadingsControl extends HeadingsView{
+final class HeadingsPaneControl extends HeadingsPaneView{
 
     private WritingText writingText;
     private int caretPosition;
@@ -23,7 +23,7 @@ final class HeadingsControl extends HeadingsView{
     private final TreeMap<SectionSpanHead, TreeItem<SectionSpanHead>> headingMap;
     private TreeItem<SectionSpanScene> selectingOutline;
 
-    HeadingsControl(){
+    HeadingsPaneControl(){
         headingMap = new TreeMap<>(Comparator.comparingInt(s -> s.getStart()));
     }
 
@@ -39,7 +39,7 @@ final class HeadingsControl extends HeadingsView{
                 .addListener((d, o, n) ->
             listenOutline(n));
         control.getTextPane().getTextArea().caretPositionProperty().addListener(
-            (d, o, n) -> selectHeading(n.intValue())
+            (d, o, n) -> showHeading(n.intValue())
         );
         lastSelected = control.lastSelectedProperty();
         textReady = control.getTextPane().textReadyProperty();
@@ -50,9 +50,9 @@ final class HeadingsControl extends HeadingsView{
     private void loadText(WritingText text){
         writingText = text;
         if (text != null){
-            text.addDocEdited(s -> loadHeadings());
-            loadHeadings();
-            selectHeading(text.getEnd());
+            text.addDocEdited(s -> showHeadings());
+            showHeadings();
+            showHeading(text.getEnd());
         } else {
             getHeadingTree().setRoot(new TreeItem<>());
             clearOutline();
@@ -61,23 +61,23 @@ final class HeadingsControl extends HeadingsView{
 
     /// %Part 1.2: WritingText.addDocEdited / loadText()
 
-    private void loadHeadings(){
+    private void showHeadings(){
         if (writingText == null) return;
         TreeItem<SectionSpanHead> root = new TreeItem<>();
         headingMap.clear();
         for (SpanBranch child: writingText){
             if (child instanceof SectionSpanHead){
-                root.getChildren().add(loadHeadings((SectionSpanHead) child));
+                root.getChildren().add(showHeadings((SectionSpanHead) child));
             }
         }
         getHeadingTree().setRoot(root);
     }
 
-    private TreeItem<SectionSpanHead> loadHeadings(SectionSpanHead head){
+    private TreeItem<SectionSpanHead> showHeadings(SectionSpanHead head){
         TreeItem<SectionSpanHead> heading = new TreeItem<>(head);
         headingMap.put(head, heading);
         for (SectionSpanHead child: head.getSections()){
-            heading.getChildren().add(loadHeadings(child));
+            heading.getChildren().add(showHeadings(child));
         }
         return heading;
     }
@@ -87,7 +87,7 @@ final class HeadingsControl extends HeadingsView{
     private void listenHeading(TreeItem<SectionSpanHead> head){
         if (textReady.getValue() && head != null){
             lastSelected.setValue(head.getValue());
-            selectHeading(head.getValue().getStart());
+            showHeading(head.getValue().getStart());
         }
         refocusText.setValue(true);
     }
@@ -102,7 +102,7 @@ final class HeadingsControl extends HeadingsView{
 
     /// %Part 2.3: control.getTextPane().getTextArea().caretPositionProperty()
 
-    private void selectHeading(int position){
+    private void showHeading(int position){
         if (! textReady.getValue()) return;
         if (writingText == null) return;
         Optional<SectionSpanHead> head = writingText.locateLeaf(position)

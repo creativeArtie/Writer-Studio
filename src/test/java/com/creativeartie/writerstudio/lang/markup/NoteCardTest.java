@@ -60,8 +60,8 @@ public class NoteCardTest {
     @Test
     public void noteLooped(){
         String line1 = "!%@loop:Heading\n";
-        String line2 = "!>ref:loop\n";
-        String line3 = "!>in-text:done";
+        String line2 = "!>source|reference:loop\n";
+        String line3 = "!>source|in-text:done";
         String raw = line1 + line2 + line3;
 
         DocumentAssert doc = assertDoc(1, raw, PARSER);
@@ -92,12 +92,10 @@ public class NoteCardTest {
         doc.assertRest();
     }
 
-    private static String COMMON_NOTE_BASE = "!%@see:Note Heading\n" +
-            "!%some note content\\\n\n" + "!>in-text: Smith, p3";
-
     @Test
     public void noteBasic(){
-        DocumentAssert doc = assertDoc(1, COMMON_NOTE_BASE, PARSER);
+        DocumentAssert doc = assertDoc(1, "!%@see:Note Heading\n" +
+            "!%some note content\\\n\n" + "!>source|in-text: Smith, p3", PARSER);
 
         commonNoteBasic(doc);
     }
@@ -105,7 +103,7 @@ public class NoteCardTest {
     private void commonNoteBasic(DocumentAssert doc){
         String raw1 = "!%@see:Note Heading\n";
         String raw2 = "!%some note content\\\n\n";
-        String raw3 = "!>in-text: Smith, p3";
+        String raw3 = "!>source|in-text: Smith, p3";
         String full = raw1 + raw2 + raw3;
 
         IDBuilder builder = doc.addId(buildId(false, "see"), 0);
@@ -124,6 +122,7 @@ public class NoteCardTest {
             .setInfoType(InfoFieldType.IN_TEXT)
             .setDataClass(ContentSpan.class);
 
+        doc.assertDoc(1, full);
         note.test( 3, full, 0);
         line1.test(6, raw1, 0, 0);
         line2.test(3, raw2, 0, 1);
@@ -267,7 +266,6 @@ public class NoteCardTest {
             "!>source|in-text: Smith, p3";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
         doc.insert(39, "\\\n", 0, 1);
-        doc.assertDoc(1, COMMON_NOTE_BASE);
         commonNoteBasic(doc);
     }
 
@@ -278,7 +276,6 @@ public class NoteCardTest {
             "!>source|in-text: Smith, p3";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
         doc.insert(22, "some ", 0, 1);
-        doc.assertDoc(1, COMMON_NOTE_BASE);
         commonNoteBasic(doc);
     }
 }

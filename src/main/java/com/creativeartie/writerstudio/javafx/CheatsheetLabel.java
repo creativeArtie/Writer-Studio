@@ -278,7 +278,7 @@ class CheatsheetLabel extends Label{
      * Update Label status with the information gather from document and the
      * current position.
      */
-    void updateLabelStatus(Document doc, int point){
+    void showStatus(Document doc, int point){
         StyleClass.setHintClass(this, testSetted.test(doc, point),
             testAllow.test(doc, point));
     }

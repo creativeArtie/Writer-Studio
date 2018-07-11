@@ -11,7 +11,7 @@ import com.creativeartie.writerstudio.resource.*;
 /**
  * A pane with two {@link HeadingTreeControl} objects that
  */
-abstract class HeadingsView extends VBox{
+abstract class HeadingsPaneView extends VBox{
 
     private class HeadingCell<T extends SectionSpan> extends TreeCell<T>{
         @Override
@@ -38,7 +38,7 @@ abstract class HeadingsView extends VBox{
     private TreeView<SectionSpanScene> outlineTree;
     private TitledPane outlinePane;
 
-    public HeadingsView(){
+    public HeadingsPaneView(){
         getChildren().addAll(buildHeadingTree(), buildOutlineTree());
     }
 

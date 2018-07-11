@@ -17,7 +17,7 @@ class WindowStatControl extends WindowStatView{
 
     @Override
     protected void setupChildern(WriterSceneControl control){
-        writingStatProperty().addListener((d, o, n) -> setStat(n));
+        writingStatProperty().addListener((d, o, n) -> loadStat(n));
 
         getWordSpinner().valueProperty().addListener((d, o, n) -> editWords(n));
         getHourSpinner().valueProperty().addListener((d, o, n) -> editHours(n));
@@ -26,7 +26,7 @@ class WindowStatControl extends WindowStatView{
         getCalendarPane().setupProperties(this);
     }
 
-    private void setStat(WritingStat stat){
+    private void loadStat(WritingStat stat){
         writingStat = stat;
         if (stat != null){
             stat.addDocEdited(s -> updateStat());

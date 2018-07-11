@@ -6,36 +6,36 @@ import javafx.collections.*;
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 
-class NoteCardControl extends NoteCardView{
+class NoteCardPaneControl extends NoteCardPaneView{
 
     private WritingText writingText;
 
     @Override
     protected void setupChildern(WriterSceneControl control){
         getNoteCardDetail().setupProperties(control);
-        control.writingTextProperty().addListener((d, o, n) -> setText(n));
+        control.writingTextProperty().addListener((d, o, n) -> loadText(n));
 
         getNoteTable().getSelectionModel().selectedItemProperty().addListener(
-            (d, o, n) -> showNote(n));
+            (d, o, n) -> showCard(n));
     }
 
     /// %Part 2.1: getNoteTable().getSelectionModel().selectedItemProperty()
-    private void showNote(NoteCardData data){
+    private void showCard(NoteCardData data){
         if (data != null){
-            getNoteCardDetail().setShowNote(data.getTargetSpan());
+            getNoteCardDetail().setShowCard(data.getTargetSpan());
         }
 
     }
 
-    private void setText(WritingText text){
+    private void loadText(WritingText text){
         writingText = text;
         if (text != null){
-            text.addDocEdited(span -> updateCards());
-            updateCards();
+            text.addDocEdited(span -> showCards());
+            showCards();
         }
     }
 
-    private void updateCards(){
+    private void showCards(){
         if (writingText == null){
             getNoteTable().setItems(FXCollections.emptyObservableList());
             return;
@@ -45,7 +45,7 @@ class NoteCardControl extends NoteCardView{
         set.addAll(map.getIds(AuxiliaryData.TYPE_RESEARCH));
         ArrayList<NoteCardData> data = new ArrayList<>();
 
-        NoteCardSpan last = getNoteCardDetail().getShowNote();
+        NoteCardSpan last = getNoteCardDetail().getShowCard();
         NoteCardData selected = null;
         for(SpanBranch span: set){
             NoteCardData item = new NoteCardData((NoteCardSpan)span);

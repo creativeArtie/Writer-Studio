@@ -24,19 +24,19 @@ public class WindowStatDayControl extends WindowStatDayView{
 
     @Override
     protected void setupChildern(WindowStatControl control){
-        control.writingStatProperty().addListener((d, o, n) -> setStat(n));
-        showDateProperty().addListener((d, o, n) -> setDay(n));
+        control.writingStatProperty().addListener((d, o, n) -> loadStat(n));
+        showDateProperty().addListener((d, o, n) -> showDay(n));
     }
 
-    private void setStat(WritingStat stat){
+    private void loadStat(WritingStat stat){
         writingStat = stat;
         if (stat != null){
-            stat.addDocEdited(s -> setDay(getShowDay()));
+            stat.addDocEdited(s -> showDay(getShowDay()));
         }
-        setDay(getShowDay());
+        showDay(getShowDay());
     }
 
-    private void setDay(LocalDate date){
+    private void showDay(LocalDate date){
         getDayLabel().setText(date == null? "": date.getDayOfMonth() + "");
         if (writingStat == null || date == null){
             getStatLabel().setGraphic(null);
