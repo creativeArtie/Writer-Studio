@@ -90,7 +90,7 @@ class WindowMatterControl extends WindowMatterView{
         box.getSelectionModel().select(ans);
         box.getSelectionModel().selectedItemProperty().addListener((b, o, n) ->{
             line.setFormat(n);
-                showPreview();
+            showPreview();
         });
         return box;
     }

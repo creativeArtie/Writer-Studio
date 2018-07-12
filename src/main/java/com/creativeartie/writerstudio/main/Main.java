@@ -60,12 +60,6 @@ public class Main extends Application{
 
     @Override
     public void start(Stage stage) throws Exception{
-        /// Set uncaught exception handler
-        Thread.setDefaultUncaughtExceptionHandler(Main::killProgram);
-
-        /// Data to use for uncaught exceptions
-        writeFile = getStartFile();
-        mainStage = stage;
 
         /// create main pane
         WriterSceneControl writer = new WriterSceneControl(stage);
@@ -79,9 +73,14 @@ public class Main extends Application{
         stage.setTitle(WindowText.PROGRAM_NAME.getText());
         stage.setMaximized(true);
 
+
+        /// Set uncaught exception handler
+        Thread.setDefaultUncaughtExceptionHandler(Main::killProgram);
+        getStartFile(writer);
+        mainStage = stage;
+
         writer.setWritingFile(writeFile);
         writer.setRefocusText(true);
-
         stage.show();
 
     }
@@ -92,8 +91,9 @@ public class Main extends Application{
      *
      * @return answer
      */
-    protected WritingFile getStartFile() throws IOException{
-        return WritingFile.newSampleFile(new File("../../../src/back/resources/help-text.txt"));
+    protected void getStartFile(WriterSceneControl writer) throws IOException{
+        writeFile = WritingFile.newSampleFile(new File("../../../src/back/resources/help-text.txt"));
+        writer.listenWriterFile((d, o, n) -> writeFile = n);
         //return WritingFile.newFile();
     }
 }

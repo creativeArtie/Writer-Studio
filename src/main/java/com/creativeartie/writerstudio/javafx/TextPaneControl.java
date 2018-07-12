@@ -57,13 +57,13 @@ class TextPaneControl extends TextPaneView {
         control.lastSelectedProperty().addListener((d, o, n) -> loadSelected(n));
 
         getTextArea().caretPositionProperty().addListener((d, o, n) ->
-            showPosition(n.intValue()));
+            loadPosition(n.intValue()));
         getTextArea().plainTextChanges().subscribe(this::textChanged);
 
         refocusText = control.refocusTextProperty();
     }
 
-    private void showPosition(int position){
+    private void loadPosition(int position){
         getLineTypeLabel().setText(writingText.getLeaf(position)
             /// s = SpanLeaf
             .flatMap(s -> s.getParent(LinedSpan.class))
@@ -100,7 +100,7 @@ class TextPaneControl extends TextPaneView {
         getTextArea().replaceText(text.getRaw());
         setStyle(text.getLeaves());
         textReady.setValue(text != null);
-        showPosition(getTextArea().getCaretPosition());
+        loadPosition(getTextArea().getCaretPosition());
     }
 
     /// %Part 3: WritingDataProperty

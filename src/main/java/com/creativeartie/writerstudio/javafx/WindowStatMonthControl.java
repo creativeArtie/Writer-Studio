@@ -11,16 +11,16 @@ class WindowStatMonthControl extends WindowStatMonthView{
 
     @Override
     protected void setupChildern(WindowStatControl control){
+        for (WindowStatDayControl day: getDayPanes()){
+            day.setupProperties(control);
+        }
+
         control.writingStatProperty().addListener((d, o, n) -> loadStat(n));
         currentMonthProperty().addListener((d, o, n) -> showMonth(n));
         getFirstButton().setOnAction(e -> toFirstMonth());
         getPastButton().setOnAction(e -> toPastMonth());
         getNextButton().setOnAction(e -> toNextMonth());
         getEndButton().setOnAction(e -> toEndMonth());
-
-        for (WindowStatDayControl day: getDayPanes()){
-            day.setupProperties(control);
-        }
     }
 
     private void loadStat(WritingStat stats){

@@ -17,13 +17,13 @@ class WindowStatControl extends WindowStatView{
 
     @Override
     protected void setupChildern(WriterSceneControl control){
+        getCalendarPane().setupProperties(this);
+
         writingStatProperty().addListener((d, o, n) -> loadStat(n));
 
         getWordSpinner().valueProperty().addListener((d, o, n) -> editWords(n));
         getHourSpinner().valueProperty().addListener((d, o, n) -> editHours(n));
         getMinuteSpinner().valueProperty().addListener((d, o, n) -> editMinutes(n));
-
-        getCalendarPane().setupProperties(this);
     }
 
     private void loadStat(WritingStat stat){

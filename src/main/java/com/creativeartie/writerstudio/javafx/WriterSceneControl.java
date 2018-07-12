@@ -6,6 +6,7 @@ import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.beans.binding.*;
 import javafx.beans.property.*;
+import javafx.beans.value.*;
 import javafx.stage.*;
 
 import org.fxmisc.richtext.*;
@@ -23,6 +24,10 @@ public class WriterSceneControl extends WriterSceneView {
 
     public void setWritingFile(WritingFile file){
         getMainMenuBar().setWritingFile(file);
+    }
+
+    public void listenWriterFile(ChangeListener<WritingFile> listener){
+        getMainMenuBar().writingFileProperty().addListener(listener);
     }
 
     @Override
@@ -63,6 +68,7 @@ public class WriterSceneControl extends WriterSceneView {
             tab.setupProperties(this);
         }
         getNoteCardPane().setupProperties(this);
+
         scene.focusOwnerProperty().addListener((d, o, n) -> refocus(n));
         refocusTextProperty().addListener((d, o, n) ->
             refocus(scene.getFocusOwner())
