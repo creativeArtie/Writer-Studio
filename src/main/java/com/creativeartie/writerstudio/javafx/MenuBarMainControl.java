@@ -32,13 +32,24 @@ class MenuBarMainControl extends MenuBarMainView{
         getCreateItem().setOnAction(e -> createFile());
         getOpenItem().setOnAction(e -> openFile());
         getExportItem().setOnAction(e -> exportPdf());
+        getExitItem().setOnAction(e -> exit());
         getAboutItem().setOnAction(e -> aboutWindow.show());
         getGoalsItem().setOnAction(e -> statsWindow.show());
-        getExitItem().setOnAction(e -> exit());
     }
 
     private void createFile(){
         setWritingFile(WritingFile.newFile());
+    }
+
+    private void openFile(){
+        File file = fileChooser.showOpenDialog(mainWindow);
+        if (file != null){
+            try {
+                setWritingFile(WritingFile.open(file));
+            } catch (Exception ex){
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     private void exportPdf(){
@@ -57,16 +68,6 @@ class MenuBarMainControl extends MenuBarMainView{
         }
     }
 
-    private void openFile(){
-        File file = fileChooser.showOpenDialog(mainWindow);
-        if (file != null){
-            try {
-                setWritingFile(WritingFile.open(file));
-            } catch (Exception ex){
-                throw new RuntimeException(ex);
-            }
-        }
-    }
 
     private void exit(){
         try {

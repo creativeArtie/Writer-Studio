@@ -30,9 +30,9 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
         control.getTextPane().getTextArea().caretPositionProperty().addListener(
             (d, o, n) -> loadCaret(n.intValue())
         );
-        lastSelected = control.lastSelectedProperty();
         getSelectionModel().selectedItemProperty().addListener((d, o, n) ->
             loadSelection(n));
+        lastSelected = control.lastSelectedProperty();
         textReady = control.getTextPane().textReadyProperty();
         refocusText = control.refocusTextProperty();
     }

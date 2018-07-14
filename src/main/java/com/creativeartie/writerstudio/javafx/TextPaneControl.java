@@ -54,24 +54,13 @@ class TextPaneControl extends TextPaneView {
 
         control.writingStatProperty().addListener((d, o, n) -> loadStat(n));
 
-        control.lastSelectedProperty().addListener((d, o, n) -> loadSelected(n));
+        control.lastSelectedProperty().addListener((d, o, n) -> showSelected(n));
 
         getTextArea().caretPositionProperty().addListener((d, o, n) ->
-            loadPosition(n.intValue()));
+            showCaret(n.intValue()));
         getTextArea().plainTextChanges().subscribe(this::textChanged);
 
         refocusText = control.refocusTextProperty();
-    }
-
-    private void loadPosition(int position){
-        getLineTypeLabel().setText(writingText.getLeaf(position)
-            /// s = SpanLeaf
-            .flatMap(s -> s.getParent(LinedSpan.class))
-            /// s = LinedSpan
-            .map(s -> WindowText.getText(s))
-            /// s = String
-            .orElse("")
-        );
     }
 
     /// %Part 1: Animation Timer
@@ -98,9 +87,9 @@ class TextPaneControl extends TextPaneView {
         textReady.setValue(false);
         writingText = text;
         getTextArea().replaceText(text.getRaw());
-        setStyle(text.getLeaves());
+        updateStyles(text.getLeaves());
         textReady.setValue(text != null);
-        loadPosition(getTextArea().getCaretPosition());
+        showCaret(getTextArea().getCaretPosition());
     }
 
     /// %Part 3: WritingDataProperty
@@ -115,7 +104,7 @@ class TextPaneControl extends TextPaneView {
         showStats();
     }
 
-    private void loadSelected(SpanBranch span){
+    private void showSelected(SpanBranch span){
         if (span == null) return;
         if (! isTextReady()) return;
         refocusText.setValue(true);
@@ -148,7 +137,7 @@ class TextPaneControl extends TextPaneView {
         int pos = change.getPosition();
         writingText.delete(pos, change.getRemovalEnd());
         writingText.insert(pos, change.getInserted());
-        setStyle(writingText.getLeaves());
+        updateStyles(writingText.getLeaves());
 
         ///Update the record
         stopTime = START;
@@ -158,9 +147,20 @@ class TextPaneControl extends TextPaneView {
         showStats();
     }
 
+    private void showCaret(int position){
+        getLineTypeLabel().setText(writingText.getLeaf(position)
+            /// s = SpanLeaf
+            .flatMap(s -> s.getParent(LinedSpan.class))
+            /// s = LinedSpan
+            .map(s -> WindowText.getText(s))
+            /// s = String
+            .orElse("")
+        );
+    }
+
     /// %Part 4: Utilities
 
-    private void setStyle(Collection<SpanLeaf> leaves){
+    private void updateStyles(Collection<SpanLeaf> leaves){
         for (SpanLeaf leaf: leaves){
             getTextArea().setStyle(
                 leaf.getStart(), leaf.getEnd(), CodeStyleBuilder.toCss(leaf)

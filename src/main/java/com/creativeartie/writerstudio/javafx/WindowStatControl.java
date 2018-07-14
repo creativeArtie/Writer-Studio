@@ -10,9 +10,9 @@ class WindowStatControl extends WindowStatView{
     private StatSpanDay currentRecord;
 
     @Override
-    protected void bindWritingStat(ReadOnlyObjectWrapper<WritingStat> stats,
+    protected void bindWritingStat(ReadOnlyObjectWrapper<WritingStat> prop,
             WriterSceneControl control){
-        stats.bind(control.writingStatProperty());
+        prop.bind(control.writingStatProperty());
     }
 
     @Override
