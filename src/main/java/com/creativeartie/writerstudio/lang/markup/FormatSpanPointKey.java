@@ -11,8 +11,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 /** A formatted reference text, mainly to docuement statistics. */
 public final class FormatSpanPointKey extends FormatSpan{
     private final FormatParsePointKey spanReparser;
-    private final CacheKeyList<StyleInfo> cacheStyles;
-    private final CacheKeyMain<String> cacheField;
+    private final CacheKeyMain<FormatTypeField> cacheField;
     private final CacheKeyMain<String> cacheValue;
 
     /** Creates a {@linkplain FormatSpanLinkRef}.
@@ -30,23 +29,17 @@ public final class FormatSpanPointKey extends FormatSpan{
         super(spanChildren, formats);
         spanReparser = argumentNotNull(reparser, "reparser");
 
-        cacheField = CacheKeyMain.stringKey();
+        cacheField = new CacheKeyMain<>(FormatTypeField.class);
         cacheValue = CacheKeyMain.stringKey();
-        cacheStyles = new CacheKeyList<>(StyleInfo.class);
     }
 
-    public String getField(){
+    public FormatTypeField getField(){
         return getLocalCache(cacheField, () -> spanFromFirst(ContentSpan.class)
-            .map(s -> s.getTrimmed()).orElse(""));
-    }
-
-    @Override
-    public List<StyleInfo> getBranchStyles(){
-        return getLocalCache(cacheStyles, () -> {
-            ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
-            return builder.add(AuxiliaryType.REF_KEY)
-                .addAll(super.getBranchStyles()).build();
-        });
+            /// s == ContentSpan
+            .map(s -> s.getTrimmed())
+            /// s == String
+            .map(s -> FormatTypeField.findField(s))
+            .orElse(FormatTypeField.ERROR));
     }
 
     @Override
@@ -62,6 +55,6 @@ public final class FormatSpanPointKey extends FormatSpan{
 
     @Override
     protected String toChildString(){
-        return getField();
+        return getField().getFieldKey();
     }
 }

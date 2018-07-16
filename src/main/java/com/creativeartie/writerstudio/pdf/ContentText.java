@@ -43,8 +43,7 @@ final class ContentText {
      * @see DivisonText#appendText(String, ContentFont)
      * @see SectionContentMain#parse(LinedSpanLevelList, String)
      */
-    static ArrayList<ContentText> createWords(String text, ContentFont font)
-            throws IOException{
+    static ArrayList<ContentText> createWords(String text, ContentFont font) {
         argumentNotNull(text, "text");
         argumentNotNull(font, "font");
 
@@ -94,7 +93,7 @@ final class ContentText {
     private Optional<SpanBranch> footnoteSpan;
 
     /** Creates a {@linkplain ContentText} by copying.
-     * 
+     *
      * @param original
      *      original object
      * @see DivisionText#addLine(DivisionText.Line)
@@ -115,7 +114,7 @@ final class ContentText {
     }
 
     /** Creates a {@linkplain ContentText}.
-     * 
+     *
      * @param text
      *      content text
      * @param font
@@ -152,7 +151,7 @@ final class ContentText {
     }
 
     /** Change the text.
-     * 
+     *
      * <b> TODO: text isn't suitable to deal with whitespaces</b>
      * @param text
      *      the new text; not null
@@ -171,7 +170,7 @@ final class ContentText {
     }
 
     /** Check if the text is a space.
-     * 
+     *
      * @return answer
      * @see DivisionText DivisionText.appendText(String)
      */
@@ -180,7 +179,7 @@ final class ContentText {
     }
 
     /** Sets the listener.
-     * 
+     *
      * @param
      *      the consumer to set
      * @return self
@@ -192,7 +191,7 @@ final class ContentText {
     }
 
     /** Get the height of the text.
-     * 
+     *
      * @return answer
      * @see MatterArea MatterArea.printText(List)
      */
@@ -201,7 +200,7 @@ final class ContentText {
     }
 
     /** Get the width of the text.
-     * 
+     *
      * @return answer
      * @see #getHeight()
      */

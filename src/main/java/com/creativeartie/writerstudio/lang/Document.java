@@ -24,6 +24,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     /// %Part 1: Constructors and Fields #######################################
 
     private SetupParser[] documentParsers;
+    private int fireReady;
     private ArrayList<SpanNode<?>> removeSpan;
 
     private final Cache<Span, Range<Integer>> spanRanges;
@@ -45,6 +46,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     protected Document(String raw, SetupParser ... parsers){
         argumentNotNull(raw, "raw");
         documentParsers = argumentNotEmpty(parsers, "parser");
+        fireReady = 0;
         removeSpan = new ArrayList<>();
 
         spanRanges = CacheBuilder.newBuilder().weakKeys().build();
@@ -169,7 +171,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
         /// gets the span leaf's parent
         Optional<SpanLeaf> found = getLeaf(location);
-        if (! found.isPresent()){
+        if (! found.isPresent() ){
             reparseDocument(supplier.apply(this));
             return;
         }
@@ -205,7 +207,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * @see #delete(int, int)
      */
     private void reparseDocument(String text){
-        for (Span span: this) {
+        for (Span span: this){
             if (span instanceof SpanBranch) ((SpanBranch) span).setRemove();
         }
         parseDocument(text);
@@ -285,14 +287,35 @@ public abstract class Document extends SpanNode<SpanBranch>{
         catalogueMap.clear();
         loadMap(this);
 
-        /// fire listeners
-        for (SpanNode<?> span: removeSpan){
-            span.fireRemoveListeners();
-        }
-        removeSpan.clear();
-        fireListeners();
+        fireAll();
     }
 
+    @Override
+    protected void setFireReady(boolean b){
+        if (b && fireReady >= 0){
+            throw new IllegalStateException(
+                "setFireReady() is already set to ready."
+            );
+        }
+        fireReady += b? 1: -1;
+        fireAll();
+    }
+
+    /** Fire all listeners
+     *
+     * @see #updateDoc()
+     * @see #setFireReady(boolean)
+     */
+    private void fireAll(){
+        if (fireReady == 0){
+            /// fire listeners
+            for (SpanNode<?> span: removeSpan){
+                span.fireRemoveListeners();
+            }
+            removeSpan.clear();
+            fireListeners();
+        }
+    }
 
     /**
      * Recursively reload the catalogue {@link Span spans}.
@@ -304,6 +327,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
      */
     private final void loadMap(List<? extends Span> children){
         assert children != null: "Null children";
+
         for (Span child: children){
             /// Fill or refill {@link #catalogueMap}
             if (child instanceof SpanBranch){
@@ -325,7 +349,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * @see Span#getRange()
      */
     final Range<Integer> getRangeCache(Span child,
-            Callable<Range<Integer>> caller) {
+        Callable<Range<Integer>> caller
+    ){
         argumentNotNull(child, "child");
         argumentNotNull(caller, "caller function (caller)");
 
@@ -345,7 +370,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * @return answer
      * @see SpanNode#getRaw()
      */
-    final String getTextCache(Span child, Callable<String> caller) {
+    final String getTextCache(Span child, Callable<String> caller){
         argumentNotNull(child, "child");
         argumentNotNull(caller, "caller");
 
@@ -367,7 +392,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * @see #getLeaves()
      */
     final List<SpanLeaf> getLeavesCache(Span child,
-            Callable<List<SpanLeaf>> caller){
+        Callable<List<SpanLeaf>> caller)
+    {
         argumentNotNull(child, "child");
         argumentNotNull(caller, "caller");
 
@@ -386,6 +412,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * @see Span#getStartColumn()
      */
     final int getColumn(int index){
+        indexClose(index, "position", 0, getRaw().length());
         try {
             return spanLocation.get(index)[0];
         } catch (ExecutionException e) {
@@ -402,6 +429,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * @see Span#getStartLine()
      */
     final int getLine(int index){
+        indexClose(index, "position", 0, getRaw().length());
         try {
             return spanLocation.get(index)[1];
         } catch (ExecutionException e) {

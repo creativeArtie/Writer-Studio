@@ -16,7 +16,8 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  * </ul>
  */
 public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
-        CatalogueData>{
+    CatalogueData>
+{
 
     /// %Part 1: Constructors and Fields #######################################
 
@@ -43,7 +44,8 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
      * @return answer
      */
     public SortedMap<CatalogueIdentity, CatalogueData> getData(
-            String ... categories){
+        String ... categories
+    ){
         argumentNotEmpty(categories, "categories");
         SortedMap<CatalogueIdentity, CatalogueData> map = delegate();
 
@@ -55,7 +57,8 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
         categories[categories.length - 1] = categories[categories.length - 1] +
             (char)0;
         CatalogueIdentity last = new CatalogueIdentity(
-            ImmutableList.copyOf(categories), "");
+            ImmutableList.copyOf(categories), ""
+        );
 
         return map.subMap(first, last);
     }
@@ -71,8 +74,7 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
         TreeSet<SpanBranch> spans = new TreeSet<>(Comparator.comparingInt(
             s -> s.getStart()));
 
-        for (Entry<CatalogueIdentity, CatalogueData> entry: delegate()
-                .entrySet()){
+        for (Entry<CatalogueIdentity, CatalogueData> entry: delegate().entrySet()){
             if (entry.getKey().getMain().equals(main)){
                 /// Found a match
                 for (SpanBranch span: entry.getValue().getIds()){
@@ -112,7 +114,7 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
                 }
 
                 /// Check if it's in a internal map
-                if (data == null) {
+                if (data == null){
                     data = idMap.get(id);
                 }
 

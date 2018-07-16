@@ -15,8 +15,8 @@ public abstract class SectionSpan extends SpanBranch {
 
     /// %Part 1: Constructor & Fields ##########################################
     private final CacheKeyOptional<LinedSpanLevelSection> cacheHeading;
-    private final CacheKeyMain<Integer> cacheLevel;
     private final CacheKeyMain<EditionType> cacheEdition;
+    private final CacheKeyMain<String> cacheDetail;
     private final CacheKeyList<NoteCardSpan> cacheNotes;
     private final CacheKeyList<LinedSpan> cacheLines;
     private final SectionParser spanReparser;
@@ -35,8 +35,8 @@ public abstract class SectionSpan extends SpanBranch {
         spanReparser = argumentNotNull(reparser, "reparser");
 
         cacheHeading = new CacheKeyOptional<>(LinedSpanLevelSection.class);
-        cacheLevel = CacheKeyMain.integerKey();
         cacheEdition = new CacheKeyMain<>(EditionType.class);
+        cacheDetail = CacheKeyMain.stringKey();
         cacheNotes = new CacheKeyList<>(NoteCardSpan.class);
         cacheLines = new CacheKeyList<>(LinedSpan.class);
 
@@ -59,17 +59,7 @@ public abstract class SectionSpan extends SpanBranch {
      *
      * @return answer
      */
-    public final int getLevel(){
-        return getLocalCache(cacheLevel, () ->{
-            Optional<? extends SectionSpan> span;
-            if (this instanceof SectionSpanHead) {
-                span = getParent(SectionSpanHead.class);
-            }else {
-                span = getParent(SectionSpanScene.class);
-            }
-            return span.map(s -> s.getLevel() + 1).orElse(1);
-        });
-    }
+    public abstract int getLevel();
 
     /** Gets the section edtion type.
      *
@@ -78,6 +68,15 @@ public abstract class SectionSpan extends SpanBranch {
     public final EditionType getEditionType(){
         return getLocalCache(cacheEdition, () -> getHeading()
             .map(s -> s.getEditionType()).orElse(EditionType.NONE));
+    }
+
+    /** Gets the section edtion detail.
+     *
+     * @return answer
+     */
+    public final String getEditionDetail(){
+        return getLocalCache(cacheDetail, () -> getHeading()
+            .map(s -> s.getEditionDetail()).orElse(""));
     }
 
     /** Gets the lines in a section
@@ -130,82 +129,7 @@ public abstract class SectionSpan extends SpanBranch {
 
     @Override
     protected final SetupParser getParser(String text){
-        argumentNotNull(text, "text");
-        if (AuxiliaryChecker.checkSectionEnd(text, isDocumentLast()) &&
-                checkStart(text)){
-
-            /// Line per line checking
-            boolean checking = true;
-            for (String str: Splitter.on(LINED_END).split(text)){
-                if (checking){
-                    /// already checked or last line ends with escape
-                    checking = false;
-                    continue;
-                }
-                if (! allowChild(str, getLevel(), this instanceof
-                        SectionSpanHead)){
-                    /// not descendant
-                    return null;
-                }
-                if (str.endsWith(TOKEN_ESCAPE)){
-                    checking = true;
-                }
-            }
-
-        /// returns
-        } else {
-            return null;
-        }
-        return spanReparser;
-    }
-
-    /** Check if the first line can be this span's child.
-     *
-     * The child classes will call {@link #allowChild(String, int, boolean)}
-     * accept for heading 1.
-     *
-     * @param text
-     *      new text
-     * @return anwser
-     * @see #getParser(String)
-     */
-    protected abstract boolean checkStart(String text);
-
-    /** Check if the line can be this span's child.
-     *
-     * @param text
-     *      new text
-     * @param allowed
-     *      high allowed level
-     * @param heading
-     *      is heading
-     * @return answer
-     * @see #checkStart(String)
-     * @see #getPaser(String)
-     */
-    static final boolean allowChild(String text, int allowed, boolean heading){
-        argumentNotNull(text, "text");
-        argumentClose(allowed, "allowed", 0, LEVEL_MAX - 1);
-
-        /// check outline
-        List<String> starters = LEVEL_STARTERS.get(LinedParseLevel.OUTLINE);
-        for (int i = LEVEL_MAX - 1; i >= 0; i--){
-            if (text.startsWith(starters.get(i))){
-                /// if (text == outline)
-                return heading? true : allowed < i + 1;
-            }
-        }
-
-        /// check heading
-        starters = LEVEL_STARTERS.get(LinedParseLevel.HEADING);
-        for (int i = LEVEL_MAX - 1; i >= 0; i--){
-            if (text.startsWith(starters.get(i))){
-                /// if (text == heading)
-                return heading? allowed < i + 1: false;
-            }
-        }
-        /// if (text == others)
-        return true;
+        return null;
     }
 
     /// %Part 4: To String Function ############################################
