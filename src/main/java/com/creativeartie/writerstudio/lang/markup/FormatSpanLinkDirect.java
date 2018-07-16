@@ -16,7 +16,6 @@ public final class FormatSpanLinkDirect extends FormatSpanLink {
     private final CacheKeyOptional<SpanBranch> cacheTarget;
     private final CacheKeyMain<String> cachePath;
     private final CacheKeyMain<String> cacheText;
-    private final CacheKeyList<StyleInfo> cacheStyles;
 
     /** Creates a {@linkplain FormatSpanLinkDirect}.
      *
@@ -36,7 +35,6 @@ public final class FormatSpanLinkDirect extends FormatSpanLink {
         cacheTarget = new CacheKeyOptional<>(SpanBranch.class);
         cachePath = CacheKeyMain.stringKey();
         cacheText = CacheKeyMain.stringKey();
-        cacheStyles  = new CacheKeyList<>(StyleInfo.class);
     }
 
     /** Gets the link path
@@ -60,15 +58,6 @@ public final class FormatSpanLinkDirect extends FormatSpanLink {
     @Override
     public boolean isExternal(){
         return false;
-    }
-
-    @Override
-    public List<StyleInfo> getBranchStyles(){
-        return getLocalCache(cacheStyles, () -> {
-            ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
-            return builder.add(AuxiliaryType.DIRECT_LINK)
-                .addAll(super.getBranchStyles()).build();
-        });
     }
 
     @Override

@@ -22,7 +22,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  * @param <T>
  *      Type of span stored
  */
-public abstract class SpanNode<T extends Span> extends Span implements List<T> {
+public abstract class SpanNode<T extends Span> extends Span implements List<T>{
 
     /// %Part 1: Constructor & Fields ##########################################
 
@@ -41,8 +41,8 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
     private boolean editedChild;
     private boolean editedTarget;
 
+    /** Creates an instanceof {@linkplain SpanNode}.*/
     protected SpanNode(){
-
         spanMainCache = CacheBuilder.newBuilder().build();
         spanOptionalCache = CacheBuilder.newBuilder().build();
         spanListCache = CacheBuilder.newBuilder().build();
@@ -96,11 +96,10 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
     final void updateParent(){
         clearSpanCache();
         editedChild = true;
-
-        if (this instanceof SpanBranch){
-            getParent().updateParent();
-        } else {
+        if (this instanceof Document){
             ((Document)this).updateDoc();
+        } else {
+            getParent().updateParent();
         }
     }
 
@@ -193,7 +192,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
 
     /// %Part 3: Get Span ######################################################
 
-    /** Gets a list of children.
+    /** Gets a list of children {@link SpanBranch}.
      *
      * @param clazz
      *      span class
@@ -280,13 +279,55 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
         return Optional.empty();
     }
 
+    /** Gets the previous sibling {@link SpanBranch}.
+     *
+     * @param clazz
+     *      span class
+     * @return answer
+     */
+    public final <U extends SpanBranch> Optional<U> spanBefore(Class<U> clazz){
+        argumentNotNull(clazz, "clazz");
+        int current = getParent().indexOf(this);
+        int i = 0;
+        for (Span search: getParent()){
+            if (i == current){
+                return Optional.empty();
+            }
+            if (clazz.isInstance(search)){
+                return Optional.of(clazz.cast(search));
+            }
+            i++;
+        }
+        assert false: "span is not a child.";
+        return null;
+
+    }
+
+    /** Gets a list of children {@link SpanLeaf}.
+     *
+     * @param info
+     *      leaf info
+     * @return answer
+     */
+    protected final List<SpanLeaf> getChildren(SpanLeafStyle info){
+        ImmutableList.Builder<SpanLeaf> builder = ImmutableList.builder();
+        for (Span span: this){
+            if (span instanceof SpanLeaf &&
+                ((SpanLeaf)span).getLeafStyle() == info
+            ){
+                builder.add((SpanLeaf) span);
+            }
+        }
+        return builder.build();
+    }
+
     /** Get the fist leaf span if it a has the style of {@code info}.
      *
      * @param info
      *      leaf info
      * @return answer
      */
-    protected Optional<SpanLeaf> leafFromFirst(StyleInfoLeaf info){
+    protected Optional<SpanLeaf> leafFromFirst(SpanLeafStyle info){
         argumentNotNull(info, "info");
         for (Span span: this){
             if (span instanceof SpanLeaf){
@@ -306,9 +347,9 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
      *      leaf info
      * @return answer
      */
-    protected Optional<SpanLeaf> leafFromLast(StyleInfoLeaf info){
+    protected Optional<SpanLeaf> leafFromLast(SpanLeafStyle info){
         argumentNotNull(info, "info");
-        for(int i = size() - 1; i >= 0; i++){
+        for(int i = size() - 1; i >= 0; i--){
             Span span = get(i);
             if (span instanceof SpanLeaf){
                 SpanLeaf found = (SpanLeaf) span;
@@ -421,7 +462,8 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
      * @return answer
      */
     protected final <T> Optional<T> getLocalCache(CacheKeyOptional<T> key,
-            Callable<Optional<T>> caller){
+        Callable<Optional<T>> caller
+    ){
         try {
             return key.cast(spanOptionalCache.get(key, caller));
         } catch (ExecutionException e) {
@@ -438,7 +480,8 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
      * @return answer
      */
     protected <T> Optional<T> getDocCache(CacheKeyOptional<T> key,
-            Callable<Optional<T>> caller){
+        Callable<Optional<T>> caller
+    ){
         try {
             return key.cast(docOptionalCache.get(key, caller));
         } catch (ExecutionException e) {
@@ -455,7 +498,8 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
      * @return answer
      */
     protected final <T> List<T> getLocalCache(CacheKeyList<T> key,
-            Callable<List<T>> caller){
+        Callable<List<T>> caller
+    ){
         try {
             return key.cast(spanListCache.get(key, caller));
         } catch (ExecutionException e) {
@@ -472,7 +516,8 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T> {
      * @return answer
      */
     protected <T> List<T> getDocCache(CacheKeyList<T> key,
-            Callable<List<T>> caller){
+        Callable<List<T>> caller
+    ){
         try {
             return key.cast(docListCache.get(key, caller));
         } catch (ExecutionException e) {

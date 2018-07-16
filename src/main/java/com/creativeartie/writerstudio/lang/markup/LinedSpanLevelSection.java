@@ -10,9 +10,11 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 public final class LinedSpanLevelSection extends LinedSpanLevel
         implements Catalogued{
 
+    private final CacheKeyMain<Boolean> cacheType;
+
     private final CacheKeyMain<String> cacheLookup;
 
-    private final CacheKeyOptional<EditionSpan> cacheEditionSpan;
+    private final CacheKeyMain<String> cacheEditionDetail;
     private final CacheKeyMain<EditionType> cacheEdition;
 
     private final CacheKeyMain<Integer> cachePublish;
@@ -28,15 +30,28 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
      */
     LinedSpanLevelSection(List<Span> children){
         super(children);
+        cacheType = CacheKeyMain.booleanKey();
         cacheLookup = CacheKeyMain.stringKey();
 
-        cacheEditionSpan = new CacheKeyOptional<>(EditionSpan.class);
+        cacheEditionDetail = CacheKeyMain.stringKey();
         cacheEdition = new CacheKeyMain<>(EditionType.class);
 
         cachePublish = CacheKeyMain.integerKey();
         cacheNote = CacheKeyMain.integerKey();
 
         cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
+    }
+
+    /** Is line is a heading?
+     *
+     * @return answer
+     */
+    public boolean isHeading(){
+        return getLocalCache(cacheType, () -> leafFromFirst(SpanLeafStyle.KEYWORD)
+            .map(s -> s.getRaw().startsWith(
+                LEVEL_STARTERS.get(LinedParseLevel.HEADING).get(0)
+            )).orElse(false)
+        );
     }
 
     /** Gets the user reference help text.
@@ -55,9 +70,9 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
      *
      * @return answer
      */
-    public Optional<EditionSpan> getEditionSpan(){
-        return getLocalCache(cacheEditionSpan, () ->
-            spanFromLast(EditionSpan.class));
+    public String getEditionDetail(){
+        return getLocalCache(cacheEditionDetail, () ->
+            spanFromLast(EditionSpan.class).map(s -> s.getDetail()).orElse(""));
     }
 
     /** Gets the edition status.
@@ -65,17 +80,15 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
      * @return answer
      */
     public EditionType getEditionType(){
-        return getLocalCache(cacheEdition, () -> {
-            Optional<EditionSpan> status = getEditionSpan();
-            return status.isPresent()? status.get().getEditionType():
-                EditionType.NONE;
-        });
+        return getLocalCache(cacheEdition, () ->
+            spanFromLast(EditionSpan.class).map(s -> s.getEditionType()).
+            orElse(EditionType.NONE));
     }
 
     @Override
     public int getPublishTotal(){
         return getLocalCache(cachePublish, () -> {
-            if (getLinedType() == LinedType.HEADING){
+            if (isHeading()){
                 return getFormattedSpan().map(s -> s.getPublishTotal())
                     .orElse(0);
             }
@@ -86,12 +99,11 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
     @Override
     public int getNoteTotal(){
         return getLocalCache(cacheNote, () -> {
-            if (getLinedType() == LinedType.HEADING){
+            if (isHeading()){
                 return getFormattedSpan().map(s -> s.getNoteTotal())
                     .orElse(0);
             } else {
-                assert getLinedType() == LinedType.OUTLINE: getLinedType();
-                return getFormattedSpan().map(s -> s.getTotalCount())
+                return getFormattedSpan().map(s -> s.getGrandTotal())
                     .orElse(0);
             }
         });
@@ -118,10 +130,17 @@ public final class LinedSpanLevelSection extends LinedSpanLevel
         }
 
         /// Gets the starting token and check it
-        LinedParseLevel parser = getLinedType() == LinedType.HEADING?
+        LinedParseLevel parser = isHeading()?
             LinedParseLevel.HEADING: LinedParseLevel.OUTLINE;
-        return text.startsWith(LEVEL_STARTERS.get(parser).get(getLevel() - 1))?
-            parser: null;
+        String base = LEVEL_STARTERS.get(parser).get(getLevel() - 1);
+        if (getLevel() != 6){
+            String next = LEVEL_STARTERS.get(parser).get(getLevel());
+            if (text.startsWith(next)){
+                return null;
+            }
+        }
+        return text.startsWith(base)? parser: null;
+
     }
 
 }

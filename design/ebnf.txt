@@ -19,14 +19,15 @@
  * Heading simplification: (grep 'Heading simplification' for information)
  *)
 
-Data = DataSpan, {DataSpan}
+Prop = PropSpan, {PropSpan};
+PropSpan = -\?, "|", {Spec}, ">" (Content | Format1), "\n";
 
-DataSpan = (DataArea, DataType, Format1) | (DataMeta, DataType, Content), \n;
-DataArea = ("head-", ("top     |" | "centre  |" | "bottom  |") ) |
-           ("text-", ("header  |" | "ender   |" ) ) |
-           ("cite-",  "header  |" );
-DataMeta =  "meta-", ("author  |" | "keywords|" | "subject |" | "title   |";
-DataType = "right |" | "left  |" | "center|" | "text  |";
+Stat = StatRecord, {StatRecord};
+StatRecord = StatDay, "|", {Spec}, "\n";
+StatDay = \#, \#, \#, \#, "-",  (* year *)
+          ["1"]?, \#, "-", (* month *)
+          ["1" | "2" | "3"]?, \#, "-"; (* day *)
+Spec = -\?, ":", -\?, "|";
 
 Manuscript = (SectionHead1), [{\n, (SectionHead)}], [\n];
 
@@ -116,4 +117,5 @@ Escape = "\", ?any unicode character?;
 \n     = ? new line ?
 \t     = ? new tab ?
 \?     = ? next terminal string ?
+\#     = ? any digit ?
 Spaces = [{? white space ?}];

@@ -7,7 +7,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  * @param T
  *      list value type
  */
-public final class CacheKeyMain<T> extends CacheKey<T> {
+public final class CacheKeyMain<T> extends CacheKey<T>{
 
     /** Creates a string {@linkplain CacheKey}. */
     public static CacheKeyMain<String> stringKey(){

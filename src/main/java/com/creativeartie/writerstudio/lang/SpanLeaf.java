@@ -10,7 +10,7 @@ public final class SpanLeaf extends Span{
 
     private final String leafText;
     private SpanBranch leafParent;
-    private final StyleInfoLeaf leafStyle;
+    private final SpanLeafStyle leafStyle;
     /// Don't infer by looking up parents, it is needed before the parent is set
     private Document spanDoc;
 
@@ -21,7 +21,7 @@ public final class SpanLeaf extends Span{
      * @param style
      *      leaf info style
      */
-    SpanLeaf(SetupPointer pointer, StyleInfoLeaf style){
+    SpanLeaf(SetupPointer pointer, SpanLeafStyle style){
         argumentNotNull(pointer, "pointer");
         leafText = pointer.getRaw();
         pointer.roll();
@@ -35,7 +35,7 @@ public final class SpanLeaf extends Span{
      *
      * @return answer
      */
-    public StyleInfoLeaf getLeafStyle(){
+    public SpanLeafStyle getLeafStyle(){
         return leafStyle;
     }
 
@@ -55,7 +55,7 @@ public final class SpanLeaf extends Span{
 
     @Override
     void setParent(SpanNode<?> parent){
-        argumentIsInstance(parent, "parent", SpanBranch.class);
+        argumentClass(parent, "parent", SpanBranch.class);
         leafParent = (SpanBranch) parent;
     }
 

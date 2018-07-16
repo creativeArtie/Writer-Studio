@@ -45,7 +45,7 @@ enum DirectoryParser implements SetupParser{
      * @see FormatParsePointId#FormatParsePointId(DirectoryType, String, boolean[])
      */
     static DirectoryParser getRefParser(DirectoryType type){
-        argumentNotState(type, "type", DirectoryType.NOTE);
+        argumentNotEnum(type, "type", DirectoryType.NOTE);
         return values()[type.ordinal() - 1];
     }
 
@@ -57,7 +57,7 @@ enum DirectoryParser implements SetupParser{
      * @see LinedParsePointer#parseCommon(SetupPointer, List)
      */
     static DirectoryParser getIDParser(DirectoryType type){
-        argumentNotState(type, "type", DirectoryType.NOTE);
+        argumentNotEnum(type, "type", DirectoryType.NOTE);
         return values()[type.ordinal() + ID_SHIFT];
     }
 
@@ -87,7 +87,7 @@ enum DirectoryParser implements SetupParser{
         System.arraycopy(enders, 0, init, 0, enders.length);
         init[enders.length] = DIRECTORY_CATEGORY;
 
-        idContent = new ContentParser(StyleInfoLeaf.ID, init);
+        idContent = new ContentParser(SpanLeafStyle.ID, init);
         reparseEnders = enders;
     }
 

@@ -15,7 +15,7 @@
         6. project libraries
     - use wildcard if possible
     - no static import except for JUnit, ParameterChecker, and AuxiliaryData
-		- AuxiliaryData static import is only for markup package
+        - AuxiliaryData static import is only for markup package
     - no line wrapping
 - Class comment
     - short describing on the first line, and a noun phrase.

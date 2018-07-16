@@ -37,7 +37,8 @@ public class LinedSpanPointNote extends LinedSpanPoint {
 
     @Override
     protected String getLookupStart(){
-        return getLinedType() == LinedType.ENDNOTE? CURLY_ENDNOTE: CURLY_FOOTNOTE;
+        return getDirectoryType() == DirectoryType.ENDNOTE? CURLY_ENDNOTE:
+            CURLY_FOOTNOTE;
     }
 
     @Override
@@ -47,8 +48,9 @@ public class LinedSpanPointNote extends LinedSpanPoint {
 
     @Override
     public DirectoryType getDirectoryType(){
-        return getLocalCache(cacheType, () -> getLinedType() ==
-            LinedType.FOOTNOTE? DirectoryType.FOOTNOTE: DirectoryType.ENDNOTE);
+        return getLocalCache(cacheType, () -> leafFromFirst(SpanLeafStyle.KEYWORD)
+            .map(s -> s.getRaw().startsWith(LINED_FOOTNOTE)).orElse(false)?
+            DirectoryType.FOOTNOTE: DirectoryType.ENDNOTE);
     }
 
     @Override
