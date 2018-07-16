@@ -18,7 +18,7 @@ final class ContentParser extends BasicParseText{
      * @see AuxiliaryData constants starts with "CONTENT"
      * @see DirectoryParser#DirectoryParser(DirectoryType, String)
      */
-    ContentParser(SpanLeafStyle style, String ... enders){
+    ContentParser(StyleInfoLeaf style, String ... enders){
         super(style, enders);
     }
 

@@ -38,9 +38,17 @@ public class CodeStyleBuilder {
             styles.add("Note");
         }
 
-        leaf.getParent(LinedSpanLevelSection.class).ifPresent(s ->
-            styles.add(s.isHeading()? "Heading": "Outline")
-        );
+        leaf.getParent(LinedSpanLevelSection.class).ifPresent(span -> {
+            switch (span.getLinedType()){
+            case HEADING:
+                styles.add("Heading");
+                break;
+            case OUTLINE:
+                styles.add("Outline");
+                break;
+            default:
+            }
+        });
 
         if (hasParent(leaf, LinedSpanAgenda.class) ||
                 hasParent(leaf, FormatSpanAgenda.class)){

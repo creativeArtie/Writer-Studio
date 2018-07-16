@@ -45,7 +45,7 @@ public abstract class Span{
 
     /** Get the {@link SpanNode parent span}.
      *
-     * {@link Document} will throws an
+     * {@link Document} will throws an 
      * {@link UnsupportedOperationException} if called.
      *
      * @return answer
@@ -54,7 +54,7 @@ public abstract class Span{
 
     /** Get the {@link SpanNode parent span}.
      *
-     * {@link Document} will throws an
+     * {@link Document} will throws an 
      * {@link UnsupportedOperationException} if called.
      *
      * @param parent
@@ -154,7 +154,7 @@ public abstract class Span{
         Span child = this;
         SpanNode<?> parent = child.getParent();
         while (locater.apply(parent) == child){
-            if (parent instanceof Document){
+            if (parent instanceof Document) {
                 /// it is the last of the doucment
                 return true;
             } else {
@@ -166,14 +166,6 @@ public abstract class Span{
 
         /// it is in the middle of the children list
         return false;
-    }
-
-    /** Set if the document is ready to fire listeners.
-     *
-     * If {@code true} listeners will also be fired at the same time as set
-     */
-    protected void setFireReady(boolean b){
-        getDocument().setFireReady(b);
     }
 
     /// %Part 4.2: Index Pointer ===============================================

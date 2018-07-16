@@ -23,7 +23,7 @@ final class FormatParseContent extends BasicParseText{
      *      span ending tokens
      * @see FormattedParser#parse(SetupPointer)
      */
-    FormatParseContent(SpanLeafStyle style, boolean[] formats,
+    FormatParseContent(StyleInfoLeaf style, boolean[] formats,
             String ... enders){
         super(style, enders);
         indexEquals(formats.length, "formats.length", FORMAT_TYPES);

@@ -23,6 +23,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  * The value order is set by:
  * <ul>
  * <li>{@link #parse(SetupParser)}</li>
+ * <li>{@link LinedType#findType(String)}</li>
  * </ul>
  */
 enum LinedParseLevel implements SetupParser {

@@ -8,11 +8,11 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  *
  * The value order is set by:
  * <ul>
- * <li>{@link InfoFieldParser} through {@link #getType(String)}</li>
- * <li>{@link CheatsheetText} through (@link CheatsheetLabel#getLabel(CheatsheetText)}</li>
+ * <li>{@link InfoFieldParser} through </li>
+ * <li>{@link #getType(String)}</li>
  * </ul>
  */
-public enum InfoFieldType{
+public enum InfoFieldType implements StyleInfo{
     /** The full citation text. */
     SOURCE,
     /** The in line citation text. */
@@ -34,29 +34,15 @@ public enum InfoFieldType{
     static InfoFieldType getType(String text){
         argumentNotNull(text, "text");
 
-        for (LinedParseCite type: LinedParseCite.values()){
-            if (type == LinedParseCite.ERROR){
-                return ERROR;
+        for (InfoFieldParser type: InfoFieldParser.values()){
+            if (type == InfoFieldParser.ERROR){
+                return InfoFieldType.ERROR;
             }
             if (type.getFieldName().equals(text)){
                 return values()[type.ordinal()];
             }
         }
         assert false: "unreachable";
-        return ERROR;
-    }
-
-    public InfoDataType getDataType(){
-        switch (this){
-        case SOURCE:
-        case FOOTNOTE:
-            return InfoDataType.FORMATTED;
-        case IN_TEXT:
-            return InfoDataType.TEXT;
-        case REF:
-            return InfoDataType.NOTE_REF;
-        default:
-            return InfoDataType.ERROR;
-        }
+        return InfoFieldType.ERROR;
     }
 }

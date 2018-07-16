@@ -30,7 +30,7 @@ class SectionContentMain extends SectionContent<LinedSpan> {
         checkNotNull(data, "data");
         MatterArea header = new MatterArea(getPage(), PageAlignment.TOP);
         header.addAll(DivisionTextFormatted.newPrintLines(this,
-            data.getMetaData().getMatter(TextTypeMatter.TEXT_HEADER)
+            data.getMetaData().getPrint(TextDataType.Area.MAIN_HEADER)
         ));
         return header;
     }
@@ -40,23 +40,24 @@ class SectionContentMain extends SectionContent<LinedSpan> {
         checkNotNull(span, "span");
         boolean clear = true;
         DivisionText line = null;
-        if (span instanceof LinedSpanBreak){
+        switch(span.getLinedType()){
+        case BREAK:
             addBreak();
             return null;
-        } else if (span instanceof LinedSpanLevelList){
-            LinedSpanLevelList list = (LinedSpanLevelList) span;
-            if (list.isNumbered()){
-                line = parseNumber(list);
-                clear = false;
-            } else {
-                line = parseBullet(list);
-            }
-        } else if (span instanceof LinedSpanLevelSection &&
-            ((LinedSpanLevelSection) span).isHeading()){
+        case BULLET:
+            line = parseBullet((LinedSpanLevelList) span);
+            break;
+        case NUMBERED:
+            line = parseNumber((LinedSpanLevelList) span);
+            clear = false;
+            break;
+        case HEADING:
             line = parse((LinedSpanLevelSection) span);
-        } else if (span instanceof LinedSpanParagraph){
+            break;
+        case PARAGRAPH:
             line = parse((LinedSpanParagraph) span);
-        } else if (span instanceof LinedSpanQuote){
+            break;
+        case QUOTE:
             line = parse((LinedSpanQuote) span);
         }
         /// reset list numbering as needed
@@ -72,8 +73,8 @@ class SectionContentMain extends SectionContent<LinedSpan> {
      * @see #parseSpan(LinedSpan)
      */
     private void addBreak() throws IOException{
-        addLines(getOutputData().getMetaData().getMatter(TextTypeMatter.
-            TEXT_BREAK));
+        addLines(getOutputData().getMetaData().getPrint(TextDataType.Area.
+            MAIN_BREAK));
         paraFirst = true;
     }
 

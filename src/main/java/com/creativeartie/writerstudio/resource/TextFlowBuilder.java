@@ -22,12 +22,9 @@ public final class TextFlowBuilder {
         if (span.isPresent()){
             LinedSpanLevelSection heading = span.get();
             loadFormatText(node, heading.getFormattedSpan());
-            EditionType type = heading.getEditionType();
-            if (type != EditionType.NONE){
-                newText("(" + type + ")", "display-edition").ifPresent(
-                    t -> node.getChildren().add(t)
-                );
-            }
+            heading.getEditionSpan().flatMap(child ->
+                newText("(" + child.getEditionType() + ")", "display-edition")
+            ).ifPresent(text -> node.getChildren().add(text));
 
         } else {
             Text empty = new Text(WindowText.EMPTY_TEXT.getText());
@@ -52,10 +49,10 @@ public final class TextFlowBuilder {
         });
     }
 
-    public static TextFlow loadMetaText(TextSpanMatter print){
+    public static TextFlow loadMetaText(TextDataSpanPrint print){
         TextFlow node = new TextFlow();
         String align;
-        switch(print.getDataType()){
+        switch(print.getFormat()){
         case RIGHT:
             node.getStyleClass().add("display-right");
             break;
@@ -110,7 +107,7 @@ public final class TextFlowBuilder {
                     assert false: "Span with incorrect Directory Type:" + type;
             }
         } else if (child instanceof FormatSpanPointKey){
-            String found = ((FormatSpanPointKey)child).getField().getFieldKey();
+            String found = ((FormatSpanPointKey)child).getField();
             ans = newText(found, "display-reference");
         } else if (child instanceof FormatSpanLink){
             FormatSpanLink span = (FormatSpanLink) child;

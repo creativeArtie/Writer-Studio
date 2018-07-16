@@ -12,7 +12,7 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  * <li> {@link AuxiliaryData#FORMATTED_TEXT}</li>
  * </ol>
  */
-public enum FormatTypeStyle{
+public enum FormatTypeStyle implements StyleInfo{
     /** Bold text with the token: {@link AuxiliaryData#FORMAT_BOLD}.*/
     BOLD(FORMAT_BOLD),
     /** Italics text with the token: {@link AuxiliaryData#FORMAT_ITALICS}. */

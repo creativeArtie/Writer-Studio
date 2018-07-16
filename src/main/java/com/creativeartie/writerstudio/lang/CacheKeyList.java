@@ -9,7 +9,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  * @param T
  *      list value type
  */
-public final class CacheKeyList<T> extends CacheKey<List<?>>{
+public final class CacheKeyList<T> extends CacheKey<List<?>> {
 
     private Class<T> valueCaster;
 
@@ -28,7 +28,7 @@ public final class CacheKeyList<T> extends CacheKey<List<?>>{
         int i = 0;
 
         for (Object item : value){
-            ans.add(argumentClass(item, "value.get(" + i + ")",
+            ans.add(argumentIsInstance(item, "value.get(" + i + ")",
                 valueCaster));
             i++;
         }

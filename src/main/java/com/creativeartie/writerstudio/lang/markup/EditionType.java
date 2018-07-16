@@ -15,7 +15,7 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  * <li>{@link #getNamedSyntaxes()}</li>
  * </ul>
  */
-public enum EditionType {
+public enum EditionType implements StyleInfo{
     /** Draft with no text or just an outline. */
     STUB,
     /** Draft with text, but unedited */

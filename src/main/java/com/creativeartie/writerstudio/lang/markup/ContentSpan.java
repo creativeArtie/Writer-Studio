@@ -60,12 +60,17 @@ public final class ContentSpan extends SpanBranch implements BasicText{
      *
      * @return answer
      */
-    public int getWordCount(){
+    public int wordCount(){
         return getLocalCache(wordCount,
             () -> Splitter.on(CharMatcher.whitespace())
                 .omitEmptyStrings()
                 .splitToList(getTrimmed())
                 .size());
+    }
+
+    @Override
+    public List<StyleInfo> getBranchStyles(){
+        return ImmutableList.of();
     }
 
     @Override

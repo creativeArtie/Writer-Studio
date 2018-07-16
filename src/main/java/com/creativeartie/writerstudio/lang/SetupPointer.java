@@ -57,7 +57,6 @@ public final class SetupPointer{
     private int matchMarker; /// match from
     private int nextMarker; /// correct to
 
-
     /** Creates a {@link SetupPointer}.
      *
      * @param raw
@@ -95,8 +94,8 @@ public final class SetupPointer{
 
     /** Next {@link SpanLeaf} prefixed with spaces matches {@code compare}.
      *
-     * The leaf's {@link SpanLeafStyle} sets to
-     * {@link SpanLeafStyle#KEYWORD}.
+     * The leaf's {@link StyleInfoLeaf} sets to 
+     * {@link StyleInfoLeaf#KEYWORD}.
      *
      * @param children
      *      adding children list
@@ -108,7 +107,7 @@ public final class SetupPointer{
         argumentNotNull(children, "children");
         argumentNotEmpty(compare, "compare");
 
-        return trimStartsWith(children, SpanLeafStyle.KEYWORD, compare);
+        return trimStartsWith(children, StyleInfoLeaf.KEYWORD, compare);
     }
 
     /** Next {@link SpanLeaf} prefixed with spaces matches {@code compare}.
@@ -121,12 +120,11 @@ public final class SetupPointer{
      *      compare text
      * @return success
      */
-    public boolean trimStartsWith(ArrayList<Span> children, SpanLeafStyle style,
+    public boolean trimStartsWith(ArrayList<Span> children, StyleInfoLeaf style,
             String compare){
         argumentNotNull(children, "children");
         argumentNotNull(style, "style");
         argumentNotEmpty(compare, "compare");
-
         /// End of the document
         if (matchMarker >= rawText.length()){
             return false;
@@ -153,8 +151,8 @@ public final class SetupPointer{
 
     /** Next {@link SpanLeaf} matches {@code compare}.
      *
-     * The leaf's {@link SpanLeafStyle} sets to
-     * {@link SpanLeafStyle#KEYWORD}.
+     * The leaf's {@link StyleInfoLeaf} sets to 
+     * {@link StyleInfoLeaf#KEYWORD}.
      *
      * @param children
      *      adding children list
@@ -166,13 +164,13 @@ public final class SetupPointer{
         argumentNotNull(children, "children");
         argumentNotEmpty(compare, "compare");
 
-        return startsWith(children, SpanLeafStyle.KEYWORD, compare);
+        return startsWith(children, StyleInfoLeaf.KEYWORD, compare);
     }
 
     /** Next {@link SpanLeaf} matches {@code compare}.
      *
-     * The leaf's {@link SpanLeafStyle} sets to
-     * {@link SpanLeafStyle#KEYWORD}.
+     * The leaf's {@link StyleInfoLeaf} sets to 
+     * {@link StyleInfoLeaf#KEYWORD}.
      *
      * @param children
      *      adding children list
@@ -182,9 +180,8 @@ public final class SetupPointer{
      *      compare text
      * @return success
      */
-    public boolean startsWith(ArrayList<Span> children, SpanLeafStyle style,
-        String compare
-    ){
+    public boolean startsWith(ArrayList<Span> children, StyleInfoLeaf style,
+            String compare){
         argumentNotNull(children, "children");
         argumentNotNull(style, "style");
         argumentNotEmpty(compare, "compare");
@@ -202,8 +199,8 @@ public final class SetupPointer{
 
     /** Next {@link SpanLeaf} has characters matches {@link CharMatcher}.
      *
-     * The leaf's {@link SpanLeafStyle} sets to
-     * {@link SpanLeafStyle#KEYWORDS}.
+     * The leaf's {@link StyleInfoLeaf} sets to 
+     * {@link StyleInfoLeaf#DATA}.
      *
      * @param children
      *      adding children list
@@ -215,7 +212,7 @@ public final class SetupPointer{
         argumentNotNull(children, "children");
         argumentNotNull(matcher, "matcher");
 
-        return matches(children, SpanLeafStyle.KEYWORD, matcher);
+        return matches(children, StyleInfoLeaf.DATA, matcher);
     }
 
 
@@ -229,17 +226,16 @@ public final class SetupPointer{
      *      characters matcher
      * @return success
      */
-    public boolean matches(ArrayList<Span> children, SpanLeafStyle style,
-        CharMatcher matcher
-    ){
+    public boolean matches(ArrayList<Span> children, StyleInfoLeaf style,
+            CharMatcher matcher){
         argumentNotNull(children, "children");
         argumentNotNull(style, "style");
         argumentNotNull(matcher, "matcher");
-
+        assert matcher != null: "Null matcher";
         int next = matchMarker;
         for (; rawText.length() > next; next++){
             if (! matcher.matches(rawText.charAt(next))){
-                /// get to the last char + 1 that matches the matcher
+                // get to the last char + 1 that matches the matcher
                 if (next != matchMarker){
                     nextMarker = next;
                     return addChild(children, style);
@@ -249,9 +245,9 @@ public final class SetupPointer{
             }
         }
 
-        /// End of document
+        // End of document
         if (next != matchMarker){
-            /// matchMarker has moved
+            //matchMarker has moved
             nextMarker = next;
             return addChild(children, style);
         }
@@ -262,7 +258,7 @@ public final class SetupPointer{
 
     /** Next {@link SpanLeaf} continues until one of a the text.
      *
-     * The leaf's {@link SpanLeafStyle} sets to {@link SpanLeafStyle#KEYWORD}.
+     * The leaf's {@link StyleInfoLeaf} sets to {@link StyleInfoLeaf#KEYWORD}.
      *
      * @param children
      *      adding children list
@@ -274,13 +270,13 @@ public final class SetupPointer{
         argumentNotNull(children, "children");
         argumentNotNull(enders, "enders");
 
-        return getTo(children, SpanLeafStyle.KEYWORD, enders);
+        return getTo(children, StyleInfoLeaf.KEYWORD, enders);
     }
 
     /** Next {@link SpanLeaf} continues until one of a the text.
      *
-     * The leaf's {@link SpanLeafStyle} sets to
-     * {@link SpanLeafStyle#KEYWORD}.
+     * The leaf's {@link StyleInfoLeaf} sets to 
+     * {@link StyleInfoLeaf#KEYWORD}.
      *
      * @param children
      *      adding children list
@@ -288,9 +284,8 @@ public final class SetupPointer{
      *      enders text
      * @return success
      */
-    public boolean getTo(ArrayList<Span> children, SpanLeafStyle style,
-        String ... enders
-    ){
+    public boolean getTo(ArrayList<Span> children, StyleInfoLeaf style,
+            String ... enders){
         argumentNotNull(children, "children");
         argumentNotNull(style, "style");
         argumentNotNull(enders, "enders");
@@ -301,8 +296,8 @@ public final class SetupPointer{
 
     /** Next {@link SpanLeaf} continues until one of a the text.
      *
-     * The leaf's {@link SpanLeafStyle} sets to
-     * {@link SpanLeafStyle#KEYWORD}.
+     * The leaf's {@link StyleInfoLeaf} sets to 
+     * {@link StyleInfoLeaf#KEYWORD}.
      *
      * @param children
      *      adding children list
@@ -314,7 +309,7 @@ public final class SetupPointer{
         argumentNotNull(children, "children");
         argumentNotNull(enders, "enders");
 
-        return getTo(children, SpanLeafStyle.KEYWORD, enders);
+        return getTo(children, StyleInfoLeaf.KEYWORD, enders);
     }
 
     /** Next {@link SpanLeaf} continues until one of a the text.
@@ -327,9 +322,8 @@ public final class SetupPointer{
      *      enders text
      * @return success
      */
-    public boolean getTo(ArrayList<Span> children, SpanLeafStyle style,
-        List<String> enders
-    ){
+    public boolean getTo(ArrayList<Span> children, StyleInfoLeaf style,
+            List<String> enders){
         argumentNotNull(children, "children");
         argumentNotNull(style, "style");
         argumentNotNull(enders, "enders");
@@ -350,7 +344,7 @@ public final class SetupPointer{
             }
         }
 
-        if (matchMarker != next){
+        if (matchMarker != next) {
             /// MatchMarker has moved
             nextMarker = next;
             return addChild(children, style);
@@ -363,8 +357,8 @@ public final class SetupPointer{
 
     /** Next {@link SpanLeaf} with a certain size.
      *
-     * The leaf's {@link SpanLeafStyle} sets to
-     * {@link SpanLeafStyle#KEYWORD}.
+     * The leaf's {@link StyleInfoLeaf} sets to 
+     * {@link StyleInfoLeaf#KEYWORD}.
      *
      * @param children
      *      adding children list
@@ -375,7 +369,7 @@ public final class SetupPointer{
     public boolean nextChars(ArrayList<Span> children, int size){
         argumentNotNull(children, "children");
         argumentAtLeast(size, "size", 1);
-        return nextChars(children, SpanLeafStyle.KEYWORD, size);
+        return nextChars(children, StyleInfoLeaf.KEYWORD, size);
     }
 
     /** Next {@link SpanLeaf} with a certain size.
@@ -388,9 +382,8 @@ public final class SetupPointer{
      *      character length size
      * @return success
      */
-    public boolean nextChars(ArrayList<Span> children, SpanLeafStyle style,
-        int size
-    ){
+    public boolean nextChars(ArrayList<Span> children, StyleInfoLeaf style,
+            int size){
         argumentNotNull(children, "children");
         argumentNotNull(style, "style");
         argumentAtLeast(size, "size", 1);
@@ -408,13 +401,13 @@ public final class SetupPointer{
     /** Creates a new {@link SpanLeaf} and return true.
      *
      * @return answer
-     * @see #trimStartsWith(ArrayList, SpanLeafStyle, String)
-     * @see #startsWith(ArrayList, SpanLeafStyle, String)
-     * @see #matches(ArrayList, SpanLeafStyle, CharMatcher)
-     * @see #getTo(ArrayList, SpanLeafStyle, List)
-     * @see nextChars(ArrayList, SpanLeafStyle, int)
+     * @see #trimStartsWith(ArrayList, StyleInfoLeaf, String)
+     * @see #startsWith(ArrayList, StyleInfoLeaf, String)
+     * @see #matches(ArrayList, StyleInfoLeaf, CharMatcher)
+     * @see #getTo(ArrayList, StyleInfoLeaf, List)
+     * @see nextChars(ArrayList, StyleInfoLeaf, int)
      */
-    private boolean addChild(ArrayList<Span> children, SpanLeafStyle style){
+    private boolean addChild(ArrayList<Span> children, StyleInfoLeaf style){
         children.add(new SpanLeaf(this, style));
         return true;
     }
@@ -469,7 +462,7 @@ public final class SetupPointer{
     /** Gets the raw text for the {@link SpanLeaf}.
      *
      * @return answer
-     * @see SpanLeaf#SpanLeaf(SetupPointer, SpanLeafStyle)
+     * @see SpanLeaf#SpanLeaf(SetupPointer, StyleInfoLeaf)
      */
     String getRaw(){
         return rawText.substring(matchMarker, nextMarker);
@@ -478,7 +471,7 @@ public final class SetupPointer{
     /** Gets the raw text for the {@link SpanLeaf}.
      *
      * @return answer
-     * @see SpanLeaf#SpanLeaf(SetupPointer, SpanLeafStyle)
+     * @see SpanLeaf#SpanLeaf(SetupPointer, StyleInfoLeaf)
      */
     Document getDocument(){
         return document;
@@ -487,7 +480,7 @@ public final class SetupPointer{
     /** Move the pointer forwards.
      *
      * @return answer
-     * @see SpanLeaf#SpanLeaf(SetupPointer, SpanLeafStyle)
+     * @see SpanLeaf#SpanLeaf(SetupPointer, StyleInfoLeaf)
      */
     void roll(){
         matchMarker = nextMarker;
@@ -518,5 +511,4 @@ public final class SetupPointer{
         }
         return ptr + "(end)";
     }
-
 }

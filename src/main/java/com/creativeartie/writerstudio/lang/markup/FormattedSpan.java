@@ -38,6 +38,11 @@ public final class FormattedSpan extends SpanBranch {
         cacheText = CacheKeyMain.stringKey();
     }
 
+    @Override
+    public List<StyleInfo> getBranchStyles(){
+        return ImmutableList.of();
+    }
+
     /** Get the word count of publishing text.*/
     public int getPublishTotal(){
         return getLocalCache(cachePublish, () -> getCount(true, false));
@@ -48,8 +53,8 @@ public final class FormattedSpan extends SpanBranch {
         return getLocalCache(cacheNote, () -> getCount(false, true));
     }
 
-    /** Get the total word count.*/
-    public int getGrandTotal(){
+    /** Get the total word count. */
+    public int getTotalCount(){
         return getLocalCache(cacheTotal, () -> getCount(true, true));
     }
 
@@ -101,7 +106,7 @@ public final class FormattedSpan extends SpanBranch {
                     text.append("1");
                 }
             }
-            return CharMatcher.whitespace().trimAndCollapseFrom(text, ' ');
+            return text.toString();
         });
     }
 

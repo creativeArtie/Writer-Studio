@@ -44,7 +44,7 @@ public final class AuxiliaryChecker{
      * @param last
      *      last line?
      * @see LinedSpan
-     * @see TextSpan#getParser(String)
+     * @see TextDataSpan#getParser(String)
      */
     static boolean checkLineEnd(String text, boolean last){
         argumentNotNull(text, "text");

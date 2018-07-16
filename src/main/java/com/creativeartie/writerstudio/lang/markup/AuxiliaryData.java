@@ -1,9 +1,7 @@
 package com.creativeartie.writerstudio.lang.markup;
 
-import java.time.format.*;
 import java.util.*;
 
-import com.google.common.base.*;
 import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.lang.*;
@@ -147,7 +145,7 @@ public final class AuxiliaryData{
     public static final String LINED_DATA = ":";
 
     /// "Special" Line begin token  part 1
-    public static final String LINED_BEGIN = "!";
+    private static final String LINED_BEGIN = "!";
     /// "Special" Line begin tokens part 2
     /** Agenda line starter:                    {@value}*/
     public static final String LINED_AGENDA   = LINED_BEGIN + "!"; /// aka: !!
@@ -240,8 +238,8 @@ public final class AuxiliaryData{
     public static final String FORMAT_UNDERLINE = "_" ;
     public static final String FORMAT_CODED     = "`" ;
 
-    /** Number of format types: from
-     * {@link FormatTypeStyle}{@code .values().length()}
+    /** Number of format types: from 
+     * {@link FormatTypeStyle}{@code .values().length()} 
      */
     public static final int FORMAT_TYPES = FormatTypeStyle.values().length;
 
@@ -279,15 +277,13 @@ public final class AuxiliaryData{
     /// %Part 1.9 Citation Field Names #########################################
 
     /** Citation in-text  field:                 {@value}*/
-    private static final String SOURCE          = "source";
-    /** Citation in-text  field:                 {@value}*/
-    public static final String SOURCE_IN_TEXT   = SOURCE + "|in-text";
+    public static final String SOURCE_IN_TEXT   = "in-text";
     /** Citation footnote field:                  {@value}*/
-    public static final String SOURCE_FOOTNOTE  = SOURCE + "|footnote";
+    public static final String SOURCE_FOOTNOTE  = "footnote";
     /** Citation last page field:                 {@value}*/
-    public static final String SOURCE_MAIN      = SOURCE + "|work-cited";
+    public static final String SOURCE_MAIN      = "source";
     /** Citation error field    :                 {@value}*/
-    public static final String SOURCE_REFERENCE = SOURCE + "|reference";
+    public static final String SOURCE_REFERENCE = "ref";
 
     /// %Part 2: Catalougue Categories #########################################
 
@@ -321,80 +317,80 @@ public final class AuxiliaryData{
 
     /** A {@link ContentParser} for simple text.
      *
-     * This set leaf style as {@link SpanLeafStyle.TEXT}.
+     * This set leaf style as {@link StyleInfoLeaf.TEXT}.
      *
      * @see EditionParser
      * @see LinedParseRest.AGENDA
-     * @see TextParser
+     * @see TextDataParser
      */
     static final ContentParser CONTENT_BASIC = new ContentParser(
-        SpanLeafStyle.TEXT);
+        StyleInfoLeaf.TEXT);
 
     /** A {@link ContentParser} for agenda text.
      *
-     * This set leaf style as {@link SpanLeafStyle.TEXT} and adds a ender
+     * This set leaf style as {@link StyleInfoLeaf.TEXT} and adds a ender
      * "{@value CURLY_END}".
      *
      * @see FormatParseAgenda
      */
     static final ContentParser CONTENT_AGENDA = new ContentParser(
-        SpanLeafStyle.TEXT, CURLY_END);
+        StyleInfoLeaf.TEXT, CURLY_END);
 
     /** A {@link ContentParser} for reference field text
      *
-     * This set leaf style as {@link SpanLeafStyle.FIELD} and adds a ender
+     * This set leaf style as {@link StyleInfoLeaf.FIELD} and adds a ender
      * "{@value CURLY_END}".
      *
      * @see FormatParsePointKey
      */
     static final ContentParser CONTENT_KEY = new ContentParser(
-        SpanLeafStyle.FIELD, CURLY_END);
+        StyleInfoLeaf.FIELD, CURLY_END);
 
     /** A {@link ContentParser} for hyperlink text.
      *
-     * This set leaf style as {@link SpanLeafStyle.TEXT} and adds a ender
+     * This set leaf style as {@link StyleInfoLeaf.TEXT} and adds a ender
      * "{@value LINK_END}".
      *
      * @see FormatParseLink
      */
     static final ContentParser CONTENT_LINK = new ContentParser(
-        SpanLeafStyle.TEXT, LINK_END);
+        StyleInfoLeaf.TEXT, LINK_END);
 
     /** A {@link ContentParser} for contntData text.
      *
-     * This set leaf style as {@link SpanLeafStyle.Data}.
+     * This set leaf style as {@link StyleInfoLeaf.Data}.
      *
      * @see InfoDataParser.TEXT
      */
     static final ContentParser CONTENT_DATA = new ContentParser(
-        SpanLeafStyle.DATA);
+        StyleInfoLeaf.DATA);
 
     /** A {@link ContentParser} for link line text.
      *
-     * This set leaf style as {@link SpanLeafStyle.PATH}.
+     * This set leaf style as {@link StyleInfoLeaf.PATH}.
      *
      * @see LinedParsePointer#HYPERLINK
      */
     static final ContentParser CONTENT_DIR_LINK  = new ContentParser(
-        SpanLeafStyle.PATH);
+        StyleInfoLeaf.PATH);
 
     /** A {@link ContentParser} for direct link text.
      *
-     * This set leaf style as {@link SpanLeafStyle.PATH} and adds a ender
+     * This set leaf style as {@link StyleInfoLeaf.PATH} and adds a ender
      * "{@value LINK_TEXT}" and "{@value LINK_END}".
      *
      * @see LinedParsePointer#HYPERLINK
      */
     static final ContentParser CONTENT_LINE_LINK = new ContentParser(
-        SpanLeafStyle.PATH, LINK_TEXT, LINK_END);
+        StyleInfoLeaf.PATH, LINK_TEXT, LINK_END);
 
     /// For ContentParser for DirectoryParser see the class itself
 
-    /// %Part 3.2: Formatted Span Parsers ======================================
+    /// %Part 3.2: Formatted Span Parsers =======================================
 
     /** A {@link ContentParser} for note text.
      *
-     * This set leaf style as {@link SpanLeafStyle.TEXT}, and allows notes.
+     * This set leaf style as {@link StyleInfoLeaf.TEXT}, and allows notes.
      *
      * @see LinedParsePointer#FOOTNOTE
      * @see LinedParsePointer#ENDNOTE
@@ -402,36 +398,36 @@ public final class AuxiliaryData{
      * @see LinedParseRest#PARAGRAPH
      */
     static final FormattedParser FORMATTED_TEXT = new FormattedParser(
-        SpanLeafStyle.TEXT, true);
+        StyleInfoLeaf.TEXT, true);
 
     /** A {@link ContentParser} for note text and other document matters.
      *
-     * This set leaf style as {@link SpanLeafStyle.TEXT}, and not allows notes.
+     * This set leaf style as {@link StyleInfoLeaf.TEXT}, and not allows notes.
      *
      * @see LinedParseRest#NOTE
-     * @see TextParser
+     * @see TextDataParser
      */
     static final FormattedParser NOTE_TEXT = new FormattedParser(
-        SpanLeafStyle.TEXT, false);
+        StyleInfoLeaf.TEXT, false);
 
     /** A {@link ContentParser} for citations.
      *
-     * This set leaf style as {@link SpanLeafStyle.DATA}, and not allows notes.
+     * This set leaf style as {@link StyleInfoLeaf.DATA}, and not allows notes.
      *
      * @see InfoDataParser#FORMATTED
      */
     static final FormattedParser FORMATTED_DATA = new FormattedParser(
-        SpanLeafStyle.DATA, false);
+        StyleInfoLeaf.DATA, false);
 
     /** A {@link ContentParser} for heading text.
      *
-     * This set leaf style as {@link SpanLeafStyle.PATH}, allows notes, and
+     * This set leaf style as {@link StyleInfoLeaf.PATH}, allows notes, and
      * adds a ender "{@value EDITION_BEGIN}".
      *
      * @see LinedParseLevel
      */
     static final FormattedParser FORMATTED_HEADER = new FormattedParser(
-        SpanLeafStyle.TEXT, true, EDITION_BEGIN);
+        StyleInfoLeaf.TEXT, true, EDITION_BEGIN);
 
     /// %Part 3.3: Main Section Line Parsers ===================================
 
@@ -447,70 +443,36 @@ public final class AuxiliaryData{
         return builder.build();
     }
 
-    /// %Part 4: Statistical Data ##############################################
-
-    public static final String STAT_KEY_DATA = ":";
-    public static final String STAT_SEPARATOR = "|";
-    public static final String STAT_ROW_END = "\n";
-    public static final CharMatcher STAT_KEY_TEXT = CharMatcher.inRange('A', 'Z')
-        .or(CharMatcher.inRange('a', 'z')).or(CharMatcher.is('-'))
-        .or(CharMatcher.whitespace())
-        .precomputed();
-
-    public static final DateTimeFormatter STAT_DATE = DateTimeFormatter
-        .ISO_LOCAL_DATE;
-
-    public static final String STAT_PUBLISH_COUNT = "publish-count";
-    public static final String STAT_NOTE_COUNT = "note-count";
-    public static final String STAT_TIME_COUNT = "time-count";
-    public static final String STAT_PUBLISH_GOAL = "publish-goal";
-    public static final String STAT_TIME_GOAL = "time-goal";
-
-    /// %Part 4: Meta and Matter Texts #########################################
-
-    /// %Part 4.1: Common Constants ============================================
-
-    private static final String TEXT_SUB = "-";
-    public static final String TEXT_SEPARATOR = "|";
-    public static final CharMatcher TEXT_KEY_TEXT = STAT_KEY_TEXT;
-
-    /// %Part 4.2: Meta Text ===================================================
+    /// ========================================================================
+    /// @Part 4: Writing Data
 
     private static final String META         = "meta-";
     /** PDF file property  for author:        {@value} */
-    public static final String META_AUTHOR   = META   + "author";
+    public static final String META_AUTHOR   = META   + "author  |";
     /** PDF file property  for keywords:      {@value} */
-    /** PDF file property  for keywords:      {@value} */
-    public static final String META_KEYWORDS = META   + "keywords";
+    public static final String META_KEYWORDS = META   + "keywords|";
     /** PDF file property  for subject:       {@value} */
-    public static final String META_SUBJECT  = META   + "subject";
+    public static final String META_SUBJECT  = META   + "subject |";
     /** PDF file property  for title:         {@value} */
-    public static final String META_TITLE    = META   + "title";
+    public static final String META_TITLE    = META   + "title   |";
 
-    /// %Part 4.3: Matter Texts ================================================
     private static final String AREA         = "-";
-    private static final String AREA_STARTER = AREA  + "starter";
-    private static final String AREA_HEADER  = AREA  + "header";
-    private static final String AREA_BREAK   = AREA  + "break";
-    private static final String AREA_FOOTER  = AREA  + "footer";
-    private static final String AREA_ENDER   = AREA  + "ender";
-
-    /// %Part 4.3.1: Main Content Text -----------------------------------------
-
-    private static final String MAIN        = "text";
+    private static final String AREA_STARTER = AREA  + "starter |";
+    private static final String AREA_HEADER  = AREA  + "header  |";
+    private static final String AREA_BREAK   = AREA  + "break   |";
+    private static final String AREA_FOOTER  = AREA  + "footer  |";
+    private static final String AREA_ENDER   = AREA  + "ender   |";
+    private static final String TEXT        = "text";
     /** Text at the start of the main content. */
-    public static final String MAIN_STARTER = MAIN + AREA_STARTER;
+    public static final String TEXT_STARTER = TEXT + AREA_STARTER;
     /** Text for the top of each main content page. */
-    public static final String MAIN_HEADER  = MAIN + AREA_HEADER;
+    public static final String TEXT_HEADER  = TEXT + AREA_HEADER;
     /** Text for section break in the main content */
-    public static final String MAIN_BREAK   = MAIN + AREA_BREAK;
+    public static final String TEXT_BREAK   = TEXT + AREA_BREAK;
     /** Text for the bottom of each main content page. */
-    public static final String MAIN_FOOTER  = MAIN + AREA_FOOTER;
+    public static final String TEXT_FOOTER  = TEXT + AREA_FOOTER;
     /** Text for the end of the main content. */
-    public static final String MAIN_ENDER   = MAIN + AREA_ENDER;
-
-    /// %Part 4.3.3: Endnote Page Text -----------------------------------------
-
+    public static final String TEXT_ENDER   = TEXT + AREA_ENDER;
     private static final String END         = "end";
     /** Text for start of the endnote content. */
     public static final String END_STARTER  = END + AREA_STARTER;
@@ -520,9 +482,6 @@ public final class AuxiliaryData{
     public static final String END_FOOTER   = END + AREA_FOOTER;
     /** Text for the end of the endnote content. */
     public static final String END_ENDER    = END + AREA_ENDER;
-
-    /// %Part 4.3.4: Work Cited Text -------------------------------------------
-
     private static final String CITE        = "cite";
     /** Text for start of the work(s) cited content. */
     public static final String CITE_STARTER = CITE + AREA_STARTER;
@@ -533,28 +492,27 @@ public final class AuxiliaryData{
     /** Text for the end of the work(s) cited content. */
     public static final String CITE_ENDER   = CITE + AREA_ENDER;
 
-    /// %Part 4.3.5: Title Page Text -------------------------------------------
-
     private static final String TITLE         = "head-";
     /** At top    of a  title  page:          {@value} */
-    public static final String TITLE_TOP     = TITLE  + "top";
-    /** At centre of a  title  page:          {@value} */
-    public static final String TITLE_CENTER  = TITLE  + "centre";
+    public static final String TITLE_TOP     = TITLE  + "top     |";
+    /** At center of a  title  page:          {@value} */
+    public static final String TITLE_CENTER  = TITLE  + "centre  |";
     /** At bottom of a  title  page:          {@value} */
-    public static final String TITLE_BOTTOM  = TITLE  + "bottom";
+    public static final String TITLE_BOTTOM  = TITLE  + "bottom  |";
 
-    /// %Part 4.4 Data type and alignment ======================================
-
+    /** Length of second field:  {@code "{@value TITLE}"#length()} */
+    public static final int ALIGN_START     = TITLE_TOP.length();
     /** Alignment right:                      {@value} */
-    public static final String ALIGN_RIGHT  = "right";
+    public static final String ALIGN_RIGHT  = "right |";
     /** Alignment left:                       {@value} */
-    public static final String ALIGN_LEFT   = "left";
-    /** Alignment centre:                     {@value} */
-    public static final String ALIGN_CENTER = "centre";
+    public static final String ALIGN_LEFT   = "left  |";
+    /** Alignment center:                     {@value} */
+    public static final String ALIGN_CENTER = "center|";
     /** Data type text:                       {@value} */
-    public static final String ALIGN_TEXT   = "text";
+    public static final String ALIGN_TEXT   = "text  |";
 
-    /// @Part.5: Private Constructor ###########################################
 
+    /// ========================================================================
+    /// @Part-4: Private Constructor ==========================================-
     private AuxiliaryData(){}
 }

@@ -9,8 +9,7 @@ public enum FormatTypeField{
     /** To show the current page number */
     PAGE_NUMBER("Stats.PageNumber"),
     /** To show the word count round to the significate digit*/
-    WORD_COUNT("Stats.WordCountEst"),
-    ERROR("Error");
+    WORD_COUNT("Stats.WordCountEst");
 
     private String fieldKey;
 
@@ -40,14 +39,10 @@ public enum FormatTypeField{
         if (key == null || key.isEmpty()) return null;
 
         for (FormatTypeField type: values()){
-            if (type == ERROR){
-                return type;
-            }
             if (type.fieldKey.equals(key)){
                 return type;
             }
         }
-        assert false: "Unreachable code.";
         return null;
     }
 }

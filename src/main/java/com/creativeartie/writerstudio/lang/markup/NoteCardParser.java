@@ -27,14 +27,10 @@ enum NoteCardParser implements SetupParser {
                 }
                 children.add(line.get());
             } else /** if (! line.isPresent()) */{
-                boolean ready = false;
-                for (LinedParseCite cite: LinedParseCite.values()){
-                    ready = cite.parse(pointer, children);
-                    if (ready){
-                        break;
-                    }
-                }
-                if (! ready){
+                line = LinedParseRest.CITE.parse(pointer);
+                if (line.isPresent()){
+                    children.add(line.get());
+                } else /** if (line != note && line != cite) */{
                     return buildSpan(children);
                 }
             }

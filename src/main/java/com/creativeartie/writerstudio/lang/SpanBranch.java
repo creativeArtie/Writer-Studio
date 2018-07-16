@@ -108,10 +108,9 @@ public abstract class SpanBranch extends SpanNode<Span> {
             getDocument());
         Optional<SpanBranch> span = parser.parse(pointer);
         /// There are text left over.
-        stateCheck(! pointer.hasNext(),
-            "Has left over characters when reparsing: " +
-            getClass().getSimpleName()
-        );
+        if (pointer.hasNext()){
+            throw new IllegalStateException("Has left over characters.");
+        }
         assert span.isPresent(): "Null span";
         updateSpan((List<Span>)span.get());
     }
@@ -130,13 +129,19 @@ public abstract class SpanBranch extends SpanNode<Span> {
     final void clearDocCache(){
         super.clearDocCache();
         for (Span child: spanChildren){
-            if (child instanceof SpanBranch){
+            if (child instanceof SpanBranch) {
                 ((SpanBranch)child).clearDocCache();
             }
         }
     }
 
     /// %Part 3: Common Get Methods ############################################
+
+    /** Get style information about this {@linkplain SpanBranch}.
+     *
+     * @return answer
+     */
+    public abstract List<StyleInfo> getBranchStyles();
 
     /** Get the catalogue status.
      *

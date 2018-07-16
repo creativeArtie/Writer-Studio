@@ -4,523 +4,533 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>420</x>
-      <y>350</y>
+      <x>380</x>
+      <y>380</y>
       <w>100</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>_*Document*_
 bg=black
-fg=white
-layer=1</panel_attributes>
+fg=white</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>190</x>
-      <y>270</y>
+      <x>150</x>
+      <y>300</y>
       <w>100</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>/CacheKey/
-layer=1</panel_attributes>
+    <panel_attributes>/CacheKey/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>190</x>
-      <y>150</y>
+      <x>150</x>
+      <y>180</y>
       <w>100</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>CacheKeyList
-layer=1</panel_attributes>
+    <panel_attributes>CacheKeyList</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>90</x>
-      <y>200</y>
+      <x>50</x>
+      <y>230</y>
       <w>120</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>CacheKeyMain
-layer=1</panel_attributes>
+    <panel_attributes>CacheKeyMain</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>260</x>
-      <y>220</y>
+      <x>220</x>
+      <y>250</y>
       <w>130</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>CacheKeyOptional
-layer=1</panel_attributes>
+    <panel_attributes>CacheKeyOptional</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>280</x>
-      <y>240</y>
+      <x>240</x>
+      <y>270</y>
       <w>60</w>
       <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-
-bg=yellow
-layer=1</panel_attributes>
+bg=yellow</panel_attributes>
     <additional_attributes>10.0;50.0;40.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>220</x>
-      <y>170</y>
+      <x>180</x>
+      <y>200</y>
       <w>30</w>
       <h>120</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-
-bg=yellow
-layer=1</panel_attributes>
+bg=yellow</panel_attributes>
     <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>150</x>
-      <y>220</y>
+      <x>110</x>
+      <y>250</y>
       <w>60</w>
       <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-
-bg=yellow
-layer=1</panel_attributes>
+bg=yellow</panel_attributes>
     <additional_attributes>40.0;60.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>80</x>
-      <y>140</y>
+      <x>40</x>
+      <y>170</y>
       <w>330</w>
       <h>170</h>
     </coordinates>
-    <panel_attributes>bg=yellow
-layer=0</panel_attributes>
+    <panel_attributes>bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>490</x>
-      <y>210</y>
+      <x>450</x>
+      <y>240</y>
       <w>110</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>CatalogueMap
-layer=1</panel_attributes>
+    <panel_attributes>CatalogueMap</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>590</x>
-      <y>160</y>
+      <x>550</x>
+      <y>190</y>
       <w>110</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>CatalogueData
-layer=1</panel_attributes>
+    <panel_attributes>CatalogueData</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>620</x>
-      <y>220</y>
+      <x>580</x>
+      <y>250</y>
       <w>100</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>/Catalogued/
-layer=1</panel_attributes>
+    <panel_attributes>/Catalogued/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>590</x>
-      <y>70</y>
+      <x>550</x>
+      <y>100</y>
       <w>130</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>CatalogueIdentity
-layer=1</panel_attributes>
+    <panel_attributes>CatalogueIdentity</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>620</x>
-      <y>180</y>
+      <x>580</x>
+      <y>210</y>
       <w>60</w>
       <h>60</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-layer=1</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=cyan</panel_attributes>
     <additional_attributes>10.0;10.0;40.0;40.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>630</x>
-      <y>90</y>
+      <x>590</x>
+      <y>120</y>
       <w>50</w>
       <h>90</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-layer=1</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;70.0;30.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>550</x>
-      <y>170</y>
+      <x>510</x>
+      <y>200</y>
       <w>60</w>
       <h>60</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-layer=1</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;40.0;40.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>690</x>
-      <y>90</y>
+      <x>650</x>
+      <y>120</y>
       <w>40</w>
       <h>150</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-layer=1</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;130.0;20.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>470</x>
-      <y>100</y>
+      <x>430</x>
+      <y>130</y>
       <w>120</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>CatalogueStatus
-layer=1</panel_attributes>
+    <panel_attributes>CatalogueStatus</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>520</x>
-      <y>120</y>
+      <x>480</x>
+      <y>150</y>
       <w>110</w>
       <h>60</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
-state
-layer=1</panel_attributes>
+state</panel_attributes>
     <additional_attributes>90.0;40.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>260</x>
-      <y>480</y>
+      <x>220</x>
+      <y>510</y>
       <w>110</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>/Command/
-layer=1</panel_attributes>
+    <panel_attributes>/Command/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>140</x>
-      <y>490</y>
+      <x>100</x>
+      <y>520</y>
       <w>110</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>SetupPointer
-layer=1</panel_attributes>
+    <panel_attributes>SetupPointer</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>210</x>
-      <y>530</y>
+      <x>170</x>
+      <y>560</y>
       <w>110</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>/SetupParser/
-layer=1</panel_attributes>
+    <panel_attributes>/SetupParser/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>270</x>
-      <y>290</y>
+      <x>230</x>
+      <y>320</y>
       <w>200</w>
       <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
-cache
-layer=2</panel_attributes>
+cache</panel_attributes>
     <additional_attributes>180.0;60.0;10.0;18.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>480</x>
-      <y>230</y>
+      <x>440</x>
+      <y>260</y>
       <w>100</w>
       <h>140</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-layer=1</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;120.0;80.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>460</x>
-      <y>410</y>
-      <w>390</w>
-      <h>190</h>
+      <x>90</x>
+      <y>470</y>
+      <w>270</w>
+      <h>140</h>
     </coordinates>
-    <panel_attributes>layer=0
-bg=light_gray</panel_attributes>
+    <panel_attributes>
+bg=blue</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>290</x>
-      <y>370</y>
-      <w>160</w>
+      <x>220</x>
+      <y>400</y>
+      <w>190</w>
       <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 edit
-ulitlies
-layer=2</panel_attributes>
-    <additional_attributes>140.0;10.0;10.0;70.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>590</x>
-      <y>560</y>
-      <w>100</w>
-      <h>30</h>
-    </coordinates>
-    <panel_attributes>/Span/
-layer=1</panel_attributes>
-    <additional_attributes/>
+ulitlies</panel_attributes>
+    <additional_attributes>170.0;10.0;10.0;70.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>550</x>
-      <y>500</y>
+      <y>590</y>
       <w>100</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>/SpanNode/
-layer=1</panel_attributes>
+    <panel_attributes>/Span/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>610</x>
-      <y>430</y>
+      <x>510</x>
+      <y>530</y>
       <w>100</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>SpanBranch
-layer=1</panel_attributes>
+    <panel_attributes>/SpanNode/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>670</x>
-      <y>470</y>
+      <x>570</x>
+      <y>460</y>
       <w>100</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>SpanLeaf
-layer=1</panel_attributes>
+    <panel_attributes>SpanBranch</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>630</x>
+      <y>510</y>
+      <w>100</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>SpanLeaf</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>610</x>
-      <y>520</y>
+      <x>570</x>
+      <y>550</y>
       <w>40</w>
       <h>60</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-
-bg=light_gray
-layer=1</panel_attributes>
+bg=light_gray</panel_attributes>
     <additional_attributes>20.0;40.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>670</x>
-      <y>490</y>
+      <x>630</x>
+      <y>530</y>
       <w>50</w>
-      <h>90</h>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-
-bg=light_gray
-layer=1</panel_attributes>
-    <additional_attributes>10.0;70.0;28.0;10.0</additional_attributes>
+bg=light_gray</panel_attributes>
+    <additional_attributes>10.0;60.0;30.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>600</x>
-      <y>450</y>
+      <x>560</x>
+      <y>480</y>
       <w>50</w>
       <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-
-bg=light_gray
-layer=1</panel_attributes>
+bg=light_gray</panel_attributes>
     <additional_attributes>10.0;50.0;30.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>650</x>
-      <y>450</y>
+      <x>610</x>
+      <y>480</y>
       <w>30</w>
       <h>130</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
-bg=light_gray
-layer=1</panel_attributes>
+bg=light_gray</panel_attributes>
     <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>460</x>
-      <y>370</y>
-      <w>110</w>
+      <x>440</x>
+      <y>400</y>
+      <w>90</w>
       <h>150</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-bg=light_gray
-layer=1</panel_attributes>
-    <additional_attributes>90.0;130.0;10.0;10.0</additional_attributes>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=light_gray</panel_attributes>
+    <additional_attributes>70.0;130.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>480</x>
-      <y>370</y>
-      <w>120</w>
+      <x>470</x>
+      <y>400</y>
+      <w>90</w>
       <h>150</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-layer=1</panel_attributes>
-    <additional_attributes>17.0;12.0;100.0;130.0</additional_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;70.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>460</x>
+      <y>440</y>
+      <w>290</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>
+bg=light_gray</panel_attributes>
+    <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>700</x>
-      <y>540</y>
+      <x>740</x>
+      <y>310</y>
       <w>100</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>StyleLeafStyle
-layer=1</panel_attributes>
+    <panel_attributes>/StyleInfo/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>780</x>
+      <y>360</y>
+      <w>100</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>StyleInfoLeaf</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>700</x>
+      <y>290</y>
+      <w>210</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>
+bg=pink</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>650</x>
-      <y>240</y>
+      <x>610</x>
+      <y>270</y>
       <w>110</w>
       <h>210</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;.
+    <panel_attributes>lt=.&gt;&gt;
+Subclass
 Sometimes
-bg=cyan
-layer=1</panel_attributes>
+bg=light_gray</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;190.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>740</x>
-      <y>490</y>
-      <w>100</w>
-      <h>70</h>
+      <x>640</x>
+      <y>330</y>
+      <w>140</w>
+      <h>150</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
-describes
-layer=1</panel_attributes>
-    <additional_attributes>10.0;10.0;20.0;50.0</additional_attributes>
+describes</panel_attributes>
+    <additional_attributes>10.0;130.0;110.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>520</x>
-      <y>70</y>
+      <x>700</x>
+      <y>380</y>
+      <w>140</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+describes</panel_attributes>
+    <additional_attributes>10.0;130.0;110.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>790</x>
+      <y>330</y>
+      <w>60</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+
+bg=pink</panel_attributes>
+    <additional_attributes>40.0;30.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>480</x>
+      <y>100</y>
       <w>90</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
-state
-layer=1</panel_attributes>
+state</panel_attributes>
     <additional_attributes>70.0;10.0;10.0;30.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>450</x>
-      <y>30</y>
+      <x>410</x>
+      <y>60</y>
       <w>330</w>
       <h>260</h>
     </coordinates>
-    <panel_attributes>bg=cyan
-layer=0</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLUseCase</id>
-    <coordinates>
-      <x>120</x>
-      <y>440</y>
-      <w>270</w>
-      <h>140</h>
-    </coordinates>
-    <panel_attributes>layer=0
-bg=blue</panel_attributes>
+    <panel_attributes>bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>

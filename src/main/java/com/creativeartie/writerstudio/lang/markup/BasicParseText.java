@@ -16,7 +16,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 abstract class BasicParseText implements SetupParser{
 
     private final ImmutableList<String> setupEnders;
-    private final SpanLeafStyle leafStyle;
+    private final StyleInfoLeaf leafStyle;
 
     /** Creates a {@linkplain BasicParseText}.
      *
@@ -25,7 +25,7 @@ abstract class BasicParseText implements SetupParser{
      * @param enders
      *      span ending tokens
      */
-    BasicParseText(SpanLeafStyle style, String ... enders){
+    BasicParseText(StyleInfoLeaf style, String ... enders){
         argumentNotNull(style, "style");
         argumentNotNull(enders, "enders");
 

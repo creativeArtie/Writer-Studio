@@ -4,7 +4,7 @@ import java.io.*;
 import java.time.*;
 import java.util.*;
 
-// @Deprecated
+/// @Deprecated
 public final class Checker {
 
     public static void checkIO(boolean test, String massage)

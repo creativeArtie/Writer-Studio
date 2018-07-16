@@ -51,14 +51,14 @@ final class SectionTitle extends Section {
      */
     private void writeMeta(){
         PDDocumentInformation info = getPdfDocument().getDocumentInformation();
-        info.setAuthor(exportData.getInfo(TextTypeInfo.AUTHOR));
+        info.setAuthor(exportData.getMetaText(TextDataType.Meta.AUTHOR));
         info.setCreationDate(new GregorianCalendar());
         info.setCreator(WindowText.PROGRAM_NAME.getText());
-        info.setKeywords(exportData.getInfo(TextTypeInfo.KEYWORDS));
+        info.setKeywords(exportData.getMetaText(TextDataType.Meta.KEYWORDS));
         info.setModificationDate(new GregorianCalendar());
         info.setProducer(WindowText.PROGRAM_NAME.getText());
-        info.setSubject(exportData.getInfo(TextTypeInfo.SUBJECT));
-        info.setTitle(exportData.getInfo(TextTypeInfo.TITLE));
+        info.setSubject(exportData.getMetaText(TextDataType.Meta.SUBJECT));
+        info.setTitle(exportData.getMetaText(TextDataType.Meta.TITLE));
     }
 
     /** Set the PDF file properties
@@ -77,7 +77,7 @@ final class SectionTitle extends Section {
      */
     private void writeTop() throws IOException{
         MatterArea top = new MatterArea(outputPage, PageAlignment.TOP);
-        top.addAll(newLines(exportData.getMatter(TextTypeMatter.FRONT_TOP)));
+        top.addAll(newLines(exportData.getPrint(TextDataType.Area.FRONT_TOP)));
         top.render();
     }
 
@@ -87,7 +87,7 @@ final class SectionTitle extends Section {
      */
     private void writeMiddle() throws IOException{
         MatterArea mid = new MatterArea(outputPage, PageAlignment.MIDDLE);
-        mid.addAll(newLines(exportData.getMatter(TextTypeMatter.FRONT_CENTER)));
+        mid.addAll(newLines(exportData.getPrint(TextDataType.Area.FRONT_CENTER)));
         mid.render();
     }
 
@@ -97,11 +97,11 @@ final class SectionTitle extends Section {
      */
     private void writeBottom() throws IOException{
         MatterArea bot = new MatterArea(outputPage, PageAlignment.BOTTOM);
-        bot.addAll(newLines(exportData.getMatter(TextTypeMatter.FRONT_BOTTOM)));
+        bot.addAll(newLines(exportData.getPrint(TextDataType.Area.FRONT_BOTTOM)));
         bot.render();
     }
 
-    /** Create the lines of the {@link TextSpanMatter} that was found.
+    /** Create the lines of the {@link TextDataSpanPrint} that was found.
      *
      * @param spans
      *      rending spans
@@ -110,7 +110,7 @@ final class SectionTitle extends Section {
      * @see writeCenter()
      * @see writeBottom()
      */
-    private List<DivisionTextFormatted> newLines(List<TextSpanMatter> spans)
+    private List<DivisionTextFormatted> newLines(List<TextDataSpanPrint> spans)
             throws IOException{
         return DivisionTextFormatted.newPrintLines(outputPage.getRenderWidth(),
             parentDoc, spans);

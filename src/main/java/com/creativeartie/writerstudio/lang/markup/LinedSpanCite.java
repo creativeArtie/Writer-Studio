@@ -10,7 +10,7 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** A citation for "Cite Worked" page, footnote or in-text. */
-public class LinedSpanCite extends LinedSpan implements Catalogued{
+public class LinedSpanCite extends LinedSpan {
 
     /** Check if the line start with {@link LINED_CITE}.
      *
@@ -24,10 +24,9 @@ public class LinedSpanCite extends LinedSpan implements Catalogued{
         return text.startsWith(LINED_CITE);
     }
 
-    private final CacheKeyMain<InfoFieldType> cacheField;
-    private final CacheKeyMain<InfoDataType> cacheType;
-    private final CacheKeyOptional<SpanBranch> cacheData;
-    private final CacheKeyOptional<CatalogueIdentity> cacheId;
+    private final CacheKeyMain<InfoFieldType> cacheFormatTypeField;
+    private final CacheKeyOptional<InfoDataSpan> cacheData;
+    private final CacheKeyList<StyleInfo> cacheStyles;
     private final CacheKeyMain<Integer> cacheNote;
 
     /** Creates a {@linkplain LinedSpanCite}.
@@ -39,42 +38,50 @@ public class LinedSpanCite extends LinedSpan implements Catalogued{
     LinedSpanCite(List<Span> children){
         super(children);
 
-        cacheField = new CacheKeyMain<>(InfoFieldType.class);
-        cacheType = new CacheKeyMain<>(InfoDataType.class);
-        cacheData = new CacheKeyOptional<>(SpanBranch.class);
+        cacheFormatTypeField = new CacheKeyMain<>(InfoFieldType.class);
+        cacheData = new CacheKeyOptional<>(InfoDataSpan.class);
+        cacheStyles = new CacheKeyList<>(StyleInfo.class);
         cacheNote = CacheKeyMain.integerKey();
-        cacheId = CacheKeyOptional.idKey();
     }
 
     /** Gets the citation field type
      *
      * @return answer
      */
-    public InfoFieldType getInfoFieldType(){
-        return getLocalCache(cacheField, () ->
-            leafFromFirst(SpanLeafStyle.FIELD)
-            .map(s -> InfoFieldType.getType(s.getRaw().trim()))
-            .orElse(InfoFieldType.ERROR));
-    }
-
-    public InfoDataType getInfoDataType(){
-        return getLocalCache(cacheType, () -> getInfoFieldType().getDataType());
+    public InfoFieldType getFormatTypeField(){
+        return getLocalCache(cacheFormatTypeField, () -> {
+            Optional<InfoFieldSpan> field = spanFromFirst(InfoFieldSpan.class);
+            if (field.isPresent()){
+                return field.get().getFormatTypeField();
+            }
+            return InfoFieldType.ERROR;
+        });
     }
 
     /** Gets the citation field data
      *
      * @return answer
      */
-    public Optional<SpanBranch> getData(){
-        return getLocalCache(cacheData, () ->
-            spanFromLast(SpanBranch.class)
-        );
+    public Optional<InfoDataSpan> getData(){
+        return getLocalCache(cacheData, () -> spanFromLast(InfoDataSpan.class));
+    }
+
+    @Override
+    public List<StyleInfo> getBranchStyles(){
+        return getLocalCache(cacheStyles, () -> {
+            ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
+            builder.addAll(super.getBranchStyles()).add(getFormatTypeField());
+            if (! getData().isPresent()){
+                builder.add(AuxiliaryType.DATA_ERROR);
+            }
+            return builder.build();
+        });
     }
 
     @Override
     public int getNoteTotal(){
         return getLocalCache(cacheNote, () -> {
-            if (getInfoFieldType() != InfoFieldType.ERROR){
+            if (getFormatTypeField() != InfoFieldType.ERROR){
                 return getData().map(this::getCount).orElse(0);
             }
             return 0;
@@ -84,36 +91,22 @@ public class LinedSpanCite extends LinedSpan implements Catalogued{
     /** Gets the note count
      *
      * @return answer
-     * @see #getNoteTotal()
      */
-    private int getCount(SpanBranch span){
+    private int getCount(InfoDataSpan span){
         assert span != null: "Null span";
-        if (span instanceof FormattedSpan){
-            FormattedSpan data = (FormattedSpan)span;
+        if (span instanceof InfoDataSpanFormatted){
+            FormattedSpan data = ((InfoDataSpanFormatted)span).getData();
             return data.getPublishTotal() + data.getNoteTotal();
-        } else if (span instanceof ContentSpan){
-            return ((ContentSpan)span).getWordCount();
+        } else if (span instanceof InfoDataSpanText){
+            return ((InfoDataSpanText)span).getData().wordCount();
         }
         return 0;
     }
 
     @Override
-    public boolean isId(){
-        return false;
-    }
-
-    @Override
-    public Optional<CatalogueIdentity> getSpanIdentity(){
-        return getDocCache(cacheId, () -> spanFromLast(DirectorySpan.class)
-            .map(span -> span.buildId())
-        );
-    }
-
-    @Override
     protected SetupParser getParser(String text){
         argumentNotNull(text, "text");
-
         return checkLine(text) && AuxiliaryChecker.checkLineEnd(text, isDocumentLast())?
-            LinedParseCite.getParser(text): null;
+            LinedParseRest.CITE: null;
     }
 }

@@ -13,7 +13,7 @@ import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
  * <li> {@link LinedParsePointer#parse(SetupPointer)}</li>
  * </ul>
  */
-public enum DirectoryType{
+public enum DirectoryType implements StyleInfo{
     /** Category for id less note cards. */
     NOTE(TYPE_NOTE),
     /** Category for ided note cards. */

@@ -11,7 +11,7 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 final class FormattedParser implements SetupParser {
 
     private final String[] spanEnders;
-    private final SpanLeafStyle leafStyle;
+    private final StyleInfoLeaf leafStyle;
     private final boolean withNote;
 
     /** Creates a {@linkplain FormattedParser}.
@@ -23,7 +23,7 @@ final class FormattedParser implements SetupParser {
      *      span enders tokens
      * @see FormattedParser#parse(SetupPointer)
      */
-    FormattedParser(SpanLeafStyle style, boolean note, String ... enders){
+    FormattedParser(StyleInfoLeaf style, boolean note, String ... enders){
         /// Combine the list of span enders and formatting enders
         spanEnders = listFormatEnderTokens(note, enders);
         leafStyle = argumentNotNull(style, "style");

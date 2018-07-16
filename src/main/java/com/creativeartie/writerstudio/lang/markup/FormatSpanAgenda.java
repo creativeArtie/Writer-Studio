@@ -11,6 +11,8 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** An inline to-do text. */
 public final class FormatSpanAgenda extends SpanBranch implements Catalogued{
+    private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(
+        AuxiliaryType.AGENDA);
     private CacheKeyMain<String> cacheAgenda;
     private CacheKeyOptional<CatalogueIdentity> cacheId;
 
@@ -50,6 +52,11 @@ public final class FormatSpanAgenda extends SpanBranch implements Catalogued{
     @Override
     public boolean isId(){
         return true;
+    }
+
+    @Override
+    public List<StyleInfo> getBranchStyles(){
+        return BRANCH_STYLE;
     }
 
     @Override

@@ -94,8 +94,8 @@ final class PageFootnote {
 
             } else if (span instanceof LinedSpanCite){
                 Optional<FormattedSpan> data = ((LinedSpanCite)span).getData()
-                    .filter(s -> s instanceof FormattedSpan)
-                    .map(s -> ((FormattedSpan)s));
+                    .filter(s -> s instanceof InfoDataSpanFormatted)
+                    .map(s -> ((InfoDataSpanFormatted)s).getData());
                 if (data.isPresent()){
                     insert.addContent(data.get());
                 }

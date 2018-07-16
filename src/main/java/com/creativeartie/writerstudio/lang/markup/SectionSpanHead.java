@@ -10,9 +10,8 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** Section with optional heading. */
 public final class SectionSpanHead extends SectionSpan {
-
-    private final CacheKeyMain<Integer> cacheLevel;
-
+    private static final List<StyleInfo> BRANCH_STYLE = ImmutableList.of(
+            AuxiliaryType.SECTION_HEAD);
     private final CacheKeyList<LinedSpan> cacheSectionLines;
 
     private final CacheKeyList<SectionSpanHead> cacheSections;
@@ -31,7 +30,6 @@ public final class SectionSpanHead extends SectionSpan {
      */
     SectionSpanHead(List<Span> children, SectionParser reparser){
         super(children, reparser);
-        cacheLevel = CacheKeyMain.integerKey();
 
         cacheSectionLines = new CacheKeyList<>(LinedSpan.class);
 
@@ -108,12 +106,6 @@ public final class SectionSpanHead extends SectionSpan {
     }
 
     @Override
-    public int getLevel(){
-        return getLocalCache(cacheLevel, () -> getParent(SectionSpanHead.class)
-            .map(s -> s.getLevel() + 1).orElse(1));
-    }
-
-    @Override
     public int getPublishTotal(){
         return getLocalCache(cachePublish, () ->
             getPublishCount() +
@@ -129,6 +121,22 @@ public final class SectionSpanHead extends SectionSpan {
             getSections().stream().mapToInt(s -> s.getNoteTotal()).sum() +
             getScenes().stream().mapToInt(s -> s.getNoteTotal()).sum()
         );
+    }
+
+    @Override
+    protected boolean checkStart(String text){
+        argumentNotNull(text, "text");
+
+        if (getLevel() == 1 && isDocumentFirst()){
+            /// Skipping checking when this is the first
+            return true;
+        }
+        return allowChild(text, getLevel() - 1, true);
+    }
+
+    @Override
+    public List<StyleInfo> getBranchStyles(){
+        return BRANCH_STYLE;
     }
 
     @Override

@@ -37,7 +37,7 @@ public final class WritingExporter implements AutoCloseable{
 
     /** Font that can be use in the package
      */
-    class PdfFont extends ContentFont<PDFont, PdfFont>{
+    class PdfFont extends ContentFont<PDFont>{
 
         /** Only public constructor. */
         PdfFont(){}
@@ -63,10 +63,10 @@ public final class WritingExporter implements AutoCloseable{
             /// From https://stackoverflow.com/questions/13701017/calculation-
             /// string-width-in-pdfbox-seems-only-to-count-characters
             try {
-                return getFont().getStringWidth(text) / 1000 * getSize();
-            } catch (IOException ex){
-                throw new RuntimeException(ex.getCause());
-            }
+				return getFont().getStringWidth(text) / 1000 * getSize();
+			} catch (IOException ex){
+				throw new RuntimeException(ex.getCause());
+			}
         }
 
         @Override
@@ -77,28 +77,28 @@ public final class WritingExporter implements AutoCloseable{
         }
 
         @Override
-        public PdfFont produce(ContentFont<PDFont, PdfFont> font, Key key,
-                Object value){
+        public PdfFont produce(ContentFont<PDFont> font, Key key, 
+				Object value){
             checkNotNull(font, "font");
             checkNotNull(key, "key");
             checkNotNull(value, "value");
 
             return new PdfFont((PdfFont) font, key, value);
         }
-
+        
         @Override
-        protected PDFont buildFont(boolean mono, boolean bold,
-                boolean italics, boolean superscript) {
+        protected PDFont buildFont(boolean mono, boolean bold, 
+				boolean italics, boolean superscript) {
             return embedFonts[superscript? SUPERSCRIPT:(mono?
-                (bold?
-                    (italics? MONO_BOTH   : MONO_BOLD):
-                    (italics? MONO_ITALICS: MONO)
-                ):(bold?
-                    (italics? SERIF_BOTH   : SERIF_BOLD):
-                    (italics? SERIF_ITALICS: SERIF)
-                )
-            )];
-        }
+				(bold?
+					(italics? MONO_BOTH   : MONO_BOLD):
+					(italics? MONO_ITALICS: MONO)
+				):(bold?
+					(italics? SERIF_BOTH   : SERIF_BOLD):
+					(italics? SERIF_ITALICS: SERIF)
+				)
+			)];
+		}
     }
 
     private final String savePath;
@@ -170,8 +170,8 @@ public final class WritingExporter implements AutoCloseable{
             }
 
             /// Add the document ending lines
-            content.addLines(data.getMetaData().getMatter(TextTypeMatter.
-                TEXT_ENDER));
+            content.addLines(data.getMetaData().getPrint(TextDataType.Area.
+                MAIN_ENDER));
         }
 
         /// Add endnotes pages

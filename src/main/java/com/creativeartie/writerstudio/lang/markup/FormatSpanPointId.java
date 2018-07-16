@@ -15,6 +15,7 @@ public final class FormatSpanPointId extends FormatSpan implements Catalogued{
 
     private final CacheKeyOptional<SpanBranch> cacheTarget;
     private final CacheKeyOptional<CatalogueIdentity> cacheId;
+    private final CacheKeyList<StyleInfo> cacheStyles;
     private final CacheKeyMain<String> cacheOutput;
 
     /** Creates a {@linkplain FormatSpanPointId}.
@@ -35,6 +36,7 @@ public final class FormatSpanPointId extends FormatSpan implements Catalogued{
 
         cacheTarget = new CacheKeyOptional<>(SpanBranch.class);
         cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
+        cacheStyles = new CacheKeyList<>(StyleInfo.class);
         cacheOutput = CacheKeyMain.stringKey();
     }
 
@@ -64,6 +66,15 @@ public final class FormatSpanPointId extends FormatSpan implements Catalogued{
     @Override
     public boolean isId(){
         return false;
+    }
+
+    @Override
+    public List<StyleInfo> getBranchStyles(){
+        return getLocalCache(cacheStyles, () -> {
+            ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
+            return builder.add(spanType).add(getIdStatus())
+                .addAll(super.getBranchStyles()).build();
+        });
     }
 
     @Override

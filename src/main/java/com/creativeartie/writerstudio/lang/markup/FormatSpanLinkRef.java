@@ -17,6 +17,7 @@ public final class FormatSpanLinkRef extends FormatSpanLink
 
     private final CacheKeyOptional<SpanBranch> cachePath;
     private final CacheKeyMain<String> cacheText;
+    private final CacheKeyList<StyleInfo> cacheStyles;
     private final CacheKeyOptional<CatalogueIdentity> cacheId;
     private final CacheKeyMain<Boolean> cacheExternal;
 
@@ -37,6 +38,7 @@ public final class FormatSpanLinkRef extends FormatSpanLink
 
         cachePath = new CacheKeyOptional<>(SpanBranch.class);
         cacheText = CacheKeyMain.stringKey();
+        cacheStyles = new CacheKeyList<>(StyleInfo.class);
         cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
         cacheExternal = CacheKeyMain.booleanKey();
     }
@@ -93,6 +95,15 @@ public final class FormatSpanLinkRef extends FormatSpanLink
                     .get(id).getTarget() instanceof LinedSpanPointLink)
                 .orElseThrow(() -> new IllegalStateException("Link not found."))
         );
+    }
+
+    @Override
+    public List<StyleInfo> getBranchStyles(){
+        return getLocalCache(cacheStyles, () ->{
+            ImmutableList.Builder<StyleInfo> builder = ImmutableList.builder();
+            return builder.add(AuxiliaryType.REF_LINK).add(getIdStatus())
+                .addAll(super.getBranchStyles()).build();
+        });
     }
 
     @Override

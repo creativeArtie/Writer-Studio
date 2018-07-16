@@ -23,6 +23,7 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
 
     private final CacheKeyMain<String> cacheLookup;
     private final CacheKeyOptional<CatalogueIdentity> cacheId;
+    private final CacheKeyList<StyleInfo> cacheStyles;
 
     /** Creates a {@linkplain NoteCardSpan}.
      *
@@ -42,6 +43,7 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
 
         cacheLookup = CacheKeyMain.stringKey();
         cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
+        cacheStyles = new CacheKeyList<>(StyleInfo.class);
     }
 
     /** Gets the formatted note title
@@ -116,23 +118,23 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
         for (LinedSpanCite child: getChildren(LinedSpanCite.class)){
             if (isType(child, type -> type == InfoFieldType.SOURCE)){
                 /// Finds the citation
-                return child.getData().map(s -> (FormattedSpan)s);
+                InfoDataSpan data = child.getData().get();
+                return Optional.of((FormattedSpan)data.getData());
 
             } else if (isType(child, t -> t == InfoFieldType.REF)){
                 /// finds a reference
-                return child.getData()
-                    /// s == SpanBranch
-                    .map(s -> (DirectorySpan) s)
-                    /// s == DirectorySpan
-                    .map(s -> getDocument().getCatalogue().get(s))
-                    /// d == CatalogueData
-                    .filter(d -> d.isReady())
-                    .map(d -> d.getTarget())
-                    /// s == SpanBranch
-                    .filter(s -> s instanceof NoteCardSpan)
-                    .map(s -> (NoteCardSpan) s)
-                    /// s == NoteCardSpan
-                    .flatMap(s -> s.getSource(start, true));
+                InfoDataSpan found = child.getData().get();
+
+                /// gets the next note
+                DirectorySpan id = (DirectorySpan)found.getData();
+                CatalogueData data = getDocument().getCatalogue().get(id);
+
+                if (data.isReady()){
+                    /// tries to get the next note card
+                    Span span = data.getTarget();
+                    assert span instanceof NoteCardSpan;
+                    return ((NoteCardSpan)span).getSource(start, true);
+                }
             }
         }
         return Optional.empty();
@@ -150,7 +152,7 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
         return Optional.ofNullable(child)
             /// c == LindSpanCite
             .filter(c -> c.getData().isPresent())
-            .map(c -> c.getInfoFieldType())
+            .map(c -> c.getFormatTypeField())
             /// c == InfoFieldType
             .filter(filter)
             .isPresent();
@@ -197,6 +199,12 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
                     new CatalogueIdentity(Arrays.asList(TYPE_NOTE), this)
                 )
         ));
+    }
+
+    @Override
+    public List<StyleInfo> getBranchStyles(){
+        return getLocalCache(cacheStyles, () ->
+            ImmutableList.of(AuxiliaryType.MAIN_NOTE, getIdStatus()));
     }
 
     @Override

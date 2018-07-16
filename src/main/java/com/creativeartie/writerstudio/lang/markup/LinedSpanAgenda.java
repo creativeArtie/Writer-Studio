@@ -32,15 +32,16 @@ public class LinedSpanAgenda extends LinedSpan implements Catalogued{
      * @return answer.
      */
     public String getAgenda(){
-        return getLocalCache(cacheAgenda, () -> spanFromLast(ContentSpan.class)
-            .map(s -> s.getTrimmed()).orElse("")
-        );
+        return getLocalCache(cacheAgenda, () -> {
+            Optional<ContentSpan> ans = getAgendaSpan();
+            return ans.isPresent()? ans.get().getTrimmed() : "";
+        });
     }
 
     @Override
     public int getNoteTotal(){
         return getLocalCache(cacheNote, () -> {
-            return getAgendaSpan().map(s -> s.getWordCount())
+            return getAgendaSpan().map(s -> s.wordCount())
                 .orElse(0);
         });
     }

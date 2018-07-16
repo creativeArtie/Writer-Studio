@@ -5,7 +5,7 @@ import java.util.*; // List
 
 import com.creativeartie.writerstudio.pdf.value.*; // PageAlignment
 import com.creativeartie.writerstudio.lang.*; // SpanBranch
-import com.creativeartie.writerstudio.lang.markup.*; // SpanBranch, TextSpanMatter
+import com.creativeartie.writerstudio.lang.markup.*; // SpanBranch, TextDataSpanPrint
 
 import static com.creativeartie.writerstudio.main.Checker.*;
 
@@ -136,7 +136,7 @@ abstract class SectionContent<T extends SpanBranch> extends Section {
      */
     protected abstract DivisionText parseSpan(T span) throws IOException;
 
-    void addLines(List<TextSpanMatter> lines) throws IOException{
+    void addLines(List<TextDataSpanPrint> lines) throws IOException{
         for (DivisionTextFormatted line: DivisionTextFormatted.newPrintLines(
                 this, lines)){
             addLine(line);

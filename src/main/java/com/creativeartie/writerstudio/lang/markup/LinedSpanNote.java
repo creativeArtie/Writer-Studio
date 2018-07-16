@@ -104,7 +104,7 @@ public class LinedSpanNote extends LinedSpan{
     @Override
     public int getNoteTotal(){
         return getLocalCache(cacheNote, () -> getFormattedSpan()
-            .map(span -> span.getGrandTotal())
+            .map(span -> span.getTotalCount())
             .orElse(0)
         );
     }

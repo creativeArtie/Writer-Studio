@@ -1,7 +1,7 @@
 package com.creativeartie.writerstudio.lang;
 
 /** Types of error with the {@link CatalogueIdentity}. */
-public enum CatalogueStatus{
+public enum CatalogueStatus implements StyleInfo {
     /// This is no id assoicate in a SpanBranch
     NO_ID,
     /// There is an id but nothing is refer to it
