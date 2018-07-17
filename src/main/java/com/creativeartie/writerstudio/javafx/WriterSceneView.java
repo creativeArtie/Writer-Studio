@@ -101,22 +101,33 @@ abstract class WriterSceneView extends BorderPane{
     }
 
     private SplitPane buildSplitCenter(){
-        textPane = new TextPaneControl();
-        SplitPane center = new SplitPane(buildLeftTabs(), textPane);
+        SplitPane center = new SplitPane(buildLeftTabs(), buildRightTabs());
         center.setDividerPositions(HOR_DIVIDER);
         return center;
     }
 
     private TabPane buildLeftTabs(){
-        metaDataPane = new MetaDataPaneControl();
         TabPane left = buildTabPane();
 
         headingsPane = new HeadingsPaneControl();
         Tab tree = new Tab(WindowText.TAB_CONTENT.getText(), headingsPane);
 
+        metaDataPane = new MetaDataPaneControl();
         Tab meta = buildTab(WindowText.TAB_META, metaDataPane);
+
         left.getTabs().addAll(tree, meta);
         return left;
+    }
+
+    private TabPane buildRightTabs(){
+        TabPane right = buildTabPane();
+
+        textPane = new TextPaneControl();
+        Tab main = buildTab(WindowText.TAB_TEXT, textPane);
+
+        right.getTabs().addAll(main);
+        return right;
+
     }
 
     private Tab buildTab(WindowText text, Node content){

@@ -61,7 +61,10 @@ public abstract class SpanBranch extends SpanNode<Span> {
         }
 
         /// next step
-        reparseText(text, parser);
+        stateCheck(reparseText(text, parser),
+            "Has left over characters when reparsing: " +
+            getClass().getSimpleName()
+        );
     }
 
 
@@ -76,9 +79,8 @@ public abstract class SpanBranch extends SpanNode<Span> {
 
         SetupParser parser = getParser(text);
         if (parser != null){
-            /// It can be fully parsed.
-            reparseText(text, parser);
-            return true;
+            /// It might be fully parsed.
+            return reparseText(text, parser);
        }
        return false;
     }
@@ -99,21 +101,21 @@ public abstract class SpanBranch extends SpanNode<Span> {
      *      replacing text
      * @param parser
      *      span parser
+     * @return is successful
      */
-    private final void reparseText(String text, SetupParser parser){
+    private final boolean reparseText(String text, SetupParser parser){
         assert text != null && text.length() > 0: "Empty text";
         assert parser != null: "Null parser";
 
         SetupPointer pointer = SetupPointer.updatePointer(text,
             getDocument());
         Optional<SpanBranch> span = parser.parse(pointer);
-        /// There are text left over.
-        stateCheck(! pointer.hasNext(),
-            "Has left over characters when reparsing: " +
-            getClass().getSimpleName()
-        );
+        if (pointer.hasNext()){
+            return false;
+        }
         assert span.isPresent(): "Null span";
         updateSpan((List<Span>)span.get());
+        return true;
     }
 
     @Override

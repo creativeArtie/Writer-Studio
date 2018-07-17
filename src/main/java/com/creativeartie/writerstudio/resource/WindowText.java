@@ -43,7 +43,9 @@ public enum WindowText {
 
     TAB_CONTENT("LeftTabs.TableOfContents"),
     TAB_META("LeftTabs.MetaData"),
-    // TAB_RELATIVE("LeftTabs.Files"),
+    // TAB_FILE("LeftTabs.Files"),
+    TAB_TEXT("RightTabs.TextArea"),
+    TAB_WEB("RightTabs.Research"),
 
     AGENDA_LINE("AgendaTable.LineColumn"),
     AGENDA_TYPE("AgendaTable.TypeColumn"),
