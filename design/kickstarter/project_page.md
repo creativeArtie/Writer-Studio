@@ -1,3 +1,5 @@
+Kickstarter fund goal: $11,000 CAD
+
 # What is Writer Studio
 
 Writer Studio is my personal open-source project designed with writer needs in
@@ -54,24 +56,49 @@ spell check and many other feature I would like to add.
 
 # Why I Need Your Help
 
-I would like to make an income from the project, maybe launch it on Android.
+I would like to make an income from the project, and launch it on Android. A lot
+of writers (including me) get distracted if they work at home and a tablet is
+easier to carry. Writer Studio is written in Java anyways, so porting to Android
+shouldn't be that hard.
+
+# Strech Goal 1
+
+If this Kickstarter campiagn hits $132,000, I will start professional printing
+system to go along with Writer Studio. Writer Studio will print the document on
+a 32 lb. letter or legal size paper. Depend on your choice, the document will
+then inserted into a prepaid envlope and then either (1) send to you so you can
+check the quality and put into mail box yourself or (2) send directly to place
+with the return address as your home address.
+
+This will look impress with your letter, but also with envlope which complete
+with print addresses and postal indicia.
+
+|Needs                                                  |Price   |
+|-------------------------------------------------------|-------:|
+|Communical laser printer                               |  $2,000|
+|A desktop that run Andriod Studio smoothly             |  $1,000|
+|Envelope Inserters                                     |  $6,000|
+|Other random stuff, supporting myself                  | $10,000|
+|1 employee to work the printer x 1 year                | $38,000|
+|office space x 1 year                                  | $27,600|
+|a lot 32 lb. bond paper                                |  $1,000|
+|Startup Class (I needed to learn how to run a business)|  $3,000|
+|Subtotal                                               | $88,000|
+|Safety margin/Cash flow/Mistakes                       |     50%|
+|Total                                                  |$132,000|
 
 
-If I am able to meet $31,000
+I put in a high safety margin to make sure strech goal covers everything and
+everything that I missed or underestimate the costs.
 
-|Needs                                    |Price  |
-|-----------------------------------------|-------|
-|Communical printer                       |$2,000 |
-|A laptop that run Andriod Studio smoothly|$2,000 |
-|Envelope Inserters or human mailer       |$6,000 |
-|Other random stuff, supporting myself    |$10,000|
-|employee to work the printer x 1 year    |$38,000|
-|office space x 1 year                    |$27,600|
-|Total                                    |$20,000|
+# Strech Goal # 2
 
-4. Additional expansion
-    1. an office (and business management class) to hire more help
-    2. paid plugins that is more focus on a topic and even more standardization
-    3. professional printing from inside the software to you with envlopes ready
-        to be send
-    4. scented romanace letters, out of date, but it sure grab attension
+Writer Studio will also print scented love letter and sent them. Because an
+unexpected, impressive love letter will surely grab attension.
+
+# Rewards
+
+- $5: vote on what to do next x 10
+- $10: name on Andriod app credits + vote
+- $20: free add (if I add adds) or 2 free plugins + vote
+- $25: everything above
