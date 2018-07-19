@@ -544,8 +544,8 @@ public class TextFileTest {
         doc.getAsserter().call(true, () -> doc.getDocument(),
             s -> s.setMatter(TextTypeMatter.FRONT_CENTER, "Title\nToday date"),
             () -> new SpanNode[]{
-                doc.getDocument(),
-                doc.getDocument().get(0)
+                doc.getDocument().get(0),
+                doc.getDocument()
             });
         commonMixed(doc);
     }
