@@ -88,7 +88,7 @@ public final class WritingData extends Document{
             if (i < print.size()){
                 print.get(i).setData(text);
             } else {
-                runCommand(() -> getRaw() + area.getKeyName() + TEXT_SEPARATOR +
+                addChild(TextParser.PARSER, area.getKeyName() + TEXT_SEPARATOR +
                     TextDataType.CENTER.getKeyName() + TEXT_SEPARATOR +
                     TextSpanMatter.fixText(text) + LINED_END);
             }
@@ -135,7 +135,7 @@ public final class WritingData extends Document{
         Optional<TextSpanInfo> span = getWritingData(meta);
         if (! span.isPresent()){
             String text = TextSpanInfo.escapeText(raw);
-            runCommand(() -> getRaw() + meta.getKeyName() + TEXT_SEPARATOR +
+            addChild(TextParser.PARSER, meta.getKeyName() + TEXT_SEPARATOR +
                 TextDataType.TEXT.getKeyName() + TEXT_SEPARATOR + text + "\n");
         } else span.get().editText(raw);
         setFireReady(true);

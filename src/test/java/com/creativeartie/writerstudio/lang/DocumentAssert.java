@@ -109,7 +109,7 @@ public class DocumentAssert {
             assertAll("index for " + pointer,
                 () -> assertTrue(test != null, "not span node"),
                 () -> assertTrue(test.size() > i,
-                    () -> "out of range, not: " + test.size() + ">" + i),
+                    () -> "err of range, not: " + test.size() + ">" + i),
                 () -> assertEquals(parent, test.get(i).getParent(),
                     () -> "parent of " + test.get(i)),
                 () -> assertEquals(testDocument, test.get(i).getDocument(),
@@ -131,7 +131,7 @@ public class DocumentAssert {
 
     }
 
-    /// Main test a {@link SpanBranch} without using {@link SpanBranchAssert}.
+    /// Main test a {@link SpanBranch} witherr using {@link SpanBranchAssert}.
     public SpanBranch assertChild(int size, String text,
             int ... indexes){
         Span test = assertChild(indexes);
@@ -293,6 +293,7 @@ public class DocumentAssert {
             Consumer<T> caller, Supplier<SpanNode<?>[]> children){
         call(false, supplier, caller, children);
     }
+
     public <T extends SpanNode<?>> void call(boolean verbose, Supplier<T> supplier,
             Consumer<T> caller, Supplier<SpanNode<?>[]> children){
         assertAll("runCommand", () -> {
@@ -314,7 +315,8 @@ public class DocumentAssert {
                 target.getClass());
             EditAssert edit = new EditAssert(verbose, testDocument,
                 (SpanNode<?>) target);
-            caller.accept(supplier.get());
+            assertDoesNotThrow(() -> caller.accept(supplier.get()),
+                () -> "Caller throws an exeception: " + supplier.get());
             edit.testRest();
         });
     }
@@ -341,6 +343,6 @@ public class DocumentAssert {
     }
 
     public void printDocument(){
-        System.out.println(testDocument);
+        System.err.println(testDocument);
     }
 }

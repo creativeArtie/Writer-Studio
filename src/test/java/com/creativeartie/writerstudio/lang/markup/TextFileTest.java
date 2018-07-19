@@ -541,12 +541,11 @@ public class TextFileTest {
         String raw = line1 + line2 + line3;
         TextFileAssert doc = new TextFileAssert(3, raw);
 
-        doc.getAsserter().call(() -> doc.getDocument(),
+        doc.getAsserter().call(true, () -> doc.getDocument(),
             s -> s.setMatter(TextTypeMatter.FRONT_CENTER, "Title\nToday date"),
             () -> new SpanNode[]{
                 doc.getDocument(),
-                doc.getDocument().get(0),
-                doc.getDocument().get(2)
+                doc.getDocument().get(0)
             });
         commonMixed(doc);
     }

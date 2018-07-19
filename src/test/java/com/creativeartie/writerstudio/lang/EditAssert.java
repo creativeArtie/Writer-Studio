@@ -41,7 +41,8 @@ public class EditAssert{
             SpanNode<?> ptr = edit;
             while (ptr instanceof SpanBranch){
                 ptr = ptr.getParent();
-                if (! expectedParents.contains(ptr)) expectedParents.add(ptr);
+                // if (! expectedParents.contains(ptr)) expectedParents.add(ptr);
+                expectedParents.add(ptr);
             }
         }
         actualParents = new ArrayList<>();
@@ -110,22 +111,22 @@ public class EditAssert{
 
     public void testRest(){
         if (showEdits) {
-            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++");
-            System.out.println("Document Edited------------------------------");
-            System.out.println(useDoc);
-            System.out.println("SpanBranch Edited----------------------------");
+            System.err.println("+++++++++++++++++++++++++++++++++++++++++++++");
+            System.err.println("Document Edited------------------------------");
+            System.err.println(useDoc);
+            System.err.println("SpanBranch Edited----------------------------");
             print("intial", expectedEdited);
 
-            System.out.println("Edits----------------------------------------");
+            System.err.println("Edits----------------------------------------");
             print(expectedEdited, actualEdited);
 
-            System.out.println("Parents--------------------------------------");
+            System.err.println("Parents--------------------------------------");
             print(expectedParents, actualParents);
 
-            System.out.println("Spans----------------------------------------");
+            System.err.println("Spans----------------------------------------");
             print(expectedSpans, actualSpans);
 
-            System.out.println("Removes--------------------------------------");
+            System.err.println("Removes--------------------------------------");
             print(expectedRemoves, actualRemoves);
         }
 
@@ -151,11 +152,11 @@ public class EditAssert{
     private void print(String type, Iterable<SpanNode<?>> list){
         int i = 1;
         for (SpanNode<?> span: list){
-            System.out.println(type + "[" + i++ + "](" +
+            System.err.println(type + "[" + i++ + "](" +
                 span.getClass().getSimpleName() + "):\t" + span);
         }
         if (i == 1){
-            System.out.println("[]");
+            System.err.println("[]");
         }
     }
 

@@ -90,6 +90,17 @@ public abstract class Document extends SpanNode<SpanBranch>{
         reparseDocument(command.getResult());
     }
 
+    @Override
+    final void addChild(SpanBranch span, int position){
+        documentChildren.add(position, span);
+        span.setParent(this);
+    }
+
+    @Override
+    final void removeChild(int index){
+        documentChildren.remove(index);
+    }
+
     /** Insert a {@linkplain String} at a location.
      *
      * @param index

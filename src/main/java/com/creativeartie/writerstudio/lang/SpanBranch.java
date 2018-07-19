@@ -49,7 +49,7 @@ public abstract class SpanBranch extends SpanNode<Span> {
         /// no text = delete
         if (text == null || text.isEmpty()){
             StringBuilder builder = new StringBuilder();
-            getDocument().delete(getStart(), getEnd());
+            removeSpan();
             return;
         }
 
@@ -116,6 +116,26 @@ public abstract class SpanBranch extends SpanNode<Span> {
         assert span.isPresent(): "Null span";
         updateSpan((List<Span>)span.get());
         return true;
+    }
+
+    protected final void removeSpan(){
+        SpanNode parent = getParent();
+        int index = parent.indexOf(this);
+        argumentCheck(index != -1, "Parameter 'span' is not a child: " + this);
+        setRemove();
+        parent.removeChild(index);
+        parent.updateSpan();
+    }
+
+    @Override
+    protected final void removeChild(int index){
+        spanChildren.remove(index);
+    }
+
+    @Override
+    final void addChild(SpanBranch span, int index){
+        spanChildren.add(index, span);
+        span.setParent(this);
     }
 
     @Override
