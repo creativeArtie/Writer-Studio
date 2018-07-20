@@ -7,6 +7,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /// Tests for listeners
+@Deprecated
 public class EditAssert{
 
     /// %Part 1: Listup tests ###################################################

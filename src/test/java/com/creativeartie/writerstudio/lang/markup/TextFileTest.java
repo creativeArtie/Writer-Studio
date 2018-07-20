@@ -16,6 +16,7 @@ import com.creativeartie.writerstudio.lang.markup.BranchTextAssert.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static com.creativeartie.writerstudio.lang.DocumentAssert.*;
 
+// @Deprecated
 public class TextFileTest {
 
     public class TextFileAssert{

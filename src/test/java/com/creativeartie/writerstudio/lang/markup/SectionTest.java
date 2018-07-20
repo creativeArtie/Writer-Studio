@@ -45,7 +45,7 @@ public class SectionTest {
             "=Chapter 2\nsome text\n";
         DocumentAssert doc = assertDoc(2, raw, PARSER);
         doc.delete(11, 12);
-        doc.assertDoc(2, COMMON_DOC, PARSER);
+        doc.assertDoc(2, COMMON_DOC);
         commonSections(doc);
     }
 
@@ -57,7 +57,7 @@ public class SectionTest {
             "=Chapter 2\nsome text\n";
         DocumentAssert doc = assertDoc(2, raw, PARSER);
         doc.insert(39, "#");
-        doc.assertDoc(2, COMMON_DOC, PARSER);
+        doc.assertDoc(2, COMMON_DOC);
         commonSections(doc);
     }
 
@@ -70,7 +70,7 @@ public class SectionTest {
         DocumentAssert doc = assertDoc(2, raw, PARSER);
         /// Note that the edited span is Chapter 1 -> Section 1
         doc.delete(39, 40);
-        doc.assertDoc(2, COMMON_DOC, PARSER);
+        doc.assertDoc(2, COMMON_DOC);
         commonSections(doc);
     }
 

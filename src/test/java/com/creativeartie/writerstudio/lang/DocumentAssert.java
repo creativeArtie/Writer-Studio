@@ -52,15 +52,18 @@ public class DocumentAssert {
 
     private final Document testDocument;
     private IDAssert idTester;
+    private Optional<ListenerAssert<? extends SpanNode<?>>> listenTester;
 
     private DocumentAssert(Document document){
         testDocument = document;
         idTester = new IDAssert();
+        listenTester = Optional.empty();
     }
 
     /// %Part 3: Document Assertion ############################################
 
     public DocumentAssert assertDoc(int size, String raw){
+        listenTester.ifPresent(l -> l.runCommand());
         ArrayList<Executable> doc = new ArrayList<>();
         doc.add(() -> assertEquals(raw, testDocument.getRaw(), "getRaw()"));
         doc.add(() -> assertEquals(size, testDocument.size(), "size()"));
@@ -235,6 +238,8 @@ public class DocumentAssert {
                 "No more text."),
             () -> assertEquals(last, target.getRaw())
         );
+        listenTester.ifPresent(l -> l.test());
+        listenTester = Optional.empty();
     }
 
     public void assertRest(){
@@ -247,6 +252,8 @@ public class DocumentAssert {
             assertFalse(testDocument.get(testDocument.size() - 1) instanceof
                 LastBranch, "More text");
         }
+        listenTester.ifPresent(l -> l.test());
+        listenTester = Optional.empty();
     }
 
     /// %Part 8: Edit Listener Tests ###########################################
@@ -256,10 +263,13 @@ public class DocumentAssert {
     }
 
     public void insert(boolean verbose, int location, String input, int ... idx){
-        EditAssert edit = createAssert(verbose, idx);
-        testDocument.insert(location, input);
+        assert ! listenTester.isPresent(): "Already testing editing.";
+        listenTester = Optional.of(ListenerAssert
+            .insert(testDocument, location, input, idx)
+            .setShowEdits(verbose)
+            .build()
+        );
         idTester = new IDAssert();
-        edit.testRest();
     }
 
 
@@ -268,32 +278,48 @@ public class DocumentAssert {
     }
 
     public void delete(boolean verbose, int start, int end, int ... idx){
-        EditAssert edit = createAssert(verbose, idx);
-        testDocument.delete(start, end);
+        assert ! listenTester.isPresent(): "Already testing editing.";
+        listenTester = Optional.of(ListenerAssert
+            .delete(testDocument, start, end, idx).setShowEdits(verbose).build()
+        );
         idTester = new IDAssert();
-        edit.testRest();
     }
 
+    public void setListenTester(ListenerAssert<?>.Builder listener){
+        setListenTester(listener.build());
+    }
+
+    public void setListenTester(ListenerAssert<?> listener){
+        assert ! listenTester.isPresent(): "Already testing editing.";
+        listenTester = Optional.of(listener);
+        idTester = new IDAssert();
+    }
+
+    @Deprecated
     public <T extends SpanNode<?>> void call(Class<T> clazz,
             Consumer<T> caller, int ... idx) {
         call(false, () -> getChild(clazz, idx), caller, idx);
     }
 
+    @Deprecated
     public <T extends SpanNode<?>> void call(boolean verbose, Class<T> clazz,
             Consumer<T> caller, int ... idx) {
         call(verbose, () -> getChild(clazz, idx), caller, idx);
     }
 
+    @Deprecated
     public <T extends SpanNode<?>> void call(Supplier<T> supplier,
             Consumer<T> caller, int ... idx) {
         call(false, supplier, caller, idx);
     }
 
+    @Deprecated
     public <T extends SpanNode<?>> void call(Supplier<T> supplier,
             Consumer<T> caller, Supplier<SpanNode<?>[]> children){
         call(false, supplier, caller, children);
     }
 
+    @Deprecated
     public <T extends SpanNode<?>> void call(boolean verbose, Supplier<T> supplier,
             Consumer<T> caller, Supplier<SpanNode<?>[]> children){
         assertAll("runCommand", () -> {
@@ -307,6 +333,7 @@ public class DocumentAssert {
         });
     }
 
+    @Deprecated
     public <T extends SpanNode<?>> void call(boolean verbose,
             Supplier<T> supplier, Consumer<T> caller, int ... idx) {
         assertAll("runCommand", () -> {
@@ -328,12 +355,12 @@ public class DocumentAssert {
         return clazz.cast(target);
     }
 
+    @Deprecated
     private EditAssert createAssert(boolean verbose, int ... indexes){
         Span child = assertChild(indexes);
         assertTrue(child instanceof SpanNode, () -> "Target not branch: " +
             child);
         return new EditAssert(verbose, testDocument, (SpanNode<?>) child);
-
     }
 
     /// %Part 9: Get and Print #################################################

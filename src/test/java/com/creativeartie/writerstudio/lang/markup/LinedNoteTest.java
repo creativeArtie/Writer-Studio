@@ -70,7 +70,7 @@ public class LinedNoteTest {
         doc.insert(7, "ex", 0);
         ///             01234567890
         String after = "!%@id:Text";
-        doc.assertDoc(1, after, parsers);
+        doc.assertDoc(1, after);
         commonComplete(doc);
     }
 
@@ -82,7 +82,7 @@ public class LinedNoteTest {
         doc.insert(3, "i", 0, 2);
         ///             01234567890
         String after = "!%@id:Text";
-        doc.assertDoc(1, after, parsers);
+        doc.assertDoc(1, after);
         commonComplete(doc);
     }
 
@@ -94,7 +94,7 @@ public class LinedNoteTest {
         doc.insert(5, ":", 0);
         ///             01234567890
         String after = "!%@id:Text";
-        doc.assertDoc(1, after, parsers);
+        doc.assertDoc(1, after);
         commonComplete(doc);
     }
 
@@ -106,7 +106,7 @@ public class LinedNoteTest {
         doc.insert(2, "@id:", 0);
         ///             01234567890
         String after = "!%@id:Text";
-        doc.assertDoc(1, after, parsers);
+        doc.assertDoc(1, after);
         commonComplete(doc);
     }
 

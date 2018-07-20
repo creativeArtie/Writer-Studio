@@ -192,7 +192,7 @@ public class FormatLinkTest {
         doc.insert(8, "|text", 0);
         ///             012345678901234
         String after = "<@cat-id|text>";
-        doc.assertDoc(1, after, parsers);
+        doc.assertDoc(1, after);
         commonRefLink(doc);
     }
 
@@ -251,7 +251,7 @@ public class FormatLinkTest {
         doc.insert(1, "path|text>", 0);
         ///             012345678901
         String after = "<path|text>";
-        doc.assertDoc(1, after, parsers);
+        doc.assertDoc(1, after);
         editLinkCommon(doc);
     }
 
@@ -263,7 +263,7 @@ public class FormatLinkTest {
         doc.insert(2, "a", 0);
         ///             012345678901
         String after = "<path|text>";
-        doc.assertDoc(1, after, parsers);
+        doc.assertDoc(1, after);
         editLinkCommon(doc);
     }
 

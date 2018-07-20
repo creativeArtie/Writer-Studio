@@ -82,7 +82,7 @@ public class ListenerAssert<T extends SpanNode<?>>{
         return ptr;
     }
 
-    private static List<SpanNode<?>> listChildren(SpanNode<?> span){
+    private static ArrayList<SpanNode<?>> listChildren(SpanNode<?> span){
         ArrayList<SpanNode<?>> children = new ArrayList<>();
         for (Span child: span){
             if (child instanceof SpanNode){
@@ -94,7 +94,7 @@ public class ListenerAssert<T extends SpanNode<?>>{
         return children;
     }
 
-    private static List<SpanNode<?>> listParents(SpanNode<?> span){
+    private static ArrayList<SpanNode<?>> listParents(SpanNode<?> span){
         ArrayList<SpanNode<?>> parents = new ArrayList<>();
         while (! (span instanceof Document)){
             span = span.getParent();
@@ -136,56 +136,68 @@ public class ListenerAssert<T extends SpanNode<?>>{
         public ListenerAssert<T> build(){
             for (SpanNode<?> span: expectedRemoves){
                 expectedParents.remove(span);
-                expectedSpans.remove(span);
             }
             return ListenerAssert.this;
         }
 
-        public void showEdits(){
+        public Builder showEdits(){
             showEdits = true;
+            return this;
+        }
+
+        public Builder setShowEdits(boolean show){
+            showEdits = show;
+            return this;
         }
     }
 
     private boolean showEdits;
+    private boolean hasTested;
     private final Document useDoc;
     private final Consumer<T> editCaller;
     private final T editingSpan;
 
-    private final HashSet<SpanNode<?>> expectedEdited;
+    private final TreeSet<SpanNode<?>> expectedEdited;
     private final ArrayList<SpanNode<?>> actualEdited;
 
-    private final HashSet<SpanNode<?>> expectedParents;
+    private final TreeSet<SpanNode<?>> expectedParents;
     private final ArrayList<SpanNode<?>> actualParents;
 
-    private final HashSet<SpanNode<?>> expectedSpans;
+    private final TreeSet<SpanNode<?>> expectedSpans;
     private final ArrayList<SpanNode<?>> actualSpans;
 
-    private final HashSet<SpanNode<?>> expectedRemoves;
+    private final TreeSet<SpanNode<?>> expectedRemoves;
     private final ArrayList<SpanNode<?>> actualRemoves;
 
     private ListenerAssert(Consumer<T> caller, Document doc, T span){
         showEdits = false;
+        hasTested = false;
         useDoc = doc;
         editCaller = caller;
         editingSpan = span;
-        expectedEdited = new HashSet<>();
+        expectedEdited = new TreeSet<>();
         actualEdited = new ArrayList<>();
 
-        expectedParents = new HashSet<>();
+        expectedParents = new TreeSet<>();
         actualParents = new ArrayList<>();
 
-        expectedSpans = new HashSet<>(listChildren(doc));
+        expectedSpans = new TreeSet<>(listChildren(doc));
+        expectedSpans.add(doc);
         actualSpans = new ArrayList<>();
 
-        expectedRemoves = new HashSet<>();
+        expectedRemoves = new TreeSet<>();
         actualRemoves = new ArrayList<>();
 
         for (SpanNode<?> child: expectedSpans){
-            child.addSpanEdited(this::edited);
-            child.addChildEdited(this::childed);
-            child.addDocEdited(this::doc);
-            child.addSpanRemoved(this::removed);
+            addListeners(child);
         }
+    }
+
+    private void addListeners(SpanNode<?> span){
+        span.addSpanEdited(this::edited);
+        span.addChildEdited(this::childed);
+        span.addDocEdited(this::doc);
+        span.addSpanRemoved(this::removed);
     }
 
     /// %Part 2: Listener functions ############################################
@@ -206,8 +218,10 @@ public class ListenerAssert<T extends SpanNode<?>>{
         actualRemoves.add(span);
     }
 
-    public ListenerAssert<T> testCommand(){
-        if (showEdits){
+    public ListenerAssert<T> runCommand(){
+        if (hasTested) return this;
+
+        //if (showEdits){
             System.err.println("+++++++++++++++++++++++++++++++++++++++++++++");
             System.err.println("Document Setup-------------------------------");
             System.err.println(useDoc);
@@ -217,10 +231,18 @@ public class ListenerAssert<T extends SpanNode<?>>{
             } else {
                 System.err.println("[Document]");
             }
-        }
+        //}
 
-        editCaller.accept(editingSpan);
-        if (showEdits) {
+        assertDoesNotThrow(() -> editCaller.accept(editingSpan),
+                () -> "Caller throws an exeception: " + editingSpan);
+        hasTested = true;
+        return this;
+    }
+
+    public ListenerAssert<T> test(){
+        if (! hasTested) runCommand();
+
+        //if (showEdits) {
             System.err.println("Post Edited ---------------------------------");
             System.err.println(useDoc);
 
@@ -235,7 +257,7 @@ public class ListenerAssert<T extends SpanNode<?>>{
 
             System.err.println("Removes--------------------------------------");
             print(expectedRemoves, actualRemoves);
-        }
+        //}
 
         ArrayList<Executable> tests = new ArrayList<>();
 
@@ -254,19 +276,21 @@ public class ListenerAssert<T extends SpanNode<?>>{
     }
 
     private void print(Set<SpanNode<?>> expects, List<SpanNode<?>> actual){
-        print("expect", expects);
-        print("actual", actual);
+        System.err.println(formatList("expect", expects));
+        System.err.println(formatList("actual", actual));
     }
 
-    private void print(String type, Iterable<SpanNode<?>> list){
+    private String formatList(String type, Iterable<SpanNode<?>> list){
         int i = 1;
+        String ans = "";
         for (SpanNode<?> span: list){
-            System.err.println(type + "[" + i++ + "](" +
-                span.getClass().getSimpleName() + "):\t" + span);
+            ans += type + "[" + i++ + "](" + span.getClass().getSimpleName() +
+                "):\t" + span + "\n";
         }
         if (i == 1){
-            System.err.println("[]");
+            ans += "[]";
         }
+        return ans;
     }
 
     private Executable search(String name, Set<SpanNode<?>> expect,
@@ -281,7 +305,9 @@ public class ListenerAssert<T extends SpanNode<?>>{
         }
 
         /// since the one called are removed from `expect`:
-        list.add(() ->  assertTrue(expect.isEmpty(), () -> "Not called: " + expect));
+        list.add(() ->  assertTrue(
+            expect.isEmpty(), () -> formatList("Not Called", expect)
+        ));
         return () -> assertAll(name, list);
     }
 }

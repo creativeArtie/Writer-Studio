@@ -50,9 +50,11 @@ public class StatsTest {
     public void addPublishGoal(){
         String raw = getDate() + "|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
-        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
-            s -> s.setPublishGoal(20),
-            0);
+        doc.setListenTester(ListenerAssert
+            .builder(s -> s.setPublishGoal(20), doc, StatSpanDay.class, 0)
+            .setEdited(0)
+            .showEdits()
+        );
         commonPublishGoal(doc);
     }
 

@@ -233,7 +233,7 @@ public class FormatKeyTest {
 
     private void commonBasic(DocumentAssert doc){
         String raw = "{%abc}";
-        doc.assertDoc(1, raw, parser);
+        doc.assertDoc(1, raw);
 
         FormatKeyAssert key = new FormatKeyAssert(doc)
             .setField(FormatTypeField.ERROR);
