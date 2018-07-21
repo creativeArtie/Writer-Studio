@@ -76,7 +76,8 @@ public class ListenerAssert<T extends SpanNode<?>>{
     private static SpanNode<?> getBranch(Document doc, int ... indexes){
         SpanNode<?> ptr = doc;
         for (int index: indexes){
-            assert index < ptr.size() && index >= 0;
+            assert index < ptr.size() && index >= 0 : index +
+                " not between 0 and " + (ptr.size() - 1);
             ptr = (SpanNode)ptr.get(index);
         }
         return ptr;
@@ -221,7 +222,7 @@ public class ListenerAssert<T extends SpanNode<?>>{
     public ListenerAssert<T> runCommand(){
         if (hasTested) return this;
 
-        //if (showEdits){
+        if (showEdits){
             System.err.println("+++++++++++++++++++++++++++++++++++++++++++++");
             System.err.println("Document Setup-------------------------------");
             System.err.println(useDoc);
@@ -229,9 +230,9 @@ public class ListenerAssert<T extends SpanNode<?>>{
             if (editingSpan instanceof SpanBranch){
                 System.err.println(editingSpan);
             } else {
-                System.err.println("[Document]");
+                System.err.println("Document (same as Document Setup)");
             }
-        //}
+        }
 
         assertDoesNotThrow(() -> editCaller.accept(editingSpan),
                 () -> "Caller throws an exeception: " + editingSpan);
@@ -242,7 +243,7 @@ public class ListenerAssert<T extends SpanNode<?>>{
     public ListenerAssert<T> test(){
         if (! hasTested) runCommand();
 
-        //if (showEdits) {
+        if (showEdits) {
             System.err.println("Post Edited ---------------------------------");
             System.err.println(useDoc);
 
@@ -257,7 +258,7 @@ public class ListenerAssert<T extends SpanNode<?>>{
 
             System.err.println("Removes--------------------------------------");
             print(expectedRemoves, actualRemoves);
-        //}
+        }
 
         ArrayList<Executable> tests = new ArrayList<>();
 

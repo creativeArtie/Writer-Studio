@@ -16,7 +16,6 @@ import com.creativeartie.writerstudio.lang.markup.BranchTextAssert.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static com.creativeartie.writerstudio.lang.DocumentAssert.*;
 
-// @Deprecated
 public class TextFileTest {
 
     public class TextFileAssert{
@@ -94,8 +93,12 @@ public class TextFileTest {
     public void editInfoNew(){
         String raw = "";
         TextFileAssert doc = new TextFileAssert(0, raw);
-        doc.getAsserter().call(WritingData.class,
-            s -> s.setInfo(TextTypeInfo.KEYWORDS, "key-1, key-2, key-etc"));
+        doc.getAsserter().setListenTester(ListenerAssert
+            .builder(
+                s -> s.setInfo(TextTypeInfo.KEYWORDS, "key-1, key-2, key-etc"),
+                doc.getAsserter(), WritingData.class
+            ).setEdited()
+        );
         commonInfo(doc);
     }
 
@@ -103,8 +106,12 @@ public class TextFileTest {
     public void editInfoOld(){
         String raw = "meta-keywords|text|abc";
         TextFileAssert doc = new TextFileAssert(1, raw);
-        doc.getAsserter().call(() -> doc.getDocument(),
-            s -> s.setInfo(TextTypeInfo.KEYWORDS, "key-1, key-2, key-etc"), 0);
+        doc.getAsserter().setListenTester(ListenerAssert
+            .builder(
+                s -> s.setInfo(TextTypeInfo.KEYWORDS, "key-1, key-2, key-etc"),
+                doc.getAsserter(), WritingData.class
+            ).replacesChildren(0)
+        );
         commonInfo(doc);
     }
 
@@ -147,8 +154,12 @@ public class TextFileTest {
     public void editInfoEscpesNew(){
         String raw = "";
         TextFileAssert doc = new TextFileAssert(0, raw);
-        doc.getAsserter().call(WritingData.class,
-            s -> s.setInfo(TextTypeInfo.KEYWORDS, "\\adf"));
+        doc.getAsserter().setListenTester(ListenerAssert
+            .builder(
+                s -> s.setInfo(TextTypeInfo.KEYWORDS, "\\adf"),
+                doc.getAsserter(), WritingData.class
+            ).setEdited()
+        );
         commonInfoEscapes(doc);
     }
 
@@ -156,9 +167,12 @@ public class TextFileTest {
     public void editInfoEscapesOld(){
         String raw = "meta-keywords|text|adedafasfafas\\\\adfasdfsaf\n";
         TextFileAssert doc = new TextFileAssert(1, raw);
-
-        doc.getAsserter().call(() -> doc.getDocument(),
-            s -> s.setInfo(TextTypeInfo.KEYWORDS, "\\adf"), 0);
+        doc.getAsserter().setListenTester(ListenerAssert
+            .builder(
+                s -> s.setInfo(TextTypeInfo.KEYWORDS, "\\adf"),
+                doc.getAsserter(), WritingData.class
+            ).replacesChildren(0)
+        );
 
         commonInfoEscapes(doc);
     }
@@ -308,8 +322,14 @@ public class TextFileTest {
     public void editMatterNew(){
         String raw = "";
         TextFileAssert doc = new TextFileAssert(0, raw);
-        doc.getAsserter().call(WritingData.class,
-            s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Hello *WORLD*!"));
+
+        doc.getAsserter().setListenTester(ListenerAssert
+            .builder(
+                s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Hello *WORLD*!"),
+                doc.getAsserter(), WritingData.class
+            ).setEdited()
+        );
+
         commonMatterSingle(doc);
     }
 
@@ -317,8 +337,14 @@ public class TextFileTest {
     public void editMatterNewEscape(){
         String raw = "";
         TextFileAssert doc = new TextFileAssert(0, raw);
-        doc.getAsserter().call(WritingData.class,
-            s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Hello *WORLD*!\\"));
+
+        doc.getAsserter().setListenTester(ListenerAssert
+            .builder(
+                s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Hello *WORLD*!\\"),
+                doc.getAsserter(), WritingData.class
+            ).setEdited()
+        );
+
         commonMatterSingle(doc);
     }
 
@@ -326,8 +352,13 @@ public class TextFileTest {
     public void editMatterEdited(){
         String raw = "text-break|centre|abc\n";
         TextFileAssert doc = new TextFileAssert(1, raw);
-        doc.getAsserter().call(() -> doc.getDocument(),
-            s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Hello *WORLD*!"), 0);
+        doc.getAsserter().setListenTester(ListenerAssert
+            .builder(
+                s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Hello *WORLD*!"),
+                doc.getAsserter(), WritingData.class
+            ).replacesChildren(0)
+        );
+
         commonMatterSingle(doc);
     }
 
@@ -335,8 +366,13 @@ public class TextFileTest {
     public void editMatterEditedEscape(){
         String raw = "text-break|centre|abc\n";
         TextFileAssert doc = new TextFileAssert(1, raw);
-        doc.getAsserter().call(() -> doc.getDocument(),
-            s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Hello *WORLD*!\\"), 0);
+        doc.getAsserter().setListenTester(ListenerAssert
+            .builder(
+                s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Hello *WORLD*!\\"),
+                doc.getAsserter(), WritingData.class
+            ).replacesChildren(0)
+        );
+
         commonMatterSingle(doc);
     }
 
@@ -344,8 +380,13 @@ public class TextFileTest {
     public void editMatterAlginChange(){
         String raw = "text-break|left|Hello *WORLD*!\n";
         TextFileAssert doc = new TextFileAssert(1, raw);
-        doc.getAsserter().call(TextSpanMatter.class,
-            s -> s.setFormat(TextDataType.CENTER), 0);
+        doc.getAsserter().setListenTester(ListenerAssert
+            .builder(
+                s -> s.setFormat(TextDataType.CENTER),
+                doc.getAsserter(), TextSpanMatter.class, 0
+            ).replacesChildren(0)
+        );
+
         commonMatterSingle(doc);
     }
 
@@ -394,16 +435,24 @@ public class TextFileTest {
     @Test
     public void matterDoubleNew(){
         TextFileAssert doc = new TextFileAssert(0, "");
-        doc.getAsserter().call(WritingData.class,
-            s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Abc\\*\nHello"));
+        doc.getAsserter().setListenTester(ListenerAssert
+            .builder(
+                s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Abc\\*\nHello"),
+                doc.getAsserter(), WritingData.class
+            ).replacesChildren()
+        );
         commonMatterDouble(doc);
     }
 
     @Test
     public void matterDoubleNewExtra(){
         TextFileAssert doc = new TextFileAssert(0, "");
-        doc.getAsserter().call(WritingData.class,
-            s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Abc\\*\\\nHello\\"));
+        doc.getAsserter().setListenTester(ListenerAssert
+            .builder(
+                s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Abc\\*\\\nHello\\"),
+                doc.getAsserter(), WritingData.class
+            ).replacesChildren()
+        );
         commonMatterDouble(doc);
     }
 
@@ -411,12 +460,13 @@ public class TextFileTest {
     public void matterDouble1Line(){
         String raw = "text-break|centre|Abc\\*\n";
         TextFileAssert doc = new TextFileAssert(1, raw);
-        doc.getAsserter().call(() -> doc.getDocument(),
-            s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Abc\\*\nHello"),
-            () -> new SpanNode[]{
-                doc.getDocument(),
-                doc.getDocument().get(0)
-            });
+        doc.getAsserter().setListenTester(ListenerAssert
+            .builder(
+                s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Abc\\*\\\nHello"),
+                doc.getAsserter(), WritingData.class
+            ).replacesChildren(0)
+            .setEdited()
+        );
         commonMatterDouble(doc);
     }
 
@@ -426,12 +476,13 @@ public class TextFileTest {
         String line2 = "text-break|centre|Fun\n";
         String raw = line1 + line2;
         TextFileAssert doc = new TextFileAssert(2, raw);
-        doc.getAsserter().call(() -> doc.getDocument(),
-            s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Abc\\*\nHello"),
-            () -> new SpanNode[]{
-                doc.getDocument().get(0),
-                doc.getDocument().get(1)
-            });
+        doc.getAsserter().setListenTester(ListenerAssert
+            .builder(
+                s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Abc\\*\\\nHello"),
+                doc.getAsserter(), WritingData.class
+            ).replacesChildren(0)
+            .replacesChildren(1)
+        );
         commonMatterDouble(doc);
     }
 
@@ -441,12 +492,13 @@ public class TextFileTest {
         String line2 = "text-break|centre|Fun\n";
         String raw = line1 + line2;
         TextFileAssert doc = new TextFileAssert(2, raw);
-        doc.getAsserter().call(() -> doc.getDocument(),
-            s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Abc\\*\\\nHello\\"),
-            () -> new SpanNode[]{
-                doc.getDocument().get(0),
-                doc.getDocument().get(1)
-            });
+        doc.getAsserter().setListenTester(ListenerAssert
+            .builder(
+                s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Abc\\*\\\nHello"),
+                doc.getAsserter(), WritingData.class
+            ).replacesChildren(0)
+            .replacesChildren(1)
+        );
         commonMatterDouble(doc);
     }
 
@@ -457,13 +509,14 @@ public class TextFileTest {
         String line3 = "text-break|centre|Cool\n";
         String raw = line1 + line2 + line3;
         TextFileAssert doc = new TextFileAssert(3, raw);
-        doc.getAsserter().call(() -> doc.getDocument(),
-            s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Abc\\*\nHello"),
-            () -> new SpanNode[]{
-                doc.getDocument(),
-                doc.getDocument().get(0),
-                doc.getDocument().get(1)
-            });
+        doc.getAsserter().setListenTester(ListenerAssert
+            .builder(
+                s -> s.setMatter(TextTypeMatter.TEXT_BREAK, "Abc\\*\\\nHello"),
+                doc.getAsserter(), WritingData.class
+            ).replacesChildren(0)
+            .replacesChildren(1)
+            .setRemoved(2)
+        );
         commonMatterDouble(doc);
     }
 
@@ -542,12 +595,13 @@ public class TextFileTest {
         String raw = line1 + line2 + line3;
         TextFileAssert doc = new TextFileAssert(3, raw);
 
-        doc.getAsserter().call(true, () -> doc.getDocument(),
-            s -> s.setMatter(TextTypeMatter.FRONT_CENTER, "Title\nToday date"),
-            () -> new SpanNode[]{
-                doc.getDocument().get(0),
-                doc.getDocument()
-            });
+        doc.getAsserter().setListenTester(ListenerAssert
+            .builder(
+                s -> s.setMatter(TextTypeMatter.FRONT_CENTER, "Title\nToday date"),
+                doc.getAsserter(), WritingData.class
+            ).replacesChildren(0)
+            .setEdited()
+        );
         commonMixed(doc);
     }
 
@@ -645,6 +699,7 @@ public class TextFileTest {
         main.assertChild(1,       text4,  3, 4, 0);
         main.assertText( 96, 106, text4,  3, 4, 0, 0);
         main.assertKey( 106, 107, "\n",    3, 5);
+        main.assertRest();
     }
 
     @ParameterizedTest(name = "TextTypeInfo.{2}")
@@ -701,5 +756,6 @@ public class TextFileTest {
         doc.test(1, raw);
         matter.test(6, raw, 0);
         content.test(1, data, 0, 4);
+        main.assertRest();
     }
 }

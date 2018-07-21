@@ -62,9 +62,9 @@ public class BranchTextAssert {
     }
 
     public static final class UnknownAssert
-            extends TextLineAssert<UnknownAssert>{
+        extends TextLineAssert<UnknownAssert>
+    {
 
-        @Deprecated
         public UnknownAssert(TextFileTest.TextFileAssert doc){
             this(doc.getAsserter());
         }
@@ -85,10 +85,9 @@ public class BranchTextAssert {
     }
 
     public static final class InfoLineAssert
-            extends TextLineAssert<InfoLineAssert>{
+        extends TextLineAssert<InfoLineAssert>
+    {
 
-
-        @Deprecated
         public InfoLineAssert(TextFileTest.TextFileAssert doc){
             this(doc.getAsserter());
         }
@@ -113,7 +112,6 @@ public class BranchTextAssert {
 
         private int lineIndex;
 
-        @Deprecated
         public MatterLineAssert(TextFileTest.TextFileAssert doc){
             this(doc.getAsserter());
         }

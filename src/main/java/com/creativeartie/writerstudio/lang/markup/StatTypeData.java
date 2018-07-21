@@ -23,4 +23,8 @@ public enum StatTypeData{
         }
         return StatTypeData.UNKNOWN;
     }
+
+    StatParseData getParser(){
+        return StatParseData.values()[ordinal()];
+    }
 }

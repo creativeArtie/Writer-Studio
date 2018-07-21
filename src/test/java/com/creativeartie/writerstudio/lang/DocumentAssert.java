@@ -263,7 +263,6 @@ public class DocumentAssert {
     }
 
     public void insert(boolean verbose, int location, String input, int ... idx){
-        assert ! listenTester.isPresent(): "Already testing editing.";
         listenTester = Optional.of(ListenerAssert
             .insert(testDocument, location, input, idx)
             .setShowEdits(verbose)
@@ -278,7 +277,6 @@ public class DocumentAssert {
     }
 
     public void delete(boolean verbose, int start, int end, int ... idx){
-        assert ! listenTester.isPresent(): "Already testing editing.";
         listenTester = Optional.of(ListenerAssert
             .delete(testDocument, start, end, idx).setShowEdits(verbose).build()
         );
@@ -290,62 +288,8 @@ public class DocumentAssert {
     }
 
     public void setListenTester(ListenerAssert<?> listener){
-        assert ! listenTester.isPresent(): "Already testing editing.";
         listenTester = Optional.of(listener);
         idTester = new IDAssert();
-    }
-
-    @Deprecated
-    public <T extends SpanNode<?>> void call(Class<T> clazz,
-            Consumer<T> caller, int ... idx) {
-        call(false, () -> getChild(clazz, idx), caller, idx);
-    }
-
-    @Deprecated
-    public <T extends SpanNode<?>> void call(boolean verbose, Class<T> clazz,
-            Consumer<T> caller, int ... idx) {
-        call(verbose, () -> getChild(clazz, idx), caller, idx);
-    }
-
-    @Deprecated
-    public <T extends SpanNode<?>> void call(Supplier<T> supplier,
-            Consumer<T> caller, int ... idx) {
-        call(false, supplier, caller, idx);
-    }
-
-    @Deprecated
-    public <T extends SpanNode<?>> void call(Supplier<T> supplier,
-            Consumer<T> caller, Supplier<SpanNode<?>[]> children){
-        call(false, supplier, caller, children);
-    }
-
-    @Deprecated
-    public <T extends SpanNode<?>> void call(boolean verbose, Supplier<T> supplier,
-            Consumer<T> caller, Supplier<SpanNode<?>[]> children){
-        assertAll("runCommand", () -> {
-            assertAll("use spans", () -> children.get(),
-                () -> supplier.get());
-            SpanNode<?>[] targets = children.get();
-            EditAssert edits = new EditAssert(verbose, testDocument, targets);
-            int i = 0;
-            assertAll("function", () -> caller.accept(supplier.get()));
-            assertAll("listeners", () -> edits.testRest());
-        });
-    }
-
-    @Deprecated
-    public <T extends SpanNode<?>> void call(boolean verbose,
-            Supplier<T> supplier, Consumer<T> caller, int ... idx) {
-        assertAll("runCommand", () -> {
-            Span target = assertChild(idx);
-            assertTrue(target instanceof SpanNode, "Traget not Branch: " +
-                target.getClass());
-            EditAssert edit = new EditAssert(verbose, testDocument,
-                (SpanNode<?>) target);
-            assertDoesNotThrow(() -> caller.accept(supplier.get()),
-                () -> "Caller throws an exeception: " + supplier.get());
-            edit.testRest();
-        });
     }
 
     public <T extends SpanNode<?>> T getChild(Class<T> clazz,
@@ -354,15 +298,6 @@ public class DocumentAssert {
         assertEquals(clazz, target.getClass(), "class");
         return clazz.cast(target);
     }
-
-    @Deprecated
-    private EditAssert createAssert(boolean verbose, int ... indexes){
-        Span child = assertChild(indexes);
-        assertTrue(child instanceof SpanNode, () -> "Target not branch: " +
-            child);
-        return new EditAssert(verbose, testDocument, (SpanNode<?>) child);
-    }
-
     /// %Part 9: Get and Print #################################################
 
     public Document getDocument(){

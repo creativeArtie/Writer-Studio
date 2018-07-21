@@ -13,155 +13,157 @@ public class SectionEditTest {
 
     @Test
     public void noneToHeading(){
-        setup("abc", new TreeAsserter(0,  /// Document
-            new TreeAsserter(1) /// Section Lvl 1
-        ), 0);
-
-        testFile.insert(0, "=");
+        testListener = ListenerAssert.insert(setup("abc",
+            new TreeAsserter(0,  /// Document
+                new TreeAsserter(1) /// Section Lvl 1
+            )
+        ), 0, "=", 0);
     }
 
     @Test
     public void noneToChild(){
-        setup("abc",new TreeAsserter(0,  /// Document
-            new TreeAsserter(0, /// Section Lvl 1
-                new TreeAsserter(1) /// Section Lvl 2
+        testListener = ListenerAssert.insert(setup("abc",
+            new TreeAsserter(0,  /// Document
+                new TreeAsserter(0, /// Section Lvl 1
+                    new TreeAsserter(1) /// Section Lvl 2
+                )
             )
-        ), 0);
-
-        testFile.insert(0, "==");
+        ), 0, "==", 0);
     }
 
     @Test
     public void noneToOutline(){
-        setup("abc", new TreeAsserter(0,  /// Document
-            new TreeAsserter(0, /// Section Lvl 1
-                new TreeAsserter(1) /// Outline Lvl 1
+        testListener = ListenerAssert.insert(setup("abc",
+            new TreeAsserter(0,  /// Document
+                new TreeAsserter(0, /// Section Lvl 1
+                    new TreeAsserter(1) /// Outline Lvl 1
+                )
             )
-        ), 0);
-
-        testFile.insert(0, "!#");
+        ), 0, "!#", 0);
     }
 
     @Test
     public void outlineToNone(){
-        setup("!#abc", new TreeAsserter(0,  /// Document
-            new TreeAsserter(1) /// Section Lvl 1
-        ), 0);
+        testListener = ListenerAssert.delete(setup("!#abc",
+            new TreeAsserter(0,  /// Document
+                new TreeAsserter(1) /// Section Lvl 1
+            )
+        ), 0, 2, /*<- delete | at ->*/ 0);
 
-        testFile.delete(0, 2);
     }
 
     @Test
     public void childToNone(){
-        setup("==abc", new TreeAsserter(0,  /// Document
-            new TreeAsserter(1) /// Section Lvl 1
-        ), 0);
+        testListener = ListenerAssert.delete(setup("==abc",
+            new TreeAsserter(0,  /// Document
+                new TreeAsserter(1) /// Section Lvl 1
+            )
+        ), 0, 2, /*<- delete | at ->*/ 0);
 
-        testFile.delete(0, 2);
     }
 
     @Test
     public void addLine(){
-        setup("abc", new TreeAsserter(0,  /// Document
-            new TreeAsserter(2) /// Section Lvl 1
-        ), 0);
+        testListener = ListenerAssert.insert(setup(
+            "abc", new TreeAsserter(0,  /// Document
+                new TreeAsserter(2) /// Section Lvl 1
+            )
+        ), 2, "\nabc\\", 0);
 
-        testFile.insert(2, "\nabc\\");
     }
 
     @Test
     public void outlineToParent(){
-        setup("!##abc", new TreeAsserter(0,  /// Document
-            new TreeAsserter(0, /// Section Lvl 1
-                new TreeAsserter(1) /// Outline Lvl 1
+        testListener = ListenerAssert.delete(setup("!##abc",
+            new TreeAsserter(0,  /// Document
+                new TreeAsserter(0, /// Section Lvl 1
+                    new TreeAsserter(1) /// Outline Lvl 1
+                )
             )
-        ), 0, 0);
-
-        testFile.delete(1, 2);
+        ), 1, 2, /*<- delete | at ->*/ 0, 0);
     }
 
     @Test
     public void mergeHeading1(){
-        /// ...0123 456789
-        setup("=abc\n=abc", new TreeAsserter(0,  /// Document
-            new TreeAsserter(2) /// Section Lvl 1
-        ));
+        /// ........................................0123 456789
+        testListener = ListenerAssert.delete(setup("=abc\n=abc",
+            new TreeAsserter(0,  /// Document
+                new TreeAsserter(2) /// Section Lvl 1
+            )
+        ), 5, 6);
 
-        testFile.delete(5, 6);
     }
 
     @Test
     public void splitHeading1(){
-        /// ...123 45678
-        setup("123\n123", new TreeAsserter(0, /// Document
-            new TreeAsserter(1), /// First section
-            new TreeAsserter(1) /// Second section
-        ));
-
-        testFile.insert(4, "=");
+        /// ........................................123 45678
+        testListener = ListenerAssert.insert(setup("123\n123",
+            new TreeAsserter(0, /// Document
+                new TreeAsserter(1), /// First section
+                new TreeAsserter(1) /// Second section
+            )
+        ), 4, "=");
     }
 
     @Test
     public void escapeHeading2(){
-        /// ...123 4567890
-        setup("123\n==0123", new TreeAsserter(0, /// Document
-            new TreeAsserter(1) /// First section
-        ), 0);
-
-        testFile.insert(3, "\\");
+        /// .......................................123 4567890
+        testListener = ListenerAssert.insert(setup("123\n==0123",
+            new TreeAsserter(0, /// Document
+                new TreeAsserter(1) /// First section
+            )
+        ), 3, "\\", 0);
     }
 
     @Test
     public void heading4AddHeading3(){
-        /// ...000 000000 11111
-        /// ...123 456789 01234
-        setup("==h\n====3\nabc", new TreeAsserter(0, /// Document
-            new TreeAsserter(0, /// Heading 1
-                new TreeAsserter(1, /// Heading 2
-                    new TreeAsserter(0, /// Section with heading 3
-                        new TreeAsserter(1) /// Section 4
-                    ),
-                    new TreeAsserter(1) /// new Section
+        /// .......................................000 000000 11111
+        /// .......................................123 456789 01234
+        testListener = ListenerAssert.insert(setup("==h\n====3\nabc",
+            new TreeAsserter(0, /// Document
+                new TreeAsserter(0, /// Heading 1
+                    new TreeAsserter(1, /// Heading 2
+                        new TreeAsserter(0, /// Section with heading 3
+                            new TreeAsserter(1) /// Section 4
+                        ),
+                        new TreeAsserter(1) /// new Section
+                    )
                 )
             )
-        ), 0, 0);
-
-        testFile.insert(10, "===");
-
+        ), 10, "===", 0, 0);
     }
 
     @Test
     public void outline4AddOutine3(){
         /// ...0000 0000011 11111
         /// ...1234 5678901 23456
-        setup("!##h\n!####3\nabc", new TreeAsserter(0, /// Document
-            new TreeAsserter(0, /// Heading 1
-                new TreeAsserter(0, /// Scene 1
-                    new TreeAsserter(1, /// Scene 2
-                        new TreeAsserter(0, /// Scene 3 with Scene 4
-                            new TreeAsserter(1) /// Scene 4
-                        ),
-                        new TreeAsserter(1) /// new Scene
+        testListener = ListenerAssert.insert(setup("!##h\n!####3\nabc",
+            new TreeAsserter(0, /// Document
+                new TreeAsserter(0, /// Heading 1
+                    new TreeAsserter(0, /// Scene 1
+                        new TreeAsserter(1, /// Scene 2
+                            new TreeAsserter(0, /// Scene 3 with Scene 4
+                                new TreeAsserter(1) /// Scene 4
+                            ),
+                            new TreeAsserter(1) /// new Scene
+                        )
                     )
                 )
             )
-        ), 0, 0, 0);
-
-        testFile.insert(12, "!###");
-
+        ), 12, "!###", 0, 0, 0);
     }
 
     @Test
     public void outlineAddHeading(){
-        /// ...12345 67890
-        setup("!#abc\n123", new TreeAsserter(0, /// Docu
-            new TreeAsserter(0, /// Heading 1
-                new TreeAsserter(1), /// Scene 1
-                new TreeAsserter(1) /// Heading 2
+        /// .......................................012345 67890
+        testListener = ListenerAssert.insert(setup("!#abc\n123",
+            new TreeAsserter(0, /// Docu
+                new TreeAsserter(0, /// Heading 1
+                    new TreeAsserter(1), /// Scene 1
+                    new TreeAsserter(1) /// Heading 2
+                )
             )
-        ), 0);
-
-        testFile.insert(6, "==");
+        ), 6, "==", 0);
     }
 
     private static class TreeAsserter{
@@ -206,24 +208,24 @@ public class SectionEditTest {
 
     @AfterEach
     public void afterEach(){
+        ListenerAssert<?> tester = testListener.build();
         if (showAll) System.out.println(testFile);
-        testListener.testRest();
+        tester.runCommand();
         testStructure.test(testFile);
+        tester.test();
     }
 
     private WritingText testFile;
     private TreeAsserter testStructure;
-    private EditAssert testListener;
+    private ListenerAssert<?>.Builder testListener;
     private boolean showAll;
 
-    private void setup(String raw, TreeAsserter structure, int ... nodes){
+    private WritingText setup(String raw, TreeAsserter structure){
         testFile = new WritingText(raw);
         SpanNode<?> target = testFile;
-        for (int ptr: nodes){
-            target = (SpanNode<?>) target.get(ptr);
-        }
-        testListener = new EditAssert(showAll, testFile, target);
+
         testStructure = structure;
+        return testFile;
     }
 
 
