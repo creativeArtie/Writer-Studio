@@ -27,20 +27,23 @@ interface SectionParser extends SetupParser {
 
         /// parse section content
         if (pointer.hasNext(getStarter())){
-            /// at least == current
-            boolean child = getNextStarter().map(s -> pointer.hasNext(s))
-                .orElse(false);
-            if (! child){
-                /// parse heading + content
+            /// line == level + above
+            /// if (! (starter != null && pointer.hasNext(starter)) ){
+            if (! getNextStarter().map(s -> pointer.hasNext(s)).orElse(false)){
+                /// line == current level
                 getHeadParser().parse(pointer, children);
                 parseContent(pointer, children);
             }
-        } else if (this == SectionParseHead.SECTION_1){
+        } else if (this == SectionParseHead.SECTION_1 && pointer.isFirst()){
+            /// line == other types + first line
             if (! pointer.hasNext(LEVEL_STARTERS.get(LinedParseLevel.OUTLINE)
                     .get(0))){
-                /// content only (section 1 with heading done above)
+                /// line != outline
                 parseContent(pointer, children);
             }
+        } else {
+            /// line == other types || line == lower level
+            return Optional.empty();
         }
 
         /// parse section scenes, (head only)

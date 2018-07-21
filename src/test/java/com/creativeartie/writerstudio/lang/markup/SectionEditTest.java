@@ -8,7 +8,6 @@ import com.creativeartie.writerstudio.lang.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled("SectionSpan parser is tempertory simplified by not parsing")
 public class SectionEditTest {
 
     @Test
