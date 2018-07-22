@@ -44,7 +44,7 @@ public class SectionTest {
         String raw = "=Chapter 1\n===Section 1\nsection 1 text\n!# outline\n" +
             "=Chapter 2\nsome text\n";
         DocumentAssert doc = assertDoc(2, raw, PARSER);
-        doc.delete(11, 12);
+        doc.delete(11, 12, 0, 1);
         doc.assertDoc(2, COMMON_DOC);
         commonSections(doc);
     }
@@ -56,7 +56,7 @@ public class SectionTest {
         String raw = "=Chapter 1\n==Section 1\nsection 1 text\n! outline\n" +
             "=Chapter 2\nsome text\n";
         DocumentAssert doc = assertDoc(2, raw, PARSER);
-        doc.insert(39, "#");
+        doc.insert(39, "#", 0, 1);
         doc.assertDoc(2, COMMON_DOC);
         commonSections(doc);
     }
@@ -69,7 +69,7 @@ public class SectionTest {
             "=Chapter 2\nsome text\n";
         DocumentAssert doc = assertDoc(2, raw, PARSER);
         /// Note that the edited span is Chapter 1 -> Section 1
-        doc.delete(39, 40);
+        doc.delete(39, 40, 0, 1, 2);
         doc.assertDoc(2, COMMON_DOC);
         commonSections(doc);
     }

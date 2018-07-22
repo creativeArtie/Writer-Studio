@@ -41,11 +41,13 @@ public final class SetupPointer{
      *      span's document
      * @see SpanBranch#reparseText()
      */
-    static SetupPointer updatePointer(String raw, Document doc){
+    static SetupPointer updatePointer(String raw, Document doc, 
+		boolean first
+	){
         argumentNotEmpty(raw, "raw");
         argumentNotNull(doc, "doc");
 
-        return new SetupPointer(raw, doc, false);
+        return new SetupPointer(raw, doc, first);
     }
 
     /// %Part 1.1: Instance Constructor ========================================

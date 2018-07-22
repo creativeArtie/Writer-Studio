@@ -49,7 +49,7 @@ public class DocumentEditTest{
         String raw = "abc";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, build(raw));
         ///            Doc
-        doc.insert(2, "\\");
+        doc.insert(2, "\\", 0);
 
         String done = "ab\\c";
         doc.assertDoc(1, done);
@@ -70,7 +70,7 @@ public class DocumentEditTest{
         String raw = "ab\\c";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, build(raw));
         ///           Doc
-        doc.insert(0, "k");
+        doc.insert(0, "k", 0);
 
         String done = "kab\\c";
         doc.assertDoc(1, done);
@@ -202,8 +202,8 @@ public class DocumentEditTest{
     public void mergeLineByDelete(){
         String raw = "=asdf\n jkl; #abc";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, build(raw));
-        ///         Doc
-        doc.delete(5, 6);
+        ///        Doc
+        doc.delete(5, 6, /*<- delete | at ->*/ 0);
 
         String done = "=asdf jkl; #abc";
         String content = "asdf jkl; ";
@@ -248,7 +248,7 @@ public class DocumentEditTest{
         String raw = "#321\nmore text";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, build(raw));
         ///           Doc
-        doc.insert(4, "\\");
+        doc.insert(4, "\\", 0);
 
         String done = "#321\\\nmore text";
         String content = "321\\\nmore text";

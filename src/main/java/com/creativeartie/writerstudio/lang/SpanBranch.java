@@ -108,7 +108,7 @@ public abstract class SpanBranch extends SpanNode<Span> {
         assert parser != null: "Null parser";
 
         SetupPointer pointer = SetupPointer.updatePointer(text,
-            getDocument());
+            getDocument(), isDocumentFirst());
         Optional<SpanBranch> span = parser.parse(pointer);
         if (pointer.hasNext()){
             return false;

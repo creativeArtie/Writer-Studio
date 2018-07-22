@@ -87,4 +87,9 @@ public final class SectionSpanScene extends SectionSpan {
     public String toString(){
         return "SCENE " + getLevel() + "{" + super.toString() + "}";
     }
+    
+    @Override
+    protected SetupParser getParser(String text){
+		return SectionParseScene.values()[getLevel() - 1];
+	}
 }

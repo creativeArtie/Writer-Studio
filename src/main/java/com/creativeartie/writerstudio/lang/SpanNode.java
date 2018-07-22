@@ -88,7 +88,9 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      * @see addChild(SetupParser, String)
      */
     protected void addChild(SetupParser parser, String text, int position){
-        SetupPointer pointer = SetupPointer.updatePointer(text, getDocument());
+		boolean first = position == 0 && isDocumentFirst();
+        SetupPointer pointer = SetupPointer.updatePointer(text, 
+			getDocument(), first);
         Optional<SpanBranch> span = parser.parse(pointer);
         stateCheck(! pointer.hasNext() && span.isPresent(),
             "Has left over characters when reparsing: " +
