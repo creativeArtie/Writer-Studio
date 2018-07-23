@@ -76,6 +76,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      *      parsing text
      */
     protected void addChild(SetupParser parser, String text){
+		System.out.println(text);
         addChild(parser, text, size());
     }
 

@@ -135,6 +135,7 @@ public final class WritingData extends Document{
         Optional<TextSpanInfo> span = getWritingData(meta);
         if (! span.isPresent()){
             String text = TextSpanInfo.escapeText(raw);
+            System.out.println(text);
             addChild(TextParser.PARSER, meta.getKeyName() + TEXT_SEPARATOR +
                 TextDataType.TEXT.getKeyName() + TEXT_SEPARATOR + text + "\n");
         } else span.get().editText(raw);
