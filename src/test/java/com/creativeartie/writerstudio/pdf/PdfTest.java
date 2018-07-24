@@ -58,17 +58,27 @@ public class PdfTest{
      * </ul>
      */
     @ParameterizedTest(name = "Export Basic Document: pdf-{0}.txt")
-    @Tag("heavy")
     @DisplayName("Export Basic Document")
     @ValueSource(strings = { "sample", "basic", "foot" , "long" })
     public void exportWellFormDoc(String file) throws IOException{
-        File doc = new File(RESOURCE + "pdf-" + file + ".txt");
+        testExport("pdf-" + file + ".txt", file + ".pdf");
+    }
+
+    @ParameterizedTest(name = "Export Malform Document: pdf-{0}.txt")
+    @DisplayName("Export Malform Document")
+    @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6, 7})
+    public void exportMalFormDoc(int i) throws IOException{
+        testExport("sectionDebug" + i + ".txt", "malform" + i + ".pdf");
+    }
+
+    private void testExport(String in, String out) throws IOException{
+        File doc = new File(RESOURCE + in);
         WritingFile use = WritingFile.newSampleFile(doc);
-        try (WritingExporter out = new WritingExporter(OUT + file + ".pdf")){
-            assertTimeout(Duration.ofSeconds(60), () -> out.export(use),
+        try (WritingExporter test = new WritingExporter(OUT + out)){
+            assertTimeout(Duration.ofSeconds(60), () -> test.export(use),
             "Export takes over 1 minute");
         }
-        System.out.println("Check file at: " + OUT + file + ".pdf");
+        System.out.println("Check file at: " + OUT + out);
     }
 
 }

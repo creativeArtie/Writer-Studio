@@ -135,7 +135,7 @@ public abstract class Span implements Comparable<Span>{
      * @return answer
      */
     public final boolean isDocumentFirst(){
-		if (this instanceof Document) return true;
+        if (this instanceof Document) return true;
         return checkLocation(parent -> parent.get(0));
     }
 
@@ -144,7 +144,7 @@ public abstract class Span implements Comparable<Span>{
      * @return answer
      */
     public final boolean isDocumentLast(){
-		if (this instanceof Document) return true;
+        if (this instanceof Document) return true;
         return checkLocation(parent -> parent.get(parent.size() - 1));
     }
 
