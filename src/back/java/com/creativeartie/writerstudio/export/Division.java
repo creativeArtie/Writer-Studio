@@ -1,10 +1,18 @@
 package com.creativeartie.writerstudio.export;
 
-import java.util.*;
+abstract class Division<T extends Number>{
+    private final RenderDivision<T> divisionRenderer;
 
-import com.google.common.collect.*;
+    Division(RenderDivision<T> renderer){
+        divisionRenderer = renderer;
+    }
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+    void render(){
+        divisionRenderer.render(this);
+    }
 
-abstract class Division<T extends Number> {
+    RenderDivision<T> getDivisionRenderer(){
+        return divisionRenderer;
+    }
+
 }

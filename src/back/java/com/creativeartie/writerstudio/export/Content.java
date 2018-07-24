@@ -1,34 +1,18 @@
 package com.creativeartie.writerstudio.export;
 
-import java.util.*;
+/** Draws contents on the page */
+abstract class Content<T extends Number>{
+    private final RenderContent<T> contentRenderer;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
-
-abstract class Content<T extends Number, U extends SpanBranch> {
-
-    private final ContentPolicySplit<T> contentSplitter;
-    private final U renderSpan;
-
-    Content(ContentPolicySplit<T> splitter, SpanBranch span){
-        contentSplitter = argumentNotNull(splitter, "splitter");
-        renderSpan = argumentNotNull(span, "span");
+    Content(RenderContent<T> renderer){
+        contentRenderer = renderer;
     }
 
-    /** Fit and split the text to a width
-     *
-     * @param width to fit
-     * @see ContentPolicySplit
-     * @see Division#addContent(Content)
-     */
-    final List<Content<T>> split(T width){
-        return contentSplitter.splitContent(width, this);
+    void render(RenderContent<T> renderer){
+        renderer.render(this);
     }
 
     abstract T getWidth();
 
     abstract T getHeight();
-
-    abstract T getFillHeight();
-
-    abstract boolean merge(Content<T> content);
 }
