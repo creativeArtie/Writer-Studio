@@ -84,15 +84,6 @@ public class MockTests{
     @DisplayName("Division (Line) Splitting test.")
     public class DivisionSplitTest{
 
-        @BeforeEach
-        public void beforeEach(TestInfo info){
-            System.out.println();
-            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++");
-            System.out.println(info.getDisplayName());
-            System.out.println("-------------------");
-        }
-
-
         @Test
         public void basic(){
             ExportDivisionText<Integer> lines = divisionExporter("Hello World!");
