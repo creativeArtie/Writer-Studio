@@ -13,17 +13,33 @@ public enum MockFactoryRender implements FactoryRender<Integer>{
         RenderContent<Integer>.Builder builder = RenderContent.builder();
         return builder
             .setSplitContent(renderer -> {
+                String text = renderer.getUseText();
+                float width = renderer.getMaxWidth();
+
                 String current = "";
                 String overflow = "";
-                float width = renderer.getMaxWidth();
-                for(String split: Splitter.on(" ").split(renderer.getUseText())){
-                    if (current.length() == 0 && split.length() < width){
-                        current = split;
-                    } else if (current.length() + split.length() + 1 <= width){
-                        current += " " + split;
-                    } else {
-                        overflow += (overflow.length() == 0? "": " ") + split;
+                Iterator<String> it = Splitter.on(" ").split(text).iterator();
+
+                if (! it.hasNext()){
+                    return new String[]{current, overflow};
+                }
+                String next = it.next();
+                if (next.isEmpty()){
+                    next = " ";
+                }
+
+                while(current.length() + next.length() < width){
+                    current += next;
+                    if (! it.hasNext()){
+                        return new String[]{current, overflow};
                     }
+                    next = " " + it.next();
+                }
+
+                overflow = next;
+
+                while(it.hasNext()){
+                    overflow += (overflow.isEmpty()? "": " ") + it.next();
                 }
                 return new String[]{current, overflow};
             })

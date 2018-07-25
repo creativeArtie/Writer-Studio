@@ -19,21 +19,20 @@ final class ExportDivisionText<T extends Number>
     }
 
     private void fillContents(Iterable<BridgeContent> contents){
+        assert outputLines.isEmpty(): "outputLines not Empty";
         ExportDivisionTextLine<T> line = new ExportDivisionTextLine<>(
             getRender());
         outputLines.add(line);
-        for(BridgeContent content: contents){
-            List<ExportDivisionTextLine<T>> lines = line.append(content,
-                outputLines.isEmpty());
-            if (! lines.isEmpty()){
-                outputLines.addAll(lines);
-                line = lines.get(lines.size() - 1);
+        for (BridgeContent content: contents){
+            Optional<ExportContentText<T>> overflow = line.append(content,
+                outputLines.size() <= 1);
+            while(overflow.isPresent()){
+                line = new ExportDivisionTextLine<>(getRender());
+                outputLines.add(line);
+                overflow = line.append(overflow.get());
             }
-            System.out.println(this);
         }
-        if (line.isFilled()){
-            outputLines.add(line);
-        }
+        System.out.println(this);
     }
 
     @Override

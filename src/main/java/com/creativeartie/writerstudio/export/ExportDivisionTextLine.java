@@ -21,28 +21,26 @@ final class ExportDivisionTextLine<T extends Number>
         return ! outputContent.isEmpty();
     }
 
-    List<ExportDivisionTextLine<T>> append(BridgeContent content, boolean first){
-        ExportContentText<T> append = new ExportContentText<>(getRender(),
-            content);
-        ArrayList<ExportDivisionTextLine<T>> children = new ArrayList<>();
-        return append(content, first, append, children);
+    Optional<ExportContentText<T>> append(BridgeContent text, boolean first){
+        return append(new ExportContentText<>(getRender(), text), first);
     }
 
-    private List<ExportDivisionTextLine<T>> append(BridgeContent content,
-        boolean first, ExportContentText<T> append,
-        ArrayList<ExportDivisionTextLine<T>> children
+    Optional<ExportContentText<T>> append(ExportContentText<T> text){
+        return append(text, false);
+    }
+
+    private Optional<ExportContentText<T>> append(ExportContentText<T> text,
+        boolean first
     ){
         T space = getRenderDivision().calcaluteSpace(this, first);
-        Optional<ExportContentText<T>> overflow = append.split(space);
-
-        if (overflow.isPresent()){
-            ExportDivisionTextLine<T> line =
-                new ExportDivisionTextLine<>(getRender());
-            children.add(line);
-            line.append(content, first, overflow.get(), children);
+        System.out.println(space);
+        Optional<ExportContentText<T>> overflow = text.split(space);
+        if (! text.isEmpty()){
+            fillWidth = getRenderDivision().calcaluteFill(this, text);
+            outputContent.add(text);
         }
-
-        return children;
+        System.out.println(fillWidth + "\t" + outputContent);
+        return overflow;
     }
 
 
