@@ -32,7 +32,6 @@ final class ExportDivisionText<T extends Number>
                 overflow = line.append(overflow.get());
             }
         }
-        System.out.println(this);
     }
 
     @Override

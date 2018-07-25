@@ -33,13 +33,11 @@ final class ExportDivisionTextLine<T extends Number>
         boolean first
     ){
         T space = getRenderDivision().calcaluteSpace(this, first);
-        System.out.println(space);
         Optional<ExportContentText<T>> overflow = text.split(space);
         if (! text.isEmpty()){
             fillWidth = getRenderDivision().calcaluteFill(this, text);
             outputContent.add(text);
         }
-        System.out.println(fillWidth + "\t" + outputContent);
         return overflow;
     }
 
