@@ -27,7 +27,6 @@ final class ExportContentText<T extends Number> implements ExportBase<T>{
         String[] text = getRenderContent().split(this, width);
         stateCheck(text.length == 2, "Unexpected split length: " + text.length);
         outputText = text[0];
-        System.out.println(text[0] + "\t\t\t" + text[1]);
         if (text[1].length() > 0){
             return Optional.of(new ExportContentText<>(this, text[1]));
         }
