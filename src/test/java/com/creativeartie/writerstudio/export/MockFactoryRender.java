@@ -12,10 +12,11 @@ public enum MockFactoryRender implements FactoryRender<Integer>{
     public RenderContent<Integer> getRenderContent(){
         RenderContent<Integer>.Builder builder = RenderContent.builder();
         return builder
-            .setContentSplitter((width, content) -> {
+            .setSplitContent(renderer -> {
                 String current = "";
                 String overflow = "";
-                for(String split: Splitter.on(" ").split(content.getText())){
+                float width = renderer.getMaxWidth();
+                for(String split: Splitter.on(" ").split(renderer.getUseText())){
                     if (current.length() == 0 && split.length() < width){
                         current = split;
                     } else if (current.length() + split.length() + 1 <= width){
@@ -26,8 +27,24 @@ public enum MockFactoryRender implements FactoryRender<Integer>{
                 }
                 return new String[]{current, overflow};
             })
-            .setContentWidth(content -> content.getText().length())
+            .setCalculateWidth(renderer -> renderer.getUseText().length())
             .build();
+    }
+
+    @Override
+    public RenderDivision<Integer> getRenderDivision(){
+        RenderDivision<Integer>.Builder builder = RenderDivision.builder();
+        return builder
+            .setCalcaluteSpace(renderer ->
+                (renderer.isFirstLine()? 20: 40) - renderer.getFillWidth()
+            ).setCalcaluteFill(renderer -> renderer.getFillWidth() +
+                renderer.getApplyContent().getWidth()
+            ).build();
+    }
+
+    @Override
+    public Integer getZero(){
+        return 0;
     }
 
 }

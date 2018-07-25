@@ -5,23 +5,24 @@ import java.util.function.*;
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** Export a span of text */
-public class RenderContent<T>{
+public class RenderContent<T extends Number>{
+
+    /// %Part 1: intallise and builder
 
     public class Builder{
 
-        public Builder setSplitContent(Function<String, Iterable<String>> func){
+        public Builder setSplitContent(Function<RenderContent<T>, String[]> func){
             splitContent = func;
             return this;
         }
 
-        public Builder setContentWidth(BiFunction<BridgeContent,String, T> func){
-            contentWidth = func;
+        public Builder setCalculateWidth(Function<RenderContent<T>, T> func){
+            calculateWidth = func;
             return this;
         }
 
         public RenderContent<T> build(){
             stateNotNull(splitContent, "splitContent");
-            stateNotNull(contentWidth, "contentWidth");
             return RenderContent.this;
         }
 
@@ -34,18 +35,54 @@ public class RenderContent<T>{
 
     private RenderContent(){}
 
-    private Function<String, Iterable<String>> splitContent;
+    /// %Part 2: List render data and functions
 
-    private BiFunction<BridgeContent, String, T> contentWidth;
+    /// %Part 2.1: Render data
 
-    String[] split(T size, BridgeContent content){
-        String self = "";
-        String other = "";
-        for (String text: splitContent.apply(content.getText())){
-        }
+    private T maxWidth;
+    private String useText;
+    private BridgeContent textStyle;
+
+    /// %Part 2.2: Render methods
+
+    private Function<RenderContent<T>, String[]> splitContent;
+    private Function<RenderContent<T>, T> calculateWidth;
+
+
+
+    /// %Part 3: Getter for rendering properties
+
+    public String getUseText(){
+        return useText;
     }
 
-    T getWidth(BridgeContent content, String text){
-        return contentWidth.apply(content, text);
+    public BridgeContent getTextStyle(){
+        return textStyle;
     }
+
+    public T getMaxWidth(){
+        return maxWidth;
+    }
+
+    /// %Part 4: llambda methods calls
+
+    String[] split(ExportContentText<T> use, T width){
+        prepRender(use);
+        maxWidth = width;
+        return splitContent.apply(this);
+    }
+
+    public T calculateWidth(ExportContentText<T> use){
+        prepRender(use);
+        return calculateWidth.apply(this);
+    }
+
+    /// %Part 5: Utilities methods
+
+    private void prepRender(ExportContentText<T> use){
+        useText = use.getText();
+        textStyle = use.getStyle();
+        maxWidth = null;
+    }
+
 }

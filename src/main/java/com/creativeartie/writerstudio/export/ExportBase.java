@@ -7,4 +7,8 @@ interface ExportBase<T extends Number> {
     public default RenderContent<T> getRenderContent(){
         return getRender().getRenderContent();
     }
+
+    public default RenderDivision<T> getRenderDivision(){
+        return getRender().getRenderDivision();
+    }
 }

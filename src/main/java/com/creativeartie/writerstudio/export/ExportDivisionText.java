@@ -2,19 +2,17 @@ package com.creativeartie.writerstudio.export;
 
 import java.util.*;
 
-import com.google.common.collect.*;
-
 /** Export a section of text, like paragraphs and headings. */
 final class ExportDivisionText<T extends Number>
-    extends ForwardingList<ExportDivisionTextLine<T>> implements ExportBase<T>
+    extends ExportBaseParent<T, ExportDivisionTextLine<T>>
 {
 
-    private final FactoryRender<T> renderFactory;
+
     private final BridgeDivision spanLine;
     private final ArrayList<ExportDivisionTextLine<T>> outputLines;
 
-    ExportDivisionText(FactoryRender<T> factory, BridgeDivision line){
-        renderFactory = factory;
+    ExportDivisionText(FactoryRender<T> renderer, BridgeDivision line){
+        super(renderer);
         spanLine = line;
         outputLines = new ArrayList<>();
         fillContents(line.getContent());
@@ -22,13 +20,16 @@ final class ExportDivisionText<T extends Number>
 
     private void fillContents(Iterable<BridgeContent> contents){
         ExportDivisionTextLine<T> line = new ExportDivisionTextLine<>(
-            renderFactory);
+            getRender());
+        outputLines.add(line);
         for(BridgeContent content: contents){
-            Optional<ExportDivisionTextLine<T>> overflow = line.split(content);
-            if (overflow.isPresent()){
-                outputLines.add(line);
-                line = overflow.get();
+            List<ExportDivisionTextLine<T>> lines = line.append(content,
+                outputLines.isEmpty());
+            if (! lines.isEmpty()){
+                outputLines.addAll(lines);
+                line = lines.get(lines.size() - 1);
             }
+            System.out.println(this);
         }
         if (line.isFilled()){
             outputLines.add(line);
@@ -38,10 +39,4 @@ final class ExportDivisionText<T extends Number>
     @Override
     protected List<ExportDivisionTextLine<T>> delegate(){
         return outputLines;
-    }
-
-    @Override
-    public FactoryRender<T> getRender(){
-        return renderFactory;
-    }
-}
+    }}

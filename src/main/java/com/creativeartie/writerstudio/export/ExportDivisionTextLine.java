@@ -2,28 +2,52 @@ package com.creativeartie.writerstudio.export;
 
 import java.util.*;
 
-import com.google.common.collect.*;
-
-/** Creates the render box. */
+/** Renders a line of text. */
 final class ExportDivisionTextLine<T extends Number>
-    extends ForwardingList<ExportContentText<T>> implements ExportBase<T>
+    extends ExportBaseParent<T, ExportContentText<T>>
 {
-    private final FactoryRender<T> renderFactory;
+
     private final ArrayList<ExportContentText<T>> outputContent;
     private T fillWidth;
     private T fillHeight;
 
-    ExportDivisionTextLine(FactoryRender<T> factory){
+    ExportDivisionTextLine(FactoryRender<T> renderer){
+        super(renderer);
         outputContent = new ArrayList<>();
-        renderFactory = factory;
+        fillWidth = renderer.getZero();
     }
 
     boolean isFilled(){
         return ! outputContent.isEmpty();
     }
 
-    Optional<ExportDivisionTextLine<T>> split(BridgeContent content){
-        return null;
+    List<ExportDivisionTextLine<T>> append(BridgeContent content, boolean first){
+        ExportContentText<T> append = new ExportContentText<>(getRender(),
+            content);
+        ArrayList<ExportDivisionTextLine<T>> children = new ArrayList<>();
+        return append(content, first, append, children);
+    }
+
+    private List<ExportDivisionTextLine<T>> append(BridgeContent content,
+        boolean first, ExportContentText<T> append,
+        ArrayList<ExportDivisionTextLine<T>> children
+    ){
+        T space = getRenderDivision().calcaluteSpace(this, first);
+        Optional<ExportContentText<T>> overflow = append.split(space);
+
+        if (overflow.isPresent()){
+            ExportDivisionTextLine<T> line =
+                new ExportDivisionTextLine<>(getRender());
+            children.add(line);
+            line.append(content, first, overflow.get(), children);
+        }
+
+        return children;
+    }
+
+
+    T getFillWidth(){
+        return fillWidth;
     }
 
     @Override
@@ -31,8 +55,4 @@ final class ExportDivisionTextLine<T extends Number>
         return outputContent;
     }
 
-    @Override
-    public FactoryRender<T> getRender(){
-        return renderFactory;
-    }
 }
