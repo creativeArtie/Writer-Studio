@@ -75,8 +75,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      * @param text
      *      parsing text
      */
-    protected void addChild(SetupParser parser, String text){
-		System.out.println(text);
+    protected synchronized void addChild(SetupParser parser, String text){
         addChild(parser, text, size());
     }
 
@@ -88,10 +87,12 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      *      parsing text
      * @see addChild(SetupParser, String)
      */
-    protected void addChild(SetupParser parser, String text, int position){
-		boolean first = position == 0 && isDocumentFirst();
-        SetupPointer pointer = SetupPointer.updatePointer(text, 
-			getDocument(), first);
+    protected synchronized void addChild(
+        SetupParser parser, String text, int position
+    ){
+        boolean first = position == 0 && isDocumentFirst();
+        SetupPointer pointer = SetupPointer.updatePointer(text,
+            getDocument(), first);
         Optional<SpanBranch> span = parser.parse(pointer);
         stateCheck(! pointer.hasNext() && span.isPresent(),
             "Has left over characters when reparsing: " +

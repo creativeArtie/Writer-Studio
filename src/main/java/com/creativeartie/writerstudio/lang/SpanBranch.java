@@ -118,7 +118,7 @@ public abstract class SpanBranch extends SpanNode<Span> {
         return true;
     }
 
-    protected final void removeSpan(){
+    protected synchronized final void removeSpan(){
         SpanNode parent = getParent();
         int index = parent.indexOf(this);
         argumentCheck(index != -1, "Parameter 'span' is not a child: " + this);

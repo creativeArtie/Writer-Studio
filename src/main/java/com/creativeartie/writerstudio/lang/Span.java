@@ -23,9 +23,13 @@ public abstract class Span implements Comparable<Span>{
     private static long counter = Long.MIN_VALUE;
     private long uniqueId;
 
+    private static synchronized long createId(){
+        return counter++;
+    }
+
     /** Package-ize Span creation.*/
     Span(){
-        uniqueId = counter++;
+        uniqueId = createId();
     }
 
     /// %Part 2: Abstract Get and Set ##########################################
