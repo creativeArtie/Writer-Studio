@@ -24,8 +24,18 @@ public class MockTests{
     @Nested
     @DisplayName("Split Content (smallest units)")
     public class ContentSplitTest{
+
         @Test
-        @DisplayName("No spliting")
+        public void empty(){
+            ExportContentText<Integer> text = contentExporter("");
+            Optional<ExportContentText<Integer>> overflow = text.split(100);
+            assertFalse(overflow.isPresent(),
+                () -> "Unexpected: " + overflow);
+            assertEquals("", text.getText());
+            assertTrue(text.isEmpty());
+        }
+
+        @Test
         public void noSplit(){
             ExportContentText<Integer> text = contentExporter("Hello");
             Optional<ExportContentText<Integer>> overflow = text.split(100);
@@ -85,6 +95,13 @@ public class MockTests{
     @Nested
     @DisplayName("Division (Line) Splitting test.")
     public class DivisionSplitTest{
+
+        @Test
+        public void empty(){
+            ExportDivisionText<Integer> lines = divisionExporter("");
+            assertEquals(1, lines.size());
+            MockBridgeDivision.test(new String[][]{{}}, lines);
+        }
 
         @Test
         public void basic(){

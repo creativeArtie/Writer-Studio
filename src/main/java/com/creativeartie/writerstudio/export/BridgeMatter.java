@@ -7,6 +7,6 @@ public interface BridgeMatter{
      *
      * @return answer
      */
-    public Iterable<BridgeContent> getContent();
+    public Iterable<BridgeDivision> getContent();
 
 }

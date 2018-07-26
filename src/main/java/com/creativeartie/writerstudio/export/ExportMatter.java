@@ -7,7 +7,14 @@ abstract class ExportMatter<T extends Number>
     extends ExportCollection<T, ExportDivisionText<T>>
 {
     private T fillHeight;
+    private ArrayList<ExportDivisionText> lineList;
 
-    ExportMatter(){
+    ExportMatter(BridgeMatter content, RenderMatter<T> render){
+        lineList = new ArrayList<>();
+
+    }
+
+    private void fillContents(Iterable<BridgeMatter> content){
+
     }
 }
