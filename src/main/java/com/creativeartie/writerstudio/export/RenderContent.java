@@ -5,11 +5,13 @@ import java.util.function.*;
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** Export a span of text */
-public class RenderContent<T extends Number>{
+public final class RenderContent<T extends Number> extends Render<T>{
 
     /// %Part 1: intallise and builder
 
-    public class Builder{
+    public class Builder extends Render<T>.Builder<RenderContent<T>>{
+
+        private Builder(){}
 
         public Builder setSplitContent(Function<RenderContent<T>, String[]> func){
             splitContent = func;
@@ -21,12 +23,11 @@ public class RenderContent<T extends Number>{
             return this;
         }
 
-        public RenderContent<T> build(){
+        @Override
+        public RenderContent<T> buildChildren(){
             stateNotNull(splitContent, "splitContent");
             return RenderContent.this;
         }
-
-        private Builder(){}
     }
 
     public static <U extends Number> RenderContent<U>.Builder builder(){
@@ -42,13 +43,12 @@ public class RenderContent<T extends Number>{
     private T maxWidth;
     private String useText;
     private BridgeContent textStyle;
+    private DataLineType lineType;
 
     /// %Part 2.2: Render methods
 
     private Function<RenderContent<T>, String[]> splitContent;
     private Function<RenderContent<T>, T> calculateWidth;
-
-
 
     /// %Part 3: Getter for rendering properties
 
@@ -62,6 +62,10 @@ public class RenderContent<T extends Number>{
 
     public T getMaxWidth(){
         return maxWidth;
+    }
+
+    public DataLineType getLineType(){
+        return lineType;
     }
 
     /// %Part 4: llambda methods calls
@@ -82,6 +86,7 @@ public class RenderContent<T extends Number>{
     private void prepRender(ExportContentText<T> use){
         useText = use.getText();
         textStyle = use.getStyle();
+        lineType = use.getLineType();
         maxWidth = null;
     }
 

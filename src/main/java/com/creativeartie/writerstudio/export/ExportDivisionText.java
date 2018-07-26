@@ -4,30 +4,32 @@ import java.util.*;
 
 /** Export a section of text, like paragraphs and headings. */
 final class ExportDivisionText<T extends Number>
-    extends ExportBaseParent<T, ExportDivisionTextLine<T>>
+    extends ExportCollection<T, ExportDivisionTextLine<T>>
 {
-
 
     private final BridgeDivision spanLine;
     private final ArrayList<ExportDivisionTextLine<T>> outputLines;
+    private final RenderDivision<T> lineRender;
+    private final DataLineType lineType;
 
-    ExportDivisionText(FactoryRender<T> renderer, BridgeDivision line){
-        super(renderer);
+    ExportDivisionText(BridgeDivision line, RenderDivision<T> render){
         spanLine = line;
         outputLines = new ArrayList<>();
+        lineType = line.getLineType();
+        lineRender = render;
         fillContents(line.getContent());
     }
 
     private void fillContents(Iterable<BridgeContent> contents){
         assert outputLines.isEmpty(): "outputLines not Empty";
         ExportDivisionTextLine<T> line = new ExportDivisionTextLine<>(
-            getRender());
+            lineRender);
         outputLines.add(line);
         for (BridgeContent content: contents){
             Optional<ExportContentText<T>> overflow = line.append(content,
-                outputLines.size() <= 1);
+                lineType, outputLines.size() <= 1);
             while(overflow.isPresent()){
-                line = new ExportDivisionTextLine<>(getRender());
+                line = new ExportDivisionTextLine<>(lineRender);
                 outputLines.add(line);
                 overflow = line.append(overflow.get());
             }
@@ -35,6 +37,6 @@ final class ExportDivisionText<T extends Number>
     }
 
     @Override
-    protected List<ExportDivisionTextLine<T>> delegate(){
+    protected List<ExportDivisionTextLine<T>> delegateRaw(){
         return outputLines;
     }}

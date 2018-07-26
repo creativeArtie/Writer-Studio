@@ -27,13 +27,23 @@ public final class MockBridgeDivision implements BridgeDivision{
     }
 
     private Iterable<BridgeContent> listContent;
+    private DataLineType lineType;
+
+    public MockBridgeDivision(DataLineType type, String ... texts){
+        this(type, buildList(texts));
+    }
 
     public MockBridgeDivision(String ... texts){
-        this(buildList(texts));
+        this(DataLineType.DEFAULT, buildList(texts));
+    }
+
+    public MockBridgeDivision(DataLineType type, Iterable<BridgeContent> content){
+        lineType = type;
+        listContent = content;
     }
 
     public MockBridgeDivision(Iterable<BridgeContent> content){
-        listContent = content;
+        this(DataLineType.DEFAULT, content);
     }
 
     @Override
@@ -46,4 +56,12 @@ public final class MockBridgeDivision implements BridgeDivision{
         return this;
     }
 
+    @Override
+    public DataLineType getLineType(){
+        return lineType;
+    }
+
+    public void setLineType(DataLineType type){
+        lineType = type;
+    }
 }

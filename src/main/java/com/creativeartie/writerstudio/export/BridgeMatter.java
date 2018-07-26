@@ -2,12 +2,11 @@ package com.creativeartie.writerstudio.export;
 
 import java.util.*;
 
-public interface BridgeDivision{
+public interface BridgeMatter{
     /** list of contents.
      *
      * @return answer
      */
     public Iterable<BridgeContent> getContent();
 
-    public DataLineType getLineType();
 }

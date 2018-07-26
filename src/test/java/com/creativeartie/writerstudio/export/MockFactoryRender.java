@@ -4,29 +4,25 @@ import java.util.*;
 import java.util.Optional;
 import com.google.common.base.*;
 
-public enum MockFactoryRender implements FactoryRender<Integer>{
+public enum MockFactoryRender{
 
     FACTORY;
 
-    @Override
     public RenderContent<Integer> getRenderContent(){
         RenderContent<Integer>.Builder builder = RenderContent.builder();
-        return builder
-            .setSplitContent(renderer -> {
+        builder.setSplitContent(renderer -> {
                 String text = renderer.getUseText();
                 float width = renderer.getMaxWidth();
 
                 String current = "";
                 String overflow = "";
-                Iterator<String> it = Splitter.on(" ").split(text).iterator();
+                Iterator<String> it = Splitter.on(" ")
+                    .trimResults().omitEmptyStrings().split(text).iterator();
 
                 if (! it.hasNext()){
                     return new String[]{current, overflow};
                 }
                 String next = it.next();
-                if (next.isEmpty()){
-                    next = " ";
-                }
 
                 while(current.length() + next.length() < width){
                     current += next;
@@ -44,23 +40,21 @@ public enum MockFactoryRender implements FactoryRender<Integer>{
                 return new String[]{current, overflow};
             })
             .setCalculateWidth(renderer -> renderer.getUseText().length())
-            .build();
+            .setGetZero(() -> 0);
+        return builder.build();
     }
 
-    @Override
     public RenderDivision<Integer> getRenderDivision(){
-        RenderDivision<Integer>.Builder builder = RenderDivision.builder();
-        return builder
+        RenderDivision<Integer>.Builder builder = RenderDivision.builder(
+            getRenderContent()
+        );
+        builder
             .setCalcaluteSpace(renderer ->
                 (renderer.isFirstLine()? 20: 40) - renderer.getFillWidth()
-            ).setCalcaluteFill(renderer -> renderer.getFillWidth() +
-                renderer.getApplyContent().getWidth()
-            ).build();
+            ).setCalcaluteFill(renderer ->
+                renderer.getFillWidth() + renderer.getContentWidth()
+            ).setGetZero(() -> 0)
+            .build();
+        return builder.build();
     }
-
-    @Override
-    public Integer getZero(){
-        return 0;
-    }
-
 }

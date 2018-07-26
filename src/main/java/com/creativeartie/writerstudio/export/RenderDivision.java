@@ -5,12 +5,13 @@ import java.util.function.*;
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** Export a span of text */
-public class RenderDivision<T extends Number>{
-
+public final class RenderDivision<T extends Number> extends Render<T>{
 
     /// %Part 1: intallise and builder
 
-    public class Builder{
+    public class Builder extends Render<T>.Builder<RenderDivision<T>>{
+
+        private Builder(){}
 
         public Builder setCalcaluteSpace(Function<RenderDivision<T>, T> func){
             calcaluteSpace = func;
@@ -22,27 +23,32 @@ public class RenderDivision<T extends Number>{
             return this;
         }
 
-        public RenderDivision<T> build(){
+        @Override
+        public RenderDivision<T> buildChildren(){
             stateNotNull(calcaluteSpace, "calcaluteSpace");
             return RenderDivision.this;
         }
-
-        private Builder(){}
     }
 
-    public static <U extends Number> RenderDivision<U>.Builder builder(){
-        return new RenderDivision<U>(). new Builder();
+    public static <U extends Number> RenderDivision<U>.Builder builder(
+        RenderContent<U> content
+    ){
+        return new RenderDivision<U>(content). new Builder();
     }
 
-    private RenderDivision(){}
+    private RenderDivision(RenderContent<T> content){
+        contentRender = content;
+    }
 
     /// %Part 2: List render data and functions
 
     /// %Part 2.1: Render data
 
+    private RenderContent<T> contentRender;
+    private DataLineType lineType;
     private T fillWidth;
     private boolean isFirstLine;
-    private ExportContentText<T> applyContent;
+    private T contentWidth;
 
     /// %Part 2.2: Render methods
 
@@ -50,6 +56,10 @@ public class RenderDivision<T extends Number>{
     private Function<RenderDivision<T>, T> calcaluteFill;
 
     /// %Part 3: Getter for rendering properties
+
+    public RenderContent<T> getContentRender(){
+        return contentRender;
+    }
 
     public T getFillWidth(){
         return fillWidth;
@@ -59,8 +69,12 @@ public class RenderDivision<T extends Number>{
         return isFirstLine;
     }
 
-    public ExportContentText<T> getApplyContent(){
-        return applyContent;
+    public T getContentWidth(){
+        return contentWidth;
+    }
+
+    public DataLineType getLineType(){
+        return lineType;
     }
 
     /// %Part 4: llambda methods calls
@@ -75,14 +89,14 @@ public class RenderDivision<T extends Number>{
         ExportContentText<T> content
     ){
         prepRender(use);
-        applyContent = content;
+        contentWidth = content.getWidth();
         return calcaluteFill.apply(this);
     }
 
     /// %Part 5: Utilities methods
 
     private void prepRender(ExportDivisionTextLine<T> use){
-        applyContent = null;
+        contentWidth = null;
         fillWidth = use.getFillWidth();
     }
 }

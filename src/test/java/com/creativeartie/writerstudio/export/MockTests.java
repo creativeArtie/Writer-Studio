@@ -7,16 +7,18 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MockTests{
-    private static final FactoryRender<Integer> RENDER = MockFactoryRender
-        .FACTORY;
 
     static ExportContentText<Integer> contentExporter(String text){
-        return new ExportContentText<>(RENDER, new MockBridgeContent(text));
+        return new ExportContentText<>(new MockBridgeContent(text),
+            DataLineType.DEFAULT, MockFactoryRender.FACTORY.getRenderContent()
+        );
     }
 
 
     static ExportDivisionText<Integer> divisionExporter(String ... text){
-        return new ExportDivisionText<>(RENDER, new MockBridgeDivision(text));
+        return new ExportDivisionText<>(new MockBridgeDivision(text),
+            MockFactoryRender.FACTORY.getRenderDivision()
+        );
     }
 
     @Nested
@@ -108,7 +110,7 @@ public class MockTests{
             /// =0000000000111====11111112222
             /// =0123456789012====34567890123
                 {"Hello World!", "Next"},
-                {"  Span!"}
+                {"Span!"}
             }, lines);
         }
 
@@ -122,7 +124,7 @@ public class MockTests{
             /// =000000000011111111112222
             /// =012345678901234567890123
                 {"Hello World! Next"},
-                {"  Span!"}
+                {"Span!"}
             }, lines);
         }
 
@@ -132,7 +134,7 @@ public class MockTests{
                 "Twinkle, twinkle, little star/ " +
                 "How I wonder what you are!/ " +
                 "Up above the world so high,/ " +
-                "Like a damond in the sky");
+                "Like a diamond in the sky");
             assertEquals(4, lines.size());
             MockBridgeDivision.test(new String[][]
             {
@@ -141,13 +143,13 @@ public class MockTests{
                {"Twinkle, twinkle,"},
             /// =00000000001111111111222222222233333333334
             /// =01234567890123456789012345678901234567890 <- 2
-               {"  little star/ How I wonder what you"},
+               {"little star/ How I wonder what you"},
             /// =00000000001111111111222222222233333333334
             /// =01234567890123456789012345678901234567890 <- 3
-               {"  are!/ Up above the world so high,/"},
+               {"are!/ Up above the world so high,/ Like"},
             /// =00000000001111111111222222222233333333334
             /// =01234567890123456789012345678901234567890 <- 4
-               {"  Like a damond in the sky"}
+               {"a diamond in the sky"}
             }, lines);
         }
 
@@ -157,7 +159,7 @@ public class MockTests{
                 "Twinkle, twinkle, little star/ ",
                 "How I wonder what you are!/ ",
                 "Up above the world so high,/ ",
-                "Like a damond in the sky");
+                "Like a diamond in the sky");
             assertEquals(4, lines.size());
             MockBridgeDivision.test(new String[][]
             {
@@ -166,13 +168,13 @@ public class MockTests{
                {"Twinkle, twinkle,"},
             /// =000000000011111====11111222222222233333333334
             /// =012345678901234====56789012345678901234567890 <- 2
-               {"  little star/ ", "How I wonder what you"},
-            /// =00000000====001111111111222222222233333333334
-            /// =01234567====890123456789012345678901234567890 <- 3
-               {"  are!/ ", "Up above the world so high,/ "},
+               {"little star/", "How I wonder what you are!/"},
+            /// =0000000000111111111122222222====2233333333334
+            /// =0123456789012345678901234567====8901234567890 <- 3
+               {"Up above the world so high,/", "Like a"},
             /// =00000000001111111111222222222233333333334
             /// =01234567890123456789012345678901234567890 <- 4
-               {"Like a damond in the sky"}
+               {"diamond in the sky"}
             }, lines);
         }
 
