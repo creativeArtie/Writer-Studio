@@ -28,31 +28,38 @@ public class MockTests{
         @Test
         public void empty(){
             ExportContentText<Integer> text = contentExporter("");
-            Optional<ExportContentText<Integer>> overflow = text.split(100);
+            Optional<ExportContentText<Integer>> overflow = text.splitContent(100);
             assertFalse(overflow.isPresent(),
                 () -> "Unexpected: " + overflow);
-            assertEquals("", text.getText());
-            assertTrue(text.isEmpty());
+
+            assertEquals(0, text.getHeight().intValue(), "getHeight()");
+            assertEquals("", text.getText(), "getText()");
+            assertTrue(text.isEmpty(), "isEmpty()");
         }
 
         @Test
         public void noSplit(){
             ExportContentText<Integer> text = contentExporter("Hello");
-            Optional<ExportContentText<Integer>> overflow = text.split(100);
+            Optional<ExportContentText<Integer>> overflow = text.splitContent(100);
             assertFalse(overflow.isPresent(),
                 () -> "Unexpected: " + overflow);
-            assertEquals("Hello", text.getText());
-            assertFalse(text.isEmpty());
+
+            assertEquals(1, text.getHeight().intValue(), "getHeight()");
+
+            assertEquals("Hello", text.getText(), "getText()");
+            assertFalse(text.isEmpty(), "isEmpty()");
         }
 
         @Test
         public void noSplitCallTwice(){
             ExportContentText<Integer> text = contentExporter("Hello");
-            Optional<ExportContentText<Integer>> overflow = text.split(100);
-            assertFalse(text.split(100).isPresent(), "Filled");
+            Optional<ExportContentText<Integer>> overflow = text.splitContent(100);
+            assertFalse(text.splitContent(100).isPresent(), "Filled");
 
-            assertEquals("Hello", text.getText());
-            assertFalse(text.isEmpty());
+            assertEquals(1, text.getHeight().intValue(), "getHeight()");
+
+            assertEquals("Hello", text.getText(), "getText()");
+            assertFalse(text.isEmpty(), "isEmpty()");
         }
 
         @Test
@@ -60,11 +67,14 @@ public class MockTests{
             /// -----------------------------------------------00000000001111111
             /// -----------------------------------------------01234567890123456
             ExportContentText<Integer> text = contentExporter("Hello World Song");
-            Optional<ExportContentText<Integer>> overflow = text.split(6);
+            Optional<ExportContentText<Integer>> overflow = text.splitContent(6);
             assertTrue(overflow.isPresent(), "Empty");
-            assertEquals(" World Song", overflow.get().getText());
-            assertEquals("Hello", text.getText());
-            assertFalse(text.isEmpty());
+            assertEquals(" World Song", overflow.get().getText(), "overflow");
+
+            assertEquals(1, text.getHeight().intValue(), "getHeight()");
+
+            assertEquals("Hello", text.getText(), "main");
+            assertFalse(text.isEmpty(), "getHeight");
         }
 
         @Test
@@ -72,11 +82,14 @@ public class MockTests{
             /// -----------------------------------------------00000000001111111
             /// -----------------------------------------------01234567890123456
             ExportContentText<Integer> text = contentExporter("Hello World Song");
-            Optional<ExportContentText<Integer>> overflow = text.split(3);
+            Optional<ExportContentText<Integer>> overflow = text.splitContent(3);
             assertTrue(overflow.isPresent(), "Empty");
-            assertEquals("Hello World Song", overflow.get().getText());
-            assertEquals("", text.getText());
-            assertTrue(text.isEmpty());
+
+            assertEquals(0, text.getHeight().intValue(), "getHeight()");
+
+            assertEquals("Hello World Song", overflow.get().getText(), "overflow");
+            assertEquals("", text.getText(), "getText()");
+            assertTrue(text.isEmpty(), "isEmpty()");
         }
 
         @Test
@@ -84,11 +97,14 @@ public class MockTests{
             /// -----------------------------------------------00000000001111111
             /// -----------------------------------------------01234567890123456
             ExportContentText<Integer> text = contentExporter("Hello World Song");
-            Optional<ExportContentText<Integer>> overflow = text.split(0);
+            Optional<ExportContentText<Integer>> overflow = text.splitContent(0);
             assertTrue(overflow.isPresent(), "Empty");
-            assertEquals("Hello World Song", overflow.get().getText());
-            assertEquals("", text.getText());
-            assertTrue(text.isEmpty());
+            assertEquals("Hello World Song", overflow.get().getText(), "overflow");
+
+            assertEquals(0, text.getHeight().intValue(), "getHeight()");
+
+            assertEquals("", text.getText(), "getText()");
+            assertTrue(text.isEmpty(), "isEmpty()");
         }
     }
 
@@ -99,50 +115,52 @@ public class MockTests{
         @Test
         public void empty(){
             ExportDivisionText<Integer> lines = divisionExporter("");
-            assertEquals(1, lines.size());
-            MockBridgeDivision.test(new String[][]{{}}, lines);
+            assertEquals(0, lines.size(), "size()");
+            MockBridgeDivision.test(new String[][]{}, 0, lines);
         }
 
         @Test
         public void basic(){
             ExportDivisionText<Integer> lines = divisionExporter("Hello World!");
-            assertEquals(1, lines.size());
-            MockBridgeDivision.test(new String[][]{{"Hello World!"}}, lines);
+            assertEquals(1, lines.size(), "size()");
+            MockBridgeDivision.test(new String[][]{{"Hello World!"}}, 1, lines);
         }
 
         @Test
         public void appendNoSpace(){
             ExportDivisionText<Integer> lines = divisionExporter("Hello",
                 "World!");
-            assertEquals(1, lines.size());
-            MockBridgeDivision.test(new String[][]{{"Hello", "World!"}}, lines);
+            assertEquals(1, lines.size(), "size()");
+            MockBridgeDivision.test(new String[][]{{"Hello", "World!"}}, 1,
+                lines);
         }
 
         @Test
         public void appendSplit(){
             ExportDivisionText<Integer> lines = divisionExporter("Hello World!",
                 "Next Span!");
-            assertEquals(2, lines.size());
+            System.out.println(lines);
+            assertEquals(2, lines.size(), "size()");
             MockBridgeDivision.test(new String[][]{
             /// =0000000000111====11111112222
             /// =0123456789012====34567890123
                 {"Hello World!", "Next"},
                 {"Span!"}
-            }, lines);
+            }, 2, lines);
         }
 
         @Test
         public void startSplit(){
             ExportDivisionText<Integer> lines = divisionExporter(
                 "Hello World! Next Span!");
-            assertEquals(2, lines.size());
+            assertEquals(2, lines.size(), "size()");
             MockBridgeDivision.test(new String[][]
             {
             /// =000000000011111111112222
             /// =012345678901234567890123
                 {"Hello World! Next"},
                 {"Span!"}
-            }, lines);
+            }, 2, lines);
         }
 
         @Test
@@ -152,7 +170,7 @@ public class MockTests{
                 "How I wonder what you are!/ " +
                 "Up above the world so high,/ " +
                 "Like a diamond in the sky");
-            assertEquals(4, lines.size());
+            assertEquals(4, lines.size(), "size()");
             MockBridgeDivision.test(new String[][]
             {
             /// =000000000011111111112
@@ -167,7 +185,7 @@ public class MockTests{
             /// =00000000001111111111222222222233333333334
             /// =01234567890123456789012345678901234567890 <- 4
                {"a diamond in the sky"}
-            }, lines);
+            }, 4, lines);
         }
 
         @Test
@@ -192,7 +210,7 @@ public class MockTests{
             /// =00000000001111111111222222222233333333334
             /// =01234567890123456789012345678901234567890 <- 4
                {"diamond in the sky"}
-            }, lines);
+            }, 4, lines);
         }
 
     }

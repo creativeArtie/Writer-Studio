@@ -7,6 +7,7 @@ final class ExportDivisionTextLine<T extends Number>
     extends ExportCollection<T, ExportContentText<T>>
 {
 
+    private ExportDivisionText exportParent;
     private final ArrayList<ExportContentText<T>> outputContent;
     private final RenderDivision<T> lineRender;
     private T fillWidth;
@@ -15,7 +16,8 @@ final class ExportDivisionTextLine<T extends Number>
     ExportDivisionTextLine(RenderDivision<T> renderer){
         lineRender = renderer;
         outputContent = new ArrayList<>();
-        fillWidth = renderer.getZero();
+        fillWidth = renderer.toZero();
+        fillHeight = renderer.toZero();
     }
 
     boolean isFilled(){
@@ -36,7 +38,7 @@ final class ExportDivisionTextLine<T extends Number>
         boolean first
     ){
         T space = lineRender.calcaluteSpace(this, first);
-        Optional<ExportContentText<T>> overflow = text.split(space);
+        Optional<ExportContentText<T>> overflow = text.splitContent(space);
         if (! text.isEmpty()){
             fillWidth = lineRender.calcaluteFill(this, text);
             outputContent.add(text);
@@ -44,9 +46,23 @@ final class ExportDivisionTextLine<T extends Number>
         return overflow;
     }
 
-
     T getFillWidth(){
         return fillWidth;
+    }
+
+    T getFillHeight(){
+        return fillHeight;
+    }
+
+    T addHeight(T subTotal){
+        if (subTotal == null){
+            subTotal = lineRender.toZero();
+        }
+        fillHeight = lineRender.toZero();
+        for (ExportContentText<T> text: this){
+            fillHeight = lineRender.compareHeight(this, text.getHeight());
+        }
+        return lineRender.addRunning(this, subTotal);
     }
 
     @Override

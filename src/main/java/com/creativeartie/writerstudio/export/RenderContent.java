@@ -18,6 +18,11 @@ public final class RenderContent<T extends Number> extends Render<T>{
             return this;
         }
 
+        public Builder setCalcuateHeight(Function<RenderContent<T>, T> func){
+            calcuateHeight = func;
+            return this;
+        }
+
         public Builder setCalculateWidth(Function<RenderContent<T>, T> func){
             calculateWidth = func;
             return this;
@@ -26,6 +31,9 @@ public final class RenderContent<T extends Number> extends Render<T>{
         @Override
         public RenderContent<T> buildChildren(){
             stateNotNull(splitContent, "splitContent");
+            stateNotNull(calcuateHeight, "calcuateHeight");
+            stateNotNull(splitContent, "splitContent");
+            stateNotNull(calculateWidth, "calculateWidth");
             return RenderContent.this;
         }
     }
@@ -47,6 +55,7 @@ public final class RenderContent<T extends Number> extends Render<T>{
 
     /// %Part 2.2: Render methods
 
+    private Function<RenderContent<T>, T> calcuateHeight;
     private Function<RenderContent<T>, String[]> splitContent;
     private Function<RenderContent<T>, T> calculateWidth;
 
@@ -70,7 +79,7 @@ public final class RenderContent<T extends Number> extends Render<T>{
 
     /// %Part 4: llambda methods calls
 
-    String[] split(ExportContentText<T> use, T width){
+    String[] splitContent(ExportContentText<T> use, T width){
         prepRender(use);
         maxWidth = width;
         return splitContent.apply(this);
@@ -79,6 +88,11 @@ public final class RenderContent<T extends Number> extends Render<T>{
     public T calculateWidth(ExportContentText<T> use){
         prepRender(use);
         return calculateWidth.apply(this);
+    }
+
+    public T calcuateHeight(ExportContentText<T> use){
+        prepRender(use);
+        return calcuateHeight.apply(this);
     }
 
     /// %Part 5: Utilities methods

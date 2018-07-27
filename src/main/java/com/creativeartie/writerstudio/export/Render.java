@@ -5,7 +5,7 @@ import java.util.function.*;
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** Positions a sub-section on the page*/
-public abstract class Render<T extends Number>{
+abstract class Render<T extends Number>{
 
 
     /// %Part 1: intallise and builder
@@ -14,13 +14,13 @@ public abstract class Render<T extends Number>{
 
         Builder(){}
 
-        public final Builder setGetZero(Supplier<T> func){
-            getZero = func;
+        public final Builder setToZero(Supplier<T> func){
+            toZero = func;
             return this;
         }
 
         public final U build(){
-            stateNotNull(getZero, "getZero");
+            stateNotNull(toZero, "toZero");
             return buildChildren();
         }
 
@@ -35,14 +35,14 @@ public abstract class Render<T extends Number>{
 
     /// %Part 2.2: Render methods
 
-    private Supplier<T> getZero;
+    private Supplier<T> toZero;
 
     /// %Part 3: Getter for rendering properties
 
     /// %Part 4: llambda methods calls
 
-    public T getZero(){
-        return getZero.get();
+    public T toZero(){
+        return toZero.get();
     }
 
     /// %Part 5: Utilities methods

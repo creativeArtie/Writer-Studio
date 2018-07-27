@@ -8,8 +8,11 @@ final class ExportDivisionText<T extends Number>
 {
 
     private final BridgeDivision spanLine;
-    private final ArrayList<ExportDivisionTextLine<T>> outputLines;
     private final RenderDivision<T> lineRender;
+
+    private final ArrayList<ExportDivisionTextLine<T>> outputLines;
+    private final boolean hasStart;
+
     private final DataLineType lineType;
 
     ExportDivisionText(BridgeDivision line, RenderDivision<T> render){
@@ -18,6 +21,7 @@ final class ExportDivisionText<T extends Number>
         lineType = line.getLineType();
         lineRender = render;
         fillContents(line.getContent());
+        hasStart = true;
     }
 
     private void fillContents(Iterable<BridgeContent> contents){
@@ -27,13 +31,22 @@ final class ExportDivisionText<T extends Number>
         outputLines.add(line);
         for (BridgeContent content: contents){
             Optional<ExportContentText<T>> overflow = line.append(content,
-                lineType, outputLines.size() <= 1);
+                lineType, hasStart && outputLines.size() <= 1);
             while(overflow.isPresent()){
                 line = new ExportDivisionTextLine<>(lineRender);
                 outputLines.add(line);
                 overflow = line.append(overflow.get());
             }
         }
+        outputLines.removeIf(l -> l.isEmpty());
+    }
+
+    T getHeight(){
+        T running = lineRender.toZero();
+        for (ExportDivisionTextLine<T> child: outputLines){
+            running = child.addHeight(running);
+        }
+        return running;
     }
 
     @Override

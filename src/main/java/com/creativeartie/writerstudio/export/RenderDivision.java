@@ -23,9 +23,22 @@ public final class RenderDivision<T extends Number> extends Render<T>{
             return this;
         }
 
+        public Builder setCompareHeight(Function<RenderDivision<T>, T> func){
+            compareHeight = func;
+            return this;
+        }
+
+        public Builder setAddRunning(Function<RenderDivision<T>, T> func){
+            addRunning = func;
+            return this;
+        }
+
         @Override
         public RenderDivision<T> buildChildren(){
             stateNotNull(calcaluteSpace, "calcaluteSpace");
+            stateNotNull(calcaluteFill, "calcaluteFill");
+            stateNotNull(compareHeight, "compareHeight");
+            stateNotNull(addRunning, "addRunning");
             return RenderDivision.this;
         }
     }
@@ -49,11 +62,17 @@ public final class RenderDivision<T extends Number> extends Render<T>{
     private T fillWidth;
     private boolean isFirstLine;
     private T contentWidth;
+    private T newHeight;
+    private T fillHeight;
+    private T runningTotal;
+
 
     /// %Part 2.2: Render methods
 
     private Function<RenderDivision<T>, T> calcaluteSpace;
     private Function<RenderDivision<T>, T> calcaluteFill;
+    private Function<RenderDivision<T>, T> compareHeight;
+    private Function<RenderDivision<T>, T> addRunning;
 
     /// %Part 3: Getter for rendering properties
 
@@ -73,8 +92,20 @@ public final class RenderDivision<T extends Number> extends Render<T>{
         return contentWidth;
     }
 
+    public T getNewHeight(){
+        return newHeight;
+    }
+
+    public T getFillHeight(){
+        return fillHeight;
+    }
+
     public DataLineType getLineType(){
         return lineType;
+    }
+
+    public T getRunningTotal(){
+        return runningTotal;
     }
 
     /// %Part 4: llambda methods calls
@@ -93,10 +124,25 @@ public final class RenderDivision<T extends Number> extends Render<T>{
         return calcaluteFill.apply(this);
     }
 
+    public T compareHeight(ExportDivisionTextLine<T> use, T height){
+        prepRender(use);
+        newHeight = height;
+        return compareHeight.apply(this);
+    }
+
+    public T addRunning(ExportDivisionTextLine<T> use, T running){
+        prepRender(use);
+        runningTotal = running;
+        return addRunning.apply(this);
+    }
+
     /// %Part 5: Utilities methods
 
     private void prepRender(ExportDivisionTextLine<T> use){
         contentWidth = null;
+        newHeight = null;
+        runningTotal = null;
+        fillHeight = use.getFillHeight();
         fillWidth = use.getFillWidth();
     }
 }

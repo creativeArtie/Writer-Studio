@@ -39,8 +39,9 @@ public enum MockFactoryRender{
                 }
                 return new String[]{current, overflow};
             })
-            .setCalculateWidth(renderer -> renderer.getUseText().length())
-            .setGetZero(() -> 0);
+            .setCalculateWidth(r -> r.getUseText().length())
+            .setCalcuateHeight(r -> r.getUseText().length() == 0? 0: 1)
+            .setToZero(() -> 0);
         return builder.build();
     }
 
@@ -49,11 +50,14 @@ public enum MockFactoryRender{
             getRenderContent()
         );
         builder
-            .setCalcaluteSpace(renderer ->
-                (renderer.isFirstLine()? 20: 40) - renderer.getFillWidth()
-            ).setCalcaluteFill(renderer ->
-                renderer.getFillWidth() + renderer.getContentWidth()
-            ).setGetZero(() -> 0)
+            .setCalcaluteSpace(r -> (r.isFirstLine()? 20: 40) - r.getFillWidth())
+            .setCalcaluteFill(r -> r.getFillWidth() + r.getContentWidth())
+            .setCompareHeight(r -> r.getFillHeight() < r.getNewHeight()?
+                r.getNewHeight(): r.getFillHeight()
+            )
+            .setAddRunning(r -> r.getRunningTotal() + r.getFillHeight())
+            .setToZero(() -> 0)
+
             .build();
         return builder.build();
     }

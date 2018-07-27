@@ -6,16 +6,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public final class MockBridgeDivision implements BridgeDivision{
 
-    public static void test(String[][] expect, ExportDivisionText<?> test){
+    public static <T extends Number> void test(String[][] texts, T size,
+        ExportDivisionText<T> test
+    ){
         int i = 0;
         for (ExportDivisionTextLine<?> line: test){
             int j = 0;
             for(ExportContentText text: line){
-                assertEquals(expect[i][j], text.getText());
+                assertEquals(texts[i][j], text.getText(), "getText()");
                 j++;
             }
             i++;
         }
+        assertEquals(size, test.getHeight(), "getHeight()");
     }
 
     private static Iterable<BridgeContent> buildList(String ... texts){

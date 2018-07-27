@@ -2,19 +2,27 @@ package com.creativeartie.writerstudio.export;
 
 import java.util.*;
 
-/** Export a section of text, like paragraphs and headings. */
+/** Export a part of a page like the header and footer. */
 abstract class ExportMatter<T extends Number>
     extends ExportCollection<T, ExportDivisionText<T>>
 {
     private T fillHeight;
-    private ArrayList<ExportDivisionText> lineList;
+    private ArrayList<ExportDivisionText<T>> lineList;
 
-    ExportMatter(BridgeMatter content, RenderMatter<T> render){
+    ExportMatter(){
         lineList = new ArrayList<>();
-
     }
 
-    private void fillContents(Iterable<BridgeMatter> content){
+    List<ExportDivisionText<T>> fillContents(ExportDivisionText<T> content,
+        T height
+    ){
+        ArrayList<ExportDivisionText<T>> overflow = new ArrayList<>();
 
+        return overflow;
+    }
+
+    @Override
+    protected List<ExportDivisionText<T>> delegateRaw(){
+        return lineList;
     }
 }
