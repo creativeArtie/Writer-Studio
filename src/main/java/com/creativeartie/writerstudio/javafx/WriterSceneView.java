@@ -24,6 +24,7 @@ abstract class WriterSceneView extends BorderPane{
     private MenuBarMainControl mainMenuBar;
     private CheatsheetPaneControl cheatsheetPane;
     private TextPaneControl textPane;
+    private ResearchPaneControl researchPane;
     private MetaDataPaneControl metaDataPane;
     private List<TableDataControl<?>> dataTables;
     private HeadingsPaneControl headingsPane;
@@ -125,7 +126,10 @@ abstract class WriterSceneView extends BorderPane{
         textPane = new TextPaneControl();
         Tab main = buildTab(WindowText.TAB_TEXT, textPane);
 
-        right.getTabs().addAll(main);
+        researchPane = new ResearchPaneControl();
+        Tab research = buildTab(WindowText.TAB_WEB, researchPane);
+
+        right.getTabs().addAll(main, research);
         return right;
 
     }
