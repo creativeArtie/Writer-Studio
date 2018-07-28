@@ -1,7 +1,10 @@
 package com.creativeartie.writerstudio.export;
 
 public enum DataLineType{
-    DEFAULT,
+    LEFT,
+    CENTER,
+    RIGHT,
+    RUNNING,
     SECTION_1,
     SECTION_2,
     SECTION_3,

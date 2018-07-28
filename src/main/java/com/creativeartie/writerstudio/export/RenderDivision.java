@@ -76,7 +76,7 @@ public final class RenderDivision<T extends Number> extends Render<T>{
 
     /// %Part 3: Getter for rendering properties
 
-    public RenderContent<T> getContentRender(){
+    RenderContent<T> getContentRender(){
         return contentRender;
     }
 

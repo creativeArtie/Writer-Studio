@@ -6,19 +6,47 @@ import java.util.*;
 abstract class ExportMatter<T extends Number>
     extends ExportCollection<T, ExportDivisionText<T>>
 {
+    private final RenderMatter<T> outputRender;
+
+    private T maxHeight;
     private T fillHeight;
     private ArrayList<ExportDivisionText<T>> lineList;
 
-    ExportMatter(){
+    ExportMatter(RenderMatter<T> output){
+        outputRender = output;
         lineList = new ArrayList<>();
     }
 
-    List<ExportDivisionText<T>> fillContents(ExportDivisionText<T> content,
-        T height
-    ){
-        ArrayList<ExportDivisionText<T>> overflow = new ArrayList<>();
+    T getMaxHeight(){
+        return maxHeight;
+    }
 
-        return overflow;
+    void setMaxHeight(T height){
+        maxHeight = height;
+    }
+
+    T getFillHeight(){
+        return fillHeight;
+    }
+
+    void setFillHeight(T height){
+        fillHeight = height;
+    }
+
+    boolean fillContent(ExportDivisionText<T> content){
+        T adding = content.getHeight();
+        if(outputRender.toZero().equals(maxHeight) ||
+            outputRender.canFit(this, adding)
+        ){
+            lineList.add(content);
+            fillHeight = outputRender.addSize(this, adding);
+            return true;
+        }
+        return false;
+    }
+
+    void removeLast(int lines){
+        lineList.subList(lines, lineList.size()).clear();
     }
 
     @Override

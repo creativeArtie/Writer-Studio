@@ -7,8 +7,8 @@ final class ExportDivisionText<T extends Number>
     extends ExportCollection<T, ExportDivisionTextLine<T>>
 {
 
-    private final BridgeDivision spanLine;
-    private final RenderDivision<T> lineRender;
+    private final BridgeDivision inputBridge;
+    private final RenderDivision<T> outputRender;
 
     private final ArrayList<ExportDivisionTextLine<T>> outputLines;
     private final boolean hasStart;
@@ -16,10 +16,10 @@ final class ExportDivisionText<T extends Number>
     private final DataLineType lineType;
 
     ExportDivisionText(BridgeDivision line, RenderDivision<T> render){
-        spanLine = line;
+        inputBridge = line;
         outputLines = new ArrayList<>();
         lineType = line.getLineType();
-        lineRender = render;
+        outputRender = render;
         fillContents(line.getContent());
         hasStart = true;
     }
@@ -27,13 +27,13 @@ final class ExportDivisionText<T extends Number>
     private void fillContents(Iterable<BridgeContent> contents){
         assert outputLines.isEmpty(): "outputLines not Empty";
         ExportDivisionTextLine<T> line = new ExportDivisionTextLine<>(
-            lineRender);
+            outputRender);
         outputLines.add(line);
         for (BridgeContent content: contents){
             Optional<ExportContentText<T>> overflow = line.append(content,
                 lineType, hasStart && outputLines.size() <= 1);
             while(overflow.isPresent()){
-                line = new ExportDivisionTextLine<>(lineRender);
+                line = new ExportDivisionTextLine<>(outputRender);
                 outputLines.add(line);
                 overflow = line.append(overflow.get());
             }
@@ -42,7 +42,7 @@ final class ExportDivisionText<T extends Number>
     }
 
     T getHeight(){
-        T running = lineRender.toZero();
+        T running = outputRender.toZero();
         for (ExportDivisionTextLine<T> child: outputLines){
             running = child.addHeight(running);
         }

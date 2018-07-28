@@ -7,17 +7,16 @@ final class ExportDivisionTextLine<T extends Number>
     extends ExportCollection<T, ExportContentText<T>>
 {
 
-    private ExportDivisionText exportParent;
     private final ArrayList<ExportContentText<T>> outputContent;
-    private final RenderDivision<T> lineRender;
+    private final RenderDivision<T> outputRender;
     private T fillWidth;
     private T fillHeight;
 
-    ExportDivisionTextLine(RenderDivision<T> renderer){
-        lineRender = renderer;
+    ExportDivisionTextLine(RenderDivision<T> render){
+        outputRender = render;
         outputContent = new ArrayList<>();
-        fillWidth = renderer.toZero();
-        fillHeight = renderer.toZero();
+        fillWidth = render.toZero();
+        fillHeight = render.toZero();
     }
 
     boolean isFilled(){
@@ -27,7 +26,7 @@ final class ExportDivisionTextLine<T extends Number>
     Optional<ExportContentText<T>> append(BridgeContent text, DataLineType type,
         boolean first
     ){
-        return append(new ExportContentText<>(text, type,lineRender.getContentRender()), first);
+        return append(new ExportContentText<>(text, type,outputRender.getContentRender()), first);
     }
 
     Optional<ExportContentText<T>> append(ExportContentText<T> text){
@@ -37,10 +36,10 @@ final class ExportDivisionTextLine<T extends Number>
     private Optional<ExportContentText<T>> append(ExportContentText<T> text,
         boolean first
     ){
-        T space = lineRender.calcaluteSpace(this, first);
+        T space = outputRender.calcaluteSpace(this, first);
         Optional<ExportContentText<T>> overflow = text.splitContent(space);
         if (! text.isEmpty()){
-            fillWidth = lineRender.calcaluteFill(this, text);
+            fillWidth = outputRender.calcaluteFill(this, text);
             outputContent.add(text);
         }
         return overflow;
@@ -56,13 +55,13 @@ final class ExportDivisionTextLine<T extends Number>
 
     T addHeight(T subTotal){
         if (subTotal == null){
-            subTotal = lineRender.toZero();
+            subTotal = outputRender.toZero();
         }
-        fillHeight = lineRender.toZero();
+        fillHeight = outputRender.toZero();
         for (ExportContentText<T> text: this){
-            fillHeight = lineRender.compareHeight(this, text.getHeight());
+            fillHeight = outputRender.compareHeight(this, text.getHeight());
         }
-        return lineRender.addRunning(this, subTotal);
+        return outputRender.addRunning(this, subTotal);
     }
 
     @Override

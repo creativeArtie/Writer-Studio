@@ -7,31 +7,31 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 /** Export a span of text */
 final class ExportContentText<T extends Number> {
 
-    private final BridgeContent inputText;
+    private final BridgeContent inputBridge;
     private final DataLineType lineType;
-    private final RenderContent<T> contentRender;
+    private final RenderContent<T> outputRender;
     private String outputText;
     private boolean isStart;
 
     public ExportContentText(BridgeContent text, DataLineType type,
         RenderContent<T> render
     ){
-        inputText = text;
+        inputBridge = text;
         lineType = type;
-        contentRender = render;
+        outputRender = render;
         outputText = text.getText();
         isStart = true;
     }
 
     private ExportContentText(ExportContentText<T> self, String text){
-        contentRender = self.contentRender;
-        inputText = self.inputText;
+        outputRender = self.outputRender;
+        inputBridge = self.inputBridge;
         lineType = self.lineType;
         outputText = text;
     }
 
     Optional<ExportContentText<T>> splitContent(T width){
-        String[] text = contentRender.splitContent(this, width);
+        String[] text = outputRender.splitContent(this, width);
         stateCheck(text.length == 2, "Unexpected split length: " + text.length);
         outputText = text[0];
         if (text[1].length() > 0){
@@ -45,7 +45,7 @@ final class ExportContentText<T extends Number> {
     }
 
     BridgeContent getStyle(){
-        return inputText;
+        return inputBridge;
     }
 
     DataLineType getLineType(){
@@ -57,15 +57,15 @@ final class ExportContentText<T extends Number> {
     }
 
     public T getWidth(){
-        return contentRender.calculateWidth(this);
+        return outputRender.calculateWidth(this);
     }
 
     public T getHeight(){
-        return contentRender.calcuateHeight(this);
+        return outputRender.calcuateHeight(this);
     }
 
     public RenderContent<T> getRender(){
-        return contentRender;
+        return outputRender;
     }
 
     @Override
