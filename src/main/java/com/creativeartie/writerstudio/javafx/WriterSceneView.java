@@ -242,6 +242,10 @@ abstract class WriterSceneView extends BorderPane{
     TextPaneControl getTextPane(){
         return textPane;
     }
+    
+    ResearchPaneControl getResearchPane(){
+		return researchPane;
+	}
 
     HeadingsPaneControl getHeadingsPane(){
         return headingsPane;

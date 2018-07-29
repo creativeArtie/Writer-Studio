@@ -60,6 +60,7 @@ public class WriterSceneControl extends WriterSceneView {
     @Override
     protected void bindChildren(Scene scene){
         getTextPane().setupProperties(this);
+        getResearchPane().setupProperties(this);
         getMainMenuBar().setupProperties(this);
         getMetaDataPane().setupProperties(this);
         getCheatsheetPane().setupProperties(this);
