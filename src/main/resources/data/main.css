@@ -63,6 +63,5 @@
 }
 
 .web-address{
-	-fx-alignment:center;
-	-fx-text-alignment:center;
+    -fx-text-alignment:center;
 }

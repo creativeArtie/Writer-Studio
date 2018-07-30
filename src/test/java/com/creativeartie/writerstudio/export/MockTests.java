@@ -10,7 +10,7 @@ public class MockTests{
 
     static ExportContentText<Integer> contentExporter(String text){
         return new ExportContentText<>(new MockBridgeContent(text),
-            DataLineType.DEFAULT, MockFactoryRender.FACTORY.getRenderContent()
+            DataLineType.LEFT, MockFactoryRender.FACTORY.getRenderContent()
         );
     }
 

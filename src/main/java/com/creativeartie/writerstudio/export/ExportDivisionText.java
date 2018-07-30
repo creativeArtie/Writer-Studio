@@ -41,12 +41,22 @@ final class ExportDivisionText<T extends Number>
         outputLines.removeIf(l -> l.isEmpty());
     }
 
-    T getHeight(){
+    T getFillHeight(){
         T running = outputRender.toZero();
         for (ExportDivisionTextLine<T> child: outputLines){
             running = child.addHeight(running);
         }
         return running;
+    }
+
+    Optional<ExportDivisionText<T>> split(T height, boolean footnotes){
+        ArrayList<ExportDivisionTextLine<T>> overflow = new ArrayList<>();
+        /*T running = outputRender.toZero();
+        for (ExportDivisionTextLine<T> child: outputLines){
+            T size = child.addHeight(running);
+        }*/
+        return null;
+
     }
 
     @Override

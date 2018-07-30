@@ -1,5 +1,6 @@
 package com.creativeartie.writerstudio.export;
 
+import java.util.*;
 import java.util.function.*;
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
@@ -45,7 +46,7 @@ public class RenderMatter<T extends Number> extends Render<T>{
     /// %Part 2.1: Render data
 
     private RenderDivision<T> contentRender;
-    private T maxHeight;
+    private Optional<T> maxHeight;
     private T fillHeight;
     private T currentHeight;
 
@@ -60,7 +61,7 @@ public class RenderMatter<T extends Number> extends Render<T>{
         return contentRender;
     }
 
-    public T getMaxHeight(){
+    public Optional<T> getMaxHeight(){
         return maxHeight;
     }
 

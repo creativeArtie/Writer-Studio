@@ -8,20 +8,21 @@ abstract class ExportMatter<T extends Number>
 {
     private final RenderMatter<T> outputRender;
 
-    private T maxHeight;
+    private Optional<T> maxHeight;
     private T fillHeight;
     private ArrayList<ExportDivisionText<T>> lineList;
 
     ExportMatter(RenderMatter<T> output){
         outputRender = output;
         lineList = new ArrayList<>();
+        maxHeight = Optional.empty();
     }
 
-    T getMaxHeight(){
+    Optional<T> getMaxHeight(){
         return maxHeight;
     }
 
-    void setMaxHeight(T height){
+    void setMaxHeight(Optional<T> height){
         maxHeight = height;
     }
 
@@ -34,7 +35,7 @@ abstract class ExportMatter<T extends Number>
     }
 
     boolean fillContent(ExportDivisionText<T> content){
-        T adding = content.getHeight();
+        T adding = content.getFillHeight();
         if(outputRender.toZero().equals(maxHeight) ||
             outputRender.canFit(this, adding)
         ){

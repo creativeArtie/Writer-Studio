@@ -30,6 +30,10 @@ final class ExportContentText<T extends Number> {
         outputText = text;
     }
 
+    Optional<BridgeDivision> getFootnote(){
+        return inputBridge.getNote();
+    }
+
     Optional<ExportContentText<T>> splitContent(T width){
         String[] text = outputRender.splitContent(this, width);
         stateCheck(text.length == 2, "Unexpected split length: " + text.length);

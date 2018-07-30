@@ -53,6 +53,17 @@ final class ExportDivisionTextLine<T extends Number>
         return fillHeight;
     }
 
+    ArrayList<ExportDivisionText<T>> getNotes(){
+        ArrayList<ExportDivisionText<T>> notes = new ArrayList<>();
+        /*for (ExportContentText<T> text: this){
+            text.getFootnote()
+                .map(b -> new ExportDivisionText(line,
+                .filter(l -> ! notes.contains(l))
+                .ifPresent(l -> notes.add(l));
+        }*/
+        return notes;
+    }
+
     T addHeight(T subTotal){
         if (subTotal == null){
             subTotal = outputRender.toZero();

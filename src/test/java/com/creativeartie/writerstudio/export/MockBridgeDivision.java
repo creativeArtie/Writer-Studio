@@ -18,7 +18,7 @@ public final class MockBridgeDivision implements BridgeDivision{
             }
             i++;
         }
-        assertEquals(size, test.getHeight(), "getHeight()");
+        assertEquals(size, test.getFillHeight(), "getFillHeight()");
     }
 
     private static Iterable<BridgeContent> buildList(String ... texts){
@@ -37,7 +37,7 @@ public final class MockBridgeDivision implements BridgeDivision{
     }
 
     public MockBridgeDivision(String ... texts){
-        this(DataLineType.DEFAULT, buildList(texts));
+        this(DataLineType.LEFT, buildList(texts));
     }
 
     public MockBridgeDivision(DataLineType type, Iterable<BridgeContent> content){
@@ -46,7 +46,7 @@ public final class MockBridgeDivision implements BridgeDivision{
     }
 
     public MockBridgeDivision(Iterable<BridgeContent> content){
-        this(DataLineType.DEFAULT, content);
+        this(DataLineType.LEFT, content);
     }
 
     @Override

@@ -28,6 +28,7 @@ abstract class WriterSceneView extends BorderPane{
     private MetaDataPaneControl metaDataPane;
     private List<TableDataControl<?>> dataTables;
     private HeadingsPaneControl headingsPane;
+    private TabPane mainTabs;
 
     private ReadOnlyObjectWrapper<WritingText> writingText;
     private ReadOnlyObjectWrapper<WritingStat> writingStat;
@@ -121,7 +122,7 @@ abstract class WriterSceneView extends BorderPane{
     }
 
     private TabPane buildRightTabs(){
-        TabPane right = buildTabPane();
+        mainTabs = buildTabPane();
 
         textPane = new TextPaneControl();
         Tab main = buildTab(WindowText.TAB_TEXT, textPane);
@@ -129,8 +130,8 @@ abstract class WriterSceneView extends BorderPane{
         researchPane = new ResearchPaneControl();
         Tab research = buildTab(WindowText.TAB_WEB, researchPane);
 
-        right.getTabs().addAll(main, research);
-        return right;
+        mainTabs.getTabs().addAll(main, research);
+        return mainTabs;
 
     }
 
@@ -242,10 +243,14 @@ abstract class WriterSceneView extends BorderPane{
     TextPaneControl getTextPane(){
         return textPane;
     }
-    
+
     ResearchPaneControl getResearchPane(){
-		return researchPane;
-	}
+        return researchPane;
+    }
+
+    TabPane getMainTabPane(){
+        return mainTabs;
+    }
 
     HeadingsPaneControl getHeadingsPane(){
         return headingsPane;

@@ -14,9 +14,7 @@ import com.creativeartie.writerstudio.lang.markup.*;
 final class HeadingsPaneControl extends HeadingsPaneView{
 
     private WritingText writingText;
-    private int caretPosition;
 
-    private ReadOnlyBooleanProperty textReady;
     private BooleanProperty refocusText;
     private ObjectProperty<SpanBranch> lastSelected;
 
@@ -38,11 +36,7 @@ final class HeadingsPaneControl extends HeadingsPaneView{
         getOutlineTree().getSelectionModel().selectedItemProperty()
                 .addListener((d, o, n) ->
             listenOutline(n));
-        control.getTextPane().getTextArea().caretPositionProperty().addListener(
-            (d, o, n) -> showHeading(n.intValue())
-        );
         lastSelected = control.lastSelectedProperty();
-        textReady = control.getTextPane().textReadyProperty();
         refocusText = control.refocusTextProperty();
     }
 
@@ -85,7 +79,7 @@ final class HeadingsPaneControl extends HeadingsPaneView{
     /// %Part 2.2: getHeadingTree().getSelectionModel().selectedItemProperty()
 
     private void listenHeading(TreeItem<SectionSpanHead> head){
-        if (textReady.getValue() && head != null){
+        if (head != null){
             lastSelected.setValue(head.getValue());
             showHeading(head.getValue().getStart());
         }
@@ -94,7 +88,7 @@ final class HeadingsPaneControl extends HeadingsPaneView{
 
     /// %Part 2.3: getOutlineTree().getSelectionModel().selectedItemProperty()
     private void listenOutline(TreeItem<SectionSpanScene> scene){
-        if (textReady.getValue() && scene != null){
+        if (scene != null){
             lastSelected.setValue(scene.getValue());
         }
         refocusText.setValue(true);
@@ -103,7 +97,6 @@ final class HeadingsPaneControl extends HeadingsPaneView{
     /// %Part 2.3: control.getTextPane().getTextArea().caretPositionProperty()
 
     private void showHeading(int position){
-        if (! textReady.getValue()) return;
         if (writingText == null) return;
         Optional<SectionSpanHead> head = writingText.locateLeaf(position)
             .flatMap(s -> s.getParent(SectionSpanHead.class));
