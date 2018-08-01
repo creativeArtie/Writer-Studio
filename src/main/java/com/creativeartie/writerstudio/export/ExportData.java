@@ -8,40 +8,63 @@ public class ExportData<T extends Number> {
 
     private ContentData inputContent;
     private RenderData<T> renderExporter;
-    private final DataLineType lineType;
-    private String outputText;
-    private boolean isStart;
+    private String outputContent;
+    private DataLineType lineType;
+    private int lineSplit;
 
-    ExportData(ContentData input, DataLineType type, RenderData<T> render){
-        inputContent = input;
+    ExportData(ContentData content, DataLineType type, RenderData<T> renderer){
+        inputContent = content;
         lineType = type;
-        renderExporter = render;
-        outputText = input.getText();
-        isStart = true;
+        renderExporter = renderer;
+        updateContent();
+        lineSplit = 0;
     }
 
-    private ExportData(ExportData<T> self, String text){
-        renderExporter = self.renderExporter;
-        inputContent = self.inputContent;
-        lineType = self.lineType;
-        outputText = text;
+    private ExportData(ExportData<T> data, OutputContentInfo info){
+        inputContent = data.inputContent;
+        renderExporter = data.renderExporter;
+        outputContent = info.getEndText();
+        lineType = data.lineType;
+        lineSplit = info.getLineSplit();
     }
 
-    Optional<ExportData<T>> splitContent(T width){
-        String[] text = renderExporter.splitContent(outputText, width);
-        stateCheck(text.length == 2, "Unexpected split length: " + text.length);
-        outputText = text[0];
-        if (text[1].length() > 0){
-            return Optional.of(new ExportData<>(this, text[1]));
+    private void updateContent(){
+        OutputContentInfo info = new OutputContentInfo(this, lineType);
+        info = renderExporter.update(info);
+        lineSplit = info.getLineSplit();
+        outputContent = info.getEndText();
+    }
+
+    Optional<ExportData<T>> split(T spaces){
+        OutputContentInfo info = new OutputContentInfo(this, lineType);
+        info = renderExporter.update(info);
+        lineSplit = info.getLineSplit();
+        outputContent = info.getStartText();
+        if (info.getEndText().length() > 0){
+            return Optional.of(new ExportData<T>(this, info));
         }
         return Optional.empty();
     }
 
-    String getText(){
-        return outputText;
+    Optional<ExportLineMain<T>> getFootnote(){
+        Optional<ContentLine> line = inputContent.getFootnote();
+        if (line.isPresent()){
+            RenderLine<T> render = renderExporter.newFootnote();
+            return Optional.of(new ExportLineMain<T>(line.get(), render));
+        }
+        return Optional.empty();
     }
 
-    ContentData getStyle(){
+    void updateContent(OutputPageInfo info){
+        inputContent.updatePageInfo(info);
+        updateContent();
+    }
+
+    T getFillHeight(){
+        return null;
+    }
+
+    ContentData getContentData(){
         return inputContent;
     }
 
@@ -49,20 +72,11 @@ public class ExportData<T extends Number> {
         return lineType;
     }
 
-    boolean isEmpty(){
-        return outputText.length() == 0;
+    String getCurrentText(){
+        return outputContent;
     }
 
-    public T getWidth(){
-        return renderExporter.getWidth(inputContent, outputText);
-    }
-
-    public T getHeight(){
-        return renderExporter.getHeight(inputContent, outputText);
-    }
-
-    @Override
-    public String toString(){
-        return "\"" + outputText + "\"";
+    int getLineSplit(){
+        return lineSplit;
     }
 }

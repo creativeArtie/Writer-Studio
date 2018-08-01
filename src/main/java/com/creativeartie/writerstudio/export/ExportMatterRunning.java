@@ -13,7 +13,7 @@ public final class ExportMatterRunning<T extends Number> extends ExportMatter<T>
 
     void render(){
         for(ContentLine input: inputContent){
-            RenderLine<T> renderer = getRenderer().newLine();
+            RenderLine<T> renderer = getRenderer().newLine(input.getLineType());
             ExportLineMain<T> output = new ExportLineMain<>(input, renderer);
             output.render();
             addFillHeight(output.getFillHeight());

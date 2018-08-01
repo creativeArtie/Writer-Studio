@@ -19,7 +19,8 @@ public final class ExportMatterContent<T extends Number> extends ExportMatter<T>
     }
 
     Optional<ExportLineMain<T>> append(ContentLine line){
-        return addLine(new ExportLineMain<>(line, getRenderer().newLine()));
+        return addLine(new ExportLineMain<>(line, getRenderer().newLine(line
+            .getLineType())));
     }
 
     Optional<ExportLineMain<T>> append(ExportLineMain<T> line){
@@ -29,21 +30,21 @@ public final class ExportMatterContent<T extends Number> extends ExportMatter<T>
     private Optional<ExportLineMain<T>> addLine(ExportLineMain<T> lines){
         int i = 0;
         for (ExportLineData<T> line: lines){
-			T grand = getFillHeight(); 
-			grand = getRenderer().addHeight(grand, line.getAllHeight());
-			List<ExportLineMain<T>> notes = line.getFootnotes();
-			if (! notes.isEmpty() && exportFootnote.isEmpty()){
-				grand = getRenderer().addHeight(grand, 
-					getRenderer().getFootnotePadding());
-			}
+            T grand = getFillHeight();
+            grand = getRenderer().addHeight(grand, line.getAllHeight(exportFootnote));
+            List<ExportLineMain<T>> notes = line.getFootnotes(exportFootnote);
+            if (! notes.isEmpty() && exportFootnote.isEmpty()){
+                grand = getRenderer().addHeight(grand,
+                    getRenderer().getFootnotePadding());
+            }
             if (getRenderer().canFitHeight(maxHeight, grand)){
-				i++;
+                i++;
                 exportFootnote.addNotes(notes);
                 addFillHeight(grand);
             } else {
-				ExportLineMain<T>[] split = lines.splitAt(i);
-				getChildren().add(split[0]);
-                return Optional.of(split[1]);
+                ExportLineMain<T> split = lines.splitAt(i);
+                getChildren().add(lines);
+                return Optional.of(split);
             }
             getChildren().add(lines);
         }

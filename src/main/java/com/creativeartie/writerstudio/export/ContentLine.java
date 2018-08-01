@@ -1,6 +1,13 @@
 package com.creativeartie.writerstudio.export;
 
-public interface ContentLine {
-	// public OutputPageInfo getPageInfo;
+import java.util.*;
+
+public interface ContentLine extends Comparable<ContentLine>{
+
+    public DataLineType getLineType();
+
+    public List<ContentData> getContent();
+
+    public void updatePageInfo(OutputPageInfo info);
 
 }

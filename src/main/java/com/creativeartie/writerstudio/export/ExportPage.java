@@ -46,8 +46,8 @@ public final class ExportPage<T extends Number>{
         outputContent.setFootnote(outputFootnote);
 
         if (overflowLine.isPresent()){
-			ExportLineMain main = overflowLine.get();
-			main.setPageInfo(info);
+            ExportLineMain main = overflowLine.get();
+            main.updatePageInfo(info);
             overflowLine = outputContent.append(overflowLine.get());
             if (overflowLine.isPresent()){
                 return Optional.of(new ExportPage<T>(this));

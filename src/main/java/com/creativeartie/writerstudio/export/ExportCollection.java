@@ -22,10 +22,10 @@ abstract class ExportCollection<T> extends ForwardingList<T>{
         }
         return outputContent.get();
     }
-    
+
     void clearContent(){
-		outputContent = Optional.empty();
-	}
+        outputContent = Optional.empty();
+    }
 
     protected abstract List<T> getChildren();
 }
