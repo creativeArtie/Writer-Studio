@@ -7,35 +7,35 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 /** Export a span of text */
 final class ExportContentText<T extends Number> {
 
-    private final BridgeContent inputBridge;
+    private final BridgeContent contentBridge;
     private final DataLineType lineType;
-    private final RenderContent<T> outputRender;
+    private final RenderContent<T> contentRender;
     private String outputText;
     private boolean isStart;
 
-    public ExportContentText(BridgeContent text, DataLineType type,
+    public ExportContentText(BridgeContent bridge, DataLineType type,
         RenderContent<T> render
     ){
-        inputBridge = text;
+        contentBridge = bridge;
         lineType = type;
-        outputRender = render;
-        outputText = text.getText();
+        contentRender = render;
+        outputText = bridge.getText();
         isStart = true;
     }
 
     private ExportContentText(ExportContentText<T> self, String text){
-        outputRender = self.outputRender;
-        inputBridge = self.inputBridge;
+        contentRender = self.contentRender;
+        contentBridge = self.contentBridge;
         lineType = self.lineType;
         outputText = text;
     }
 
     Optional<BridgeDivision> getFootnote(){
-        return inputBridge.getNote();
+        return contentBridge.getNote();
     }
 
     Optional<ExportContentText<T>> splitContent(T width){
-        String[] text = outputRender.splitContent(this, width);
+        String[] text = contentRender.splitContent(this, width);
         stateCheck(text.length == 2, "Unexpected split length: " + text.length);
         outputText = text[0];
         if (text[1].length() > 0){
@@ -49,7 +49,7 @@ final class ExportContentText<T extends Number> {
     }
 
     BridgeContent getStyle(){
-        return inputBridge;
+        return contentBridge;
     }
 
     DataLineType getLineType(){
@@ -61,15 +61,15 @@ final class ExportContentText<T extends Number> {
     }
 
     public T getWidth(){
-        return outputRender.calculateWidth(this);
+        return contentRender.calculateWidth(this);
     }
 
     public T getHeight(){
-        return outputRender.calcuateHeight(this);
+        return contentRender.calcuateHeight(this);
     }
 
     public RenderContent<T> getRender(){
-        return outputRender;
+        return contentRender;
     }
 
     @Override

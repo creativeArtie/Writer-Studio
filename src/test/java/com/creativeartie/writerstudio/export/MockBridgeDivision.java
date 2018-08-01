@@ -50,8 +50,8 @@ public final class MockBridgeDivision implements BridgeDivision{
     }
 
     @Override
-    public Iterable<BridgeContent> getContent(){
-        return listContent;
+    public Iterator<BridgeContent> iterator(){
+        return listContent.iterator();
     }
 
     public MockBridgeDivision setListContent(String ... texts){

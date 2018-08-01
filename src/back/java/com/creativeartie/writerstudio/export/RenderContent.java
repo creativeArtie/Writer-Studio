@@ -29,7 +29,7 @@ public final class RenderContent<T extends Number> extends Render<T>{
         }
 
         @Override
-        public RenderContent<T> buildChildren(){
+        protected RenderContent<T> buildChildren(){
             stateNotNull(splitContent, "splitContent");
             stateNotNull(calcuateHeight, "calcuateHeight");
             stateNotNull(splitContent, "splitContent");

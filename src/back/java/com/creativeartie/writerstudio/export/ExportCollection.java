@@ -7,7 +7,7 @@ import com.google.common.collect.*;
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** Export a span of text */
-abstract class ExportBaseParent<T extends Number, U> extends ForwardingList<U> {
+abstract class ExportCollection<T extends Number, U> extends ForwardingList<U> {
 
     @Override
     protected final List<U> delegate(){

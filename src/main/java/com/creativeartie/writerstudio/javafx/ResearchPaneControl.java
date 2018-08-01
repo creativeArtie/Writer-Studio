@@ -16,7 +16,7 @@ import com.creativeartie.writerstudio.resource.*;
 final class ResearchPaneControl extends ResearchPaneView {
 
     private WebHistory webHistory;
-    private static final Duration LIMITS = Duration.ofMinutes(1);
+    private static final Duration LIMITS = Duration.ofMinutes(2);
     private Optional<LocalDateTime> endTime;
     private BooleanProperty refocusText;
     private BooleanProperty disableTab;
@@ -62,7 +62,9 @@ final class ResearchPaneControl extends ResearchPaneView {
             loadUrl(getAddressBarField().getText())
         );
 
-        getWebEngine().load("http://example.com");
+        getSearchBarField().setOnAction(e -> searchItem());
+
+        getWebEngine().load("http://duckduckgo.com");
         updateHistory();
     }
 
@@ -103,10 +105,15 @@ final class ResearchPaneControl extends ResearchPaneView {
                 endTime = Optional.empty();
                 return;
             }
-            getTimeOutLabel().setText(String.format(
-                WindowText.RESEARCH_TIMEOUT.getText(),
-                Duration.between(now, ends).toMillis() / 1000f
-            ));
+
+            float time = Duration.between(now, ends).toMillis() / 1000f;
+            String text = time > 60?
+                String.format(
+                    WindowText.RESEARCH_TIMEOUT_MINS.getText(), time / 60f
+                ): String.format(
+                    WindowText.RESEARCH_TIMEOUT_SECS.getText(), time
+                );
+            getTimeOutLabel().setText(text);
         }
     }
 
@@ -130,24 +137,26 @@ final class ResearchPaneControl extends ResearchPaneView {
         for (WebHistory.Entry entry: webHistory.getEntries()){
             if (ptr < current){
                 getBackButton().setDisable(false);
-                newMenu(getBackButton().getItems(), ptr, entry);
+                newMenu(ptr, entry).ifPresent(
+                    m -> getBackButton().getItems().add(0, m)
+                );
             } else if (ptr > current){
                 getForwardButton().setDisable(false);
-                newMenu(getForwardButton().getItems(), ptr, entry);
+                newMenu(ptr, entry).ifPresent(
+                    m -> getForwardButton().getItems().add(m)
+                );
             }
             ptr++;
         }
     }
 
-    private void newMenu(ObservableList<MenuItem> list, int position,
-            WebHistory.Entry entry
-        ){
+    private Optional<MenuItem> newMenu(int position, WebHistory.Entry entry){
         if(entry.getTitle() == null){
-            return;
+            return Optional.empty();
         }
         MenuItem item = new MenuItem(entry.getTitle());
         item.setOnAction(e -> go(position - webHistory.getCurrentIndex()));
-        list.add(item);
+        return Optional.of(item);
     }
 
     private void loadUrl(String text){
@@ -157,4 +166,8 @@ final class ResearchPaneControl extends ResearchPaneView {
         getWebEngine().load(text);
     }
 
+    private void searchItem(){
+        String text = getSearchBarField().getText().replace(' ', '+');
+        getWebEngine().load("http://duckduckgo.com?q=" + text);
+    }
 }

@@ -2,56 +2,32 @@ package com.creativeartie.writerstudio.export;
 
 import java.util.*;
 
-/** Export a part of a page like the header and footer. */
 abstract class ExportMatter<T extends Number>
-    extends ExportCollection<T, ExportDivisionText<T>>
+    extends ExportCollection<ExportLineMain<T>>
 {
-    private final RenderMatter<T> outputRender;
-
-    private Optional<T> maxHeight;
+    private final RenderMatter<T> renderExporter;
+    private final ArrayList<ExportLineMain<T>> outputContent;
     private T fillHeight;
-    private ArrayList<ExportDivisionText<T>> lineList;
 
-    ExportMatter(RenderMatter<T> output){
-        outputRender = output;
-        lineList = new ArrayList<>();
-        maxHeight = Optional.empty();
+    public ExportMatter(RenderMatter<T> renderer){
+        renderExporter = renderer;
+        outputContent = new ArrayList<>();
     }
 
-    Optional<T> getMaxHeight(){
-        return maxHeight;
-    }
-
-    void setMaxHeight(Optional<T> height){
-        maxHeight = height;
-    }
-
-    T getFillHeight(){
-        return fillHeight;
-    }
-
-    void setFillHeight(T height){
-        fillHeight = height;
-    }
-
-    boolean fillContent(ExportDivisionText<T> content){
-        T adding = content.getFillHeight();
-        if(outputRender.toZero().equals(maxHeight) ||
-            outputRender.canFit(this, adding)
-        ){
-            lineList.add(content);
-            fillHeight = outputRender.addSize(this, adding);
-            return true;
-        }
-        return false;
-    }
-
-    void removeLast(int lines){
-        lineList.subList(lines, lineList.size()).clear();
+    RenderMatter<T> getRenderer(){
+        return renderExporter;
     }
 
     @Override
-    protected List<ExportDivisionText<T>> delegateRaw(){
-        return lineList;
+    protected List<ExportLineMain<T>> getChildren(){
+        return outputContent;
+    }
+
+    void updateHeight(ExportLineMain<T> line){
+        fillHeight = renderExporter.addHeight(fillHeight, line.getFillHeight());
+    }
+
+    public T getFillHeight(){
+        return fillHeight;
     }
 }

@@ -2,15 +2,21 @@ package com.creativeartie.writerstudio.export;
 
 import java.util.*;
 
-/** Export a section of text, like paragraphs and headings. */
-final class ExportMatterRunning<T extends Number> extends ExportMatter<T>{
+public final class ExportMatterRunning<T extends Number> extends ExportMatter<T>{
+    private final ContentMatter inputContent;
 
-    ExportMatterRunning(BridgeMatter input, RenderMatter<T> render){
+    public ExportMatterRunning(ContentMatter input, RenderMatter<T> render){
         super(render);
-        for (BridgeDivision division: input.getContent()){
-            fillContent(
-                new ExportDivisionText<>(division, render.getContentRender())
-            );
+        inputContent = input;
+    }
+
+
+    void render(){
+        for(ContentLine input: inputContent){
+            RenderLine<T> renderer = getRenderer().newLine();
+            ExportLineMain<T> output = new ExportLineMain<>(input, renderer);
+            output.render();
+            updateHeight(output);
         }
     }
 }

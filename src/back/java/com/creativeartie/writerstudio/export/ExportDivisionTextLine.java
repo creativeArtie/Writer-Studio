@@ -7,26 +7,26 @@ final class ExportDivisionTextLine<T extends Number>
     extends ExportCollection<T, ExportContentText<T>>
 {
 
-    private final ArrayList<ExportContentText<T>> outputContent;
-    private final RenderDivision<T> outputRender;
+    private final ArrayList<ExportContentText<T>> contentBridge;
+    private final RenderDivision<T> contentRender;
     private T fillWidth;
     private T fillHeight;
 
     ExportDivisionTextLine(RenderDivision<T> render){
-        outputRender = render;
-        outputContent = new ArrayList<>();
+        contentRender = render;
+        contentBridge = new ArrayList<>();
         fillWidth = render.toZero();
         fillHeight = render.toZero();
     }
 
     boolean isFilled(){
-        return ! outputContent.isEmpty();
+        return ! contentBridge.isEmpty();
     }
 
     Optional<ExportContentText<T>> append(BridgeContent text, DataLineType type,
         boolean first
     ){
-        return append(new ExportContentText<>(text, type,outputRender.getContentRender()), first);
+        return append(new ExportContentText<>(text, type,contentRender.getContentRender()), first);
     }
 
     Optional<ExportContentText<T>> append(ExportContentText<T> text){
@@ -36,11 +36,11 @@ final class ExportDivisionTextLine<T extends Number>
     private Optional<ExportContentText<T>> append(ExportContentText<T> text,
         boolean first
     ){
-        T space = outputRender.calcaluteSpace(this, first);
+        T space = contentRender.calcaluteSpace(this, first);
         Optional<ExportContentText<T>> overflow = text.splitContent(space);
         if (! text.isEmpty()){
-            fillWidth = outputRender.calcaluteFill(this, text);
-            outputContent.add(text);
+            fillWidth = contentRender.calcaluteFill(this, text);
+            contentBridge.add(text);
         }
         return overflow;
     }
@@ -66,18 +66,18 @@ final class ExportDivisionTextLine<T extends Number>
 
     T addHeight(T subTotal){
         if (subTotal == null){
-            subTotal = outputRender.toZero();
+            subTotal = contentRender.toZero();
         }
-        fillHeight = outputRender.toZero();
+        fillHeight = contentRender.toZero();
         for (ExportContentText<T> text: this){
-            fillHeight = outputRender.compareHeight(this, text.getHeight());
+            fillHeight = contentRender.compareHeight(this, text.getHeight());
         }
-        return outputRender.addRunning(this, subTotal);
+        return contentRender.addRunning(this, subTotal);
     }
 
     @Override
     protected List<ExportContentText<T>> delegateRaw(){
-        return outputContent;
+        return contentBridge;
     }
 
 }

@@ -4,15 +4,24 @@ import java.util.*;
 
 import com.google.common.collect.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+abstract class ExportCollection<T> extends ForwardingList<T>{
+    private Optional<ImmutableList<T>> outputContent;
 
-/** Export a span of text */
-abstract class ExportCollection<T extends Number, U> extends ForwardingList<U> {
-
-    @Override
-    protected final List<U> delegate(){
-        return ImmutableList.copyOf(delegateRaw());
+    ExportCollection(){
+        outputContent = Optional.empty();
     }
 
-    abstract List<U> delegateRaw();
+    @Override
+    protected List<T> delegate(){
+        if (! outputContent.isPresent()){
+            List<T> children = getChildren();
+            if (children.isEmpty()){
+                return ImmutableList.of();
+            }
+            outputContent = Optional.of(ImmutableList.copyOf(children));
+        }
+        return outputContent.get();
+    }
+
+    protected abstract List<T> getChildren();
 }

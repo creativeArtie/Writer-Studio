@@ -34,7 +34,7 @@ public final class RenderDivision<T extends Number> extends Render<T>{
         }
 
         @Override
-        public RenderDivision<T> buildChildren(){
+        protected RenderDivision<T> buildChildren(){
             stateNotNull(calcaluteSpace, "calcaluteSpace");
             stateNotNull(calcaluteFill, "calcaluteFill");
             stateNotNull(compareHeight, "compareHeight");

@@ -60,9 +60,11 @@ abstract class ResearchPaneView extends BorderPane{
 
 
         addressBarField = new TextField();
+        addressBarField.setPromptText(WindowText.RESEARCH_URL.getText());
         pane.add(addressBarField, 2, 0);
 
         searchBarField = new TextField();
+        searchBarField.setPromptText(WindowText.RESEARCH_SEARCH.getText());
         pane.add(searchBarField, 3, 0);
 
 
@@ -123,6 +125,10 @@ abstract class ResearchPaneView extends BorderPane{
 
     TextField getAddressBarField(){
         return addressBarField;
+    }
+
+    TextField getSearchBarField(){
+        return searchBarField;
     }
 
     Label getTimeOutLabel(){

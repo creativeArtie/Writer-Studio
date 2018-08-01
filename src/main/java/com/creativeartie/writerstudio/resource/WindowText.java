@@ -81,9 +81,12 @@ public enum WindowText {
     NOTE_CARD_SOURCE("NoteDetail.SourceLabel"),
     NOTE_CARD_EDIT("NoteDetail.GotoEdit"),
 
+    RESEARCH_URL("ResearchPane.AddressPlaceholder"),
+    RESEARCH_SEARCH("ResearchPane.SearchPlaceholder"),
     RESEARCH_BACK("ResearchPane.BackButton"),
     RESEARCH_FORWARD("ResearchPane.ForwardButton"),
-    RESEARCH_TIMEOUT("ResearchPane.TimeoutFormat"),
+    RESEARCH_TIMEOUT_MINS("ResearchPane.TimeoutMinutes"),
+    RESEARCH_TIMEOUT_SECS("ResearchPane.TimeoutSeconds"),
 
     DATA_META("DocData.MetaDataTitle"),
     DATA_AREA("DocData.MattersTitle"),

@@ -8,12 +8,10 @@ import com.creativeartie.writerstudio.export.*;
 
 abstract class Format<T extends FormatSpan> implements BridgeContent{
 
-    private ArrayList<Consumer<String>> textListeners;
-    private T contentSpan;
+    private final T contentSpan;
 
     Format(T span){
         contentSpan = span;
-        textListeners = new ArrayList<>();
     }
 
     @Override
@@ -34,13 +32,6 @@ abstract class Format<T extends FormatSpan> implements BridgeContent{
     @Override
     public boolean isCoded(){
         return contentSpan.isCoded();
-    }
-
-    protected void textEdited(){
-        String text = getText();
-        for (Consumer<String> listener: textListeners){
-            listener.accept(text);
-        }
     }
 
     T getSpan(){

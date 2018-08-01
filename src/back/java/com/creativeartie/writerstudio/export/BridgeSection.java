@@ -9,4 +9,6 @@ public interface BridgeSection{
     public BridgeMatter getFooter();
 
     public BridgeMatter getContent();
+
+    public DataPageType getPageType();
 }
