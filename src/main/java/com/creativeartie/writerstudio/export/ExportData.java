@@ -29,15 +29,15 @@ public class ExportData<T extends Number> {
     }
 
     private void updateContent(){
-        OutputContentInfo info = new OutputContentInfo(this, lineType);
+        OutputContentInfo<T> info = new OutputContentInfo<>(this, lineType, null);
         info = renderExporter.update(info);
         lineSplit = info.getLineSplit();
         outputContent = info.getEndText();
     }
 
     Optional<ExportData<T>> split(T spaces){
-        OutputContentInfo info = new OutputContentInfo(this, lineType);
-        info = renderExporter.update(info);
+        OutputContentInfo<T> info = new OutputContentInfo<>(this, lineType, spaces);
+        info = renderExporter.split(info);
         lineSplit = info.getLineSplit();
         outputContent = info.getStartText();
         if (info.getEndText().length() > 0){
@@ -60,8 +60,14 @@ public class ExportData<T extends Number> {
         updateContent();
     }
 
+    T getFillWidth(){
+        OutputContentInfo<T> info = new OutputContentInfo<>(this, lineType, null);
+        return renderExporter.getWidth(info);
+    }
+
     T getFillHeight(){
-        return null;
+        OutputContentInfo<T> info = new OutputContentInfo<>(this, lineType, null);
+        return renderExporter.getHeight(info);
     }
 
     ContentData getContentData(){

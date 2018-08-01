@@ -4,11 +4,11 @@ import java.util.*;
 
 public interface ContentData {
 
+    public void updatePageInfo(OutputPageInfo info);
+
     public String getText();
 
     public Optional<ContentLine> getFootnote();
-
-    public void updatePageInfo(OutputPageInfo info);
 
     public boolean isBold();
 
@@ -19,6 +19,8 @@ public interface ContentData {
     public boolean isCoded();
 
     public boolean isSuperscript();
+
+    public Optional<String> getLinkPath();
 
     // public boolean isKeepLast();
 

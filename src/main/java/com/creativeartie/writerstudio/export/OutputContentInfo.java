@@ -2,25 +2,30 @@ package com.creativeartie.writerstudio.export;
 
 import java.util.*;
 
-public class OutputContentInfo {
+public class OutputContentInfo<T> {
     private final ContentData contentData;
 
     private final DataLineType lineType;
-    private final String fullText;
+    private String fullText;
+    private final String currentText;
 
     private int lineSplit;
     private String startText;
     private String endText;
+    private T widthSpace;
 
-    OutputContentInfo(ExportData<?> data, DataLineType type){
+    OutputContentInfo(ExportData<?> data, DataLineType type, T space){
         contentData = data.getContentData();
 
         lineType = data.getLineType();
         fullText = contentData.getText();
+        currentText = data.getCurrentText();
 
         lineSplit = data.getLineSplit();
         startText = fullText;
         endText = "";
+
+        widthSpace = space;
     }
 
     public int getLineSplit(){
@@ -31,6 +36,10 @@ public class OutputContentInfo {
         lineSplit = value;
     }
 
+    public String getCurrentText(){
+        return currentText;
+    }
+
     String getStartText(){
         return startText;
     }
@@ -39,12 +48,16 @@ public class OutputContentInfo {
         startText = value;
     }
 
-    String getEndText(){
-        return endText;
-    }
-
     public String getFullText(){
         return fullText;
+    }
+
+    void setFullText(String text){
+        fullText = text;
+    }
+
+    String getEndText(){
+        return endText;
     }
 
     public void setEndText(String value){
@@ -73,6 +86,14 @@ public class OutputContentInfo {
 
     public boolean isSuperscript(){
         return contentData.isSuperscript();
+    }
+
+    public Optional<String> getLinkPath(){
+        return contentData.getLinkPath();
+    }
+
+    public T getWidthSpaces(){
+        return widthSpace;
     }
 
 }

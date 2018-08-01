@@ -4,7 +4,11 @@ public interface RenderData<T extends Number> {
 
     public RenderLine<T> newFootnote();
 
-    public OutputContentInfo update(OutputContentInfo info);
+    public OutputContentInfo<T> update(OutputContentInfo<T> info);
 
-    public OutputContentInfo split(OutputContentInfo info);
+    public OutputContentInfo<T> split(OutputContentInfo<T> info);
+
+    public T getWidth(OutputContentInfo<T> info);
+
+    public T getHeight(OutputContentInfo<T> info);
 }
