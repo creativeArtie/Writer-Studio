@@ -23,8 +23,8 @@ abstract class ExportMatter<T extends Number>
         return outputContent;
     }
 
-    void updateHeight(ExportLineMain<T> line){
-        fillHeight = renderExporter.addHeight(fillHeight, line.getFillHeight());
+    void addFillHeight(T height){
+        fillHeight = renderExporter.addHeight(fillHeight, height);
     }
 
     public T getFillHeight(){

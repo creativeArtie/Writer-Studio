@@ -16,7 +16,7 @@ public final class ExportMatterRunning<T extends Number> extends ExportMatter<T>
             RenderLine<T> renderer = getRenderer().newLine();
             ExportLineMain<T> output = new ExportLineMain<>(input, renderer);
             output.render();
-            updateHeight(output);
+            addFillHeight(output.getFillHeight());
         }
     }
 }

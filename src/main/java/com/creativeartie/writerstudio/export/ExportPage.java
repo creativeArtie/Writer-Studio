@@ -30,7 +30,7 @@ public final class ExportPage<T extends Number>{
     }
 
     Optional<ExportPage<T>> render(){
-        OuputPageInfo info = renderExporter.getPageInfo();
+        OutputPageInfo info = renderExporter.getPageInfo();
         outputHeader = new ExportMatterRunning<>(inputContent.getHeader(info),
             renderExporter.getHeader());
         outputFooter = new ExportMatterRunning<>(inputContent.getFooter(info),
@@ -46,6 +46,8 @@ public final class ExportPage<T extends Number>{
         outputContent.setFootnote(outputFootnote);
 
         if (overflowLine.isPresent()){
+			ExportLineMain main = overflowLine.get();
+			main.setPageInfo(info);
             overflowLine = outputContent.append(overflowLine.get());
             if (overflowLine.isPresent()){
                 return Optional.of(new ExportPage<T>(this));

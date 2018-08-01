@@ -4,9 +4,9 @@ public interface ContentSection {
 
     public DataPageType getPageType();
 
-    public ContentMatter getHeader(OuputPageInfo info);
+    public ContentMatter getHeader(OutputPageInfo info);
 
-    public ContentMatter getFooter(OuputPageInfo info);
+    public ContentMatter getFooter(OutputPageInfo info);
 
-    public ContentMatter getContent(OuputPageInfo info, int from);
+    public ContentMatter getContent(OutputPageInfo info, int from);
 }

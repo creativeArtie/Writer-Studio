@@ -1,7 +1,7 @@
 package com.creativeartie.writerstudio.export;
 
 public interface RenderPage<T extends Number> {
-    /// private DataPageType pageType;
+    /// private DataPageType getPageType;
 
     public RenderMatter<T> getHeader();
 
@@ -11,7 +11,7 @@ public interface RenderPage<T extends Number> {
 
     public RenderMatter<T> getFootnote();
 
-    public OuputPageInfo getPageInfo();
+    public OutputPageInfo getPageInfo();
 
     public T getEmptyHeight(T header, T footer);
 }
