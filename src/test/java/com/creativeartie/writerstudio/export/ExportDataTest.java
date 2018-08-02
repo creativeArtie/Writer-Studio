@@ -34,11 +34,15 @@ public class ExportDataTest{
         );
     }
 
-    @ParameterizedTest(name = "{2} -> {0}{1}")
+    @ParameterizedTest(name = "{2} -> {0}{1}")@Disabled
     @CsvSource({
         "'',Hello,1",
     /// ----01234
         "'',Hello,4",
+    /// --0123456
+        "'Hello ','World',6",
+    /// --0123456 789
+        "'Hello ','World',9",
     /// --01234567890123
         "'Twinkle, ','twinkle, little star',13",
         "'', 'How I wonder what you are!',2",

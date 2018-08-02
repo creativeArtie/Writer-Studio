@@ -7,6 +7,7 @@ import com.creativeartie.writerstudio.export.*;
 import com.google.common.collect.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 public class MockRenderData implements RenderData<Integer>{
 
@@ -21,61 +22,82 @@ public class MockRenderData implements RenderData<Integer>{
     public OutputContentInfo<Integer> split(OutputContentInfo<Integer> info){
         String full = info.getFullText();
         int split = info.getLineSplit();
-        int spaces = info.getWidthSpaces();
+        Integer spaces = info.getWidthSpaces();
 
-        /// Skip the text of the last lines
-        int ptr = 0;
-        for(int i = 0; i < split; i++){
-            ptr = full.indexOf(ptr, ' ');
-        }
+        Optional<Integer> start = getFillingText(full, split);
 
-        String filling = full.substring(ptr);
-        if (getWidth(filling) <= spaces){
-            /// fits everything RETURN
-            info.setStartText(filling);
+        stateCheck(start.isPresent(), "Line split is too large: " + split);
+
+        /// split[0] = last line text to ignore
+        /// split[1] = current text to add
+        String[] found = splitText(full, start.get());
+
+        if (isFitAll(found[1], spaces)){
+            info.setStartText(found[1]);
             info.setEndText("");
-            return info;
+            /// info.setLineSplit(split); // No change
+            return info; /// FITS ALL
         }
 
-
-        ptr = filling.indexOf(' '); /// reuses ptr :-)
-        if (ptr == -1){
-            ///Single word -> not fit RETURN
+        Optional<Integer> current = getFillingText(full, ++split);
+        if (! current.isPresent()){
             info.setStartText("");
-            info.setEndText(filling);
-            return info;
+            info.setEndText(found[1]);
+            /// info.setLineSplit(split - 1); // No change
+            return info; /// FITS NONE
         }
 
-        System.out.println("MockRenderData");
-        System.out.println(filling);
-        System.out.println(filling.length());
-        System.out.println(ptr);
-        System.out.println();
-
-        split++;
-        String current = filling.substring(ptr);
-        while (getWidth(current) < spaces){
-            int tmp = filling.indexOf(ptr, ' ');
-            if (tmp == -1){
-                /// Last world
+        while(current.isPresent()){
+            /// split[0] = text to fit
+            /// split[1] = possible overflow
+            String[] test = splitText(full, start.get(), current.get());
+            if (! isFitAll(test[0], spaces)){
+                info.setStartText(found[0]);
+                info.setEndText(found[1]);
+                info.setLineSplit(split - 1);
+                return info; /// FOUND FIRST UNFIT
             }
-            current = filling.substring(tmp);
-            split++;
+            found = test;
+            current = getFillingText(full, ++split);
         }
 
-        /// First word / After x word not fit RETURN
-        info.setStartText(filling.substring(0, ptr + 1));
-        info.setEndText(filling.substring(ptr + 1));
-        info.setLineSplit(split);
-        return info;
+        info.setStartText(found[0]);
+        info.setEndText(found[1]);
+        info.setLineSplit(split - 1);
+        return info; ///
+
     }
+
+    private Optional<Integer> getFillingText(String full, int to){
+        Integer starter = 0;
+        for (int i = 0; i < to; i++){
+            starter = full.indexOf(starter,' ');
+            if (starter == -1){
+                return Optional.empty();
+            }
+        }
+        return Optional.of(starter);
+    }
+
+    private boolean isFitAll(String text, Integer spaces){
+        return text.length() < spaces;
+    }
+
+    private String[] splitText(String full, int to){
+        return splitText(full, 0, to);
+    }
+
+    private String[] splitText(String full, int from, int to){
+        return new String[]{full.substring(from, to + 1), full.substring(to)};
+    }
+
 
     public Integer getWidth(OutputContentInfo<Integer> info){
         return getWidth(info.getCurrentText());
     }
 
     private Integer getWidth(String text){
-         return text.length();
+        return text.length();
     }
 
     public Integer getHeight(OutputContentInfo<Integer> info){
