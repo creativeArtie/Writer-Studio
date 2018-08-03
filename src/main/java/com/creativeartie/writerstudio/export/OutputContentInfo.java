@@ -92,7 +92,7 @@ public class OutputContentInfo<T> {
         return contentData.getLinkPath();
     }
 
-    public T getWidthSpaces(){
+    public T getWidthSpace(){
         return widthSpace;
     }
 

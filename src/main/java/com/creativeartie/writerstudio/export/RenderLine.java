@@ -8,5 +8,5 @@ public interface RenderLine<T extends Number> {
 
     public T compareHeight(T old, T compare);
 
-    public T getSpaceWidth(T width);
+    public T getWidthSpace(T width);
 }

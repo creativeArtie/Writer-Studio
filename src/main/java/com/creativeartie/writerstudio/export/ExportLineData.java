@@ -22,7 +22,7 @@ public class ExportLineData<T extends Number>
     }
 
     List<ExportLineData<T>> append(ExportData<T> data){
-        T space = renderExporter.getSpaceWidth(fillWidth);
+        T space = renderExporter.getWidthSpace(fillWidth);
         ArrayList<ExportLineData<T>> ans = new ArrayList<>();
         Optional<ExportData<T>> overflow = data.split(space);
         if (overflow.isPresent()){
