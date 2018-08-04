@@ -12,11 +12,7 @@ public class MockContentData implements ContentData{
 
     public Optional<ContentLine> contentFootnote;
 
-    public boolean isBold;
-    public boolean isItalics;
-    public boolean isUnderline;
-    public boolean isCoded;
-    public boolean isSuperscript;
+    public List<DataContentType> formatTypes;
 
     public Optional<String> linkPath;
 
@@ -25,11 +21,7 @@ public class MockContentData implements ContentData{
 
         contentFootnote = Optional.empty();
 
-        isBold = false;
-        isItalics = false;
-        isUnderline = false;
-        isCoded = false;
-        isSuperscript = false;
+        formatTypes = new ArrayList<>();
 
         linkPath = Optional.empty();;
     }
@@ -59,53 +51,8 @@ public class MockContentData implements ContentData{
     }
 
     @Override
-    public boolean isBold(){
-        return isBold;
-    }
-
-    public MockContentData setBold(boolean value){
-        isBold = value;
-        return this;
-    }
-
-    @Override
-    public boolean isItalics(){
-        return isItalics;
-    }
-
-    public MockContentData setItalics(boolean value){
-        isItalics = value;
-        return this;
-    }
-
-    @Override
-    public boolean isUnderline(){
-        return isUnderline;
-    }
-
-    public MockContentData setUnderline(boolean value){
-        isUnderline = value;
-        return this;
-    }
-
-    @Override
-    public boolean isCoded(){
-        return isCoded;
-    }
-
-    public MockContentData setCoded(boolean value){
-        isCoded = value;
-        return this;
-    }
-
-    @Override
-    public boolean isSuperscript(){
-        return isSuperscript;
-    }
-
-    public MockContentData setSuperscript(boolean value){
-        isSuperscript = value;
-        return this;
+    public List<DataContentType> getFormats(){
+        return formatTypes;
     }
 
     @Override
@@ -126,11 +73,8 @@ public class MockContentData implements ContentData{
         assertAll(name,
             () -> assertEquals(contentText, test.getText()),
             () -> assertEquals(contentFootnote, test.getFootnote()),
-            () -> assertEquals(isBold, test.isBold()),
-            () -> assertEquals(isItalics, test.isItalics()),
-            () -> assertEquals(isUnderline, test.isUnderline()),
-            () -> assertEquals(isCoded, test.isCoded()),
-            () -> assertEquals(isSuperscript, test.isSuperscript()),
+            () -> assertArrayEquals(formatTypes.toArray(),
+                test.getFormats().toArray()),
             () -> assertEquals(linkPath, test.getLinkPath())
         );
     }

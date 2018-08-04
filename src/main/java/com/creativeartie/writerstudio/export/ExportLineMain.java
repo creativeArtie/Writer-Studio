@@ -40,7 +40,7 @@ public final class ExportLineMain<T extends Number>
     void render(){
         ArrayList<ExportData<T>> data = new ArrayList<>();
         DataLineType type = inputContent.getLineType();
-        for (ContentData content: inputContent.getContent()){
+        for (ContentData content: inputContent){
             data.add(new ExportData<>(content, type, renderExporter.newData()));
         }
         render(data);

@@ -10,15 +10,7 @@ public interface ContentData {
 
     public Optional<ContentLine> getFootnote();
 
-    public boolean isBold();
-
-    public boolean isItalics();
-
-    public boolean isUnderline();
-
-    public boolean isCoded();
-
-    public boolean isSuperscript();
+    public List<DataContentType> getFormats();
 
     public Optional<String> getLinkPath();
 

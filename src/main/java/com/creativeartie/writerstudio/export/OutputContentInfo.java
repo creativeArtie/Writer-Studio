@@ -68,24 +68,8 @@ public class OutputContentInfo<T> {
         return lineType;
     }
 
-    public boolean isBold(){
-        return contentData.isBold();
-    }
-
-    public boolean isItalics(){
-        return contentData.isItalics();
-    }
-
-    public boolean isUnderline(){
-        return contentData.isUnderline();
-    }
-
-    public boolean isCoded(){
-        return contentData.isCoded();
-    }
-
-    public boolean isSuperscript(){
-        return contentData.isSuperscript();
+    public List<DataContentType> getFormats(){
+        return contentData.getFormats();
     }
 
     public Optional<String> getLinkPath(){

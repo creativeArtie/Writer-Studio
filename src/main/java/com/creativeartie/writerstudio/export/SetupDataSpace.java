@@ -14,7 +14,32 @@ public interface SetupDataSpace<T extends Number> extends RenderData<T>{
                 info.setEndText("");
                 return info;
             }
+        } else {
+            info.setStartText("");
+            info.setEndText("");
+            return info;
         }
+
+        int where = 1;
+        split++;
+        String[] last = current;
+        current = splitLine(line, where);
+        int i = 0;
+        while(current[0].length() > 0){
+            if (! isFitWidth(current[0], info.getWidthSpace())){
+                info.setStartText(last[0]);
+                info.setEndText(last[1]);
+                info.setLineSplit(split - 1);
+                return info;
+            }
+            last = current;
+            current = splitLine(line, where);
+            split++;
+            where++;
+            assert i < info.getFullText().length();
+            i++;
+        }
+
         return info;
     }
 

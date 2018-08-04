@@ -55,24 +55,24 @@ public class ExportDataTest{
         );
     }
 
-    @ParameterizedTest(name = "{2} -> {0}{1}")@Disabled
-    @CsvSource({/*
+    @ParameterizedTest(name = "{2} -> {0}{1}")
+    @CsvSource({
         "'',Hello,1",
     /// ----01234
-        "'',Hello,4",*/
+        "'',Hello,4",
     /// --0123
-        "'Hello ','World',3",/*
+        "'','Hello World',3",
     /// --012345   6789
-        "'Hello ','World',9",/*
+        "'Hello ','World',9",
     /// --012345   67
-        "'Hello ','World',9",/*
+        "'Hello ','World',6",
     /// --01234567890123
         "'Twinkle, ','twinkle, little star',13",
-        "'', 'How I wonder what you are!',2",/*
+        "'', 'How I wonder what you are!',2",
     /// --01234567890
-        "'Up above ','the world so high,',10",/*
+        "'Up above ','the world so high,',10",
     /// --0123456789012345678901
-        "'Like a damond in the ','sky',22"*/
+        "'Like a damond in the ','sky',22"
     })
     public void fitPartData(String first, String second, int split){
         String full = first + second;
