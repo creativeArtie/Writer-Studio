@@ -20,6 +20,9 @@ public class MockRenderData implements SetupDataSpace<Integer>{
     }
 
     public boolean isFitWidth(String text, Integer space){
+        if (text.endsWith(" ")){
+            return text.length() - 1 <= space;
+        }
         return text.length() <= space;
     }
 

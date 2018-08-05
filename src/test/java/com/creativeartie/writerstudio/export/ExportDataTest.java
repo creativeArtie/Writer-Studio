@@ -72,7 +72,15 @@ public class ExportDataTest{
     /// --01234567890
         "'Up above ','the world so high,',10",
     /// --0123456789012345678901
-        "'Like a damond in the ','sky',22"
+        "'Like a damond in the ','sky',22",
+    /// --01234   567
+        "'Then ','the traveller in the dark',7",
+    /// --01234567890
+        "'Thanks you ','for you tiny spark;',10",
+    /// --012345678   9
+        "'He could ','not see where to go,',9",
+    /// --012
+        "'If ','you did not twinkle so.',2"
     })
     public void fitPartData(String first, String second, int split){
         String full = first + second;
@@ -97,5 +105,16 @@ public class ExportDataTest{
                 "height 2")
         );
 
+    }
+
+    public void resplit(){
+        /// -----------0000000000111111111133333333334
+        /// -----------0123456789012345678901234567890
+        String full = "Then the traveller in the dark";
+        /// ---------------
+        ExportData<Integer> test = build(full, DataLineType.LEFT);
+        Optional<ExportData<Integer>> overflow = test.split(8);
+        assertTrue(overflow.isPresent());
+        Optional<ExportData<Integer>> more = overflow.get().split(5);
     }
 }

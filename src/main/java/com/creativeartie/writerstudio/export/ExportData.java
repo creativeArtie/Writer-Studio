@@ -16,6 +16,7 @@ public class ExportData<T extends Number> {
         inputContent = content;
         lineType = type;
         renderExporter = renderer;
+        outputContent = content.getText();
         updateContent();
         lineSplit = 0;
     }
@@ -84,5 +85,14 @@ public class ExportData<T extends Number> {
 
     int getLineSplit(){
         return lineSplit;
+    }
+
+    boolean isFilled(){
+        return outputContent.length() > 0;
+    }
+
+    @Override
+    public String toString(){
+        return "{" + outputContent + "}";
     }
 }

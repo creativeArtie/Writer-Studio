@@ -25,10 +25,11 @@ public class ExportLineData<T extends Number>
         T space = renderExporter.getWidthSpace(fillWidth, isBegin);
         ArrayList<ExportLineData<T>> ans = new ArrayList<>();
         Optional<ExportData<T>> overflow = data.split(space);
+        if (data.isFilled()) outputContent.add(data);
         if (overflow.isPresent()){
             ExportLineData<T> insert = new ExportLineData<>(this);
             ans.add(insert);
-            ans.addAll(insert.append(data));
+            ans.addAll(insert.append(overflow.get())); /// reursive call
         }
         return ans;
     }
