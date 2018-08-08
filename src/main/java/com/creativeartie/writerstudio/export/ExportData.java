@@ -41,7 +41,7 @@ public class ExportData<T extends Number> {
 
     Optional<ExportData<T>> split(T spaces){
         OutputContentInfo<T> info = new OutputContentInfo<>(this, lineType, spaces);
-        info = renderExporter.split(info);
+        info = renderExporter.split(info, keepNext);
         lineSplit = info.getLineSplit();
         outputContent = info.getStartText();
         if (info.getEndText().length() > 0){
@@ -92,6 +92,18 @@ public class ExportData<T extends Number> {
 
     boolean isFilled(){
         return outputContent.length() > 0;
+    }
+
+    boolean isKeepLast(){
+        return inputContent.isKeepLast();
+    }
+
+    void addKeepNext(T width){
+        keepNext = width;
+    }
+
+    T getKeepNext(){
+        return keepNext;
     }
 
     @Override

@@ -10,7 +10,6 @@ public final class ExportMatterRunning<T extends Number> extends ExportMatter<T>
         inputContent = input;
     }
 
-
     void render(){
         for(ContentLine input: inputContent){
             RenderLine<T> renderer = getRenderer().newLine(input.getLineType());

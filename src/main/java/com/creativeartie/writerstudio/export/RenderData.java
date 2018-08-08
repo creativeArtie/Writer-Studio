@@ -6,7 +6,7 @@ public interface RenderData<T extends Number> {
 
     public OutputContentInfo<T> update(OutputContentInfo<T> info);
 
-    public OutputContentInfo<T> split(OutputContentInfo<T> info);
+    public OutputContentInfo<T> split(OutputContentInfo<T> info, T extra);
 
     public T getWidth(OutputContentInfo<T> info);
 

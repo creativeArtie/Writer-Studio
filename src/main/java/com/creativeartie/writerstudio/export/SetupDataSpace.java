@@ -2,14 +2,14 @@ package com.creativeartie.writerstudio.export;
 
 public interface SetupDataSpace<T extends Number> extends RenderData<T>{
 
-    public default OutputContentInfo<T> split(OutputContentInfo<T> info){
+    public default OutputContentInfo<T> split(OutputContentInfo<T> info, T extra){
         String line = info.getFullText();
         int split = info.getLineSplit();
         String[] current = splitLine(line, split);
 
         line = current[1];
         if(line.length() != 0){
-            if (isFitWidth(line, info.getWidthSpace())){
+            if (isFitWidth(line, info.getWidthSpace(), extra)){
                 info.setStartText(line);
                 info.setEndText("");
                 return info;
@@ -23,7 +23,7 @@ public interface SetupDataSpace<T extends Number> extends RenderData<T>{
         int where = 1;
         String[] last = current;
         current = splitLine(line, where);
-        if (! isFitWidth(current[0], info.getWidthSpace())){
+        if (! isFitWidth(current[0], info.getWidthSpace(), extra)){
             info.setStartText("");
             info.setEndText(last[1]);
             info.setLineSplit(split);
@@ -31,7 +31,7 @@ public interface SetupDataSpace<T extends Number> extends RenderData<T>{
         }
         int i = 0;
         while(current[0].length() > 0){
-            if (! isFitWidth(current[0], info.getWidthSpace())){
+            if (! isFitWidth(current[0], info.getWidthSpace(), extra)){
                 info.setStartText(last[0]);
                 info.setEndText(last[1]);
                 info.setLineSplit(split - 1);
@@ -41,6 +41,13 @@ public interface SetupDataSpace<T extends Number> extends RenderData<T>{
             current = splitLine(line, where);
             split++;
             where++;
+            if (current[1].length() == 0){
+                info.setStartText(last[0]);
+                info.setEndText(last[1]);
+                info.setLineSplit(split - 1);
+                return info;
+
+            }
             assert i < info.getFullText().length();
             i++;
         }
@@ -67,6 +74,6 @@ public interface SetupDataSpace<T extends Number> extends RenderData<T>{
         return new String[]{start, end};
     }
 
-    public boolean isFitWidth(String text, T spaces);
+    public boolean isFitWidth(String text, T spaces, T extra);
 
 }

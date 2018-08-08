@@ -16,7 +16,7 @@ public class MockContentData implements ContentData{
 
     private Optional<String> linkPath;
 
-    private boolean keepNext;
+    private boolean keepLast;
 
     public MockContentData(String text){
         contentText = text;
@@ -27,7 +27,7 @@ public class MockContentData implements ContentData{
 
         linkPath = Optional.empty();
 
-        keepNext = false;
+        keepLast = false;
     }
 
     @Override
@@ -70,12 +70,12 @@ public class MockContentData implements ContentData{
     }
 
     @Override
-    public boolean isKeepNext(){
-        return keepNext;
+    public boolean isKeepLast(){
+        return keepLast;
     }
 
-    public MockContentData setKeepNext(boolean value){
-        keepNext = value;
+    public MockContentData setKeepLast(boolean value){
+        keepLast = value;
         return this;
     }
 

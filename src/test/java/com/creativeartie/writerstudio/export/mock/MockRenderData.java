@@ -19,11 +19,12 @@ public class MockRenderData implements SetupDataSpace<Integer>{
         return info;
     }
 
-    public boolean isFitWidth(String text, Integer space){
+    public boolean isFitWidth(String text, Integer space, Integer extra){
+        extra = extra == null? 0: extra;
         if (text.endsWith(" ")){
-            return text.length() - 1 <= space;
+            return text.length() - 1 <= space + extra;
         }
-        return text.length() <= space;
+        return text.length() <= space + extra;
     }
 
     public Integer getWidth(OutputContentInfo<Integer> info){

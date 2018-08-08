@@ -48,7 +48,11 @@ public final class ExportLineMain<T extends Number>
         ExportLineData<T> cur = new ExportLineData<T>(isBegin, renderExporter);
         outputContent.add(cur);
 
+        int i = 0;
         for (ExportData<T> content: data){
+            if (data.get(i + 1).isKeepLast()){
+                content.addKeepNext(data.get(i + 1).getFillWidth());
+            }
             Optional<ExportLineData<T>> overflow = cur.append(content,
                 inputContent.getLineType());
             while (overflow.isPresent()){
@@ -56,6 +60,7 @@ public final class ExportLineMain<T extends Number>
                 outputContent.add(cur);
                 overflow = cur.render();
             }
+            i++;
         }
         if (cur.isEmpty()){
             outputContent.remove(cur);

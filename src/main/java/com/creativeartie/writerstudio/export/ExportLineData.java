@@ -47,6 +47,7 @@ public class ExportLineData<T extends Number>
         return append(data, lineType);
     }
 
+
     T getAllHeight(List<ExportLineMain<T>> current){
         T cur = getFillHeight();
         for(ExportLineMain<T> note: getFootnotes(current)){
