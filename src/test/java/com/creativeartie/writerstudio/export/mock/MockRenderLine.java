@@ -4,6 +4,18 @@ import com.creativeartie.writerstudio.export.*;
 
 public class MockRenderLine implements RenderLine<Integer> {
 
+    private final int firstLine;
+    private final int midLine;
+
+    public MockRenderLine(){
+        this(5, 10);
+    }
+
+    public MockRenderLine(int first, int mid){
+        firstLine = first;
+        midLine = mid;
+    }
+
     public RenderData<Integer> newData(){
         return new MockRenderData();
     }
@@ -18,9 +30,9 @@ public class MockRenderLine implements RenderLine<Integer> {
 
     public Integer getWidthSpace(Integer width, boolean first){
         if (first){
-            return 5;
+            return firstLine - (width == null? 0: width);
         } else {
-            return 10;
+            return midLine - (width == null? 0: width);
         }
     }
 }

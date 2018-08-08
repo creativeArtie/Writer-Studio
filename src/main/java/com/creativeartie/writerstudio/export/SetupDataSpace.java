@@ -21,9 +21,14 @@ public interface SetupDataSpace<T extends Number> extends RenderData<T>{
         }
 
         int where = 1;
-        split++;
         String[] last = current;
         current = splitLine(line, where);
+        if (! isFitWidth(current[0], info.getWidthSpace())){
+            info.setStartText("");
+            info.setEndText(last[1]);
+            info.setLineSplit(split);
+            return info;
+        }
         int i = 0;
         while(current[0].length() > 0){
             if (! isFitWidth(current[0], info.getWidthSpace())){
@@ -39,6 +44,7 @@ public interface SetupDataSpace<T extends Number> extends RenderData<T>{
             assert i < info.getFullText().length();
             i++;
         }
+        assert false: "Unreachable code.";
 
         return info;
     }

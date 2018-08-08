@@ -49,16 +49,16 @@ public final class ExportLineMain<T extends Number>
         outputContent.add(cur);
 
         for (ExportData<T> content: data){
-            List<ExportLineData<T>> overflow = cur.append(content);
-            if (! overflow.isEmpty()){
-                outputContent.addAll(overflow);
-                cur = overflow.get(overflow.size() - 1);
+            Optional<ExportLineData<T>> overflow = cur.append(content);
+            while (overflow.isPresent()){
+                cur = overflow.get();
+                outputContent.add(cur);
+                overflow = cur.render();
             }
         }
         if (cur.isEmpty()){
             outputContent.remove(cur);
         }
-        System.out.println(this);
     }
 
     ExportLineMain<T> splitAt(int at){
@@ -108,5 +108,14 @@ public final class ExportLineMain<T extends Number>
     @Override
     protected List<ExportLineData<T>> getChildren(){
         return outputContent;
+    }
+
+    @Override
+    public String toString(){
+        String text = "[\n";
+        for (ExportLineData<T> line: this){
+            text += "\t" + line + "\n";
+        }
+        return text + "]";
     }
 }

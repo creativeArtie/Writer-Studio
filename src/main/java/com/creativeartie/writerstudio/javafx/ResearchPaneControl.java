@@ -17,6 +17,7 @@ final class ResearchPaneControl extends ResearchPaneView {
 
     private WebHistory webHistory;
     private static final Duration LIMITS = Duration.ofMinutes(2);
+    private static final String HOME = "https://duckduckgo.com";
     private Optional<LocalDateTime> endTime;
     private BooleanProperty refocusText;
     private BooleanProperty disableTab;
@@ -64,7 +65,7 @@ final class ResearchPaneControl extends ResearchPaneView {
 
         getSearchBarField().setOnAction(e -> searchItem());
 
-        getWebEngine().load("http://duckduckgo.com");
+        getWebEngine().load(HOME);
         updateHistory();
     }
 
@@ -103,6 +104,7 @@ final class ResearchPaneControl extends ResearchPaneView {
                 refocusText.setValue(true);
                 disableTab.setValue(true);
                 endTime = Optional.empty();
+                getWebEngine().load(HOME);
                 return;
             }
 

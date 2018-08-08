@@ -2,6 +2,8 @@ package com.creativeartie.writerstudio.export;
 
 import java.util.*;
 
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+
 public class ExportLineData<T extends Number>
     extends ExportCollection<ExportData<T>>
 {
@@ -21,19 +23,25 @@ public class ExportLineData<T extends Number>
         this(false, self.renderExporter);
     }
 
-    List<ExportLineData<T>> append(ExportData<T> data){
+    Optional<ExportLineData<T>> append(ExportData<T> data){
         T space = renderExporter.getWidthSpace(fillWidth, isBegin);
-        ArrayList<ExportLineData<T>> ans = new ArrayList<>();
         Optional<ExportData<T>> overflow = data.split(space);
         if (data.isFilled()) outputContent.add(data);
         if (overflow.isPresent()){
-            ExportLineData<T> insert = new ExportLineData<>(this);
-            ans.add(insert);
-            ans.addAll(insert.append(overflow.get())); /// reursive call
+            ExportLineData<T> ans = new ExportLineData<>(this);
+            ans.outputContent.add(overflow.get());
+            return Optional.of(ans);
         }
-        return ans;
+        return Optional.empty();
     }
 
+    Optional<ExportLineData<T>> render(){
+        stateCheck(outputContent.size() == 1,
+            "content is not contains only 1 data.");
+        ExportData<T> data = outputContent.get(0);
+        outputContent.clear();
+        return append(data);
+    }
 
     T getAllHeight(List<ExportLineMain<T>> current){
         T cur = getFillHeight();

@@ -8,13 +8,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MockContentData implements ContentData{
 
-    public String contentText;
+    private String contentText;
 
-    public Optional<ContentLine> contentFootnote;
+    private Optional<ContentLine> contentFootnote;
 
-    public List<DataContentType> formatTypes;
+    private List<DataContentType> formatTypes;
 
-    public Optional<String> linkPath;
+    private Optional<String> linkPath;
+
+    private boolean keepLast;
 
     public MockContentData(String text){
         contentText = text;
@@ -23,7 +25,9 @@ public class MockContentData implements ContentData{
 
         formatTypes = new ArrayList<>();
 
-        linkPath = Optional.empty();;
+        linkPath = Optional.empty();
+
+        keepLast = false;
     }
 
     @Override
@@ -62,6 +66,16 @@ public class MockContentData implements ContentData{
 
     public MockContentData setLinkPath(Optional<String> value){
         linkPath = value;
+        return this;
+    }
+
+    @Override
+    public boolean isKeepLast(){
+        return keepLast;
+    }
+
+    public MockContentData setKeepLast(boolean value){
+        keepLast = value;
         return this;
     }
 

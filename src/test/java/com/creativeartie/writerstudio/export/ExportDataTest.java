@@ -20,6 +20,7 @@ public class ExportDataTest{
 
     @ParameterizedTest(name = "{0} -> \"{1}\"")
     @CsvSource({
+        "0,'','',''",
         "0,'Hello','','Hello'",
         "1,'Hello','Hello',''",
         "0,'Hello World! One Two Three','','Hello World! One Two Three'",
@@ -28,6 +29,7 @@ public class ExportDataTest{
         "3,'Hello World! One Two Three','Hello World! One ','Two Three'",
         "4,'Hello World! One Two Three','Hello World! One Two ','Three'",
         "5,'Hello World! One Two Three','Hello World! One Two Three',''",
+        "6,'Hello World! One Two Three','Hello World! One Two Three',''",
     })
     public void spaceSplitLine(int at, String text, String first, String second){
         String[] test = new MockRenderData().splitLine(text, at);
@@ -40,7 +42,7 @@ public class ExportDataTest{
 
     @ParameterizedTest(name = "{1} -> {0}")
     /// ---------------------------0123456789012
-    @CsvSource({"Hello World,40", "Hello World!,12", "Hello,123"})
+    @CsvSource({"Hello World,40", "Hello World!,12", "'Hello',213","'',213"})
     public void fitAllData(String text, int width){
         ExportData<Integer> test = build(text, DataLineType.LEFT);
         Optional<ExportData<Integer>> overflow =
@@ -57,9 +59,8 @@ public class ExportDataTest{
 
     @ParameterizedTest(name = "{2} -> {0}{1}")
     @CsvSource({
-        "'',Hello,1",
-    /// ----01234
-        "'',Hello,4",
+    ///
+        "'', 'Hello',3",
     /// --0123
         "'','Hello World',3",
     /// --012345   6789
@@ -73,14 +74,12 @@ public class ExportDataTest{
         "'Up above ','the world so high,',10",
     /// --0123456789012345678901
         "'Like a damond in the ','sky',22",
-    /// --01234   567
-        "'Then ','the traveller in the dark',7",
-    /// --01234567890
-        "'Thanks you ','for you tiny spark;',10",
+    /// --01234   5678
+        "'When ','this blazing sun is gone,',8", /// cut before space
+    /// --012345678
+        "'Then you ','show your little light',10", /// cut at space
     /// --012345678   9
-        "'He could ','not see where to go,',9",
-    /// --012
-        "'If ','you did not twinkle so.',2"
+        "'Twinkle, ','twinkle, through the night',9", /// cut aftr space
     })
     public void fitPartData(String first, String second, int split){
         String full = first + second;
@@ -104,17 +103,46 @@ public class ExportDataTest{
             () -> assertEquals(10, test2.getFillHeight().intValue(),
                 "height 2")
         );
-
     }
 
-    public void resplit(){
-        /// -----------0000000000111111111133333333334
-        /// -----------0123456789012345678901234567890
-        String full = "Then the traveller in the dark";
+    @ParameterizedTest(name = "{0}{1}{2}")
+    @CsvSource({
+        "'','Then the traveller in the dark','',2,300",
+    /// --0123456
+        "'Thanks ','you for your tiny tiny spark','',7,400",
+    /// -----012345678   9
+        "'','He could ','not see where to go',1,9",
+    /// --0123456   012345678
+        "'If you ','did not ','twinkle so.',7,10",
+    /// --012345 0123456
+        "'And ','often ','through my curtain peeks',8,8",
+    /// --01234567   012
+        "'For you ','','never shut your eye',10,2",
+    /// --012345678   01234567890123   456
+        "'Till the ','sun is in the ','sky.',9,17"
+    })
+    public void overflowTwo(String first, String second, String third,
+        int line, int spaces
+    ){
+        String full = first + second + third;
         /// ---------------
         ExportData<Integer> test = build(full, DataLineType.LEFT);
-        Optional<ExportData<Integer>> overflow = test.split(8);
+        Optional<ExportData<Integer>> overflow = test.split(line);
+
+        assertEquals(first, test.getCurrentText(), "first overflow");
+
         assertTrue(overflow.isPresent());
-        Optional<ExportData<Integer>> more = overflow.get().split(5);
+        assertEquals(second + third, overflow.get().getCurrentText(),
+            "first overflow - unsplit");
+
+        Optional<ExportData<Integer>> more = overflow.get().split(spaces);
+        assertEquals(second, overflow.get().getCurrentText(),
+            "first overflow - split");
+        if (third.isEmpty()){
+            assertFalse(more.isPresent(), "more overflow: " + more);
+        } else {
+            assertTrue(more.isPresent(), "more overflow");
+            assertEquals(third, more.get().getCurrentText(), "more overflow");
+        }
     }
 }

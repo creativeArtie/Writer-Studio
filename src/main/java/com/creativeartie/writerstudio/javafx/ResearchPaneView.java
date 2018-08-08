@@ -9,7 +9,6 @@ import javafx.scene.web.*;
 
 import com.creativeartie.writerstudio.resource.*;
 
-
 abstract class ResearchPaneView extends BorderPane{
 
     private SplitMenuButton backButton;
