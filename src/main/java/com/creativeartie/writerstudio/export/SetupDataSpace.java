@@ -68,4 +68,5 @@ public interface SetupDataSpace<T extends Number> extends RenderData<T>{
     }
 
     public boolean isFitWidth(String text, T spaces);
+
 }

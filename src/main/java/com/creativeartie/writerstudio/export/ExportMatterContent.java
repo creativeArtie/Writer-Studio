@@ -50,6 +50,4 @@ public final class ExportMatterContent<T extends Number> extends ExportMatter<T>
         }
         return Optional.empty();
     }
-
-
 }

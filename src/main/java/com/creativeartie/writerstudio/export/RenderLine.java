@@ -6,9 +6,9 @@ public interface RenderLine<T extends Number> {
 
     public RenderData<T> newData();
 
-    public T addHeight(T old, T adding);
+    public T addSize(T old, T adding);
 
-    public T compareHeight(T old, T compare);
+    public T compareSize(T old, T compare);
 
     public T getWidthSpace(T width, boolean first);
 }

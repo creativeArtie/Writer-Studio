@@ -27,6 +27,7 @@ public class ExportLineData<T extends Number>
         T space = renderExporter.getWidthSpace(fillWidth, isBegin);
         Optional<ExportData<T>> overflow = data.split(space);
         if (data.isFilled()) outputContent.add(data);
+        fillWidth = renderExporter.addSize(fillWidth, data.getFillWidth());
         if (overflow.isPresent()){
             ExportLineData<T> ans = new ExportLineData<>(this);
             ans.outputContent.add(overflow.get());
@@ -46,7 +47,7 @@ public class ExportLineData<T extends Number>
     T getAllHeight(List<ExportLineMain<T>> current){
         T cur = getFillHeight();
         for(ExportLineMain<T> note: getFootnotes(current)){
-            cur = renderExporter.addHeight(cur, note.getFillHeight());
+            cur = renderExporter.addSize(cur, note.getFillHeight());
         }
         return cur;
     }
@@ -54,7 +55,7 @@ public class ExportLineData<T extends Number>
     T getFillHeight(){
         T cur = null;
         for (ExportData<T> content: outputContent){
-            cur = renderExporter.compareHeight(cur, content.getFillHeight());
+            cur = renderExporter.compareSize(cur, content.getFillHeight());
         }
         return cur;
     }

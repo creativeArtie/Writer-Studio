@@ -14,6 +14,6 @@ public interface ContentData {
 
     public Optional<String> getLinkPath();
 
-    public boolean isKeepLast();
+    public boolean isKeepNext();
 
 }

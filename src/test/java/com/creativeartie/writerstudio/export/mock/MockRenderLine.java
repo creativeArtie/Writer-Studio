@@ -20,11 +20,11 @@ public class MockRenderLine implements RenderLine<Integer> {
         return new MockRenderData();
     }
 
-    public Integer addHeight(Integer old, Integer adding){
+    public Integer addSize(Integer old, Integer adding){
         return old == null? adding: old + adding;
     }
 
-    public Integer compareHeight(Integer old, Integer compare){
+    public Integer compareSize(Integer old, Integer compare){
         return old == null? compare: (old < compare? compare: old);
     }
 

@@ -29,7 +29,7 @@ public final class ExportLineMain<T extends Number>
         renderExporter = self.renderExporter;
 
         fillHeight = null;
-        outputContent = output;
+        outputContent = new ArrayList<>(output);
         isBegin = false;
     }
 
@@ -63,26 +63,22 @@ public final class ExportLineMain<T extends Number>
 
     ExportLineMain<T> splitAt(int at){
         argumentCloseOpen(at, "at", 0, size());
-        ArrayList<ExportLineData<T>> keep = new ArrayList<>();
-        ArrayList<ExportLineData<T>> overflow = new ArrayList<>();
-        int i = 0;
-        fillHeight = null;
-        for (ExportLineData<T> line: outputContent){
-            if(i < at){
-                keep.add(line);
-                fillHeight = renderExporter.addHeight(fillHeight,
-                    line.getFillHeight());
-            } else {
-                overflow.add(line);
-            }
-        }
-        return new ExportLineMain<>(this, overflow);
+        ArrayList<ExportLineData<T>> start = new ArrayList<>(
+            outputContent.subList(0, at)
+        );
+        ArrayList<ExportLineData<T>> end = new ArrayList<>(
+            outputContent.subList(at, outputContent.size())
+        );
+        clearContent();
+        outputContent.clear();
+        outputContent.addAll(start);
+        return new ExportLineMain<>(this, end);
     }
 
     T getFillHeight(){
         if (fillHeight == null){
             for(ExportLineData<T> data: outputContent){
-                fillHeight = renderExporter.addHeight(fillHeight,
+                fillHeight = renderExporter.addSize(fillHeight,
                     data.getFillHeight());
             }
         }
