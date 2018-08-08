@@ -10,5 +10,5 @@ public interface RenderLine<T extends Number> {
 
     public T compareSize(T old, T compare);
 
-    public T getWidthSpace(T width, boolean first);
+    public T getWidthSpace(T width, boolean first, DataLineType type);
 }

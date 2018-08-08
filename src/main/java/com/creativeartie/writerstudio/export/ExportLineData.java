@@ -11,20 +11,23 @@ public class ExportLineData<T extends Number>
     private ArrayList<ExportData<T>> outputContent;
     private final boolean isBegin;
     private T fillWidth;
+    private DataLineType lineType;
 
     ExportLineData(boolean begin, RenderLine<T> render){
         isBegin = begin;
         renderExporter = render;
         outputContent = new ArrayList<>();
         fillWidth = null;
+        lineType = null;
     }
 
     private ExportLineData(ExportLineData<T> self){
         this(false, self.renderExporter);
     }
 
-    Optional<ExportLineData<T>> append(ExportData<T> data){
-        T space = renderExporter.getWidthSpace(fillWidth, isBegin);
+    Optional<ExportLineData<T>> append(ExportData<T> data, DataLineType type){
+        T space = renderExporter.getWidthSpace(fillWidth, isBegin, type);
+        lineType = type;
         Optional<ExportData<T>> overflow = data.split(space);
         if (data.isFilled()) outputContent.add(data);
         fillWidth = renderExporter.addSize(fillWidth, data.getFillWidth());
@@ -41,7 +44,7 @@ public class ExportLineData<T extends Number>
             "content is not contains only 1 data.");
         ExportData<T> data = outputContent.get(0);
         outputContent.clear();
-        return append(data);
+        return append(data, lineType);
     }
 
     T getAllHeight(List<ExportLineMain<T>> current){

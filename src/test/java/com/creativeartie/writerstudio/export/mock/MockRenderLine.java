@@ -28,7 +28,7 @@ public class MockRenderLine implements RenderLine<Integer> {
         return old == null? compare: (old < compare? compare: old);
     }
 
-    public Integer getWidthSpace(Integer width, boolean first){
+    public Integer getWidthSpace(Integer width, boolean first, DataLineType type){
         if (first){
             return firstLine - (width == null? 0: width);
         } else {

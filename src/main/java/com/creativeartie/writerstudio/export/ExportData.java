@@ -11,6 +11,7 @@ public class ExportData<T extends Number> {
     private String outputContent;
     private DataLineType lineType;
     private int lineSplit;
+    private T keepNext;
 
     ExportData(ContentData content, DataLineType type, RenderData<T> renderer){
         inputContent = content;
@@ -19,6 +20,7 @@ public class ExportData<T extends Number> {
         outputContent = content.getText();
         updateContent();
         lineSplit = 0;
+        keepNext = null;
     }
 
     private ExportData(ExportData<T> data, OutputContentInfo info){
@@ -27,6 +29,7 @@ public class ExportData<T extends Number> {
         outputContent = info.getEndText();
         lineType = data.lineType;
         lineSplit = info.getLineSplit();
+        keepNext = data.keepNext;
     }
 
     private void updateContent(){
