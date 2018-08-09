@@ -8,7 +8,7 @@ public interface SetupDataSpace<T extends Number> extends RenderData<T>{
         String[] current = splitLine(line, split);
 
         line = current[1];
-        if(line.length() != 0){
+        if(line.length() != 0){;
             if (isFitWidth(line, info.getWidthSpace(), extra)){
                 info.setStartText(line);
                 info.setEndText("");

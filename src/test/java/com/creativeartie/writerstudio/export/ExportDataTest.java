@@ -74,12 +74,14 @@ public class ExportDataTest{
         "'Up above ','the world so high,',10",
     /// --0123456789012345678901
         "'Like a damond in the ','sky',22",
-    /// --01234   5678
-        "'When ','this blazing sun is gone,',8", /// cut before space
+    /// --0123456789   0
+        "'When this ','blazing sun is gone,',10", /// cut after space
+    /// --01234   56
+        "'When ','he nothing shines upon,',6", /// cut before space
     /// --012345678
         "'Then you ','show your little light',10", /// cut at space
     /// --012345678   9
-        "'Twinkle, ','twinkle, through the night',9", /// cut aftr space
+        "'Twinkle, ','twinkle, through the night',9", /// cut after space
     })
     public void fitPartData(String first, String second, int split){
         String full = first + second;
@@ -125,7 +127,7 @@ public class ExportDataTest{
         int line, int spaces
     ){
         String full = first + second + third;
-        /// ---------------
+
         ExportData<Integer> test = build(full, DataLineType.LEFT);
         Optional<ExportData<Integer>> overflow = test.split(line);
 
@@ -145,4 +147,46 @@ public class ExportDataTest{
             assertEquals(third, more.get().getCurrentText(), "more overflow");
         }
     }
+
+    @ParameterizedTest
+    @CsvSource({
+    /// --000000000011111111112222222222
+    /// --012345678901234567890123456789
+        "'As your bright and tiny spark','',35,5",
+    /// --00000000001111111111222222222233333
+    /// --01234567890123456789012345678901234
+        "'Lights the traveller in the dark','',34,2",
+    /// --00000000001111111111222---222222233333
+    /// --01234567890123456789012---345678901234
+        "'Though I know not what ','you are,',32,7",
+    /// --0000000000111111111122222--2222233333
+    /// --0123456789012345678901234--5678901234
+        "'Twinkle, twinkle, little ','star',30,4",
+    })
+    public void extraSpaces(String first, String second, int size, int spaces){
+        String full = first + second;
+
+        ExportData<Integer> test = build(full, DataLineType.LEFT);
+        test.setKeepNext(spaces);
+        Optional<ExportData<Integer>> overflow =
+            assertTimeout(Duration.ofSeconds(5), () -> test.split(size));
+        assertAll(
+            () -> assertEquals(second.length() > 0, overflow.isPresent(), "overflow"),
+            () -> assertEquals(first, test.getCurrentText(), "text 1"),
+            () -> assertEquals(first.length(), test.getFillWidth().intValue(),
+                "width 1"),
+            () -> assertEquals(10, test.getFillHeight().intValue(),
+                "height 1")
+        );
+        if (! overflow.isPresent()) return;
+        ExportData<Integer> test2 = overflow.get();
+        assertAll(
+            () -> assertEquals(second, test2.getCurrentText(), "text 2"),
+            () -> assertEquals(second.length(), test2.getFillWidth().intValue(),
+                "width 2"),
+            () -> assertEquals(10, test2.getFillHeight().intValue(),
+                "height 2")
+        );
+    }
+
 }

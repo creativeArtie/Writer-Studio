@@ -124,15 +124,9 @@ public class ExportLineTest{
             "all day long "
         );
         MockRenderLine render = new MockRenderLine(20, 25);
-        System.out.println("===================================================");
-        System.out.println(start);
         ExportLineMain<Integer> base = new ExportLineMain<>(content, render);
         base.render();
         ExportLineMain<Integer> split = start == -1? null : base.splitAt(start);
-
-        System.out.println("---------------------------------------------------");
-        System.out.println(base);
-        System.out.println(split);
 
         assertEquals(start == -1? 6: start, base.size(), "line size old");
         if (split != null) assertEquals(6 - start, split.size(), "line size new");
@@ -190,5 +184,13 @@ public class ExportLineTest{
         assertEquals(2, test.get(line).size(), "line 6 size: " + line);
         assertData("round, ",                  10, test, line, 0);
         assertData("all day long ",            10, test, line, 1);
+    }
+
+    @Test
+    public void longFootnote(){
+        MockContentLine line = new MockContentLine();
+        line.add(new MockContentData("No purchase neccessary."));
+        line.add(new MockContentData("After first purchase").setKeepLast(true));
+
     }
 }

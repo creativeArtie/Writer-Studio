@@ -98,7 +98,7 @@ public class ExportData<T extends Number> {
         return inputContent.isKeepLast();
     }
 
-    void addKeepNext(T width){
+    void setKeepNext(T width){
         keepNext = width;
     }
 
