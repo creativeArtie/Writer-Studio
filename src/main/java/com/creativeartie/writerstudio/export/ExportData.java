@@ -50,6 +50,14 @@ public class ExportData<T extends Number> {
         return Optional.empty();
     }
 
+    ExportData<T> splitLast(){
+        OutputContentInfo<T> info = new OutputContentInfo<>(this, lineType, null);
+        info.setLineSplit(info.getLineSplit() - 1);
+        info = renderExporter.split(info, keepNext);
+        outputContent = info.getStartText();
+        return new ExportData<T>(this, info);
+    }
+
     Optional<ExportLineMain<T>> getFootnote(){
         Optional<ContentLine> line = inputContent.getFootnote();
         if (line.isPresent()){

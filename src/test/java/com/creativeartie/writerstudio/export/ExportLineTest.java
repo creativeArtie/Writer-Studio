@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.*;
 
 import java.time.*;
 import java.util.*;
+import java.util.stream.*;
 
 import com.creativeartie.writerstudio.export.mock.*;
 
@@ -80,6 +81,17 @@ public class ExportLineTest{
             assertEquals(1, test.get(i).size(), "line " + i + " size");
             assertData(lines[i], 10, test, i, 0);
         }
+    }
+
+    @Test
+    public void longWord(){
+        String full = "See Pneumonultramicrospicsilicovolcanconiosis Hey you";
+        MockContentLine content = new MockContentLine(full);
+        MockRenderLine render = new MockRenderLine();
+        ExportLineMain<Integer> test = new ExportLineMain<>(content, render);
+        test.render();
+        System.out.println(test);
+        assertEquals(3, test.size(), "line size");
     }
 
     @Test
@@ -186,11 +198,59 @@ public class ExportLineTest{
         assertData("all day long ",            10, test, line, 1);
     }
 
-    @Test
+
+    static Stream<Arguments> keepLast(){
+        return Stream.of(
+            Arguments.of( /// Well past
+                22, new String[][]{{"Simple text line", "1234"}}
+            ), Arguments.of( /// Just past
+                20, new String[][]{{"Simple text line", "1234"}}
+            ), Arguments.of( /// Just overflow
+                19, new String[][]{{"Simple text "}, {"line", "1234"}}
+            ), Arguments.of( /// Overflow
+                17, new String[][]{{"Simple text "}, {"line", "1234"}}
+            ), Arguments.of( /// Well Overflow
+                14, new String[][]{{"Simple text "}, {"line", "1234"}}
+            )
+        );
+    }
+
+    @ParameterizedTest@Disabled
+    @MethodSource
+    public void keepLast(int size, String[][] expects){
+        /// -----0000000000111111 1111
+        /// -----0123456789012345 6789
+        /// For: Simple text line 1234
+        MockContentLine line = new MockContentLine();
+        line.add(new MockContentData("Simple text line"));
+        line.add(new MockContentData("1234").setKeepLast(true));
+        MockRenderLine render = new MockRenderLine(size, size);
+        ExportLineMain<Integer> test = new ExportLineMain<>(line, render);
+        test.render();
+        assertEquals(expects.length, test.size());
+        int i = 0;
+        for (String[] expect: expects){
+            assertEquals(expect.length, test.get(i).size());
+            int j = 0;
+            for (String text: expect){
+                assertData(text, 10, test, i, j);
+                j++;
+            }
+            i++;
+        }
+    }
+
+    //@Test
     public void longFootnote(){
         MockContentLine line = new MockContentLine();
         line.add(new MockContentData("No purchase neccessary."));
+        /// --------------------------000000000011111111112
+        /// --------------------------012345678901234567890
         line.add(new MockContentData("After first purchase").setKeepLast(true));
 
+        MockRenderLine render = new MockRenderLine(20,25);
+        ExportLineMain<Integer> test = new ExportLineMain<>(line, render);
+        test.render();
+        System.out.println(test);
     }
 }

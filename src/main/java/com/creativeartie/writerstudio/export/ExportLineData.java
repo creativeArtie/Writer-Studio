@@ -47,6 +47,15 @@ public class ExportLineData<T extends Number>
         return append(data, lineType);
     }
 
+    Optional<ExportLineData<T>> forceAppend(){
+        ExportData<T> data = outputContent.get(0);
+        fillWidth = renderExporter.addSize(fillWidth, data.getFillWidth());
+        ExportData<T> overflow = data.splitLast();
+        ExportLineData<T> ans = new ExportLineData<>(this);
+        ans.outputContent.add(overflow);
+        return Optional.of(ans);
+    }
+
 
     T getAllHeight(List<ExportLineMain<T>> current){
         T cur = getFillHeight();

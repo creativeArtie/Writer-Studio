@@ -22,7 +22,6 @@ public final class ExportSection<T extends Number>
 
     protected void render(){
         outputContent.clear();
-        clearContent();
         ExportPage<T> page = new ExportPage<>(inputContent,
             renderExporter.newPage(inputContent.getPageType())
         );

@@ -22,7 +22,6 @@ public final class ExportWriter<T extends Number>
 
     public void render(){
         outputContent.clear();
-        clearContent();
         for (ContentSection content: inputContent){
             ExportSection<T> output = new ExportSection<>(content, renderExporter);
             outputContent.add(output);

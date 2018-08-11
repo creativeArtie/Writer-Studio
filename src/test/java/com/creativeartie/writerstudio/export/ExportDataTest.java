@@ -162,6 +162,8 @@ public class ExportDataTest{
     /// --0000000000111111111122222--2222233333
     /// --0123456789012345678901234--5678901234
         "'Twinkle, twinkle, little ','star',30,4",
+    ///
+        "'','Hello',6,6"
     })
     public void extraSpaces(String first, String second, int size, int spaces){
         String full = first + second;
@@ -171,7 +173,8 @@ public class ExportDataTest{
         Optional<ExportData<Integer>> overflow =
             assertTimeout(Duration.ofSeconds(5), () -> test.split(size));
         assertAll(
-            () -> assertEquals(second.length() > 0, overflow.isPresent(), "overflow"),
+            () -> assertEquals(second.length() > 0, overflow.isPresent(),
+                "overflow"),
             () -> assertEquals(first, test.getCurrentText(), "text 1"),
             () -> assertEquals(first.length(), test.getFillWidth().intValue(),
                 "width 1"),

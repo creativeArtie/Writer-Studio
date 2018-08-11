@@ -6,6 +6,10 @@ public interface SetupDataSpace<T extends Number> extends RenderData<T>{
         String line = info.getFullText();
         int split = info.getLineSplit();
         String[] current = splitLine(line, split);
+        if (extra == null){
+            info.setStartText(current[0]);
+            info.setEndText(current[1]);
+        }
 
         line = current[1];
         if(line.length() != 0){;
