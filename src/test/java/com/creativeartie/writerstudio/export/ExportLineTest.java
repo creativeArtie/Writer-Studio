@@ -40,7 +40,7 @@ public class ExportLineTest{
         assertData("b c", 10, test, 0, 1);
     }
 
-    @ParameterizedTest()
+    @ParameterizedTest()@Disabled
     @ValueSource(strings = {"123 ;overflow", "123 overflow"})
     public void appendToNewline(String text){
         MockContentLine content = new MockContentLine(text.split(";"));
@@ -90,8 +90,13 @@ public class ExportLineTest{
         MockRenderLine render = new MockRenderLine();
         ExportLineMain<Integer> test = new ExportLineMain<>(content, render);
         test.render();
-        System.out.println(test);
         assertEquals(3, test.size(), "line size");
+        for (int i = 0 ;i < 3; i++){
+            assertEquals(1, test.get(i).size(), "line "+ i + " size");
+        }
+        assertData("See ", 10, test, 0, 0);
+        assertData("Pneumonultramicrospicsilicovolcanconiosis ", 10, test, 1, 0);
+        assertData("Hey you", 10, test, 2, 0);
     }
 
     @Test
@@ -200,6 +205,9 @@ public class ExportLineTest{
 
 
     static Stream<Arguments> keepLast(){
+        /// -----0000000000111111 1111
+        /// -----0123456789012345 6789
+        /// For: Simple text line 1234
         return Stream.of(
             Arguments.of( /// Well past
                 22, new String[][]{{"Simple text line", "1234"}}
@@ -215,18 +223,16 @@ public class ExportLineTest{
         );
     }
 
-    @ParameterizedTest@Disabled
+    @ParameterizedTest
     @MethodSource
     public void keepLast(int size, String[][] expects){
-        /// -----0000000000111111 1111
-        /// -----0123456789012345 6789
-        /// For: Simple text line 1234
         MockContentLine line = new MockContentLine();
         line.add(new MockContentData("Simple text line"));
         line.add(new MockContentData("1234").setKeepLast(true));
         MockRenderLine render = new MockRenderLine(size, size);
         ExportLineMain<Integer> test = new ExportLineMain<>(line, render);
         test.render();
+        System.out.println(test);
         assertEquals(expects.length, test.size());
         int i = 0;
         for (String[] expect: expects){
@@ -240,7 +246,7 @@ public class ExportLineTest{
         }
     }
 
-    //@Test
+    @Test
     public void longFootnote(){
         MockContentLine line = new MockContentLine();
         line.add(new MockContentData("No purchase neccessary."));

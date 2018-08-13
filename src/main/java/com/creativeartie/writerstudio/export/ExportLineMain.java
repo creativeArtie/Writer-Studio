@@ -51,7 +51,8 @@ public final class ExportLineMain<T extends Number>
         int i = 0;
         for (ExportData<T> content: data){
             if (i + 1 < data.size() && data.get(i + 1).isKeepLast()){
-                content.setKeepNext(data.get(i + 1).getFillWidth());
+                System.out.println(data.get(i + 1));
+                content.setKeepNext(data.get(i + 1).getFullWidth());
             }
             Optional<ExportLineData<T>> overflow = cur.append(content,
                 inputContent.getLineType());
@@ -61,9 +62,6 @@ public final class ExportLineMain<T extends Number>
                 cur = overflow.get();
                 outputContent.add(cur);
                 overflow = force? cur.forceAppend(): cur.render();
-                if (force){
-                    System.out.println(overflow);
-                }
                 if (j == 20){
                     assert false: "Inner while";
                 }
@@ -72,9 +70,7 @@ public final class ExportLineMain<T extends Number>
             assert i < data.size();
             i++;
         }
-        if (cur.isEmpty()){
-            outputContent.remove(cur);
-        }
+        outputContent.removeIf(t -> t.isEmpty());
     }
 
     ExportLineMain<T> splitAt(int at){

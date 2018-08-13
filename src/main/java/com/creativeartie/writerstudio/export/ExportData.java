@@ -52,8 +52,8 @@ public class ExportData<T extends Number> {
 
     ExportData<T> splitLast(){
         OutputContentInfo<T> info = new OutputContentInfo<>(this, lineType, null);
-        info.setLineSplit(info.getLineSplit() - 1);
-        info = renderExporter.split(info, keepNext);
+        info.setLineSplit(info.getLineSplit());
+        info = renderExporter.split(info);
         outputContent = info.getStartText();
         return new ExportData<T>(this, info);
     }
@@ -82,6 +82,12 @@ public class ExportData<T extends Number> {
         return renderExporter.getHeight(info);
     }
 
+    T getFullWidth(){
+        OutputContentInfo<T> info = new OutputContentInfo<>(this, lineType, null);
+        info.currentTextAsFull();
+        return renderExporter.getWidth(info);
+    }
+
     ContentData getContentData(){
         return inputContent;
     }
@@ -108,6 +114,7 @@ public class ExportData<T extends Number> {
 
     void setKeepNext(T width){
         keepNext = width;
+        System.out.println(keepNext);
     }
 
     T getKeepNext(){
@@ -116,6 +123,7 @@ public class ExportData<T extends Number> {
 
     @Override
     public String toString(){
-        return "{" + outputContent + "}";
+        return "{" + (outputContent.length() == 0? inputContent.getText() : "\"" +
+            outputContent + "\"") + "}";
     }
 }

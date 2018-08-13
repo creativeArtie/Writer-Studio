@@ -156,14 +156,16 @@ public class ExportDataTest{
     /// --00000000001111111111222222222233333
     /// --01234567890123456789012345678901234
         "'Lights the traveller in the dark','',34,2",
-    /// --00000000001111111111222---222222233333
-    /// --01234567890123456789012---345678901234
-        "'Though I know not what ','you are,',32,7",
+    /// --000000000011111111112222222---22233333
+    /// --012345678901234567890123456---78901234
+        "'Though I know not what you ','are,',32,7",
     /// --0000000000111111111122222--2222233333
     /// --0123456789012345678901234--5678901234
-        "'Twinkle, twinkle, little ','star',30,4",
+        "'Twinkle, twinkle, little ','star',30,5",
     ///
-        "'','Hello',6,6"
+        "'','Hello',6,6",
+    /// --0123456   7890
+        "'Some 2 ','123',10,2"
     })
     public void extraSpaces(String first, String second, int size, int spaces){
         String full = first + second;

@@ -7,7 +7,7 @@ public class OutputContentInfo<T> {
 
     private final DataLineType lineType;
     private String fullText;
-    private final String currentText;
+    private String currentText;
 
     private int lineSplit;
     private String startText;
@@ -22,7 +22,7 @@ public class OutputContentInfo<T> {
         currentText = data.getCurrentText();
 
         lineSplit = data.getLineSplit();
-        startText = fullText;
+        startText = "";
         endText = "";
 
         widthSpace = space;
@@ -38,6 +38,11 @@ public class OutputContentInfo<T> {
 
     public String getCurrentText(){
         return currentText;
+    }
+
+    void currentTextAsFull(){
+        System.out.println(fullText);
+        currentText = fullText;
     }
 
     String getStartText(){
@@ -78,6 +83,12 @@ public class OutputContentInfo<T> {
 
     public T getWidthSpace(){
         return widthSpace;
+    }
+
+    @Override
+    public String toString(){
+        return "[start=\"" + startText + "\",end=\"" + endText + "\",split=\"" +
+            lineSplit + "\"]";
     }
 
 }
