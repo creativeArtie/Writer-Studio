@@ -114,7 +114,6 @@ public class ExportData<T extends Number> {
 
     void setKeepNext(T width){
         keepNext = width;
-        System.out.println(keepNext);
     }
 
     T getKeepNext(){

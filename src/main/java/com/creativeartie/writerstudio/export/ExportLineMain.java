@@ -51,7 +51,6 @@ public final class ExportLineMain<T extends Number>
         int i = 0;
         for (ExportData<T> content: data){
             if (i + 1 < data.size() && data.get(i + 1).isKeepLast()){
-                System.out.println(data.get(i + 1));
                 content.setKeepNext(data.get(i + 1).getFullWidth());
             }
             Optional<ExportLineData<T>> overflow = cur.append(content,

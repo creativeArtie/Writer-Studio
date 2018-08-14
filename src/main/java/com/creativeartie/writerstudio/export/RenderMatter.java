@@ -6,7 +6,7 @@ public interface RenderMatter<T extends Number> {
 
     public T addHeight(T old, T add);
 
-    public boolean canFitHeight(T cur, T adding);
+    public boolean canFitHeight(@MaybeNull T cur, T adding);
 
-    public T getFootnotePadding();
+    public T getPadding();
 }

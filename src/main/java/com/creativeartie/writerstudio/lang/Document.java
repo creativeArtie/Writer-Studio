@@ -33,7 +33,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     /// values = Integer[]{column, line}
     private final LoadingCache<Integer, Integer[]> spanLocation;
 
-    private final CatalogueMap catalogueMap;
+    private final CatalogueSystem catalogueMap;
     private ArrayList<SpanBranch> documentChildren;
 
     /** Creates a {@linkplain Document}.
@@ -73,11 +73,11 @@ public abstract class Document extends SpanNode<SpanBranch>{
                 return new Integer[]{column, line};
             }));
 
-        catalogueMap = new CatalogueMap();
+        catalogueMap = new CatalogueSystem();
         parseDocument(raw); /// Sets spanChildren
 
         /// load catalogue map
-        catalogueMap.clear();
+        catalogueMap.clearMap();
         loadMap(documentChildren);
     }
 
@@ -295,7 +295,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         }
 
         /// reload the catalogue
-        catalogueMap.clear();
+        catalogueMap.clearMap();
         loadMap(this);
 
         fireAll();
@@ -526,7 +526,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * @return answer
      */
     public final CatalogueMap getCatalogue(){
-        return catalogueMap;
+        return catalogueMap.delegate();
     }
 
     /** Add catalogue map from a document.
@@ -536,11 +536,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
      */
     public void addReferences(Document ... docs){
         for (Document doc: docs){
-            CatalogueMap map = doc.catalogueMap;
-            // TODO work on span branches (no more editing will be doen to them)
-            // TODO remove id references (not applicable)
-            // TODO merge ids
-            catalogueMap.add(map);
+            CatalogueSystem map = doc.catalogueMap;
+            catalogueMap.add(map.delegate());
         }
     }
 

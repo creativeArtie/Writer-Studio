@@ -22,16 +22,10 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
     /// %Part 1: Constructors and Fields #######################################
 
     private final TreeMap<CatalogueIdentity, CatalogueData> idMap;
-    private final ArrayList<CatalogueMap> otherMaps;
-
-    private Optional<Map<CatalogueIdentity, CatalogueData>> delegateMap;
 
     /** {@linkplain CatalogueMap}'s constructor.*/
     CatalogueMap(){
         idMap = new TreeMap<>();
-        otherMaps = new ArrayList<>();
-
-        delegateMap = Optional.empty();
     }
 
     /// %Part 2: Main Span Managerment #########################################
@@ -102,23 +96,9 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
 
                 /// Catalogued is found with a id
                 CatalogueIdentity id = found.get();
-                CatalogueData data = null;
+                CatalogueData data = idMap.get(id);
 
-                /// check if it in a exteranl map
-                for (CatalogueMap map: otherMaps){
-                    data = map.get(id);
-                    if (data != null){
-                        data.addExternal(adding);
-                        return;
-                    }
-                }
-
-                /// Check if it's in a internal map
-                if (data == null){
-                    data = idMap.get(id);
-                }
-
-                /// Adds a internal id
+                /// Adds a internal id if not found
                 if (data == null){
                     data = new CatalogueData(this, id);
                     idMap.put(id, data);
@@ -129,47 +109,24 @@ public final class CatalogueMap extends ForwardingSortedMap<CatalogueIdentity,
         }
     }
 
-    /// %Part 3: Other Maps ####################################################
-
-    /** Adds a {@link CatalogueMap}.
-     *
-     * @param map
-     *      map to add
-     */
-    void add(CatalogueMap map){
-        argumentNotNull(map, "map");
-        otherMaps.add(map);
-    }
-
-    /** Remove a {@link CatalogueMap}.
-     *
-     * @param map
-     *      map to remove
-     */
-    void remove(CatalogueMap map){
-        otherMaps.remove(map);
+    void addMap(CatalogueMap map){
+        for (Map.Entry<CatalogueIdentity, CatalogueData> data: map.entrySet()){
+            if (idMap.containsKey(data.getKey())){
+                idMap.get(data.getKey()).add(data.getValue());
+            } else {
+                idMap.put(data.getKey(), new CatalogueData(data.getValue()));
+            }
+        }
     }
 
     /// %Part 4: Overriding ####################################################
 
     @Override
     public SortedMap<CatalogueIdentity, CatalogueData> delegate(){
-        ImmutableSortedMap.Builder<CatalogueIdentity, CatalogueData> builder =
-            ImmutableSortedMap.naturalOrder();
-        for (CatalogueMap map: otherMaps){
-            builder.putAll(map);
-        }
-        builder.putAll(idMap);
-        return builder.build();
+        return ImmutableSortedMap.copyOf(idMap);
     }
 
-    @Override
-    public void clear(){
+    void clearMap(){
         idMap.clear();
-        for (CatalogueMap map: otherMaps){
-            for (CatalogueData data: map.values()){
-                data.clearExternals();
-            }
-        }
     }
 }

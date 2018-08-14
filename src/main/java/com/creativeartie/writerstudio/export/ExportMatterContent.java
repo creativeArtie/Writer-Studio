@@ -35,7 +35,7 @@ public final class ExportMatterContent<T extends Number> extends ExportMatter<T>
             List<ExportLineMain<T>> notes = line.getFootnotes(exportFootnote);
             if (! notes.isEmpty() && exportFootnote.isEmpty()){
                 grand = getRenderer().addHeight(grand,
-                    getRenderer().getFootnotePadding());
+                    getRenderer().getPadding());
             }
             if (getRenderer().canFitHeight(maxHeight, grand)){
                 i++;

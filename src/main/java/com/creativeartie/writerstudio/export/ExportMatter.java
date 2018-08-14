@@ -24,6 +24,9 @@ abstract class ExportMatter<T extends Number>
     }
 
     void addFillHeight(T height){
+        if (fillHeight == null){
+            fillHeight = renderExporter.getPadding();
+        }
         fillHeight = renderExporter.addHeight(fillHeight, height);
     }
 

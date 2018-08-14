@@ -13,5 +13,5 @@ public interface RenderPage<T extends Number> {
 
     public OutputPageInfo getPageInfo();
 
-    public T getEmptyHeight(T header, T footer);
+    public T getEmptyHeight(@MaybeNull T header, @MaybeNull T footer);
 }

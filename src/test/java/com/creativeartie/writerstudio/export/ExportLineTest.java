@@ -40,7 +40,7 @@ public class ExportLineTest{
         assertData("b c", 10, test, 0, 1);
     }
 
-    @ParameterizedTest()@Disabled
+    @ParameterizedTest
     @ValueSource(strings = {"123 ;overflow", "123 overflow"})
     public void appendToNewline(String text){
         MockContentLine content = new MockContentLine(text.split(";"));
@@ -232,7 +232,6 @@ public class ExportLineTest{
         MockRenderLine render = new MockRenderLine(size, size);
         ExportLineMain<Integer> test = new ExportLineMain<>(line, render);
         test.render();
-        System.out.println(test);
         assertEquals(expects.length, test.size());
         int i = 0;
         for (String[] expect: expects){
@@ -247,6 +246,7 @@ public class ExportLineTest{
     }
 
     @Test
+    @Disabled("Currently, MockContent.keepLast is only for footnote; not even know what to do")
     public void longFootnote(){
         MockContentLine line = new MockContentLine();
         line.add(new MockContentData("No purchase neccessary."));
@@ -258,5 +258,25 @@ public class ExportLineTest{
         ExportLineMain<Integer> test = new ExportLineMain<>(line, render);
         test.render();
         System.out.println(test);
+    }
+
+    @RepeatedTest(4)
+    public void lineHeight(RepetitionInfo info){
+        int diff = info.getCurrentRepetition() - 1;
+        MockContentLine line = new MockContentLine();
+        String[] inputs = new String[]{"Hello ", "Great ", "Big ", "World!"};
+        int i = 0;
+        for (String input: inputs){
+            MockContentData data = new MockContentData(input);
+            if (i == diff){
+                data.getFormats().add(DataContentType.BOLD);
+            }
+            line.add(data);
+            i++;
+        }
+        MockRenderLine render = new MockRenderLine(1000,1000);
+        ExportLineMain<Integer> test = new ExportLineMain<>(line, render);
+        test.render();
+        assertEquals(30, test.getFillHeight().intValue());
     }
 }
