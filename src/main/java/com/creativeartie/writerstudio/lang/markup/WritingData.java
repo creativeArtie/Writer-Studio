@@ -52,6 +52,16 @@ public final class WritingData extends Document{
         cacheMeta = meta.build();
     }
 
+    public Optional<SpanLeaf> getLeaf(TextTypeMatter area, int location){
+        return locateLeaf(l ->
+            l.getParent(TextSpanMatter.class)
+                .filter(s -> s.getRowType() == area).isPresent() &&
+            (l.getParent(FormattedSpan.class).isPresent() ||
+                l.getRaw().equals(LINED_END)
+            )? l.getLocalEnd(): 0
+        , location);
+    }
+
     /** Gets a list of lines to print in a manuscript area.
      *
      * @param area

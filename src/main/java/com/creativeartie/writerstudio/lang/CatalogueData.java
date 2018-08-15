@@ -24,10 +24,6 @@ public final class CatalogueData{
 
     private final ArrayList<SpanBranch> idSpans;
     private final ArrayList<SpanBranch> refSpans;
-
-    private Optional<List<SpanBranch>> cacheIds;
-    private Optional<List<SpanBranch>> cacheRefs;
-
     /** Creates a {@linkplain CatalogueData}.
      *
      * @param parent
@@ -42,8 +38,6 @@ public final class CatalogueData{
         idSpans = new ArrayList<>();
         refSpans = new ArrayList<>();
 
-        cacheIds = Optional.empty();
-        cacheRefs = Optional.empty();
     }
 
     CatalogueData(CatalogueData self){
@@ -53,8 +47,6 @@ public final class CatalogueData{
         idSpans = new ArrayList<>(self.idSpans);
         refSpans = new ArrayList<>(self.refSpans);
 
-        cacheIds = Optional.empty();
-        cacheRefs = Optional.empty();
     }
 
     /// %Part 2: States and Readiness ##########################################
@@ -108,10 +100,7 @@ public final class CatalogueData{
      * @return answer
      */
     public List<SpanBranch> getIds(){
-        if (! cacheIds.isPresent()){
-            cacheIds = Optional.of(ImmutableList.copyOf(idSpans));
-        }
-        return cacheIds.get();
+        return ImmutableList.copyOf(idSpans);
     }
 
     /** Gets the complete set of refs.
@@ -119,10 +108,7 @@ public final class CatalogueData{
      * @return answer
      */
     public List<SpanBranch> getRefs(){
-        if (! cacheRefs.isPresent()){
-            cacheIds = Optional.of(ImmutableList.copyOf(refSpans));
-        }
-        return cacheRefs.get();
+         return ImmutableList.copyOf(refSpans);
     }
 
     /// %Part 4: Adding a clearing #############################################
@@ -146,12 +132,6 @@ public final class CatalogueData{
             refSpans.add(span);
         }
     }
-
-    /** Removes all external {@link SpanBranch}. */
-    void clearExternals(){
-        cacheIds = Optional.empty();
-    }
-
     /// %Part 5: Other Gets ####################################################
 
     /** Gets the parent map where this {@linkplain CatalogueData} is stored.

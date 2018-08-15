@@ -1,5 +1,7 @@
 package com.creativeartie.writerstudio.lang;
 
+import java.util.function.*;
+
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** A {@link Span} storing the raw text. */
@@ -49,6 +51,10 @@ public final class SpanLeaf extends Span{
         argumentNotNull(input, "input");
         return "\"" + input.replace("\"", "\" \\\" \"")
             .replace("\n", "\" \\n \"").replace("\t", "\" \\t \"") + "\"";
+    }
+
+    int getLength(ToIntFunction<SpanLeaf> type){
+        return type.applyAsInt(this);
     }
 
     /// %Part 2: Overrding Methods #############################################

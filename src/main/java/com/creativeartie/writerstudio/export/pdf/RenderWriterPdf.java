@@ -12,7 +12,7 @@ public class RenderWriterPdf implements RenderWriter<Float> {
     private final PDDocument pdfDocument;
     private final PDFont[] embedFonts;
 
-    public RenderWriterPdf(){
+    public RenderWriterPdf() throws IOException{
         pdfDocument = new PDDocument();
 
         /// setup fonts

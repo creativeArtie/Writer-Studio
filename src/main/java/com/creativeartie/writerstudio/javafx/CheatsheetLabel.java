@@ -1,5 +1,6 @@
 package com.creativeartie.writerstudio.javafx;
 
+import java.util.*;
 import java.util.function.*;
 import javafx.scene.control.*;
 
@@ -28,8 +29,8 @@ class CheatsheetLabel extends Label{
      *
      * @see #getOtherFormatLabel(CheatsheetText)
      */
-    private static boolean findContent(Document doc, Integer point){
-        return doc.locateSpan(point, FormattedSpan.class).isPresent();
+    private static boolean findContent(SpanLeaf leaf){
+        return leaf.getParent(FormattedSpan.class).isPresent();
     }
 
     static CheatsheetLabel getLabel(CheatsheetText text){
@@ -85,20 +86,20 @@ class CheatsheetLabel extends Label{
     private static CheatsheetLabel getLinedHeadLabel(CheatsheetText text){
         boolean head = text == CheatsheetText.LINED_HEADING;
         return new CheatsheetLabel(text.getLabel(),
-            (doc, point) -> doc.locateSpan(point, LinedSpanLevelSection.class)
+            l -> l.getParent(LinedSpanLevelSection.class)
                 .map(s -> head == s.isHeading())
                 .orElse(false),
-            (doc, point) -> true
+            l -> true
         );
     }
 
     private static CheatsheetLabel getLinedListLabel(CheatsheetText text){
         boolean head = text == CheatsheetText.LINED_NUMBERED;
         return new CheatsheetLabel(text.getLabel(),
-            (doc, point) -> doc.locateSpan(point, LinedSpanLevelList.class)
+            l -> l.getParent(LinedSpanLevelList.class)
                 .map(s -> head == s.isNumbered())
                 .orElse(false),
-            (doc, point) -> true
+            l -> true
         );
     }
 
@@ -106,10 +107,10 @@ class CheatsheetLabel extends Label{
         DirectoryType type = text == CheatsheetText.LINED_ENDNOTE?
             DirectoryType.ENDNOTE: DirectoryType.FOOTNOTE;
         return new CheatsheetLabel(text.getLabel(),
-            (doc, point) -> doc.locateSpan(point, LinedSpanPointNote.class)
+            l -> l.getParent(LinedSpanPointNote.class)
                 .map(s -> s.getDirectoryType() == type)
                 .orElse(false),
-            (doc, point) -> true
+            l -> true
         );
     }
 
@@ -145,8 +146,8 @@ class CheatsheetLabel extends Label{
             set = null;
         }
         return new CheatsheetLabel(text.getLabel(),
-            (doc, point) -> doc.locateSpan(point, set).isPresent(),
-            (doc, point) -> true
+            l -> l.getParent(set).isPresent(),
+            l -> true
         );
     }
 
@@ -158,10 +159,10 @@ class CheatsheetLabel extends Label{
             text.ordinal() - CheatsheetText.EDITION_STUB.ordinal()
         ];
         return new CheatsheetLabel(text.getLabel(),
-            (doc, point) -> doc.locateSpan(point, EditionSpan.class)
+            l -> l.getParent(EditionSpan.class)
                 .map(span -> span.getEditionType() == type)
                 .orElse(false),
-            (doc, point) -> doc.locateSpan(point, EditionSpan.class)
+            l -> l.getParent(EditionSpan.class)
                 .isPresent()
         );
     }
@@ -174,7 +175,7 @@ class CheatsheetLabel extends Label{
             text.ordinal() - CheatsheetText.FORMAT_BOLD.ordinal()
         ];
         return new CheatsheetLabel(text.getLabel(),
-            (doc, point) -> doc.locateSpan(point, FormatSpan.class)
+            l -> l.getParent(FormatSpan.class)
                 .map(span -> span.isFormat(type))
                 .orElse(false),
             CheatsheetLabel::findContent
@@ -190,10 +191,10 @@ class CheatsheetLabel extends Label{
             text.ordinal() - CheatsheetText.FORMAT_CODED.ordinal()
         ];
         return new CheatsheetLabel(text.getLabel(),
-            (doc, point) -> doc.locateSpan(point, FormatSpanPointId.class)
+            l -> l.getParent(FormatSpanPointId.class)
                 .map(span -> span.getIdType() == type)
                 .orElse(false),
-            (doc, point) -> doc.locateSpan(point, FormattedSpan.class)
+            l -> l.getParent(FormattedSpan.class)
                 .map(s -> s.allowNotes()).orElse(false)
         );
     }
@@ -209,10 +210,10 @@ class CheatsheetLabel extends Label{
             throw new IllegalArgumentException("Unsupported type: " + type);
         }
         return new CheatsheetLabel(text.getLabel(),
-            (doc, point) -> doc.locateSpan(point, LinedSpanCite.class).map(
-                span -> span.getInfoFieldType() == type
-            ).orElse(false),
-            (doc, point) -> doc.locateSpan(point, LinedSpanCite.class)
+            l -> l.getParent(LinedSpanCite.class)
+                .map(span -> span.getInfoFieldType() == type)
+                .orElse(false),
+            l -> l.getParent(LinedSpanCite.class)
                 .isPresent()
         );
     }
@@ -222,14 +223,14 @@ class CheatsheetLabel extends Label{
      */
     private static CheatsheetLabel getIdentityLabel(){
         return new CheatsheetLabel(CheatsheetText.OTHER_ID.getLabel(),
-            (doc, point) -> doc.locateSpan(point, DirectorySpan.class)
+            l -> l.getParent(DirectorySpan.class)
                 .isPresent(),
-            (doc, point) ->
-                doc.locateSpan(point, FormatSpanLinkRef.class).isPresent() ||
-                doc.locateSpan(point, FormatSpanPointId.class).isPresent() ||
-                doc.locateSpan(point, LinedSpanLevelSection.class).isPresent() ||
-                doc.locateSpan(point, LinedSpanPoint.class).isPresent() ||
-                doc.locateSpan(point, LinedSpanNote.class).isPresent()
+            l ->
+                l.getParent(FormatSpanLinkRef.class).isPresent() ||
+                l.getParent(FormatSpanPointId.class).isPresent() ||
+                l.getParent(LinedSpanLevelSection.class).isPresent() ||
+                l.getParent(LinedSpanPoint.class).isPresent() ||
+                l.getParent(LinedSpanNote.class).isPresent()
         );
     }
 
@@ -256,18 +257,18 @@ class CheatsheetLabel extends Label{
         }
         final Class<?> test = setup;
         return new CheatsheetLabel(type.getLabel(),
-            (doc, point) -> doc.locateSpan(point, test).isPresent(),
+            l -> l.getParent(test).isPresent(),
             CheatsheetLabel::findContent
         );
     }
 
     /// %Part 2: Instance Methods, Fields, and Construtor
 
-    private final BiPredicate<Document, Integer> testSetted;
-    private final BiPredicate<Document, Integer> testAllow;
+    private final Predicate<SpanLeaf> testSetted;
+    private final Predicate<SpanLeaf> testAllow;
 
-    private CheatsheetLabel(String text, BiPredicate<Document, Integer> set,
-            BiPredicate<Document, Integer> allow){
+    private CheatsheetLabel(String text, Predicate<SpanLeaf> set,
+            Predicate<SpanLeaf> allow){
         super(text);
         testSetted = set;
         testAllow = allow;
@@ -278,8 +279,27 @@ class CheatsheetLabel extends Label{
      * Update Label status with the information gather from document and the
      * current position.
      */
-    void showStatus(Document doc, int point){
-        StyleClass.setHintClass(this, testSetted.test(doc, point),
-            testAllow.test(doc, point));
+    void showStatus(Document doc, int pos){
+        if (doc != null){
+            Optional<SpanLeaf> leaf = doc.locateLeaf(pos);
+            if (leaf.isPresent()){
+                showStatus(leaf.get());
+                return;
+            }
+        }
+        StyleClass.setHintClass(this, false, false);
+    }
+
+    /**
+     * Update Label status with the information gather from document and the
+     * current position.
+     */
+    void showStatus(SpanLeaf leaf){
+        if (leaf == null){
+            StyleClass.setHintClass(this, false, false);
+        } else {
+            StyleClass.setHintClass(this, testSetted.test(leaf), testAllow
+                .test(leaf));
+        }
     }
 }

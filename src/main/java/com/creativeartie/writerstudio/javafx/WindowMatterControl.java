@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 
 import org.fxmisc.richtext.model.*;
 
+import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.resource.*;
 
@@ -18,8 +19,8 @@ class WindowMatterControl extends WindowMatterView{
         control.writingDataProperty().addListener((d, o, n) -> loadData(n));
         showMatterProperty().addListener((d, o, n) -> showMatter(n));
         getTextArea().plainTextChanges().subscribe(this::updateText);
-        // getTextArea().caretPositionProperty().addListener((d, o, n) ->
-        //    updateHints(n)); /// Does not work
+        getTextArea().caretPositionProperty().addListener((d, o, n) ->
+            updateHints(n));
     }
 
     /// %Part 1: control.writingDataProperty()
@@ -61,10 +62,17 @@ class WindowMatterControl extends WindowMatterView{
     /// %Part 4: getTextArea().caretPositionProperty()
 
     private void updateHints(int position){
-        if (writingData == null) return;
+        SpanLeaf leaf = null;
+        TextTypeMatter matter = getShowMatter();
+        if (matter != null) {
+            if (writingData != null) {
+                leaf = writingData.getLeaf(getShowMatter(), position)
+                    .orElse(null);
+            }
+        }
 
         for (CheatsheetLabel label: getHintLabels()){
-            label.showStatus(writingData, position);
+            label.showStatus(leaf);
         }
     }
 

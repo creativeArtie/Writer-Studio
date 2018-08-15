@@ -9,36 +9,37 @@ public final class CatalogueSystem extends ForwardingSortedMap<CatalogueIdentity
 {
     private CatalogueMap documentMap;
     private List<CatalogueMap> referenceMaps;
-    private Optional<CatalogueMap> outputMap;
+    private CatalogueMap outputMap;
 
     public CatalogueSystem(){
         documentMap = new CatalogueMap();
         referenceMaps = new ArrayList<>();
-        outputMap = Optional.empty();
+        outputMap = new CatalogueMap();
     }
 
     void clearMap(){
         documentMap.clearMap();
-        outputMap = Optional.empty();
+        outputMap.clearMap();
+        for (CatalogueMap map: referenceMaps){
+            outputMap.addMap(map);
+        }
     }
 
     void add(SpanBranch span){
         documentMap.add(span);
+        outputMap.add(span);
     }
 
     void add(CatalogueMap map){
         referenceMaps.add(map);
+        outputMap.addMap(map);
     }
 
     public CatalogueMap delegate(){
-        if (! outputMap.isPresent()){
-            CatalogueMap map = new CatalogueMap();
-            map.addMap(documentMap);
-            for(CatalogueMap ref: referenceMaps){
-                map.addMap(ref);
-            }
-            outputMap = Optional.of(map);
-        }
-        return outputMap.get();
+        return outputMap;
+    }
+
+    public CatalogueMap getDocumentMap(){
+        return documentMap;
     }
 }
