@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.2">
+<diagram program="umlet" version="14.3.0">
   <zoom_level>7</zoom_level>
   <element>
     <id>UMLSpecialState</id>
@@ -84,7 +84,8 @@ fg=blue</panel_attributes>
     <panel_attributes>editRaw(...)
 symbol=substate
 bg=green
-transparency=0</panel_attributes>
+transparency=0
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -110,7 +111,8 @@ fg=blue</panel_attributes>
     </coordinates>
     <panel_attributes>Branch from
 from leaf
-transparency=0</panel_attributes>
+transparency=0
+valign=center</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -357,7 +359,8 @@ symbol=substate
 group=1
 transparency=0
 bg=green
-layer=1</panel_attributes>
+layer=1
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -402,7 +405,8 @@ layer=2</panel_attributes>
 from leaf
 group=1
 layer=1
-transparency=0</panel_attributes>
+transparency=0
+valign=center</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -467,7 +471,7 @@ layer=2</panel_attributes>
     <coordinates>
       <x>567</x>
       <y>287</y>
-      <w>112</w>
+      <w>119</w>
       <h>154</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
@@ -741,7 +745,7 @@ layer=3</panel_attributes>
     <coordinates>
       <x>140</x>
       <y>462</y>
-      <w>105</w>
+      <w>112</w>
       <h>63</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
@@ -1016,7 +1020,7 @@ layer=3
     <coordinates>
       <x>133</x>
       <y>196</y>
-      <w>119</w>
+      <w>126</w>
       <h>119</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
@@ -1110,7 +1114,7 @@ fg=red</panel_attributes>
     <coordinates>
       <x>406</x>
       <y>609</y>
-      <w>70</w>
+      <w>77</w>
       <h>42</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
@@ -1183,7 +1187,7 @@ layer=1</panel_attributes>
     <coordinates>
       <x>518</x>
       <y>483</y>
-      <w>168</w>
+      <w>175</w>
       <h>56</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
@@ -1430,7 +1434,7 @@ layer=1</panel_attributes>
     <coordinates>
       <x>770</x>
       <y>462</y>
-      <w>105</w>
+      <w>112</w>
       <h>63</h>
     </coordinates>
     <panel_attributes>lt=&lt;-

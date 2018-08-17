@@ -477,6 +477,32 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      */
     public abstract List<SpanLeaf> getLeaves();
 
+    /** Gets a {@link SpanLeaf} at the location defined by a function
+     *
+     * @param type
+     *      type indexing function
+     * @param location
+     *      the location according by the function
+     * @return answer
+     */
+    protected final Optional<SpanLeaf> locateLeaf(ToIntFunction<SpanLeaf> type,
+        int location
+    ){
+        if (isEmpty()){
+            return Optional.empty();
+        }
+        int ptr = 0;
+        for (SpanLeaf leaf: getLeaves()){
+            int length = leaf.getLength(type);
+            if (length + ptr < location){
+                ptr += length;
+            } else {
+                return Optional.of(leaf);
+            }
+        }
+        return Optional.empty();
+    }
+
     /// %Part 4: Caches ########################################################
 
     /** Get local cache for a single object.

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.2">
+<diagram program="umlet" version="14.3.0">
   <zoom_level>8</zoom_level>
   <element>
     <id>UMLClass</id>
@@ -10,8 +10,10 @@
       <h>24</h>
     </coordinates>
     <panel_attributes>/BasicParseText/
-bg=pink
-fg=red</panel_attributes>
+transparency=0
+valign=center
+fg=red
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -23,7 +25,8 @@ fg=red</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>/BasicText/
-
+transparency=0
+valign=center
 bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
@@ -36,6 +39,8 @@ bg=yellow</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>BasicTextEscape
+transparency=0
+valign=center
 bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
@@ -48,6 +53,8 @@ bg=yellow</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>ContentParser
+transparency=0
+valign=center
 bg=blue
 fg=red</panel_attributes>
     <additional_attributes/>
@@ -61,6 +68,8 @@ fg=red</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>ContentSpan
+transparency=0
+valign=center
 bg=blue</panel_attributes>
     <additional_attributes/>
   </element>
@@ -73,6 +82,8 @@ bg=blue</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>DirectoryParser
+transparency=0
+valign=center
 bg=orange
 fg=red</panel_attributes>
     <additional_attributes/>
@@ -86,8 +97,9 @@ fg=red</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>DirectorySpan
-bg=orange
-</panel_attributes>
+transparency=0
+valign=center
+bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -174,6 +186,8 @@ fg=blue</panel_attributes>
     </coordinates>
     <panel_attributes>EditionSpan
 fg=gray
+transparency=0
+valign=center
 bg=green</panel_attributes>
     <additional_attributes/>
   </element>
@@ -187,6 +201,8 @@ bg=green</panel_attributes>
     </coordinates>
     <panel_attributes>EditionParser
 fg=red
+transparency=0
+valign=center
 bg=green</panel_attributes>
     <additional_attributes/>
   </element>
@@ -200,6 +216,8 @@ bg=green</panel_attributes>
     </coordinates>
     <panel_attributes>EditionType
 fg=gray
+transparency=0
+valign=center
 bg=green</panel_attributes>
     <additional_attributes/>
   </element>
@@ -213,6 +231,8 @@ bg=green</panel_attributes>
     </coordinates>
     <panel_attributes>FormatParseAgenda
 fg=red
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -225,6 +245,8 @@ bg=cyan</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>FormatSpanAgenda
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -238,6 +260,8 @@ bg=cyan</panel_attributes>
     </coordinates>
     <panel_attributes>FormatParseContent
 fg=red
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -250,6 +274,8 @@ bg=cyan</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>FormatSpanContent
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -337,6 +363,8 @@ fg=blue</panel_attributes>
     </coordinates>
     <panel_attributes>/FormatParseLink/
 fg=red
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -349,6 +377,8 @@ bg=cyan</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>/FormatSpanLink/
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -375,6 +405,8 @@ fg=red</panel_attributes>
     </coordinates>
     <panel_attributes>FormatParseLinkDirect
 fg=red
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -388,6 +420,8 @@ bg=cyan</panel_attributes>
     </coordinates>
     <panel_attributes>FormatParseLinkRef
 fg=red
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -400,6 +434,8 @@ bg=cyan</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>FormatSpanLinkDirect
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -412,6 +448,8 @@ bg=cyan</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>FormatSpanLinkRef
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -485,6 +523,8 @@ fg=orange</panel_attributes>
     </coordinates>
     <panel_attributes>/FormatParsePoint/
 fg=red
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -498,6 +538,8 @@ bg=cyan</panel_attributes>
     </coordinates>
     <panel_attributes>FormatParsePointID
 fg=red
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -511,6 +553,8 @@ bg=cyan</panel_attributes>
     </coordinates>
     <panel_attributes>FormatParsePointKey
 fg=red
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -523,6 +567,8 @@ bg=cyan</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>FormatSpanPointID
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -535,6 +581,8 @@ bg=cyan</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>FormatSpanPointKey
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -623,6 +671,8 @@ fg=red</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>FormattedSpan
+transparency=0
+valign=center
 bg=magenta</panel_attributes>
     <additional_attributes/>
   </element>
@@ -636,6 +686,8 @@ bg=magenta</panel_attributes>
     </coordinates>
     <panel_attributes>FormattedParser
 fg=red
+transparency=0
+valign=center
 bg=magenta</panel_attributes>
     <additional_attributes/>
   </element>
@@ -781,8 +833,10 @@ fg=orange</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>InfoDataType
-bg=pink
-fg=gray</panel_attributes>
+transparency=0
+valign=center
+fg=gray
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -806,8 +860,10 @@ fg=gray</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>InfoFieldType
-bg=pink
-fg=gray</panel_attributes>
+transparency=0
+valign=center
+fg=gray
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -831,6 +887,8 @@ fg=gray</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>DirectoryType
+transparency=0
+valign=center
 bg=orange
 fg=gray</panel_attributes>
     <additional_attributes/>
@@ -881,6 +939,8 @@ fg=red</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>/FormatSpan/
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -894,6 +954,8 @@ bg=cyan</panel_attributes>
     </coordinates>
     <panel_attributes>FormatTypeStyle
 fg=gray
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -967,7 +1029,9 @@ fg=gray</panel_attributes>
     </coordinates>
     <panel_attributes>LinedSpanCite
 fg=blue
-bg=pink</panel_attributes>
+transparency=0
+valign=center
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -993,7 +1057,9 @@ creates</panel_attributes>
     </coordinates>
     <panel_attributes>LinedParseLevel
 fg=red
-bg=pink</panel_attributes>
+transparency=0
+valign=center
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1006,7 +1072,9 @@ bg=pink</panel_attributes>
     </coordinates>
     <panel_attributes>/LinedSpanLevel/
 fg=blue
-bg=pink</panel_attributes>
+transparency=0
+valign=center
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1019,7 +1087,9 @@ bg=pink</panel_attributes>
     </coordinates>
     <panel_attributes>LinedSpanLevelList
 fg=blue
-bg=pink</panel_attributes>
+transparency=0
+valign=center
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1032,7 +1102,9 @@ bg=pink</panel_attributes>
     </coordinates>
     <panel_attributes>LinedSpanLevelSection
 fg=blue
-bg=pink</panel_attributes>
+transparency=0
+valign=center
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1045,7 +1117,9 @@ bg=pink</panel_attributes>
     </coordinates>
     <panel_attributes>LinedParsePointer
 fg=red
-bg=pink</panel_attributes>
+transparency=0
+valign=center
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1058,7 +1132,9 @@ bg=pink</panel_attributes>
     </coordinates>
     <panel_attributes>/LinedSpanPoint/
 fg=blue
-bg=pink</panel_attributes>
+transparency=0
+valign=center
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1071,7 +1147,9 @@ bg=pink</panel_attributes>
     </coordinates>
     <panel_attributes>LinedSpanPointLink
 fg=blue
-bg=pink</panel_attributes>
+transparency=0
+valign=center
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1084,7 +1162,9 @@ bg=pink</panel_attributes>
     </coordinates>
     <panel_attributes>LinedSpanPointNote
 fg=blue
-bg=pink</panel_attributes>
+transparency=0
+valign=center
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1097,7 +1177,9 @@ bg=pink</panel_attributes>
     </coordinates>
     <panel_attributes>LinedParseRest
 fg=red
-bg=pink</panel_attributes>
+transparency=0
+valign=center
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1110,7 +1192,9 @@ bg=pink</panel_attributes>
     </coordinates>
     <panel_attributes>LinedSpanNote
 fg=blue
-bg=pink</panel_attributes>
+transparency=0
+valign=center
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1123,7 +1207,9 @@ bg=pink</panel_attributes>
     </coordinates>
     <panel_attributes>LinedSpanAgenda
 fg=blue
-bg=pink</panel_attributes>
+transparency=0
+valign=center
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1136,7 +1222,9 @@ bg=pink</panel_attributes>
     </coordinates>
     <panel_attributes>LinedSpanQuote
 fg=blue
-bg=pink</panel_attributes>
+transparency=0
+valign=center
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1149,7 +1237,9 @@ bg=pink</panel_attributes>
     </coordinates>
     <panel_attributes>LinedSpanBreak
 fg=blue
-bg=pink</panel_attributes>
+transparency=0
+valign=center
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1162,7 +1252,9 @@ bg=pink</panel_attributes>
     </coordinates>
     <panel_attributes>LinedSpanParagraph
 fg=blue
-bg=pink</panel_attributes>
+transparency=0
+valign=center
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1453,6 +1545,8 @@ fg=blue</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>NoteCardSpan
+transparency=0
+valign=center
 bg=magenta</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1477,6 +1571,8 @@ fg=cyan</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>NoteCardParser
+transparency=0
+valign=center
 bg=magenta
 fg=red</panel_attributes>
     <additional_attributes/>
@@ -1491,6 +1587,8 @@ fg=red</panel_attributes>
     </coordinates>
     <panel_attributes>/SectionParser/
 fg=red
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1504,6 +1602,8 @@ bg=cyan</panel_attributes>
     </coordinates>
     <panel_attributes>SectionParseScene
 fg=red
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1517,6 +1617,8 @@ bg=cyan</panel_attributes>
     </coordinates>
     <panel_attributes>SectionParseHead
 fg=red
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1529,6 +1631,8 @@ bg=cyan</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>/SectionSpan/
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1589,6 +1693,8 @@ fg=cyan</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>NoteSpanHead
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1601,6 +1707,8 @@ bg=cyan</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>NoteSpanScene
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1723,8 +1831,7 @@ fg=cyan</panel_attributes>
     </coordinates>
     <panel_attributes>lt=&lt;.
 creates
-fg=red
-bg=cyan</panel_attributes>
+fg=red</panel_attributes>
     <additional_attributes>90.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
@@ -1737,8 +1844,7 @@ bg=cyan</panel_attributes>
     </coordinates>
     <panel_attributes>lt=&lt;.
 creates
-fg=red
-bg=cyan</panel_attributes>
+fg=red</panel_attributes>
     <additional_attributes>80.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
@@ -1751,6 +1857,8 @@ bg=cyan</panel_attributes>
     </coordinates>
     <panel_attributes>WritingText
 fg=magenta
+transparency=0
+valign=center
 bg=light_gray</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1764,6 +1872,8 @@ bg=light_gray</panel_attributes>
     </coordinates>
     <panel_attributes>WritingData
 fg=magenta
+transparency=0
+valign=center
 bg=light_gray</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1777,6 +1887,8 @@ bg=light_gray</panel_attributes>
     </coordinates>
     <panel_attributes>/FormatTypeField/
 fg=gray
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1825,6 +1937,8 @@ fg=cyan</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>*ManuscriptFile*
+transparency=0
+valign=center
 bg=dark_gray
 fg=green</panel_attributes>
     <additional_attributes/>
@@ -1910,7 +2024,9 @@ fg=cyan</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>AuxiliaryChecker
-fg=dark_gray</panel_attributes>
+fg=dark_gray
+transparency=0
+valign=center</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1922,7 +2038,9 @@ fg=dark_gray</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>AuxiliaryData
-fg=dark_gray</panel_attributes>
+fg=dark_gray
+transparency=0
+valign=center</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1933,9 +2051,11 @@ fg=dark_gray</panel_attributes>
       <w>88</w>
       <h>32</h>
     </coordinates>
-    <panel_attributes>Constants for 
+    <panel_attributes>Constants for
 everything
-fg=dark_gray</panel_attributes>
+fg=dark_gray
+transparency=0
+valign=center</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1984,7 +2104,9 @@ fg=dark_gray</panel_attributes>
     </coordinates>
     <panel_attributes>Local parse
 helper utilities
-fg=dark_gray</panel_attributes>
+fg=dark_gray
+transparency=0
+valign=center</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -2007,7 +2129,8 @@ fg=gray</panel_attributes>
       <w>80</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>blue text
+    <panel_attributes>transparency=0
+blue text
 clases
 fg=blue</panel_attributes>
     <additional_attributes/>
@@ -2031,7 +2154,9 @@ fg=blue</panel_attributes>
       <w>80</w>
       <h>24</h>
     </coordinates>
-    <panel_attributes>/SpanBranch/</panel_attributes>
+    <panel_attributes>transparency=0
+valign=center
+/SpanBranch/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -2042,7 +2167,9 @@ fg=blue</panel_attributes>
       <w>72</w>
       <h>24</h>
     </coordinates>
-    <panel_attributes>/Document/
+    <panel_attributes>transparency=0
+valign=center
+/Document/
 fg=magenta</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2054,7 +2181,9 @@ fg=magenta</panel_attributes>
       <w>80</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>magenta
+    <panel_attributes>transparency=0
+valign=center
+magenta
 text clases
 fg=magenta</panel_attributes>
     <additional_attributes/>
@@ -2079,7 +2208,8 @@ fg=blue</panel_attributes>
       <w>80</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>black
+    <panel_attributes>transparency=0
+black
 text clases</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2140,7 +2270,9 @@ fg=red</panel_attributes>
       <w>80</w>
       <h>24</h>
     </coordinates>
-    <panel_attributes>/SetupParser/
+    <panel_attributes>transparency=0
+valign=center
+/SetupParser/
 fg=red</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2152,7 +2284,9 @@ fg=red</panel_attributes>
       <w>80</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>red
+    <panel_attributes>transparency=0
+valign=center
+red
 text clases
 fg=red</panel_attributes>
     <additional_attributes/>
@@ -2166,7 +2300,8 @@ fg=red</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>WritingStat
-
+transparency=0
+valign=center
 bg=light_gray
 fg=magenta</panel_attributes>
     <additional_attributes/>
@@ -2191,7 +2326,8 @@ fg=magenta</panel_attributes>
       <w>104</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>template=T: Span
+    <panel_attributes>transparency=0
+template=T: Span
 /SpanNode/
 fg=dark_gray</panel_attributes>
     <additional_attributes/>
@@ -2256,7 +2392,9 @@ fg=pink</panel_attributes>
     </coordinates>
     <panel_attributes>LinedParseCite
 fg=red
-bg=pink</panel_attributes>
+transparency=0
+valign=center
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -2267,7 +2405,9 @@ bg=pink</panel_attributes>
       <w>72</w>
       <h>24</h>
     </coordinates>
-    <panel_attributes>/Enum/
+    <panel_attributes>transparency=0
+valign=center
+/Enum/
 fg=gray</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2279,7 +2419,9 @@ fg=gray</panel_attributes>
       <w>80</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>gray
+    <panel_attributes>transparency=0
+valign=center
+gray
 text clases
 fg=gray</panel_attributes>
     <additional_attributes/>
@@ -2317,7 +2459,7 @@ often</panel_attributes>
       <w>376</w>
       <h>200</h>
     </coordinates>
-    <panel_attributes/>
+    <panel_attributes>transparency=0</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -2379,6 +2521,8 @@ fg=blue</panel_attributes>
     </coordinates>
     <panel_attributes>StatParseData
 fg=red
+transparency=0
+valign=center
 bg=magenta</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2391,6 +2535,8 @@ bg=magenta</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>/StatSpanData/
+transparency=0
+valign=center
 bg=magenta</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2403,6 +2549,8 @@ bg=magenta</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>StatSpanDataInt
+transparency=0
+valign=center
 bg=magenta</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2415,6 +2563,8 @@ bg=magenta</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>StatSpanDataString
+transparency=0
+valign=center
 bg=magenta</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2427,6 +2577,8 @@ bg=magenta</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>StatSpanDataTime
+transparency=0
+valign=center
 bg=magenta</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2514,6 +2666,8 @@ fg=red</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>StatSpanRecord
+transparency=0
+valign=center
 bg=magenta</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2527,6 +2681,8 @@ bg=magenta</panel_attributes>
     </coordinates>
     <panel_attributes>StatTypeRecord
 fg=gray
+transparency=0
+valign=center
 bg=magenta</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2540,6 +2696,8 @@ bg=magenta</panel_attributes>
     </coordinates>
     <panel_attributes>StatParseRecord
 fg=red
+transparency=0
+valign=center
 bg=magenta</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2577,6 +2735,8 @@ fg=gray</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>TextDataType
+transparency=0
+valign=center
 bg=pink
 fg=gray</panel_attributes>
     <additional_attributes/>
@@ -2591,6 +2751,8 @@ fg=gray</panel_attributes>
     </coordinates>
     <panel_attributes>TextParser
 fg=red
+transparency=0
+valign=center
 bg=pink</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2603,6 +2765,8 @@ bg=pink</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>TextSpan
+transparency=0
+valign=center
 bg=pink</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2615,6 +2779,8 @@ bg=pink</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>TextSpanInfo
+transparency=0
+valign=center
 bg=pink</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2627,6 +2793,8 @@ bg=pink</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>TextSpanMatter
+transparency=0
+valign=center
 bg=pink</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2640,6 +2808,8 @@ bg=pink</panel_attributes>
     </coordinates>
     <panel_attributes>TextType
 fg=gray
+transparency=0
+valign=center
 bg=pink</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2653,6 +2823,8 @@ bg=pink</panel_attributes>
     </coordinates>
     <panel_attributes>TextTypeInfo
 fg=gray
+transparency=0
+valign=center
 bg=pink</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2666,6 +2838,8 @@ bg=pink</panel_attributes>
     </coordinates>
     <panel_attributes>TextTypeMeta
 fg=gray
+transparency=0
+valign=center
 bg=pink</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2824,6 +2998,8 @@ fg=magenta</panel_attributes>
       <h>24</h>
     </coordinates>
     <panel_attributes>TextSpanUnknown
+transparency=0
+valign=center
 bg=pink</panel_attributes>
     <additional_attributes/>
   </element>

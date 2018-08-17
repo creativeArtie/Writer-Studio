@@ -75,7 +75,7 @@
       ><path d="M0 0 L0 30 L150 30 L150 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath24"
-      ><path d="M0 0 L0 30 L120 30 L120 0 Z"
+      ><path d="M0 0 L0 30 L140 30 L140 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath25"
       ><path d="M0 0 L0 160 L60 160 L60 0 Z"
@@ -144,89 +144,89 @@
       ><path d="M0 0 L0 120 L260 120 L260 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath47"
-      ><path d="M0 0 L0 30 L140 30 L140 0 Z"
+      ><path d="M0 0 L0 30 L120 30 L120 0 Z"
       /></clipPath
     ></defs
-    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(610,0)" stroke-opacity="0" stroke="rgb(255,255,255)"
-    ><path d="M0.5 0.5 L43.0283 0.5 L43.0283 21.6094 L99 21.6094 L99 69 L0.5 69 Z" stroke="none" clip-path="url(#clipPath2)"
+    ><g fill="white" transform="translate(610,0)" stroke="white"
+    ><path d="M0.5 0.5 L45.4795 0.5 L45.4795 21.6094 L99 21.6094 L99 69 L0.5 69 Z" stroke="none" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M0.5 0.5 L45.4795 0.5 L45.4795 21.6094 L99 21.6094 L99 69 L0.5 69 Z" clip-path="url(#clipPath2)" stroke="black"
+      /><path fill="none" d="M0.5 21.6094 L45.4795 21.6094" clip-path="url(#clipPath2)" stroke="black"
     /></g
-    ><g transform="translate(610,0)"
-    ><path fill="none" d="M0.5 0.5 L43.0283 0.5 L43.0283 21.6094 L99 21.6094 L99 69 L0.5 69 Z" clip-path="url(#clipPath2)"
-      /><path fill="none" d="M0.5 21.6094 L43.0283 21.6094" clip-path="url(#clipPath2)"
-      /><text x="5" font-size="14px" y="16.1094" clip-path="url(#clipPath2)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(610,0)"
+    ><text x="5" xml:space="preserve" y="16.1094" clip-path="url(#clipPath2)" stroke="none"
       >main</text
     ></g
-    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(420,140)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><g fill="white" transform="translate(420,140)" stroke="white"
     ><ellipse rx="59.25" ry="24.25" clip-path="url(#clipPath3)" cx="59.75" cy="24.75" stroke="none"
+      /><ellipse clip-path="url(#clipPath3)" fill="none" rx="59.25" cx="59.75" ry="24.25" cy="24.75" stroke="blue"
     /></g
-    ><g fill="blue" transform="translate(420,140)" stroke="blue"
-    ><ellipse rx="59.25" fill="none" ry="24.25" clip-path="url(#clipPath3)" cx="59.75" cy="24.75"
-      /><text x="22" font-size="14px" y="30.0547" clip-path="url(#clipPath3)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g fill="blue" font-size="14px" font-family="sans-serif" transform="translate(420,140)" stroke="blue"
+    ><text x="22" xml:space="preserve" y="30.0547" clip-path="url(#clipPath3)" stroke="none"
       >Add as tab</text
     ></g
-    ><g fill="rgb(255,175,175)" fill-opacity="0.4902" transform="translate(1030,140)" stroke-opacity="0.4902" stroke="rgb(255,175,175)"
+    ><g fill="rgb(255,175,175)" transform="translate(1030,140)" stroke="rgb(255,175,175)"
     ><ellipse rx="59.25" ry="24.25" clip-path="url(#clipPath3)" cx="59.75" cy="24.75" stroke="none"
+      /><ellipse clip-path="url(#clipPath3)" fill="none" rx="59.25" cx="59.75" ry="24.25" cy="24.75" stroke="black"
     /></g
-    ><g transform="translate(1030,140)"
-    ><ellipse rx="59.25" fill="none" ry="24.25" clip-path="url(#clipPath3)" cx="59.75" cy="24.75"
-      /><text x="34" font-size="14px" y="30.0547" clip-path="url(#clipPath3)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(1030,140)"
+    ><text x="34" xml:space="preserve" y="30.0547" clip-path="url(#clipPath3)" stroke="none"
       >Control</text
     ></g
-    ><g fill="rgb(200,200,200)" fill-opacity="0.4902" transform="translate(900,140)" stroke-opacity="0.4902" stroke="rgb(200,200,200)"
+    ><g fill="rgb(200,200,200)" transform="translate(900,140)" stroke="rgb(200,200,200)"
     ><ellipse rx="59.25" ry="24.25" clip-path="url(#clipPath3)" cx="59.75" cy="24.75" stroke="none"
+      /><ellipse clip-path="url(#clipPath3)" fill="none" rx="59.25" cx="59.75" ry="24.25" cy="24.75" stroke="black"
     /></g
-    ><g transform="translate(900,140)"
-    ><ellipse rx="59.25" fill="none" ry="24.25" clip-path="url(#clipPath3)" cx="59.75" cy="24.75"
-      /><text x="18" font-size="14px" y="22" clip-path="url(#clipPath3)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(900,140)"
+    ><text x="18" xml:space="preserve" y="24.6641" clip-path="url(#clipPath3)" stroke="none"
       >Data Object</text
-      ><text x="6" font-size="14px" y="38.1094" clip-path="url(#clipPath3)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      ><text x="6" xml:space="preserve" y="40.7734" clip-path="url(#clipPath3)" stroke="none"
       >(for TableView)</text
     ></g
-    ><g fill="rgb(0,255,0)" fill-opacity="0.4902" transform="translate(770,140)" stroke-opacity="0.4902" stroke="rgb(0,255,0)"
+    ><g fill="lime" transform="translate(770,140)" stroke="lime"
     ><ellipse rx="59.25" ry="24.25" clip-path="url(#clipPath3)" cx="59.75" cy="24.75" stroke="none"
+      /><ellipse clip-path="url(#clipPath3)" fill="none" rx="59.25" cx="59.75" ry="24.25" cy="24.75" stroke="black"
     /></g
-    ><g transform="translate(770,140)"
-    ><ellipse rx="59.25" fill="none" ry="24.25" clip-path="url(#clipPath3)" cx="59.75" cy="24.75"
-      /><text x="23" font-size="14px" y="30.0547" clip-path="url(#clipPath3)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(770,140)"
+    ><text x="23" xml:space="preserve" y="30.0547" clip-path="url(#clipPath3)" stroke="none"
       >TableView</text
     ></g
-    ><g fill="rgb(0,255,255)" fill-opacity="0.4902" transform="translate(1160,140)" stroke-opacity="0.4902" stroke="rgb(0,255,255)"
+    ><g fill="aqua" transform="translate(1160,140)" stroke="aqua"
     ><ellipse rx="59.25" ry="24.25" clip-path="url(#clipPath3)" cx="59.75" cy="24.75" stroke="none"
+      /><ellipse clip-path="url(#clipPath3)" fill="none" rx="59.25" cx="59.75" ry="24.25" cy="24.75" stroke="black"
     /></g
-    ><g transform="translate(1160,140)"
-    ><ellipse rx="59.25" fill="none" ry="24.25" clip-path="url(#clipPath3)" cx="59.75" cy="24.75"
-      /><text x="33" font-size="14px" y="30.0547" clip-path="url(#clipPath3)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(1160,140)"
+    ><text x="33" xml:space="preserve" y="30.0547" clip-path="url(#clipPath3)" stroke="none"
       >Utilities</text
     ></g
-    ><g fill="rgb(255,0,0)" fill-opacity="0.4902" transform="translate(160,140)" stroke-opacity="0.4902" stroke="rgb(255,0,0)"
+    ><g fill="red" transform="translate(160,140)" stroke="red"
     ><ellipse rx="59.25" ry="24.25" clip-path="url(#clipPath3)" cx="59.75" cy="24.75" stroke="none"
+      /><ellipse clip-path="url(#clipPath3)" fill="none" rx="59.25" cx="59.75" ry="24.25" cy="24.75" stroke="black"
     /></g
-    ><g transform="translate(160,140)"
-    ><ellipse rx="59.25" fill="none" ry="24.25" clip-path="url(#clipPath3)" cx="59.75" cy="24.75"
-      /><text x="28" font-size="14px" y="30.0547" clip-path="url(#clipPath3)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(160,140)"
+    ><text x="28" xml:space="preserve" y="30.0547" clip-path="url(#clipPath3)" stroke="none"
       >MenuBar</text
     ></g
-    ><g fill="rgb(255,255,0)" fill-opacity="0.4902" transform="translate(30,140)" stroke-opacity="0.4902" stroke="rgb(255,255,0)"
+    ><g fill="yellow" transform="translate(30,140)" stroke="yellow"
     ><ellipse rx="59.25" ry="24.25" clip-path="url(#clipPath3)" cx="59.75" cy="24.75" stroke="none"
+      /><ellipse clip-path="url(#clipPath3)" fill="none" rx="59.25" cx="59.75" ry="24.25" cy="24.75" stroke="black"
     /></g
-    ><g transform="translate(30,140)"
-    ><ellipse rx="59.25" fill="none" ry="24.25" clip-path="url(#clipPath3)" cx="59.75" cy="24.75"
-      /><text x="20" font-size="14px" y="22" clip-path="url(#clipPath3)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(30,140)"
+    ><text x="20" xml:space="preserve" y="22" clip-path="url(#clipPath3)" stroke="none"
       >Stage/Pane</text
-      ><text x="14" font-size="14px" y="38.1094" clip-path="url(#clipPath3)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      ><text x="14" xml:space="preserve" y="38.1094" clip-path="url(#clipPath3)" stroke="none"
       >(for Window)</text
     ></g
-    ><g fill="rgb(255,165,0)" fill-opacity="0.4902" transform="translate(290,140)" stroke-opacity="0.4902" stroke="rgb(255,165,0)"
+    ><g fill="rgb(255,165,0)" transform="translate(290,140)" stroke="rgb(255,165,0)"
     ><ellipse rx="59.25" ry="24.25" clip-path="url(#clipPath3)" cx="59.75" cy="24.75" stroke="none"
+      /><ellipse clip-path="url(#clipPath3)" fill="none" rx="59.25" cx="59.75" ry="24.25" cy="24.75" stroke="black"
     /></g
-    ><g transform="translate(290,140)"
-    ><ellipse rx="59.25" fill="none" ry="24.25" clip-path="url(#clipPath3)" cx="59.75" cy="24.75"
-      /><text x="42" font-size="14px" y="22" clip-path="url(#clipPath3)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(290,140)"
+    ><text x="42" xml:space="preserve" y="22" clip-path="url(#clipPath3)" stroke="none"
       >Pane</text
-      ><text x="25" font-size="14px" y="38.1094" clip-path="url(#clipPath3)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      ><text x="25" xml:space="preserve" y="38.1094" clip-path="url(#clipPath3)" stroke="none"
       >(for Pane)</text
     ></g
-    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(420,580)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><g fill="white" transform="translate(420,580)" stroke="white"
     ><rect x="0.5" width="908.5" height="268.5" y="0.5" clip-path="url(#clipPath4)" stroke="none"
     /></g
     ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(420,580)" stroke-linecap="butt"
@@ -234,7 +234,7 @@
       /><text x="431" font-size="14px" y="18.1094" clip-path="url(#clipPath4)" font-family="sans-serif" stroke="none" xml:space="preserve"
       >Center</text
     ></g
-    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(0,850)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><g fill="white" transform="translate(0,850)" stroke="white"
     ><rect x="0.5" width="1328.5" height="98.5" y="0.5" clip-path="url(#clipPath5)" stroke="none"
     /></g
     ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(0,850)" stroke-linecap="butt"
@@ -242,7 +242,7 @@
       /><text x="639" font-size="14px" y="18.1094" clip-path="url(#clipPath5)" font-family="sans-serif" stroke="none" xml:space="preserve"
       >Bottom</text
     ></g
-    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(0,580)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><g fill="white" transform="translate(0,580)" stroke="white"
     ><rect x="0.5" width="418.5" height="268.5" y="0.5" clip-path="url(#clipPath6)" stroke="none"
     /></g
     ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(0,580)" stroke-linecap="butt"
@@ -250,7 +250,7 @@
       /><text x="196" font-size="14px" y="18.1094" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
       >Left</text
     ></g
-    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(0,200)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><g fill="white" transform="translate(0,200)" stroke="white"
     ><rect x="0.5" width="1328.5" height="378.5" y="0.5" clip-path="url(#clipPath7)" stroke="none"
     /></g
     ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(0,200)" stroke-linecap="butt"
@@ -271,12 +271,12 @@
     ><text x="14" xml:space="preserve" y="33.0547" clip-path="url(#clipPath9)" stroke="none"
       >used</text
     ></g
-    ><g fill="rgb(255,255,0)" fill-opacity="0.4902" transform="translate(630,30)" stroke-opacity="0.4902" stroke="rgb(255,255,0)"
+    ><g fill="yellow" transform="translate(630,30)" stroke="yellow"
     ><rect x="0.5" width="58.5" height="28.5" y="0.5" clip-path="url(#clipPath10)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath10)" fill="none" width="58.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(630,30)"
-    ><rect fill="none" x="0.5" width="58.5" height="28.5" y="0.5" clip-path="url(#clipPath10)"
-      /><text x="13" font-size="14px" y="18.1094" clip-path="url(#clipPath10)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(630,30)"
+    ><text x="13" xml:space="preserve" y="20.0547" clip-path="url(#clipPath10)" stroke="none"
       >Main</text
     ></g
     ><g fill="rgb(255,165,0)" transform="translate(790,270)" stroke="rgb(255,165,0)"
@@ -289,28 +289,28 @@
       /><path fill="white" d="M4 22.2583 L10.5 11 L17 22.2583 Z" clip-path="url(#clipPath8)" stroke="none"
       /><path fill="none" d="M4 22.2583 L10.5 11 L17 22.2583 Z" clip-path="url(#clipPath8)"
     /></g
-    ><g fill="rgb(255,255,0)" fill-opacity="0.4902" transform="translate(220,810)" stroke-opacity="0.4902" stroke="rgb(255,255,0)"
+    ><g fill="yellow" transform="translate(220,810)" stroke="yellow"
     ><rect x="0.5" width="158.5" height="28.5" y="0.5" clip-path="url(#clipPath11)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath11)" fill="none" width="158.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(220,810)"
-    ><rect fill="none" x="0.5" width="158.5" height="28.5" y="0.5" clip-path="url(#clipPath11)"
-      /><text x="12" font-size="14px" y="18.1094" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(220,810)"
+    ><text x="12" xml:space="preserve" y="20.0547" clip-path="url(#clipPath11)" stroke="none"
       >WindowMatterView</text
     ></g
-    ><g fill="rgb(255,165,0)" fill-opacity="0.4902" transform="translate(1100,520)" stroke-opacity="0.4902" stroke="rgb(255,165,0)"
+    ><g fill="rgb(255,165,0)" transform="translate(1100,520)" stroke="rgb(255,165,0)"
     ><rect x="0.5" width="198.5" height="28.5" y="0.5" clip-path="url(#clipPath12)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath12)" fill="none" width="198.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(1100,520)"
-    ><rect fill="none" x="0.5" width="198.5" height="28.5" y="0.5" clip-path="url(#clipPath12)"
-      /><text x="12" font-size="14px" y="18.1094" clip-path="url(#clipPath12)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(1100,520)"
+    ><text x="12" xml:space="preserve" y="20.0547" clip-path="url(#clipPath12)" stroke="none"
       >NoteCardDetailPaneView</text
     ></g
-    ><g fill="rgb(255,0,0)" fill-opacity="0.4902" transform="translate(830,300)" stroke-opacity="0.4902" stroke="rgb(255,0,0)"
+    ><g fill="red" transform="translate(830,300)" stroke="red"
     ><rect x="0.5" width="158.5" height="28.5" y="0.5" clip-path="url(#clipPath11)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath11)" fill="none" width="158.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(830,300)"
-    ><rect fill="none" x="0.5" width="158.5" height="28.5" y="0.5" clip-path="url(#clipPath11)"
-      /><text x="10" font-size="14px" y="18.1094" clip-path="url(#clipPath11)" font-family="sans-serif" font-style="italic" stroke="none" xml:space="preserve"
+    ><g font-style="italic" font-size="14px" font-family="sans-serif" transform="translate(830,300)"
+    ><text x="10" xml:space="preserve" y="20.0547" clip-path="url(#clipPath11)" stroke="none"
       >WriterMenuBarView</text
     ></g
     ><g fill="aqua" stroke-miterlimit="5" stroke-dasharray="8,5" transform="translate(280,490)" stroke-linecap="butt" stroke="aqua"
@@ -319,7 +319,7 @@
       /><path fill="none" d="M740.5 70.5 L740.5 10.5" clip-path="url(#clipPath13)"
       /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M4 22.2583 L10.5 11 L17 22.2583" clip-path="url(#clipPath13)" stroke-linecap="square"
     /></g
-    ><g fill="rgb(255,165,0)" transform="translate(100,660)" stroke="rgb(255,165,0)"
+    ><g fill="rgb(255,165,0)" transform="translate(120,660)" stroke="rgb(255,165,0)"
     ><path fill="none" d="M10.5 11.5 L10.5 40.5" clip-path="url(#clipPath14)"
       /><path fill="white" d="M4 22.2583 L10.5 11 L17 22.2583 Z" clip-path="url(#clipPath14)" stroke="none"
       /><path fill="none" d="M4 22.2583 L10.5 11 L17 22.2583 Z" clip-path="url(#clipPath14)"
@@ -389,36 +389,36 @@
       /><path fill="white" d="M38.7417 64 L50 70.5 L38.7417 77 L27.9833 70.5 Z" clip-path="url(#clipPath18)" stroke="none"
       /><path fill="none" d="M38.7417 64 L50 70.5 L38.7417 77 L27.9833 70.5 Z" clip-path="url(#clipPath18)"
     /></g
-    ><g fill="rgb(255,165,0)" fill-opacity="0.4902" transform="translate(210,320)" stroke-opacity="0.4902" stroke="rgb(255,165,0)"
+    ><g fill="rgb(255,165,0)" transform="translate(210,320)" stroke="rgb(255,165,0)"
     ><rect x="0.5" width="168.5" height="28.5" y="0.5" clip-path="url(#clipPath19)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath19)" fill="none" width="168.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(210,320)"
-    ><rect fill="none" x="0.5" width="168.5" height="28.5" y="0.5" clip-path="url(#clipPath19)"
-      /><text x="12" font-size="14px" y="18.1094" clip-path="url(#clipPath19)" font-family="sans-serif" font-style="italic" stroke="none" xml:space="preserve"
+    ><g font-style="italic" font-size="14px" font-family="sans-serif" transform="translate(210,320)"
+    ><text x="12" xml:space="preserve" y="20.0547" clip-path="url(#clipPath19)" stroke="none"
       >WindowStatDayView</text
     ></g
-    ><g fill="rgb(255,165,0)" fill-opacity="0.4902" transform="translate(210,270)" stroke-opacity="0.4902" stroke="rgb(255,165,0)"
+    ><g fill="rgb(255,165,0)" transform="translate(210,270)" stroke="rgb(255,165,0)"
     ><rect x="0.5" width="168.5" height="28.5" y="0.5" clip-path="url(#clipPath19)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath19)" fill="none" width="168.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(210,270)"
-    ><rect fill="none" x="0.5" width="168.5" height="28.5" y="0.5" clip-path="url(#clipPath19)"
-      /><text x="3" font-size="14px" y="18.1094" clip-path="url(#clipPath19)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(210,270)"
+    ><text x="3" xml:space="preserve" y="20.0547" clip-path="url(#clipPath19)" stroke="none"
       >WindowStatDayControl</text
     ></g
-    ><g fill="rgb(255,165,0)" fill-opacity="0.4902" transform="translate(420,320)" stroke-opacity="0.4902" stroke="rgb(255,165,0)"
+    ><g fill="rgb(255,165,0)" transform="translate(420,320)" stroke="rgb(255,165,0)"
     ><rect x="0.5" width="188.5" height="28.5" y="0.5" clip-path="url(#clipPath20)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath20)" fill="none" width="188.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(420,320)"
-    ><rect fill="none" x="0.5" width="188.5" height="28.5" y="0.5" clip-path="url(#clipPath20)"
-      /><text x="14" font-size="14px" y="18.1094" clip-path="url(#clipPath20)" font-family="sans-serif" font-style="italic" stroke="none" xml:space="preserve"
+    ><g font-style="italic" font-size="14px" font-family="sans-serif" transform="translate(420,320)"
+    ><text x="14" xml:space="preserve" y="20.0547" clip-path="url(#clipPath20)" stroke="none"
       >WindowStatMonthView</text
     ></g
-    ><g fill="rgb(255,165,0)" fill-opacity="0.4902" transform="translate(420,270)" stroke-opacity="0.4902" stroke="rgb(255,165,0)"
+    ><g fill="rgb(255,165,0)" transform="translate(420,270)" stroke="rgb(255,165,0)"
     ><rect x="0.5" width="188.5" height="28.5" y="0.5" clip-path="url(#clipPath20)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath20)" fill="none" width="188.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(420,270)"
-    ><rect fill="none" x="0.5" width="188.5" height="28.5" y="0.5" clip-path="url(#clipPath20)"
-      /><text x="5" font-size="14px" y="18.1094" clip-path="url(#clipPath20)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(420,270)"
+    ><text x="5" xml:space="preserve" y="20.0547" clip-path="url(#clipPath20)" stroke="none"
       >WindowStatMonthControl</text
     ></g
     ><g fill="blue" transform="translate(290,830)" stroke="blue"
@@ -436,28 +436,28 @@
       /><path fill="white" d="M4 22.2583 L10.5 11 L17 22.2583 Z" clip-path="url(#clipPath8)" stroke="none"
       /><path fill="none" d="M4 22.2583 L10.5 11 L17 22.2583 Z" clip-path="url(#clipPath8)"
     /></g
-    ><g fill="rgb(255,175,175)" fill-opacity="0.4902" transform="translate(220,910)" stroke-opacity="0.4902" stroke="rgb(255,175,175)"
+    ><g fill="rgb(255,175,175)" transform="translate(220,910)" stroke="rgb(255,175,175)"
     ><rect x="0.5" width="148.5" height="28.5" y="0.5" clip-path="url(#clipPath23)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath23)" fill="none" width="148.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(220,910)"
-    ><rect fill="none" x="0.5" width="148.5" height="28.5" y="0.5" clip-path="url(#clipPath23)"
-      /><text x="16" font-size="14px" y="18.1094" clip-path="url(#clipPath23)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(220,910)"
+    ><text x="16" xml:space="preserve" y="20.0547" clip-path="url(#clipPath23)" stroke="none"
       >CheatsheetLabel</text
     ></g
-    ><g fill="rgb(255,165,0)" fill-opacity="0.4902" transform="translate(760,910)" stroke-opacity="0.4902" stroke="rgb(255,165,0)"
+    ><g fill="rgb(255,165,0)" transform="translate(760,910)" stroke="rgb(255,165,0)"
     ><rect x="0.5" width="168.5" height="28.5" y="0.5" clip-path="url(#clipPath19)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath19)" fill="none" width="168.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(760,910)"
-    ><rect fill="none" x="0.5" width="168.5" height="28.5" y="0.5" clip-path="url(#clipPath19)"
-      /><text x="10" font-size="14px" y="18.1094" clip-path="url(#clipPath19)" font-family="sans-serif" font-style="italic" stroke="none" xml:space="preserve"
+    ><g font-style="italic" font-size="14px" font-family="sans-serif" transform="translate(760,910)"
+    ><text x="10" xml:space="preserve" y="20.0547" clip-path="url(#clipPath19)" stroke="none"
       >CheatsheetPaneView</text
     ></g
-    ><g fill="rgb(255,165,0)" fill-opacity="0.4902" transform="translate(50,700)" stroke-opacity="0.4902" stroke="rgb(255,165,0)"
-    ><rect x="0.5" width="118.5" height="28.5" y="0.5" clip-path="url(#clipPath24)" stroke="none"
+    ><g fill="rgb(255,165,0)" transform="translate(60,700)" stroke="rgb(255,165,0)"
+    ><rect x="0.5" width="138.5" height="28.5" y="0.5" clip-path="url(#clipPath24)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath24)" fill="none" width="138.5" height="28.5" stroke="blue"
     /></g
-    ><g fill="blue" transform="translate(50,700)" stroke="blue"
-    ><rect fill="none" x="0.5" width="118.5" height="28.5" y="0.5" clip-path="url(#clipPath24)"
-      /><text x="-6" font-size="14px" y="18.1094" clip-path="url(#clipPath24)" font-family="sans-serif" font-style="italic" stroke="none" xml:space="preserve"
+    ><g fill="blue" font-style="italic" font-size="14px" font-family="sans-serif" transform="translate(60,700)" stroke="blue"
+    ><text x="3" xml:space="preserve" y="20.0547" clip-path="url(#clipPath24)" stroke="none"
       >HeadingsPaneView</text
     ></g
     ><g fill="rgb(255,165,0)" transform="translate(290,660)" stroke="rgb(255,165,0)"
@@ -472,20 +472,20 @@
       /><path fill="white" d="M22.2583 17 L11 10.5 L22.2583 4 L33.0167 10.5 Z" clip-path="url(#clipPath25)" stroke="none"
       /><path fill="none" d="M22.2583 17 L11 10.5 L22.2583 4 L33.0167 10.5 Z" clip-path="url(#clipPath25)"
     /></g
-    ><g fill="rgb(255,165,0)" fill-opacity="0.4902" transform="translate(220,700)" stroke-opacity="0.4902" stroke="rgb(255,165,0)"
+    ><g fill="rgb(255,165,0)" transform="translate(220,700)" stroke="rgb(255,165,0)"
     ><rect x="0.5" width="158.5" height="28.5" y="0.5" clip-path="url(#clipPath11)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath11)" fill="none" width="158.5" height="28.5" stroke="blue"
     /></g
-    ><g fill="blue" transform="translate(220,700)" stroke="blue"
-    ><rect fill="none" x="0.5" width="158.5" height="28.5" y="0.5" clip-path="url(#clipPath11)"
-      /><text x="11" font-size="14px" y="18.1094" clip-path="url(#clipPath11)" font-family="sans-serif" font-style="italic" stroke="none" xml:space="preserve"
+    ><g fill="blue" font-style="italic" font-size="14px" font-family="sans-serif" transform="translate(220,700)" stroke="blue"
+    ><text x="11" xml:space="preserve" y="20.0547" clip-path="url(#clipPath11)" stroke="none"
       >MetaDataPaneView</text
     ></g
-    ><g fill="rgb(255,255,0)" fill-opacity="0.4902" transform="translate(220,760)" stroke-opacity="0.4902" stroke="rgb(255,255,0)"
+    ><g fill="yellow" transform="translate(220,760)" stroke="yellow"
     ><rect x="0.5" width="158.5" height="28.5" y="0.5" clip-path="url(#clipPath11)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath11)" fill="none" width="158.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(220,760)"
-    ><rect fill="none" x="0.5" width="158.5" height="28.5" y="0.5" clip-path="url(#clipPath11)"
-      /><text x="3" font-size="14px" y="18.1094" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(220,760)"
+    ><text x="3" xml:space="preserve" y="20.0547" clip-path="url(#clipPath11)" stroke="none"
       >WindowMatterControl</text
     ></g
     ><g fill="rgb(120,120,120)" transform="translate(70,490)" stroke="rgb(120,120,120)"
@@ -500,12 +500,12 @@
       /><path fill="white" d="M4 22.2583 L10.5 11 L17 22.2583 Z" clip-path="url(#clipPath27)" stroke="none"
       /><path fill="none" d="M4 22.2583 L10.5 11 L17 22.2583 Z" clip-path="url(#clipPath27)"
     /></g
-    ><g fill="rgb(255,165,0)" fill-opacity="0.4902" transform="translate(150,470)" stroke-opacity="0.4902" stroke="rgb(255,165,0)"
+    ><g fill="rgb(255,165,0)" transform="translate(150,470)" stroke="rgb(255,165,0)"
     ><rect x="0.5" width="148.5" height="28.5" y="0.5" clip-path="url(#clipPath23)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath23)" fill="none" width="148.5" height="28.5" stroke="blue"
     /></g
-    ><g fill="blue" transform="translate(150,470)" stroke="blue"
-    ><rect fill="none" x="0.5" width="148.5" height="28.5" y="0.5" clip-path="url(#clipPath23)"
-      /><text x="7" font-size="14px" y="18.1094" clip-path="url(#clipPath23)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g fill="blue" font-size="14px" font-family="sans-serif" transform="translate(150,470)" stroke="blue"
+    ><text x="7" xml:space="preserve" y="20.0547" clip-path="url(#clipPath23)" stroke="none"
       >NoteCardPaneView</text
     ></g
     ><g fill="blue" transform="translate(260,370)" stroke="blue"
@@ -517,20 +517,20 @@
       /><path fill="white" d="M4 142.2583 L10.5 131 L17 142.2583 L10.5 153.0167 Z" clip-path="url(#clipPath28)" stroke="none"
       /><path fill="none" d="M4 142.2583 L10.5 131 L17 142.2583 L10.5 153.0167 Z" clip-path="url(#clipPath28)"
     /></g
-    ><g fill="rgb(255,165,0)" fill-opacity="0.4902" transform="translate(1100,470)" stroke-opacity="0.4902" stroke="rgb(255,165,0)"
+    ><g fill="rgb(255,165,0)" transform="translate(1100,470)" stroke="rgb(255,165,0)"
     ><rect x="0.5" width="198.5" height="28.5" y="0.5" clip-path="url(#clipPath12)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath12)" fill="none" width="198.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(1100,470)"
-    ><rect fill="none" x="0.5" width="198.5" height="28.5" y="0.5" clip-path="url(#clipPath12)"
-      /><text x="3" font-size="14px" y="18.1094" clip-path="url(#clipPath12)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(1100,470)"
+    ><text x="3" xml:space="preserve" y="20.0547" clip-path="url(#clipPath12)" stroke="none"
       >NoteCardDetailPaneControl</text
     ></g
-    ><g fill="rgb(200,200,200)" fill-opacity="0.4902" transform="translate(30,470)" stroke-opacity="0.4902" stroke="rgb(200,200,200)"
+    ><g fill="rgb(200,200,200)" transform="translate(30,470)" stroke="rgb(200,200,200)"
     ><rect x="0.5" width="108.5" height="28.5" y="0.5" clip-path="url(#clipPath29)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath29)" fill="none" width="108.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(30,470)"
-    ><rect fill="none" x="0.5" width="108.5" height="28.5" y="0.5" clip-path="url(#clipPath29)"
-      /><text x="5" font-size="14px" y="18.1094" clip-path="url(#clipPath29)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(30,470)"
+    ><text x="5" xml:space="preserve" y="20.0547" clip-path="url(#clipPath29)" stroke="none"
       >NoteCardData</text
     ></g
     ><g fill="rgb(120,120,120)" transform="translate(870,400)" stroke="rgb(120,120,120)"
@@ -544,20 +544,20 @@
       /><path fill="none" d="M230.5 30.5 L230.5 70.5" clip-path="url(#clipPath30)"
       /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M4 22.2583 L10.5 11 L17 22.2583" clip-path="url(#clipPath30)" stroke-linecap="square"
     /></g
-    ><g fill="rgb(0,255,0)" fill-opacity="0.4902" transform="translate(830,380)" stroke-opacity="0.4902" stroke="rgb(0,255,0)"
+    ><g fill="lime" transform="translate(830,380)" stroke="lime"
     ><rect x="0.5" width="108.5" height="28.5" y="0.5" clip-path="url(#clipPath29)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath29)" fill="none" width="108.5" height="28.5" stroke="blue"
     /></g
-    ><g fill="blue" transform="translate(830,380)" stroke="blue"
-    ><rect fill="none" x="0.5" width="108.5" height="28.5" y="0.5" clip-path="url(#clipPath29)"
-      /><text x="2" font-size="14px" y="18.1094" clip-path="url(#clipPath29)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g fill="blue" font-size="14px" font-family="sans-serif" transform="translate(830,380)" stroke="blue"
+    ><text x="2" xml:space="preserve" y="20.0547" clip-path="url(#clipPath29)" stroke="none"
       >ReferencePane</text
     ></g
-    ><g fill="rgb(200,200,200)" fill-opacity="0.4902" transform="translate(830,470)" stroke-opacity="0.4902" stroke="rgb(200,200,200)"
+    ><g fill="rgb(200,200,200)" transform="translate(830,470)" stroke="rgb(200,200,200)"
     ><rect x="0.5" width="108.5" height="28.5" y="0.5" clip-path="url(#clipPath29)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath29)" fill="none" width="108.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(830,470)"
-    ><rect fill="none" x="0.5" width="108.5" height="28.5" y="0.5" clip-path="url(#clipPath29)"
-      /><text x="2" font-size="14px" y="18.1094" clip-path="url(#clipPath29)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(830,470)"
+    ><text x="2" xml:space="preserve" y="20.0547" clip-path="url(#clipPath29)" stroke="none"
       >ReferenceData</text
     ></g
     ><g fill="aqua" stroke-miterlimit="5" stroke-dasharray="8,5" transform="translate(560,400)" stroke-linecap="butt" stroke="aqua"
@@ -578,12 +578,12 @@
       /><path fill="none" d="M320.5 40.5 L320.5 70.5" clip-path="url(#clipPath32)"
       /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M4 22.2583 L10.5 11 L17 22.2583" clip-path="url(#clipPath32)" stroke-linecap="square"
     /></g
-    ><g fill="rgb(0,255,255)" fill-opacity="0.4902" transform="translate(950,470)" stroke-opacity="0.4902" stroke="rgb(0,255,255)"
+    ><g fill="aqua" transform="translate(950,470)" stroke="aqua"
     ><rect x="0.5" width="128.5" height="28.5" y="0.5" clip-path="url(#clipPath33)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath33)" fill="none" width="128.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(950,470)"
-    ><rect fill="none" x="0.5" width="128.5" height="28.5" y="0.5" clip-path="url(#clipPath33)"
-      /><text x="5" font-size="14px" y="18.1094" clip-path="url(#clipPath33)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(950,470)"
+    ><text x="5" xml:space="preserve" y="20.0547" clip-path="url(#clipPath33)" stroke="none"
       >TableDataHelper</text
     ></g
     ><g fill="rgb(255,165,0)" transform="translate(380,400)" stroke="rgb(255,165,0)"
@@ -644,60 +644,60 @@
       /><path fill="white" d="M4 22.2583 L10.5 11 L17 22.2583 L10.5 33.0167 Z" clip-path="url(#clipPath27)" stroke="none"
       /><path fill="none" d="M4 22.2583 L10.5 11 L17 22.2583 L10.5 33.0167 Z" clip-path="url(#clipPath27)"
     /></g
-    ><g fill="rgb(0,255,0)" fill-opacity="0.4902" transform="translate(450,380)" stroke-opacity="0.4902" stroke="rgb(0,255,0)"
+    ><g fill="lime" transform="translate(450,380)" stroke="lime"
     ><rect x="0.5" width="128.5" height="28.5" y="0.5" clip-path="url(#clipPath33)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath33)" fill="none" width="128.5" height="28.5" stroke="blue"
     /></g
-    ><g fill="blue" transform="translate(450,380)" stroke="blue"
-    ><rect fill="none" x="0.5" width="128.5" height="28.5" y="0.5" clip-path="url(#clipPath33)"
-      /><text x="1" font-size="14px" y="18.1094" clip-path="url(#clipPath33)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g fill="blue" font-size="14px" font-family="sans-serif" transform="translate(450,380)" stroke="blue"
+    ><text x="1" xml:space="preserve" y="20.0547" clip-path="url(#clipPath33)" stroke="none"
       >TableAgendaPane</text
     ></g
-    ><g fill="rgb(200,200,200)" fill-opacity="0.4902" transform="translate(450,470)" stroke-opacity="0.4902" stroke="rgb(200,200,200)"
+    ><g fill="rgb(200,200,200)" transform="translate(450,470)" stroke="rgb(200,200,200)"
     ><rect x="0.5" width="128.5" height="28.5" y="0.5" clip-path="url(#clipPath33)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath33)" fill="none" width="128.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(450,470)"
-    ><rect fill="none" x="0.5" width="128.5" height="28.5" y="0.5" clip-path="url(#clipPath33)"
-      /><text x="2" font-size="14px" y="18.1094" clip-path="url(#clipPath33)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(450,470)"
+    ><text x="2" xml:space="preserve" y="20.0547" clip-path="url(#clipPath33)" stroke="none"
       >TableAgendaData</text
     ></g
-    ><g fill="rgb(200,200,200)" fill-opacity="0.4902" transform="translate(710,470)" stroke-opacity="0.4902" stroke="rgb(200,200,200)"
+    ><g fill="rgb(200,200,200)" transform="translate(710,470)" stroke="rgb(200,200,200)"
     ><rect x="0.5" width="108.5" height="28.5" y="0.5" clip-path="url(#clipPath29)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath29)" fill="none" width="108.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(710,470)"
-    ><rect fill="none" x="0.5" width="108.5" height="28.5" y="0.5" clip-path="url(#clipPath29)"
-      /><text x="2" font-size="14px" y="18.1094" clip-path="url(#clipPath29)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(710,470)"
+    ><text x="2" xml:space="preserve" y="20.0547" clip-path="url(#clipPath29)" stroke="none"
       >TableNoteData</text
     ></g
-    ><g fill="rgb(0,255,0)" fill-opacity="0.4902" transform="translate(710,380)" stroke-opacity="0.4902" stroke="rgb(0,255,0)"
+    ><g fill="lime" transform="translate(710,380)" stroke="lime"
     ><rect x="0.5" width="108.5" height="28.5" y="0.5" clip-path="url(#clipPath29)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath29)" fill="none" width="108.5" height="28.5" stroke="blue"
     /></g
-    ><g fill="blue" transform="translate(710,380)" stroke="blue"
-    ><rect fill="none" x="0.5" width="108.5" height="28.5" y="0.5" clip-path="url(#clipPath29)"
-      /><text x="1" font-size="14px" y="18.1094" clip-path="url(#clipPath29)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g fill="blue" font-size="14px" font-family="sans-serif" transform="translate(710,380)" stroke="blue"
+    ><text x="1" xml:space="preserve" y="20.0547" clip-path="url(#clipPath29)" stroke="none"
       >TableNotePane</text
     ></g
-    ><g fill="rgb(0,255,0)" fill-opacity="0.4902" transform="translate(590,380)" stroke-opacity="0.4902" stroke="rgb(0,255,0)"
+    ><g fill="lime" transform="translate(590,380)" stroke="lime"
     ><rect x="0.5" width="108.5" height="28.5" y="0.5" clip-path="url(#clipPath29)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath29)" fill="none" width="108.5" height="28.5" stroke="blue"
     /></g
-    ><g fill="blue" transform="translate(590,380)" stroke="blue"
-    ><rect fill="none" x="0.5" width="108.5" height="28.5" y="0.5" clip-path="url(#clipPath29)"
-      /><text x="4" font-size="14px" y="18.1094" clip-path="url(#clipPath29)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g fill="blue" font-size="14px" font-family="sans-serif" transform="translate(590,380)" stroke="blue"
+    ><text x="4" xml:space="preserve" y="20.0547" clip-path="url(#clipPath29)" stroke="none"
       >TableLinkPane</text
     ></g
-    ><g fill="rgb(200,200,200)" fill-opacity="0.4902" transform="translate(590,470)" stroke-opacity="0.4902" stroke="rgb(200,200,200)"
+    ><g fill="rgb(200,200,200)" transform="translate(590,470)" stroke="rgb(200,200,200)"
     ><rect x="0.5" width="108.5" height="28.5" y="0.5" clip-path="url(#clipPath29)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath29)" fill="none" width="108.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(590,470)"
-    ><rect fill="none" x="0.5" width="108.5" height="28.5" y="0.5" clip-path="url(#clipPath29)"
-      /><text x="4" font-size="14px" y="18.1094" clip-path="url(#clipPath29)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(590,470)"
+    ><text x="4" xml:space="preserve" y="20.0547" clip-path="url(#clipPath29)" stroke="none"
       >TableLinkData</text
     ></g
-    ><g fill="rgb(200,200,200)" fill-opacity="0.4902" transform="translate(610,520)" stroke-opacity="0.4902" stroke="rgb(200,200,200)"
+    ><g fill="rgb(200,200,200)" transform="translate(610,520)" stroke="rgb(200,200,200)"
     ><rect x="0.5" width="78.5" height="28.5" y="0.5" clip-path="url(#clipPath38)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath38)" fill="none" width="78.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(610,520)"
-    ><rect fill="none" x="0.5" width="78.5" height="28.5" y="0.5" clip-path="url(#clipPath38)"
-      /><text x="4" font-size="14px" y="18.1094" clip-path="url(#clipPath38)" font-family="sans-serif" font-style="italic" stroke="none" xml:space="preserve"
+    ><g font-style="italic" font-size="14px" font-family="sans-serif" transform="translate(610,520)"
+    ><text x="4" xml:space="preserve" y="20.0547" clip-path="url(#clipPath38)" stroke="none"
       >TableData</text
     ></g
     ><g fill="rgb(255,165,0)" transform="translate(850,710)" stroke="rgb(255,165,0)"
@@ -763,116 +763,116 @@
       /><path fill="white" d="M4 22.2583 L10.5 11 L17 22.2583 L10.5 33.0167 Z" clip-path="url(#clipPath46)" stroke="none"
       /><path fill="none" d="M4 22.2583 L10.5 11 L17 22.2583 L10.5 33.0167 Z" clip-path="url(#clipPath46)"
     /></g
-    ><g fill="rgb(0,255,0)" fill-opacity="0.4902" transform="translate(310,520)" stroke-opacity="0.4902" stroke="rgb(0,255,0)"
+    ><g fill="lime" transform="translate(310,520)" stroke="lime"
     ><rect x="0.5" width="128.5" height="28.5" y="0.5" clip-path="url(#clipPath33)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath33)" fill="none" width="128.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(310,520)"
-    ><rect fill="none" x="0.5" width="128.5" height="28.5" y="0.5" clip-path="url(#clipPath33)"
-      /><text x="12" font-size="14px" y="18.1094" clip-path="url(#clipPath33)" font-family="sans-serif" font-style="italic" stroke="none" xml:space="preserve"
+    ><g font-style="italic" font-size="14px" font-family="sans-serif" transform="translate(310,520)"
+    ><text x="12" xml:space="preserve" y="20.0547" clip-path="url(#clipPath33)" stroke="none"
       >TableDataView</text
     ></g
-    ><g fill="rgb(255,165,0)" fill-opacity="0.4902" transform="translate(800,760)" stroke-opacity="0.4902" stroke="rgb(255,165,0)"
-    ><rect x="0.5" width="118.5" height="28.5" y="0.5" clip-path="url(#clipPath24)" stroke="none"
+    ><g fill="rgb(255,165,0)" transform="translate(800,760)" stroke="rgb(255,165,0)"
+    ><rect x="0.5" width="118.5" height="28.5" y="0.5" clip-path="url(#clipPath47)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath47)" fill="none" width="118.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(800,760)"
-    ><rect fill="none" x="0.5" width="118.5" height="28.5" y="0.5" clip-path="url(#clipPath24)"
-      /><text x="10" font-size="14px" y="18.1094" clip-path="url(#clipPath24)" font-family="sans-serif" font-style="italic" stroke="none" xml:space="preserve"
+    ><g font-style="italic" font-size="14px" font-family="sans-serif" transform="translate(800,760)"
+    ><text x="10" xml:space="preserve" y="20.0547" clip-path="url(#clipPath47)" stroke="none"
       >TextPaneView</text
     ></g
-    ><g fill="rgb(255,255,0)" fill-opacity="0.4902" transform="translate(650,320)" stroke-opacity="0.4902" stroke="rgb(255,255,0)"
+    ><g fill="yellow" transform="translate(650,320)" stroke="yellow"
     ><rect x="0.5" width="148.5" height="28.5" y="0.5" clip-path="url(#clipPath23)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath23)" fill="none" width="148.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(650,320)"
-    ><rect fill="none" x="0.5" width="148.5" height="28.5" y="0.5" clip-path="url(#clipPath23)"
-      /><text x="12" font-size="14px" y="18.1094" clip-path="url(#clipPath23)" font-family="sans-serif" font-style="italic" stroke="none" xml:space="preserve"
+    ><g font-style="italic" font-size="14px" font-family="sans-serif" transform="translate(650,320)"
+    ><text x="12" xml:space="preserve" y="20.0547" clip-path="url(#clipPath23)" stroke="none"
       >WindowStatsView</text
     ></g
-    ><g fill="rgb(255,255,0)" fill-opacity="0.4902" transform="translate(650,270)" stroke-opacity="0.4902" stroke="rgb(255,255,0)"
+    ><g fill="yellow" transform="translate(650,270)" stroke="yellow"
     ><rect x="0.5" width="148.5" height="28.5" y="0.5" clip-path="url(#clipPath23)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath23)" fill="none" width="148.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(650,270)"
-    ><rect fill="none" x="0.5" width="148.5" height="28.5" y="0.5" clip-path="url(#clipPath23)"
-      /><text x="3" font-size="14px" y="18.1094" clip-path="url(#clipPath23)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(650,270)"
+    ><text x="3" xml:space="preserve" y="20.0547" clip-path="url(#clipPath23)" stroke="none"
       >WindowStatsControl</text
     ></g
-    ><g fill="rgb(255,255,0)" fill-opacity="0.4902" transform="translate(1030,270)" stroke-opacity="0.4902" stroke="rgb(255,255,0)"
+    ><g fill="yellow" transform="translate(1030,270)" stroke="yellow"
     ><rect x="0.5" width="108.5" height="28.5" y="0.5" clip-path="url(#clipPath29)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath29)" fill="none" width="108.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(1030,270)"
-    ><rect fill="none" x="0.5" width="108.5" height="28.5" y="0.5" clip-path="url(#clipPath29)"
-      /><text x="6" font-size="14px" y="18.1094" clip-path="url(#clipPath29)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(1030,270)"
+    ><text x="6" xml:space="preserve" y="20.0547" clip-path="url(#clipPath29)" stroke="none"
       >WindowAbout</text
     ></g
-    ><g fill="rgb(255,165,0)" fill-opacity="0.4902" transform="translate(760,860)" stroke-opacity="0.4902" stroke="rgb(255,165,0)"
+    ><g fill="rgb(255,165,0)" transform="translate(760,860)" stroke="rgb(255,165,0)"
     ><rect x="0.5" width="168.5" height="28.5" y="0.5" clip-path="url(#clipPath19)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath19)" fill="none" width="168.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(760,860)"
-    ><rect fill="none" x="0.5" width="168.5" height="28.5" y="0.5" clip-path="url(#clipPath19)"
-      /><text x="2" font-size="14px" y="18.1094" clip-path="url(#clipPath19)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(760,860)"
+    ><text x="2" xml:space="preserve" y="20.0547" clip-path="url(#clipPath19)" stroke="none"
       >CheatsheetPaneControl</text
     ></g
-    ><g fill="rgb(255,165,0)" fill-opacity="0.4902" transform="translate(140,380)" stroke-opacity="0.4902" stroke="rgb(255,165,0)"
+    ><g fill="rgb(255,165,0)" transform="translate(140,380)" stroke="rgb(255,165,0)"
     ><rect x="0.5" width="158.5" height="28.5" y="0.5" clip-path="url(#clipPath11)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath11)" fill="none" width="158.5" height="28.5" stroke="blue"
     /></g
-    ><g fill="blue" transform="translate(140,380)" stroke="blue"
-    ><rect fill="none" x="0.5" width="158.5" height="28.5" y="0.5" clip-path="url(#clipPath11)"
-      /><text x="4" font-size="14px" y="18.1094" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g fill="blue" font-size="14px" font-family="sans-serif" transform="translate(140,380)" stroke="blue"
+    ><text x="4" xml:space="preserve" y="20.0547" clip-path="url(#clipPath11)" stroke="none"
       >NoteCardPaneControl</text
     ></g
-    ><g fill="rgb(0,255,0)" fill-opacity="0.4902" transform="translate(310,470)" stroke-opacity="0.4902" stroke="rgb(0,255,0)"
+    ><g fill="lime" transform="translate(310,470)" stroke="lime"
     ><rect x="0.5" width="128.5" height="28.5" y="0.5" clip-path="url(#clipPath33)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath33)" fill="none" width="128.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(310,470)"
-    ><rect fill="none" x="0.5" width="128.5" height="28.5" y="0.5" clip-path="url(#clipPath33)"
-      /><text x="3" font-size="14px" y="18.1094" clip-path="url(#clipPath33)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(310,470)"
+    ><text x="3" xml:space="preserve" y="20.0547" clip-path="url(#clipPath33)" stroke="none"
       >TableDataControl</text
     ></g
-    ><g fill="rgb(255,165,0)" fill-opacity="0.4902" transform="translate(220,640)" stroke-opacity="0.4902" stroke="rgb(255,165,0)"
+    ><g fill="rgb(255,165,0)" transform="translate(220,640)" stroke="rgb(255,165,0)"
     ><rect x="0.5" width="158.5" height="28.5" y="0.5" clip-path="url(#clipPath11)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath11)" fill="none" width="158.5" height="28.5" stroke="blue"
     /></g
-    ><g fill="blue" transform="translate(220,640)" stroke="blue"
-    ><rect fill="none" x="0.5" width="158.5" height="28.5" y="0.5" clip-path="url(#clipPath11)"
-      /><text x="3" font-size="14px" y="18.1094" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g fill="blue" font-size="14px" font-family="sans-serif" transform="translate(220,640)" stroke="blue"
+    ><text x="3" xml:space="preserve" y="20.0547" clip-path="url(#clipPath11)" stroke="none"
       >MetaDataPaneControl</text
     ></g
-    ><g fill="rgb(255,165,0)" fill-opacity="0.4902" transform="translate(50,640)" stroke-opacity="0.4902" stroke="rgb(255,165,0)"
+    ><g fill="rgb(255,165,0)" transform="translate(50,640)" stroke="rgb(255,165,0)"
     ><rect x="0.5" width="158.5" height="28.5" y="0.5" clip-path="url(#clipPath11)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath11)" fill="none" width="158.5" height="28.5" stroke="blue"
     /></g
-    ><g fill="blue" transform="translate(50,640)" stroke="blue"
-    ><rect fill="none" x="0.5" width="158.5" height="28.5" y="0.5" clip-path="url(#clipPath11)"
-      /><text x="4" font-size="14px" y="18.1094" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g fill="blue" font-size="14px" font-family="sans-serif" transform="translate(50,640)" stroke="blue"
+    ><text x="4" xml:space="preserve" y="20.0547" clip-path="url(#clipPath11)" stroke="none"
       >HeadingsPaneControl</text
     ></g
-    ><g fill="rgb(255,0,0)" fill-opacity="0.4902" transform="translate(830,260)" stroke-opacity="0.4902" stroke="rgb(255,0,0)"
+    ><g fill="red" transform="translate(830,260)" stroke="red"
     ><rect x="0.5" width="158.5" height="28.5" y="0.5" clip-path="url(#clipPath11)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath11)" fill="none" width="158.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(830,260)"
-    ><rect fill="none" x="0.5" width="158.5" height="28.5" y="0.5" clip-path="url(#clipPath11)"
-      /><text x="1" font-size="14px" y="18.1094" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(830,260)"
+    ><text x="1" xml:space="preserve" y="20.0547" clip-path="url(#clipPath11)" stroke="none"
       >WriterMenuBarControl</text
     ></g
-    ><g fill="rgb(255,165,0)" fill-opacity="0.4902" transform="translate(800,690)" stroke-opacity="0.4902" stroke="rgb(255,165,0)"
-    ><rect x="0.5" width="118.5" height="28.5" y="0.5" clip-path="url(#clipPath24)" stroke="none"
+    ><g fill="rgb(255,165,0)" transform="translate(800,690)" stroke="rgb(255,165,0)"
+    ><rect x="0.5" width="118.5" height="28.5" y="0.5" clip-path="url(#clipPath47)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath47)" fill="none" width="118.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(800,690)"
-    ><rect fill="none" x="0.5" width="118.5" height="28.5" y="0.5" clip-path="url(#clipPath24)"
-      /><text x="1" font-size="14px" y="18.1094" clip-path="url(#clipPath24)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(800,690)"
+    ><text x="1" xml:space="preserve" y="20.0547" clip-path="url(#clipPath47)" stroke="none"
       >TextPaneControl</text
     ></g
-    ><g fill="rgb(255,165,0)" fill-opacity="0.4902" transform="translate(590,90)" stroke-opacity="0.4902" stroke="rgb(255,165,0)"
-    ><rect x="0.5" width="138.5" height="28.5" y="0.5" clip-path="url(#clipPath47)" stroke="none"
+    ><g fill="rgb(255,165,0)" transform="translate(590,90)" stroke="rgb(255,165,0)"
+    ><rect x="0.5" width="138.5" height="28.5" y="0.5" clip-path="url(#clipPath24)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath24)" fill="none" width="138.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(590,90)"
-    ><rect fill="none" x="0.5" width="138.5" height="28.5" y="0.5" clip-path="url(#clipPath47)"
-      /><text x="1" font-size="14px" y="18.1094" clip-path="url(#clipPath47)" font-family="sans-serif" stroke="none" xml:space="preserve"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(590,90)"
+    ><text x="1" xml:space="preserve" y="20.0547" clip-path="url(#clipPath24)" stroke="none"
       >WriterSceneControl</text
     ></g
-    ><g fill="rgb(255,165,0)" fill-opacity="0.4902" transform="translate(590,140)" stroke-opacity="0.4902" stroke="rgb(255,165,0)"
-    ><rect x="0.5" width="138.5" height="28.5" y="0.5" clip-path="url(#clipPath47)" stroke="none"
+    ><g fill="rgb(255,165,0)" transform="translate(590,140)" stroke="rgb(255,165,0)"
+    ><rect x="0.5" width="138.5" height="28.5" y="0.5" clip-path="url(#clipPath24)" stroke="none"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath24)" fill="none" width="138.5" height="28.5" stroke="black"
     /></g
-    ><g transform="translate(590,140)"
-    ><rect fill="none" x="0.5" width="138.5" height="28.5" y="0.5" clip-path="url(#clipPath47)"
-      /><text x="10" font-size="14px" y="18.1094" clip-path="url(#clipPath47)" font-family="sans-serif" font-style="italic" stroke="none" xml:space="preserve"
+    ><g font-style="italic" font-size="14px" font-family="sans-serif" transform="translate(590,140)"
+    ><text x="10" xml:space="preserve" y="20.0547" clip-path="url(#clipPath24)" stroke="none"
       >WriterSceneView</text
     ></g
   ></g

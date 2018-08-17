@@ -501,24 +501,6 @@ public abstract class Document extends SpanNode<SpanBranch>{
         return Optional.of((SpanLeaf)pointer);
     }
 
-    protected final Optional<SpanLeaf> locateLeaf(ToIntFunction<SpanLeaf> type,
-        int location
-    ){
-        if (isEmpty()){
-            return Optional.empty();
-        }
-        int ptr = 0;
-        for (SpanLeaf leaf: getLeaves()){
-            int length = leaf.getLength(type);
-            if (length + ptr < location){
-                ptr += length;
-            } else {
-                return Optional.of(leaf);
-            }
-        }
-        return Optional.empty();
-    }
-
     /** Located the span in a {@link SpanNode}.
      *
      * @param index
