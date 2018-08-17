@@ -105,7 +105,45 @@ class NoteCardDetailPaneControl extends NoteCardDetailPaneView{
             content = pane;
         }
 
+        /// Add citations
         GridPane bottom = new GridPane();
+        ColumnConstraints column1 = new ColumnConstraints();
+        column1.setPercentWidth(30.0);
+        ColumnConstraints column2 = new ColumnConstraints();
+        column2.setPercentWidth(70.0);
+        bottom.getColumnConstraints().addAll(column1, column2);
+        /// add source
+        span.getSource().ifPresent(source -> {
+
+            bottom.add(sourceLabel, 0, 0);
+            bottom.add(new ScrollPane(TextFlowBuilder
+                .loadFormatText(Optional.of(source))), 1, 0);
+        });
+        /// add footnote/in-text
+        span.getInTextLine().ifPresent(line -> {
+            Label label = null;
+            Node text = null;
+            if (line.getInfoFieldType() == InfoFieldType.FOOTNOTE){
+                label = footnoteLabel;
+                text = new Text(line.getData()
+                    .filter(s -> s instanceof ContentSpan)
+                    .map(s -> ((ContentSpan)s).getTrimmed())
+                    .orElse("")
+                );
+            } else {
+                label = inTextLabel;
+                text = TextFlowBuilder.loadFormatText( line.getData()
+                    .filter(s -> s instanceof FormattedSpan)
+                    .map(s -> (FormattedSpan) s)
+                );
+            }
+            if (text != null){
+                assert label != null : "Null label, but filled text";
+                bottom.add(label, 0, 1);
+                bottom.add(new ScrollPane(text), 1, 1);
+            }
+        });
+
         bottom.add(new StackPane(new Label(span.getLookupText())), 0, 2);
         bottom.add(new StackPane(goToButton), 1, 2);
 

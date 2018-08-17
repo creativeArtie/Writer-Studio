@@ -13,50 +13,80 @@ import com.creativeartie.writerstudio.resource.*;
  */
 public abstract class NoteCardPaneView extends GridPane{
     /// %Part 1: Constructor and Class Fields
+    private TreeView<String> idTree;
+    private TreeView<String> locationTree;
+    private Button insertAfterButton;
+    private Button insertBeforeButton;
+    private Button deleteItemButton;
 
-    private TableView<NoteCardData> noteTable;
-    private NoteCardDetailPaneControl noteDetail;
+    private NoteCardDetailPaneControl contentPane;
+    private TableView<NoteCardData> metaInfoTable;
 
     public NoteCardPaneView(){
 
-        add(buildNoteTable(), 0, 0);
-        add(buildNoteDetail(), 1, 0);
+        double width = 100.0 / 3;
+        ColumnConstraints column1 = new ColumnConstraints();
+        column1.setPercentWidth(width);
+        ColumnConstraints column2 = new ColumnConstraints();
+        column2.setPercentWidth(width);
+        ColumnConstraints column3 = new ColumnConstraints();
+        column3.setPercentWidth(width);
+        getColumnConstraints().addAll(column1, column2, column3);
+
+
+        add(buildPointerPane(), 0, 0);
+        add(buildContentPane(), 1, 0);
+        add(buildInfoPane(), 2, 0);
+    }
+
+    private BorderPane buildPointerPane(){
+        BorderPane pane = new BorderPane();
+        pane.setCenter(buildLocationTabs());
+        pane.setBottom(buildEditButtons());
+        setFillHeight(pane, true);
+        return pane;
+    }
+
+    private TabPane buildLocationTabs(){
+        TabPane tab = new TabPane(buildIdViewPane(), buildLocationViewPane());
+        tab.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        return tab;
+    }
+
+    private Tab buildIdViewPane(){
+        idTree = new TreeView<>();
+        idTree.setShowRoot(false);
+        return new Tab("Id", idTree);
+    }
+
+    private Tab buildLocationViewPane(){
+        locationTree = new TreeView<>();
+        locationTree.setShowRoot(false);
+        return new Tab("Location", locationTree);
+    }
+
+    private FlowPane buildEditButtons(){
+        insertAfterButton = new Button("Add after");
+        insertBeforeButton = new Button("Add before");
+        deleteItemButton = new Button("delete");
+        FlowPane pane = new FlowPane(insertBeforeButton, insertAfterButton,
+            deleteItemButton);
+        return pane;
+    }
+
+    private NoteCardDetailPaneControl buildContentPane(){
+        contentPane = new NoteCardDetailPaneControl();
+        setFillHeight(contentPane, false);
+        return contentPane;
+    }
+
+    private TableView<NoteCardData> buildInfoPane(){
+        metaInfoTable = new TableView<>();
+        setFillHeight(metaInfoTable, true);
+        return metaInfoTable;
     }
 
     /// %Part 2: Layout
-
-    @SuppressWarnings("unchecked") /// For ans.getColumns().addAdd(TableColumn ...)
-    private TableView<NoteCardData> buildNoteTable(){
-        noteTable = new TableView<>();
-
-        TableColumn<NoteCardData, Optional<CatalogueIdentity>> id =
-            TableDataHelper.getIdColumn(WindowText.NOTE_CARDS_ID, d ->
-                d.noteIdProperty());
-        TableDataHelper.setPrecentWidth(id, noteTable, 20.0);
-
-        TableColumn<NoteCardData, SectionSpan> section =
-            TableDataHelper.getSectionColumn(WindowText.NOTE_CARDS_SECTION, d ->
-                d.noteSectionProperty());
-        TableDataHelper.setPrecentWidth(section, noteTable, 40.0);
-
-        TableColumn<NoteCardData, Optional<FormattedSpan>> format =
-            TableDataHelper.getFormatColumn(WindowText.NOTE_CARDS_TITLE, d ->
-                d.noteTitleProperty());
-        TableDataHelper.setPrecentWidth(format, noteTable, 40.0);
-
-        noteTable.getColumns().addAll(id, section, format);
-        noteTable.setFixedCellSize(30);
-        noteTable.setPlaceholder(new Label(WindowText.NOTE_CARDS_EMPTY.getText()));
-        noteTable.prefWidthProperty().bind(widthProperty().multiply(.7));
-        return noteTable;
-    }
-
-    private NoteCardDetailPaneControl buildNoteDetail(){
-        noteDetail = new NoteCardDetailPaneControl();
-        noteDetail.prefWidthProperty().bind(widthProperty().multiply(.3));
-        noteDetail.prefHeightProperty().bind(heightProperty());
-        return noteDetail;
-    }
 
     /// %Part 3: Listener Methods
 
@@ -69,12 +99,15 @@ public abstract class NoteCardPaneView extends GridPane{
     /// %Part 4: Properties
 
     /// %Part 5: Get Child Methods
-
-    TableView<NoteCardData> getNoteTable(){
-        return noteTable;
+    NoteCardDetailPaneControl getContentPane(){
+        return contentPane;
     }
 
-    NoteCardDetailPaneControl getNoteCardDetail(){
-        return noteDetail;
+    TreeView<String> getIdTree(){
+        return idTree;
+    }
+
+    TreeView<String> getLocationTree(){
+        return locationTree;
     }
 }
