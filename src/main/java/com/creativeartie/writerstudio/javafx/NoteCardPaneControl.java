@@ -13,7 +13,7 @@ class NoteCardPaneControl extends NoteCardPaneView{
 
     private WritingText writingText;
     private HashBiMap<CatalogueIdentity, TreeItem<String>> idItemMap;
-    private TreeMap<CatalogueIdentity, Set<SpanBranch>> idSpanMap;
+    private TreeMap<CatalogueIdentity, Set<NoteCardSpan>> idSpanMap;
 
     NoteCardPaneControl(){
         idItemMap = HashBiMap.create();
@@ -23,50 +23,74 @@ class NoteCardPaneControl extends NoteCardPaneView{
 
     @Override
     protected void setupChildern(WriterSceneControl control){
-        getNoteDetailPane().setupProperties(control);
         control.writingTextProperty().addListener((d, o, n) -> loadText(n));
+        getNoteDetailPane().setupProperties(control);
     }
 
     private void loadText(WritingText text){
         if (text != null){
+            writingText = text;
             text.addDocEdited(s -> updateIds());
         }
         updateIds();
     }
 
     private void updateIds(){
+        idItemMap.clear();
+        idSpanMap.clear();
         if (writingText == null){
             getIdTree().setRoot(new TreeItem<>());
-            idItemMap.clear();
-
+            return;
         }
+
+        TreeItem<String> root = new TreeItem<>();
+        getIdTree().setRoot(root);
+
         CatalogueMap map = writingText.getCatalogue();
         TreeSet<SpanBranch> set = map.getIds(AuxiliaryData.TYPE_NOTE);
-        TreeItem<String> root = new TreeItem<>();
         if (! set.isEmpty()){
-            TreeItem<String> empty = new TreeItem<>();
+            TreeItem<String> empty = new TreeItem<>("Unnamed");
             root.getChildren().add(empty);
+            TreeSet<NoteCardSpan> add = new TreeSet<>();
+            set.forEach( s -> add.add((NoteCardSpan)s) );
             idItemMap.put(null, empty);
-            idSpanMap.put(null, set);
+            idSpanMap.put(null, add);
         }
-        set = map.getIds(AuxiliaryData.TYPE_RESEARCH);
-        for (SpanBranch branch: set){
-            CatalogueIdentity id = branch.getSpanIdentity().get();
-            TreeItem<String> target = root;
-            for (String category: id.getCategories()){
-                for (TreeItem<String> child: getChildren()){
-                    if (child.getValue.equals(category)) {
-                        target = child;
-                        break;
-                    }
-                }
-                if (target == root){
-                    TreeItem<String> child = new TreeItem(category);
-                    target.getChildren().add(child);
-                    target = child;
-                }
-            }
 
+        set = map.getIds(AuxiliaryData.TYPE_RESEARCH);
+        if (set.isEmpty()) return;
+
+        TreeItem<String> note = new TreeItem<>("Named");
+        root.getChildren().add(note);
+        for (SpanBranch branch: set){
+            NoteCardSpan add = (NoteCardSpan)  branch;
+            CatalogueIdentity id = add.getSpanIdentity().get();
+            TreeItem<String> target = note;
+            boolean isFirst = true;
+            for (String category: id.getCategories()){
+                if (isFirst) {
+                    isFirst = false;
+                    continue;
+                }
+                target = locateItem(target, category);
+            }
+            if (! idItemMap.containsKey(id)){
+                idItemMap.put(id, target);
+                idSpanMap.put(id, new TreeSet<>());
+            }
+            idSpanMap.get(id).add(add);
         }
+    }
+
+    private TreeItem<String> locateItem(TreeItem<String> at, String data){
+        for(TreeItem<String> child: at.getChildren()){
+            String value = child.getValue();
+            if (value.equals(data)){
+                return child;
+            }
+        }
+        TreeItem<String> create = new TreeItem<>(data);
+        at.getChildren().add(create);
+        return create;
     }
 }

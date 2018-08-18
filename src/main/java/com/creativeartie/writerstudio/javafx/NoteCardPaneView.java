@@ -13,8 +13,8 @@ import com.creativeartie.writerstudio.resource.*;
  */
 abstract class NoteCardPaneView extends GridPane{
 
-    private NoteCardTreeControl idTree;
-    private NoteCardTreeControl locationTree;
+    private TreeView<String> idTree;
+    private TreeView<String> locationTree;
 
     private Button insertBeforeButton;
     private Button insertAfterButton;
@@ -39,10 +39,13 @@ abstract class NoteCardPaneView extends GridPane{
 
     /// %Part 2: Layout
     private TabPane buildLocationPane(){
-        idTree = new NoteCardTreeControl();
-        Tab id = new Tab("Id List");
-        locationTree = new NoteCardTreeControl();
-        Tab location = new Tab("Location List");
+        idTree = new TreeView<>();
+        idTree.setShowRoot(false);
+        Tab id = new Tab("Id List", idTree);
+
+        locationTree = new TreeView<>();
+        locationTree.setShowRoot(false);
+        Tab location = new Tab("Location List", locationTree);
 
         TabPane pane = new TabPane(id, location);
         pane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
@@ -82,11 +85,11 @@ abstract class NoteCardPaneView extends GridPane{
 
     /// %Part 5: Get Child Methods
 
-    NoteCardTreeControl getIdTree(){
+    TreeView<String> getIdTree(){
         return idTree;
     }
 
-    NoteCardTreeControl getLoactionTree(){
+    TreeView<String> getLoactionTree(){
         return locationTree;
     }
 

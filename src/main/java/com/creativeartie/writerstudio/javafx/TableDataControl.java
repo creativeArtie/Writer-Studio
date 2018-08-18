@@ -70,7 +70,7 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
 
     private void showItems(){
         ArrayList<T> list = new ArrayList<>();
-        for (SpanBranch span: writingText.getCatalogue().getIds(getCategory())){
+        for (SpanBranch span: writingText.getDocumentCatalogue().getIds(getCategory())){
             for (Class<? extends SpanBranch> clazz: getTargetClass()){
                 if (clazz.isInstance(span)){
                     list.add(buildSpan(span));

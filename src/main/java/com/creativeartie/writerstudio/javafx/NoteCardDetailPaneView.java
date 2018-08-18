@@ -38,7 +38,9 @@ abstract class NoteCardDetailPaneView extends TabPane{
     /// %Part 2: Layout
     private Tab buildEmptyTab(){
         Label text = new Label("Select a note to view");
-        return new Tab("None Selected", text);
+        BorderPane pane = new BorderPane();
+        pane.setCenter(text);
+        return new Tab("None Selected", pane);
     }
 
     private Tab buildMainTab(){

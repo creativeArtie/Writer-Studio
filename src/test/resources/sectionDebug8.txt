@@ -1,0 +1,17 @@
+!%@Note cat-1: Note 1
+!% Some text
+!%@Note cat-23: Note 23
+!% Some text 23
+!%@Note cat-base-1: sub note 1
+!%sadfsa
+!%@Note cat-base-232: sub note 232
+!%sadfsa 232
+!%@Note cat-base-2: more sub note
+!%@Note cat-base-fun-2: more sub note
+!%Some more text
+!%@Something else-1: adfa
+!%abd
+
+!% Nameless 1
+
+!% Nameless 2

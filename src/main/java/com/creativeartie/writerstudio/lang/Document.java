@@ -529,6 +529,14 @@ public abstract class Document extends SpanNode<SpanBranch>{
         return catalogueMap.delegate();
     }
 
+    /** Get catalogue map.
+     *
+     * @return answer
+     */
+    public final CatalogueMap getDocumentCatalogue(){
+        return catalogueMap.getDocumentMap();
+    }
+
     /** Add catalogue map from a document.
      *
      * @param docs
