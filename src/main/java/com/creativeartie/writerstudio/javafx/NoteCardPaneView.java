@@ -3,92 +3,74 @@ package com.creativeartie.writerstudio.javafx;
 import java.util.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.text.*;
 
-import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.resource.*;
 
 /**
- * Stores a list of user notes, hyperlinks.
+ * A pane with two {@link HeadingTreeControl} objects that
  */
-public abstract class NoteCardPaneView extends GridPane{
-    /// %Part 1: Constructor and Class Fields
-    private TreeView<String> idTree;
-    private TreeView<String> locationTree;
-    private Button insertAfterButton;
+abstract class NoteCardPaneView extends GridPane{
+
+    private NoteCardTreeControl idTree;
+    private NoteCardTreeControl locationTree;
+
     private Button insertBeforeButton;
-    private Button deleteItemButton;
+    private Button insertAfterButton;
+    private Button deleteButton;
+    private ListView<NoteCardSpan> noteCardsList;
 
-    private NoteCardDetailPaneControl contentPane;
-    private TableView<NoteCardData> metaInfoTable;
+    private NoteCardDetailPaneControl noteDetailPane;
 
+    /// %Part 1: Constructor and Class Fields
     public NoteCardPaneView(){
-
         double width = 100.0 / 3;
-        ColumnConstraints column1 = new ColumnConstraints();
-        column1.setPercentWidth(width);
-        ColumnConstraints column2 = new ColumnConstraints();
-        column2.setPercentWidth(width);
-        ColumnConstraints column3 = new ColumnConstraints();
-        column3.setPercentWidth(width);
-        getColumnConstraints().addAll(column1, column2, column3);
-
-
-        add(buildPointerPane(), 0, 0);
-        add(buildContentPane(), 1, 0);
-        add(buildInfoPane(), 2, 0);
-    }
-
-    private BorderPane buildPointerPane(){
-        BorderPane pane = new BorderPane();
-        pane.setCenter(buildLocationTabs());
-        pane.setBottom(buildEditButtons());
-        setFillHeight(pane, true);
-        return pane;
-    }
-
-    private TabPane buildLocationTabs(){
-        TabPane tab = new TabPane(buildIdViewPane(), buildLocationViewPane());
-        tab.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        return tab;
-    }
-
-    private Tab buildIdViewPane(){
-        idTree = new TreeView<>();
-        idTree.setShowRoot(false);
-        return new Tab("Id", idTree);
-    }
-
-    private Tab buildLocationViewPane(){
-        locationTree = new TreeView<>();
-        locationTree.setShowRoot(false);
-        return new Tab("Location", locationTree);
-    }
-
-    private FlowPane buildEditButtons(){
-        insertAfterButton = new Button("Add after");
-        insertBeforeButton = new Button("Add before");
-        deleteItemButton = new Button("delete");
-        FlowPane pane = new FlowPane(insertBeforeButton, insertAfterButton,
-            deleteItemButton);
-        return pane;
-    }
-
-    private NoteCardDetailPaneControl buildContentPane(){
-        contentPane = new NoteCardDetailPaneControl();
-        setFillHeight(contentPane, false);
-        return contentPane;
-    }
-
-    private TableView<NoteCardData> buildInfoPane(){
-        metaInfoTable = new TableView<>();
-        setFillHeight(metaInfoTable, true);
-        return metaInfoTable;
+        ColumnConstraints columns[] = new ColumnConstraints[3];
+        for (int i = 0; i < columns.length; i++){
+            columns[i] = new ColumnConstraints();
+            columns[i].setPercentWidth(width);
+        }
+        getColumnConstraints().addAll(columns);
+        add(buildLocationPane(), 0, 0);
+        add(buildNoteListPane(), 1, 0);
+        add(buildDetailPane(), 2, 0);
     }
 
     /// %Part 2: Layout
+    private TabPane buildLocationPane(){
+        idTree = new NoteCardTreeControl();
+        Tab id = new Tab("Id List");
+        locationTree = new NoteCardTreeControl();
+        Tab location = new Tab("Location List");
 
-    /// %Part 3: Listener Methods
+        TabPane pane = new TabPane(id, location);
+        pane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        return pane;
+    }
+
+    private BorderPane buildNoteListPane(){
+        BorderPane pane = new BorderPane();
+
+        noteCardsList = new ListView<>();
+        noteCardsList.setPlaceholder(new Label("Select a id or location"));
+        pane.setCenter(noteCardsList);
+
+        insertAfterButton = new Button("Insert After");
+        insertBeforeButton = new Button("Insert Before");
+        deleteButton = new Button("Delete");
+        pane.setBottom(new FlowPane(insertAfterButton, insertBeforeButton,
+            deleteButton));
+        return pane;
+    }
+
+    private NoteCardDetailPaneControl buildDetailPane(){
+        noteDetailPane = new NoteCardDetailPaneControl();
+        return noteDetailPane;
+    }
+
+
+    /// %Part 3: Setup Properties
 
     public void setupProperties(WriterSceneControl control){
         setupChildern(control);
@@ -99,15 +81,16 @@ public abstract class NoteCardPaneView extends GridPane{
     /// %Part 4: Properties
 
     /// %Part 5: Get Child Methods
-    NoteCardDetailPaneControl getContentPane(){
-        return contentPane;
-    }
 
-    TreeView<String> getIdTree(){
+    NoteCardTreeControl getIdTree(){
         return idTree;
     }
 
-    TreeView<String> getLocationTree(){
+    NoteCardTreeControl getLoactionTree(){
         return locationTree;
+    }
+
+    NoteCardDetailPaneControl getNoteDetailPane(){
+        return noteDetailPane;
     }
 }
