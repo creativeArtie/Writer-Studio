@@ -13,6 +13,24 @@ import com.creativeartie.writerstudio.resource.*;
  */
 abstract class NoteCardPaneView extends GridPane{
 
+    private class NoteCell extends ListCell<NoteCardSpan>{
+        @Override
+        public void updateItem(NoteCardSpan item, boolean empty){
+            /// Required by JavaFX API:
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setText(null);
+                setGraphic(null);
+            } else {
+                /// Allows TextFlowBuilder to create the Label
+                TextFlow graphic = TextFlowBuilder.loadFormatText(item
+                    .getTitle());
+                setText(null);
+                setGraphic(graphic);
+            }
+        }
+    }
+
     private TreeView<String> idTree;
     private TreeView<String> locationTree;
 
@@ -57,6 +75,7 @@ abstract class NoteCardPaneView extends GridPane{
 
         noteCardsList = new ListView<>();
         noteCardsList.setPlaceholder(new Label("Select a id or location"));
+        noteCardsList.setCellFactory(l ->  new NoteCell());
         pane.setCenter(noteCardsList);
 
         insertAfterButton = new Button("Insert After");
@@ -91,6 +110,10 @@ abstract class NoteCardPaneView extends GridPane{
 
     TreeView<String> getLoactionTree(){
         return locationTree;
+    }
+
+    ListView<NoteCardSpan> getNoteCardList(){
+        return noteCardsList;
     }
 
     NoteCardDetailPaneControl getNoteDetailPane(){

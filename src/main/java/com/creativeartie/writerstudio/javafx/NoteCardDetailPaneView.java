@@ -15,7 +15,7 @@ abstract class NoteCardDetailPaneView extends TabPane{
     private Tab emptyTab;
 
     private Tab mainTab;
-    private InlineCssTextArea noteTitle;
+    private TextField noteTitle;
     private InlineCssTextArea noteContent;
 
     private Tab metaTab;
@@ -45,7 +45,7 @@ abstract class NoteCardDetailPaneView extends TabPane{
 
     private Tab buildMainTab(){
         BorderPane pane = new BorderPane();
-        noteTitle = new InlineCssTextArea();
+        noteTitle = new TextField();
         noteContent = new InlineCssTextArea();
         pane.setTop(noteTitle);
         pane.setCenter(noteContent);
@@ -99,5 +99,13 @@ abstract class NoteCardDetailPaneView extends TabPane{
 
     Tab getEmptyTab(){
         return emptyTab;
+    }
+
+    Tab getMainTab(){
+        return mainTab;
+    }
+
+    Tab getMetaTab(){
+        return metaTab;
     }
 }

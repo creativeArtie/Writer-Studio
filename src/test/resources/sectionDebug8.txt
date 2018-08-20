@@ -7,7 +7,7 @@
 !%@Note cat-base-232: sub note 232
 !%sadfsa 232
 !%@Note cat-base-2: more sub note
-!%@Note cat-base-fun-2: more sub note
+!%@Note cat-base-fun-game-2: more sub note
 !%Some more text
 !%@Something else-1: adfa
 !%abd

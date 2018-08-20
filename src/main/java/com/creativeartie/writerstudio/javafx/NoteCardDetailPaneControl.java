@@ -14,10 +14,18 @@ class NoteCardDetailPaneControl extends NoteCardDetailPaneView{
     }
 
     private void loadCard(NoteCardSpan span){
+        selectedSpan = span;
         if (span == null){
             getTabs().clear();
             getTabs().add(getEmptyTab());
+            return;
         }
+        getTabs().clear();
+        getTabs().addAll(getMainTab(), getMetaTab());
+        String title = span.getTitle()
+            .map(f -> f.getParsedText())
+            .orElse("");
+
     }
 
 }
