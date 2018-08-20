@@ -10,10 +10,11 @@ import javafx.beans.property.*;
 import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.resource.*;
-import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
-    WindowStatChildContants.*;
 
 abstract class WindowStatMonthView extends GridPane{
+    private static int DAY_OF_WEEK = DayOfWeek.values().length;
+    private static int SHOW_WEEKS = 6;
+    private static int DAY_PANES = DAY_OF_WEEK * SHOW_WEEKS;
 
     /// %Part 1: Constructor and Class Fields
 
@@ -50,8 +51,8 @@ abstract class WindowStatMonthView extends GridPane{
         int size = DayOfWeek.values().length;
         for(int i = 0; i < size; i++){
             ColumnConstraints column = new ColumnConstraints();
-            column.setPrefWidth(COLUMN_WIDTH);
-            column.setMaxWidth(COLUMN_WIDTH);
+            column.setPrefWidth(WindowStatView.WIDTH / size);
+            column.setMaxWidth(WindowStatView.WIDTH / size);
             columns.add(column);
         }
         getColumnConstraints().addAll(columns);
@@ -71,7 +72,7 @@ abstract class WindowStatMonthView extends GridPane{
 
     private StackPane buildMonthTitle(){
         yearMonthLabel = new Label();
-        yearMonthLabel.getStyleClass().add(MONTH_STYLE);
+        yearMonthLabel.getStyleClass().add("month");
         return new StackPane(yearMonthLabel);
     }
 
@@ -88,10 +89,10 @@ abstract class WindowStatMonthView extends GridPane{
 
     private StackPane buildDayLabel(DayOfWeek day){
         Label header = new Label(WindowText.getText(day));
-        header.getStyleClass().add(WEEKDAY_STYLE);
+        header.getStyleClass().add("weekday");
 
         StackPane pane = new StackPane(header);
-        pane.getStyleClass().add(WEEKDAY_BOX_STYLE);
+        pane.getStyleClass().add("weekday-box");
         return pane;
     }
 

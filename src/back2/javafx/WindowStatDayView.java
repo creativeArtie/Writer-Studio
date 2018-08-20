@@ -7,8 +7,6 @@ import javafx.scene.layout.*;
 import javafx.beans.property.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
-import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
-    WindowStatChildContants.*;
 
 abstract class WindowStatDayView extends AnchorPane{
     /// %Part 1: Constructor and Class Fields
@@ -19,9 +17,9 @@ abstract class WindowStatDayView extends AnchorPane{
     private SimpleObjectProperty<LocalDate> showDate;
 
     WindowStatDayView(){
-        setMaxWidth(COLUMN_WIDTH);
-        setPrefHeight(CELL_HEIGHT);
-        getStyleClass().add(DAY_BOX_STYLE);
+        setMaxWidth(WindowStatView.WIDTH / 7);
+        setPrefHeight(60);
+        getStyleClass().add("day-box");
 
         getChildren().addAll(buildDayLabel(), buildStatLabel());
 
@@ -32,8 +30,8 @@ abstract class WindowStatDayView extends AnchorPane{
 
     private Label buildDayLabel(){
         dayLabel = new Label();
-        setTopAnchor(dayLabel, DAY_ANCHOR_TOP);
-        setLeftAnchor(dayLabel, DAY_ANCHOR_LEFT);
+        setTopAnchor(dayLabel, 0.0);
+        setLeftAnchor(dayLabel, 0.0);
 
         return dayLabel;
     }
@@ -43,8 +41,8 @@ abstract class WindowStatDayView extends AnchorPane{
         statTip = new Tooltip();
         statLabel.setTooltip(statTip);
 
-        setTopAnchor(statLabel, STAT_ANCHOR_TOP);
-        setRightAnchor(statLabel, STAT_ANCHOR_RIGHT);
+        setTopAnchor(statLabel, 5.0);
+        setRightAnchor(statLabel, 0.0);
 
         return statLabel;
     }

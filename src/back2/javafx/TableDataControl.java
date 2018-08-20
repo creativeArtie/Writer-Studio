@@ -14,6 +14,9 @@ import com.creativeartie.writerstudio.resource.*;
  * @see AgendaPaneView
  */
 abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
+
+    /// %Part 1: Private Fields and Constructor
+
     private WritingText writingText;
     private int caretPosition;
     private ObjectProperty<SpanBranch> lastSelected;
@@ -23,6 +26,10 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
     TableDataControl(WindowText text){
         super(text);
     }
+
+    /// %Part 2: Property Binding
+
+    /// %Part 3: Bind Children Properties
 
     @Override
     protected void setupChildern(WriterSceneControl control){
@@ -37,18 +44,19 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
         refocusText = control.refocusTextProperty();
     }
 
-    /// %Part 1: control#writingTextProperty()
+    /// %Part 3.1: control.writingTextProperty()
 
     private void loadText(WritingText text){
         writingText = text;
         if (text != null) {
-            text.addDocEdited(span -> showItems());
-            showItems();
-            showSelection();
+            text.addDocEdited(span -> loadText());
+            loadText();
         }
     }
 
-    /// %Part 2: control#caretPositionProperty()
+    private void loadText(){}
+
+    /// %Part 3.2: control.getTextPane().getTextArea().caretPositionProperty()
 
     /** Updates the selections base on the cursor movements. */
     public void loadCaret(int index){
@@ -56,7 +64,7 @@ abstract class TableDataControl<T extends TableData> extends TableDataView<T>{
         showSelection();
     }
 
-    /// %Part 3: control.lastSelectedProperty()
+    /// %Part 3.3: getSelectionModel().selectedItemProperty()
 
     private void loadSelection(TableData data){
         if (data != null){

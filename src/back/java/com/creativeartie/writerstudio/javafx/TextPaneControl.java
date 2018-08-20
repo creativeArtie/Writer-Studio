@@ -84,21 +84,12 @@ class TextPaneControl extends TextPaneView {
     /// %Part 2: WritingTextProperty
 
     private void loadText(WritingText text){
+        textReady.setValue(false);
         writingText = text;
-        if (text != null){
-            text.addDocEdited(s -> updateText());
-        }
-        updateText();
-    }
-
-    private void updateText(){
-        if (writingText != null){
-            textReady.setValue(false);
-            getTextArea().replaceText(writingText.getRaw());
-            updateStyles(writingText.getLeaves());
-            textReady.setValue(writingText != null);
-            showCaret(getTextArea().getCaretPosition());
-        }
+        getTextArea().replaceText(text.getRaw());
+        updateStyles(text.getLeaves());
+        textReady.setValue(text != null);
+        showCaret(getTextArea().getCaretPosition());
     }
 
     /// %Part 3: WritingDataProperty

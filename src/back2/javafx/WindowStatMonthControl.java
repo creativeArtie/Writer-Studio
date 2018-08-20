@@ -1,12 +1,10 @@
 package com.creativeartie.writerstudio.javafx;
 
 import java.time.*;
-import java.time.format.*;
 import java.util.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
-import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
-    WindowStatChildContants.*;
+import com.creativeartie.writerstudio.resource.*;
 
 class WindowStatMonthControl extends WindowStatMonthView{
     private WritingStat writingStat;
@@ -33,9 +31,8 @@ class WindowStatMonthControl extends WindowStatMonthView{
     }
 
     private void showMonth(YearMonth month){
-        getYearMonthLabel().setText(month.format(DateTimeFormatter
-            .ofPattern(YEAR_MONTH_FORMAT)
-        ));
+        String header = WindowText.getText(month.getMonth());
+        getYearMonthLabel().setText(header + " " + month.getYear());
 
         if (writingStat != null){
             boolean last = writingStat.getEndMonth().equals(month);

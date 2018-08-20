@@ -18,7 +18,7 @@ import com.creativeartie.writerstudio.lang.markup.*;
 
 public class WriterSceneControl extends WriterSceneView {
 
-    /// %Part 1: Constructor and public methods
+    /// %Part 1: Public methods
 
     public WriterSceneControl(Stage window){
         super(window);
@@ -30,9 +30,6 @@ public class WriterSceneControl extends WriterSceneView {
 
     public void listenWriterFile(ChangeListener<WritingFile> listener){
         getMainMenuBar().writingFileProperty().addListener(listener);
-    }
-
-    public void refocusText(){
     }
 
     /// %Part 2: Property Binding
@@ -66,8 +63,35 @@ public class WriterSceneControl extends WriterSceneView {
 
     /// %Part 3: Bind Children Properties
 
+    @Override
     protected void bindChildren(Scene scene){
-        getMainMenuBar().postLoad(this);
+        getTextPane().setupProperties(this);
+        getResearchPane().setupProperties(this);
+        getMainMenuBar().setupProperties(this);
+        getMetaDataPane().setupProperties(this);
+        getCheatsheetPane().setupProperties(this);
+        getHeadingsPane().setupProperties(this);
+        for (TableDataControl<?> tab: getDataTables()){
+            tab.setupProperties(this);
+        }
+        getNoteCardPane().setupProperties(this);
+
+        scene.focusOwnerProperty().addListener((d, o, n) -> refocus(n));
+        refocusTextProperty().addListener((d, o, n) ->
+            refocus(scene.getFocusOwner())
+        );
     }
 
+    /// %Part 3.1:  scene.focusOwnerProperty() and refocusTextProperty()
+
+    private void refocus(Node node){
+        if (isRefocusText()){
+            Platform.runLater( () -> {
+                InlineCssTextArea area = getTextPane().getTextArea();
+                area.requestFollowCaret();
+                area.requestFocus();
+                setRefocusText(false);
+            });
+        }
+    }
 }

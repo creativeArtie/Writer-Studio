@@ -5,8 +5,7 @@ import javafx.beans.property.*;
 import javafx.stage.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
-import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
-    MenuBarConstants.*;
+import com.creativeartie.writerstudio.resource.*;
 
 abstract class MenuBarMainView extends MenuBar{
 
@@ -29,12 +28,12 @@ abstract class MenuBarMainView extends MenuBar{
 
     /// %Part 2: Layout
     private final Menu buildFileMenu(){
-        Menu file =  new Menu(    FILE);
-        createItem = new MenuItem(FILE_NEW);
-        openItem =   new MenuItem(FILE_OPEN);
-        exportItem = new MenuItem(FILE_EXPORT);
-        saveItem =   new MenuItem(FILE_SAVE);
-        exitItem =   new MenuItem(FILE_EXIT);
+        Menu file =  new Menu(    WindowText.MENU_FILE.getText());
+        createItem = new MenuItem(WindowText.MENU_FILE_NEW.getText());
+        openItem =   new MenuItem(WindowText.MENU_FILE_OPEN.getText());
+        exportItem = new MenuItem(WindowText.MENU_FILE_EXPORT.getText());
+        saveItem =   new MenuItem(WindowText.MENU_FILE_SAVE.getText());
+        exitItem =   new MenuItem(WindowText.MENU_FILE_EXIT.getText());
         file.getItems().addAll(createItem, openItem,
             new SeparatorMenuItem(), saveItem, exportItem,
             new SeparatorMenuItem(), exitItem);
@@ -42,22 +41,22 @@ abstract class MenuBarMainView extends MenuBar{
     }
 
     private final Menu buildStatMenu(){
-        Menu stats = new Menu(    STATS);
-        goalsItem =  new MenuItem(STATS_GOALS);
+        Menu stats = new Menu(    WindowText.MENU_STATS.getText());
+        goalsItem =  new MenuItem(WindowText.MENU_STATS_GOALS.getText());
         stats.getItems().addAll(goalsItem);
         return stats;
     }
 
     private final Menu buildHelpMenu(){
-        Menu help = new Menu(    HELP);
-        aboutItem = new MenuItem(HELP_ABOUT);
+        Menu help = new Menu(    WindowText.MENU_HELP.getText());
+        aboutItem = new MenuItem(WindowText.MENU_HELP_ABOUT.getText());
         help.getItems().addAll(aboutItem);
         return help;
     }
 
     /// %Part 3: Setup Properties
 
-    public void postLoad(WriterSceneControl control){
+    public void setupProperties(WriterSceneControl control){
         setupChildern(control);
     }
 
