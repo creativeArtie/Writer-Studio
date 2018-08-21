@@ -34,7 +34,7 @@ class MenuBarMainControl extends MenuBarMainView{
     /// %Part 3: Bind Children Properties
 
     @Override
-    protected void setupChildern(WriterSceneControl control){
+    protected void bindChildren(WriterSceneControl control){
         statsWindow.postLoad(control);
 
         getCreateItem().setOnAction(e -> createFile());

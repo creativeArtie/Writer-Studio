@@ -17,14 +17,14 @@ abstract class WindowStatMonthView extends GridPane{
 
     /// %Part 1: Constructor and Class Fields
 
+    private SimpleObjectProperty<YearMonth> currentMonth;
+
     private Button firstButton;
     private Button pastButton;
     private Button nextButton;
     private Button endButton;
     private Label yearMonthLabel;
     private List<WindowStatDayControl> dayPanes;
-
-    private SimpleObjectProperty<YearMonth> currentMonth;
 
     WindowStatMonthView(){
         setColumnConstraints();

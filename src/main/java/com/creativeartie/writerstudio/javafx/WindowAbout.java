@@ -27,12 +27,17 @@ public class WindowAbout extends Stage{
         initModality(Modality.APPLICATION_MODAL);
     }
 
+    /// %Part 2: Layout
+
+    /// %Part 2 (stage -> scene)
+
     private Scene buildScene(){
         Scene ans = new Scene(buildMainPane(), WINDOW_WIDTH, WINDOW_HEIGHT);
         ans.getStylesheets().add(FileResource.ABOUT_CSS.getCssPath());
         return ans;
     }
-    /// %Part 2: Layout
+
+    /// %Part 2 (stage -> scene -> content)
 
     private BorderPane buildMainPane(){
         BorderPane pane = new BorderPane();
@@ -43,6 +48,8 @@ public class WindowAbout extends Stage{
 
         return pane;
     }
+
+    /// %Part 2 (stage -> scene -> content -> top)
 
     private FlowPane buildCreditPane(){
         Label name = new Label(PROGRAM_NAME);
@@ -58,6 +65,8 @@ public class WindowAbout extends Stage{
         return top;
     }
 
+    /// %Part 2 (stage -> scene -> content -> top -> credits - bottom)
+
     private FlowPane build3rdPartyPane(){
         return new FlowPane(
             buildLicenseLink(GUAVA, APACHE),
@@ -65,6 +74,15 @@ public class WindowAbout extends Stage{
             buildLicenseLink(PDF_BOX, APACHE)
         );
     }
+
+    private Hyperlink buildLicenseLink(String title, String text){
+        Hyperlink ans = new Hyperlink(title);
+        ans.setOnAction(evt -> licenseText.setText(text));
+
+        return ans;
+    }
+
+    /// %Part 2 (stage -> scene -> content -> center)
 
     private TextArea buildLicenseText(){
         licenseText = new TextArea();
@@ -75,12 +93,7 @@ public class WindowAbout extends Stage{
         return licenseText;
     }
 
-    private Hyperlink buildLicenseLink(String title, String text){
-        Hyperlink ans = new Hyperlink(title);
-        ans.setOnAction(evt -> licenseText.setText(text));
-
-        return ans;
-    }
+    /// %Part 2 (stage -> scene -> content -> bottom)
 
     private TextFlow buildBottomPane(){
         Text text = new Text(SOURCE_TEXT);

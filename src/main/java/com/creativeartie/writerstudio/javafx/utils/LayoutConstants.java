@@ -31,6 +31,11 @@ public class LayoutConstants{
 
     private static final String PROGRAM_NAME = getString("MainWindow.Title");
 
+    public static class MainWindowConstants{
+        public static final double[] VER_DIVIDER = new double[]{.2, .8};
+        public static final double[] HOR_DIVIDER = new double[]{.0, 1.0};
+    }
+
     public static class MenuBarConstants{
         public static final String FILE = getString("MainMenu.File");
         public static final String FILE_NEW = getString("MainMenu.FileCreate");
@@ -98,6 +103,8 @@ public class LayoutConstants{
         public static double STAT_ANCHOR_TOP = 5.0;
         public static double STAT_ANCHOR_RIGHT = 0.0;
 
+        public static double ICON_SIZE = 50;
+
         public static String YEAR_MONTH_FORMAT = "MMMM yyyy";
         public static String TIP_FORMAT = "Written: %,d(%,d)\nTime: %s (%s)";
         public static String TIME_FORMAT = "%d:%02d:%02d";
@@ -135,5 +142,36 @@ public class LayoutConstants{
                 throw new RuntimeException(ex);
             }
         }
+    }
+
+    public static class TextPaneConstants{
+        public static final String LINE_TYPE_STYLE = "line-type";
+        public static final String TEXT_STAT_STYLE = "text-stat";
+        public static final String CLOCK_STYLE = "program-clock";
+
+        public static final String CLOCK_FORMAT = "HH:mm:ss";
+        public static final String STAT_TEXT =
+            "Publish: %d (%#.2f%%); Time: %d:%02d:%02d (%#.2f%%)";
+
+        public static final String HEADING = getString("LinedName.Heading");
+        public static final String OUTLINE = getString("LinedName.Outline");
+        public static final String NUMBERED = getString("LinedName.Numbered");
+        public static final String BULLET = getString("LinedName.Bullet");
+
+        public static final String FOOTNOTE = getString("LinedName.Footnote");
+        public static final String ENDNOTE = getString("LinedName.Endnote");
+        public static final String LINK = getString("LinedName.Link");
+        public static final String NOTE = getString("LinedName.Note");
+        public static final String AGENDA = getString("LinedName.Agenda");
+        public static final String QUOTE = getString("LinedName.Quote");
+        public static final String BREAK = getString("LinedName.Break");
+        public static final String SOURCE = getString("LinedName.Cite");
+        public static final String PARAGRAPH = getString("LinedName.Paragraph");
+
+        public static final double LABEL_WIDTH = 100.0 / 3;
+
+        public static final long STOP = -2;
+        public static final long START = -1;
+        public static final long LENGTH = 60 * 1000000l;
     }
 }

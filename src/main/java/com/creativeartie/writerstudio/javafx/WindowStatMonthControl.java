@@ -9,7 +9,14 @@ import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
     WindowStatChildContants.*;
 
 class WindowStatMonthControl extends WindowStatMonthView{
+    /// %Part 1: Private Fields and Constructor
+
     private WritingStat writingStat;
+
+    WindowStatMonthControl(){}
+
+    /// %Part 2: Property Binding
+    /// %Part 3: Bind Children Properties
 
     @Override
     protected void setupChildern(WindowStatControl control){
@@ -17,22 +24,26 @@ class WindowStatMonthControl extends WindowStatMonthView{
             day.setupProperties(control);
         }
 
-        control.writingStatProperty().addListener((d, o, n) -> loadStat(n));
-        currentMonthProperty().addListener((d, o, n) -> showMonth(n));
-        getFirstButton().setOnAction(e -> toFirstMonth());
-        getPastButton().setOnAction(e -> toPastMonth());
-        getNextButton().setOnAction(e -> toNextMonth());
-        getEndButton().setOnAction(e -> toEndMonth());
+        control.writingStatProperty().addListener((d, o, n) -> listenStats(n));
+        currentMonthProperty().addListener((d, o, n) -> listenMonth(n));
+        getFirstButton().setOnAction(e -> listenFirstButton());
+        getPastButton().setOnAction(e -> listenPastButton());
+        getNextButton().setOnAction(e -> listenNextButton());
+        getEndButton().setOnAction(e -> listenEndButton());
     }
 
-    private void loadStat(WritingStat stats){
+    /// %Part 3.1: control.writingStatProperty()
+
+    private void listenStats(WritingStat stats){
         writingStat = stats;
         if (stats != null){
             setCurrentMonth(stats.getEndMonth());
         }
     }
 
-    private void showMonth(YearMonth month){
+    /// %Part 3.2: currentMonthProperty()
+
+    private void listenMonth(YearMonth month){
         getYearMonthLabel().setText(month.format(DateTimeFormatter
             .ofPattern(YEAR_MONTH_FORMAT)
         ));
@@ -68,28 +79,35 @@ class WindowStatMonthControl extends WindowStatMonthView{
             panes.next().setShowDay(null);
         }
 
-
     }
 
-    private void toFirstMonth(){
+    /// %Part 3.3: getFirstButton().setOnAction(...)
+
+    private void listenFirstButton(){
         if (writingStat != null){
             setCurrentMonth(writingStat.getStartMonth());
         }
     }
 
-    private void toPastMonth(){
+    /// %Part 3.4: getPastButton().setOnAction(...)
+
+    private void listenPastButton(){
         if (writingStat != null){
             setCurrentMonth(getCurrentMonth().minusMonths(1));
         }
     }
 
-    private void toNextMonth(){
+    /// %Part 3.5: getNextButton().setOnAction(...)
+
+    private void listenNextButton(){
         if (writingStat != null){
             setCurrentMonth(getCurrentMonth().plusMonths(1));
         }
     }
 
-    private void toEndMonth(){
+    /// %Part 3.6: getEndButton().setOnAction(...)
+
+    private void listenEndButton(){
         if (writingStat != null){
             setCurrentMonth(writingStat.getEndMonth());
         }

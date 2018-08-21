@@ -1,3 +1,7 @@
+.program-clock{
+    -fx-text-alignment:right;
+}
+
 .no-text, .no-span, .id-numbered, .display-italics{
     -fx-font-style:italic;
 }
@@ -62,6 +66,6 @@
     -fx-alignment:center-right;
 }
 
-.web-address{
+.web-address, .text-stat{
     -fx-text-alignment:center;
 }

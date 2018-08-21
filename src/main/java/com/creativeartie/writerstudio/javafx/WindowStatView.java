@@ -16,12 +16,12 @@ public abstract class WindowStatView extends Stage{
 
     /// %Part 1: Constructor and Class Fields
 
+    private ReadOnlyObjectWrapper<WritingStat> writingStat;
+
     private WindowStatMonthControl calendarPane;
     private Spinner<Integer> wordSpinner;
     private Spinner<Integer> hourSpinner;
     private Spinner<Integer> minuteSpinner;
-
-    private ReadOnlyObjectWrapper<WritingStat> writingStat;
 
     WindowStatView(){
         Stage ans = new Stage();
@@ -104,12 +104,12 @@ public abstract class WindowStatView extends Stage{
 
     public void postLoad(WriterSceneControl control){
         bindWritingStat(writingStat, control);
-        setupChildern(control);
+        bindChildren(control);
     }
 
     protected abstract void bindWritingStat(
         ReadOnlyObjectWrapper<WritingStat> stats, WriterSceneControl control);
-    protected abstract void setupChildern(WriterSceneControl control);
+    protected abstract void bindChildren(WriterSceneControl control);
 
     /// %Part 4: Properties
 

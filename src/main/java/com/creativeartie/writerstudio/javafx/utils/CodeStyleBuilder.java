@@ -1,4 +1,4 @@
-package com.creativeartie.writerstudio.resource;
+package com.creativeartie.writerstudio.javafx.utils;
 
 import java.util.*;
 import java.io.*;
@@ -12,7 +12,7 @@ import static com.google.common.base.Preconditions.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.main.*;
-import com.creativeartie.writerstudio.resource.*;
+
 public class CodeStyleBuilder {
 
     private static Properties properties = buildProperties();
@@ -20,7 +20,8 @@ public class CodeStyleBuilder {
     private static Properties buildProperties(){
         Properties ans = new Properties();
         try {
-            ans.load(FileResources.getCodeStyleProperties());
+            ans.load(CodeStyleBuilder.class.getResourceAsStream(
+                FileResource.CODE_STYLE.getLocalPath()));
         } catch (Exception ex){
             throw new RuntimeException(ex);
         }

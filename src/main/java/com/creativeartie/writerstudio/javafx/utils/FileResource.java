@@ -7,7 +7,9 @@ public enum FileResource{
     MAIN_CSS("main", ".css"), STAT_CSS("stats", ".css"),
     ABOUT_CSS("about", ".css"),
 
-    DISPLAY_TEXT("displayText", ".txt"), ICON_PATH("icons", ".png"),
+    DISPLAY_TEXT("displayText", ".properties"),
+    CODE_STYLE("codeStyles", ".properties"),
+    ICON_PATH("icons", ".png"),
 
     APACHE("apache", ".txt"), BSD("bsd", ".txt");
 

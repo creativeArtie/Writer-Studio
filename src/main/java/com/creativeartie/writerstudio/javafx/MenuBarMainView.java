@@ -10,6 +10,10 @@ import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
 
 abstract class MenuBarMainView extends MenuBar{
 
+    /// %Part 1: Constructor and Class Fields
+
+    private SimpleObjectProperty<WritingFile> writingFile;
+
     private MenuItem createItem;
     private MenuItem openItem;
     private MenuItem exportItem;
@@ -18,16 +22,16 @@ abstract class MenuBarMainView extends MenuBar{
     private MenuItem goalsItem;
     private MenuItem aboutItem;
 
-    private SimpleObjectProperty<WritingFile> writingFile;
-
     public MenuBarMainView(Stage window){
-        getMenus().addAll(buildFileMenu(), buildStatMenu(), buildHelpMenu());
-
         writingFile = new SimpleObjectProperty<>(this, "writingFile");
 
+        getMenus().addAll(buildFileMenu(), buildStatMenu(), buildHelpMenu());
     }
 
     /// %Part 2: Layout
+
+    /// %Part 2 (menu bar -> file menu)
+
     private final Menu buildFileMenu(){
         Menu file =  new Menu(    FILE);
         createItem = new MenuItem(FILE_NEW);
@@ -41,12 +45,16 @@ abstract class MenuBarMainView extends MenuBar{
         return file;
     }
 
+    /// %Part 2 (menu bar -> stat menu)
+
     private final Menu buildStatMenu(){
         Menu stats = new Menu(    STATS);
         goalsItem =  new MenuItem(STATS_GOALS);
         stats.getItems().addAll(goalsItem);
         return stats;
     }
+
+    /// %Part 2 (menu bar -> help menu)
 
     private final Menu buildHelpMenu(){
         Menu help = new Menu(    HELP);
@@ -58,10 +66,10 @@ abstract class MenuBarMainView extends MenuBar{
     /// %Part 3: Setup Properties
 
     public void postLoad(WriterSceneControl control){
-        setupChildern(control);
+        bindChildren(control);
     }
 
-    protected abstract void setupChildern(WriterSceneControl control);
+    protected abstract void bindChildren(WriterSceneControl control);
 
     /// %Part 4: Properties
 

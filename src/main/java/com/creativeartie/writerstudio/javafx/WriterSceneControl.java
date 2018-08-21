@@ -38,8 +38,8 @@ public class WriterSceneControl extends WriterSceneView {
     /// %Part 2: Property Binding
 
     @Override
-    protected void bindWritingText(ReadOnlyObjectWrapper<WritingText> prop){
-        prop.bind(Bindings.createObjectBinding(
+    protected void bindWritingText(ReadOnlyObjectWrapper<WritingText> property){
+        property.bind(Bindings.createObjectBinding(
             () -> Optional.ofNullable(getMainMenuBar().getWritingFile())
                 .map(f -> f.getDocument())
                 .orElse(null)
@@ -47,8 +47,8 @@ public class WriterSceneControl extends WriterSceneView {
     }
 
     @Override
-    protected void bindWritingStat(ReadOnlyObjectWrapper<WritingStat> prop){
-        prop.bind(Bindings.createObjectBinding(
+    protected void bindWritingStat(ReadOnlyObjectWrapper<WritingStat> property){
+        property.bind(Bindings.createObjectBinding(
             () -> Optional.ofNullable(getMainMenuBar().getWritingFile())
                 .map(f -> f.getRecords())
                 .orElse(null)
@@ -56,8 +56,8 @@ public class WriterSceneControl extends WriterSceneView {
     }
 
     @Override
-    protected void bindWritingData(ReadOnlyObjectWrapper<WritingData> prop){
-        prop.bind(Bindings.createObjectBinding(
+    protected void bindWritingData(ReadOnlyObjectWrapper<WritingData> property){
+        property.bind(Bindings.createObjectBinding(
             () -> Optional.ofNullable(getMainMenuBar().getWritingFile())
                 .map(f -> f.getMetaData())
                 .orElse(null)
@@ -67,6 +67,7 @@ public class WriterSceneControl extends WriterSceneView {
     /// %Part 3: Bind Children Properties
 
     protected void bindChildren(Scene scene){
+        getTextPane().postLoad(this);
         getMainMenuBar().postLoad(this);
     }
 

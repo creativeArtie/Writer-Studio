@@ -12,11 +12,12 @@ import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
 
 abstract class WindowStatDayView extends AnchorPane{
     /// %Part 1: Constructor and Class Fields
+
+    private SimpleObjectProperty<LocalDate> showDate;
+
     private Label dayLabel;
     private Label statLabel;
     private Tooltip statTip;
-
-    private SimpleObjectProperty<LocalDate> showDate;
 
     WindowStatDayView(){
         setMaxWidth(COLUMN_WIDTH);
@@ -52,10 +53,10 @@ abstract class WindowStatDayView extends AnchorPane{
     /// %Part 3: Setup Properties
 
     public void setupProperties(WindowStatControl control){
-        setupChildern(control);
+        bindChildren(control);
     }
 
-    protected abstract void setupChildern(WindowStatControl control);
+    protected abstract void bindChildren(WindowStatControl control);
 
     /// %Part 4: Properties
 

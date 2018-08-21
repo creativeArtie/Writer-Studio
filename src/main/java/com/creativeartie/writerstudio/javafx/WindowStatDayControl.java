@@ -12,6 +12,8 @@ import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
 
 public class WindowStatDayControl extends WindowStatDayView{
 
+    /// %Part 1: Private Fields and Constructor
+
     private final ImageView passAll;
     private final ImageView passWord;
     private final ImageView passTime;
@@ -25,21 +27,28 @@ public class WindowStatDayControl extends WindowStatDayView{
         failAll = buildImage(ImageIcon.GOAL_FAIL);
     }
 
+    /// %Part 2: Property Binding
+    /// %Part 3: Bind Children Properties
+
     @Override
-    protected void setupChildern(WindowStatControl control){
-        control.writingStatProperty().addListener((d, o, n) -> loadStat(n));
-        showDateProperty().addListener((d, o, n) -> showDay(n));
+    protected void bindChildren(WindowStatControl control){
+        control.writingStatProperty().addListener((d, o, n) -> listenStat(n));
+        showDateProperty().addListener((d, o, n) -> listenDay(n));
     }
 
-    private void loadStat(WritingStat stat){
+    /// %Part 3.1: control.writingStatProperty()
+
+    private void listenStat(WritingStat stat){
         writingStat = stat;
         if (stat != null){
-            stat.addDocEdited(s -> showDay(getShowDay()));
+            stat.addDocEdited(s -> listenDay(getShowDay()));
         }
-        showDay(getShowDay());
+        listenDay(getShowDay());
     }
 
-    private void showDay(LocalDate date){
+    /// %Part 3.2: showDateProperty() + reused by listenStat
+
+    private void listenDay(LocalDate date){
         getDayLabel().setText(date == null? "": date.getDayOfMonth() + "");
         if (writingStat == null || date == null){
             getStatLabel().setGraphic(null);
@@ -77,10 +86,12 @@ public class WindowStatDayControl extends WindowStatDayView{
         getStatTip().setText(tip);
     }
 
+    /// %Part 4: Utilities
+
     private static ImageView buildImage(ImageIcon icon){
         ImageView image = icon.getIcon();
-        image.setFitHeight(50);
-        image.setFitWidth(50);
+        image.setFitHeight(ICON_SIZE);
+        image.setFitWidth(ICON_SIZE);
         return image;
     }
 
