@@ -31,6 +31,8 @@ abstract class WindowStatDayView extends AnchorPane{
 
     /// %Part 2: Layout
 
+    /// %Part 2 (content -> top left)
+
     private Label buildDayLabel(){
         dayLabel = new Label();
         setTopAnchor(dayLabel, DAY_ANCHOR_TOP);
@@ -38,6 +40,8 @@ abstract class WindowStatDayView extends AnchorPane{
 
         return dayLabel;
     }
+
+    /// %Part 2 (content -> middle right)
 
     private Label buildStatLabel(){
         statLabel = new Label();
@@ -52,13 +56,15 @@ abstract class WindowStatDayView extends AnchorPane{
 
     /// %Part 3: Setup Properties
 
-    public void setupProperties(WindowStatControl control){
+    public void postLoad(WindowStatControl control){
         bindChildren(control);
     }
 
     protected abstract void bindChildren(WindowStatControl control);
 
     /// %Part 4: Properties
+
+    /// %Part 4.1: showDate (LocalDate)
 
     public SimpleObjectProperty<LocalDate> showDateProperty(){
         return showDate;

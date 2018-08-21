@@ -6,7 +6,6 @@ import javafx.scene.control.*;
 import javafx.stage.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.resource.*;
 import com.creativeartie.writerstudio.pdf.*;
 
 import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.

@@ -33,6 +33,7 @@ public class WriterSceneControl extends WriterSceneView {
     }
 
     public void refocusText(){
+        setRefocusText(true);
     }
 
     /// %Part 2: Property Binding
@@ -67,8 +68,25 @@ public class WriterSceneControl extends WriterSceneView {
     /// %Part 3: Bind Children Properties
 
     protected void bindChildren(Scene scene){
-        getTextPane().postLoad(this);
         getMainMenuBar().postLoad(this);
+        getCheatsheetPane().postLoad(this);
+        getMetaDataPane().postLoad(this);
+        getTextPane().postLoad(this);
+        getResearchPane().postLoad(this);
+
+        refocusTextProperty().addListener((d, o, n) -> listenRefocusText(n));
+    }
+
+    private void listenRefocusText(boolean refocus){
+        if (refocus){
+            Platform.runLater( () -> {
+                getMainTabPane().getSelectionModel().selectFirst();
+                InlineCssTextArea area = getTextPane().getTextArea();
+                area.requestFollowCaret();
+                area.requestFocus();
+                setRefocusText(false);
+            });
+        }
     }
 
 }

@@ -8,6 +8,8 @@ import javafx.scene.layout.*;
 import com.google.common.io.*;
 import com.google.common.base.*;
 
+import com.creativeartie.writerstudio.lang.markup.*;
+
 public class LayoutConstants{
 
     private static ResourceBundle texts;
@@ -25,15 +27,26 @@ public class LayoutConstants{
     }
 
     private static String getString(String base, String name){
-        return base + CaseFormat.UPPER_UNDERSCORE
-            .to(CaseFormat.UPPER_CAMEL, name);
+        return getString(base + CaseFormat.UPPER_UNDERSCORE
+            .to(CaseFormat.UPPER_CAMEL, name));
     }
 
+    private static final String EMPTY_TEXT = getString("CommonText.NoText");
     private static final String PROGRAM_NAME = getString("MainWindow.Title");
+    private static final String CLOCK_FORMAT = "HH:mm:ss";
+
+    static class UtilitiesConstants{
+        public static String NOT_FOUND_STYLE = "no-span";
+        public static String EMPTY_TEXT = LayoutConstants.EMPTY_TEXT;
+    }
 
     public static class MainWindowConstants{
         public static final double[] VER_DIVIDER = new double[]{.2, .8};
         public static final double[] HOR_DIVIDER = new double[]{.0, 1.0};
+
+        public static final String TAB_META = getString("LeftTabs.MetaData");
+        public static final String TAB_CONTENT = getString("RightTabs.TextArea");
+        public static final String TAB_WEB = getString("RightTabs.Research");
     }
 
     public static class MenuBarConstants{
@@ -144,12 +157,34 @@ public class LayoutConstants{
         }
     }
 
+    public static class MetaDataConstants{
+        public static final String BORDER_STYLE = "border";
+        public static final int WINDOW_WIDTH = 650;
+        public static final int WINDOW_HEIGHT = 500;
+        public static final int AREA_HEIGHT = (500 / 2) - 10;
+
+        public static final String META_DATA_TITLE = LayoutConstants.getString(
+            "DocData.MetaDataTitle");
+        public static final String MATTER_AREA_TITLE = LayoutConstants.getString(
+            "DocData.MattersTitle");
+        public static final String EDIT_BUTTON = LayoutConstants.getString(
+            "DocData.EditButton");
+
+        public static String getString(TextTypeMatter area){
+            return LayoutConstants.getString("DocData.Matter", area.name());
+        }
+
+        public static String getString(TextTypeInfo meta){
+            return LayoutConstants.getString("DocData.Field", meta.name());
+        }
+    }
+
     public static class TextPaneConstants{
         public static final String LINE_TYPE_STYLE = "line-type";
         public static final String TEXT_STAT_STYLE = "text-stat";
         public static final String CLOCK_STYLE = "program-clock";
 
-        public static final String CLOCK_FORMAT = "HH:mm:ss";
+        public static final String CLOCK_FORMAT = LayoutConstants.CLOCK_FORMAT;
         public static final String STAT_TEXT =
             "Publish: %d (%#.2f%%); Time: %d:%02d:%02d (%#.2f%%)";
 
@@ -173,5 +208,36 @@ public class LayoutConstants{
         public static final long STOP = -2;
         public static final long START = -1;
         public static final long LENGTH = 60 * 1000000l;
+    }
+
+    public static class ResearchConstants{
+        public static final double BACK_MENU_WIDTH = 10;
+        public static final double FORWARD_MENU_WIDTH = 10;
+        public static final double ADDRESS_BAR_WIDTH = 60;
+        public static final double SEARCH_BAR_WIDTH = 20;
+
+        public static final String BACK_MENU_TEXT = getString(
+            "ResearchPane.BackButton");
+        public static final String FORWARD_MENU_TEXT = getString(
+            "ResearchPane.ForwardButton");
+        public static final String ADDRESS_BAR_TEXT = getString(
+            "ResearchPane.AddressPlaceholder");
+        public static final String SEARCH_BAR_TEXT = getString(
+            "ResearchPane.SearchPlaceholder");
+
+        public static final String HTTP_START = "https://";
+        public static final Duration TIME_LIMITS = Duration.ofMinutes(5);
+        public static final String HOME_PAGE = HTTP_START + "duckduckgo.com";
+        public static final String HTTP_TEST = "http";
+        public static final String CLOCK_FORMAT = LayoutConstants.CLOCK_FORMAT;
+        public static final String SEARCH_START = "http://duckduckgo.com?q=";
+        public static final char SEARCH_REPLACE = '+';
+
+
+        public static final String TIMEOUT_MINS = getString(
+            "ResearchPane.TimeoutMinutes");
+        public static final String TIMEOUT_SECS = getString(
+            "ResearchPane.TimeoutSeconds");
+
     }
 }

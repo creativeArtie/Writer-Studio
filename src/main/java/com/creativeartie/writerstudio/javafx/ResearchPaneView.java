@@ -7,9 +7,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.web.*;
 
-import com.creativeartie.writerstudio.resource.*;
+import com.creativeartie.writerstudio.javafx.utils.*;
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants
+    .ResearchConstants.*;
 
 abstract class ResearchPaneView extends BorderPane{
+
+    /// %Part 1: Constructor and Class Fields
 
     private SplitMenuButton backButton;
     private SplitMenuButton forwardButton;
@@ -28,6 +32,8 @@ abstract class ResearchPaneView extends BorderPane{
 
     /// %Part 2: Layout
 
+    /// %Part 2 (content -> top)
+
     private VBox buildTopPane(){
         VBox pane = new VBox();
         pane.setAlignment(Pos.TOP_CENTER);
@@ -37,38 +43,37 @@ abstract class ResearchPaneView extends BorderPane{
         return pane;
     }
 
+    /// %Part 2 (content -> top -> 1st row)
+
     private GridPane build1stRow(){
         GridPane pane = new GridPane();
-        ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(10);
-        ColumnConstraints col2 = new ColumnConstraints();
-        col2.setPercentWidth(10);
-        ColumnConstraints col3 = new ColumnConstraints();
-        col3.setPercentWidth(60);
-        ColumnConstraints col4 = new ColumnConstraints();
-        col4.setPercentWidth(20);
-        pane.getColumnConstraints().addAll(col1, col2, col3, col4);
 
         backButton = new SplitMenuButton();
-        backButton.setText(WindowText.RESEARCH_BACK.getText());
+        CommonLayoutUtility.setWidthPrecent(pane, BACK_MENU_WIDTH);
+        backButton.setText(BACK_MENU_TEXT);
+
         pane.add(backButton, 0, 0);
 
         forwardButton = new SplitMenuButton();
-        forwardButton.setText(WindowText.RESEARCH_FORWARD.getText());
+        forwardButton.setText(FORWARD_MENU_TEXT);
+        CommonLayoutUtility.setWidthPrecent(pane, FORWARD_MENU_WIDTH);
         pane.add(forwardButton, 1, 0);
 
 
         addressBarField = new TextField();
-        addressBarField.setPromptText(WindowText.RESEARCH_URL.getText());
+        addressBarField.setPromptText(ADDRESS_BAR_TEXT);
+        CommonLayoutUtility.setWidthPrecent(pane, ADDRESS_BAR_WIDTH);
         pane.add(addressBarField, 2, 0);
 
         searchBarField = new TextField();
-        searchBarField.setPromptText(WindowText.RESEARCH_SEARCH.getText());
+        searchBarField.setPromptText(SEARCH_BAR_TEXT);
+        CommonLayoutUtility.setWidthPrecent(pane, SEARCH_BAR_WIDTH);
         pane.add(searchBarField, 3, 0);
-
 
         return pane;
     }
+
+    /// %Part 2 (content -> top -> 2nd row)
 
     private Label build2ndRow(){
         titleLabel = new Label();
@@ -76,11 +81,15 @@ abstract class ResearchPaneView extends BorderPane{
         return titleLabel;
     }
 
+    /// %Part 2 (content -> center)
+
     private WebView buildBrowser(){
         WebView web = new WebView();
         webEngine = web.getEngine();
         return web;
     }
+
+    /// %Part 2 (content -> bottom)
 
     private HBox buildBottomPane(){
         HBox root = new HBox();
@@ -97,12 +106,13 @@ abstract class ResearchPaneView extends BorderPane{
 
     /// %Part 3: Setup Properties
 
-    public void setupProperties(WriterSceneControl control){
-        setupChildern(control);
+    public void postLoad(WriterSceneControl control){
+        bindChildren(control);
     }
 
-    protected abstract void setupChildern(WriterSceneControl control);
+    protected abstract void bindChildren(WriterSceneControl control);
 
+    /// %Part 4: Properties
 
     /// %Part 5: Get Child Methods
 

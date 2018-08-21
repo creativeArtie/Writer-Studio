@@ -66,10 +66,11 @@ public abstract class WindowStatView extends Stage{
 
         Label time = new Label(GOALS_TIME_TEXT);
 
-        CommonLayoutUtility.addColumnPrecent(pane, GOAL_LABEL_COLUMN);
-        CommonLayoutUtility.addColumnPrecent(pane, GOAL_DATA_COLUMN);
+        CommonLayoutUtility.setWidthPrecent(pane, GOAL_LABEL_COLUMN);
         pane.add(word, 0, 0);
         pane.add(wordSpinner, 1, 0);
+
+        CommonLayoutUtility.setWidthPrecent(pane, GOAL_DATA_COLUMN);
         pane.add(time, 0, 1);
         pane.add(buildTimeGoalPane(), 1, 1);
 
@@ -112,6 +113,8 @@ public abstract class WindowStatView extends Stage{
     protected abstract void bindChildren(WriterSceneControl control);
 
     /// %Part 4: Properties
+
+    /// %Part 4.1: writingStat (WritingStat)
 
     public ReadOnlyObjectProperty<WritingStat> writingStatProperty(){
         return writingStat.getReadOnlyProperty();

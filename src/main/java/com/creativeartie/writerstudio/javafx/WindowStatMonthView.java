@@ -2,6 +2,7 @@ package com.creativeartie.writerstudio.javafx;
 
 import java.util.*;
 import java.time.*;
+import java.time.format.*;
 import javafx.geometry.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -9,7 +10,7 @@ import javafx.beans.property.*;
 
 import com.google.common.collect.*;
 
-import com.creativeartie.writerstudio.resource.*;
+import com.creativeartie.writerstudio.javafx.utils.*;
 import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
     WindowStatChildContants.*;
 
@@ -45,6 +46,8 @@ abstract class WindowStatMonthView extends GridPane{
 
     /// %Part 2: Layout
 
+    /// %Part 2 column sizes
+
     private void setColumnConstraints(){
         ArrayList<ColumnConstraints> columns = new ArrayList<>();
         int size = DayOfWeek.values().length;
@@ -57,17 +60,21 @@ abstract class WindowStatMonthView extends GridPane{
         getColumnConstraints().addAll(columns);
     }
 
+    /// %Part 2 (content -> top left)
+
     private FlowPane buildPastNav(){
         firstButton = new Button();
-        firstButton.setGraphic(ButtonIcon.START_MONTH.getIcon());
+        firstButton.setGraphic(ImageIcon.START_MONTH.getIcon());
 
         pastButton = new Button();
-        pastButton.setGraphic(ButtonIcon.PAST_MONTH.getIcon());
+        pastButton.setGraphic(ImageIcon.PAST_MONTH.getIcon());
 
         FlowPane pane = new FlowPane(firstButton, pastButton);
         pane.setAlignment(Pos.BOTTOM_LEFT);
         return pane;
     }
+
+    /// %Part 2 (content -> top center)
 
     private StackPane buildMonthTitle(){
         yearMonthLabel = new Label();
@@ -75,19 +82,25 @@ abstract class WindowStatMonthView extends GridPane{
         return new StackPane(yearMonthLabel);
     }
 
+    /// %Part 2 (content -> top right)
+
     private FlowPane buildNextNav(){
         nextButton = new Button();
-        nextButton.setGraphic(ButtonIcon.NEXT_MONTH.getIcon());
+        nextButton.setGraphic(ImageIcon.NEXT_MONTH.getIcon());
         endButton = new Button();
-        endButton.setGraphic(ButtonIcon.END_MONTH.getIcon());
+        endButton.setGraphic(ImageIcon.END_MONTH.getIcon());
 
         FlowPane pane = new FlowPane(nextButton, endButton);
         pane.setAlignment(Pos.BOTTOM_RIGHT);
         return pane;
     }
 
+    /// %Part 2 (content -> row) separate setup and insert methods
+
     private StackPane buildDayLabel(DayOfWeek day){
-        Label header = new Label(WindowText.getText(day));
+        LocalDate use = LocalDate.now().with(day);
+        String text = DateTimeFormatter.ofPattern("EEE").format(use);
+        Label header = new Label(text);
         header.getStyleClass().add(WEEKDAY_STYLE);
 
         StackPane pane = new StackPane(header);
@@ -114,13 +127,15 @@ abstract class WindowStatMonthView extends GridPane{
 
     /// %Part 3: Setup Properties
 
-    public void setupProperties(WindowStatControl control){
-        setupChildern(control);
+    public void postLoad(WindowStatControl control){
+        bindChildren(control);
     }
 
-    protected abstract void setupChildern(WindowStatControl control);
+    protected abstract void bindChildren(WindowStatControl control);
 
     /// %Part 4: Properties
+
+    /// %Part 4.1: currentMonth (YearMonth)
 
     public SimpleObjectProperty<YearMonth> currentMonthProperty(){
         return currentMonth;

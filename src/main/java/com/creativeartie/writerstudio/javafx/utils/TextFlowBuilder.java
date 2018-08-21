@@ -1,5 +1,4 @@
-package com.creativeartie.writerstudio.resource;
-
+package com.creativeartie.writerstudio.javafx.utils;
 
 import java.util.*;
 import javafx.scene.*;
@@ -7,6 +6,8 @@ import javafx.scene.text.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.lang.*;
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    UtilitiesConstants.*;
 
 public final class TextFlowBuilder {
 
@@ -30,8 +31,8 @@ public final class TextFlowBuilder {
             }
 
         } else {
-            Text empty = new Text(WindowText.EMPTY_TEXT.getText());
-            StyleClass.NOT_FOUND.addClass(empty);
+            Text empty = new Text(EMPTY_TEXT);
+            empty.getStyleClass().add(NOT_FOUND_STYLE);
             node.getChildren().add(empty);
         }
     }

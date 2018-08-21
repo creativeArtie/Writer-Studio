@@ -55,6 +55,10 @@ public class WritingText extends Document{
         cacheNote = CacheKeyMain.integerKey();
     }
 
+    public void replaceText(String text){
+        runCommand(() -> text);
+    }
+
     /** Check if all section has a heading.
      */
     public boolean allHasHeading(){

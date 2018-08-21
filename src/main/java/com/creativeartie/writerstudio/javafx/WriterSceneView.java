@@ -28,7 +28,13 @@ abstract class WriterSceneView extends BorderPane{
     private SimpleBooleanProperty refocusText;
 
     private MenuBarMainControl mainMenuBar;
+
+    private CheatsheetPaneControl cheatsheetPane;
+    private MetaDataPaneControl metaDataPane;
+
+    private TabPane mainTabs;
     private TextPaneControl textPane;
+    private ResearchPaneControl researchPane;
 
     WriterSceneView(Stage window){
         getStylesheets().add(FileResource.MAIN_CSS.getCssPath());
@@ -36,6 +42,7 @@ abstract class WriterSceneView extends BorderPane{
         writingText = new ReadOnlyObjectWrapper<>(this, "writingText");
         writingStat = new ReadOnlyObjectWrapper<>(this, "writingStat");
         writingData = new ReadOnlyObjectWrapper<>(this, "writingData");
+        refocusText = new SimpleBooleanProperty(this, "refocusText");
 
         setTop(buildTop(window));
         setCenter(buildSplitMain());
@@ -44,6 +51,7 @@ abstract class WriterSceneView extends BorderPane{
     /// %Part 2: Layout
 
     /// %Part 2 (pane -> menu bar)
+
     private MenuBarMainControl buildTop(Stage window){
         mainMenuBar = new MenuBarMainControl(window);
         return mainMenuBar;
@@ -70,16 +78,15 @@ abstract class WriterSceneView extends BorderPane{
         BorderPane content = new BorderPane();
         content.setCenter(buildSplitCenter());
 
-        //cheatsheetPane = new CheatsheetPaneControl();
-        // content.setBottom(cheatsheetPane);
+        cheatsheetPane = new CheatsheetPaneControl();
+        content.setBottom(cheatsheetPane);
         return content;
     }
 
     /// %Part 2 (pane -> top-down split -> bottom -> left-right split)
 
     private SplitPane buildSplitCenter(){
-        textPane = new TextPaneControl();
-        SplitPane center = new SplitPane(buildLeftTabs(), textPane);
+        SplitPane center = new SplitPane(buildLeftTabs(), buildRightTabs());
         center.setDividerPositions(HOR_DIVIDER);
         return center;
     }
@@ -87,7 +94,24 @@ abstract class WriterSceneView extends BorderPane{
     /// %Part 2 (pane -> top-down split -> bottom -> left-right split -> left)
 
     private TabPane buildLeftTabs(){
-        return new TabPane();
+        TabPane tabs = CommonLayoutUtility.buildTabPane();
+
+        metaDataPane = new MetaDataPaneControl();
+        CommonLayoutUtility.addTab(tabs, TAB_META, metaDataPane);
+
+        return tabs;
+    }
+
+    /// %Part 2 (pane -> top-down split -> bottom -> left-right split -> right)
+
+    private TabPane buildRightTabs(){
+        mainTabs = CommonLayoutUtility.buildTabPane();
+        textPane = new TextPaneControl();
+        CommonLayoutUtility.addTab(mainTabs, TAB_CONTENT, textPane);
+
+        researchPane = new ResearchPaneControl();
+        CommonLayoutUtility.addTab(mainTabs, TAB_WEB, researchPane);
+        return mainTabs;
     }
 
     /// %Part 3: Setup Properties
@@ -113,8 +137,7 @@ abstract class WriterSceneView extends BorderPane{
 
     /// %Part 4: Properties
 
-
-    /// %Part 4.1: WritingText
+    /// %Part 4.1: writingText (WritingText)
 
     public ReadOnlyObjectProperty<WritingText> writingTextProperty(){
         return writingText.getReadOnlyProperty();
@@ -124,7 +147,7 @@ abstract class WriterSceneView extends BorderPane{
         return writingText.getValue();
     }
 
-    /// %Part 4.2: WritingStat
+    /// %Part 4.2: writingStat (WritingStat)
 
     public ReadOnlyObjectProperty<WritingStat> writingStatProperty(){
         return writingStat.getReadOnlyProperty();
@@ -134,7 +157,7 @@ abstract class WriterSceneView extends BorderPane{
         return writingStat.getValue();
     }
 
-    /// %Part 4.3: WritingData
+    /// %Part 4.3: writingData (WritingData)
 
     public ReadOnlyObjectProperty<WritingData> writingDataProperty(){
         return writingData.getReadOnlyProperty();
@@ -144,13 +167,43 @@ abstract class WriterSceneView extends BorderPane{
         return writingData.getValue();
     }
 
+    /// %Part 4.4: refocusText (Boolean)
+
+    public BooleanProperty refocusTextProperty(){
+        return refocusText;
+    }
+
+    public boolean isRefocusText(){
+        return refocusText.getValue();
+    }
+
+    public void setRefocusText(boolean value){
+        refocusText.setValue(value);
+    }
+
     /// %Part 5: Get Child Methods
 
     MenuBarMainControl getMainMenuBar(){
         return mainMenuBar;
     }
 
+    CheatsheetPaneControl getCheatsheetPane(){
+        return cheatsheetPane;
+    }
+
+    MetaDataPaneControl getMetaDataPane(){
+        return metaDataPane;
+    }
+
+    TabPane getMainTabPane(){
+        return mainTabs;
+    }
+
     TextPaneControl getTextPane(){
         return textPane;
+    }
+
+    ResearchPaneControl getResearchPane(){
+        return researchPane;
     }
 }

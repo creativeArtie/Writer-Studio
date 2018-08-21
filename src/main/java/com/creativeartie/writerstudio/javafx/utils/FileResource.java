@@ -5,7 +5,7 @@ import java.net.*; // URL
 
 public enum FileResource{
     MAIN_CSS("main", ".css"), STAT_CSS("stats", ".css"),
-    ABOUT_CSS("about", ".css"),
+    ABOUT_CSS("about", ".css"), META_CSS("meta", ".css"),
 
     DISPLAY_TEXT("displayText", ".properties"),
     CODE_STYLE("codeStyles", ".properties"),

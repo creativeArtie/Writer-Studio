@@ -10,18 +10,17 @@ import javafx.stage.*;
 import org.fxmisc.richtext.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.resource.*;
+import com.creativeartie.writerstudio.javafx.utils.*;
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    MetaDataConstants.*;
 
 abstract class WindowMatterView extends Stage{
 
     /// %Part 1: Constructor and Class Fields
 
-    protected static final int WIDTH = 650;
-    protected static final int HEIGHT = 500;
-    protected static final int AREA_HEIGHT = (500 / 2) - 10;
     private InlineCssTextArea textArea;
     private VBox previewText;
-    private List<CheatsheetLabel> hintLabels;
+    private List<HintLabel> hintLabels;
 
     private final SimpleObjectProperty<TextTypeMatter> showMatter;
 
@@ -35,20 +34,24 @@ abstract class WindowMatterView extends Stage{
 
     /// %Part 2: Layout
 
+    /// %Part 2 (stage -> scene)
+
     private Scene buildScene(){
-        Scene scene = new Scene(createMainPane(), WIDTH, HEIGHT);
-        scene.getStylesheets().add(FileResources.getPrintCss());
+        Scene scene = new Scene(createMainPane(), WINDOW_WIDTH, WINDOW_HEIGHT);
+        scene.getStylesheets().add(FileResource.META_CSS.getCssPath());
         return scene;
     }
 
+    /// %Part 2 (stage -> scene -> content)
+
     private GridPane createMainPane(){
         GridPane pane = new GridPane();
-        setPrecentWidth(pane, 100);
+        CommonLayoutUtility.setWidthPrecent(pane, 100);
 
-        setPrecentHeight(pane, 45);
+        CommonLayoutUtility.setHeightPrecent(pane, 45);
         pane.add(buildTextArea(), 0, 0);
 
-        setPrecentHeight(pane, 45);
+        CommonLayoutUtility.setHeightPrecent(pane, 45);
         pane.add(buildPreviewArea(), 0, 1);
 
         pane.add(buildHintLabels(), 0, 2);
@@ -56,69 +59,61 @@ abstract class WindowMatterView extends Stage{
         return pane;
     }
 
+    /// %Part 2 (stage -> scene -> content -> top)
+
     private InlineCssTextArea buildTextArea(){
         textArea = new InlineCssTextArea();
         return textArea;
     }
 
+    /// %Part 2 (stage -> scene -> content -> center)
+
     private VBox buildPreviewArea(){
         previewText = new VBox();
-        previewText.getStyleClass().add("border");
+        previewText.getStyleClass().add(BORDER_STYLE);
         return previewText;
     }
 
-    private GridPane buildHintLabels(){
-        hintLabels = Arrays.asList(new CheatsheetLabel[]{
+    /// %Part 2 (stage -> scene -> content -> bottom)
 
-            CheatsheetLabel.getLabel(CheatsheetText.FORMAT_AGENDA),
-            CheatsheetLabel.getLabel(CheatsheetText.OTHER_ESCAPE),
-            CheatsheetLabel.getLabel(CheatsheetText.FORMAT_REF_KEY),
-            CheatsheetLabel.getLabel(CheatsheetText.FORMAT_DIRECT_LINK),
-            CheatsheetLabel.getLabel(CheatsheetText.FORMAT_REF_LINK),
-            CheatsheetLabel.getLabel(CheatsheetText.FORMAT_BOLD),
-            CheatsheetLabel.getLabel(CheatsheetText.FORMAT_ITALICS),
-            CheatsheetLabel.getLabel(CheatsheetText.FORMAT_UNDERLINE),
-            CheatsheetLabel.getLabel(CheatsheetText.FORMAT_CODED)
+    private GridPane buildHintLabels(){
+        hintLabels = Arrays.asList(new HintLabel[]{
+
+            HintLabel.getLabel(HintText.FORMAT_AGENDA),
+            HintLabel.getLabel(HintText.OTHER_ESCAPE),
+            HintLabel.getLabel(HintText.FORMAT_REF_KEY),
+            HintLabel.getLabel(HintText.FORMAT_DIRECT_LINK),
+            HintLabel.getLabel(HintText.FORMAT_REF_LINK),
+            HintLabel.getLabel(HintText.FORMAT_BOLD),
+            HintLabel.getLabel(HintText.FORMAT_ITALICS),
+            HintLabel.getLabel(HintText.FORMAT_UNDERLINE),
+            HintLabel.getLabel(HintText.FORMAT_CODED)
         });
 
         GridPane pane = new GridPane();
-        pane.getStyleClass().add("border");
+        pane.getStyleClass().add(BORDER_STYLE);
         int i = 0;
         for (int row = 0; row < 3; row++){
-            setPrecentWidth(pane, 33.333333);
+            CommonLayoutUtility.setWidthPrecent(pane, 33.333333);
             for (int col = 0; col < 3; col++){
                 pane.add(hintLabels.get(i++), row, col);
             }
         }
-        setPrecentHeight(pane, 10);
+        CommonLayoutUtility.setHeightPrecent(pane, 10);
         return pane;
-    }
-
-    /**
-     * Set the next column by percent width. Helper method of
-     * {@link #initHintsLabels()}.
-     */
-    private void setPrecentWidth(GridPane pane, double value){
-        ColumnConstraints column = new ColumnConstraints();
-        column.setPercentWidth(value);
-        pane.getColumnConstraints().add(column);
-    }
-
-    private void setPrecentHeight(GridPane pane, double value){
-        RowConstraints row = new RowConstraints();
-        row.setPercentHeight(value);
-        pane.getRowConstraints().add(row);
     }
 
     /// %Part 3: Setup Properties
 
-    public void setupProperties(WriterSceneControl control){
-        setupChildern(control);
+    public void postLoad(WriterSceneControl control){
+        bindChildren(control);
     }
 
-    protected abstract void setupChildern(WriterSceneControl control);
+    protected abstract void bindChildren(WriterSceneControl control);
 
     /// %Part 4: Properties
+
+    /// %Part 4.1: showMatter (TextTypeMatter)
 
     public ObjectProperty<TextTypeMatter> showMatterProperty(){
         return showMatter;
@@ -142,7 +137,7 @@ abstract class WindowMatterView extends Stage{
         return previewText;
     }
 
-    List<CheatsheetLabel> getHintLabels() {
+    List<HintLabel> getHintLabels() {
         return hintLabels;
     }
 }

@@ -19,13 +19,14 @@ class WindowStatMonthControl extends WindowStatMonthView{
     /// %Part 3: Bind Children Properties
 
     @Override
-    protected void setupChildern(WindowStatControl control){
+    protected void bindChildren(WindowStatControl control){
         for (WindowStatDayControl day: getDayPanes()){
-            day.setupProperties(control);
+            day.postLoad(control);
         }
 
         control.writingStatProperty().addListener((d, o, n) -> listenStats(n));
         currentMonthProperty().addListener((d, o, n) -> listenMonth(n));
+
         getFirstButton().setOnAction(e -> listenFirstButton());
         getPastButton().setOnAction(e -> listenPastButton());
         getNextButton().setOnAction(e -> listenNextButton());

@@ -27,15 +27,15 @@ class TextPaneControl extends TextPaneView {
 
     private boolean isReady;
     private long stopTime;
-    private ReadOnlyIntegerWrapper caretPosition;
+    private ReadOnlyIntegerWrapper updatedPosition;
     private WritingText writingText;
     private WritingStat writingStat;
 
     /// %Part 1: Private Fields and Constructor
     /// %Part 2: Property Binding
 
-    protected void bindCaretPosition(ReadOnlyIntegerWrapper property){
-        caretPosition = property;
+    protected void bindUpdatedPosition(ReadOnlyIntegerWrapper property){
+        updatedPosition = property;
     }
     /// %Part 3: Bind Children Properties
 
@@ -54,6 +54,7 @@ class TextPaneControl extends TextPaneView {
         getTextArea().plainTextChanges().subscribe(this::listenTextChange);
         getTextArea().caretPositionProperty().addListener((d, o, n) ->
             listenCaret(n.intValue()));
+        isReady = true;
     }
 
     /// %Part 3.1: new AnimationTimer(...).start();
@@ -79,40 +80,63 @@ class TextPaneControl extends TextPaneView {
     /// %Part 3.2: control.writingStatProperty()
 
     private void listenWritingStat(WritingStat stat){
+        isReady = false;
         writingStat = stat;
         if (stat != null) {
             writingText.addDocEdited(t -> showStats());
         }
         if (writingText != null) writingStat.stopWriting(writingText);
         showStats();
+        isReady = true;
     }
 
     /// %Part 3.3: control.writingTextProperty()
 
     private void listenWritingText(WritingText text){
+        isReady = false;
         writingText = text;
         if (text == null) return;
         getTextArea().replaceText(writingText.getRaw());
         updateStyles(writingText.getLeaves());
         if (writingStat != null) writingStat.stopWriting(writingText);
+        isReady = true;
     }
 
     /// %Part 3.4: getTextArea().plainTextChanges().subscribe(...);
 
     private synchronized void listenTextChange(PlainTextChange change){
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-        if (writingText == null) return;
-        if (! getTextArea().isFocused()) return;
-
+        if (! isReady || writingStat == null || writingText == null) return;
+        isReady = false;
         /// update the text area
         int pos = change.getPosition();
+
         writingText.delete(pos, change.getRemovalEnd());
         writingText.insert(pos, change.getInserted());
         updateStyles(writingText.getLeaves());
 
-        ///Update the record
+        /// Update the record
         stopTime = START;
         writingStat.startWriting(writingText);
+
+        /// Way to protect error differences between interface and document
+        if(! writingText.getRaw().equals(getTextArea().getText())){
+            System.err.println("==========================================");
+            System.err.println("Text in interface and in document mismatch");
+            System.err.println("reparsing all");
+            Thread.currentThread().dumpStack();
+            System.err.println("problem change: " + change);
+            System.err.println();
+            System.err.println("interface text: \n" + getTextArea().getText());
+            System.err.println();
+            System.err.println("document text: \n" + writingText.getRaw());
+
+            writingText.replaceText(getTextArea().getText());
+            updateStyles(writingText.getLeaves());
+            listenCaret(getTextArea().getCaretPosition());
+        }
+
+        isReady = true;
     }
 
     /// %Part 3.5: getTextArea().caretPositionProperty()

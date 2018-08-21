@@ -22,7 +22,7 @@ class WindowStatControl extends WindowStatView{
 
     @Override
     protected void bindChildren(WriterSceneControl control){
-        getCalendarPane().setupProperties(this);
+        getCalendarPane().postLoad(this);
 
         writingStatProperty().addListener((d, o, n) -> listenStat(n));
 

@@ -5,7 +5,6 @@ import java.time.*;
 import javafx.scene.image.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
-// import com.creativeartie.writerstudio.resource.*;
 import com.creativeartie.writerstudio.javafx.utils.*;
 import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
     WindowStatChildContants.*;

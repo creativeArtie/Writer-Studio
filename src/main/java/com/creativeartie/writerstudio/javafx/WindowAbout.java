@@ -75,6 +75,8 @@ public class WindowAbout extends Stage{
         );
     }
 
+    /// %Part 2 (stage -> scene -> content -> top -> credits - bottom -> link)
+
     private Hyperlink buildLicenseLink(String title, String text){
         Hyperlink ans = new Hyperlink(title);
         ans.setOnAction(evt -> licenseText.setText(text));

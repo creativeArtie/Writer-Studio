@@ -11,13 +11,15 @@ import javafx.scene.control.*;
 import javafx.scene.web.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.resource.*;
+import com.creativeartie.writerstudio.javafx.utils.*;
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    ResearchConstants.*;
 
 final class ResearchPaneControl extends ResearchPaneView {
 
+    /// %Part 1: Private Fields and Constructor
+
     private WebHistory webHistory;
-    private static final Duration LIMITS = Duration.ofMinutes(2);
-    private static final String HOME = "https://duckduckgo.com";
     private Optional<LocalDateTime> endTime;
     private BooleanProperty refocusText;
     private BooleanProperty disableTab;
@@ -27,19 +29,25 @@ final class ResearchPaneControl extends ResearchPaneView {
         endTime = Optional.empty();
     }
 
+    /// %Part 2: Property Binding
+    /// %Part 3: Bind Children Properties
+
     @Override
-    protected void setupChildern(WriterSceneControl control){
-        control.writingTextProperty().addListener((d, o, n) -> loadText(n));
+    protected void bindChildren(WriterSceneControl control){
         mainTabs = control.getMainTabPane();
-        mainTabs.getSelectionModel().selectedItemProperty().addListener(
-            (d, o, n) -> startResearch(n.getContent() == this)
-        );
         disableTab = mainTabs.getTabs().get(1).disableProperty();
         refocusText = control.refocusTextProperty();
 
+        control.writingTextProperty().addListener(
+            (d, o, n) -> listenWritingText(n)
+        );
+        mainTabs.getSelectionModel().selectedItemProperty().addListener(
+            (d, o, n) -> listenTabSelected(n.getContent().isVisible())
+        );
+
         new AnimationTimer(){
             @Override
-            public void handle(long now) {setTime(now); }
+            public void handle(long now) {listenTimer(now); }
         }.start();
 
         getWebEngine().titleProperty().addListener((d, o, n) ->
@@ -49,82 +57,80 @@ final class ResearchPaneControl extends ResearchPaneView {
 
         webHistory = getWebEngine().getHistory();
         webHistory.currentIndexProperty().addListener((d, o, n) ->
-            updateHistory());
+            listenHistory());
         webHistory.getEntries().addListener(
-            (ListChangeListener<WebHistory.Entry>)e -> updateHistory()
+            (ListChangeListener<WebHistory.Entry>)e -> listenHistory()
         );
 
-        getBackButton().setOnAction(e -> go(-1));
-        getForwardButton().setOnAction(e -> go(1));
-
-        getTimeOutLabel().setText("Hello");
+        getBackButton().setOnAction(e -> listenButtonClick(-1));
+        getForwardButton().setOnAction(e -> listenButtonClick(1));
 
         getAddressBarField().setOnAction(evt ->
-            loadUrl(getAddressBarField().getText())
+            listenAddress(getAddressBarField().getText())
         );
 
         getSearchBarField().setOnAction(e -> searchItem());
 
-        getWebEngine().load(HOME);
-        updateHistory();
+        getWebEngine().load(HOME_PAGE);
+        listenHistory();
     }
 
+    /// %Part 3.1: control.writingTextProperty()
 
-    private void loadText(WritingText text){
+    private void listenWritingText(WritingText text){
         if (text != null){
-            text.addDocEdited(s -> allowResearch());
+            text.addDocEdited(s -> updateTimer());
         }
-        allowResearch();
+        updateTimer();
     }
 
-
-    private void allowResearch(){
+    private void updateTimer(){
         endTime = Optional.empty();
-        disableTab.setValue(false);
+        if (disableTab.getValue()){
+            disableTab.setValue(false);
+        } else {
+            listenTabSelected(true);
+        }
     }
 
-    private void startResearch(boolean visible){
+    /// %Part 3.2: mainTabs.getSelectionModel().selectedItemProperty()
+
+    private void listenTabSelected(boolean visible){
         if (! visible) return;
         if (endTime.isPresent()){
             return;
         }
-        endTime = Optional.of(LocalDateTime.now().plus(LIMITS));
+        endTime = Optional.of(LocalDateTime.now().plus(TIME_LIMITS));
 
     }
 
-    private void setTime(long timer){
+    /// %Part 3.3:  new AnimationTimer(){...}.start()
+
+    private void listenTimer(long timer){
         getClockLabel().setText(
-            DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalTime.now()
+            DateTimeFormatter.ofPattern(CLOCK_FORMAT).format(LocalTime.now()
         ));
         if (endTime.isPresent()){
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime ends = endTime.get();
             if (now.isAfter(ends)){
-                mainTabs.getSelectionModel().selectFirst();
                 refocusText.setValue(true);
                 disableTab.setValue(true);
                 endTime = Optional.empty();
-                getWebEngine().load(HOME);
+                getWebEngine().load(HOME_PAGE);
                 return;
             }
-
             float time = Duration.between(now, ends).toMillis() / 1000f;
             String text = time > 60?
-                String.format(
-                    WindowText.RESEARCH_TIMEOUT_MINS.getText(), time / 60f
-                ): String.format(
-                    WindowText.RESEARCH_TIMEOUT_SECS.getText(), time
-                );
+                String.format(TIMEOUT_MINS, time / 60f):
+                String.format(TIMEOUT_SECS, time);
             getTimeOutLabel().setText(text);
         }
     }
 
+    /// %Part 3.4 webHistory.currentIndexProperty() && webHistory.getEntries()
 
-    private void go(int offset){
-        webHistory.go(offset);
-    }
-
-    private void updateHistory(){
+    private void listenHistory(){
         getBackButton().setDisable(true);
         getBackButton().getItems().clear();
         getForwardButton().setDisable(true);
@@ -157,19 +163,33 @@ final class ResearchPaneControl extends ResearchPaneView {
             return Optional.empty();
         }
         MenuItem item = new MenuItem(entry.getTitle());
-        item.setOnAction(e -> go(position - webHistory.getCurrentIndex()));
+        item.setOnAction(
+            e -> listenButtonClick(position - webHistory.getCurrentIndex())
+        );
         return Optional.of(item);
     }
 
-    private void loadUrl(String text){
-        if (! text.startsWith("http")){
-            text = "http://" + text;
+    /// %Part 3.5: getBackButton().setOnAction(...) &&
+    /// %          getForwardButton().setOnAction(...) &&
+    /// %          MenuItem.setOnAction(...)
+
+    private void listenButtonClick(int offset){
+        webHistory.go(offset);
+    }
+
+    /// %Part 3.6: getAddressBarField().setOnAction(...)
+
+    private void listenAddress(String text){
+        if (! text.startsWith(HTTP_TEST)){
+            text = HTTP_START + text;
         }
         getWebEngine().load(text);
     }
 
+    /// %Part 3.6: getSearchBarField().setOnAction(...)
+
     private void searchItem(){
-        String text = getSearchBarField().getText().replace(' ', '+');
-        getWebEngine().load("http://duckduckgo.com?q=" + text);
+        String text = getSearchBarField().getText().replace(' ', SEARCH_REPLACE);
+        getWebEngine().load(SEARCH_START + text);
     }
 }

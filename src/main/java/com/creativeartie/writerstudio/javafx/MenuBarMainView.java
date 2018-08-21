@@ -73,7 +73,7 @@ abstract class MenuBarMainView extends MenuBar{
 
     /// %Part 4: Properties
 
-    /// %Part 4.1: WritingFile
+    /// %Part 4.1: writingFile (WritingFile)
 
     public ObjectProperty<WritingFile> writingFileProperty(){
         return writingFile;
