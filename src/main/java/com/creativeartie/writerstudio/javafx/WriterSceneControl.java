@@ -70,6 +70,7 @@ public class WriterSceneControl extends WriterSceneView {
     protected void bindChildren(Scene scene){
         getMainMenuBar().postLoad(this);
         getCheatsheetPane().postLoad(this);
+        getHeadingPane().postLoad(this);
         getMetaDataPane().postLoad(this);
         getTextPane().postLoad(this);
         getResearchPane().postLoad(this);

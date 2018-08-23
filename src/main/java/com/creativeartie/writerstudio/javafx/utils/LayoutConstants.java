@@ -44,6 +44,8 @@ public class LayoutConstants{
         public static final double[] VER_DIVIDER = new double[]{.2, .8};
         public static final double[] HOR_DIVIDER = new double[]{.0, 1.0};
 
+        public static final String TAB_HEADINGS =
+            getString("LeftTabs.TableOfContents");
         public static final String TAB_META = getString("LeftTabs.MetaData");
         public static final String TAB_CONTENT = getString("RightTabs.TextArea");
         public static final String TAB_WEB = getString("RightTabs.Research");
@@ -162,6 +164,9 @@ public class LayoutConstants{
         public static final int WINDOW_WIDTH = 650;
         public static final int WINDOW_HEIGHT = 500;
         public static final int AREA_HEIGHT = (500 / 2) - 10;
+        public static final double MATTER_EDIT_HEIGHT = 43;
+        public static final double MATTER_VIEW_HEIGHT = 43;
+        public static final double HINT_WIDTH = 100.0 / 3;
 
         public static final String META_DATA_TITLE = LayoutConstants.getString(
             "DocData.MetaDataTitle");

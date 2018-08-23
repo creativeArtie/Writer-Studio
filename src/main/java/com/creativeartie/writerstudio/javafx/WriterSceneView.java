@@ -26,10 +26,13 @@ abstract class WriterSceneView extends BorderPane{
     private ReadOnlyObjectWrapper<WritingStat> writingStat;
     private ReadOnlyObjectWrapper<WritingData> writingData;
     private SimpleBooleanProperty refocusText;
+    private SimpleObjectProperty<SpanBranch> lastSelected;
 
     private MenuBarMainControl mainMenuBar;
 
     private CheatsheetPaneControl cheatsheetPane;
+
+    private HeadingsPaneControl headingPane;
     private MetaDataPaneControl metaDataPane;
 
     private TabPane mainTabs;
@@ -43,6 +46,7 @@ abstract class WriterSceneView extends BorderPane{
         writingStat = new ReadOnlyObjectWrapper<>(this, "writingStat");
         writingData = new ReadOnlyObjectWrapper<>(this, "writingData");
         refocusText = new SimpleBooleanProperty(this, "refocusText");
+        lastSelected = new SimpleObjectProperty<>(this, "lastSelected");
 
         setTop(buildTop(window));
         setCenter(buildSplitMain());
@@ -95,6 +99,9 @@ abstract class WriterSceneView extends BorderPane{
 
     private TabPane buildLeftTabs(){
         TabPane tabs = CommonLayoutUtility.buildTabPane();
+
+        headingPane = new HeadingsPaneControl();
+        CommonLayoutUtility.addTab(tabs, TAB_HEADINGS, headingPane);
 
         metaDataPane = new MetaDataPaneControl();
         CommonLayoutUtility.addTab(tabs, TAB_META, metaDataPane);
@@ -181,6 +188,20 @@ abstract class WriterSceneView extends BorderPane{
         refocusText.setValue(value);
     }
 
+    /// %Part 4.3: lastSelected (SpanBranch)
+
+    public ObjectProperty<SpanBranch> lastSelectedProperty(){
+        return lastSelected;
+    }
+
+    public SpanBranch getLastSelected(){
+        return lastSelected.getValue();
+    }
+
+    public void setLastSelected(SpanBranch value){
+        lastSelected.setValue(value);
+    }
+
     /// %Part 5: Get Child Methods
 
     MenuBarMainControl getMainMenuBar(){
@@ -189,6 +210,10 @@ abstract class WriterSceneView extends BorderPane{
 
     CheatsheetPaneControl getCheatsheetPane(){
         return cheatsheetPane;
+    }
+
+    HeadingsPaneControl getHeadingPane(){
+        return headingPane;
     }
 
     MetaDataPaneControl getMetaDataPane(){

@@ -23,7 +23,7 @@ abstract class TextPaneView extends BorderPane {
     private InlineCssTextArea textArea;
     private Label lineTypeLabel;
     private Label statLabel;
-    private Label timeLabel;
+    private Label clockLabel;
     private ReadOnlyIntegerWrapper updatedPosition;
 
     TextPaneView(){
@@ -52,9 +52,11 @@ abstract class TextPaneView extends BorderPane {
 
         CommonLayoutUtility.setWidthPrecent(parent, LABEL_WIDTH);
         parent.add(buildStatsLabel(), 1, 0);
+        parent.setHalignment(statLabel, HPos.CENTER);
 
         CommonLayoutUtility.setWidthPrecent(parent, LABEL_WIDTH);
         parent.add(buildTimeLabel(), 2, 0);
+        parent.setHalignment(clockLabel, HPos.RIGHT);
 
         return parent;
     }
@@ -78,9 +80,9 @@ abstract class TextPaneView extends BorderPane {
     /// %Part 2 (content -> bottom grid -> right)
 
     private Label buildTimeLabel(){
-        timeLabel = new Label();
-        timeLabel.getStyleClass().add(CLOCK_STYLE);
-        return timeLabel;
+        clockLabel = new Label();
+        clockLabel.getStyleClass().add(CLOCK_STYLE);
+        return clockLabel;
     }
 
     /// %Part 3: Setup Properties
@@ -120,8 +122,8 @@ abstract class TextPaneView extends BorderPane {
         return statLabel;
     }
 
-    protected Label getTimeLabel(){
-        return timeLabel;
+    protected Label getClockLabel(){
+        return clockLabel;
     }
 
 }

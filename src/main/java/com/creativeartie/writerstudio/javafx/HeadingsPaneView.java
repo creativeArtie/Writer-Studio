@@ -1,35 +1,19 @@
 package com.creativeartie.writerstudio.javafx;
 
 import java.util.*;
+import javafx.event.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.resource.*;
+import com.creativeartie.writerstudio.javafx.utils.*;
 
 /**
  * A pane with two {@link HeadingTreeControl} objects that
  */
 abstract class HeadingsPaneView extends VBox{
-
-    private class HeadingCell<T extends SectionSpan> extends TreeCell<T>{
-        @Override
-        public void updateItem(T item, boolean empty){
-            /// Required by JavaFX API:
-            super.updateItem(item, empty);
-            if (empty || item == null) {
-                setText(null);
-                setGraphic(null);
-            } else {
-                /// Allows WindowSpanParser to create the Label
-                TextFlow graphic = TextFlowBuilder.loadHeadingLine(item
-                    .getHeading());
-                setText(null);
-                setGraphic(graphic);
-            }
-        }
-    }
 
     /// %Part 1: Constructor and Class Fields
 
@@ -37,6 +21,7 @@ abstract class HeadingsPaneView extends VBox{
     private TitledPane headingPane;
     private TreeView<SectionSpanScene> outlineTree;
     private TitledPane outlinePane;
+    private EventHandler<? super MouseEvent> selectionEvent;
 
     public HeadingsPaneView(){
         getChildren().addAll(buildHeadingTree(), buildOutlineTree());
@@ -61,17 +46,22 @@ abstract class HeadingsPaneView extends VBox{
     private <T extends SectionSpan> TreeView<T> buildTree(){
         TreeView<T> tree = new TreeView<>();
         tree.setShowRoot(false);
-        tree.setCellFactory(param -> new HeadingCell<>());
+        tree.setCellFactory(param -> {
+            TreeCellHeading ans = new TreeCellHeading<>();
+            ans.setOnMouseClicked(selectionEvent);
+            return ans;
+        });
         return tree;
     }
 
     /// %Part 3: Setup Properties
 
-    public void setupProperties(WriterSceneControl control){
-        setupChildern(control);
+    public void postLoad(WriterSceneControl control){
+        selectionEvent = getSelectionHandler();
+        bindChildren(control);
     }
 
-    protected abstract void setupChildern(WriterSceneControl control);
+    protected abstract void bindChildren(WriterSceneControl control);
 
     /// %Part 4: Properties
 

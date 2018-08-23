@@ -60,7 +60,7 @@ class TextPaneControl extends TextPaneView {
     /// %Part 3.1: new AnimationTimer(...).start();
 
     private void listenTimer(long now){
-        getTimeLabel().setText(
+        getClockLabel().setText(
             DateTimeFormatter.ofPattern(CLOCK_FORMAT).format(LocalTime.now()
         ));
 
@@ -93,12 +93,20 @@ class TextPaneControl extends TextPaneView {
     /// %Part 3.3: control.writingTextProperty()
 
     private void listenWritingText(WritingText text){
-        isReady = false;
         writingText = text;
-        if (text == null) return;
+        if (writingText != null){
+            writingText.addDocEdited(d -> listenWritingText());
+        }
+        listenWritingText();
+    }
+
+    private void listenWritingText(){
+        isReady = false;
+        if (writingText == null) return;
         getTextArea().replaceText(writingText.getRaw());
         updateStyles(writingText.getLeaves());
         if (writingStat != null) writingStat.stopWriting(writingText);
+        syncDocuments(null);
         isReady = true;
     }
 
@@ -119,23 +127,7 @@ class TextPaneControl extends TextPaneView {
         stopTime = START;
         writingStat.startWriting(writingText);
 
-        /// Way to protect error differences between interface and document
-        if(! writingText.getRaw().equals(getTextArea().getText())){
-            System.err.println("==========================================");
-            System.err.println("Text in interface and in document mismatch");
-            System.err.println("reparsing all");
-            Thread.currentThread().dumpStack();
-            System.err.println("problem change: " + change);
-            System.err.println();
-            System.err.println("interface text: \n" + getTextArea().getText());
-            System.err.println();
-            System.err.println("document text: \n" + writingText.getRaw());
-
-            writingText.replaceText(getTextArea().getText());
-            updateStyles(writingText.getLeaves());
-            listenCaret(getTextArea().getCaretPosition());
-        }
-
+        syncDocuments(change);
         isReady = true;
     }
 
@@ -185,6 +177,25 @@ class TextPaneControl extends TextPaneView {
     }
 
     /// %Part 4: Utilities
+
+    /** Way to protect error differences between interface and document */
+    private void syncDocuments(PlainTextChange change){
+        if(! writingText.getRaw().equals(getTextArea().getText())){
+            System.err.println("==========================================");
+            System.err.println("Text in interface and in document mismatch");
+            System.err.println("reparsing all");
+            Thread.currentThread().dumpStack();
+            System.err.println("problem change: " + change);
+            System.err.println();
+            System.err.println("interface text: \n" + getTextArea().getText());
+            System.err.println();
+            System.err.println("document text: \n" + writingText.getRaw());
+
+            writingText.replaceText(getTextArea().getText());
+            updateStyles(writingText.getLeaves());
+            listenCaret(getTextArea().getCaretPosition());
+        }
+    }
 
     private void updateStyles(Collection<SpanLeaf> leaves){
         for (SpanLeaf leaf: leaves){

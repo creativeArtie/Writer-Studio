@@ -48,10 +48,10 @@ abstract class WindowMatterView extends Stage{
         GridPane pane = new GridPane();
         CommonLayoutUtility.setWidthPrecent(pane, 100);
 
-        CommonLayoutUtility.setHeightPrecent(pane, 45);
+        CommonLayoutUtility.setHeightPrecent(pane, MATTER_EDIT_HEIGHT);
         pane.add(buildTextArea(), 0, 0);
 
-        CommonLayoutUtility.setHeightPrecent(pane, 45);
+        CommonLayoutUtility.setHeightPrecent(pane, MATTER_VIEW_HEIGHT);
         pane.add(buildPreviewArea(), 0, 1);
 
         pane.add(buildHintLabels(), 0, 2);
@@ -94,12 +94,11 @@ abstract class WindowMatterView extends Stage{
         pane.getStyleClass().add(BORDER_STYLE);
         int i = 0;
         for (int row = 0; row < 3; row++){
-            CommonLayoutUtility.setWidthPrecent(pane, 33.333333);
+            CommonLayoutUtility.setWidthPrecent(pane, HINT_WIDTH);
             for (int col = 0; col < 3; col++){
                 pane.add(hintLabels.get(i++), row, col);
             }
         }
-        CommonLayoutUtility.setHeightPrecent(pane, 10);
         return pane;
     }
 
