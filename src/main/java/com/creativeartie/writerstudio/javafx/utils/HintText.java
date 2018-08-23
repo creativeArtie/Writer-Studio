@@ -56,8 +56,7 @@ public enum HintText {
     private static ResourceBundle texts;
     private static ResourceBundle getBundle(){
         if (texts == null){
-            texts = PropertyResourceBundle.getBundle("data.syntaxHints",
-                Locale.ENGLISH);
+            texts = FileResource.HINT_TEXTS.getResourceBundle();
         }
         return texts;
     }

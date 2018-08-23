@@ -15,9 +15,7 @@ public class LayoutConstants{
     private static ResourceBundle texts;
     static ResourceBundle getWindowText(){
         if (texts == null){
-            texts = PropertyResourceBundle.getBundle(FileResource.DISPLAY_TEXT
-                .getBundleString(),
-                Locale.ENGLISH);
+            texts = FileResource.DISPLAY_TEXT.getResourceBundle();
         }
         return texts;
     }
@@ -31,13 +29,15 @@ public class LayoutConstants{
             .to(CaseFormat.UPPER_CAMEL, name));
     }
 
+    public static String NOT_FOUND_STYLE = "no-span";
     private static final String EMPTY_TEXT = getString("CommonText.NoText");
     private static final String PROGRAM_NAME = getString("MainWindow.Title");
     private static final String CLOCK_FORMAT = "HH:mm:ss";
 
     static class UtilitiesConstants{
-        public static String NOT_FOUND_STYLE = "no-span";
-        public static String EMPTY_TEXT = LayoutConstants.EMPTY_TEXT;
+        public static final String NOT_FOUND_STYLE = LayoutConstants.
+            NOT_FOUND_STYLE;
+        public static final String EMPTY_TEXT = LayoutConstants.EMPTY_TEXT;
     }
 
     public static class MainWindowConstants{
@@ -149,7 +149,7 @@ public class LayoutConstants{
             getString("AboutWindow.SourceLink");
 
         private static String getLicense(FileResource path){
-            URL stream = LayoutConstants.class.getResource(path.getLocalPath());
+            URL stream = path.getResourceFile();
 
             try {
                 return Resources.asCharSource(stream, Charsets.UTF_8).read();
@@ -157,6 +157,28 @@ public class LayoutConstants{
                 throw new RuntimeException(ex);
             }
         }
+    }
+
+    public static class TableCellConstants{
+        public static final String NOT_FOUND_STYLE = LayoutConstants.
+            NOT_FOUND_STYLE;
+        public static final String NUMBER_COLUMN_STYLE = "id-numbered";
+        public static final String NO_TEXT_STYLE = "no-text";
+        public static final String NO_ID = getString("CommonText.NoId");
+    }
+
+    public static class HintConstants{
+        public static final String HINT_SET_STYLE = "hint-set";
+        public static final String HINT_UNSET_STYLE = "hint-unset";
+        public static final String HINT_ALLOW_STYLE = "hint-allow";
+        public static final String HINT_DISALLOW_STYLE = "hint-disallow";
+    }
+
+    public static class HeadingConstants{
+        public static final String HEADING_TITLE =
+            getString("HeadingTree.HeadingTitle");
+        public static final String OUTLINE_TITLE =
+            getString("HeadingTree.OutlineTitle");
     }
 
     public static class MetaDataConstants{

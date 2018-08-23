@@ -29,8 +29,7 @@ public enum ImageIcon{
 
     private static Image getImage(){
         if (map == null){
-            map = new Image(ImageIcon.class.getResourceAsStream(
-                FileResource.ICON_PATH.getLocalPath()));
+            map = new Image(FileResource.ICON_PATH.getResourceStream());
         }
         return map;
     }

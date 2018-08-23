@@ -28,6 +28,7 @@ class TextPaneControl extends TextPaneView {
     private boolean isReady;
     private long stopTime;
     private ReadOnlyIntegerWrapper updatedPosition;
+    private BooleanProperty refocusText;
     private WritingText writingText;
     private WritingStat writingStat;
 
@@ -41,6 +42,8 @@ class TextPaneControl extends TextPaneView {
 
     @Override
     protected void bindChildren(WriterSceneControl control){
+        refocusText = control.refocusTextProperty();
+
         new AnimationTimer(){
             @Override
             public void handle(long now) {listenTimer(now); }
@@ -50,6 +53,8 @@ class TextPaneControl extends TextPaneView {
             listenWritingStat(n));
         control.writingTextProperty().addListener((d, o, n) ->
             listenWritingText(n));
+        control.lastSelectedProperty().addListener((d, o, n) ->
+            listenLastSelected(n));
 
         getTextArea().plainTextChanges().subscribe(this::listenTextChange);
         getTextArea().caretPositionProperty().addListener((d, o, n) ->
@@ -110,7 +115,44 @@ class TextPaneControl extends TextPaneView {
         isReady = true;
     }
 
-    /// %Part 3.4: getTextArea().plainTextChanges().subscribe(...);
+    /// %Part 3.5: control.lastSelectedProperty()
+
+    private void listenLastSelected(SpanBranch span){
+        if (span instanceof SectionSpanHead){
+            SectionSpanHead head = (SectionSpanHead) span;
+            Optional<SectionSpan> found = head.getScenes().stream().findFirst()
+                .map(s -> (SectionSpan) s);
+            if (! found.isPresent()){
+                found = head.getSections().stream().findFirst()
+                    .map(s -> (SectionSpan) s);
+            }
+            if (found.isPresent()){
+                moveToPoint(found.get().getStart() - 1);
+            } else {
+                moveToPoint(span.getEnd());
+            }
+        } else if (span instanceof SectionSpanScene){
+            moveToPoint(((SectionSpanScene) span).getSubscenes().stream()
+                .findFirst().map(s -> s.getStart() - 1).orElse(span.getEnd()));
+        } else {
+            moveToPoint(span.getEnd());
+        }
+    }
+
+    private void moveToPoint(int location){
+        String text = getTextArea().getText();
+        if (text.length() > location){
+            if (getTextArea().getText().charAt(location) == '\n'){
+                location--;
+            }
+        } else if (location < 0){
+            location = 0;
+        }
+        getTextArea().moveTo(location);
+        refocusText.setValue(true);
+    }
+
+    /// %Part 3.5: getTextArea().plainTextChanges().subscribe(...)
 
     private synchronized void listenTextChange(PlainTextChange change){
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
@@ -131,7 +173,7 @@ class TextPaneControl extends TextPaneView {
         isReady = true;
     }
 
-    /// %Part 3.5: getTextArea().caretPositionProperty()
+    /// %Part 3.6: getTextArea().caretPositionProperty()
 
     private void listenCaret(int position){
         getLineTypeLabel().setText(writingText.getLeaf(position)
@@ -142,9 +184,12 @@ class TextPaneControl extends TextPaneView {
             /// s = String
             .orElse("")
         );
+        if (getTextArea().isFocused()){
+            updatedPosition.setValue(getTextArea().getCaretPosition());
+        }
     }
 
-    public static String getLineText(LinedSpan span){
+    private static String getLineText(LinedSpan span){
         if (span instanceof LinedSpanLevelSection){
             LinedSpanLevelSection line = (LinedSpanLevelSection) span;
             return (line.isHeading()? HEADING: OUTLINE) +

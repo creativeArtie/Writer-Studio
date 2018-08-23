@@ -1,17 +1,21 @@
 package com.creativeartie.writerstudio.javafx.utils;
 
 import java.io.*; // InputStrem
-import java.net.*; // URL
+import java.net.*;
+import java.util.*;
+
+import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 public enum FileResource{
-    MAIN_CSS("main", ".css"), STAT_CSS("stats", ".css"),
-    ABOUT_CSS("about", ".css"), META_CSS("meta", ".css"),
-
     DISPLAY_TEXT("displayText", ".properties"),
     CODE_STYLE("codeStyles", ".properties"),
-    ICON_PATH("icons", ".png"),
+    HINT_TEXTS("syntaxHints", ".properties"),
 
-    APACHE("apache", ".txt"), BSD("bsd", ".txt");
+    ICON_PATH("icons", ".png"),
+    APACHE("apache", ".txt"), BSD("bsd", ".txt"),
+
+    MAIN_CSS("main", ".css"), STAT_CSS("stats", ".css"),
+    ABOUT_CSS("about", ".css"), META_CSS("meta", ".css");
 
     private static final String[] LOCATION = new String[]{
         "com", "creativeartie", "writerstudio", "javafx", "utils"
@@ -24,15 +28,23 @@ public enum FileResource{
         fileExt = ext;
     }
 
+    ResourceBundle getResourceBundle(){
+        stateCheck(ordinal() < ICON_PATH.ordinal(), "Not supported for " + this);
+        return PropertyResourceBundle.getBundle(
+            String.join(".", LOCATION) + "." + baseString, Locale.ENGLISH
+        );
+    }
+
     public String getCssPath(){
+        stateCheck(ordinal() > BSD.ordinal(), "Nort supported for " + this);
         return String.join("/", LOCATION) + "/" + baseString + fileExt;
     }
 
-    String getLocalPath(){
-        return baseString + fileExt;
+    URL getResourceFile(){
+        return FileResource.class.getResource(baseString + fileExt);
     }
 
-    String getBundleString(){
-        return String.join(".", LOCATION) + "." + baseString;
+    InputStream getResourceStream(){
+        return FileResource.class.getResourceAsStream(baseString + fileExt);
     }
 }

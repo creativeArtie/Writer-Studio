@@ -20,8 +20,7 @@ public class CodeStyleBuilder {
     private static Properties buildProperties(){
         Properties ans = new Properties();
         try {
-            ans.load(CodeStyleBuilder.class.getResourceAsStream(
-                FileResource.CODE_STYLE.getLocalPath()));
+            ans.load(FileResource.CODE_STYLE.getResourceStream());
         } catch (Exception ex){
             throw new RuntimeException(ex);
         }

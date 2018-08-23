@@ -1,14 +1,15 @@
 package com.creativeartie.writerstudio.javafx;
 
 import java.util.*;
-import javafx.event.*;
 import javafx.scene.control.*;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.resource.*;
 import com.creativeartie.writerstudio.javafx.utils.*;
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    HeadingConstants.*;
 
 /**
  * A pane with two {@link HeadingTreeControl} objects that
@@ -21,7 +22,6 @@ abstract class HeadingsPaneView extends VBox{
     private TitledPane headingPane;
     private TreeView<SectionSpanScene> outlineTree;
     private TitledPane outlinePane;
-    private EventHandler<? super MouseEvent> selectionEvent;
 
     public HeadingsPaneView(){
         getChildren().addAll(buildHeadingTree(), buildOutlineTree());
@@ -29,26 +29,31 @@ abstract class HeadingsPaneView extends VBox{
 
     /// %Part 2: Layout
 
+    /// %Part 2 (content -> top)
+
     private TitledPane buildHeadingTree(){
         headingTree = buildTree();
-        headingPane = new TitledPane(WindowText.HEADING_TITLE.getText(),
-            headingTree);
+        headingPane = new TitledPane(HEADING_TITLE, headingTree);
         return headingPane;
     }
 
+    /// %Part 2 (content -> bottom)
+
     private TitledPane buildOutlineTree(){
         outlineTree = buildTree();
-        outlinePane = new TitledPane(WindowText.OUTLINE_TITLE.getText(),
-            outlineTree);
+        outlinePane = new TitledPane(OUTLINE_TITLE, outlineTree);
         return outlinePane;
     }
+
+    /// %Part 2.1 Utilities
 
     private <T extends SectionSpan> TreeView<T> buildTree(){
         TreeView<T> tree = new TreeView<>();
         tree.setShowRoot(false);
         tree.setCellFactory(param -> {
-            TreeCellHeading ans = new TreeCellHeading<>();
-            ans.setOnMouseClicked(selectionEvent);
+            TreeCellHeading<T> ans = new TreeCellHeading<>();
+            ans.setOnMouseClicked(e -> handleSelection(e, ans.getTreeItem()
+                .getValue()));
             return ans;
         });
         return tree;
@@ -57,9 +62,11 @@ abstract class HeadingsPaneView extends VBox{
     /// %Part 3: Setup Properties
 
     public void postLoad(WriterSceneControl control){
-        selectionEvent = getSelectionHandler();
         bindChildren(control);
     }
+
+    protected abstract void handleSelection(MouseEvent event,
+        SectionSpan section);
 
     protected abstract void bindChildren(WriterSceneControl control);
 

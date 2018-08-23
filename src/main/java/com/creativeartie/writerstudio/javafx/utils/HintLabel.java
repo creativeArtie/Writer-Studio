@@ -8,7 +8,8 @@ import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.resource.*;
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    HintConstants.*;
 
 /**
  * A label that show hints and can change style base on the position of the
@@ -287,7 +288,7 @@ public class HintLabel extends Label{
                 return;
             }
         }
-        StyleClass.setHintClass(this, false, false);
+        setHintClass(this, false, false);
     }
 
     /**
@@ -296,10 +297,20 @@ public class HintLabel extends Label{
      */
     public void showStatus(SpanLeaf leaf){
         if (leaf == null){
-            StyleClass.setHintClass(this, false, false);
+            setHintClass(this, false, false);
         } else {
-            StyleClass.setHintClass(this, testSetted.test(leaf), testAllow
+            setHintClass(this, testSetted.test(leaf), testAllow
                 .test(leaf));
         }
+    }
+
+    private static void setHintClass(HintLabel label, boolean set,
+        boolean allowed
+    ){
+        label.getStyleClass().removeAll(HINT_SET_STYLE, HINT_UNSET_STYLE,
+            HINT_ALLOW_STYLE, HINT_DISALLOW_STYLE);
+        String setClass = set? HINT_SET_STYLE: HINT_UNSET_STYLE;
+        String allowClass = allowed? HINT_ALLOW_STYLE: HINT_DISALLOW_STYLE;
+        label.getStyleClass().addAll(setClass, allowClass);
     }
 }

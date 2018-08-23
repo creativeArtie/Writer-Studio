@@ -1,4 +1,4 @@
-package com.creativeartie.writerstudio.javafx;
+package com.creativeartie.writerstudio.javafx.utils;
 
 import java.util.*;
 import java.util.function.*;
@@ -12,12 +12,13 @@ import javafx.scene.text.*;
 
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.resource.*;
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    TableCellConstants.*;
 
 /**
  * Methods that are common in {@linkplain TableView}.
  */
-final class TableDataHelper{
+public final class TableCellFactory{
 
     private static class IdCell<T> extends TableCell<T,
             Optional<CatalogueIdentity>>{
@@ -29,15 +30,15 @@ final class TableDataHelper{
             if (empty || item == null){
                 setText(null);
                 setGraphic(null);
-                StyleClass.NOT_FOUND.removeClass(this);
+                getStyleClass().remove(NOT_FOUND_STYLE);
             } else {
                 String text;
                 if (item.isPresent()){
                     text = item.get().getFullIdentity();
-                    StyleClass.NOT_FOUND.removeClass(this);
+                    getStyleClass().remove(NOT_FOUND_STYLE);
                 } else {
-                    text = WindowText.NO_ID.getText();
-                    StyleClass.NOT_FOUND.addClass(this);
+                    text = NO_ID;
+                    getStyleClass().remove(NOT_FOUND_STYLE);
                 }
                 setText(text);
                 setGraphic(null);
@@ -46,11 +47,11 @@ final class TableDataHelper{
     }
 
     public static <T> TableColumn<T, Optional<CatalogueIdentity>> getIdColumn(
-            WindowText title, Function<T,
+            String title, Function<T,
                 ObservableObjectValue<Optional<CatalogueIdentity>>
             > property){
         TableColumn<T, Optional<CatalogueIdentity>> ans = new TableColumn<>(
-            title.getText());
+            title);
         ans.setCellFactory(list -> new IdCell<>());
         ans.setCellValueFactory(c -> new SimpleObjectProperty<>(
 
@@ -69,15 +70,15 @@ final class TableDataHelper{
                 setGraphic(null);
             } else {
                 setText(item.toString());
-                StyleClass.NUMBER_COLUMN.addClass(this);
+                getStyleClass().add(NUMBER_COLUMN_STYLE);
                 setGraphic(null);
             }
         }
     }
 
-    public static <T> TableColumn<T, Number> getNumberColumn(WindowText title,
+    public static <T> TableColumn<T, Number> getNumberColumn(String title,
             Function<T, ObservableNumberValue> property){
-        TableColumn<T, Number> ans = new TableColumn<>(title.getText());
+        TableColumn<T, Number> ans = new TableColumn<>(title);
         ans.setCellFactory(list -> new NumberCell<>());
         ans.setCellValueFactory(c -> new SimpleIntegerProperty(
             /// 1st getValue() = T data; 2nd getValue() = Number
@@ -86,9 +87,9 @@ final class TableDataHelper{
         return ans;
     }
 
-    public static <T> TableColumn<T, Boolean> getBooleanColumn(WindowText title,
+    public static <T> TableColumn<T, Boolean> getBooleanColumn(String title,
             Function<T, ObservableBooleanValue> property){
-        TableColumn<T, Boolean> ans = new TableColumn<>(title.getText());
+        TableColumn<T, Boolean> ans = new TableColumn<>(title);
         ans.setCellFactory(list -> new CheckBoxTableCell<>());
         ans.setCellValueFactory(c -> new SimpleBooleanProperty(
             /// 1st getValue() = T data; 2nd getValue() = Boolean
@@ -116,9 +117,9 @@ final class TableDataHelper{
     }
 
     public static <T> TableColumn<T, SectionSpan> getSectionColumn(
-            WindowText title,
+            String title,
             Function<T, ObservableObjectValue<SectionSpan>> property){
-        TableColumn<T, SectionSpan> ans = new TableColumn<>(title.getText());
+        TableColumn<T, SectionSpan> ans = new TableColumn<>(title);
         ans.setCellFactory(list -> new SectionCell<>());
         ans.setCellValueFactory(c -> new SimpleObjectProperty<>(
             /// 1st getValue() = T data; 2nd getValue() = SectionSpan
@@ -150,11 +151,10 @@ final class TableDataHelper{
     }
 
     public static <T> TableColumn<T, Optional<FormattedSpan>> getFormatColumn(
-            WindowText title,
+            String title,
             Function<T, ObservableObjectValue<Optional<FormattedSpan>>>
                 property){
-        TableColumn<T, Optional<FormattedSpan>> ans = new TableColumn<>(title
-            .getText());
+        TableColumn<T, Optional<FormattedSpan>> ans = new TableColumn<>(title);
         ans.setCellFactory(list -> new FormatCell<>());
         ans.setCellValueFactory(c -> new SimpleObjectProperty<>(
             /// 1st getValue() = T data; 2nd getValue() = Text
@@ -190,9 +190,9 @@ final class TableDataHelper{
         }
     }
 
-    public static <T> TableColumn<T, Object> getLinkColumn(WindowText title,
+    public static <T> TableColumn<T, Object> getLinkColumn(String title,
             Function<T, ObservableObjectValue<Object>> property){
-        TableColumn<T, Object> ans = new TableColumn<>(title.getText());
+        TableColumn<T, Object> ans = new TableColumn<>(title);
         ans.setCellFactory(list -> new LinkCell<>());
         ans.setCellValueFactory(c -> new SimpleObjectProperty<>(
             /// 1st getValue() = T data; 2nd getValue() = Text
@@ -203,9 +203,9 @@ final class TableDataHelper{
 
     /** TableCell for strings */
     private static class TextCell<T> extends TableCell<T, String> {
-        private WindowText emptyText;
+        private String emptyText;
 
-        private TextCell(WindowText empty){
+        private TextCell(String empty){
             emptyText = empty;
         }
 
@@ -220,8 +220,8 @@ final class TableDataHelper{
                 Text graphic = null;
                 if (item.isEmpty()){
                     /// There is no text found.
-                    graphic = new Text(emptyText.getText());
-                    StyleClass.NO_TEXT.addClass(graphic);
+                    graphic = new Text(emptyText);
+                    getStyleClass().add(NO_TEXT_STYLE);
                 } else {
                     /// Add the text that is found.
                     graphic = new Text(item);
@@ -234,9 +234,9 @@ final class TableDataHelper{
         }
     }
 
-    public static <T> TableColumn<T, String> getTextColumn(WindowText title,
-            Function<T, ObservableStringValue> property, WindowText empty){
-        TableColumn<T, String> ans = new TableColumn<>(title.getText());
+    public static <T> TableColumn<T, String> getTextColumn(String title,
+            Function<T, ObservableStringValue> property, String empty){
+        TableColumn<T, String> ans = new TableColumn<>(title);
         ans.setCellFactory(list -> new TextCell<>(empty));
         ans.setCellValueFactory(c -> new SimpleStringProperty(
             /// 1st getValue() = T data; 2nd getValue() = Text
@@ -245,9 +245,9 @@ final class TableDataHelper{
         return ans;
     }
 
-    public static void styleTableView(TableView<?> table, WindowText empty){
+    public static void styleTableView(TableView<?> table, String empty){
         table.setFixedCellSize(30);
-        table.setPlaceholder(new Label(empty.getText()));
+        table.setPlaceholder(new Label(empty));
     }
 
 
@@ -257,5 +257,5 @@ final class TableDataHelper{
             .multiply(precent / 100));
     }
 
-    private TableDataHelper(){}
+    private TableCellFactory(){}
 }
