@@ -30,6 +30,12 @@ abstract class WriterSceneView extends BorderPane{
 
     private MenuBarMainControl mainMenuBar;
 
+    private NoteCardPaneControl noteCardPane;
+    private DataPaneAgenda agendaPane;
+    private DataPaneLink linkPane;
+    private DataPaneNote footnotePane;
+    private DataPaneNote endnotePane;
+
     private CheatsheetPaneControl cheatsheetPane;
 
     private HeadingsPaneControl headingPane;
@@ -73,7 +79,26 @@ abstract class WriterSceneView extends BorderPane{
     /// %Part 2 (pane -> top-down split -> top)
 
     private TabPane buildTopTabs(){
-        return new TabPane();
+        TabPane tabs = CommonLayoutUtility.buildTabPane();
+
+        noteCardPane = new NoteCardPaneControl();
+        CommonLayoutUtility.addTab(tabs, TAB_NOTE_CARD, noteCardPane);
+
+        agendaPane = new DataPaneAgenda();
+        CommonLayoutUtility.addTab(tabs, TAB_AGENDA, agendaPane);
+
+        linkPane = new DataPaneLink();
+        CommonLayoutUtility.addTab(tabs, TAB_LINK, linkPane);
+
+        footnotePane = new DataPaneNote(DirectoryType.FOOTNOTE);
+        CommonLayoutUtility.addTab(tabs, TAB_FOOTNOTE, footnotePane);
+
+        endnotePane = new DataPaneNote(DirectoryType.ENDNOTE);
+        CommonLayoutUtility.addTab(tabs, TAB_ENDNOTE, endnotePane);
+
+        ReferencePane ref = new ReferencePane();
+        CommonLayoutUtility.addTab(tabs, TAB_REFERENCE, ref);
+        return tabs;
     }
 
     /// %Part 2 (pane -> top-down split -> bottom)
@@ -210,6 +235,26 @@ abstract class WriterSceneView extends BorderPane{
 
     CheatsheetPaneControl getCheatsheetPane(){
         return cheatsheetPane;
+    }
+
+    NoteCardPaneControl getNoteCardPane(){
+        return noteCardPane;
+    }
+
+    DataPaneAgenda getAgendaPane(){
+        return agendaPane;
+    }
+
+    DataPaneLink getLinkPane(){
+        return linkPane;
+    }
+
+    DataPaneNote getFootnotePane(){
+        return footnotePane;
+    }
+
+    DataPaneNote getEndnotePane(){
+        return endnotePane;
     }
 
     HeadingsPaneControl getHeadingPane(){

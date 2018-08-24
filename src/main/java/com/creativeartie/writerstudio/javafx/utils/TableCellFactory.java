@@ -13,7 +13,7 @@ import javafx.scene.text.*;
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
-    TableCellConstants.*;
+    UtilitiesConstants.*;
 
 /**
  * Methods that are common in {@linkplain TableView}.

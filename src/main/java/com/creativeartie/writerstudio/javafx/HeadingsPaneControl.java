@@ -42,8 +42,8 @@ final class HeadingsPaneControl extends HeadingsPaneView{
         control.writingTextProperty().addListener(
             (d, o, n) -> listenWritingText(n)
         );
-        control.getTextPane().updatedPositionProperty().addListener(
-            (d, o, n) -> showHeading(n.intValue())
+        control.getTextPane().getTextArea().caretPositionProperty().addListener(
+            (d, o, n) -> listenCaret(n.intValue())
         );
         lastSelected = control.lastSelectedProperty();
         refocusText = control.refocusTextProperty();
@@ -56,7 +56,7 @@ final class HeadingsPaneControl extends HeadingsPaneView{
         if (text != null){
             text.addDocEdited(s -> loadHeadings());
             loadHeadings();
-            showHeading(text.getEnd());
+            listenCaret(text.getEnd());
         } else {
             getHeadingTree().setRoot(new TreeItem<>());
             clearOutline();
@@ -86,27 +86,9 @@ final class HeadingsPaneControl extends HeadingsPaneView{
         return heading;
     }
 
-    /// %Part 3.2: getHeadingTree().getSelectionModel().selectedItemProperty()
-
-    private void listenHeading(TreeItem<SectionSpanHead> head){
-        if (head != null){
-            lastSelected.setValue(head.getValue());
-            showHeading(head.getValue().getStart());
-        }
-        refocusText.setValue(true);
-    }
-
-    /// %Part 2.3: getOutlineTree().getSelectionModel().selectedItemProperty()
-    private void listenOutline(TreeItem<SectionSpanScene> scene){
-        if (scene != null){
-            lastSelected.setValue(scene.getValue());
-        }
-        refocusText.setValue(true);
-    }
-
     /// %Part 3.2: control.getTextPane().getTextArea().caretPositionProperty()
 
-    private void showHeading(int position){
+    private void listenCaret(int position){
         if (writingText == null) return;
         Optional<SectionSpanHead> head = writingText.locateLeaf(position)
             .flatMap(s -> s.getParent(SectionSpanHead.class));
@@ -152,6 +134,8 @@ final class HeadingsPaneControl extends HeadingsPaneView{
         }
         return item;
     }
+
+    /// %Part 4: Utilities
 
     private void clearOutline(){
         getOutlineTree().setRoot(new TreeItem<>());

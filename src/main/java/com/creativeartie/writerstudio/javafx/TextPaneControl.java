@@ -27,7 +27,6 @@ class TextPaneControl extends TextPaneView {
 
     private boolean isReady;
     private long stopTime;
-    private ReadOnlyIntegerWrapper updatedPosition;
     private BooleanProperty refocusText;
     private WritingText writingText;
     private WritingStat writingStat;
@@ -35,9 +34,6 @@ class TextPaneControl extends TextPaneView {
     /// %Part 1: Private Fields and Constructor
     /// %Part 2: Property Binding
 
-    protected void bindUpdatedPosition(ReadOnlyIntegerWrapper property){
-        updatedPosition = property;
-    }
     /// %Part 3: Bind Children Properties
 
     @Override
@@ -109,7 +105,6 @@ class TextPaneControl extends TextPaneView {
         isReady = false;
         if (writingText == null) return;
         getTextArea().replaceText(writingText.getRaw());
-        updateStyles(writingText.getLeaves());
         if (writingStat != null) writingStat.stopWriting(writingText);
         syncDocuments(null);
         isReady = true;
@@ -118,22 +113,12 @@ class TextPaneControl extends TextPaneView {
     /// %Part 3.5: control.lastSelectedProperty()
 
     private void listenLastSelected(SpanBranch span){
-        if (span instanceof SectionSpanHead){
-            SectionSpanHead head = (SectionSpanHead) span;
-            Optional<SectionSpan> found = head.getScenes().stream().findFirst()
-                .map(s -> (SectionSpan) s);
-            if (! found.isPresent()){
-                found = head.getSections().stream().findFirst()
-                    .map(s -> (SectionSpan) s);
-            }
-            if (found.isPresent()){
-                moveToPoint(found.get().getStart() - 1);
-            } else {
-                moveToPoint(span.getEnd());
-            }
-        } else if (span instanceof SectionSpanScene){
-            moveToPoint(((SectionSpanScene) span).getSubscenes().stream()
-                .findFirst().map(s -> s.getStart() - 1).orElse(span.getEnd()));
+        Thread.currentThread().dumpStack();
+        if (span instanceof SectionSpan){
+            moveToPoint(span.spanFromLast(LinedSpan.class)
+                .map(l -> l.getEnd())
+                .orElse(0)
+            );
         } else {
             moveToPoint(span.getEnd());
         }
@@ -155,15 +140,13 @@ class TextPaneControl extends TextPaneView {
     /// %Part 3.5: getTextArea().plainTextChanges().subscribe(...)
 
     private synchronized void listenTextChange(PlainTextChange change){
-        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         if (! isReady || writingStat == null || writingText == null) return;
         isReady = false;
         /// update the text area
         int pos = change.getPosition();
 
-        writingText.delete(pos, change.getRemovalEnd());
-        writingText.insert(pos, change.getInserted());
-        updateStyles(writingText.getLeaves());
+        //writingText.delete(pos, change.getRemovalEnd());
+        //writingText.insert(pos, change.getInserted());
 
         /// Update the record
         stopTime = START;
@@ -184,9 +167,6 @@ class TextPaneControl extends TextPaneView {
             /// s = String
             .orElse("")
         );
-        if (getTextArea().isFocused()){
-            updatedPosition.setValue(getTextArea().getCaretPosition());
-        }
     }
 
     private static String getLineText(LinedSpan span){
@@ -223,9 +203,14 @@ class TextPaneControl extends TextPaneView {
 
     /// %Part 4: Utilities
 
-    /** Way to protect error differences between interface and document */
+    /** Way to protect error differences between interface and document
+     *
+     * @param change
+     *      the change that cause the issue
+     */
     private void syncDocuments(PlainTextChange change){
         if(! writingText.getRaw().equals(getTextArea().getText())){
+            System.out.println(writingText);
             System.err.println("==========================================");
             System.err.println("Text in interface and in document mismatch");
             System.err.println("reparsing all");
@@ -239,7 +224,9 @@ class TextPaneControl extends TextPaneView {
             writingText.replaceText(getTextArea().getText());
             updateStyles(writingText.getLeaves());
             listenCaret(getTextArea().getCaretPosition());
+            System.out.println(writingText);
         }
+        updateStyles(writingText.getLeaves());
     }
 
     private void updateStyles(Collection<SpanLeaf> leaves){

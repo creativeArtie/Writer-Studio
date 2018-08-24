@@ -29,14 +29,22 @@ public class LayoutConstants{
             .to(CaseFormat.UPPER_CAMEL, name));
     }
 
-    public static String NOT_FOUND_STYLE = "no-span";
+    private static final String NOT_FOUND_STYLE = "no-span";
+
+    private static final String EMPTY_NA = getString("CommonText.NotApplicable");
     private static final String EMPTY_TEXT = getString("CommonText.NoText");
     private static final String PROGRAM_NAME = getString("MainWindow.Title");
+
     private static final String CLOCK_FORMAT = "HH:mm:ss";
 
     static class UtilitiesConstants{
         public static final String NOT_FOUND_STYLE = LayoutConstants.
             NOT_FOUND_STYLE;
+        public static final String NUMBER_COLUMN_STYLE = "id-numbered";
+        public static final String NO_TEXT_STYLE       = "no-text";
+
+        public static final String NO_ID = getString("CommonText.NoId");
+
         public static final String EMPTY_TEXT = LayoutConstants.EMPTY_TEXT;
     }
 
@@ -44,25 +52,30 @@ public class LayoutConstants{
         public static final double[] VER_DIVIDER = new double[]{.2, .8};
         public static final double[] HOR_DIVIDER = new double[]{.0, 1.0};
 
-        public static final String TAB_HEADINGS =
-            getString("LeftTabs.TableOfContents");
-        public static final String TAB_META = getString("LeftTabs.MetaData");
+        public static final String TAB_NOTE_CARD = getString("NoteTabs.TitleNoteCard");
+        public static final String TAB_AGENDA    = getString("NoteTabs.TitleAgenda");
+        public static final String TAB_LINK      = getString("NoteTabs.TitleLink");
+        public static final String TAB_FOOTNOTE  = getString("NoteTabs.TitleFootnote");
+        public static final String TAB_ENDNOTE   = getString("NoteTabs.TitleEndnote");
+        public static final String TAB_REFERENCE = getString("NoteTabs.TitleReference");
+
+        public static final String TAB_HEADINGS = getString("LeftTabs.TableOfContents");
+        public static final String TAB_META     = getString("LeftTabs.MetaData");
+
         public static final String TAB_CONTENT = getString("RightTabs.TextArea");
-        public static final String TAB_WEB = getString("RightTabs.Research");
+        public static final String TAB_WEB     = getString("RightTabs.Research");
     }
 
     public static class MenuBarConstants{
-        public static final String FILE = getString("MainMenu.File");
-        public static final String FILE_NEW = getString("MainMenu.FileCreate");
-        public static final String FILE_SAVE = getString("MainMenu.FileSave");
-        public static final String FILE_OPEN = getString("MainMenu.FileOpen");
+        public static final String FILE        = getString("MainMenu.File");
+        public static final String FILE_NEW    = getString("MainMenu.FileCreate");
+        public static final String FILE_SAVE   = getString("MainMenu.FileSave");
+        public static final String FILE_OPEN   = getString("MainMenu.FileOpen");
         public static final String FILE_EXPORT = getString("MainMenu.ExportPdf");
-        public static final String FILE_EXIT = getString("MainMenu.FileExit");
-
-        public static final String STATS = getString("MainMenu.Stats");
+        public static final String FILE_EXIT   = getString("MainMenu.FileExit");
+        public static final String STATS       = getString("MainMenu.Stats");
         public static final String STATS_GOALS = getString("MainMenu.StatsGoal");
-
-        public static final String HELP = getString("MainMenu.Help");
+        public static final String HELP       = getString("MainMenu.Help");
         public static final String HELP_ABOUT = getString("MainMenu.HelpAbout");
 
         public static final String OPEN_FILE = getString("MainMenu.ChooserTitle");
@@ -70,11 +83,11 @@ public class LayoutConstants{
 
     public static class WindowStatContants{
         public static final String WINDOW_TITLE = getString("StatsScreen.Title");
-        public static final int WINDOW_WIDTH = 490;
+        public static final int WINDOW_WIDTH  = 490;
         public static final int WINDOW_HEIGHT = 490;
 
         public static final double GOAL_LABEL_COLUMN = 30.0;
-        public static final double GOAL_DATA_COLUMN = 70.0;
+        public static final double GOAL_DATA_COLUMN  = 70.0;
 
         public static final String GOAL_WORD_TEXT =
             getString("StatsScreen.WordGoal");
@@ -159,12 +172,94 @@ public class LayoutConstants{
         }
     }
 
-    public static class TableCellConstants{
-        public static final String NOT_FOUND_STYLE = LayoutConstants.
-            NOT_FOUND_STYLE;
-        public static final String NUMBER_COLUMN_STYLE = "id-numbered";
-        public static final String NO_TEXT_STYLE = "no-text";
-        public static final String NO_ID = getString("CommonText.NoId");
+    public static class AgendaConstants{
+        public static final String EMPTY_TEXT =
+            getString("AgendaTable.EmptyTable");
+
+        public static final String LINE_NAME = getString("AgendaTable.LineColumn");
+        public static final String TYPE_NAME = getString("AgendaTable.TypeColumn");
+        public static final String SECTION_NAME =
+            getString("AgendaTable.SectionColumn");
+        public static final String TEXT_NAME = getString("AgendaTable.TextColumn");
+
+        public static final double LINE_WIDTH = 10.0;
+        public static final double TYPE_WIDTH = 10.0;
+        public static final double SECTION_WIDTH = 40.0;
+        public static final double TEXT_WIDTH = 40.0;
+    }
+
+    public static class LinkConstants{
+        public static final String EMPTY_TEXT =
+            getString("LinksTable.EmptyTable");
+        public static final String EMPTY_NA = LayoutConstants.EMPTY_NA;
+
+        public static final String LOCATION_NAME =
+            getString("LinksTable.LocationColumn");
+        public static final String ID_NAME =
+            getString("LinksTable.IdentityColumn");
+        public static final String BOOKMARK_NAME =
+            getString("LinksTable.BookmarkColumn");
+        public static final String LOOKUP_NAME =
+            getString("LinksTable.LookupColumn");
+        public static final String CONTENT_NAME =
+            getString("LinksTable.ContentColumn");
+
+        public static final double LOCATION_WIDTH = 10.0;
+        public static final double ID_WIDTH = 20.0;
+        public static final double BOOKMARK_WIDTH = 10.0;
+        public static final double LOOKUP_WIDTH = 20.0;
+        public static final double CONTENT_WIDTH = 40.0;
+    }
+
+    public static class NoteConstants{
+        public static final String EMPTY_FOOTNOTE =
+            getString("NotesTable.EmptyFootnote");
+        public static final String EMPTY_ENDNOTE =
+            getString("NotesTable.EmptyEndnote");
+        public static final String EMPTY_NA = LayoutConstants.EMPTY_NA;
+
+        public static final String LOCATION_NAME =
+            getString("NotesTable.LocationColumn");
+        public static final String ID_NAME =
+            getString("NotesTable.IdentityColumn");
+        public static final String LOOKUP_NAME =
+            getString("NotesTable.LookupColumn");
+        public static final String CONTENT_NAME =
+            getString("NotesTable.ContentColumn");
+
+        public static final double LOCATION_WIDTH = 10.0;
+        public static final double ID_WIDTH = 20.0;
+        public static final double LOOKUP_WIDTH = 20.0;
+        public static final double CONTENT_WIDTH = 50.0;
+    }
+
+    public static class ReferenceConstants{
+        public static final String REF_NAME =
+            getString("ReferenceData.ColumnName");
+        public static final String REF_ID =
+            getString("ReferenceData.ColumnId");
+        public static final String REF_LONG =
+            getString("ReferenceData.ColumnDescription");
+        public static final String REF_EXAMPLE =
+            getString("ReferenceData.ColumnExample");
+        public static final String EMPTY_NA = LayoutConstants.EMPTY_NA;
+
+        public static final double NAME_COLUMN = 20.0;
+        public static final double ID_COLUMN = 20.0;
+        public static final double DESCRIBE_COLUMN = 50.0;
+        public static final double EXAMPLE_COLUMN = 10.0;
+
+        public static String getNameText(FormatTypeField area){
+            return getString("ReferenceData.Name", area.name());
+        }
+
+        public static String getDescriptionText(FormatTypeField area){
+            return getString("ReferenceData.Description", area.name());
+        }
+
+        public static String getExampleText(FormatTypeField area){
+            return getString("ReferenceData.Example", area.name());
+        }
     }
 
     public static class HintConstants{
@@ -172,6 +267,17 @@ public class LayoutConstants{
         public static final String HINT_UNSET_STYLE = "hint-unset";
         public static final String HINT_ALLOW_STYLE = "hint-allow";
         public static final String HINT_DISALLOW_STYLE = "hint-disallow";
+
+        public static final double COLUMN1  = 7;
+        public static final double COLUMN2  = 8;  /// 15
+        public static final double COLUMN3  = 11; /// 26
+        public static final double COLUMN4  = 6;  /// 32
+        public static final double COLUMN5  = 6;  /// 38
+        public static final double COLUMN6  = 12; /// 50
+        public static final double COLUMN7  = 12; /// 62
+        public static final double COLUMN8  = 12; /// 74
+        public static final double COLUMN9  = 12; /// 86
+        public static final double COLUMN10 = 14; /// 100
     }
 
     public static class HeadingConstants{

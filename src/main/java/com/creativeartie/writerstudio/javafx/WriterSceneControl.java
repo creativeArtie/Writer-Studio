@@ -69,7 +69,15 @@ public class WriterSceneControl extends WriterSceneView {
 
     protected void bindChildren(Scene scene){
         getMainMenuBar().postLoad(this);
+
+        getNoteCardPane().postLoad(this);
+        getAgendaPane().postLoad(this);
+        getLinkPane().postLoad(this);
+        getFootnotePane().postLoad(this);
+        getEndnotePane().postLoad(this);
+
         getCheatsheetPane().postLoad(this);
+
         getHeadingPane().postLoad(this);
         getMetaDataPane().postLoad(this);
         getTextPane().postLoad(this);

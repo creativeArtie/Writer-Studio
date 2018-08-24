@@ -24,11 +24,8 @@ abstract class TextPaneView extends BorderPane {
     private Label lineTypeLabel;
     private Label statLabel;
     private Label clockLabel;
-    private ReadOnlyIntegerWrapper updatedPosition;
 
     TextPaneView(){
-        updatedPosition = new ReadOnlyIntegerWrapper(this, "updatedPosition");
-
         setCenter(buildTextArea());
         setBottom(buildBottomPane());
     }
@@ -88,25 +85,12 @@ abstract class TextPaneView extends BorderPane {
     /// %Part 3: Setup Properties
 
     public void postLoad(WriterSceneControl control){
-        bindUpdatedPosition(updatedPosition);
         bindChildren(control);
     }
-
-    protected abstract void bindUpdatedPosition(ReadOnlyIntegerWrapper property);
 
     protected abstract void bindChildren(WriterSceneControl control);
 
     /// %Part 4: Properties
-
-    /// %Part 4.1: updatePosition (Integer)
-
-    public ReadOnlyIntegerProperty updatedPositionProperty(){
-        return updatedPosition.getReadOnlyProperty();
-    }
-
-    public int getUpdatedPosition(){
-        return updatedPosition.getValue();
-    }
 
     /// %Part 5: Get Child Methods
 
