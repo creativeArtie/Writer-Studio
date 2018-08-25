@@ -155,6 +155,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     protected synchronized void delete(int start, int end){
         argumentClose(end, "end", 0, getEnd());
         argumentClose(start, "start", 0, end);
+        if (start == end) return;
 
         edit(span -> {
             if (span.getEnd() >= end){

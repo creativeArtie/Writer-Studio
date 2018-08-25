@@ -1,6 +1,8 @@
 package com.creativeartie.writerstudio.lang;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.*;
+import org.junit.jupiter.params.provider.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
 
@@ -22,6 +24,28 @@ public class DocumentEditTest{
 
     }
 
+    @Test
+    @DisplayName("Delete from Empty")
+    public void deleteEmptyFromEmpty(){
+        String raw = "";
+        DocumentAssert doc = DocumentAssert.assertDoc(0, raw, build(raw));
+        doc.delete(0, 0);
+        doc.assertDoc(0, "");
+        doc.assertRest();
+    }
+    
+    
+    @ParameterizedTest(name = "Delete Empty at {0}.")
+    @DisplayName("Delete Empty")
+    @ValueSource(ints = { 0, 1, 2, 3, 4 })
+    public void deleteEmpty(int value){
+        String raw = "abcd";
+        DocumentAssert doc = DocumentAssert.assertDoc(0, raw, build(raw));
+        doc.delete(value, value);
+        System.out.println(doc.getDocument());
+        testBasic(doc);
+    }
+    
     @Test
     @DisplayName("Add Basic")
     public void addBasic(){
