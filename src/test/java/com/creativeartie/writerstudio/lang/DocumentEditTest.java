@@ -29,23 +29,43 @@ public class DocumentEditTest{
     public void deleteEmptyFromEmpty(){
         String raw = "";
         DocumentAssert doc = DocumentAssert.assertDoc(0, raw, build(raw));
-        doc.delete(0, 0);
+        doc.noDelete(0, 0);
         doc.assertDoc(0, "");
         doc.assertRest();
     }
-    
-    
+
+
     @ParameterizedTest(name = "Delete Empty at {0}.")
     @DisplayName("Delete Empty")
     @ValueSource(ints = { 0, 1, 2, 3, 4 })
     public void deleteEmpty(int value){
         String raw = "abcd";
         DocumentAssert doc = DocumentAssert.assertDoc(0, raw, build(raw));
-        doc.delete(value, value);
-        System.out.println(doc.getDocument());
+        doc.noDelete(value, value);
         testBasic(doc);
     }
-    
+
+    @Test
+    @DisplayName("Insert from Empty")
+    public void insertEmptyFromEmpty(){
+        String raw = "";
+        DocumentAssert doc = DocumentAssert.assertDoc(0, raw, build(raw));
+        doc.noInsert(0, "");
+        doc.assertDoc(0, "");
+        doc.assertRest();
+    }
+
+
+    @ParameterizedTest(name = "Delete Empty at {0}.")
+    @DisplayName("Insert Empty")
+    @ValueSource(ints = { 0, 1, 2, 3, 4 })
+    public void insertEmpty(int value){
+        String raw = "abcd";
+        DocumentAssert doc = DocumentAssert.assertDoc(0, raw, build(raw));
+        doc.noInsert(value, "");
+        testBasic(doc);
+    }
+
     @Test
     @DisplayName("Add Basic")
     public void addBasic(){

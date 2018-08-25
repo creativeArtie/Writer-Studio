@@ -150,6 +150,14 @@ public class ListenerAssert<T extends SpanNode<?>>{
             showEdits = show;
             return this;
         }
+
+        public ListenerAssert<T> noEditsBuild(){
+            expectedEdited.clear();
+            expectedParents.clear();
+            expectedSpans.clear();
+            expectedRemoves().clear();
+            return ListenerAssert.this;
+        }
     }
 
     private boolean showEdits;

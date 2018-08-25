@@ -271,6 +271,20 @@ public class DocumentAssert {
         idTester = new IDAssert();
     }
 
+    public void noInsert(int location, String input, int ... idx){
+        return noInsert(false, location, input, idx);
+    }
+
+    public void noInsert(boolean verbose, int location, String input,
+        int ... idx)
+    {
+        listenTester = Optional.of(ListenerAssert
+            .insert(testDocument, location, input, idx)
+            .setShowEdits(verbose)
+            .noEditsBuild()
+        );
+        idTester = new IDAssert();
+    }
 
     public void delete(int start, int end, int ... idx){
         delete(false, start, end, idx);
@@ -279,6 +293,18 @@ public class DocumentAssert {
     public void delete(boolean verbose, int start, int end, int ... idx){
         listenTester = Optional.of(ListenerAssert
             .delete(testDocument, start, end, idx).setShowEdits(verbose).build()
+        );
+        idTester = new IDAssert();
+    }
+
+    public void noDelete(int start, int end, int ... idx){
+        noDelete(false, start, end, idx);
+    }
+
+    public void delete(boolean verbose, int start, int end, int ... idx){
+        listenTester = Optional.of(ListenerAssert
+            .delete(testDocument, start, end, idx).setShowEdits(verbose)
+                .noEditsBuild()
         );
         idTester = new IDAssert();
     }
