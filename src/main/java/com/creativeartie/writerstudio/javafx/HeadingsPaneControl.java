@@ -41,10 +41,10 @@ final class HeadingsPaneControl extends HeadingsPaneView{
     protected void bindChildren(WriterSceneControl control){
         control.writingTextProperty().addListener(
             (d, o, n) -> listenWritingText(n)
-        );
+        );/*
         control.getTextPane().getTextArea().caretPositionProperty().addListener(
             (d, o, n) -> listenCaret(n.intValue())
-        );
+        );*/
         lastSelected = control.lastSelectedProperty();
         refocusText = control.refocusTextProperty();
     }

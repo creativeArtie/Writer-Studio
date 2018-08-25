@@ -94,15 +94,8 @@ class TextPaneControl extends TextPaneView {
     /// %Part 3.3: control.writingTextProperty()
 
     private void listenWritingText(WritingText text){
-        writingText = text;
-        if (writingText != null){
-            writingText.addDocEdited(d -> listenWritingText());
-        }
-        listenWritingText();
-    }
-
-    private void listenWritingText(){
         isReady = false;
+        writingText = text;
         if (writingText == null) return;
         getTextArea().replaceText(writingText.getRaw());
         if (writingStat != null) writingStat.stopWriting(writingText);
@@ -145,8 +138,8 @@ class TextPaneControl extends TextPaneView {
         /// update the text area
         int pos = change.getPosition();
 
-        //writingText.delete(pos, change.getRemovalEnd());
-        //writingText.insert(pos, change.getInserted());
+        writingText.delete(pos, change.getRemovalEnd());
+        writingText.insert(pos, change.getInserted());
 
         /// Update the record
         stopTime = START;
