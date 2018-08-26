@@ -111,6 +111,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
     protected synchronized void insert(int index, String input){
         argumentClose(index, "index", 0, getEnd());
         argumentNotNull(input, "input");
+        
+        if (input.isEmpty()) return;
 
         /// Insert into empty doc
         if (isEmpty()){

@@ -6,7 +6,7 @@ import org.junit.jupiter.params.provider.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
 
-@DisplayName("Some Document Editing Tester")
+@DisplayName("Document Editing")
 public class DocumentEditTest{
 
     private static Document build(String raw){
@@ -40,13 +40,13 @@ public class DocumentEditTest{
     @ValueSource(ints = { 0, 1, 2, 3, 4 })
     public void deleteEmpty(int value){
         String raw = "abcd";
-        DocumentAssert doc = DocumentAssert.assertDoc(0, raw, build(raw));
-        doc.noDelete(value, value);
+        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, build(raw));
+        doc.noDelete(true, value, value);
         testBasic(doc);
     }
 
     @Test
-    @DisplayName("Insert from Empty")
+    @DisplayName("Insert empty to empty")
     public void insertEmptyFromEmpty(){
         String raw = "";
         DocumentAssert doc = DocumentAssert.assertDoc(0, raw, build(raw));
@@ -56,13 +56,13 @@ public class DocumentEditTest{
     }
 
 
-    @ParameterizedTest(name = "Delete Empty at {0}.")
+    @ParameterizedTest(name = "Insert Empty at {0}.")
     @DisplayName("Insert Empty")
     @ValueSource(ints = { 0, 1, 2, 3, 4 })
     public void insertEmpty(int value){
         String raw = "abcd";
-        DocumentAssert doc = DocumentAssert.assertDoc(0, raw, build(raw));
-        doc.noInsert(value, "");
+        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, build(raw));
+        doc.noInsert(true, value, "");
         testBasic(doc);
     }
 

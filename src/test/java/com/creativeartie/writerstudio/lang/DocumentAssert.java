@@ -272,7 +272,7 @@ public class DocumentAssert {
     }
 
     public void noInsert(int location, String input, int ... idx){
-        return noInsert(false, location, input, idx);
+        noInsert(false, location, input, idx);
     }
 
     public void noInsert(boolean verbose, int location, String input,
@@ -301,7 +301,7 @@ public class DocumentAssert {
         noDelete(false, start, end, idx);
     }
 
-    public void delete(boolean verbose, int start, int end, int ... idx){
+    public void noDelete(boolean verbose, int start, int end, int ... idx){
         listenTester = Optional.of(ListenerAssert
             .delete(testDocument, start, end, idx).setShowEdits(verbose)
                 .noEditsBuild()

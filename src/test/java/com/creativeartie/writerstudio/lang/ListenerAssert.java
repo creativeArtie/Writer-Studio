@@ -155,7 +155,7 @@ public class ListenerAssert<T extends SpanNode<?>>{
             expectedEdited.clear();
             expectedParents.clear();
             expectedSpans.clear();
-            expectedRemoves().clear();
+            expectedRemoves.clear();
             return ListenerAssert.this;
         }
     }
