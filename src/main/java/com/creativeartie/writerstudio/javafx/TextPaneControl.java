@@ -203,21 +203,21 @@ class TextPaneControl extends TextPaneView {
      */
     private void syncDocuments(PlainTextChange change){
         if(! writingText.getRaw().equals(getTextArea().getText())){
-            System.out.println(writingText);
             System.err.println("==========================================");
+            System.err.println(writingText);
             System.err.println("Text in interface and in document mismatch");
             System.err.println("reparsing all");
             Thread.currentThread().dumpStack();
             System.err.println("problem change: " + change);
-            System.err.println();
+            System.err.println("😧");
             System.err.println("interface text: \n" + getTextArea().getText());
-            System.err.println();
+            System.err.println("😧");
             System.err.println("document text: \n" + writingText.getRaw());
+            System.err.println("😧");
 
             writingText.replaceText(getTextArea().getText());
             updateStyles(writingText.getLeaves());
             listenCaret(getTextArea().getCaretPosition());
-            System.out.println(writingText);
         }
         updateStyles(writingText.getLeaves());
     }

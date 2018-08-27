@@ -14,8 +14,18 @@ class NoteCardPaneControl extends NoteCardPaneView{
 
     private WritingText writingText;
 
+    protected void handleListSelected(MouseEvent event, TreeItem<?> note){
+        if (event.getButton().equals(MouseButton.PRIMARY) &&
+            note instanceof NoteCardTreeItem)
+        {
+            getNoteCardList().setItems(((NoteCardTreeItem<?>)note).getNoteList());
+        }
+    }
+
     protected void handleNoteSelected(MouseEvent event, NoteCardSpan note){
-        getNoteDetailPane().setShowCard(note);
+        if (event.getButton().equals(MouseButton.PRIMARY)){
+            getNoteDetailPane().setShowCard(note);
+        }
     }
 
     @Override
@@ -35,6 +45,7 @@ class NoteCardPaneControl extends NoteCardPaneView{
     private void updateAll(){
         updateIds();
         updateHeadings();
+        getNoteCardList().getItems().clear();
     }
 
     private void updateIds(){
@@ -105,18 +116,14 @@ class NoteCardPaneControl extends NoteCardPaneView{
 
     private void updateHeadings(){
         NoteCardTreeItem<SectionSpanHead> root = new NoteCardTreeItem<>();
-        for (SectionSpanHead child:
-            writingText.getChildren(SectionSpanHead.class)
-        ){
-            updateHeadings(root, child);
-        }
+        updateHeadings(root, writingText);
         getLoactionTree().setRoot(root);
     }
 
     private void updateHeadings(NoteCardTreeItem<SectionSpanHead> root,
-        SectionSpanHead parent)
+        SpanNode<?> parent)
     {
-        for (SectionSpanHead child: parent.getSections()){
+        for (SectionSpanHead child: parent.getChildren(SectionSpanHead.class)){
             NoteCardTreeItem<SectionSpanHead> item =
                 new NoteCardTreeItem<>(child);
             item.addNoteCards(child.getNotes());

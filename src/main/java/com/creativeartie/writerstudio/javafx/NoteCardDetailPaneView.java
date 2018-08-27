@@ -110,4 +110,12 @@ abstract class NoteCardDetailPaneView extends TabPane{
     Tab getMetaTab(){
         return metaTab;
     }
+
+    TextFlow getNoteTitle(){
+        return noteTitle;
+    }
+
+    TextFlow getNoteContent(){
+        return noteContent;
+    }
 }

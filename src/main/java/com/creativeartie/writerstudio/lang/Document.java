@@ -111,7 +111,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     protected synchronized void insert(int index, String input){
         argumentClose(index, "index", 0, getEnd());
         argumentNotNull(input, "input");
-        
+
         if (input.isEmpty()) return;
 
         /// Insert into empty doc
@@ -123,7 +123,11 @@ public abstract class Document extends SpanNode<SpanBranch>{
         /// Insert at the end
         if (index == getLocalEnd()){
             /// Gets the last span leaf's parent
-            Span span = locateLeaf(size() - 1).get();
+            Span span = this.get(size() - 1);
+            while(span instanceof SpanBranch){
+                span = ((SpanBranch)span).get(size() - 1);
+            }
+
             assert span instanceof SpanLeaf: "Wrong class.";
             span = span.getParent();
             /// try to parse at SpanBranch

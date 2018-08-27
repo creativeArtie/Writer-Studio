@@ -1,6 +1,11 @@
 package com.creativeartie.writerstudio.javafx;
 
+import java.util.*;
+import javafx.scene.text.*;
+
 import com.creativeartie.writerstudio.lang.markup.*;
+
+import com.creativeartie.writerstudio.javafx.utils.*;
 
 class NoteCardDetailPaneControl extends NoteCardDetailPaneView{
     /// %Part 1: setupChildren
@@ -22,10 +27,16 @@ class NoteCardDetailPaneControl extends NoteCardDetailPaneView{
         }
         getTabs().clear();
         getTabs().addAll(getMainTab(), getMetaTab());
-        String title = span.getTitle()
-            .map(f -> f.getParsedText())
-            .orElse("");
 
+        TextFlow title = getNoteTitle();
+        title.getChildren().clear();
+        TextFlowBuilder.loadFormatText(title, span.getTitle());
+
+        TextFlow content = getNoteContent();
+        content.getChildren().clear();
+        for (FormattedSpan child: span.getContent()){
+            TextFlowBuilder.loadFormatText(content, Optional.of(child));
+            content.getChildren().add(new Text("\n"));
+        }
     }
-
 }

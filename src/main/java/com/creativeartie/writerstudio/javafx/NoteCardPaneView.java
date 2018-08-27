@@ -14,6 +14,21 @@ import com.creativeartie.writerstudio.javafx.utils.*;
  */
 abstract class NoteCardPaneView extends GridPane{
 
+    private class IdCardCell extends TreeCell<String>{
+        @Override
+        public void updateItem(String item, boolean empty){
+            /// Required by JavaFX API:
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setText(null);
+                setGraphic(null);
+            } else {
+                /// Allows TextFlowBuilder to create the Label
+                setText(item);
+            }
+        }
+    }
+
     private class NoteCardCell extends ListCell<NoteCardSpan>{
         @Override
         public void updateItem(NoteCardSpan item, boolean empty){
@@ -24,8 +39,14 @@ abstract class NoteCardPaneView extends GridPane{
                 setGraphic(null);
             } else {
                 /// Allows TextFlowBuilder to create the Label
-                TextFlow graphic = TextFlowBuilder.loadFormatText(item
-                    .getTitle());
+                TextFlow graphic = new TextFlow();
+                Text name = new Text(item.getSpanIdentity()
+                    .map(i -> i.getName())
+                    .orElse("")
+                );
+                name.getStyleClass().add("list-id");
+                graphic.getChildren().add(name);
+                TextFlowBuilder.loadFormatText(graphic, item.getTitle());
                 setText(null);
                 setGraphic(graphic);
             }
@@ -60,10 +81,20 @@ abstract class NoteCardPaneView extends GridPane{
     private TabPane buildLocationPane(){
         idTree = new TreeView<>();
         idTree.setShowRoot(false);
+        idTree.setCellFactory(p -> {
+            TreeCell<String> ans = new IdCardCell();
+            ans.setOnMouseClicked(e -> handleListSelected(e, ans.getTreeItem()));
+            return ans;
+        });
         Tab id = new Tab("Id List", idTree);
 
         locationTree = new TreeView<>();
         locationTree.setShowRoot(false);
+        locationTree.setCellFactory(p -> {
+            TreeCellHeading<SectionSpanHead> ans = new TreeCellHeading<>();
+            ans.setOnMouseClicked(e -> handleListSelected(e, ans.getTreeItem()));
+            return ans;
+        });
         Tab location = new Tab("Location List", locationTree);
 
         TabPane pane = new TabPane(id, location);
@@ -104,6 +135,9 @@ abstract class NoteCardPaneView extends GridPane{
     public void postLoad(WriterSceneControl control){
         bindChildren(control);
     }
+
+    protected abstract void handleListSelected(MouseEvent event,
+        TreeItem<?> note);
 
     protected abstract void handleNoteSelected(MouseEvent event,
         NoteCardSpan note);
