@@ -63,12 +63,24 @@ abstract class NoteCardDetailPaneView extends TabPane{
 
     private ToolBar buildNoteControls(){
         showType = new ComboBox<>();
-        showType.getItems().addAll("Show Usable", "Show exta", "Show All");
+        showType.getItems().addAll("Show Used", "Show Unused", "Show All");
         return new ToolBar(showType);
     }
 
     private TableView<NoteCardData> buildMetaTable(){
         noteMetaTable = new TableView<>();
+        TableColumn<NoteCardData, Boolean> use = TableCellFactory
+            .getBooleanColumn("Is used", d -> d.inUseProperty());
+        TableCellFactory.setPrecentWidth(use, this, 10);
+
+        TableColumn<NoteCardData, InfoFieldType> field = TableCellFactory
+            .getFieldTypeColumn("Field", d -> d.fieldTypeProperty());
+
+        TableColumn<NoteCardData, Optional<SpanBranch>> data = TableCellFactory
+            .getMetaDataColumn("Value", d -> d.dataTextProperty());
+
+        noteMetaTable.getColumns().addAll(use, field, data);
+
         return noteMetaTable;
     }
 

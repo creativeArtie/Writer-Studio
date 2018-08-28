@@ -164,6 +164,67 @@ public final class TableCellFactory{
     }
 
     /** TableCell for strings */
+    private static class InfoFieldCell<T> extends TableCell<T, InfoDataType> {
+
+        @Override
+        public void updateItem(InfoFieldType item, boolean empty){
+            /// Required by JavaFX API:
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setText(null);
+                setGraphic(null);
+            } else {
+                /// Completing the setting
+                setText(null);
+                setGraphic(graphic);
+            }
+        }
+    }
+
+    public static <T> TableColumn<T, InfoDataType> getInfoFieldColumn(String title,
+            Function<T, ObservableObjectValue<InfoDataType>> property){
+        TableColumn<T, Object> ans = new TableColumn<>(title);
+        ans.setCellFactory(list -> new LinkCell<>());
+        ans.setCellValueFactory(c -> new SimpleObjectProperty<>(
+            /// 1st getValue() = T data; 2nd getValue() = Text
+            property.apply(c.getValue()).getValue()
+        ));
+        return ans;
+    }
+
+    /** TableCell for strings */
+    private static class MetaDataCell<T> extends TableCell<T,
+        Optional<SpanBranch>>
+    {
+
+        @Override
+        public void updateItem(Optional<SpanBranch> item, boolean empty){
+            /// Required by JavaFX API:
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setText(null);
+                setGraphic(null);
+            } else {
+
+                /// Completing the setting
+                setText(null);
+                setGraphic(graphic);
+            }
+        }
+    }
+
+    public static <T> TableColumn<T, Object> getMetaDataColumn(String title,
+            Function<T, ObservableObjectValue<Object>> property){
+        TableColumn<T, Object> ans = new TableColumn<>(title);
+        ans.setCellFactory(list -> new LinkCell<>());
+        ans.setCellValueFactory(c -> new SimpleObjectProperty<>(
+            /// 1st getValue() = T data; 2nd getValue() = Text
+            property.apply(c.getValue()).getValue()
+        ));
+        return ans;
+    }
+
+    /** TableCell for strings */
     private static class LinkCell<T> extends TableCell<T, Object> {
 
         @Override

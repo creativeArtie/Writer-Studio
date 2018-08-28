@@ -38,5 +38,6 @@ class NoteCardDetailPaneControl extends NoteCardDetailPaneView{
             TextFlowBuilder.loadFormatText(content, Optional.of(child));
             content.getChildren().add(new Text("\n"));
         }
+
     }
 }
