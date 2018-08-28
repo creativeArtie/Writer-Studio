@@ -7,6 +7,8 @@ import javafx.scene.input.*;
 
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    NoteCardConstants.*;
 
 import com.google.common.collect.*;
 
@@ -61,7 +63,7 @@ class NoteCardPaneControl extends NoteCardPaneView{
         CatalogueMap map = writingText.getCatalogue();
         TreeSet<SpanBranch> set = map.getIds(AuxiliaryData.TYPE_NOTE);
         if (! set.isEmpty()){
-            NoteCardTreeItem<String> empty = new NoteCardTreeItem<>("Unnamed");
+            NoteCardTreeItem<String> empty = new NoteCardTreeItem<>(UNNAME_CARD);
             root.getChildren().add(empty);
             TreeSet<NoteCardSpan> add = new TreeSet<>();
             set.forEach( s -> add.add((NoteCardSpan)s) );
@@ -70,7 +72,7 @@ class NoteCardPaneControl extends NoteCardPaneView{
 
         set = map.getIds(AuxiliaryData.TYPE_RESEARCH);
         if (set.isEmpty()) return;
-        NoteCardTreeItem<String> note = new NoteCardTreeItem<>("Named");
+        NoteCardTreeItem<String> note = new NoteCardTreeItem<>(NAMED_CARD);
         root.getChildren().add(note);
 
         for (SpanBranch branch: set){

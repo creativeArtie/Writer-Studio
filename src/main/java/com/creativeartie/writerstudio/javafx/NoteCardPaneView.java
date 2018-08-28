@@ -8,6 +8,8 @@ import javafx.scene.text.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.javafx.utils.*;
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    NoteCardConstants.*;
 
 /**
  * A pane with two {@link HeadingTreeControl} objects that
@@ -44,7 +46,7 @@ abstract class NoteCardPaneView extends GridPane{
                     .map(i -> i.getName())
                     .orElse("")
                 );
-                name.getStyleClass().add("list-id");
+                name.getStyleClass().add(LIST_ID_STYLE);
                 graphic.getChildren().add(name);
                 TextFlowBuilder.loadFormatText(graphic, item.getTitle());
                 setText(null);
@@ -86,7 +88,7 @@ abstract class NoteCardPaneView extends GridPane{
             ans.setOnMouseClicked(e -> handleListSelected(e, ans.getTreeItem()));
             return ans;
         });
-        Tab id = new Tab("Id List", idTree);
+        Tab id = new Tab(TAB_ID, idTree);
 
         locationTree = new TreeView<>();
         locationTree.setShowRoot(false);
@@ -95,33 +97,23 @@ abstract class NoteCardPaneView extends GridPane{
             ans.setOnMouseClicked(e -> handleListSelected(e, ans.getTreeItem()));
             return ans;
         });
-        Tab location = new Tab("Location List", locationTree);
+        Tab location = new Tab(TAB_LOCATION, locationTree);
 
         TabPane pane = new TabPane(id, location);
         pane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         return pane;
     }
 
-    private BorderPane buildNoteListPane(){
-        BorderPane pane = new BorderPane();
+    private ListView buildNoteListPane(){
 
         noteCardsList = new ListView<>();
-        noteCardsList.setPlaceholder(new Label("Select a id or location"));
+        noteCardsList.setPlaceholder(new Label(EMPTY_LIST));
         noteCardsList.setCellFactory(l ->  {
             NoteCardCell cell = new NoteCardCell();
             cell.setOnMouseClicked(e -> handleNoteSelected(e, cell.getItem()));
             return cell;
         });
-        pane.setCenter(noteCardsList);
-
-        /* // TODO to be implement in the next version
-        insertAfterButton = new Button("Insert After");
-        insertBeforeButton = new Button("Insert Before");
-        deleteButton = new Button("Delete");
-        pane.setBottom(new FlowPane(insertAfterButton, insertBeforeButton,
-            deleteButton));
-        */
-        return pane;
+        return noteCardsList;
     }
 
     private NoteCardDetailPaneControl buildDetailPane(){

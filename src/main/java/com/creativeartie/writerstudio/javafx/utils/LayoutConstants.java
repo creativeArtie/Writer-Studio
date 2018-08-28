@@ -46,6 +46,10 @@ public class LayoutConstants{
         public static final String NO_ID = getString("CommonText.NoId");
 
         public static final String EMPTY_TEXT = LayoutConstants.EMPTY_TEXT;
+
+        public static String getFieldTypeText(InfoFieldType area){
+            return getString("NoteCards.", area.name() + "_COLUMN");
+        }
     }
 
     public static class MainWindowConstants{
@@ -170,6 +174,32 @@ public class LayoutConstants{
                 throw new RuntimeException(ex);
             }
         }
+    }
+
+    public static class NoteCardConstants{
+        public static final String LIST_ID_STYLE = "list-id";
+
+        public static final String TAB_ID = getString("NoteCards.TabTitleId");
+        public static final String EMPTY_LIST = getString("NoteCards.EmptyList");
+        public static final String TAB_LOCATION = getString("NoteCards.TabTitleLocation");
+
+        public static final String UNNAME_CARD = getString("NoteCards.UnnameCard");
+        public static final String NAMED_CARD = getString("NoteCards.NamedCard");
+
+        public static final String EMPTY_TEXT_LABEL = getString("NoteCards.EmptyTabText");
+        public static final String TAB_EMPTY = getString("NoteCards.EmptyTabTitle");
+        public static final String TAB_CONTENT = getString("NoteCards.ContentTabTitle");
+        public static final String TAB_META = getString("NoteCards.MetaTabTitle");
+
+        public static final String[] META_SHOW_ITEMS = new String[]{
+            getString("NoteCards.SelectedUseMeta"),
+            getString("NoteCards.SelectedUnusedMeta"),
+            getString("NoteCards.SelectedAllMeta")
+        };
+
+        public static final String IN_USE_COLUMN = getString("NoteCards.InUseColumn");
+        public static final String FIELD_COLUMN  = getString("NoteCards.FieldColumn");
+        public static final String VALUE_COLUMN  = getString("NoteCards.ValueColumn");
     }
 
     public static class AgendaConstants{

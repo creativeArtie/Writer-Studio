@@ -164,7 +164,7 @@ public final class TableCellFactory{
     }
 
     /** TableCell for strings */
-    private static class InfoFieldCell<T> extends TableCell<T, InfoDataType> {
+    private static class FieldTypeCell<T> extends TableCell<T, InfoFieldType> {
 
         @Override
         public void updateItem(InfoFieldType item, boolean empty){
@@ -175,16 +175,17 @@ public final class TableCellFactory{
                 setGraphic(null);
             } else {
                 /// Completing the setting
-                setText(null);
-                setGraphic(graphic);
+                setText(getFieldTypeText(item));
+                setGraphic(null);
             }
         }
     }
 
-    public static <T> TableColumn<T, InfoDataType> getInfoFieldColumn(String title,
-            Function<T, ObservableObjectValue<InfoDataType>> property){
-        TableColumn<T, Object> ans = new TableColumn<>(title);
-        ans.setCellFactory(list -> new InfoFieldCell<>());
+    public static <T> TableColumn<T, InfoFieldType> getFieldTypeColumn(
+        String title,
+            Function<T, ObservableObjectValue<InfoFieldType>> property){
+        TableColumn<T, InfoFieldType> ans = new TableColumn<>(title);
+        ans.setCellFactory(list -> new FieldTypeCell<>());
         ans.setCellValueFactory(c -> new SimpleObjectProperty<>(
             /// 1st getValue() = T data; 2nd getValue() = Text
             property.apply(c.getValue()).getValue()
@@ -205,8 +206,17 @@ public final class TableCellFactory{
                 setText(null);
                 setGraphic(null);
             } else {
-
+                TextFlow graphic;
+                Optional<FormattedSpan> span = item
+                    .filter(s -> s instanceof FormattedSpan)
+                    .map(s -> ((FormattedSpan)s));
                 /// Completing the setting
+                if (! span.isPresent() & item.isPresent()){
+                    graphic = new TextFlow();
+                    graphic.getChildren().add(new Text(item.get().getRaw()));
+                } else {
+                    graphic = TextFlowBuilder.loadFormatText(span);
+                }
                 setText(null);
                 setGraphic(graphic);
             }
@@ -217,7 +227,7 @@ public final class TableCellFactory{
         String title,
         Function<T, ObservableObjectValue<Optional<SpanBranch>>> property)
     {
-        TableColumn<T, Object> ans = new TableColumn<>(title);
+        TableColumn<T, Optional<SpanBranch>> ans = new TableColumn<>(title);
         ans.setCellFactory(list -> new MetaDataCell<>());
         ans.setCellValueFactory(c -> new SimpleObjectProperty<>(
             /// 1st getValue() = T data; 2nd getValue() = Text

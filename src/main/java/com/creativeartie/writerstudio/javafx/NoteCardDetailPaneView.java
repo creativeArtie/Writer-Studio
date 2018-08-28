@@ -1,5 +1,6 @@
 package com.creativeartie.writerstudio.javafx;
 
+import java.util.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
@@ -8,7 +9,11 @@ import javafx.beans.property.*;
 import org.fxmisc.richtext.*;
 import org.fxmisc.richtext.model.*;
 
+import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
+import com.creativeartie.writerstudio.javafx.utils.*;
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    NoteCardConstants.*;
 
 abstract class NoteCardDetailPaneView extends TabPane{
     /// %Part 1: Constructor and Class Fields
@@ -38,10 +43,10 @@ abstract class NoteCardDetailPaneView extends TabPane{
 
     /// %Part 2: Layout
     private Tab buildEmptyTab(){
-        Label text = new Label("Select a note to view");
+        Label text = new Label(EMPTY_TEXT_LABEL);
         BorderPane pane = new BorderPane();
         pane.setCenter(text);
-        return new Tab("None Selected", pane);
+        return new Tab(TAB_EMPTY, pane);
     }
 
     private Tab buildMainTab(){
@@ -51,33 +56,34 @@ abstract class NoteCardDetailPaneView extends TabPane{
         ScrollPane scroll = new ScrollPane(noteContent);
         pane.setTop(noteTitle);
         pane.setCenter(scroll);
-        return new Tab("Content", pane);
+        return new Tab(TAB_CONTENT, pane);
     }
 
     private Tab buildMetaTab(){
         BorderPane pane = new BorderPane();
         pane.setTop(buildNoteControls());
         pane.setCenter(buildMetaTable());
-        return new Tab("Meta Data", pane);
+        return new Tab(TAB_META, pane);
     }
 
     private ToolBar buildNoteControls(){
         showType = new ComboBox<>();
-        showType.getItems().addAll("Show Used", "Show Unused", "Show All");
+        showType.getItems().addAll(META_SHOW_ITEMS);
         return new ToolBar(showType);
     }
 
+    @SuppressWarnings("unchecked") /// For getColumns().addAdd(TableColumn ...)
     private TableView<NoteCardData> buildMetaTable(){
         noteMetaTable = new TableView<>();
         TableColumn<NoteCardData, Boolean> use = TableCellFactory
-            .getBooleanColumn("Is used", d -> d.inUseProperty());
-        TableCellFactory.setPrecentWidth(use, this, 10);
+            .getBooleanColumn(IN_USE_COLUMN, d -> d.inUseProperty());
+        TableCellFactory.setPrecentWidth(use, noteMetaTable, 10);
 
         TableColumn<NoteCardData, InfoFieldType> field = TableCellFactory
-            .getFieldTypeColumn("Field", d -> d.fieldTypeProperty());
+            .getFieldTypeColumn(FIELD_COLUMN, d -> d.fieldTypeProperty());
 
         TableColumn<NoteCardData, Optional<SpanBranch>> data = TableCellFactory
-            .getMetaDataColumn("Value", d -> d.dataTextProperty());
+            .getMetaDataColumn(VALUE_COLUMN, d -> d.dataTextProperty());
 
         noteMetaTable.getColumns().addAll(use, field, data);
 
