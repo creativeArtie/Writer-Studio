@@ -184,7 +184,7 @@ public final class TableCellFactory{
     public static <T> TableColumn<T, InfoDataType> getInfoFieldColumn(String title,
             Function<T, ObservableObjectValue<InfoDataType>> property){
         TableColumn<T, Object> ans = new TableColumn<>(title);
-        ans.setCellFactory(list -> new LinkCell<>());
+        ans.setCellFactory(list -> new InfoFieldCell<>());
         ans.setCellValueFactory(c -> new SimpleObjectProperty<>(
             /// 1st getValue() = T data; 2nd getValue() = Text
             property.apply(c.getValue()).getValue()
@@ -213,10 +213,12 @@ public final class TableCellFactory{
         }
     }
 
-    public static <T> TableColumn<T, Object> getMetaDataColumn(String title,
-            Function<T, ObservableObjectValue<Object>> property){
+    public static <T> TableColumn<T, Optional<SpanBranch>> getMetaDataColumn(
+        String title,
+        Function<T, ObservableObjectValue<Optional<SpanBranch>>> property)
+    {
         TableColumn<T, Object> ans = new TableColumn<>(title);
-        ans.setCellFactory(list -> new LinkCell<>());
+        ans.setCellFactory(list -> new MetaDataCell<>());
         ans.setCellValueFactory(c -> new SimpleObjectProperty<>(
             /// 1st getValue() = T data; 2nd getValue() = Text
             property.apply(c.getValue()).getValue()
