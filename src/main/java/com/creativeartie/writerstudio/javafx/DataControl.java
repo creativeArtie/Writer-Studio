@@ -75,7 +75,7 @@ abstract class DataControl<T extends DataInput> extends DataView<T>{
     /// %Part 4.1: Update list with abstract methods
 
     private void loadItems(){
-        ArrayList<T> list = new ArrayList<>();
+        ObservableList<T> list = FXCollections.observableArrayList();
         for (SpanBranch span: writingText.getDocumentCatalogue().getIds(getCategory())){
             for (Class<? extends SpanBranch> clazz: getTargetClass()){
                 if (clazz.isInstance(span)){
@@ -83,7 +83,7 @@ abstract class DataControl<T extends DataInput> extends DataView<T>{
                 }
             }
         }
-        setItems(FXCollections.observableList(list));
+        setItems(list);
         showSelection();
     }
 

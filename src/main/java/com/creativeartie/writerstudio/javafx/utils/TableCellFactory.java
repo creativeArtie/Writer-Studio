@@ -164,10 +164,10 @@ public final class TableCellFactory{
     }
 
     /** TableCell for strings */
-    private static class FieldTypeCell<T> extends TableCell<T, InfoFieldType> {
+    private static class FieldTypeCell<T> extends TableCell<T, Object> {
 
         @Override
-        public void updateItem(InfoFieldType item, boolean empty){
+        public void updateItem(Object item, boolean empty){
             /// Required by JavaFX API:
             super.updateItem(item, empty);
             if (empty || item == null) {
@@ -175,16 +175,24 @@ public final class TableCellFactory{
                 setGraphic(null);
             } else {
                 /// Completing the setting
-                setText(getFieldTypeText(item));
+                String text;
+                if (item instanceof InfoFieldType) {
+                    text = getFieldTypeText((InfoFieldType)item);
+                    getStyleClass().remove(UNKNONW_FIELD_STYLE);
+                } else {
+                    text = (String) item;
+                    getStyleClass().add(UNKNONW_FIELD_STYLE);
+                }
+                setText(text);
                 setGraphic(null);
             }
         }
     }
 
-    public static <T> TableColumn<T, InfoFieldType> getFieldTypeColumn(
+    public static <T> TableColumn<T, Object> getFieldTypeColumn(
         String title,
-            Function<T, ObservableObjectValue<InfoFieldType>> property){
-        TableColumn<T, InfoFieldType> ans = new TableColumn<>(title);
+            Function<T, ObservableObjectValue<Object>> property){
+        TableColumn<T, Object> ans = new TableColumn<>(title);
         ans.setCellFactory(list -> new FieldTypeCell<>());
         ans.setCellValueFactory(c -> new SimpleObjectProperty<>(
             /// 1st getValue() = T data; 2nd getValue() = Text
@@ -206,17 +214,35 @@ public final class TableCellFactory{
                 setText(null);
                 setGraphic(null);
             } else {
-                TextFlow graphic;
-                Optional<FormattedSpan> span = item
-                    .filter(s -> s instanceof FormattedSpan)
-                    .map(s -> ((FormattedSpan)s));
-                /// Completing the setting
-                if (! span.isPresent() & item.isPresent()){
-                    graphic = new TextFlow();
-                    graphic.getChildren().add(new Text(item.get().getRaw()));
+                Optional<FormattedSpan> text;
+                if (item.isPresent()){
+                    SpanBranch span = item.get();
+                    if (span instanceof FormattedSpan){
+                        text = item.map(s -> (FormattedSpan)s);
+                    } else if (span instanceof DirectorySpan){
+                        /// finds a reference
+                        text = item.map(s -> (DirectorySpan) s)
+                            /// s == DirectorySpan
+                            .map(s -> s.buildId())
+                            /// i == CatalogueIdentity
+                            .map(i -> span.getDocument().getCatalogue().get(i))
+                            /// d == CatalogueData
+                            .filter(d -> d.isReady())
+                            .map(d -> d.getTarget())
+                            /// s == SpanBranch
+                            .filter(s -> s instanceof NoteCardSpan)
+                            .map(s -> (NoteCardSpan) s)
+                            /// s == NoteCardSpan
+                            .flatMap(s -> s.getSource());
+                    } else {
+                        setText(span.getRaw());
+                        setGraphic(null);
+                        return;
+                    }
                 } else {
-                    graphic = TextFlowBuilder.loadFormatText(span);
+                    text = Optional.empty();
                 }
+                TextFlow graphic = TextFlowBuilder.loadFormatText(text);
                 setText(null);
                 setGraphic(graphic);
             }

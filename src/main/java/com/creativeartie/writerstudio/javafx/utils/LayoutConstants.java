@@ -42,6 +42,7 @@ public class LayoutConstants{
             NOT_FOUND_STYLE;
         public static final String NUMBER_COLUMN_STYLE = "id-numbered";
         public static final String NO_TEXT_STYLE       = "no-text";
+        public static final String UNKNONW_FIELD_STYLE = "unknown-field";
 
         public static final String NO_ID = getString("CommonText.NoId");
 
@@ -191,11 +192,19 @@ public class LayoutConstants{
         public static final String TAB_CONTENT = getString("NoteCards.ContentTabTitle");
         public static final String TAB_META = getString("NoteCards.MetaTabTitle");
 
-        public static final String[] META_SHOW_ITEMS = new String[]{
-            getString("NoteCards.SelectedUseMeta"),
-            getString("NoteCards.SelectedUnusedMeta"),
-            getString("NoteCards.SelectedAllMeta")
-        };
+        public enum ShowMeta{
+            USED("NoteCards.SelectedUseMeta"),
+            UNUSED("NoteCards.SelectedUnusedMeta"),
+            ALL("NoteCards.SelectedAllMeta");
+            private final String displayText;
+            private ShowMeta(String text){
+                displayText = getString(text);
+            }
+
+            public String getDisplayText(){
+                return displayText;
+            }
+        }
 
         public static final String IN_USE_COLUMN = getString("NoteCards.InUseColumn");
         public static final String FIELD_COLUMN  = getString("NoteCards.FieldColumn");

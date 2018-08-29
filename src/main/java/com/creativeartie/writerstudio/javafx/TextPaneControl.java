@@ -106,7 +106,6 @@ class TextPaneControl extends TextPaneView {
     /// %Part 3.5: control.lastSelectedProperty()
 
     private void listenLastSelected(SpanBranch span){
-        Thread.currentThread().dumpStack();
         if (span instanceof SectionSpan){
             moveToPoint(span.spanFromLast(LinedSpan.class)
                 .map(l -> l.getEnd())

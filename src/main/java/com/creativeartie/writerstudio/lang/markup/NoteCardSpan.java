@@ -124,7 +124,9 @@ public class NoteCardSpan extends SpanBranch implements Catalogued {
                     /// s == SpanBranch
                     .map(s -> (DirectorySpan) s)
                     /// s == DirectorySpan
-                    .map(s -> getDocument().getCatalogue().get(s))
+                    .map(d -> d.buildId())
+                    /// i == CatalogueIdentity
+                    .map(i -> getDocument().getCatalogue().get(i))
                     /// d == CatalogueData
                     .filter(d -> d.isReady())
                     .map(d -> d.getTarget())

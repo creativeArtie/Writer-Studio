@@ -16,6 +16,22 @@ import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
     NoteCardConstants.*;
 
 abstract class NoteCardDetailPaneView extends TabPane{
+    private class ShowMetaCell extends ListCell<ShowMeta>{
+        @Override
+        public void updateItem(ShowMeta item, boolean empty){
+            /// Required by JavaFX API:
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setText(null);
+                setGraphic(null);
+            } else {
+                /// Allows WindowSpanParser to create the Label
+                setText(item.getDisplayText());
+                setGraphic(null);
+            }
+        }
+    }
+
     /// %Part 1: Constructor and Class Fields
 
     private Tab emptyTab;
@@ -26,7 +42,7 @@ abstract class NoteCardDetailPaneView extends TabPane{
 
     private Tab metaTab;
     private TableView<NoteCardData> noteMetaTable;
-    private ComboBox<String> showType;
+    private ComboBox<ShowMeta> showMetaBox;
     private Button addField;
     private Button deleteField;
     private Button removeUnused;
@@ -67,19 +83,23 @@ abstract class NoteCardDetailPaneView extends TabPane{
     }
 
     private ToolBar buildNoteControls(){
-        showType = new ComboBox<>();
-        showType.getItems().addAll(META_SHOW_ITEMS);
-        return new ToolBar(showType);
+        showMetaBox = new ComboBox<>();
+        showMetaBox.getItems().addAll(ShowMeta.values());
+        showMetaBox.getSelectionModel().select(ShowMeta.ALL);
+        showMetaBox.setCellFactory(p -> new ShowMetaCell());
+        showMetaBox.setButtonCell(new ShowMetaCell());
+        return new ToolBar(showMetaBox);
     }
 
     @SuppressWarnings("unchecked") /// For getColumns().addAdd(TableColumn ...)
     private TableView<NoteCardData> buildMetaTable(){
         noteMetaTable = new TableView<>();
+        noteMetaTable.setFixedCellSize(30);
         TableColumn<NoteCardData, Boolean> use = TableCellFactory
             .getBooleanColumn(IN_USE_COLUMN, d -> d.inUseProperty());
         TableCellFactory.setPrecentWidth(use, noteMetaTable, 10);
 
-        TableColumn<NoteCardData, InfoFieldType> field = TableCellFactory
+        TableColumn<NoteCardData, Object> field = TableCellFactory
             .getFieldTypeColumn(FIELD_COLUMN, d -> d.fieldTypeProperty());
 
         TableColumn<NoteCardData, Optional<SpanBranch>> data = TableCellFactory
@@ -135,5 +155,13 @@ abstract class NoteCardDetailPaneView extends TabPane{
 
     TextFlow getNoteContent(){
         return noteContent;
+    }
+
+    ComboBox<ShowMeta> getShowMetaBox(){
+        return showMetaBox;
+    }
+
+    TableView<NoteCardData> getNoteMetaTable(){
+        return noteMetaTable;
     }
 }

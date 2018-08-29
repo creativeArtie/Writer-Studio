@@ -2,8 +2,12 @@
     -fx-text-alignment:right;
 }
 
-.no-text, .no-span, .id-numbered, .display-italics{
+.no-text, .no-span, .id-numbered, .display-italics, .unknown-field{
     -fx-font-style:italic;
+}
+
+.list-id{
+    -fx-stroke:gray;
 }
 
 .hint-set, .hint-unset, .hint-allow, .hint-disallow{
