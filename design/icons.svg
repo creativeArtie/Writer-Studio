@@ -15,7 +15,7 @@
    height="96.000435"
    id="svg3214"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.92.3 (d244b95, 2018-08-02)"
    sodipodi:docname="icons.svg"
    inkscape:export-filename="../data/jar/icons.png"
    inkscape:export-xdpi="359.98633"
@@ -61,15 +61,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="4"
-     inkscape:cx="194.67369"
+     inkscape:cx="142.90462"
      inkscape:cy="53.987109"
      inkscape:document-units="px"
      inkscape:current-layer="layer3"
      showgrid="false"
      inkscape:window-width="1280"
-     inkscape:window-height="776"
+     inkscape:window-height="745"
      inkscape:window-x="0"
-     inkscape:window-y="24"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -85,7 +85,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -99,7 +99,7 @@
     <flowRoot
        xml:space="preserve"
        id="flowRoot3222"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0.01%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
        transform="matrix(1.0000051,0,0,1.0000051,0.00168212,-4.8104321e-4)"><flowRegion
          id="flowRegion3224"><rect
            id="rect3226"
@@ -107,17 +107,18 @@
            height="92.85714"
            x="-0.71428573"
            y="1.6478958" /></flowRegion><flowPara
-         id="flowPara3228" /></flowRoot>    <text
+         id="flowPara3228"
+         style="font-size:12px;line-height:1.25"> </flowPara></flowRoot>    <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.00002527px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
        x="-256.57837"
        y="28.572241"
-       id="text3234"
-       sodipodi:linespacing="125%"><tspan
+       id="text3234"><tspan
          sodipodi:role="line"
          id="tspan3236"
          x="-256.57837"
-         y="28.572241" /></text>
+         y="28.572241"
+         style="font-size:5.0000248px;line-height:1.25"> </tspan></text>
     <g
        id="g3900"
        transform="matrix(1.0000051,0,0,1.0000051,-1.4276692,-5.0434806)">
@@ -129,20 +130,21 @@
          id="rect3128"
          style="fill:#b3b3b3;fill-opacity:1;stroke:none" />
       <text
-         sodipodi:linespacing="125%"
          id="text3130"
          y="76.490395"
          x="-121.97527"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            id="tspan3134"
            y="76.490395"
            x="-121.97527"
-           sodipodi:role="line">direct-link</tspan><tspan
+           sodipodi:role="line"
+           style="font-size:5px;line-height:1.25">direct-link</tspan><tspan
            y="82.740395"
            x="-121.97527"
            sodipodi:role="line"
-           id="tspan3138">span</tspan></text>
+           id="tspan3138"
+           style="font-size:5px;line-height:1.25">span</tspan></text>
     </g>
     <g
        id="g3887"
@@ -155,20 +157,21 @@
          id="rect3152"
          style="fill:#b3b3b3;fill-opacity:1;stroke:none" />
       <text
-         sodipodi:linespacing="125%"
          id="text3154"
          y="76.875397"
          x="-58.010269"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            y="76.875397"
            x="-58.010269"
            sodipodi:role="line"
-           id="tspan3158">link</tspan><tspan
+           id="tspan3158"
+           style="font-size:5px;line-height:1.25">link</tspan><tspan
            y="83.125397"
            x="-58.010269"
            sodipodi:role="line"
-           id="tspan3186">text</tspan></text>
+           id="tspan3186"
+           style="font-size:5px;line-height:1.25">text</tspan></text>
     </g>
     <g
        id="g3856"
@@ -181,20 +184,21 @@
          id="rect3162"
          style="fill:#b3b3b3;fill-opacity:1;stroke:none" />
       <text
-         sodipodi:linespacing="125%"
          id="text3164"
          y="76.367958"
          x="69.914734"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            y="76.367958"
            x="69.914734"
            sodipodi:role="line"
-           id="tspan3168">ref-note</tspan><tspan
+           id="tspan3168"
+           style="font-size:5px;line-height:1.25">ref-note</tspan><tspan
            y="82.617958"
            x="69.914734"
            sodipodi:role="line"
-           id="tspan3190">span</tspan></text>
+           id="tspan3190"
+           style="font-size:5px;line-height:1.25">span</tspan></text>
     </g>
     <g
        id="g3881"
@@ -208,19 +212,20 @@
          y="62.172958" />
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          x="-25.975266"
          y="76.367958"
-         id="text3174"
-         sodipodi:linespacing="125%"><tspan
+         id="text3174"><tspan
            sodipodi:role="line"
            x="-25.975266"
            y="76.367958"
-           id="tspan3176">footnote</tspan><tspan
+           id="tspan3176"
+           style="font-size:5px;line-height:1.25">footnote</tspan><tspan
            id="tspan3178"
            sodipodi:role="line"
            x="-25.975266"
-           y="82.617958">span</tspan></text>
+           y="82.617958"
+           style="font-size:5px;line-height:1.25">span</tspan></text>
     </g>
     <g
        id="g3874"
@@ -236,19 +241,20 @@
            y="62.172958" />
         <text
            xml:space="preserve"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
            x="6.0822296"
            y="76.367958"
-           id="text3196"
-           sodipodi:linespacing="125%"><tspan
+           id="text3196"><tspan
              sodipodi:role="line"
              x="6.0822296"
              y="76.367958"
-             id="tspan3200">endnote</tspan><tspan
+             id="tspan3200"
+             style="font-size:5px;line-height:1.25">endnote</tspan><tspan
              id="tspan3234"
              sodipodi:role="line"
              x="6.0822296"
-             y="82.617958">span</tspan></text>
+             y="82.617958"
+             style="font-size:5px;line-height:1.25">span</tspan></text>
       </g>
     </g>
     <g
@@ -263,19 +269,20 @@
          y="62.172958" />
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          x="38.094727"
          y="76.367958"
-         id="text3206"
-         sodipodi:linespacing="125%"><tspan
+         id="text3206"><tspan
            id="tspan3210"
            sodipodi:role="line"
            x="38.094727"
-           y="76.367958">agenda</tspan><tspan
+           y="76.367958"
+           style="font-size:5px;line-height:1.25">agenda</tspan><tspan
            sodipodi:role="line"
            x="38.094727"
            y="82.617958"
-           id="tspan3239">span</tspan></text>
+           id="tspan3239"
+           style="font-size:5px;line-height:1.25">span</tspan></text>
     </g>
     <g
        id="g3906"
@@ -289,19 +296,20 @@
          y="62.295395" />
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          x="-153.92526"
          y="76.490395"
-         id="text3216"
-         sodipodi:linespacing="125%"><tspan
+         id="text3216"><tspan
            sodipodi:role="line"
            x="-153.92526"
            y="76.490395"
-           id="tspan3243">id</tspan><tspan
+           id="tspan3243"
+           style="font-size:5px;line-height:1.25">id</tspan><tspan
            sodipodi:role="line"
            x="-153.92526"
            y="82.740395"
-           id="tspan3247">span</tspan></text>
+           id="tspan3247"
+           style="font-size:5px;line-height:1.25">span</tspan></text>
     </g>
     <g
        id="g3912"
@@ -314,20 +322,21 @@
          id="rect3224"
          style="fill:#b3b3b3;fill-opacity:1;stroke:none" />
       <text
-         sodipodi:linespacing="125%"
          id="text3226"
          y="76.404396"
          x="-185.86026"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            y="76.404396"
            x="-185.86026"
            sodipodi:role="line"
-           id="tspan3230">edition</tspan><tspan
+           id="tspan3230"
+           style="font-size:5px;line-height:1.25">edition</tspan><tspan
            y="82.654396"
            x="-185.86026"
            sodipodi:role="line"
-           id="tspan3251">span</tspan></text>
+           id="tspan3251"
+           style="font-size:5px;line-height:1.25">span</tspan></text>
     </g>
     <g
        id="g3936"
@@ -341,19 +350,20 @@
          y="62.351532" />
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          x="-313.96277"
          y="76.931534"
-         id="text3257"
-         sodipodi:linespacing="125%"><tspan
+         id="text3257"><tspan
            id="tspan3261"
            sodipodi:role="line"
            x="-313.96277"
-           y="76.931534">bold</tspan><tspan
+           y="76.931534"
+           style="font-size:5px;line-height:1.25">bold</tspan><tspan
            sodipodi:role="line"
            x="-313.96277"
            y="83.181534"
-           id="tspan3295">format</tspan></text>
+           id="tspan3295"
+           style="font-size:5px;line-height:1.25">format</tspan></text>
     </g>
     <g
        id="g3930"
@@ -366,20 +376,21 @@
          id="rect3265"
          style="fill:#cccccc;fill-opacity:1;stroke:none" />
       <text
-         sodipodi:linespacing="125%"
          id="text3267"
          y="76.931534"
          x="-281.90027"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            id="tspan3271"
            y="76.931534"
            x="-281.90027"
-           sodipodi:role="line">italics</tspan><tspan
+           sodipodi:role="line"
+           style="font-size:5px;line-height:1.25">italics</tspan><tspan
            y="83.181534"
            x="-281.90027"
            sodipodi:role="line"
-           id="tspan3299">format</tspan></text>
+           id="tspan3299"
+           style="font-size:5px;line-height:1.25">format</tspan></text>
     </g>
     <g
        id="g3924"
@@ -392,20 +403,21 @@
          id="rect3275"
          style="fill:#b3b3b3;fill-opacity:1;stroke:none" />
       <text
-         sodipodi:linespacing="125%"
          id="text3277"
          y="76.931534"
          x="-249.98776"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            id="tspan3281"
            y="76.931534"
            x="-249.98776"
-           sodipodi:role="line">underline</tspan><tspan
+           sodipodi:role="line"
+           style="font-size:5px;line-height:1.25">underline</tspan><tspan
            y="83.181534"
            x="-249.98776"
            sodipodi:role="line"
-           id="tspan3303">format</tspan></text>
+           id="tspan3303"
+           style="font-size:5px;line-height:1.25">format</tspan></text>
     </g>
     <g
        id="g3918"
@@ -419,19 +431,20 @@
          y="62.351532" />
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          x="-217.96277"
          y="76.931534"
-         id="text3287"
-         sodipodi:linespacing="125%"><tspan
+         id="text3287"><tspan
            id="tspan3291"
            sodipodi:role="line"
            x="-217.96277"
-           y="76.931534">coded</tspan><tspan
+           y="76.931534"
+           style="font-size:5px;line-height:1.25">coded</tspan><tspan
            sodipodi:role="line"
            x="-217.96277"
            y="83.181534"
-           id="tspan3307">format</tspan></text>
+           id="tspan3307"
+           style="font-size:5px;line-height:1.25">format</tspan></text>
     </g>
     <g
        id="g3850"
@@ -444,20 +457,21 @@
          id="rect3311"
          style="fill:#cccccc;fill-opacity:1;stroke:none" />
       <text
-         sodipodi:linespacing="125%"
          id="text3313"
          y="76.207962"
          x="102.08223"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            id="tspan3317"
            y="76.207962"
            x="102.08223"
-           sodipodi:role="line">escape</tspan><tspan
+           sodipodi:role="line"
+           style="font-size:5px;line-height:1.25">escape</tspan><tspan
            y="82.457962"
            x="102.08223"
            sodipodi:role="line"
-           id="tspan3321">char</tspan></text>
+           id="tspan3321"
+           style="font-size:5px;line-height:1.25">char</tspan></text>
     </g>
     <g
        id="g3771"
@@ -470,20 +484,21 @@
          id="rect3232"
          style="fill:#cccccc;fill-opacity:1" />
       <text
-         sodipodi:linespacing="125%"
          id="text3238"
          y="44.931431"
          x="-313.93777"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            y="44.931431"
            x="-313.93777"
            id="tspan3240"
-           sodipodi:role="line">paragraph</tspan><tspan
+           sodipodi:role="line"
+           style="font-size:5px;line-height:1.25">paragraph</tspan><tspan
            y="51.181431"
            x="-313.93777"
            sodipodi:role="line"
-           id="tspan3048">line</tspan></text>
+           id="tspan3048"
+           style="font-size:5px;line-height:1.25">line</tspan></text>
     </g>
     <g
        id="g3783"
@@ -497,19 +512,20 @@
          y="30.351431" />
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          x="-250.05276"
          y="44.931431"
-         id="text3251"
-         sodipodi:linespacing="125%"><tspan
+         id="text3251"><tspan
            sodipodi:role="line"
            x="-250.05276"
            y="44.931431"
-           id="tspan3255">break</tspan><tspan
+           id="tspan3255"
+           style="font-size:5px;line-height:1.25">break</tspan><tspan
            sodipodi:role="line"
            x="-250.05276"
            y="51.181431"
-           id="tspan3044">line</tspan></text>
+           id="tspan3044"
+           style="font-size:5px;line-height:1.25">line</tspan></text>
     </g>
     <g
        id="g3813"
@@ -522,20 +538,21 @@
          id="rect3014"
          style="fill:#b3b3b3;fill-opacity:1;stroke:none" />
       <text
-         sodipodi:linespacing="125%"
          id="text3016"
          y="44.875298"
          x="-90.065262"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            id="tspan3018"
            y="44.875298"
            x="-88.815262"
-           sodipodi:role="line">link </tspan><tspan
+           sodipodi:role="line"
+           style="font-size:5px;line-height:1.25">link </tspan><tspan
            y="51.125298"
            x="-90.065262"
            sodipodi:role="line"
-           id="tspan3050">line</tspan></text>
+           id="tspan3050"
+           style="font-size:5px;line-height:1.25">line</tspan></text>
     </g>
     <g
        id="g3801"
@@ -548,20 +565,21 @@
          id="rect3022"
          style="fill:#b3b3b3;fill-opacity:1;stroke:none" />
       <text
-         sodipodi:linespacing="125%"
          id="text3024"
          y="44.875298"
          x="-153.93027"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            y="44.875298"
            x="-153.93027"
            sodipodi:role="line"
-           id="tspan3052">heading</tspan><tspan
+           id="tspan3052"
+           style="font-size:5px;line-height:1.25">heading</tspan><tspan
            y="51.125298"
            x="-153.93027"
            sodipodi:role="line"
-           id="tspan3056">line</tspan></text>
+           id="tspan3056"
+           style="font-size:5px;line-height:1.25">line</tspan></text>
     </g>
     <g
        id="g3807"
@@ -575,19 +593,20 @@
          y="30.295296" />
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          x="-121.91777"
          y="44.862797"
-         id="text3032"
-         sodipodi:linespacing="125%"><tspan
+         id="text3032"><tspan
            sodipodi:role="line"
            x="-121.91777"
            y="44.862797"
-           id="tspan3034">outline</tspan><tspan
+           id="tspan3034"
+           style="font-size:5px;line-height:1.25">outline</tspan><tspan
            sodipodi:role="line"
            x="-121.91777"
            y="51.112797"
-           id="tspan3060">line</tspan></text>
+           id="tspan3060"
+           style="font-size:5px;line-height:1.25">line</tspan></text>
     </g>
     <g
        id="g3777"
@@ -600,20 +619,21 @@
          id="rect3098"
          style="fill:#b3b3b3;fill-opacity:1;stroke:none" />
       <text
-         sodipodi:linespacing="125%"
          id="text3100"
          y="44.718929"
          x="-281.91779"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            y="44.718929"
            x="-281.91779"
            id="tspan3102"
-           sodipodi:role="line">quote</tspan><tspan
+           sodipodi:role="line"
+           style="font-size:5px;line-height:1.25">quote</tspan><tspan
            id="tspan3104"
            y="50.968929"
            x="-281.91779"
-           sodipodi:role="line">line</tspan></text>
+           sodipodi:role="line"
+           style="font-size:5px;line-height:1.25">line</tspan></text>
     </g>
     <g
        id="g3789"
@@ -627,19 +647,20 @@
          y="30.351431" />
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          x="-217.93027"
          y="44.931431"
-         id="text3110"
-         sodipodi:linespacing="125%"><tspan
+         id="text3110"><tspan
            sodipodi:role="line"
            x="-217.93027"
            y="44.931431"
-           id="tspan3112">numbered</tspan><tspan
+           id="tspan3112"
+           style="font-size:5px;line-height:1.25">numbered</tspan><tspan
            id="tspan3114"
            sodipodi:role="line"
            x="-217.93027"
-           y="51.181431">line</tspan></text>
+           y="51.181431"
+           style="font-size:5px;line-height:1.25">line</tspan></text>
     </g>
     <g
        id="g3894"
@@ -653,19 +674,20 @@
          y="62.295395" />
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          x="-90.142769"
          y="76.490395"
-         id="text3144"
-         sodipodi:linespacing="125%"><tspan
+         id="text3144"><tspan
            sodipodi:role="line"
            x="-90.142769"
            y="76.490395"
-           id="tspan3148">ref-link</tspan><tspan
+           id="tspan3148"
+           style="font-size:5px;line-height:1.25">ref-link</tspan><tspan
            sodipodi:role="line"
            x="-90.142769"
            y="82.740395"
-           id="tspan3182">span</tspan></text>
+           id="tspan3182"
+           style="font-size:5px;line-height:1.25">span</tspan></text>
     </g>
     <g
        id="g3831"
@@ -679,19 +701,20 @@
          y="30.172859" />
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          x="38.094727"
          y="44.752861"
-         id="text3263"
-         sodipodi:linespacing="125%"><tspan
+         id="text3263"><tspan
            sodipodi:role="line"
            id="tspan3265"
            x="38.094727"
-           y="44.752861">agenda</tspan><tspan
+           y="44.752861"
+           style="font-size:5px;line-height:1.25">agenda</tspan><tspan
            sodipodi:role="line"
            x="38.094727"
            y="51.002861"
-           id="tspan3040">line</tspan></text>
+           id="tspan3040"
+           style="font-size:5px;line-height:1.25">line</tspan></text>
     </g>
     <g
        id="g3819"
@@ -704,20 +727,21 @@
          id="rect3269"
          style="fill:#b3b3b3;fill-opacity:1;stroke:none" />
       <text
-         sodipodi:linespacing="125%"
          id="text3271"
          y="44.752861"
          x="-25.975266"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            id="tspan3273"
            y="44.752861"
            x="-25.975266"
-           sodipodi:role="line">footnote</tspan><tspan
+           sodipodi:role="line"
+           style="font-size:5px;line-height:1.25">footnote</tspan><tspan
            y="51.002861"
            x="-25.975266"
            sodipodi:role="line"
-           id="tspan3038">line</tspan></text>
+           id="tspan3038"
+           style="font-size:5px;line-height:1.25">line</tspan></text>
     </g>
     <g
        id="g3825"
@@ -731,19 +755,20 @@
          y="30.172859" />
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          x="6.0822296"
          y="44.752861"
-         id="text3008"
-         sodipodi:linespacing="125%"><tspan
+         id="text3008"><tspan
            sodipodi:role="line"
            id="tspan3010"
            x="6.0822296"
-           y="44.752861">endnote</tspan><tspan
+           y="44.752861"
+           style="font-size:5px;line-height:1.25">endnote</tspan><tspan
            sodipodi:role="line"
            x="6.0822296"
            y="51.002861"
-           id="tspan3036">line</tspan></text>
+           id="tspan3036"
+           style="font-size:5px;line-height:1.25">line</tspan></text>
     </g>
     <g
        id="g3837"
@@ -757,19 +782,20 @@
          y="30.172859" />
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          x="70.117233"
          y="44.695358"
-         id="text3120"
-         sodipodi:linespacing="125%"><tspan
+         id="text3120"><tspan
            id="tspan3122"
            sodipodi:role="line"
            x="70.117233"
-           y="44.695358">citation</tspan><tspan
+           y="44.695358"
+           style="font-size:5px;line-height:1.25">citation</tspan><tspan
            id="tspan3124"
            sodipodi:role="line"
            x="70.117233"
-           y="50.945358">line</tspan></text>
+           y="50.945358"
+           style="font-size:5px;line-height:1.25">line</tspan></text>
     </g>
     <g
        id="g3844"
@@ -782,20 +808,21 @@
          id="rect3325"
          style="fill:#b3b3b3;fill-opacity:1;stroke:none" />
       <text
-         sodipodi:linespacing="125%"
          id="text3327"
          y="44.540359"
          x="102.04723"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            y="44.540359"
            x="102.04723"
            sodipodi:role="line"
-           id="tspan3329">note</tspan><tspan
+           id="tspan3329"
+           style="font-size:5px;line-height:1.25">note</tspan><tspan
            y="50.790359"
            x="102.04723"
            sodipodi:role="line"
-           id="tspan3331">line</tspan></text>
+           id="tspan3331"
+           style="font-size:5px;line-height:1.25">line</tspan></text>
     </g>
     <g
        id="g3795"
@@ -808,32 +835,33 @@
          id="rect3599"
          style="fill:#cccccc;fill-opacity:1;stroke:none" />
       <text
-         sodipodi:linespacing="125%"
          id="text3601"
          y="44.789295"
          x="-185.98277"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            id="tspan3603"
            y="44.789295"
            x="-185.98277"
-           sodipodi:role="line">bullet</tspan><tspan
+           sodipodi:role="line"
+           style="font-size:5px;line-height:1.25">bullet</tspan><tspan
            y="51.039295"
            x="-185.98277"
            sodipodi:role="line"
-           id="tspan3605">line</tspan></text>
+           id="tspan3605"
+           style="font-size:5px;line-height:1.25">line</tspan></text>
     </g>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:7.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="-57.108639"
        y="41.627396"
-       id="text3739"
-       sodipodi:linespacing="125%"><tspan
+       id="text3739"><tspan
          sodipodi:role="line"
          id="tspan3741"
          x="-57.108639"
-         y="41.627396" /></text>
+         y="41.627396"
+         style="font-size:7.5px;line-height:1.25"> </tspan></text>
     <g
        id="g3749"
        transform="translate(0.1250026,-0.12516543)">
@@ -845,20 +873,21 @@
          id="rect3737"
          style="opacity:1;fill:#cccccc;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <text
-         sodipodi:linespacing="125%"
          id="text3743"
          y="40.116409"
          x="-59.415283"
-         style="font-style:normal;font-weight:normal;font-size:5px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
            y="40.116409"
            x="-59.415283"
            id="tspan3745"
-           sodipodi:role="line">special</tspan><tspan
+           sodipodi:role="line"
+           style="font-size:5px;line-height:1.25">special</tspan><tspan
            id="tspan3747"
            y="46.366409"
            x="-59.415283"
-           sodipodi:role="line">Text</tspan></text>
+           sodipodi:role="line"
+           style="font-size:5px;line-height:1.25">Text</tspan></text>
     </g>
     <g
        style="display:inline"
@@ -872,20 +901,21 @@
          id="rect3265-6"
          style="fill:#cccccc;fill-opacity:1;stroke:none" />
       <text
-         sodipodi:linespacing="125%"
          id="text3267-7"
          y="76.931534"
          x="-281.90778"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            y="76.931534"
            x="-281.90778"
            sodipodi:role="line"
-           id="tspan3299-3">frist</tspan><tspan
+           id="tspan3299-3"
+           style="font-size:5px;line-height:1.25">frist</tspan><tspan
            y="83.181534"
            x="-281.90778"
            sodipodi:role="line"
-           id="tspan5556">month</tspan></text>
+           id="tspan5556"
+           style="font-size:5px;line-height:1.25">month</tspan></text>
     </g>
     <g
        style="display:inline"
@@ -900,19 +930,20 @@
          y="62.351532" />
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          x="-313.86276"
          y="76.719032"
-         id="text3257-9"
-         sodipodi:linespacing="125%"><tspan
+         id="text3257-9"><tspan
            sodipodi:role="line"
            x="-313.86276"
            y="76.719032"
-           id="tspan3295-2">past</tspan><tspan
+           id="tspan3295-2"
+           style="font-size:5px;line-height:1.25">past</tspan><tspan
            sodipodi:role="line"
            x="-313.86276"
            y="82.969032"
-           id="tspan5644">month</tspan></text>
+           id="tspan5644"
+           style="font-size:5px;line-height:1.25">month</tspan></text>
     </g>
     <g
        style="display:inline"
@@ -926,20 +957,21 @@
          id="rect3265-6-0"
          style="fill:#cccccc;fill-opacity:1;stroke:none" />
       <text
-         sodipodi:linespacing="125%"
          id="text3267-7-9"
          y="76.719032"
          x="-281.86276"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            y="76.719032"
            x="-281.86276"
            sodipodi:role="line"
-           id="tspan3299-3-3">next</tspan><tspan
+           id="tspan3299-3-3"
+           style="font-size:5px;line-height:1.25">next</tspan><tspan
            y="82.969032"
            x="-281.86276"
            sodipodi:role="line"
-           id="tspan5556-6">month</tspan></text>
+           id="tspan5556-6"
+           style="font-size:5px;line-height:1.25">month</tspan></text>
     </g>
     <g
        style="display:inline"
@@ -954,19 +986,20 @@
          y="62.351532" />
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          x="-313.86276"
          y="76.919029"
-         id="text3257-9-2"
-         sodipodi:linespacing="125%"><tspan
+         id="text3257-9-2"><tspan
            sodipodi:role="line"
            x="-313.86276"
            y="76.919029"
-           id="tspan3295-2-1">last</tspan><tspan
+           id="tspan3295-2-1"
+           style="font-size:5px;line-height:1.25">last</tspan><tspan
            sodipodi:role="line"
            x="-313.86276"
            y="83.169029"
-           id="tspan5648">month</tspan></text>
+           id="tspan5648"
+           style="font-size:5px;line-height:1.25">month</tspan></text>
     </g>
     <g
        style="display:inline"
@@ -980,20 +1013,21 @@
          id="rect3265-6-7"
          style="fill:#cccccc;fill-opacity:1;stroke:none" />
       <text
-         sodipodi:linespacing="125%"
          id="text3267-7-92"
          y="76.539032"
          x="-281.91028"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            y="76.539032"
            x="-281.91028"
            sodipodi:role="line"
-           id="tspan5556-2">failed</tspan><tspan
+           id="tspan5556-2"
+           style="font-size:5px;line-height:1.25">failed</tspan><tspan
            y="82.789032"
            x="-281.91028"
            sodipodi:role="line"
-           id="tspan5676">goal</tspan></text>
+           id="tspan5676"
+           style="font-size:5px;line-height:1.25">goal</tspan></text>
     </g>
     <g
        style="display:inline"
@@ -1008,19 +1042,20 @@
          y="62.351532" />
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          x="-313.97528"
          y="76.32653"
-         id="text3257-9-5"
-         sodipodi:linespacing="125%"><tspan
+         id="text3257-9-5"><tspan
            id="tspan3261-1"
            sodipodi:role="line"
            x="-313.97528"
-           y="76.32653">word</tspan><tspan
+           y="76.32653"
+           style="font-size:5px;line-height:1.25">word</tspan><tspan
            sodipodi:role="line"
            x="-313.97528"
            y="82.57653"
-           id="tspan3295-2-9">goal</tspan></text>
+           id="tspan3295-2-9"
+           style="font-size:5px;line-height:1.25">goal</tspan></text>
     </g>
     <g
        transform="matrix(1.0000051,0,0,1.0000051,30.572493,26.956528)"
@@ -1033,20 +1068,21 @@
          id="rect5688"
          style="fill:#cccccc;fill-opacity:1;stroke:none" />
       <text
-         sodipodi:linespacing="125%"
          id="text5690"
          y="76.425392"
          x="-153.91777"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            id="tspan5692"
            y="76.425392"
            x="-153.91777"
-           sodipodi:role="line">time</tspan><tspan
+           sodipodi:role="line"
+           style="font-size:5px;line-height:1.25">time</tspan><tspan
            id="tspan5694"
            y="82.675392"
            x="-153.91777"
-           sodipodi:role="line">goal</tspan></text>
+           sodipodi:role="line"
+           style="font-size:5px;line-height:1.25">goal</tspan></text>
     </g>
     <g
        transform="matrix(1.0000051,0,0,1.0000051,30.57233,26.956528)"
@@ -1060,19 +1096,20 @@
          y="62.295395" />
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
          x="-121.90777"
          y="76.862892"
-         id="text5700"
-         sodipodi:linespacing="125%"><tspan
+         id="text5700"><tspan
            id="tspan5704"
            sodipodi:role="line"
            x="-120.65777"
-           y="76.862892">all </tspan><tspan
+           y="76.862892"
+           style="font-size:5px;line-height:1.25">all </tspan><tspan
            sodipodi:role="line"
            x="-121.90777"
            y="83.112892"
-           id="tspan5708">meeet</tspan></text>
+           id="tspan5708"
+           style="font-size:5px;line-height:1.25">meeet</tspan></text>
     </g>
   </g>
   <g
@@ -1093,25 +1130,23 @@
          y="0"
          x="0" />
       <text
-         sodipodi:linespacing="125%"
          id="text3873"
          y="18.572071"
          x="63.374443"
-         style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
-           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;line-height:1.25;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono'"
            y="18.572071"
            x="63.374443"
            id="tspan3875"
            sodipodi:role="line">“</tspan></text>
       <text
-         sodipodi:linespacing="125%"
          id="text3877-9"
          y="28.614071"
          x="72.008446"
-         style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
-           style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:18px;line-height:1.25;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono'"
            y="28.614071"
            x="72.008446"
            id="tspan3879-6"
@@ -1147,15 +1182,15 @@
            y="29.107742" />
         <text
            xml:space="preserve"
-           style="font-size:6.89821959px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            x="158.68271"
            y="40.346615"
-           id="text5451"
-           sodipodi:linespacing="125%"><tspan
+           id="text5451"><tspan
              sodipodi:role="line"
              id="tspan5453"
              x="158.68271"
-             y="40.346615">***</tspan></text>
+             y="40.346615"
+             style="font-size:6.89822006px;line-height:1.25">***</tspan></text>
         <rect
            y="40.345177"
            x="157.125"
@@ -1189,16 +1224,16 @@
         <g
            id="g3666">
           <text
-             sodipodi:linespacing="125%"
              id="text3646"
              y="33.026752"
              x="54.203762"
-             style="font-size:4.11520433px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
              xml:space="preserve"><tspan
                id="tspan3652"
                y="33.026752"
                x="54.203762"
-               sodipodi:role="line">1)</tspan></text>
+               sodipodi:role="line"
+               style="font-size:4.11520386px;line-height:1.25">1)</tspan></text>
           <rect
              y="31.177992"
              x="58.5"
@@ -1212,15 +1247,15 @@
            transform="translate(0,8)">
           <text
              xml:space="preserve"
-             style="font-size:4.11520433px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
              x="54.203762"
              y="33.026752"
-             id="text3922"
-             sodipodi:linespacing="125%"><tspan
+             id="text3922"><tspan
                sodipodi:role="line"
                x="54.203762"
                y="33.026752"
-               id="tspan3924">3)</tspan></text>
+               id="tspan3924"
+               style="font-size:4.11520386px;line-height:1.25">3)</tspan></text>
           <rect
              style="fill:#000000;fill-opacity:1;stroke:none"
              id="rect3926"
@@ -1233,16 +1268,16 @@
            id="g3928"
            transform="translate(0,4)">
           <text
-             sodipodi:linespacing="125%"
              id="text3930"
              y="33.026752"
              x="54.203762"
-             style="font-size:4.11520433px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
              xml:space="preserve"><tspan
                id="tspan3932"
                y="33.026752"
                x="54.203762"
-               sodipodi:role="line">2)</tspan></text>
+               sodipodi:role="line"
+               style="font-size:4.11520386px;line-height:1.25">2)</tspan></text>
           <rect
              y="31.177992"
              x="58.5"
@@ -1281,8 +1316,7 @@
              transform="matrix(1.0909091,0,0,1.0909091,-4.4659091,0.09550238)"
              cx="6.5"
              cy="33.112186"
-             r="1.375"
-             d="m 7.875,33.112186 c 0,0.759392 -0.6156085,1.375 -1.375,1.375 -0.7593915,0 -1.375,-0.615608 -1.375,-1.375 0,-0.759391 0.6156085,-1.375 1.375,-1.375 0.7593915,0 1.375,0.615609 1.375,1.375 z" />
+             r="1.375" />
           <rect
              style="fill:#000000;fill-opacity:1;stroke:none"
              id="rect3615"
@@ -1304,8 +1338,7 @@
              style="fill:#000000;fill-opacity:1;stroke:none"
              cx="6.5"
              cy="33.112186"
-             r="1.375"
-             d="m 7.875,33.112186 c 0,0.759392 -0.6156085,1.375 -1.375,1.375 -0.7593915,0 -1.375,-0.615608 -1.375,-1.375 0,-0.759391 0.6156085,-1.375 1.375,-1.375 0.7593915,0 1.375,0.615609 1.375,1.375 z" />
+             r="1.375" />
           <rect
              y="35.467888"
              x="4.5043869"
@@ -1327,8 +1360,7 @@
              transform="matrix(1.0909091,0,0,1.0909091,-4.4659091,0.09550238)"
              cx="6.5"
              cy="33.112186"
-             r="1.375"
-             d="m 7.875,33.112186 c 0,0.759392 -0.6156085,1.375 -1.375,1.375 -0.7593915,0 -1.375,-0.615608 -1.375,-1.375 0,-0.759391 0.6156085,-1.375 1.375,-1.375 0.7593915,0 1.375,0.615609 1.375,1.375 z" />
+             r="1.375" />
           <rect
              style="fill:#000000;fill-opacity:1;stroke:none"
              id="rect3631"
@@ -1351,28 +1383,27 @@
          style="fill:none;stroke:#000000;stroke-width:0.001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
       <text
          transform="translate(32,-6.3878145)"
-         sodipodi:linespacing="125%"
          id="text3183"
          y="-20"
          x="-2.375"
-         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Waree;-inkscape-font-specification:Waree"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:1.25;font-family:Waree;-inkscape-font-specification:Waree"
            y="-20"
            x="-2.375"
            id="tspan3185"
-           sodipodi:role="line" /></text>
+           sodipodi:role="line"> </tspan></text>
       <text
          xml:space="preserve"
-         style="font-size:17.60000038px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:URW Chancery L;-inkscape-font-specification:URW Chancery L Bold Italic"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0%;font-family:'URW Chancery L';-inkscape-font-specification:'URW Chancery L Bold Italic';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          x="31.7192"
          y="7.4817858"
-         id="text3391"
-         sodipodi:linespacing="125%"><tspan
+         id="text3391"><tspan
            sodipodi:role="line"
            id="tspan3393"
            x="31.7192"
-           y="7.4817858">H</tspan></text>
+           y="7.4817858"
+           style="font-size:17.60000038px;line-height:1.25">H</tspan></text>
     </g>
     <g
        id="g4038"
@@ -1431,16 +1462,16 @@
                id="rect3994"
                style="fill:#000000;fill-opacity:1;stroke:none" />
             <text
-               sodipodi:linespacing="125%"
                id="text4010"
                y="33.171803"
                x="78.491982"
-               style="font-size:3.36842108px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
                xml:space="preserve"><tspan
                  y="33.171803"
                  x="78.491982"
                  id="tspan4012"
-                 sodipodi:role="line">1)</tspan></text>
+                 sodipodi:role="line"
+                 style="font-size:3.36842108px;line-height:1.25">1)</tspan></text>
           </g>
           <g
              id="g4022"
@@ -1454,15 +1485,15 @@
                y="31.522434" />
             <text
                xml:space="preserve"
-               style="font-size:3.36842108px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
                x="78.491982"
                y="33.171803"
-               id="text4026"
-               sodipodi:linespacing="125%"><tspan
+               id="text4026"><tspan
                  id="tspan4152"
                  sodipodi:role="line"
                  x="78.491982"
-                 y="33.171803">3)</tspan></text>
+                 y="33.171803"
+                 style="font-size:3.36842108px;line-height:1.25">3)</tspan></text>
           </g>
           <g
              id="g4030"
@@ -1475,18 +1506,18 @@
                id="rect4032"
                style="fill:#000000;fill-opacity:1;stroke:none" />
             <text
-               sodipodi:linespacing="125%"
                id="text4034"
                y="33.328354"
                x="78.491982"
-               style="font-size:3.36842108px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+               style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
                xml:space="preserve"><tspan
                  y="33.328354"
                  x="78.491982"
                  id="tspan4036"
-                 sodipodi:role="line"><tspan
+                 sodipodi:role="line"
+                 style="font-size:3.36842108px;line-height:1.25;font-family:sans-serif"><tspan
    id="tspan4156"
-   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono">2</tspan>)</tspan></text>
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono'">2</tspan>)</tspan></text>
           </g>
         </g>
       </g>
@@ -1519,12 +1550,13 @@
              id="text4122-2"
              y="41.425968"
              x="139.52206"
-             style="font-size:4.37988567px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono'"
              xml:space="preserve"><tspan
                y="41.425968"
                x="139.52206"
                id="tspan4124-9"
-               sodipodi:role="line">1:</tspan></text>
+               sodipodi:role="line"
+               style="font-size:4.37988615px;line-height:1.25">1:</tspan></text>
         </g>
         <g
            id="g4219">
@@ -1539,14 +1571,15 @@
              id="g4213">
             <text
                xml:space="preserve"
-               style="font-size:2.01560092px;fill:#999999"
+               style="line-height:0%;fill:#999999"
                x="146.15356"
                y="33.25"
                id="text4122"><tspan
                  sodipodi:role="line"
                  id="tspan4124"
                  x="146.15356"
-                 y="33.25">1</tspan></text>
+                 y="33.25"
+                 style="font-size:2.01560092px;line-height:1.25">1</tspan></text>
             <path
                inkscape:connector-curvature="0"
                style="fill:#999999;fill-opacity:1;stroke:none"
@@ -1596,15 +1629,15 @@
                style="fill:#999999;fill-opacity:1">
               <text
                  xml:space="preserve"
-                 style="font-size:1.76399338px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#999999;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#999999;fill-opacity:1;stroke:none"
                  x="148.43019"
                  y="12.28125"
-                 id="text5413"
-                 sodipodi:linespacing="125%"><tspan
+                 id="text5413"><tspan
                    sodipodi:role="line"
                    id="tspan5415"
                    x="148.43019"
-                   y="12.28125">1</tspan></text>
+                   y="12.28125"
+                   style="font-size:1.76399302px;line-height:1.25">1</tspan></text>
               <g
                  id="g5417"
                  style="fill:#999999;fill-opacity:1">
@@ -1651,16 +1684,16 @@
                id="rect5399"
                style="fill:#000000;fill-opacity:1;stroke:none" />
             <text
-               sodipodi:linespacing="125%"
                id="text5401"
                y="17.803972"
                x="144.87598"
-               style="font-size:4.37381268px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
                xml:space="preserve"><tspan
                  y="17.803972"
                  x="144.87598"
                  id="tspan5403"
-                 sodipodi:role="line">1:</tspan></text>
+                 sodipodi:role="line"
+                 style="font-size:4.37381315px;line-height:1.25">1:</tspan></text>
           </g>
         </g>
       </g>
@@ -1687,13 +1720,12 @@
            y="0"
            x="0" />
         <text
-           sodipodi:linespacing="125%"
            id="text4089"
            y="41.43121"
            x="83.559624"
-           style="font-size:16.08394814px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Saab;-inkscape-font-specification:Saab"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:Saab;-inkscape-font-specification:Saab;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            xml:space="preserve"><tspan
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Saab;-inkscape-font-specification:Saab"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.08394814px;line-height:1.25;font-family:Saab;-inkscape-font-specification:Saab"
              y="41.43121"
              x="83.559624"
              id="tspan4091-0"
@@ -1713,16 +1745,16 @@
          width="744.09448"
          height="1052.3622" />
       <text
-         sodipodi:linespacing="125%"
          id="text3560"
          y="23.312752"
          x="41.098766"
-         style="font-size:18.17751503px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            y="23.312752"
            x="41.098766"
            id="tspan3562"
-           sodipodi:role="line">¶</tspan></text>
+           sodipodi:role="line"
+           style="font-size:18.17751503px;line-height:1.25">¶</tspan></text>
     </g>
     <g
        transform="matrix(1.999875,0,0,1.999875,-228.37886,-100.95501)"
@@ -1737,15 +1769,15 @@
          x="0" />
       <text
          xml:space="preserve"
-         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono Bold"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          x="118.34484"
          y="75.729774"
-         id="text5481"
-         sodipodi:linespacing="125%"><tspan
+         id="text5481"><tspan
            sodipodi:role="line"
            id="tspan5483"
            x="118.34484"
-           y="75.729774">B</tspan></text>
+           y="75.729774"
+           style="font-size:12px;line-height:1.25">B</tspan></text>
     </g>
     <g
        transform="matrix(1.999875,0,0,1.999875,-234.84627,-120.5506)"
@@ -1761,16 +1793,16 @@
       <g
          id="g6975">
         <text
-           sodipodi:linespacing="125%"
            id="text5485"
            y="85.143684"
            x="153.71875"
-           style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            xml:space="preserve"><tspan
              y="85.143684"
              x="153.71875"
              id="tspan5487"
-             sodipodi:role="line">U</tspan></text>
+             sodipodi:role="line"
+             style="font-size:12px;line-height:1.25">U</tspan></text>
         <rect
            y="85.330933"
            x="154.21875"
@@ -1793,16 +1825,15 @@
          x="0" />
       <text
          xml:space="preserve"
-         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          x="177.56084"
          y="78.485771"
-         id="text5495"
-         sodipodi:linespacing="125%"><tspan
+         id="text5495"><tspan
            sodipodi:role="line"
            id="tspan5497"
            x="177.56084"
            y="78.485771"
-           style="font-style:italic;-inkscape-font-specification:Ubuntu Mono Italic">I</tspan></text>
+           style="font-style:italic;font-size:12px;line-height:1.25;-inkscape-font-specification:'Ubuntu Mono Italic'">I</tspan></text>
     </g>
     <g
        transform="matrix(1.999875,0,0,1.999875,-288.36951,-77.956446)"
@@ -1817,16 +1848,15 @@
          x="0" />
       <text
          xml:space="preserve"
-         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          x="196.44684"
          y="64.241768"
-         id="text5499"
-         sodipodi:linespacing="125%"><tspan
+         id="text5499"><tspan
            sodipodi:role="line"
            id="tspan5501"
            x="196.44684"
            y="64.241768"
-           style="fill:#666666">C</tspan></text>
+           style="font-size:12px;line-height:1.25;fill:#666666">C</tspan></text>
     </g>
     <g
        transform="matrix(1.999875,0,0,1.999875,43.593822,-38.139763)"
@@ -1841,15 +1871,15 @@
          height="1052.3622" />
       <text
          xml:space="preserve"
-         style="font-size:5.62014437px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          x="170.47482"
          y="42.112762"
-         id="text7014"
-         sodipodi:linespacing="125%"><tspan
+         id="text7014"><tspan
            sodipodi:role="line"
            id="tspan7016"
            x="170.47482"
-           y="42.112762">[...]</tspan></text>
+           y="42.112762"
+           style="font-size:5.62014389px;line-height:1.25">[...]</tspan></text>
     </g>
     <g
        transform="matrix(1.999875,0,0,1.999875,31.662548,8.1685769)"
@@ -1887,16 +1917,16 @@
                id="rect4387"
                style="fill:#999999;fill-opacity:1;stroke:none" />
             <text
-               sodipodi:linespacing="125%"
                id="text4391"
                y="17.803972"
                x="144.87598"
-               style="font-size:4.37381268px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#999999;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#999999;fill-opacity:1;stroke:none"
                xml:space="preserve"><tspan
                  y="17.803972"
                  x="144.87598"
                  id="tspan4393"
-                 sodipodi:role="line">1:</tspan></text>
+                 sodipodi:role="line"
+                 style="font-size:4.37381315px;line-height:1.25">1:</tspan></text>
           </g>
         </g>
         <g
@@ -1918,15 +1948,15 @@
                id="g5247">
               <text
                  xml:space="preserve"
-                 style="font-size:1.76399338px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
                  x="148.43019"
                  y="12.28125"
-                 id="text4395"
-                 sodipodi:linespacing="125%"><tspan
+                 id="text4395"><tspan
                    sodipodi:role="line"
                    id="tspan4397"
                    x="148.43019"
-                   y="12.28125">1</tspan></text>
+                   y="12.28125"
+                   style="font-size:1.76399302px;line-height:1.25">1</tspan></text>
               <g
                  id="g5243">
                 <path
@@ -1981,12 +2011,13 @@
              id="text4231"
              y="41.425968"
              x="139.52206"
-             style="font-size:4.37988567px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#999999;fill-opacity:1;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';fill:#999999;fill-opacity:1"
              xml:space="preserve"><tspan
                y="41.425968"
                x="139.52206"
                id="tspan4233"
-               sodipodi:role="line">1:</tspan></text>
+               sodipodi:role="line"
+               style="font-size:4.37988615px;line-height:1.25">1:</tspan></text>
         </g>
         <g
            style="fill:#241f1c;fill-opacity:1"
@@ -2004,14 +2035,15 @@
              id="g4239">
             <text
                xml:space="preserve"
-               style="font-size:2.01560092px;fill:#241f1c;fill-opacity:1"
+               style="line-height:0%;fill:#241f1c;fill-opacity:1"
                x="146.15356"
                y="33.25"
                id="text4241"><tspan
                  sodipodi:role="line"
                  id="tspan4243"
                  x="146.15356"
-                 y="33.25">1</tspan></text>
+                 y="33.25"
+                 style="font-size:2.01560092px;line-height:1.25">1</tspan></text>
             <path
                inkscape:connector-curvature="0"
                style="fill:#241f1c;fill-opacity:1;stroke:none"
@@ -2098,15 +2130,15 @@
            transform="translate(139.26823,-37.80677)" />
         <text
            xml:space="preserve"
-           style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            x="218.0573"
            y="2.3020642"
-           id="text4038"
-           sodipodi:linespacing="125%"><tspan
+           id="text4038"><tspan
              sodipodi:role="line"
              id="tspan4040"
              x="218.0573"
-             y="2.3020642">🔗</tspan></text>
+             y="2.3020642"
+             style="font-size:12px;line-height:1.25">🔗</tspan></text>
       </g>
     </g>
     <g
@@ -2132,15 +2164,15 @@
            transform="translate(314.38176,-19.216305)" />
         <text
            xml:space="preserve"
-           style="font-size:5px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            x="392.99115"
            y="17.723492"
-           id="text4058"
-           sodipodi:linespacing="125%"><tspan
+           id="text4058"><tspan
              sodipodi:role="line"
              id="tspan4060"
              x="392.99115"
-             y="17.723492">[...]</tspan></text>
+             y="17.723492"
+             style="font-size:5px;line-height:1.25">[...]</tspan></text>
       </g>
     </g>
     <g
@@ -2159,27 +2191,26 @@
          id="g4104">
         <text
            xml:space="preserve"
-           style="font-size:13px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4d4d4d;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#4d4d4d;fill-opacity:1;stroke:none"
            x="439.70084"
            y="48.647579"
-           id="text4092"
-           sodipodi:linespacing="125%"><tspan
+           id="text4092"><tspan
              sodipodi:role="line"
              x="439.70084"
              y="48.647579"
-             id="tspan4096">\</tspan></text>
+             id="tspan4096"
+             style="font-size:13px;line-height:1.25">\</tspan></text>
         <text
            xml:space="preserve"
-           style="font-size:13px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            x="443.58978"
            y="48.647579"
-           id="text4100"
-           sodipodi:linespacing="125%"><tspan
+           id="text4100"><tspan
              sodipodi:role="line"
              id="tspan4102"
              x="443.58978"
              y="48.647579"
-             style="font-size:13px">?</tspan></text>
+             style="font-size:13px;line-height:1.25">?</tspan></text>
       </g>
     </g>
     <g
@@ -2222,16 +2253,16 @@
                width="1"
                height="1" />
             <text
-               sodipodi:linespacing="125%"
                id="text4311-7"
                y="-1.71681"
                x="182.83989"
-               style="font-size:6.22056627px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none"
                xml:space="preserve"><tspan
                  y="-1.71681"
                  x="182.83989"
                  id="tspan4313-3"
-                 sodipodi:role="line">↘</tspan></text>
+                 sodipodi:role="line"
+                 style="font-size:6.2205658px;line-height:1.25">↘</tspan></text>
           </g>
         </g>
       </g>
@@ -2248,16 +2279,16 @@
          x="0"
          transform="translate(170.60418,39.560263)" />
       <text
-         sodipodi:linespacing="125%"
          id="text4238"
          y="44.597252"
          x="204.53387"
-         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            y="44.597252"
            x="204.53387"
            id="tspan4240"
-           sodipodi:role="line">🔗</tspan></text>
+           sodipodi:role="line"
+           style="font-size:12px;line-height:1.25">🔗</tspan></text>
     </g>
     <g
        id="g4322"
@@ -2281,27 +2312,27 @@
            x="267.49551"
            y="35.851509" />
         <text
-           sodipodi:linespacing="125%"
            id="text4238-5"
            y="46.763081"
            x="272.28088"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            xml:space="preserve"><tspan
              y="46.763081"
              x="272.28088"
              id="tspan4240-6"
-             sodipodi:role="line">🔗</tspan></text>
+             sodipodi:role="line"
+             style="font-size:10px;line-height:1.25">🔗</tspan></text>
         <text
            xml:space="preserve"
-           style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            x="271.21631"
            y="42.706467"
-           id="text4311"
-           sodipodi:linespacing="125%"><tspan
+           id="text4311"><tspan
              sodipodi:role="line"
              id="tspan4313"
              x="271.21631"
-             y="42.706467">↘</tspan></text>
+             y="42.706467"
+             style="font-size:8px;line-height:1.25">↘</tspan></text>
       </g>
     </g>
     <g
@@ -2319,16 +2350,16 @@
          transform="translate(-0.14437426,0.03201813)"
          id="g4415">
         <text
-           sodipodi:linespacing="125%"
            id="text4238-2"
            y="46.933628"
            x="176.47838"
-           style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            xml:space="preserve"><tspan
              y="46.933628"
              x="176.47838"
              id="tspan4240-5"
-             sodipodi:role="line">🔗</tspan></text>
+             sodipodi:role="line"
+             style="font-size:8px;line-height:1.25">🔗</tspan></text>
         <g
            id="g3755"
            transform="matrix(0.75564936,0,0,0.75564936,41.355196,8.2858649)">
@@ -2342,41 +2373,41 @@
              width="448.00015"
              height="96.000435" />
           <text
-             sodipodi:linespacing="125%"
              id="text3391-2"
              y="39.333733"
              x="168.98129"
-             style="font-size:8px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:URW Chancery L;-inkscape-font-specification:URW Chancery L Bold Italic"
+             style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0%;font-family:'URW Chancery L';-inkscape-font-specification:'URW Chancery L Bold Italic';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
              xml:space="preserve"><tspan
                y="39.333733"
                x="168.98129"
                id="tspan3393-9"
-               sodipodi:role="line">H</tspan></text>
+               sodipodi:role="line"
+               style="font-size:8px;line-height:1.25">H</tspan></text>
         </g>
         <text
            xml:space="preserve"
-           style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            x="174.31812"
            y="44.055363"
-           id="text4311-9"
-           sodipodi:linespacing="125%"><tspan
+           id="text4311-9"><tspan
              sodipodi:role="line"
              id="tspan4313-8"
              x="174.31812"
-             y="44.055363">↘</tspan></text>
+             y="44.055363"
+             style="font-size:8px;line-height:1.25">↘</tspan></text>
       </g>
     </g>
     <text
        xml:space="preserve"
-       style="font-size:6.66656494px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
        x="176.58791"
        y="38.610153"
-       id="text4433"
-       sodipodi:linespacing="125%"><tspan
+       id="text4433"><tspan
          sodipodi:role="line"
          x="176.58791"
          y="38.610153"
-         id="tspan4439" /></text>
+         id="tspan4439"
+         style="font-size:6.66656494px;line-height:1.25"> </tspan></text>
     <g
        id="g5225"
        transform="matrix(1.999875,0,0,1.999875,-150.6188,-39.260219)">
@@ -2401,15 +2432,15 @@
            ry="2.8790457" />
         <text
            xml:space="preserve"
-           style="font-size:5px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono Bold"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            x="140.46208"
            y="45.885487"
-           id="text5216"
-           sodipodi:linespacing="125%"><tspan
+           id="text5216"><tspan
              sodipodi:role="line"
              id="tspan5218"
              x="140.46208"
-             y="45.885487">STATUS</tspan></text>
+             y="45.885487"
+             style="font-size:5px;line-height:1.25">STATUS</tspan></text>
       </g>
     </g>
     <g
@@ -2417,15 +2448,15 @@
        transform="matrix(1.999875,0,0,1.999875,-366.88252,-49.022056)">
       <text
          xml:space="preserve"
-         style="font-size:21.98843956px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Saab;-inkscape-font-specification:Saab Bold"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0%;font-family:Saab;-inkscape-font-specification:'Saab Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          x="364.97311"
          y="53.48336"
-         id="text5477"
-         sodipodi:linespacing="125%"><tspan
+         id="text5477"><tspan
            sodipodi:role="line"
            id="tspan5479"
            x="364.97311"
-           y="53.48336">!</tspan></text>
+           y="53.48336"
+           style="font-size:21.98843956px;line-height:1.25">!</tspan></text>
       <use
          x="0"
          y="0"
@@ -2450,16 +2481,16 @@
            style="fill:#999999;fill-opacity:1;stroke:none;display:inline" />
         <text
            xml:space="preserve"
-           style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:sans-serif"
+           style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none"
            x="1.0307081"
            y="-267.94858"
            id="text3924"
-           sodipodi:linespacing="125%"
-           transform="matrix(0,1,-1,0,0,0)"><tspan
+           transform="rotate(90)"><tspan
              sodipodi:role="line"
              id="tspan3926"
              x="1.0307081"
-             y="-267.94858">↶</tspan></text>
+             y="-267.94858"
+             style="font-size:20px;line-height:1.25">↶</tspan></text>
         <g
            id="g3943">
           <g
@@ -2513,16 +2544,16 @@
          width="744.09448"
          height="1052.3622" />
       <text
-         sodipodi:linespacing="125%"
          id="text5682"
          y="74.512161"
          x="117.71063"
-         style="font-size:9.37558556px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono Bold"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            y="74.512161"
            x="117.71063"
            id="tspan5684"
-           sodipodi:role="line">⏮</tspan></text>
+           sodipodi:role="line"
+           style="font-size:9.37558556px;line-height:1.25">⏮</tspan></text>
     </g>
     <g
        transform="matrix(1.999875,0,0,1.999875,-196.37886,-68.954997)"
@@ -2537,15 +2568,15 @@
          x="0" />
       <text
          xml:space="preserve"
-         style="font-size:9.37558556px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono Bold"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          x="117.71063"
          y="74.512161"
-         id="text5714"
-         sodipodi:linespacing="125%"><tspan
+         id="text5714"><tspan
            sodipodi:role="line"
            id="tspan5716"
            x="117.71063"
-           y="74.512161">⏪</tspan></text>
+           y="74.512161"
+           style="font-size:9.37558556px;line-height:1.25">⏪</tspan></text>
     </g>
     <g
        transform="matrix(1.999875,0,0,1.999875,-164.37886,-68.954997)"
@@ -2560,15 +2591,15 @@
          x="0" />
       <text
          xml:space="preserve"
-         style="font-size:9.37558556px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono Bold"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          x="117.71063"
          y="74.512161"
-         id="text5722"
-         sodipodi:linespacing="125%"><tspan
+         id="text5722"><tspan
            sodipodi:role="line"
            id="tspan5724"
            x="117.71063"
-           y="74.512161">⏩</tspan></text>
+           y="74.512161"
+           style="font-size:9.37558556px;line-height:1.25">⏩</tspan></text>
     </g>
     <g
        id="g5726"
@@ -2582,16 +2613,16 @@
          width="744.09448"
          height="1052.3622" />
       <text
-         sodipodi:linespacing="125%"
          id="text5730"
          y="74.512161"
          x="117.71063"
-         style="font-size:9.37558556px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono Bold"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            y="74.512161"
            x="117.71063"
            id="tspan5732"
-           sodipodi:role="line">⏭</tspan></text>
+           sodipodi:role="line"
+           style="font-size:9.37558556px;line-height:1.25">⏭</tspan></text>
     </g>
     <g
        transform="matrix(1.999875,0,0,1.999875,-100.37886,-68.954997)"
@@ -2763,7 +2794,7 @@
            transform="translate(0.3750184,1.375086)">
           <path
              transform="matrix(0.49487365,0,0,0.50529204,18.672789,36.916696)"
-             d="m 212.28123,87.01606 c 0,2.459393 -2.0357,4.453124 -4.54687,4.453124 -2.51117,0 -4.54687,-1.993731 -4.54687,-4.453124 0,-2.459393 2.0357,-4.453125 4.54687,-4.453125 2.51117,0 4.54687,1.993732 4.54687,4.453125 z"
+             d="m 212.28123,87.01606 a 4.5468745,4.4531245 0 0 1 -4.54687,4.453124 4.5468745,4.4531245 0 0 1 -4.54687,-4.453124 4.5468745,4.4531245 0 0 1 4.54687,-4.453125 4.5468745,4.4531245 0 0 1 4.54687,4.453125 z"
              sodipodi:ry="4.4531245"
              sodipodi:rx="4.5468745"
              sodipodi:cy="87.01606"
