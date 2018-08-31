@@ -9,6 +9,7 @@ import static com.google.common.base.Preconditions.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.lang.Span;
 import com.creativeartie.writerstudio.main.*;
+import com.creativeartie.writerstudio.javafx.utils.*;
 
 public enum WindowText {
     PROGRAM_NAME("MainWindow.Title"),
@@ -137,7 +138,7 @@ public enum WindowText {
         return getDisplay(getText("DocData.Matter", area.name()));
     }
 
-    public static String getText(ButtonIcon icon){
+    public static String getText(ImageIcon icon){
         return getDisplay(getText("Icon.", icon.name()));
     }
 

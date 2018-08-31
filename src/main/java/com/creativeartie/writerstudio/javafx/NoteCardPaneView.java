@@ -25,7 +25,6 @@ abstract class NoteCardPaneView extends GridPane{
                 setText(null);
                 setGraphic(null);
             } else {
-                System.out.println(getTreeItem().getClass());
                 /// Allows TextFlowBuilder to create the Label
                 setText(item);
             }

@@ -19,8 +19,8 @@ public enum ImageIcon{
     LINK_TEXT(8, 1), FOOTNOTE_SPAN(9, 1), ENDNOTE_SPAN(10, 1),AGENDA_SPAN(11, 1),
     CITE_SPAN(12, 1), ESCAPE_CHAR(13, 1),*/
 
-    START_MONTH(0, 2), PAST_MONTH(1, 2), NEXT_MONTH(2, 2), END_MONTH(3, 2),
-    GOAL_FAIL(4, 2), GOAL_WORD(5, 2), GOAL_TIME(6, 2), GOAL_ALL(7, 2);
+    START_MONTH(0, 0), PAST_MONTH(1, 0), NEXT_MONTH(2, 0), END_MONTH(3, 0),
+    GOAL_FAIL(7, 0), GOAL_WORD(4, 0), GOAL_TIME(5, 0), GOAL_ALL(6, 0);
 
     private static final int RAW_SIZE = 128;
     private static final int OUT_SIZE = 24;
