@@ -20,72 +20,6 @@ interface SectionParser extends SetupParser {
      */
     public static final List<SetupParser> SECTION_PARSERS = getSectionParsers();
 
-    @Override
-    public default Optional<SpanBranch> parse(SetupPointer pointer){
-        argumentNotNull(pointer, "pointer");
-        ArrayList<Span> children = new ArrayList<>();
-
-        /// parse section content
-        if (pointer.hasNext(getStarter())){
-            /// line == level + above
-            /// if (! (starter != null && pointer.hasNext(starter)) ){
-            if (! getNextStarter().map(s -> pointer.hasNext(s)).orElse(false)){
-                /// line == current level
-                getHeadParser().parse(pointer, children);
-                parseContent(pointer, children);
-            }
-        } else if (this == SectionParseHead.SECTION_1 && pointer.isFirst()){
-            /// line == other types + first line
-            if (! pointer.hasNext(LEVEL_STARTERS.get(LinedParseLevel.OUTLINE)
-                    .get(0))){
-                /// line != outline
-                parseContent(pointer, children);
-            }
-        } else {
-            /// line == other types || line == lower level
-            return Optional.empty();
-        }
-
-        /// parse section scenes, (head only)
-        if (this instanceof SectionParseHead){
-            SectionParseHead.parseOutline(pointer, children);
-        }
-
-        /// parse sub section heads or secnes
-        /// while (nested starter != null && pointer.hasNext(nested starter) ) {
-        while (getNextStarter().map(s -> pointer.hasNext(s)).orElse(false)){
-            nextParser().parse(pointer, children);
-        }
-
-        return Optional.ofNullable(children.isEmpty()? null:
-            buildSpan(children));
-    }
-
-    /** Get the starter token.
-     *
-     * Use for checking if the heading is at least this level or a child
-     *
-     * @return answer
-     * @see parse(SetupPointer)
-     */
-    public String getStarter();
-
-    /** Get the next starter token.
-     *
-     * Use for checking if the heading is a child.
-     *
-     * @return answer
-     * @see parse(SetupPointer)
-     */
-    public Optional<String> getNextStarter();
-
-    /** Gets the heading parser.
-     *
-     * @return answer
-     * @see parse(SetupPointer)
-     */
-    public LinedParseLevel getHeadParser();
-
     /** parses the content
      *
      * @param pointer
@@ -112,22 +46,33 @@ interface SectionParser extends SetupParser {
         }
     }
 
-    /** Gets the next parser.
-     *
-     * Can return {@code null} if
-     * {@link #getNextPointer() getNextPointer().isPresent())} returns
-     * {@code false}.
-     *
-     * @return answer
-     */
-    public SectionParser nextParser();
+    static boolean isCurrentLevel(SetupPointer pointer, LinedParseLevel type,
+        int level
+    ){
+        return pointer.hasNext(LEVEL_STARTERS.get(type).get(level)) &&
+            ! isChild(pointer, type, level);
+    }
 
-    /** Creates a new {@link SectionSpan}.
-     *
-     * @param children
-     *      span children
-     * @return answer
-     */
-    public SectionSpan buildSpan(ArrayList<Span> children);
+    static boolean isChild(SetupPointer pointer, LinedParseLevel type,
+        int level
+    ){
+        if (level + 1 == LEVEL_MAX) {
+            return false;
+        }
+        return pointer.hasNext(LEVEL_STARTERS.get(type).get(level + 1));
+    }
+
+    public default void parseChildren(SetupPointer pointer,
+        ArrayList<Span> children
+    ){
+        Optional<SpanBranch> child = parseChild(pointer);
+        boolean found = false;
+        while (child.isPresent()){
+            children.add(child.get());
+            child = parseChild(pointer);
+        }
+    }
+
+    public Optional<SpanBranch> parseChild(SetupPointer pointer);
 
 }

@@ -35,6 +35,10 @@ class NoteCardTreeItem<T> extends TreeItem<T>{
         return noteList;
     }
 
+    public int getSize(){
+        return noteList.size();
+    }
+
     public ObservableList<NoteCardSpan> getNoteList(){
         return noteList.getValue();
     }

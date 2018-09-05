@@ -245,11 +245,6 @@ public class ListenerAssert<T extends SpanNode<?>>{
         assertDoesNotThrow(() -> editCaller.accept(editingSpan),
                 () -> "Caller throws an exeception: " + editingSpan);
         hasTested = true;
-        return this;
-    }
-
-    public ListenerAssert<T> test(){
-        if (! hasTested) runCommand();
 
         if (showEdits) {
             System.err.println("Post Edited ---------------------------------");
@@ -267,6 +262,12 @@ public class ListenerAssert<T extends SpanNode<?>>{
             System.err.println("Removes--------------------------------------");
             print(expectedRemoves, actualRemoves);
         }
+
+        return this;
+    }
+
+    public ListenerAssert<T> test(){
+        if (! hasTested) runCommand();
 
         ArrayList<Executable> tests = new ArrayList<>();
 

@@ -2,6 +2,7 @@ package com.creativeartie.writerstudio.javafx;
 
 import java.util.*;
 import javafx.scene.control.*;
+import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.input.*;
 import javafx.scene.text.*;
@@ -15,6 +16,37 @@ import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
  * A pane with two {@link HeadingTreeControl} objects that
  */
 abstract class NoteCardPaneView extends GridPane{
+    private static ImageView getCountIcon(int size){
+        switch(size){
+        case 0:
+            return ImageIcon.NONE.getIcon();
+        case 1:
+            return ImageIcon.ONE.getIcon();
+        default:
+            return ImageIcon.MANY.getIcon();
+        }
+    }
+
+    private class HeadingCardCell extends TreeCell<SectionSpanHead> {
+        @Override
+        public void updateItem(SectionSpanHead item, boolean empty){
+            /// Required by JavaFX API:
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setText(null);
+                setGraphic(null);
+            } else {
+                TextFlow graphic = new TextFlow();
+                int size = ((NoteCardTreeItem<?>)getTreeItem()).getSize();
+                graphic.getChildren().add(getCountIcon(size));
+
+                TextFlowBuilder.loadHeadingLine(graphic, item.getHeading());
+                /// Allows WindowSpanParser to create the Label
+                setText(null);
+                setGraphic(graphic);
+            }
+        }
+    }
 
     private class IdCardCell extends TreeCell<String>{
         @Override
@@ -26,7 +58,10 @@ abstract class NoteCardPaneView extends GridPane{
                 setGraphic(null);
             } else {
                 /// Allows TextFlowBuilder to create the Label
-                setText(item);
+                int size = ((NoteCardTreeItem<?>)getTreeItem()).getSize();
+                Label label = new Label(item, getCountIcon(size));
+                setText(null);
+                setGraphic(label);
             }
         }
     }
@@ -93,7 +128,7 @@ abstract class NoteCardPaneView extends GridPane{
         locationTree = new TreeView<>();
         locationTree.setShowRoot(false);
         locationTree.setCellFactory(p -> {
-            TreeCellHeading<SectionSpanHead> ans = new TreeCellHeading<>();
+            HeadingCardCell ans = new HeadingCardCell();
             ans.setOnMouseClicked(e -> handleListSelected(e, ans.getTreeItem()));
             return ans;
         });

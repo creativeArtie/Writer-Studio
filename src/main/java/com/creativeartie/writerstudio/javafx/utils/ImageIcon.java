@@ -20,7 +20,8 @@ public enum ImageIcon{
     CITE_SPAN(12, 1), ESCAPE_CHAR(13, 1),*/
 
     START_MONTH(0, 0), PAST_MONTH(1, 0), NEXT_MONTH(2, 0), END_MONTH(3, 0),
-    GOAL_FAIL(7, 0), GOAL_WORD(4, 0), GOAL_TIME(5, 0), GOAL_ALL(6, 0);
+    GOAL_FAIL(7, 0), GOAL_WORD(4, 0), GOAL_TIME(5, 0), GOAL_ALL(6, 0),
+    ONE(8,0), MANY(9,0), NONE(10, 0);
 
     private static final int RAW_SIZE = 128;
     private static final int OUT_SIZE = 24;
