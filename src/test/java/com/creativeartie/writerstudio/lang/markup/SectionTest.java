@@ -45,7 +45,7 @@ public class SectionTest {
         String text2 = "=Child";
         String raw = text1 + text2;
         DocumentAssert doc = assertDoc(2, raw, PARSER);
-        doc.insert(true, 8, "=");
+        doc.insert(8, "=");
 
         text2 = "=" + text2;
         raw = text1 + text2;
@@ -53,25 +53,26 @@ public class SectionTest {
 
         HeadSectionAssert head1 = new HeadSectionAssert(doc)
             .setPublishCount(1) .setNoteCount(0)
+            .addLine(0, 0)      .setHeading(0, 0)
             .addSection(0, 1)   .setPublishTotal(2)
             .addAllLine(0, 1, 0).setNoteTotal(0);
         HeadLevelLineAssert line1 = new HeadLevelLineAssert(doc)
-            .setFormattedSpan(0, 0, 2)
+            .setFormattedSpan(0, 0, 1)
             .setEdition(EditionType.NONE).setLevel(1)
             .setPublish(1)   .setNote(0);
         HeadSectionAssert head2 = new HeadSectionAssert(doc)
-            .setPublishCount(0).setLevel(2) .setNoteCount(0)
-            .addSection(0, 0, 0)            .setPublishTotal(1)
-            .addAllLine(0, 0, 0, 0, 0, 0, 0).setNoteTotal(0);
+            .setPublishCount(1).setLevel(2) .setNoteCount(0)
+            .addLine(0, 1, 0)               .setHeading(0, 1, 0)
+            .setPublishTotal(1)             .setNoteTotal(0);
         HeadLevelLineAssert line2 = new HeadLevelLineAssert(doc)
-            .setFormattedSpan(0, 0, 2)
-            .setEdition(EditionType.NONE).setLevel(1)
+            .setFormattedSpan(0, 1, 0, 1)
+            .setEdition(EditionType.NONE).setLevel(2)
             .setPublish(1)   .setNote(0);
 
         head1.test(2, raw, 0);
         line1.test(3, text1, 0, 0);
         head2.test(1, text2, 0, 1);
-        line2.test(2, text2, 0, 0, 1);
+        line2.test(2, text2, 0, 1, 0);
         doc.assertRest();
     }
 

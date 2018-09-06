@@ -309,14 +309,14 @@ public class ListenerAssert<T extends SpanNode<?>>{
         for (SpanNode<?> got: actual){
             list.add(() -> {
                 assertTrue(expect.contains(got),
-                    () -> "Unexpected: "  + got);
+                    () -> "Unexpected" + name + ": "  + got);
                 expect.remove(got);
             });
         }
 
         /// since the one called are removed from `expect`:
         list.add(() ->  assertTrue(
-            expect.isEmpty(), () -> formatList("Not Called", expect)
+            expect.isEmpty(), () -> formatList("Not Call " + name + ": ", expect)
         ));
         return () -> assertAll(name, list);
     }
