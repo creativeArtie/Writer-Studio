@@ -234,7 +234,7 @@ public class ContentTest{
         ///           012345678901
         String after = "hallway run";
         doc.insert(4, "way");
-        doc.assertDoc(1, after, parsers);
+        doc.assertDoc(1, after);
 
         ContentAssert content = new ContentAssert(doc)
             .setBoth(after) .setBegin(false)
@@ -252,7 +252,7 @@ public class ContentTest{
         ///           012345678901
         String after = "hallway run";
         doc.insert(7, " run");
-        doc.assertDoc(1, after, parsers);
+        doc.assertDoc(1, after);
 
         ContentAssert content = new ContentAssert(doc)
             .setBoth(after) .setBegin(false)
@@ -269,7 +269,7 @@ public class ContentTest{
         DocumentAssert doc = assertDoc(1, before, parsers);
         String after = "ab\\*d";
         doc.insert(2, "\\");
-        doc.assertDoc(1, after, parsers);
+        doc.assertDoc(1, after);
 
         ContentAssert content = new ContentAssert(doc)
             .setBoth("ab*d").setBegin(false)
@@ -291,7 +291,7 @@ public class ContentTest{
         DocumentAssert doc = assertDoc(1, before, parsers);
         String after = "ab*d";
         doc.delete(2, 3);
-        doc.assertDoc(1, after, parsers);
+        doc.assertDoc(1, after);
 
         ContentAssert content = new ContentAssert(doc)
             .setBoth(after) .setBegin(false)
@@ -310,7 +310,7 @@ public class ContentTest{
 
         ///             012 3456
         String after = "abc\nab";
-        doc.assertDoc(2, after, parsers);
+        doc.assertDoc(2, after);
         commonUnparsed(doc, "\n");
     }
 
@@ -323,7 +323,7 @@ public class ContentTest{
 
         ///             0123456
         String after = "abc}ab";
-        doc.assertDoc(2, after, parsers);
+        doc.assertDoc(2, after);
         commonUnparsed(doc, "}");
     }
 }

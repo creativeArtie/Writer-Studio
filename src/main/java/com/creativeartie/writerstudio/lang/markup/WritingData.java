@@ -52,6 +52,16 @@ public final class WritingData extends Document{
         cacheMeta = meta.build();
     }
 
+    public Optional<SpanLeaf> getLeaf(TextTypeMatter area, int location){
+        return locateLeaf(l ->
+            l.getParent(TextSpanMatter.class)
+                .filter(s -> s.getRowType() == area).isPresent() &&
+            (l.getParent(FormattedSpan.class).isPresent() ||
+                l.getRaw().equals(LINED_END)
+            )? l.getLocalEnd(): 0
+        , location);
+    }
+
     /** Gets a list of lines to print in a manuscript area.
      *
      * @param area
@@ -88,7 +98,7 @@ public final class WritingData extends Document{
             if (i < print.size()){
                 print.get(i).setData(text);
             } else {
-                runCommand(() -> getRaw() + area.getKeyName() + TEXT_SEPARATOR +
+                addChild(TextParser.PARSER, area.getKeyName() + TEXT_SEPARATOR +
                     TextDataType.CENTER.getKeyName() + TEXT_SEPARATOR +
                     TextSpanMatter.fixText(text) + LINED_END);
             }
@@ -135,7 +145,8 @@ public final class WritingData extends Document{
         Optional<TextSpanInfo> span = getWritingData(meta);
         if (! span.isPresent()){
             String text = TextSpanInfo.escapeText(raw);
-            runCommand(() -> getRaw() + meta.getKeyName() + TEXT_SEPARATOR +
+            System.out.println(text);
+            addChild(TextParser.PARSER, meta.getKeyName() + TEXT_SEPARATOR +
                 TextDataType.TEXT.getKeyName() + TEXT_SEPARATOR + text + "\n");
         } else span.get().editText(raw);
         setFireReady(true);

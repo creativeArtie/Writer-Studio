@@ -65,6 +65,7 @@ public class LinedLevelHeadTest {
         DocumentAssert doc = assertDoc(1, raw, parsers);
         doc.delete(1, 2);
 
+        doc.assertDoc(1, "!");
         doc.assertRest("!");
     }
 

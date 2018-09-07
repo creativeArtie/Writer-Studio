@@ -17,6 +17,11 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 public class Main extends Application{
     private static Stage mainStage;
     private static WritingFile writeFile;
+    private static Application mainApp;
+
+    public static Application getApplication(){
+        return mainApp;
+    }
 
     /** Main method
      *
@@ -60,6 +65,7 @@ public class Main extends Application{
 
     @Override
     public void start(Stage stage) throws Exception{
+        mainApp = this;
 
         /// create main pane
         WriterSceneControl writer = new WriterSceneControl(stage);
@@ -67,7 +73,7 @@ public class Main extends Application{
         /// set scene
         Scene scene = new Scene(writer, 800, 600);
         stage.setScene(scene);
-        writer.setupProperties(scene);
+        writer.postLoad(scene);
 
         /// set stage info
         stage.setTitle(WindowText.PROGRAM_NAME.getText());
@@ -80,7 +86,7 @@ public class Main extends Application{
         mainStage = stage;
 
         writer.setWritingFile(writeFile);
-        writer.setRefocusText(true);
+        writer.refocusText();
         stage.show();
 
     }
@@ -92,6 +98,7 @@ public class Main extends Application{
      * @return answer
      */
     protected void getStartFile(WriterSceneControl writer) throws IOException{
+        // writeFile = WritingFile.newSampleFile(new File("../../../src/test/resources/sectionDebug8.txt"));
         // writeFile = WritingFile.newSampleFile(new File("../../../src/back/resources/help-text.txt"));
         writeFile = WritingFile.newFile();
         writer.listenWriterFile((d, o, n) -> writeFile = n);

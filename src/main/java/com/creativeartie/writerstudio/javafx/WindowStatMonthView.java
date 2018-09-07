@@ -2,6 +2,7 @@ package com.creativeartie.writerstudio.javafx;
 
 import java.util.*;
 import java.time.*;
+import java.time.format.*;
 import javafx.geometry.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -9,14 +10,15 @@ import javafx.beans.property.*;
 
 import com.google.common.collect.*;
 
-import com.creativeartie.writerstudio.resource.*;
+import com.creativeartie.writerstudio.javafx.utils.*;
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    WindowStatChildContants.*;
 
 abstract class WindowStatMonthView extends GridPane{
-    private static int DAY_OF_WEEK = DayOfWeek.values().length;
-    private static int SHOW_WEEKS = 6;
-    private static int DAY_PANES = DAY_OF_WEEK * SHOW_WEEKS;
 
     /// %Part 1: Constructor and Class Fields
+
+    private SimpleObjectProperty<YearMonth> currentMonth;
 
     private Button firstButton;
     private Button pastButton;
@@ -24,8 +26,6 @@ abstract class WindowStatMonthView extends GridPane{
     private Button endButton;
     private Label yearMonthLabel;
     private List<WindowStatDayControl> dayPanes;
-
-    private SimpleObjectProperty<YearMonth> currentMonth;
 
     WindowStatMonthView(){
         setColumnConstraints();
@@ -46,53 +46,65 @@ abstract class WindowStatMonthView extends GridPane{
 
     /// %Part 2: Layout
 
+    /// %Part 2 column sizes
+
     private void setColumnConstraints(){
         ArrayList<ColumnConstraints> columns = new ArrayList<>();
         int size = DayOfWeek.values().length;
         for(int i = 0; i < size; i++){
             ColumnConstraints column = new ColumnConstraints();
-            column.setPrefWidth(WindowStatView.WIDTH / size);
-            column.setMaxWidth(WindowStatView.WIDTH / size);
+            column.setPrefWidth(COLUMN_WIDTH);
+            column.setMaxWidth(COLUMN_WIDTH);
             columns.add(column);
         }
         getColumnConstraints().addAll(columns);
     }
 
+    /// %Part 2 (content -> top left)
+
     private FlowPane buildPastNav(){
         firstButton = new Button();
-        firstButton.setGraphic(ButtonIcon.START_MONTH.getIcon());
+        firstButton.setGraphic(ImageIcon.START_MONTH.getIcon());
 
         pastButton = new Button();
-        pastButton.setGraphic(ButtonIcon.PAST_MONTH.getIcon());
+        pastButton.setGraphic(ImageIcon.PAST_MONTH.getIcon());
 
         FlowPane pane = new FlowPane(firstButton, pastButton);
         pane.setAlignment(Pos.BOTTOM_LEFT);
         return pane;
     }
 
+    /// %Part 2 (content -> top center)
+
     private StackPane buildMonthTitle(){
         yearMonthLabel = new Label();
-        yearMonthLabel.getStyleClass().add("month");
+        yearMonthLabel.getStyleClass().add(MONTH_STYLE);
         return new StackPane(yearMonthLabel);
     }
 
+    /// %Part 2 (content -> top right)
+
     private FlowPane buildNextNav(){
         nextButton = new Button();
-        nextButton.setGraphic(ButtonIcon.NEXT_MONTH.getIcon());
+        nextButton.setGraphic(ImageIcon.NEXT_MONTH.getIcon());
         endButton = new Button();
-        endButton.setGraphic(ButtonIcon.END_MONTH.getIcon());
+        endButton.setGraphic(ImageIcon.END_MONTH.getIcon());
 
         FlowPane pane = new FlowPane(nextButton, endButton);
         pane.setAlignment(Pos.BOTTOM_RIGHT);
         return pane;
     }
 
+    /// %Part 2 (content -> row) separate setup and insert methods
+
     private StackPane buildDayLabel(DayOfWeek day){
-        Label header = new Label(WindowText.getText(day));
-        header.getStyleClass().add("weekday");
+        LocalDate use = LocalDate.now().with(day);
+        String text = DateTimeFormatter.ofPattern("EEE").format(use);
+        Label header = new Label(text);
+        header.getStyleClass().add(WEEKDAY_STYLE);
 
         StackPane pane = new StackPane(header);
-        pane.getStyleClass().add("weekday-box");
+        pane.getStyleClass().add(WEEKDAY_BOX_STYLE);
         return pane;
     }
 
@@ -115,13 +127,15 @@ abstract class WindowStatMonthView extends GridPane{
 
     /// %Part 3: Setup Properties
 
-    public void setupProperties(WindowStatControl control){
-        setupChildern(control);
+    public void postLoad(WindowStatControl control){
+        bindChildren(control);
     }
 
-    protected abstract void setupChildern(WindowStatControl control);
+    protected abstract void bindChildren(WindowStatControl control);
 
     /// %Part 4: Properties
+
+    /// %Part 4.1: currentMonth (YearMonth)
 
     public SimpleObjectProperty<YearMonth> currentMonthProperty(){
         return currentMonth;

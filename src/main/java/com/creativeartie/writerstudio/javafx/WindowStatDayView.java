@@ -7,19 +7,22 @@ import javafx.scene.layout.*;
 import javafx.beans.property.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    WindowStatChildContants.*;
 
 abstract class WindowStatDayView extends AnchorPane{
     /// %Part 1: Constructor and Class Fields
+
+    private SimpleObjectProperty<LocalDate> showDate;
+
     private Label dayLabel;
     private Label statLabel;
     private Tooltip statTip;
 
-    private SimpleObjectProperty<LocalDate> showDate;
-
     WindowStatDayView(){
-        setMaxWidth(WindowStatView.WIDTH / 7);
-        setPrefHeight(60);
-        getStyleClass().add("day-box");
+        setMaxWidth(COLUMN_WIDTH);
+        setPrefHeight(CELL_HEIGHT);
+        getStyleClass().add(DAY_BOX_STYLE);
 
         getChildren().addAll(buildDayLabel(), buildStatLabel());
 
@@ -28,34 +31,40 @@ abstract class WindowStatDayView extends AnchorPane{
 
     /// %Part 2: Layout
 
+    /// %Part 2 (content -> top left)
+
     private Label buildDayLabel(){
         dayLabel = new Label();
-        setTopAnchor(dayLabel, 0.0);
-        setLeftAnchor(dayLabel, 0.0);
+        setTopAnchor(dayLabel, DAY_ANCHOR_TOP);
+        setLeftAnchor(dayLabel, DAY_ANCHOR_LEFT);
 
         return dayLabel;
     }
+
+    /// %Part 2 (content -> middle right)
 
     private Label buildStatLabel(){
         statLabel = new Label();
         statTip = new Tooltip();
         statLabel.setTooltip(statTip);
 
-        setTopAnchor(statLabel, 5.0);
-        setRightAnchor(statLabel, 0.0);
+        setTopAnchor(statLabel, STAT_ANCHOR_TOP);
+        setRightAnchor(statLabel, STAT_ANCHOR_RIGHT);
 
         return statLabel;
     }
 
     /// %Part 3: Setup Properties
 
-    public void setupProperties(WindowStatControl control){
-        setupChildern(control);
+    public void postLoad(WindowStatControl control){
+        bindChildren(control);
     }
 
-    protected abstract void setupChildern(WindowStatControl control);
+    protected abstract void bindChildren(WindowStatControl control);
 
     /// %Part 4: Properties
+
+    /// %Part 4.1: showDate (LocalDate)
 
     public SimpleObjectProperty<LocalDate> showDateProperty(){
         return showDate;

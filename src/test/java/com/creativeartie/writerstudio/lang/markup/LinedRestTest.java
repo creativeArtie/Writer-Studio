@@ -29,7 +29,7 @@ public class LinedRestTest {
         String before = "**\n";
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(1, "*");
-        doc.assertDoc(1, "***\n", parsers);
+        doc.assertDoc(1, "***\n");
         commonBreak(doc);
     }
 
@@ -48,7 +48,7 @@ public class LinedRestTest {
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(1, "*");
         String after = "****\n";
-        doc.assertDoc(1, after, parsers);
+        doc.assertDoc(1, after);
 
         ParagraphLineAssert paragraph = new ParagraphLineAssert(doc)
             .setPublish(0).setNote(0)
@@ -70,7 +70,7 @@ public class LinedRestTest {
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.delete(0, 1);
         String after = "**\n";
-        doc.assertDoc(1, after, parsers);
+        doc.assertDoc(1, after);
 
         ParagraphLineAssert paragraph = new ParagraphLineAssert(doc)
             .setPublish(0).setNote(0)

@@ -125,14 +125,7 @@ public abstract class SectionSpan extends SpanBranch {
 
     public abstract int getNoteTotal();
 
-    /// %Part 3: Get Parser ####################################################
-
-    @Override
-    protected final SetupParser getParser(String text){
-        return null;
-    }
-
-    /// %Part 4: To String Function ############################################
+    /// %Part 3: To String Function ############################################
 
     @Override
     public String toString(){

@@ -33,7 +33,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     /// values = Integer[]{column, line}
     private final LoadingCache<Integer, Integer[]> spanLocation;
 
-    private final CatalogueMap catalogueMap;
+    private final CatalogueSystem catalogueMap;
     private ArrayList<SpanBranch> documentChildren;
 
     /** Creates a {@linkplain Document}.
@@ -73,11 +73,11 @@ public abstract class Document extends SpanNode<SpanBranch>{
                 return new Integer[]{column, line};
             }));
 
-        catalogueMap = new CatalogueMap();
+        catalogueMap = new CatalogueSystem();
         parseDocument(raw); /// Sets spanChildren
 
         /// load catalogue map
-        catalogueMap.clear();
+        catalogueMap.clearMap();
         loadMap(documentChildren);
     }
 
@@ -88,6 +88,17 @@ public abstract class Document extends SpanNode<SpanBranch>{
     @Override
     protected final synchronized void runCommand(Command command){
         reparseDocument(command.getResult());
+    }
+
+    @Override
+    final void addChild(SpanBranch span, int position){
+        documentChildren.add(position, span);
+        span.setParent(this);
+    }
+
+    @Override
+    final void removeChild(int index){
+        documentChildren.remove(index);
     }
 
     /** Insert a {@linkplain String} at a location.
@@ -101,6 +112,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
         argumentClose(index, "index", 0, getEnd());
         argumentNotNull(input, "input");
 
+        if (input.isEmpty()) return;
+
         /// Insert into empty doc
         if (isEmpty()){
             reparseDocument(input);
@@ -110,7 +123,11 @@ public abstract class Document extends SpanNode<SpanBranch>{
         /// Insert at the end
         if (index == getLocalEnd()){
             /// Gets the last span leaf's parent
-            Span span = locateLeaf(size() - 1).get();
+            Span span = this.get(size() - 1);
+            while(span instanceof SpanBranch){
+                span = ((SpanBranch)span).get(size() - 1);
+            }
+
             assert span instanceof SpanLeaf: "Wrong class.";
             span = span.getParent();
             /// try to parse at SpanBranch
@@ -144,6 +161,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
     protected synchronized void delete(int start, int end){
         argumentClose(end, "end", 0, getEnd());
         argumentClose(start, "start", 0, end);
+        if (start == end) return;
 
         edit(span -> {
             if (span.getEnd() >= end){
@@ -284,7 +302,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
         }
 
         /// reload the catalogue
-        catalogueMap.clear();
+        catalogueMap.clearMap();
         loadMap(this);
 
         fireAll();
@@ -515,7 +533,15 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * @return answer
      */
     public final CatalogueMap getCatalogue(){
-        return catalogueMap;
+        return catalogueMap.delegate();
+    }
+
+    /** Get catalogue map.
+     *
+     * @return answer
+     */
+    public final CatalogueMap getDocumentCatalogue(){
+        return catalogueMap.getDocumentMap();
     }
 
     /** Add catalogue map from a document.
@@ -525,11 +551,8 @@ public abstract class Document extends SpanNode<SpanBranch>{
      */
     public void addReferences(Document ... docs){
         for (Document doc: docs){
-            CatalogueMap map = doc.catalogueMap;
-            // TODO work on span branches (no more editing will be doen to them)
-            // TODO remove id references (not applicable)
-            // TODO merge ids
-            catalogueMap.add(map);
+            CatalogueSystem map = doc.catalogueMap;
+            catalogueMap.add(map.delegate());
         }
     }
 

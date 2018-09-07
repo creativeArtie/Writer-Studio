@@ -177,12 +177,9 @@ public final class StatSpanDay extends SpanBranch{
 
     private void addNewColumn(StatTypeData type, Object data){
         String symbol = StatParseData.values()[type.ordinal()].getSymbol();
-        /// (getRaw() - "\n") + symbol + ":" + data + "|" + "\n"
-        runCommand(() -> getRaw().substring(
-                0, getRaw().length() - STAT_ROW_END.length()
-            ) +
-            symbol + STAT_KEY_DATA + data + STAT_SEPARATOR +
-            STAT_ROW_END);
+        ///symbol + ":" + data + "|"
+        addChild(type.getParser(), symbol + STAT_KEY_DATA + data +
+            STAT_SEPARATOR, size() - 1);
     }
 
     /** Starts the record time (as needed) and update counts.

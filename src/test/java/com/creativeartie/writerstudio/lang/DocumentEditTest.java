@@ -1,10 +1,12 @@
 package com.creativeartie.writerstudio.lang;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.*;
+import org.junit.jupiter.params.provider.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
 
-@DisplayName("Some Document Editing Tester")
+@DisplayName("Document Editing")
 public class DocumentEditTest{
 
     private static Document build(String raw){
@@ -20,6 +22,48 @@ public class DocumentEditTest{
         doc.insert(0, "abcd");
         testBasic(doc);
 
+    }
+
+    @Test
+    @DisplayName("Delete from Empty")
+    public void deleteEmptyFromEmpty(){
+        String raw = "";
+        DocumentAssert doc = DocumentAssert.assertDoc(0, raw, build(raw));
+        doc.noDelete(0, 0);
+        doc.assertDoc(0, "");
+        doc.assertRest();
+    }
+
+
+    @ParameterizedTest(name = "Delete Empty at {0}.")
+    @DisplayName("Delete Empty")
+    @ValueSource(ints = { 0, 1, 2, 3, 4 })
+    public void deleteEmpty(int value){
+        String raw = "abcd";
+        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, build(raw));
+        doc.noDelete(true, value, value);
+        testBasic(doc);
+    }
+
+    @Test
+    @DisplayName("Insert empty to empty")
+    public void insertEmptyFromEmpty(){
+        String raw = "";
+        DocumentAssert doc = DocumentAssert.assertDoc(0, raw, build(raw));
+        doc.noInsert(0, "");
+        doc.assertDoc(0, "");
+        doc.assertRest();
+    }
+
+
+    @ParameterizedTest(name = "Insert Empty at {0}.")
+    @DisplayName("Insert Empty")
+    @ValueSource(ints = { 0, 1, 2, 3, 4 })
+    public void insertEmpty(int value){
+        String raw = "abcd";
+        DocumentAssert doc = DocumentAssert.assertDoc(1, raw, build(raw));
+        doc.noInsert(true, value, "");
+        testBasic(doc);
     }
 
     @Test
@@ -49,7 +93,7 @@ public class DocumentEditTest{
         String raw = "abc";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, build(raw));
         ///            Doc
-        doc.insert(2, "\\");
+        doc.insert(2, "\\", 0);
 
         String done = "ab\\c";
         doc.assertDoc(1, done);
@@ -70,7 +114,7 @@ public class DocumentEditTest{
         String raw = "ab\\c";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, build(raw));
         ///           Doc
-        doc.insert(0, "k");
+        doc.insert(0, "k", 0);
 
         String done = "kab\\c";
         doc.assertDoc(1, done);
@@ -202,8 +246,8 @@ public class DocumentEditTest{
     public void mergeLineByDelete(){
         String raw = "=asdf\n jkl; #abc";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, build(raw));
-        ///         Doc
-        doc.delete(5, 6);
+        ///        Doc
+        doc.delete(5, 6, /*<- delete | at ->*/ 0);
 
         String done = "=asdf jkl; #abc";
         String content = "asdf jkl; ";
@@ -248,7 +292,7 @@ public class DocumentEditTest{
         String raw = "#321\nmore text";
         DocumentAssert doc = DocumentAssert.assertDoc(1, raw, build(raw));
         ///           Doc
-        doc.insert(4, "\\");
+        doc.insert(4, "\\", 0);
 
         String done = "#321\\\nmore text";
         String content = "321\\\nmore text";

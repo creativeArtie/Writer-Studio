@@ -39,13 +39,51 @@ public class SectionTest {
     }
 
     @Test
+    public void editHeading1ToChild(){
+        /// ------------012345678
+        String text1 = "=Hello\n";
+        String text2 = "=Child";
+        String raw = text1 + text2;
+        DocumentAssert doc = assertDoc(2, raw, PARSER);
+        doc.insert(8, "=");
+
+        text2 = "=" + text2;
+        raw = text1 + text2;
+        doc.assertDoc(1, raw);
+
+        HeadSectionAssert head1 = new HeadSectionAssert(doc)
+            .setPublishCount(1) .setNoteCount(0)
+            .addLine(0, 0)      .setHeading(0, 0)
+            .addSection(0, 1)   .setPublishTotal(2)
+            .addAllLine(0, 1, 0).setNoteTotal(0);
+        HeadLevelLineAssert line1 = new HeadLevelLineAssert(doc)
+            .setFormattedSpan(0, 0, 1)
+            .setEdition(EditionType.NONE).setLevel(1)
+            .setPublish(1)   .setNote(0);
+        HeadSectionAssert head2 = new HeadSectionAssert(doc)
+            .setPublishCount(1).setLevel(2) .setNoteCount(0)
+            .addLine(0, 1, 0)               .setHeading(0, 1, 0)
+            .setPublishTotal(1)             .setNoteTotal(0);
+        HeadLevelLineAssert line2 = new HeadLevelLineAssert(doc)
+            .setFormattedSpan(0, 1, 0, 1)
+            .setEdition(EditionType.NONE).setLevel(2)
+            .setPublish(1)   .setNote(0);
+
+        head1.test(2, raw, 0);
+        line1.test(3, text1, 0, 0);
+        head2.test(1, text2, 0, 1);
+        line2.test(2, text2, 0, 1, 0);
+        doc.assertRest();
+    }
+
+    @Test
     public void editChangeSection1_1(){
         ///           0123456789 0123
         String raw = "=Chapter 1\n===Section 1\nsection 1 text\n!# outline\n" +
             "=Chapter 2\nsome text\n";
         DocumentAssert doc = assertDoc(2, raw, PARSER);
-        doc.delete(11, 12);
-        doc.assertDoc(2, COMMON_DOC, PARSER);
+        doc.delete(11, 12, 0, 1);
+        doc.assertDoc(2, COMMON_DOC);
         commonSections(doc);
     }
 
@@ -56,8 +94,8 @@ public class SectionTest {
         String raw = "=Chapter 1\n==Section 1\nsection 1 text\n! outline\n" +
             "=Chapter 2\nsome text\n";
         DocumentAssert doc = assertDoc(2, raw, PARSER);
-        doc.insert(39, "#");
-        doc.assertDoc(2, COMMON_DOC, PARSER);
+        doc.insert(39, "#", 0, 1);
+        doc.assertDoc(2, COMMON_DOC);
         commonSections(doc);
     }
 
@@ -69,8 +107,8 @@ public class SectionTest {
             "=Chapter 2\nsome text\n";
         DocumentAssert doc = assertDoc(2, raw, PARSER);
         /// Note that the edited span is Chapter 1 -> Section 1
-        doc.delete(39, 40);
-        doc.assertDoc(2, COMMON_DOC, PARSER);
+        doc.delete(39, 40, 0, 1, 2);
+        doc.assertDoc(2, COMMON_DOC);
         commonSections(doc);
     }
 
@@ -123,6 +161,7 @@ public class SectionTest {
         head5.test(1, text, 0, 0, 0, 0, 0);
         head6.test(1, text, 0, 0, 0, 0, 0, 0);
         line.test( 2, text, 0, 0, 0, 0, 0, 0, 0);
+        doc.assertRest();
     }
 
     private void commonSections(DocumentAssert doc){

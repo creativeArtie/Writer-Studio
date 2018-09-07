@@ -1,5 +1,6 @@
 package com.creativeartie.writerstudio.javafx;
 
+import com.creativeartie.writerstudio.javafx.utils.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 
 /**
@@ -9,41 +10,44 @@ import com.creativeartie.writerstudio.lang.markup.*;
  */
 class CheatsheetPaneControl extends CheatsheetPaneView{
 
+    /// %Part 1: Private Fields and Constructor
+
     private WritingText writingText;
     private int caretPosition;
 
-    /// %Part 1: setupChildren
+    /// %Part 2: Property Binding
+    /// %Part 3: Bind Children Properties
 
-    protected void setupChildern(WriterSceneControl control){
-        control.writingTextProperty().addListener((d, o, n) -> loadText(n));
+    protected void bindChildren(WriterSceneControl control){
+        control.writingTextProperty().addListener((d, o, n) -> listenWritingText(n));
 
         control.getTextPane().getTextArea().caretPositionProperty().addListener(
-            (d, o, n) -> loadPosition(n.intValue())
+            (d, o, n) -> listenPosition(n.intValue())
         );
     }
 
-    /// %Part 1.1: WriterSceneControl#writingTextProperty()
+    /// %Part 3.1: control.writingTextProperty()
 
-    private void loadText(WritingText text){
+    private void listenWritingText(WritingText text){
         writingText = text;
         if (text != null) showStatus();
     }
 
-    /// %Part 1.2: WriterSceneControl#caretPositionProperty()
+    /// %Part 3.2: control.caretPositionProperty()
 
-    private void loadPosition(int position){
+    private void listenPosition(int position){
         caretPosition = position;
         if (writingText != null) showStatus();
     }
 
-    /// %Part 2: Utilities
+    /// %Part 3: Utilities
 
      /** Updates the labels base on the cursor movements. */
     private void showStatus(){
         if (writingText.getRange().contains(caretPosition) ||
             writingText.getEnd() == caretPosition
         ){
-            for (CheatsheetLabel label: getHintLabels()){
+            for (HintLabel label: getHintLabels()){
                 label.showStatus(writingText, caretPosition);
             }
         }

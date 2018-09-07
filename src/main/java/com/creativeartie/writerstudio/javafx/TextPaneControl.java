@@ -11,9 +11,12 @@ import org.fxmisc.richtext.model.*;
 
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.resource.*;
+import com.creativeartie.writerstudio.javafx.utils.*;
 
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    TextPaneConstants.*;
 
 /**
  * Controller for the main text area.
@@ -22,143 +25,201 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  */
 class TextPaneControl extends TextPaneView {
 
+    private boolean isReady;
+    private long stopTime;
+    private BooleanProperty refocusText;
     private WritingText writingText;
     private WritingStat writingStat;
 
-    private static final long STOP = -2;
-    private static final long START = -1;
-    private static final long LENGTH = 60 * 1000000l;
-    private long stopTime;
-    private long restyleTime;
+    /// %Part 1: Private Fields and Constructor
+    /// %Part 2: Property Binding
 
-    private ReadOnlyBooleanWrapper textReady;
-    private BooleanProperty refocusText;
-
-    TextPaneControl(){
-        stopTime = STOP;
-    }
+    /// %Part 3: Bind Children Properties
 
     @Override
-    protected void setTextReadyProperty(ReadOnlyBooleanWrapper prop){
-        textReady = prop;
-    }
+    protected void bindChildren(WriterSceneControl control){
+        refocusText = control.refocusTextProperty();
 
-    @Override
-    protected void setupChildern(WriterSceneControl control){
         new AnimationTimer(){
             @Override
-            public void handle(long now) {showTime(now); }
+            public void handle(long now) {listenTimer(now); }
         }.start();
 
-        control.writingTextProperty().addListener((d, o, n) -> loadText(n));
+        control.writingStatProperty().addListener((d, o, n) ->
+            listenWritingStat(n));
+        control.writingTextProperty().addListener((d, o, n) ->
+            listenWritingText(n));
+        control.lastSelectedProperty().addListener((d, o, n) ->
+            listenLastSelected(n));
 
-        control.writingStatProperty().addListener((d, o, n) -> loadStat(n));
-
-        control.lastSelectedProperty().addListener((d, o, n) -> showSelected(n));
-
+        getTextArea().plainTextChanges().subscribe(this::listenTextChange);
         getTextArea().caretPositionProperty().addListener((d, o, n) ->
-            showCaret(n.intValue()));
-        getTextArea().plainTextChanges().subscribe(this::textChanged);
-
-        refocusText = control.refocusTextProperty();
+            listenCaret(n.intValue()));
+        isReady = true;
     }
 
-    /// %Part 1: Animation Timer
+    /// %Part 3.1: new AnimationTimer(...).start();
 
-    private void showTime(long now){
-        getTimeLabel().setText(
-            DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalTime.now()
+    private void listenTimer(long now){
+        getClockLabel().setText(
+            DateTimeFormatter.ofPattern(CLOCK_FORMAT).format(LocalTime.now()
         ));
+
+       showStats();
+
+       if (writingStat == null) return;
+
         if (stopTime == START){
             stopTime = now + LENGTH;
 
         } else if (stopTime != STOP){
-            if (stopTime < now && textReady.getValue()){
-                writingStat.stopWriting(writingText);
-                showStats();
-                stopTime = STOP;
-            }
+            writingStat.stopWriting(writingText);
+            stopTime = STOP;
         }
     }
 
-    /// %Part 2: WritingTextProperty
+    /// %Part 3.2: control.writingStatProperty()
 
-    private void loadText(WritingText text){
-        textReady.setValue(false);
-        writingText = text;
-        getTextArea().replaceText(text.getRaw());
-        updateStyles(text.getLeaves());
-        textReady.setValue(text != null);
-        showCaret(getTextArea().getCaretPosition());
-    }
-
-    /// %Part 3: WritingDataProperty
-
-    private void loadStat(WritingStat stat){
-        textReady.setValue(false);
+    private void listenWritingStat(WritingStat stat){
+        isReady = false;
         writingStat = stat;
-        if (stat != null){
-            stat.addDocEdited(s -> showStats());
+        if (stat != null) {
+            writingText.addDocEdited(t -> showStats());
         }
-        textReady.setValue(stat != null);
+        if (writingText != null) writingStat.stopWriting(writingText);
         showStats();
+        isReady = true;
     }
 
-    private void showSelected(SpanBranch span){
-        if (span == null) return;
-        if (! isTextReady()) return;
-        refocusText.setValue(true);
-        if (span.getRange().contains(getTextArea().getCaretPosition())) return;
+    /// %Part 3.3: control.writingTextProperty()
 
-        textReady.setValue(false);
-        int position = span.getEnd();
-        if (position == getTextArea().getLength()){
-            getTextArea().end(NavigationActions.SelectionPolicy.CLEAR);
+    private void listenWritingText(WritingText text){
+        isReady = false;
+        writingText = text;
+        if (writingText == null) return;
+        getTextArea().replaceText(writingText.getRaw());
+        if (writingStat != null) writingStat.stopWriting(writingText);
+        syncDocuments(null);
+        isReady = true;
+    }
+
+    /// %Part 3.5: control.lastSelectedProperty()
+
+    private void listenLastSelected(SpanBranch span){
+        if (span instanceof SectionSpan){
+            moveToPoint(span.spanFromLast(LinedSpan.class)
+                .map(l -> l.getEnd())
+                .orElse(0)
+            );
         } else {
-            char found = writingText == null? (char) 0:
-                writingText.getRaw().charAt(position - 1);
-            getTextArea().moveTo(position - (found == '\n'? 1: 0));
+            moveToPoint(span.getEnd());
         }
-        textReady.setValue(true);
     }
 
-    /// %Part 4: plainTextChanges
-
-    private synchronized void textChanged(PlainTextChange change){
-        if (! textReady.getValue()){
-            return;
+    private void moveToPoint(int location){
+        String text = getTextArea().getText();
+        if (text.length() > location){
+            if (getTextArea().getText().charAt(location) == '\n'){
+                location--;
+            }
+        } else if (location < 0){
+            location = 0;
         }
+        getTextArea().moveTo(location);
+        refocusText.setValue(true);
+    }
 
-        textReady.setValue(false);
-        stateNotNull(writingText, "writingText");
-        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+    /// %Part 3.5: getTextArea().plainTextChanges().subscribe(...)
 
+    private synchronized void listenTextChange(PlainTextChange change){
+        if (! isReady || writingStat == null || writingText == null) return;
+        isReady = false;
         /// update the text area
         int pos = change.getPosition();
+
         writingText.delete(pos, change.getRemovalEnd());
         writingText.insert(pos, change.getInserted());
-        updateStyles(writingText.getLeaves());
 
-        ///Update the record
+        /// Update the record
         stopTime = START;
         writingStat.startWriting(writingText);
 
-        textReady.setValue(true);
-        showStats();
+        syncDocuments(change);
+        isReady = true;
     }
 
-    private void showCaret(int position){
+    /// %Part 3.6: getTextArea().caretPositionProperty()
+
+    private void listenCaret(int position){
         getLineTypeLabel().setText(writingText.getLeaf(position)
             /// s = SpanLeaf
             .flatMap(s -> s.getParent(LinedSpan.class))
             /// s = LinedSpan
-            .map(s -> WindowText.getText(s))
+            .map(s -> getLineText(s))
             /// s = String
             .orElse("")
         );
     }
 
+    private static String getLineText(LinedSpan span){
+        if (span instanceof LinedSpanLevelSection){
+            LinedSpanLevelSection line = (LinedSpanLevelSection) span;
+            return (line.isHeading()? HEADING: OUTLINE) +
+                " " + line.getLevel();
+        } else if( span instanceof  LinedSpanLevelList){
+            LinedSpanLevelList line = (LinedSpanLevelList) span;
+            return (line.isNumbered()? NUMBERED: BULLET) +
+                " " + line.getLevel();
+        } else if (span instanceof LinedSpanPointNote){
+            return ((LinedSpanPointNote) span).getDirectoryType() ==
+                DirectoryType.FOOTNOTE?
+                FOOTNOTE: ENDNOTE;
+        } else if (span instanceof LinedSpanPointLink){
+            return LINK;
+        } else if (span instanceof LinedSpanNote){
+            return NOTE;
+        } else if (span instanceof LinedSpanAgenda){
+            return AGENDA;
+        } else if (span instanceof LinedSpanQuote){
+            return QUOTE;
+        } else if (span instanceof LinedSpanBreak){
+            return BREAK;
+        } else if (span instanceof LinedSpanCite){
+            return SOURCE;
+        } else if (span instanceof LinedSpanParagraph){
+            return PARAGRAPH;
+        }
+        assert false: "Missing code for: " + span.getClass();
+        return "";
+    }
+
     /// %Part 4: Utilities
+
+    /** Way to protect error differences between interface and document
+     *
+     * @param change
+     *      the change that cause the issue
+     */
+    private void syncDocuments(PlainTextChange change){
+        if(! writingText.getRaw().equals(getTextArea().getText())){
+            System.err.println("==========================================");
+            System.err.println(writingText);
+            System.err.println("Text in interface and in document mismatch");
+            System.err.println("reparsing all");
+            Thread.currentThread().dumpStack();
+            System.err.println("problem change: " + change);
+            System.err.println("😧");
+            System.err.println("interface text: \n" + getTextArea().getText());
+            System.err.println("😧");
+            System.err.println("document text: \n" + writingText.getRaw());
+            System.err.println("😧");
+
+            writingText.replaceText(getTextArea().getText());
+            updateStyles(writingText.getLeaves());
+            listenCaret(getTextArea().getCaretPosition());
+        }
+        updateStyles(writingText.getLeaves());
+    }
 
     private void updateStyles(Collection<SpanLeaf> leaves){
         for (SpanLeaf leaf: leaves){
@@ -169,21 +230,19 @@ class TextPaneControl extends TextPaneView {
     }
 
     private void showStats(){
-        if (textReady.getValue()){
-            StatSpanDay record = writingStat.getRecord();
-            int word = record.getPublishWritten();
-            double count = (word / (double) record.getPublishGoal()) * 100;
+        if (writingStat == null) return;
+        StatSpanDay record = writingStat.getRecord();
+        int word = record.getPublishWritten();
+        double count = (word / (double) record.getPublishGoal()) * 100;
 
-            Duration timer = record.getWriteTime();
-            long hours = timer.toHours();
-            long minutes = timer.toMinutes() % 60;
-            long seconds = timer.getSeconds() % 60;
-            double past = (timer.getSeconds() / (double) record.getTimeGoal()
-                .getSeconds()) * 100;
-            String text = String.format(
-                "Publish: %d (%#.2f%%); Time: %d:%02d:%02d (%#.2f%%)",
-                word, count, hours, minutes, seconds, past);
-            getStatsLabel().setText(text);
-        }
+        Duration timer = record.getWriteTime();
+        long hours = timer.toHours();
+        long minutes = timer.toMinutes() % 60;
+        long seconds = timer.getSeconds() % 60;
+        double past = (timer.getSeconds() / (double) record.getTimeGoal()
+            .getSeconds()) * 100;
+        String text = String.format(STAT_TEXT, word, count, hours, minutes,
+            seconds, past);
+        getStatsLabel().setText(text);
     }
 }

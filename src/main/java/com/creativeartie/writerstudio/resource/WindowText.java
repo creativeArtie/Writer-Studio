@@ -9,6 +9,7 @@ import static com.google.common.base.Preconditions.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.lang.Span;
 import com.creativeartie.writerstudio.main.*;
+import com.creativeartie.writerstudio.javafx.utils.*;
 
 public enum WindowText {
     PROGRAM_NAME("MainWindow.Title"),
@@ -43,7 +44,9 @@ public enum WindowText {
 
     TAB_CONTENT("LeftTabs.TableOfContents"),
     TAB_META("LeftTabs.MetaData"),
-    // TAB_RELATIVE("LeftTabs.Files"),
+    // TAB_FILE("LeftTabs.Files"),
+    TAB_TEXT("RightTabs.TextArea"),
+    TAB_WEB("RightTabs.Research"),
 
     AGENDA_LINE("AgendaTable.LineColumn"),
     AGENDA_TYPE("AgendaTable.TypeColumn"),
@@ -78,6 +81,13 @@ public enum WindowText {
     NOTE_CARD_IN_TEXT("NoteDetail.InTextLabel"),
     NOTE_CARD_SOURCE("NoteDetail.SourceLabel"),
     NOTE_CARD_EDIT("NoteDetail.GotoEdit"),
+
+    RESEARCH_URL("ResearchPane.AddressPlaceholder"),
+    RESEARCH_SEARCH("ResearchPane.SearchPlaceholder"),
+    RESEARCH_BACK("ResearchPane.BackButton"),
+    RESEARCH_FORWARD("ResearchPane.ForwardButton"),
+    RESEARCH_TIMEOUT_MINS("ResearchPane.TimeoutMinutes"),
+    RESEARCH_TIMEOUT_SECS("ResearchPane.TimeoutSeconds"),
 
     DATA_META("DocData.MetaDataTitle"),
     DATA_AREA("DocData.MattersTitle"),
@@ -128,7 +138,7 @@ public enum WindowText {
         return getDisplay(getText("DocData.Matter", area.name()));
     }
 
-    public static String getText(ButtonIcon icon){
+    public static String getText(ImageIcon icon){
         return getDisplay(getText("Icon.", icon.name()));
     }
 

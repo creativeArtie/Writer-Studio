@@ -10,48 +10,64 @@ import javafx.scene.control.*;
 
 import com.google.common.collect.*;
 
+import com.creativeartie.writerstudio.javafx.utils.*;
 import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.resource.*;
+
+
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    MainWindowConstants.*;
 
 abstract class WriterSceneView extends BorderPane{
+
     /// %Part 1: Constructor and Class Fields
-
-    private static final double[] VER_DIVIDER = new double[]{.2, .8};
-    private static final double[] HOR_DIVIDER = new double[]{.0, 1.0};
-
-    private NoteCardPaneControl noteCardPane;
-    private MenuBarMainControl mainMenuBar;
-    private CheatsheetPaneControl cheatsheetPane;
-    private TextPaneControl textPane;
-    private MetaDataPaneControl metaDataPane;
-    private List<TableDataControl<?>> dataTables;
-    private HeadingsPaneControl headingsPane;
 
     private ReadOnlyObjectWrapper<WritingText> writingText;
     private ReadOnlyObjectWrapper<WritingStat> writingStat;
     private ReadOnlyObjectWrapper<WritingData> writingData;
-    private SimpleObjectProperty<SpanBranch> lastSelected;
     private SimpleBooleanProperty refocusText;
+    private SimpleObjectProperty<SpanBranch> lastSelected;
+
+    private MenuBarMainControl mainMenuBar;
+
+    private NoteCardPaneControl noteCardPane;
+    private DataPaneAgenda agendaPane;
+    private DataPaneLink linkPane;
+    private DataPaneNote footnotePane;
+    private DataPaneNote endnotePane;
+
+    private CheatsheetPaneControl cheatsheetPane;
+
+    private HeadingsPaneControl headingPane;
+    private MetaDataPaneControl metaDataPane;
+
+    private TabPane mainTabs;
+    private TextPaneControl textPane;
+    private ResearchPaneControl researchPane;
 
     WriterSceneView(Stage window){
-        getStylesheets().add(FileResources.getMainCss());
-        setTop(buildTop(window));
-        setCenter(buildSplitMain());
+        getStylesheets().add(FileResource.MAIN_CSS.getCssPath());
 
         writingText = new ReadOnlyObjectWrapper<>(this, "writingText");
         writingStat = new ReadOnlyObjectWrapper<>(this, "writingStat");
         writingData = new ReadOnlyObjectWrapper<>(this, "writingData");
-        lastSelected = new SimpleObjectProperty<>(this, "lastSelected");
         refocusText = new SimpleBooleanProperty(this, "refocusText");
+        lastSelected = new SimpleObjectProperty<>(this, "lastSelected");
+
+        setTop(buildTop(window));
+        setCenter(buildSplitMain());
     }
 
     /// %Part 2: Layout
+
+    /// %Part 2 (pane -> menu bar)
 
     private MenuBarMainControl buildTop(Stage window){
         mainMenuBar = new MenuBarMainControl(window);
         return mainMenuBar;
     }
+
+    /// %Part 2 (pane -> top-down split)
 
     private SplitPane buildSplitMain(){
         SplitPane full = new SplitPane(buildTopTabs(), buildContent());
@@ -60,36 +76,32 @@ abstract class WriterSceneView extends BorderPane{
         return full;
     }
 
-    private TabPane buildTopTabs(){
-        TabPane top = buildTabPane();
+    /// %Part 2 (pane -> top-down split -> top)
 
-        ArrayList<Tab> tabs = new ArrayList<>();
+    private TabPane buildTopTabs(){
+        TabPane tabs = CommonLayoutUtility.buildTabPane();
 
         noteCardPane = new NoteCardPaneControl();
-        tabs.add(new Tab(WindowText.TAB_NOTE_CARD.getText(), noteCardPane));
+        CommonLayoutUtility.addTab(tabs, TAB_NOTE_CARD, noteCardPane);
 
-        ImmutableList.Builder<TableDataControl<?>> builder =
-            ImmutableList.builder();
-        tabs.add(buildTab(new TableAgendaPane(), WindowText.TAB_AGENDA, builder));
-        tabs.add(buildTab(new TableLinkPane(), WindowText.TAB_LINK, builder));
-        tabs.add(buildTab(new TableNotePane(DirectoryType.FOOTNOTE),
-            WindowText.TAB_FOOTNOTE, builder));
-        tabs.add(buildTab(new TableNotePane(DirectoryType.ENDNOTE),
-            WindowText.TAB_ENDNOTE, builder));
-        dataTables = builder.build();
+        agendaPane = new DataPaneAgenda();
+        CommonLayoutUtility.addTab(tabs, TAB_AGENDA, agendaPane);
 
-        tabs.add(buildTab(WindowText.TAB_REFERENCE, new ReferencePane()));
+        linkPane = new DataPaneLink();
+        CommonLayoutUtility.addTab(tabs, TAB_LINK, linkPane);
 
-        top.getTabs().addAll(tabs);
-        return top;
+        footnotePane = new DataPaneNote(DirectoryType.FOOTNOTE);
+        CommonLayoutUtility.addTab(tabs, TAB_FOOTNOTE, footnotePane);
+
+        endnotePane = new DataPaneNote(DirectoryType.ENDNOTE);
+        CommonLayoutUtility.addTab(tabs, TAB_ENDNOTE, endnotePane);
+
+        ReferencePane ref = new ReferencePane();
+        CommonLayoutUtility.addTab(tabs, TAB_REFERENCE, ref);
+        return tabs;
     }
 
-    private static final Tab buildTab(TableDataControl<?> tab, WindowText title,
-            ImmutableList.Builder<TableDataControl<?>> builder){
-        Tab ans = new Tab(title.getText(), tab);
-        builder.add(tab);
-        return ans;
-    }
+    /// %Part 2 (pane -> top-down split -> bottom)
 
     private BorderPane buildContent(){
         BorderPane content = new BorderPane();
@@ -100,38 +112,43 @@ abstract class WriterSceneView extends BorderPane{
         return content;
     }
 
+    /// %Part 2 (pane -> top-down split -> bottom -> left-right split)
+
     private SplitPane buildSplitCenter(){
-        textPane = new TextPaneControl();
-        SplitPane center = new SplitPane(buildLeftTabs(), textPane);
+        SplitPane center = new SplitPane(buildLeftTabs(), buildRightTabs());
         center.setDividerPositions(HOR_DIVIDER);
         return center;
     }
 
+    /// %Part 2 (pane -> top-down split -> bottom -> left-right split -> left)
+
     private TabPane buildLeftTabs(){
+        TabPane tabs = CommonLayoutUtility.buildTabPane();
+
+        headingPane = new HeadingsPaneControl();
+        CommonLayoutUtility.addTab(tabs, TAB_HEADINGS, headingPane);
+
         metaDataPane = new MetaDataPaneControl();
-        TabPane left = buildTabPane();
+        CommonLayoutUtility.addTab(tabs, TAB_META, metaDataPane);
 
-        headingsPane = new HeadingsPaneControl();
-        Tab tree = new Tab(WindowText.TAB_CONTENT.getText(), headingsPane);
-
-        Tab meta = buildTab(WindowText.TAB_META, metaDataPane);
-        left.getTabs().addAll(tree, meta);
-        return left;
+        return tabs;
     }
 
-    private Tab buildTab(WindowText text, Node content){
-        return new Tab(text.getText(), content);
-    }
+    /// %Part 2 (pane -> top-down split -> bottom -> left-right split -> right)
 
-    private TabPane buildTabPane(){
-        TabPane ans = new TabPane();
-        ans.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        return ans;
+    private TabPane buildRightTabs(){
+        mainTabs = CommonLayoutUtility.buildTabPane();
+        textPane = new TextPaneControl();
+        CommonLayoutUtility.addTab(mainTabs, TAB_CONTENT, textPane);
+
+        researchPane = new ResearchPaneControl();
+        CommonLayoutUtility.addTab(mainTabs, TAB_WEB, researchPane);
+        return mainTabs;
     }
 
     /// %Part 3: Setup Properties
 
-    public void setupProperties(Scene scene){
+    public void postLoad(Scene scene){
         bindWritingText(writingText);
         bindWritingStat(writingStat);
         bindWritingData(writingData);
@@ -151,7 +168,8 @@ abstract class WriterSceneView extends BorderPane{
     protected abstract void bindChildren(Scene scene);
 
     /// %Part 4: Properties
-    /// %Part 4.2: WritingText
+
+    /// %Part 4.1: writingText (WritingText)
 
     public ReadOnlyObjectProperty<WritingText> writingTextProperty(){
         return writingText.getReadOnlyProperty();
@@ -161,7 +179,7 @@ abstract class WriterSceneView extends BorderPane{
         return writingText.getValue();
     }
 
-    /// %Part 4.3: WritingStat
+    /// %Part 4.2: writingStat (WritingStat)
 
     public ReadOnlyObjectProperty<WritingStat> writingStatProperty(){
         return writingStat.getReadOnlyProperty();
@@ -171,7 +189,7 @@ abstract class WriterSceneView extends BorderPane{
         return writingStat.getValue();
     }
 
-    /// %Part 4.3: WritingData
+    /// %Part 4.3: writingData (WritingData)
 
     public ReadOnlyObjectProperty<WritingData> writingDataProperty(){
         return writingData.getReadOnlyProperty();
@@ -181,19 +199,7 @@ abstract class WriterSceneView extends BorderPane{
         return writingData.getValue();
     }
 
-    /// %Part 4.3: LastSelected
-
-    public ObjectProperty<SpanBranch> lastSelectedProperty(){
-        return lastSelected;
-    }
-
-    public SpanBranch getLastSelected(){
-        return lastSelected.getValue();
-    }
-
-    public void setLastSelected(SpanBranch value){
-        lastSelected.setValue(value);
-    }
+    /// %Part 4.4: refocusText (Boolean)
 
     public BooleanProperty refocusTextProperty(){
         return refocusText;
@@ -207,32 +213,67 @@ abstract class WriterSceneView extends BorderPane{
         refocusText.setValue(value);
     }
 
-    /// %Part 5: Get Child Methods
-    MenuBarMainControl getMainMenuBar(){
-        return mainMenuBar;
+    /// %Part 4.3: lastSelected (SpanBranch)
+
+    public ObjectProperty<SpanBranch> lastSelectedProperty(){
+        return lastSelected;
     }
 
-    NoteCardPaneControl getNoteCardPane(){
-        return noteCardPane;
+    public SpanBranch getLastSelected(){
+        return lastSelected.getValue();
+    }
+
+    public void setLastSelected(SpanBranch value){
+        lastSelected.setValue(value);
+    }
+
+    /// %Part 5: Get Child Methods
+
+    MenuBarMainControl getMainMenuBar(){
+        return mainMenuBar;
     }
 
     CheatsheetPaneControl getCheatsheetPane(){
         return cheatsheetPane;
     }
 
+    NoteCardPaneControl getNoteCardPane(){
+        return noteCardPane;
+    }
+
+    DataPaneAgenda getAgendaPane(){
+        return agendaPane;
+    }
+
+    DataPaneLink getLinkPane(){
+        return linkPane;
+    }
+
+    DataPaneNote getFootnotePane(){
+        return footnotePane;
+    }
+
+    DataPaneNote getEndnotePane(){
+        return endnotePane;
+    }
+
+    HeadingsPaneControl getHeadingPane(){
+        return headingPane;
+    }
+
     MetaDataPaneControl getMetaDataPane(){
         return metaDataPane;
+    }
+
+    TabPane getMainTabPane(){
+        return mainTabs;
     }
 
     TextPaneControl getTextPane(){
         return textPane;
     }
 
-    HeadingsPaneControl getHeadingsPane(){
-        return headingsPane;
-    }
-
-    List<TableDataControl<?>> getDataTables(){
-        return dataTables;
+    ResearchPaneControl getResearchPane(){
+        return researchPane;
     }
 }

@@ -7,24 +7,25 @@ import javafx.scene.layout.*;
 import javafx.stage.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.resource.*;
+import com.creativeartie.writerstudio.javafx.utils.*;
+
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    WindowStatContants.*;
 
 public abstract class WindowStatView extends Stage{
-    protected static int WIDTH = 490;
-    protected static int HEIGHT = 490;
+
+    /// %Part 1: Constructor and Class Fields
+
+    private ReadOnlyObjectWrapper<WritingStat> writingStat;
 
     private WindowStatMonthControl calendarPane;
     private Spinner<Integer> wordSpinner;
     private Spinner<Integer> hourSpinner;
     private Spinner<Integer> minuteSpinner;
 
-    private ReadOnlyObjectWrapper<WritingStat> writingStat;
-
-    /// %Part 1: Constructor and Class Fields
-
     WindowStatView(){
         Stage ans = new Stage();
-        setTitle(WindowText.GOALS_TITLE.getText());
+        setTitle(WINDOW_TITLE);
         setResizable(false);
         setScene(buildScene());
         initModality(Modality.APPLICATION_MODAL);
@@ -34,11 +35,15 @@ public abstract class WindowStatView extends Stage{
 
     /// %Part 2: Layout
 
+    /// %Part 2 (stage -> scene)
+
     private Scene buildScene(){
-        Scene scene = new Scene(createMainPane(), WIDTH, HEIGHT);
-        scene.getStylesheets().add(FileResources.getStatsCss());
+        Scene scene = new Scene(createMainPane(), WINDOW_WIDTH, WINDOW_HEIGHT);
+        scene.getStylesheets().add(FileResource.STAT_CSS.getCssPath());
         return scene;
     }
+
+    /// %Part 2 (stage -> scene -> content)
 
     private BorderPane createMainPane(){
         BorderPane pane = new BorderPane();
@@ -48,44 +53,48 @@ public abstract class WindowStatView extends Stage{
         return pane;
     }
 
+    /// %Part 2 (stage -> scene -> content -> bottom)
+
     private GridPane buildEditPane(){
         GridPane pane = new GridPane();
 
-        ColumnConstraints column1 = new ColumnConstraints();
-        column1.setPercentWidth(30);
-        ColumnConstraints column2 = new ColumnConstraints();
-        column2.setPercentWidth(70);
-        pane.getColumnConstraints().addAll(column1, column2);
+        Label word = new Label(GOAL_WORD_TEXT);
 
-        Label word = new Label(WindowText.GOAL_WORD_TEXT.getText());
-
-        wordSpinner = new Spinner<>(0, 10000, 100);
+        wordSpinner = new Spinner<>(WORD_GOAL_MIN, WORD_GOAL_MAX,
+            WORD_GOAL_DEFAULT);
         wordSpinner.setEditable(true);
 
-        Label time = new Label(WindowText.GOALS_TIME_TEXT.getText());
+        Label time = new Label(GOALS_TIME_TEXT);
 
+        CommonLayoutUtility.setWidthPrecent(pane, GOAL_LABEL_COLUMN);
         pane.add(word, 0, 0);
         pane.add(wordSpinner, 1, 0);
+
+        CommonLayoutUtility.setWidthPrecent(pane, GOAL_DATA_COLUMN);
         pane.add(time, 0, 1);
         pane.add(buildTimeGoalPane(), 1, 1);
 
         return pane;
     }
 
+    /// %Part 2 (stage -> scene -> content -> bottom -> time data panel)
+
     private FlowPane buildTimeGoalPane(){
         FlowPane pane = new FlowPane();
 
-        hourSpinner = new Spinner<>(0, 23, 0);
+        hourSpinner = new Spinner<>(HOUR_GOAL_MIN, HOUR_GOAL_MAX,
+            HOUR_GOAL_DEFAULT);
         hourSpinner.setEditable(true);
         hourSpinner.setPrefWidth(100.0);
 
-        Label hour = new Label(WindowText.HOUR_UNIT.getText());
+        Label hour = new Label(HOUR_UNIT);
 
-        minuteSpinner = new Spinner<>(0, 59, 30);
+        minuteSpinner = new Spinner<>(MINS_GOAL_MIN, MINS_GOAL_MAX,
+            MINS_GOAL_DEFAULT);
         minuteSpinner.setEditable(true);
         minuteSpinner.setPrefWidth(100.0);
 
-        Label minute = new Label(WindowText.MINUTE_UNIT.getText());
+        Label minute = new Label(MINUTE_UNIT);
 
 
         pane.getChildren().addAll(hourSpinner, hour, minuteSpinner, minute);
@@ -94,16 +103,18 @@ public abstract class WindowStatView extends Stage{
 
     /// %Part 3: Setup Properties
 
-    public void setupProperties(WriterSceneControl control){
+    public void postLoad(WriterSceneControl control){
         bindWritingStat(writingStat, control);
-        setupChildern(control);
+        bindChildren(control);
     }
 
     protected abstract void bindWritingStat(
         ReadOnlyObjectWrapper<WritingStat> stats, WriterSceneControl control);
-    protected abstract void setupChildern(WriterSceneControl control);
+    protected abstract void bindChildren(WriterSceneControl control);
 
     /// %Part 4: Properties
+
+    /// %Part 4.1: writingStat (WritingStat)
 
     public ReadOnlyObjectProperty<WritingStat> writingStatProperty(){
         return writingStat.getReadOnlyProperty();
@@ -114,6 +125,7 @@ public abstract class WindowStatView extends Stage{
     }
 
     /// %Part 5: Get Child Methods
+
     WindowStatMonthControl getCalendarPane() {
         return calendarPane;
     }

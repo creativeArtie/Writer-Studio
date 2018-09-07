@@ -4,7 +4,9 @@ import javafx.collections.*;
 import javafx.scene.control.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.resource.*;
+import com.creativeartie.writerstudio.javafx.utils.*;
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    ReferenceConstants.*;
 
 class ReferencePane extends TableView<ReferenceData>{
 
@@ -16,25 +18,25 @@ class ReferencePane extends TableView<ReferenceData>{
 
     @SuppressWarnings("unchecked") /// For getColumns().addAdd(TableColumn ...)
     private void buildColumns(){
-        TableColumn<ReferenceData, String> name = TableDataHelper
-            .getTextColumn(WindowText.REF_NAME, d ->
-                d.referenceNameProperty(), WindowText.EMPTY_NA);
-        TableDataHelper.setPrecentWidth(name, this, 20.0);
+        TableColumn<ReferenceData, String> name = TableCellFactory
+            .getTextColumn(REF_NAME, d ->
+                d.referenceNameProperty(), EMPTY_NA);
+        TableCellFactory.setPrecentWidth(name, this, NAME_COLUMN);
 
-        TableColumn<ReferenceData, String> id = TableDataHelper
-            .getTextColumn(WindowText.REF_ID, d ->
-                d.referenceIdProperty(), WindowText.EMPTY_NA);
-        TableDataHelper.setPrecentWidth(id, this, 20.0);
+        TableColumn<ReferenceData, String> id = TableCellFactory
+            .getTextColumn(REF_ID, d ->
+                d.referenceIdProperty(), EMPTY_NA);
+        TableCellFactory.setPrecentWidth(id, this, ID_COLUMN);
 
-        TableColumn<ReferenceData, String> describe = TableDataHelper
-            .getTextColumn(WindowText.REF_LONG, d ->
-                d.referenceDescriptionProperty(), WindowText.EMPTY_NA);
-        TableDataHelper.setPrecentWidth(describe, this, 50.0);
+        TableColumn<ReferenceData, String> describe = TableCellFactory
+            .getTextColumn(REF_LONG, d ->
+                d.referenceDescriptionProperty(), EMPTY_NA);
+        TableCellFactory.setPrecentWidth(describe, this, DESCRIBE_COLUMN);
 
-        TableColumn<ReferenceData, String> example = TableDataHelper
-            .getTextColumn(WindowText.REF_EXAMPLE, d ->
-                d.referenceExampleProperty(), WindowText.EMPTY_NA);
-        TableDataHelper.setPrecentWidth(example, this, 10.0);
+        TableColumn<ReferenceData, String> example = TableCellFactory
+            .getTextColumn(REF_EXAMPLE, d ->
+                d.referenceExampleProperty(), EMPTY_NA);
+        TableCellFactory.setPrecentWidth(example, this, EXAMPLE_COLUMN);
 
         getColumns().addAll(name, id, describe, example);
     }

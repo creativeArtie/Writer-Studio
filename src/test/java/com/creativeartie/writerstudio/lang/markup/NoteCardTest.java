@@ -145,6 +145,8 @@ public class NoteCardTest {
         IDBuilder builder1 = doc.addId(buildId(true,  "00"), 0);
         IDBuilder builder2 = doc.addId(buildId(false, "ed"), 1);
 
+        doc.assertDoc   (2, full);
+
         NoteCardAssert note1 = new NoteCardAssert(doc)
             .setCatalogued(CatalogueStatus.UNUSED, builder1)
             .setNote(2).setTitle(0, 0, 1);

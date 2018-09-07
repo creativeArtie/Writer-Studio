@@ -2,79 +2,192 @@ package com.creativeartie.writerstudio.javafx;
 
 import java.util.*;
 import javafx.scene.control.*;
+import javafx.scene.image.*;
 import javafx.scene.layout.*;
+import javafx.scene.input.*;
+import javafx.scene.text.*;
 
-import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.resource.*;
+import com.creativeartie.writerstudio.javafx.utils.*;
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    NoteCardConstants.*;
 
 /**
- * Stores a list of user notes, hyperlinks.
+ * A pane with two {@link HeadingTreeControl} objects that
  */
-public abstract class NoteCardPaneView extends GridPane{
+abstract class NoteCardPaneView extends GridPane{
+    private static ImageView getCountIcon(int size){
+        switch(size){
+        case 0:
+            return ImageIcon.NONE.getIcon();
+        case 1:
+            return ImageIcon.ONE.getIcon();
+        default:
+            return ImageIcon.MANY.getIcon();
+        }
+    }
+
+    private class HeadingCardCell extends TreeCell<SectionSpanHead> {
+        @Override
+        public void updateItem(SectionSpanHead item, boolean empty){
+            /// Required by JavaFX API:
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setText(null);
+                setGraphic(null);
+            } else {
+                TextFlow graphic = new TextFlow();
+                int size = ((NoteCardTreeItem<?>)getTreeItem()).getSize();
+                graphic.getChildren().add(getCountIcon(size));
+
+                TextFlowBuilder.loadHeadingLine(graphic, item.getHeading());
+                /// Allows WindowSpanParser to create the Label
+                setText(null);
+                setGraphic(graphic);
+            }
+        }
+    }
+
+    private class IdCardCell extends TreeCell<String>{
+        @Override
+        public void updateItem(String item, boolean empty){
+            /// Required by JavaFX API:
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setText(null);
+                setGraphic(null);
+            } else {
+                /// Allows TextFlowBuilder to create the Label
+                int size = ((NoteCardTreeItem<?>)getTreeItem()).getSize();
+                Label label = new Label(item, getCountIcon(size));
+                setText(null);
+                setGraphic(label);
+            }
+        }
+    }
+
+    private class NoteCardCell extends ListCell<NoteCardSpan>{
+        @Override
+        public void updateItem(NoteCardSpan item, boolean empty){
+            /// Required by JavaFX API:
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setText(null);
+                setGraphic(null);
+            } else {
+                /// Allows TextFlowBuilder to create the Label
+                TextFlow graphic = new TextFlow();
+                Text name = new Text(item.getSpanIdentity()
+                    .map(i -> i.getName())
+                    .orElse("")
+                );
+                name.getStyleClass().add(LIST_ID_STYLE);
+                graphic.getChildren().add(name);
+                TextFlowBuilder.loadFormatText(graphic, item.getTitle());
+                setText(null);
+                setGraphic(graphic);
+            }
+        }
+    }
+
+    private TreeView<String> idTree;
+    private TreeView<SectionSpanHead> locationTree;
+
+    private Button insertBeforeButton;
+    private Button insertAfterButton;
+    private Button deleteButton;
+    private ListView<NoteCardSpan> noteCardsList;
+
+    private NoteCardDetailPaneControl noteDetailPane;
+
     /// %Part 1: Constructor and Class Fields
-
-    private TableView<NoteCardData> noteTable;
-    private NoteCardDetailPaneControl noteDetail;
-
     public NoteCardPaneView(){
-
-        add(buildNoteTable(), 0, 0);
-        add(buildNoteDetail(), 1, 0);
+        double width = 100.0 / 3;
+        ColumnConstraints columns[] = new ColumnConstraints[3];
+        for (int i = 0; i < columns.length; i++){
+            columns[i] = new ColumnConstraints();
+            columns[i].setPercentWidth(width);
+        }
+        getColumnConstraints().addAll(columns);
+        add(buildLocationPane(), 0, 0);
+        add(buildNoteListPane(), 1, 0);
+        add(buildDetailPane(), 2, 0);
     }
 
     /// %Part 2: Layout
+    private TabPane buildLocationPane(){
+        idTree = new TreeView<>();
+        idTree.setShowRoot(false);
+        idTree.setCellFactory(p -> {
+            TreeCell<String> ans = new IdCardCell();
+            ans.setOnMouseClicked(e -> handleListSelected(e, ans.getTreeItem()));
+            return ans;
+        });
+        Tab id = new Tab(TAB_ID, idTree);
 
-    @SuppressWarnings("unchecked") /// For ans.getColumns().addAdd(TableColumn ...)
-    private TableView<NoteCardData> buildNoteTable(){
-        noteTable = new TableView<>();
+        locationTree = new TreeView<>();
+        locationTree.setShowRoot(false);
+        locationTree.setCellFactory(p -> {
+            HeadingCardCell ans = new HeadingCardCell();
+            ans.setOnMouseClicked(e -> handleListSelected(e, ans.getTreeItem()));
+            return ans;
+        });
+        Tab location = new Tab(TAB_LOCATION, locationTree);
 
-        TableColumn<NoteCardData, Optional<CatalogueIdentity>> id =
-            TableDataHelper.getIdColumn(WindowText.NOTE_CARDS_ID, d ->
-                d.noteIdProperty());
-        TableDataHelper.setPrecentWidth(id, noteTable, 20.0);
-
-        TableColumn<NoteCardData, SectionSpan> section =
-            TableDataHelper.getSectionColumn(WindowText.NOTE_CARDS_SECTION, d ->
-                d.noteSectionProperty());
-        TableDataHelper.setPrecentWidth(section, noteTable, 40.0);
-
-        TableColumn<NoteCardData, Optional<FormattedSpan>> format =
-            TableDataHelper.getFormatColumn(WindowText.NOTE_CARDS_TITLE, d ->
-                d.noteTitleProperty());
-        TableDataHelper.setPrecentWidth(format, noteTable, 40.0);
-
-        noteTable.getColumns().addAll(id, section, format);
-        noteTable.setFixedCellSize(30);
-        noteTable.setPlaceholder(new Label(WindowText.NOTE_CARDS_EMPTY.getText()));
-        noteTable.prefWidthProperty().bind(widthProperty().multiply(.7));
-        return noteTable;
+        TabPane pane = new TabPane(id, location);
+        pane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        return pane;
     }
 
-    private NoteCardDetailPaneControl buildNoteDetail(){
-        noteDetail = new NoteCardDetailPaneControl();
-        noteDetail.prefWidthProperty().bind(widthProperty().multiply(.3));
-        noteDetail.prefHeightProperty().bind(heightProperty());
-        return noteDetail;
+    private ListView buildNoteListPane(){
+
+        noteCardsList = new ListView<>();
+        noteCardsList.setPlaceholder(new Label(EMPTY_LIST));
+        noteCardsList.setCellFactory(l ->  {
+            NoteCardCell cell = new NoteCardCell();
+            cell.setOnMouseClicked(e -> handleNoteSelected(e, cell.getItem()));
+            return cell;
+        });
+        return noteCardsList;
     }
 
-    /// %Part 3: Listener Methods
-
-    public void setupProperties(WriterSceneControl control){
-        setupChildern(control);
+    private NoteCardDetailPaneControl buildDetailPane(){
+        noteDetailPane = new NoteCardDetailPaneControl();
+        return noteDetailPane;
     }
 
-    protected abstract void setupChildern(WriterSceneControl control);
+
+    /// %Part 3: Setup Properties
+
+    public void postLoad(WriterSceneControl control){
+        bindChildren(control);
+    }
+
+    protected abstract void handleListSelected(MouseEvent event,
+        TreeItem<?> note);
+
+    protected abstract void handleNoteSelected(MouseEvent event,
+        NoteCardSpan note);
+
+    protected abstract void bindChildren(WriterSceneControl control);
 
     /// %Part 4: Properties
 
     /// %Part 5: Get Child Methods
 
-    TableView<NoteCardData> getNoteTable(){
-        return noteTable;
+    TreeView<String> getIdTree(){
+        return idTree;
     }
 
-    NoteCardDetailPaneControl getNoteCardDetail(){
-        return noteDetail;
+    TreeView<SectionSpanHead> getLoactionTree(){
+        return locationTree;
+    }
+
+    ListView<NoteCardSpan> getNoteCardList(){
+        return noteCardsList;
+    }
+
+    NoteCardDetailPaneControl getNoteDetailPane(){
+        return noteDetailPane;
     }
 }

@@ -7,32 +7,41 @@ import javafx.scene.control.*;
 
 import org.fxmisc.richtext.model.*;
 
+import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.resource.*;
+import com.creativeartie.writerstudio.javafx.utils.*;
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    MetaDataConstants.*;
 
 class WindowMatterControl extends WindowMatterView{
+    /// %Part 1: Private Fields and Constructor
 
     private WritingData writingData;
 
-    protected void setupChildern(WriterSceneControl control){
-        control.writingDataProperty().addListener((d, o, n) -> loadData(n));
-        showMatterProperty().addListener((d, o, n) -> showMatter(n));
-        getTextArea().plainTextChanges().subscribe(this::updateText);
-        // getTextArea().caretPositionProperty().addListener((d, o, n) ->
-        //    updateHints(n)); /// Does not work
+    /// %Part 2: Property Binding
+    /// %Part 3: Bind Children Properties
+
+    @Override
+    protected void bindChildren(WriterSceneControl control){
+        control.writingDataProperty().addListener((d, o, n) -> listenWritingData(n));
+        showMatterProperty().addListener((d, o, n) -> listenShowMatter(n));
+        getTextArea().plainTextChanges().subscribe(this::listenTextChanges);
+        getTextArea().caretPositionProperty().addListener((d, o, n) ->
+            listenCaret(n));
     }
 
-    /// %Part 1: control.writingDataProperty()
+    /// %Part 3.1: control.writingDataProperty()
 
-    private void loadData(WritingData data){
+    private void listenWritingData(WritingData data){
         writingData = data;
     }
 
-    /// %Part 2: showMatterProperty()
+    /// %Part 3.2: showMatterProperty()
 
-    private void showMatter(TextTypeMatter matter){
+    private void listenShowMatter(TextTypeMatter matter){
         if (getShowMatter() == null) return;
-        setTitle(WindowText.getString(matter));
+        String title = null;
+        setTitle(getString(matter));
 
         if (writingData != null){
             String text = "";
@@ -47,9 +56,9 @@ class WindowMatterControl extends WindowMatterView{
         showPreview();
     }
 
-    /// %Part 3: getTextArea().plainTextChanges()
+    /// %Part 3.4: getTextArea().plainTextChanges()
 
-    private void updateText(PlainTextChange value) {
+    private void listenTextChanges(PlainTextChange value) {
         if (writingData == null) return;
         if (getShowMatter() == null) return;
 
@@ -58,17 +67,24 @@ class WindowMatterControl extends WindowMatterView{
         showPreview();
     }
 
-    /// %Part 4: getTextArea().caretPositionProperty()
+    /// %Part 3.5: getTextArea().caretPositionProperty()
 
-    private void updateHints(int position){
-        if (writingData == null) return;
+    private void listenCaret(int position){
+        SpanLeaf leaf = null;
+        TextTypeMatter matter = getShowMatter();
+        if (matter != null) {
+            if (writingData != null) {
+                leaf = writingData.getLeaf(getShowMatter(), position)
+                    .orElse(null);
+            }
+        }
 
-        for (CheatsheetLabel label: getHintLabels()){
-            label.showStatus(writingData, position);
+        for (HintLabel label: getHintLabels()){
+            label.showStatus(leaf);
         }
     }
 
-    /// %Part update preview
+    /// %Part 4: Utilities
 
     private void showPreview(){
         if (writingData == null) return;

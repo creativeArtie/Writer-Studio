@@ -8,26 +8,31 @@ import javafx.geometry.*;
 import org.fxmisc.richtext.*;
 import org.fxmisc.richtext.model.*;
 
+import com.creativeartie.writerstudio.javafx.utils.*;
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    TextPaneConstants.*;
+
+
 /**
  * A rict text fx text area that show the text
  */
 abstract class TextPaneView extends BorderPane {
 
+    /// %Part 1: Constructor and Class Fields
+
     private InlineCssTextArea textArea;
     private Label lineTypeLabel;
     private Label statLabel;
-    private Label timeLabel;
-
-    private ReadOnlyBooleanWrapper textReady;
+    private Label clockLabel;
 
     TextPaneView(){
         setCenter(buildTextArea());
         setBottom(buildBottomPane());
-
-        textReady = new ReadOnlyBooleanWrapper(this, "textReady");
     }
 
     /// %Part 2: Layout
+
+    /// %Part 2 (content -> center)
 
     private InlineCssTextArea buildTextArea(){
         textArea = new InlineCssTextArea();
@@ -35,87 +40,60 @@ abstract class TextPaneView extends BorderPane {
         return textArea;
     }
 
+    /// %Part 2 (content -> bottom grid)
+
     private GridPane buildBottomPane(){
         GridPane parent = new GridPane();
+        CommonLayoutUtility.setWidthPrecent(parent, LABEL_WIDTH);
         parent.add(buildLineTypeLabel(), 0, 0);
-        setPrecentWidth(parent, 33.33333333);
 
+        CommonLayoutUtility.setWidthPrecent(parent, LABEL_WIDTH);
         parent.add(buildStatsLabel(), 1, 0);
-        setPrecentWidth(parent, 33.33333333);
+        parent.setHalignment(statLabel, HPos.CENTER);
 
+        CommonLayoutUtility.setWidthPrecent(parent, LABEL_WIDTH);
         parent.add(buildTimeLabel(), 2, 0);
-        setPrecentWidth(parent, 33.33333333);
+        parent.setHalignment(clockLabel, HPos.RIGHT);
 
         return parent;
     }
 
-    private HBox buildLineTypeLabel(){
+    /// %Part 2 (content -> bottom grid -> left)
+
+    private FlowPane buildLineTypeLabel(){
         lineTypeLabel = new Label();
-
-        HBox align = new HBox();
-        align.setAlignment(Pos.BASELINE_LEFT);
-        align.getChildren().add(lineTypeLabel);
-
-        return align;
+        lineTypeLabel.getStyleClass().add(LINE_TYPE_STYLE);
+        return new FlowPane(lineTypeLabel);
     }
 
-    private HBox buildStatsLabel(){
+    /// %Part 2 (content -> bottom grid -> center)
+
+    private Label buildStatsLabel(){
         statLabel = new Label();
-
-        HBox align = new HBox();
-        align.setAlignment(Pos.BASELINE_CENTER);
-        align.getChildren().add(statLabel);
-
-        return align;
+        statLabel.getStyleClass().add(TEXT_STAT_STYLE);
+        return statLabel;
     }
 
-    private HBox buildTimeLabel(){
-        timeLabel = new Label();
+    /// %Part 2 (content -> bottom grid -> right)
 
-        HBox align = new HBox();
-        align.setAlignment(Pos.BASELINE_RIGHT);
-        align.getChildren().add(timeLabel);
-
-        return align;
-    }
-
-    /**
-     * Set the next column by percent width.
-     * @param value
-     *      percent width
-     * @see initLineTypeLabel(GridPane)
-     * @see initStatsLabel(GridPane)
-     * @see initTimeLabel(GridPane)
-     */
-    private void setPrecentWidth(GridPane pane, double value){
-        ColumnConstraints column = new ColumnConstraints();
-        column.setPercentWidth(value);
-        pane.getColumnConstraints().add(column);
+    private Label buildTimeLabel(){
+        clockLabel = new Label();
+        clockLabel.getStyleClass().add(CLOCK_STYLE);
+        return clockLabel;
     }
 
     /// %Part 3: Setup Properties
 
-    public void setupProperties(WriterSceneControl control){
-        setTextReadyProperty(textReady);
-        setupChildern(control);
+    public void postLoad(WriterSceneControl control){
+        bindChildren(control);
     }
 
-    protected abstract void setTextReadyProperty(ReadOnlyBooleanWrapper prop);
-
-    protected abstract void setupChildern(WriterSceneControl control);
-
+    protected abstract void bindChildren(WriterSceneControl control);
 
     /// %Part 4: Properties
 
-    public ReadOnlyBooleanProperty textReadyProperty(){
-        return textReady.getReadOnlyProperty();
-    }
-
-    public boolean isTextReady(){
-        return textReady.getValue();
-    }
-
     /// %Part 5: Get Child Methods
+
     protected InlineCssTextArea getTextArea(){
         return textArea;
     }
@@ -128,8 +106,8 @@ abstract class TextPaneView extends BorderPane {
         return statLabel;
     }
 
-    protected Label getTimeLabel(){
-        return timeLabel;
+    protected Label getClockLabel(){
+        return clockLabel;
     }
 
 }

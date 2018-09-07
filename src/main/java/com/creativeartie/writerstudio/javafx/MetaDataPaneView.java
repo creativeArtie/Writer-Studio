@@ -5,7 +5,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.resource.*;
+import com.creativeartie.writerstudio.javafx.utils.*;
+
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    MetaDataConstants.*;
 
 abstract class MetaDataPaneView extends VBox{
     /// %Part 1: Constructor and Class Fields
@@ -20,12 +23,15 @@ abstract class MetaDataPaneView extends VBox{
 
     /// %Part 2: Layout
 
-    private GridPane buildInfoLabels(){
+    /// %Part 2 (Content -> top)
+
+    private TitledPane buildInfoLabels(){
         infoFields = new TreeMap<>();
-        GridPane pane = buildGridPane(WindowText.DATA_META, 0);
+        GridPane pane = new GridPane();
+
         int i = 0;
         for (TextTypeInfo meta: TextTypeInfo.values()){
-            Label label = new Label(WindowText.getString(meta));
+            Label label = new Label(getString(meta));
             TextField field = new TextField();
 
             infoFields.put(meta, field);
@@ -34,18 +40,19 @@ abstract class MetaDataPaneView extends VBox{
 
             i++;
         }
-        return pane;
+        return buildTitledGrid(META_DATA_TITLE, pane);
     }
 
-    private GridPane buildMatterLabels(){
+    /// %Part 2 (Content -> bottom)
+
+    private TitledPane buildMatterLabels(){
         matterButtons = new TreeMap<>();
-        GridPane pane = buildGridPane(WindowText.DATA_AREA, 1);
+        GridPane pane = new GridPane();
 
         int i = 0;
-
         for (TextTypeMatter area: TextTypeMatter.values()){
-            Label label = new Label(WindowText.getString(area));
-            Button button = new Button(WindowText.DATA_EDIT.getText());
+            Label label = new Label(getString(area));
+            Button button = new Button(EDIT_BUTTON);
 
             matterButtons.put(area, button);
             pane.add(label, 0, i);
@@ -53,26 +60,26 @@ abstract class MetaDataPaneView extends VBox{
 
             i++;
         }
-        return pane;
+        return buildTitledGrid(MATTER_AREA_TITLE, pane);
 
     }
 
-    private GridPane buildGridPane(WindowText text, int row){
-        GridPane ans = new GridPane();
+    /// %Part 2.1: Utilities
+
+    private static TitledPane buildTitledGrid(String text, GridPane child){
         TitledPane pane = new TitledPane();
-        pane.setText(text.getText());
-        pane.setContent(ans);
-        getChildren().add(pane);
-        return ans;
+        pane.setText(text);
+        pane.setContent(child);
+        return pane;
     }
 
     /// %Part 3: Setup Properties
 
-    public void setupProperties(WriterSceneControl control){
-        setupChildern(control);
+    public void postLoad(WriterSceneControl control){
+        bindChildren(control);
     }
 
-    protected abstract void setupChildern(WriterSceneControl control);
+    protected abstract void bindChildren(WriterSceneControl control);
 
     /// %Part 4: Properties
 

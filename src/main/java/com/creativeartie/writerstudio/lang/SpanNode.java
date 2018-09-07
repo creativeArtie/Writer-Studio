@@ -7,6 +7,8 @@ import java.util.function.*;
 import com.google.common.cache.*;
 import com.google.common.collect.*;
 
+import com.creativeartie.writerstudio.main.*;
+
 import static com.creativeartie.writerstudio.main.ParameterChecker.*;
 
 /** A list of {@link Span spans} which mainly implements {@linkplain List}.
@@ -68,7 +70,50 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      */
     protected abstract void runCommand(Command command);
 
-    /** Update the span and it's parents
+    /** Insert a child span at the end.
+     *
+     * @param parser
+     *      span branch parser
+     * @param text
+     *      parsing text
+     */
+    protected synchronized void addChild(SetupParser parser, String text){
+        addChild(parser, text, size());
+    }
+
+    /** Insert a child span at the end
+     *
+     * @param parser
+     *      span branch parser
+     * @param text
+     *      parsing text
+     * @see addChild(SetupParser, String)
+     */
+    protected synchronized void addChild(
+        SetupParser parser, String text, int position
+    ){
+        boolean first = position == 0 && isDocumentFirst();
+        SetupPointer pointer = SetupPointer.updatePointer(text,
+            getDocument(), first);
+        Optional<SpanBranch> span = parser.parse(pointer);
+        stateCheck(! pointer.hasNext() && span.isPresent(),
+            "Has left over characters when reparsing: " +
+            getClass().getSimpleName()
+        );
+        addChild(span.get(), position);
+        updateSpan();
+    }
+
+    /** Adds the child into the parent.
+     *
+     * @param span
+     *      adding span
+     * @param position
+     *      position to add
+     */
+    abstract void addChild(SpanBranch span, int position);
+
+    /** Update the spans and their parents
      *
      * @param spans
      *      new children spans
@@ -79,6 +124,21 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
         setEdited();
         getParent().updateParent();
     }
+
+    /** Update this span and it's parents
+     *
+     * @see #SpanBranch#reparseText(String, SetupParser)
+     */
+    final void updateSpan(){
+        setEdited();
+        if (this instanceof Document){
+            ((Document)this).updateDoc();
+        } else {
+            getParent().updateParent();
+        }
+    }
+
+    abstract void removeChild(int index);
 
     /** Set the span children
      *
@@ -186,7 +246,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      * @see #fireRemoveListeners()
      * @see #fireListeners()
      */
-    private void fire(HashSet<Consumer<SpanNode<T>>> listeners){
+    private final void fire(HashSet<Consumer<SpanNode<T>>> listeners){
         for (Consumer<SpanNode<T>> listener: listeners) listener.accept(this);
     }
 
@@ -198,7 +258,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      *      span class
      * @return answer
      */
-    protected final <T> List<T> getChildren(Class<T> clazz){
+    public final <T> List<T> getChildren(Class<T> clazz){
         ImmutableList.Builder<T> builder = ImmutableList.builder();
         for (Span span: this){
             if (clazz.isInstance(span)){
@@ -214,7 +274,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      *      span class
      * @return answer
      */
-    protected <T extends SpanBranch> Optional<T> spanAtFirst(Class<T> clazz){
+    public final <T extends SpanBranch> Optional<T> spanAtFirst(Class<T> clazz){
         argumentNotNull(clazz, "clazz");
 
         if (isEmpty()){
@@ -232,7 +292,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      *      span class
      * @return answer
      */
-    protected <T extends SpanBranch> Optional<T> spanFromFirst(Class<T> clazz){
+    public final <T extends SpanBranch> Optional<T> spanFromFirst(Class<T> clazz){
         argumentNotNull(clazz, "clazz");
 
         for(Span span: this){
@@ -250,7 +310,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      *      span class
      * @return answer
      */
-    protected <T extends SpanBranch> Optional<T> spanAtLast(Class<T> clazz){
+    public final <T extends SpanBranch> Optional<T> spanAtLast(Class<T> clazz){
         argumentNotNull(clazz, "clazz");
         if (isEmpty()){
             return Optional.empty();
@@ -267,7 +327,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      *      span class
      * @return answer
      */
-    protected <T extends SpanBranch> Optional<T> spanFromLast(Class<T> clazz){
+    public final <T extends SpanBranch> Optional<T> spanFromLast(Class<T> clazz){
         argumentNotNull(clazz, "clazz");
         for(int i = size() - 1; i >= 0; i--){
             Span span = get(i);
@@ -309,7 +369,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      *      leaf info
      * @return answer
      */
-    protected final List<SpanLeaf> getChildren(SpanLeafStyle info){
+    public final List<SpanLeaf> getChildren(SpanLeafStyle info){
         ImmutableList.Builder<SpanLeaf> builder = ImmutableList.builder();
         for (Span span: this){
             if (span instanceof SpanLeaf &&
@@ -327,7 +387,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      *      leaf info
      * @return answer
      */
-    protected Optional<SpanLeaf> leafFromFirst(SpanLeafStyle info){
+    public final Optional<SpanLeaf> leafFromFirst(SpanLeafStyle info){
         argumentNotNull(info, "info");
         for (Span span: this){
             if (span instanceof SpanLeaf){
@@ -347,7 +407,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      *      leaf info
      * @return answer
      */
-    protected Optional<SpanLeaf> leafFromLast(SpanLeafStyle info){
+    public final Optional<SpanLeaf> leafFromLast(SpanLeafStyle info){
         argumentNotNull(info, "info");
         for(int i = size() - 1; i >= 0; i--){
             Span span = get(i);
@@ -418,6 +478,32 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      * @return answer
      */
     public abstract List<SpanLeaf> getLeaves();
+
+    /** Gets a {@link SpanLeaf} at the location defined by a function
+     *
+     * @param type
+     *      type indexing function
+     * @param location
+     *      the location according by the function
+     * @return answer
+     */
+    protected final Optional<SpanLeaf> locateLeaf(ToIntFunction<SpanLeaf> type,
+        int location
+    ){
+        if (isEmpty()){
+            return Optional.empty();
+        }
+        int ptr = 0;
+        for (SpanLeaf leaf: getLeaves()){
+            int length = leaf.getLength(type);
+            if (length + ptr < location){
+                ptr += length;
+            } else {
+                return Optional.of(leaf);
+            }
+        }
+        return Optional.empty();
+    }
 
     /// %Part 4: Caches ########################################################
 

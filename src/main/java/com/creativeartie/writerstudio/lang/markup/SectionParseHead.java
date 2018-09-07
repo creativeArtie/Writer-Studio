@@ -19,56 +19,54 @@ enum SectionParseHead implements SectionParser {
     /** Section 4. */ SECTION_4,    /** Section 5. */ SECTION_5,
     /** Section 6. */ SECTION_6;
 
-    private final String lineStarter;
-    private static final String OUTLINE = LEVEL_STARTERS
-        .get(LinedParseLevel.OUTLINE).get(0);
-
-    /** Creates a {@line SectionParseHead}. */
-    private SectionParseHead(){
-        lineStarter = LEVEL_STARTERS.get(LinedParseLevel.HEADING).get(ordinal());
-    }
-
     @Override
-    public String getStarter(){
-        return lineStarter;
-    }
+    public Optional<SpanBranch> parse(SetupPointer pointer){
+        ArrayList<Span> children = new ArrayList<>();
+        if (SectionParser.isCurrentLevel(pointer, LinedParseLevel.HEADING,
+            ordinal())
+        ){
+            /// Line = current level
+            LinedParseLevel.HEADING.parse(pointer, children);
+            SectionParser.parseContent(pointer, children);
 
-    @Override
-    public Optional<String> getNextStarter(){
-        if (ordinal() < values().length - 1){
-            return Optional.of(values()[ordinal() + 1].lineStarter);
+        } else if (this == SECTION_1 && pointer.isFirst()) {
+            /// Line = not level && first
+            SectionParser.parseContent(pointer, children);
+
+        } else {
+            return Optional.empty();
         }
-        return Optional.empty();
+
+        return parseRest(pointer, children);
     }
 
     @Override
-    public LinedParseLevel getHeadParser(){
-        return LinedParseLevel.HEADING;
-    }
+    public Optional<SpanBranch> parseChild(SetupPointer pointer){
+        stateCheck(this != SECTION_1, "Section 1 can be a child");
 
-    /** parse the outline
-     *
-     * @param pointer
-     *      setup pointer
-     * @param children
-     *      span children
-     * @see SectionParser#parse(SetupPointer)
-     */
-    static void parseOutline(SetupPointer pointer, ArrayList<Span> children){
-        argumentNotNull(pointer, "pointer");
-        argumentNotNull(children, "children");
-        while (pointer.hasNext(OUTLINE)){
-            SectionParseScene.SCENE_1.parse(pointer, children);
+        ArrayList<Span> children = new ArrayList<>();
+        if (SectionParser.isCurrentLevel(
+            pointer, LinedParseLevel.HEADING, ordinal())
+        ){
+            LinedParseLevel.HEADING.parse(pointer, children);
+            SectionParser.parseContent(pointer, children);
         }
+
+        return parseRest(pointer, children);
     }
 
-    @Override
-    public SectionParseHead nextParser(){
-        return values()[ordinal() + 1];
-    }
-    @Override
-    public SectionSpan buildSpan(ArrayList<Span> children){
-        argumentNotEmpty(children, "children");
-        return new SectionSpanHead(children, this);
+    private Optional<SpanBranch> parseRest(SetupPointer pointer,
+        ArrayList<Span> children
+    ){
+        /// Get outline
+        SectionParseScene.SCENE_1.parseChildren(pointer, children);
+
+        /// Get child headings
+        if (this != SECTION_6){
+            values()[ordinal() + 1].parseChildren(pointer, children);
+        }
+
+        return Optional.ofNullable(children.isEmpty()? null:
+            new SectionSpanHead(children, this));
     }
 }

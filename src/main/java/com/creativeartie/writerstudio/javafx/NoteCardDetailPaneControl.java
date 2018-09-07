@@ -1,155 +1,82 @@
 package com.creativeartie.writerstudio.javafx;
 
 import java.util.*;
-import javafx.scene.*;
+import javafx.collections.*;
+import javafx.collections.transformation.*;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.beans.property.*;
 import javafx.scene.text.*;
 
-import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
-import com.creativeartie.writerstudio.resource.*;
+
+import com.creativeartie.writerstudio.javafx.utils.*;
+import com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+    NoteCardConstants.*;
 
 class NoteCardDetailPaneControl extends NoteCardDetailPaneView{
-    private ObjectProperty<SpanBranch> lastSelected;
-    private BooleanProperty refocusText;
+    /// %Part 1: setupChildren
 
-    private final Label footnoteLabel;
-    private final Label inTextLabel;
-    private final Label sourceLabel;
-
-    private final Label noCardTitleLabel;
-    private final Label noCardDetailLabel;
-
-    private final Label noTitleTextLabel;
-    private final Label noContentTextLabel;
-
-    private final Button goToButton;
-
-    NoteCardDetailPaneControl(){
-        sourceLabel = new Label(WindowText.NOTE_CARD_SOURCE.getText());
-        footnoteLabel = new Label(WindowText.NOTE_CARD_FOOTNOTE.getText());
-        inTextLabel = new Label(WindowText.NOTE_CARD_IN_TEXT.getText());
-
-        noCardTitleLabel = new Label(WindowText.NOTE_CARD_PLACEHOLDER_TITLE
-            .getText());
-        noCardDetailLabel = new Label(WindowText.NOTE_CARD_PLACHOLDER_DETAIL
-            .getText());
-
-        noTitleTextLabel = new Label(WindowText.NOTE_CARD_EMPTY_TITLE.getText());
-        noContentTextLabel = new Label(WindowText.NOTE_CARD_EMTPY_DETAIL
-            .getText());
-
-        goToButton = new Button(WindowText.NOTE_CARD_EDIT.getText());
-
-        StyleClass.NOT_FOUND.addClass(noCardTitleLabel);
-        StyleClass.NOT_FOUND.addClass(noCardDetailLabel);
-        StyleClass.NO_TEXT.addClass(noTitleTextLabel);
-    }
+    private NoteCardSpan selectedSpan;
+    private ShowMeta showMeta;
+    private FilteredList<NoteCardData> metaList;
 
     @Override
-    protected void setupChildern(WriterSceneControl control){
-        lastSelected = control.lastSelectedProperty();
-        refocusText = control.refocusTextProperty();
-
-        goToButton.setOnAction(evt -> goToCard());
-
-        showCardProperty().addListener((d, o, n) -> showCard(n));
-
-        clearContent();
+    protected void bindChildren(WriterSceneControl control){
+        showCardProperty().addListener((d, o, n) -> loadCard(n));
+        getShowMetaBox().getSelectionModel().selectedItemProperty().addListener(
+            (d, o, n) -> listenShowMeta(n));
+        showMeta = getShowMetaBox().getSelectionModel().getSelectedItem();
+        loadCard(null);
     }
 
-    private void goToCard(){
-        lastSelected.setValue(getShowCard());
-        refocusText.setValue(true);
-    }
-
-    private void showCard(NoteCardSpan show){
-        if (show == null){
-            clearContent();
-        } else {
-            showContent(show);
+    private void loadCard(NoteCardSpan span){
+        selectedSpan = span;
+        if (span == null){
+            getTabs().clear();
+            getTabs().add(getEmptyTab());
+            return;
         }
-    }
+        getTabs().clear();
+        getTabs().addAll(getMainTab(), getMetaTab());
 
-    private void clearContent(){
-        setGraphic(noCardTitleLabel);
-        setContent(noCardDetailLabel);
-    }
+        TextFlow title = getNoteTitle();
+        title.getChildren().clear();
+        TextFlowBuilder.loadFormatText(title, span.getTitle());
 
-    private void showContent(NoteCardSpan span){
-        assert span != null: "Null span";
-        /// Add the title
-        Optional<FormattedSpan> title = span.getTitle();
-        if (title.isPresent()){
-            setGraphic(TextFlowBuilder.loadFormatText(span.getTitle()));
-        } else {
-            setGraphic(noTitleTextLabel);
+        TextFlow content = getNoteContent();
+        content.getChildren().clear();
+        for (FormattedSpan child: span.getContent()){
+            TextFlowBuilder.loadFormatText(content, Optional.of(child));
+            content.getChildren().add(new Text("\n"));
         }
 
-        /// Add the content
-        Node content;
-        Collection<FormattedSpan> lines = span.getContent();
-        if (lines.isEmpty()){
-            content = noContentTextLabel;
-        } else {
-            TextFlow text = new TextFlow();
-            for (FormattedSpan line: lines){
-                TextFlowBuilder.loadFormatText(text, Optional.of(line));
-                text.getChildren().add(new Text("\n"));
-            }
-            ScrollPane pane = new ScrollPane(text);
-            pane.setFitToHeight(true);
-            pane.setFitToWidth(true);
-            content = pane;
+        TableView<NoteCardData> meta = getNoteMetaTable();
+        ObservableList<NoteCardData> list = FXCollections.observableArrayList();
+        boolean source = false;
+        boolean intext = false;
+        for (LinedSpanCite cite: span.getChildren(LinedSpanCite.class)){
+            NoteCardData data = new NoteCardData(cite, source, intext);
+            source = source || data.isCitation();
+            intext = intext || data.isInText();
+            list.add(data);
         }
+        metaList = new FilteredList<>(list);
+        metaList.setPredicate(this::checkData);
+        meta.setItems(metaList);
+    }
 
-        /// Add citations
-        GridPane bottom = new GridPane();
-        ColumnConstraints column1 = new ColumnConstraints();
-        column1.setPercentWidth(30.0);
-        ColumnConstraints column2 = new ColumnConstraints();
-        column2.setPercentWidth(70.0);
-        bottom.getColumnConstraints().addAll(column1, column2);
-        /// add source
-        span.getSource().ifPresent(source -> {
+    private void listenShowMeta(ShowMeta meta){
+        showMeta = meta == null? ShowMeta.ALL: meta;
+        metaList.setPredicate(this::checkData);
+    }
 
-            bottom.add(sourceLabel, 0, 0);
-            bottom.add(new ScrollPane(TextFlowBuilder
-                .loadFormatText(Optional.of(source))), 1, 0);
-        });
-        /// add footnote/in-text
-        span.getInTextLine().ifPresent(line -> {
-            Label label = null;
-            Node text = null;
-            if (line.getInfoFieldType() == InfoFieldType.FOOTNOTE){
-                label = footnoteLabel;
-                text = new Text(line.getData()
-                    .filter(s -> s instanceof ContentSpan)
-                    .map(s -> ((ContentSpan)s).getTrimmed())
-                    .orElse("")
-                );
-            } else {
-                label = inTextLabel;
-                text = TextFlowBuilder.loadFormatText( line.getData()
-                    .filter(s -> s instanceof FormattedSpan)
-                    .map(s -> (FormattedSpan) s)
-                );
-            }
-            if (text != null){
-                assert label != null : "Null label, but filled text";
-                bottom.add(label, 0, 1);
-                bottom.add(new ScrollPane(text), 1, 1);
-            }
-        });
-
-        bottom.add(new StackPane(new Label(span.getLookupText())), 0, 2);
-        bottom.add(new StackPane(goToButton), 1, 2);
-
-        BorderPane ans = new BorderPane();
-        ans.setCenter(content);
-        ans.setBottom(bottom);
-        setContent(ans);
+    private boolean checkData(NoteCardData data){
+        switch(showMeta){
+        case UNUSED:
+            return ! data.inUseProperty().getValue();
+        case USED:
+            return data.inUseProperty().getValue();
+        default:
+            return true;
+        }
     }
 }

@@ -18,6 +18,8 @@ import com.creativeartie.writerstudio.lang.markup.*;
 
 public class WriterSceneControl extends WriterSceneView {
 
+    /// %Part 1: Constructor and public methods
+
     public WriterSceneControl(Stage window){
         super(window);
     }
@@ -30,9 +32,15 @@ public class WriterSceneControl extends WriterSceneView {
         getMainMenuBar().writingFileProperty().addListener(listener);
     }
 
+    public void refocusText(){
+        setRefocusText(true);
+    }
+
+    /// %Part 2: Property Binding
+
     @Override
-    protected void bindWritingText(ReadOnlyObjectWrapper<WritingText> prop){
-        prop.bind(Bindings.createObjectBinding(
+    protected void bindWritingText(ReadOnlyObjectWrapper<WritingText> property){
+        property.bind(Bindings.createObjectBinding(
             () -> Optional.ofNullable(getMainMenuBar().getWritingFile())
                 .map(f -> f.getDocument())
                 .orElse(null)
@@ -40,8 +48,8 @@ public class WriterSceneControl extends WriterSceneView {
     }
 
     @Override
-    protected void bindWritingStat(ReadOnlyObjectWrapper<WritingStat> prop){
-        prop.bind(Bindings.createObjectBinding(
+    protected void bindWritingStat(ReadOnlyObjectWrapper<WritingStat> property){
+        property.bind(Bindings.createObjectBinding(
             () -> Optional.ofNullable(getMainMenuBar().getWritingFile())
                 .map(f -> f.getRecords())
                 .orElse(null)
@@ -49,35 +57,39 @@ public class WriterSceneControl extends WriterSceneView {
     }
 
     @Override
-    protected void bindWritingData(ReadOnlyObjectWrapper<WritingData> prop){
-        prop.bind(Bindings.createObjectBinding(
+    protected void bindWritingData(ReadOnlyObjectWrapper<WritingData> property){
+        property.bind(Bindings.createObjectBinding(
             () -> Optional.ofNullable(getMainMenuBar().getWritingFile())
                 .map(f -> f.getMetaData())
                 .orElse(null)
         , getMainMenuBar().writingFileProperty()));
     }
 
-    @Override
-    protected void bindChildren(Scene scene){
-        getTextPane().setupProperties(this);
-        getMainMenuBar().setupProperties(this);
-        getMetaDataPane().setupProperties(this);
-        getCheatsheetPane().setupProperties(this);
-        getHeadingsPane().setupProperties(this);
-        for (TableDataControl<?> tab: getDataTables()){
-            tab.setupProperties(this);
-        }
-        getNoteCardPane().setupProperties(this);
+    /// %Part 3: Bind Children Properties
 
-        scene.focusOwnerProperty().addListener((d, o, n) -> refocus(n));
-        refocusTextProperty().addListener((d, o, n) ->
-            refocus(scene.getFocusOwner())
-        );
+    protected void bindChildren(Scene scene){
+        getMainMenuBar().postLoad(this);
+
+        getNoteCardPane().postLoad(this);
+        getAgendaPane().postLoad(this);
+        getLinkPane().postLoad(this);
+        getFootnotePane().postLoad(this);
+        getEndnotePane().postLoad(this);
+
+        getCheatsheetPane().postLoad(this);
+
+        getHeadingPane().postLoad(this);
+        getMetaDataPane().postLoad(this);
+        getTextPane().postLoad(this);
+        getResearchPane().postLoad(this);
+
+        refocusTextProperty().addListener((d, o, n) -> listenRefocusText(n));
     }
 
-    private void refocus(Node node){
-        if (isRefocusText()){
+    private void listenRefocusText(boolean refocus){
+        if (refocus){
             Platform.runLater( () -> {
+                getMainTabPane().getSelectionModel().selectFirst();
                 InlineCssTextArea area = getTextPane().getTextArea();
                 area.requestFollowCaret();
                 area.requestFocus();
@@ -85,4 +97,5 @@ public class WriterSceneControl extends WriterSceneView {
             });
         }
     }
+
 }

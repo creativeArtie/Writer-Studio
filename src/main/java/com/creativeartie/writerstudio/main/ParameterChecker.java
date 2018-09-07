@@ -35,6 +35,10 @@ public final class ParameterChecker {
         if (! test) throw stateBuild(message);
     }
 
+    public static void argumentCheck(boolean test, String message){
+        if (! test) throw new IllegalArgumentException(message);
+    }
+
     /** Create a {@linkplain IllegalStateException}.
      *
      * Same as {@code new IllegalStateException(message)}.

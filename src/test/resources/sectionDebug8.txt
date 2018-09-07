@@ -1,0 +1,37 @@
+!%@Note cat-1: Note 1
+!% Some text
+!%@Note cat-23: Note 23
+!% Some text 23
+!%@Note cat-base-1: sub note 1
+!%sadfsa
+!%@Note cat-base-232: sub note 232
+!%sadfsa 232
+!%@Note cat-base-2: more sub note
+!%@Note cat-base-fun-game-2: more sub note
+!%Some more text
+!>source|work-cited:no id
+!>source|reference:no id
+!>source|footnote:abcd1
+!>source|footnote:abcd2
+!%@Something else-1: adfa
+!%abd
+!>source|reference:no id
+!>abcd:abcd
+= Chapter 1
+!% Nameless 1
+== Chapter 1.1
+== Chapter 1.2
+!% Nameless 2
+= Chapter 2
+!% @no id: *Hello World* {!help }
+!% Joy to the home; Our maid is come
+!% Let house receive it's clean:
+!% Let every dust prepare to binned,
+!% And our cleaniness sing.
+!%/
+!% Joy to the home; The maid had work
+!% Let sing our songs enjoy
+!% While cup & dishes, bed, air & floor
+!% Repeat the cleaning joy
+!>source|in-text: 123
+!>source|work-cited: Joy to the *World*; Our **Lord** is come

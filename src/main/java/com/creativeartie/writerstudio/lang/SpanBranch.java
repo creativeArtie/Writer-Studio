@@ -49,7 +49,7 @@ public abstract class SpanBranch extends SpanNode<Span> {
         /// no text = delete
         if (text == null || text.isEmpty()){
             StringBuilder builder = new StringBuilder();
-            getDocument().delete(getStart(), getEnd());
+            removeSpan();
             return;
         }
 
@@ -61,7 +61,10 @@ public abstract class SpanBranch extends SpanNode<Span> {
         }
 
         /// next step
-        reparseText(text, parser);
+        stateCheck(reparseText(text, parser),
+            "Has left over characters when reparsing: " +
+            getClass().getSimpleName()
+        );
     }
 
 
@@ -76,9 +79,8 @@ public abstract class SpanBranch extends SpanNode<Span> {
 
         SetupParser parser = getParser(text);
         if (parser != null){
-            /// It can be fully parsed.
-            reparseText(text, parser);
-            return true;
+            /// It might be fully parsed.
+            return reparseText(text, parser);
        }
        return false;
     }
@@ -99,21 +101,41 @@ public abstract class SpanBranch extends SpanNode<Span> {
      *      replacing text
      * @param parser
      *      span parser
+     * @return is successful
      */
-    private final void reparseText(String text, SetupParser parser){
+    private final boolean reparseText(String text, SetupParser parser){
         assert text != null && text.length() > 0: "Empty text";
         assert parser != null: "Null parser";
 
         SetupPointer pointer = SetupPointer.updatePointer(text,
-            getDocument());
+            getDocument(), isDocumentFirst());
         Optional<SpanBranch> span = parser.parse(pointer);
-        /// There are text left over.
-        stateCheck(! pointer.hasNext(),
-            "Has left over characters when reparsing: " +
-            getClass().getSimpleName()
-        );
+        if (pointer.hasNext()){
+            return false;
+        }
         assert span.isPresent(): "Null span";
         updateSpan((List<Span>)span.get());
+        return true;
+    }
+
+    protected synchronized final void removeSpan(){
+        SpanNode parent = getParent();
+        int index = parent.indexOf(this);
+        argumentCheck(index != -1, "Parameter 'span' is not a child: " + this);
+        setRemove();
+        parent.removeChild(index);
+        parent.updateSpan();
+    }
+
+    @Override
+    protected final void removeChild(int index){
+        spanChildren.remove(index);
+    }
+
+    @Override
+    final void addChild(SpanBranch span, int index){
+        spanChildren.add(index, span);
+        span.setParent(this);
     }
 
     @Override

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.2">
+<diagram program="umlet" version="14.3.0">
   <zoom_level>10</zoom_level>
   <element>
     <id>UMLClass</id>
@@ -11,6 +11,8 @@
     </coordinates>
     <panel_attributes>/WriterSceneView/
 layer=1
+transparency=0
+valign=center
 bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
@@ -24,6 +26,8 @@ bg=orange</panel_attributes>
     </coordinates>
     <panel_attributes>WriterSceneControl
 layer=1
+transparency=0
+valign=center
 bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
@@ -37,6 +41,8 @@ bg=orange</panel_attributes>
     </coordinates>
     <panel_attributes>TextPaneControl
 layer=1
+transparency=0
+valign=center
 bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
@@ -50,6 +56,8 @@ bg=orange</panel_attributes>
     </coordinates>
     <panel_attributes>WriterMenuBarControl
 layer=1
+transparency=0
+valign=center
 bg=red</panel_attributes>
     <additional_attributes/>
   </element>
@@ -63,6 +71,8 @@ bg=red</panel_attributes>
     </coordinates>
     <panel_attributes>HeadingsPaneControl
 layer=1
+transparency=0
+valign=center
 bg=orange
 fg=blue</panel_attributes>
     <additional_attributes/>
@@ -77,6 +87,8 @@ fg=blue</panel_attributes>
     </coordinates>
     <panel_attributes>MetaDataPaneControl
 layer=1
+transparency=0
+valign=center
 bg=orange
 fg=blue</panel_attributes>
     <additional_attributes/>
@@ -91,6 +103,8 @@ fg=blue</panel_attributes>
     </coordinates>
     <panel_attributes>TableDataControl
 layer=1
+transparency=0
+valign=center
 bg=green</panel_attributes>
     <additional_attributes/>
   </element>
@@ -104,6 +118,8 @@ bg=green</panel_attributes>
     </coordinates>
     <panel_attributes>NoteCardPaneControl
 layer=1
+transparency=0
+valign=center
 bg=orange
 fg=blue</panel_attributes>
     <additional_attributes/>
@@ -118,6 +134,8 @@ fg=blue</panel_attributes>
     </coordinates>
     <panel_attributes>CheatsheetPaneControl
 layer=1
+transparency=0
+valign=center
 bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
@@ -131,6 +149,8 @@ bg=orange</panel_attributes>
     </coordinates>
     <panel_attributes>WindowAbout
 layer=1
+transparency=0
+valign=center
 bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
@@ -144,6 +164,8 @@ bg=yellow</panel_attributes>
     </coordinates>
     <panel_attributes>WindowStatsControl
 layer=1
+transparency=0
+valign=center
 bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
@@ -157,6 +179,8 @@ bg=yellow</panel_attributes>
     </coordinates>
     <panel_attributes>/WindowStatsView/
 layer=1
+transparency=0
+valign=center
 bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
@@ -170,6 +194,8 @@ bg=yellow</panel_attributes>
     </coordinates>
     <panel_attributes>/TextPaneView/
 layer=1
+transparency=0
+valign=center
 bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
@@ -183,6 +209,8 @@ bg=orange</panel_attributes>
     </coordinates>
     <panel_attributes>/TableDataView/
 layer=1
+transparency=0
+valign=center
 bg=green</panel_attributes>
     <additional_attributes/>
   </element>
@@ -312,6 +340,8 @@ fg=orange</panel_attributes>
     </coordinates>
     <panel_attributes>/TableData/
 layer=1
+transparency=0
+valign=center
 bg=light_gray</panel_attributes>
     <additional_attributes/>
   </element>
@@ -325,6 +355,8 @@ bg=light_gray</panel_attributes>
     </coordinates>
     <panel_attributes>TableLinkData
 layer=1
+transparency=0
+valign=center
 bg=light_gray</panel_attributes>
     <additional_attributes/>
   </element>
@@ -338,6 +370,8 @@ bg=light_gray</panel_attributes>
     </coordinates>
     <panel_attributes>TableLinkPane
 layer=1
+transparency=0
+valign=center
 bg=green
 fg=blue</panel_attributes>
     <additional_attributes/>
@@ -352,6 +386,8 @@ fg=blue</panel_attributes>
     </coordinates>
     <panel_attributes>TableNotePane
 layer=1
+transparency=0
+valign=center
 bg=green
 fg=blue</panel_attributes>
     <additional_attributes/>
@@ -366,6 +402,8 @@ fg=blue</panel_attributes>
     </coordinates>
     <panel_attributes>TableNoteData
 layer=1
+transparency=0
+valign=center
 bg=light_gray</panel_attributes>
     <additional_attributes/>
   </element>
@@ -379,6 +417,8 @@ bg=light_gray</panel_attributes>
     </coordinates>
     <panel_attributes>TableAgendaData
 layer=1
+transparency=0
+valign=center
 bg=light_gray</panel_attributes>
     <additional_attributes/>
   </element>
@@ -392,6 +432,8 @@ bg=light_gray</panel_attributes>
     </coordinates>
     <panel_attributes>TableAgendaPane
 layer=1
+transparency=0
+valign=center
 bg=green
 fg=blue</panel_attributes>
     <additional_attributes/>
@@ -536,6 +578,8 @@ fg=orange</panel_attributes>
     </coordinates>
     <panel_attributes>TableDataHelper
 layer=1
+transparency=0
+valign=center
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -575,6 +619,8 @@ fg=cyan</panel_attributes>
     </coordinates>
     <panel_attributes>ReferenceData
 layer=1
+transparency=0
+valign=center
 bg=light_gray</panel_attributes>
     <additional_attributes/>
   </element>
@@ -588,6 +634,8 @@ bg=light_gray</panel_attributes>
     </coordinates>
     <panel_attributes>ReferencePane
 layer=1
+transparency=0
+valign=center
 bg=green
 fg=blue</panel_attributes>
     <additional_attributes/>
@@ -628,6 +676,8 @@ fg=gray</panel_attributes>
     </coordinates>
     <panel_attributes>NoteCardData
 layer=1
+transparency=0
+valign=center
 bg=light_gray</panel_attributes>
     <additional_attributes/>
   </element>
@@ -641,6 +691,8 @@ bg=light_gray</panel_attributes>
     </coordinates>
     <panel_attributes>NoteCardDetailPaneControl
 layer=1
+transparency=0
+valign=center
 bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
@@ -667,6 +719,8 @@ fg=blue</panel_attributes>
     </coordinates>
     <panel_attributes>NoteCardPaneView
 layer=1
+transparency=0
+valign=center
 bg=orange
 fg=blue</panel_attributes>
     <additional_attributes/>
@@ -707,6 +761,8 @@ fg=gray</panel_attributes>
     </coordinates>
     <panel_attributes>WindowMatterControl
 layer=1
+transparency=0
+valign=center
 bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
@@ -720,6 +776,8 @@ bg=yellow</panel_attributes>
     </coordinates>
     <panel_attributes>/MetaDataPaneView/
 layer=1
+transparency=0
+valign=center
 bg=orange
 fg=blue</panel_attributes>
     <additional_attributes/>
@@ -752,13 +810,15 @@ fg=orange</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>50</x>
+      <x>60</x>
       <y>700</y>
-      <w>120</w>
+      <w>140</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>/HeadingsPaneView/
 layer=1
+transparency=0
+valign=center
 bg=orange
 fg=blue</panel_attributes>
     <additional_attributes/>
@@ -773,6 +833,8 @@ fg=blue</panel_attributes>
     </coordinates>
     <panel_attributes>/CheatsheetPaneView/
 layer=1
+transparency=0
+valign=center
 bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
@@ -786,6 +848,8 @@ bg=orange</panel_attributes>
     </coordinates>
     <panel_attributes>CheatsheetLabel
 layer=1
+transparency=0
+valign=center
 bg=pink</panel_attributes>
     <additional_attributes/>
   </element>
@@ -838,6 +902,8 @@ fg=blue</panel_attributes>
     </coordinates>
     <panel_attributes>WindowStatMonthControl
 layer=1
+transparency=0
+valign=center
 bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
@@ -851,6 +917,8 @@ bg=orange</panel_attributes>
     </coordinates>
     <panel_attributes>/WindowStatMonthView/
 layer=1
+transparency=0
+valign=center
 bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
@@ -864,6 +932,8 @@ bg=orange</panel_attributes>
     </coordinates>
     <panel_attributes>WindowStatDayControl
 layer=1
+transparency=0
+valign=center
 bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
@@ -877,6 +947,8 @@ bg=orange</panel_attributes>
     </coordinates>
     <panel_attributes>/WindowStatDayView/
 layer=1
+transparency=0
+valign=center
 bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1000,7 +1072,7 @@ fg=magenta</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>100</x>
+      <x>120</x>
       <y>660</y>
       <w>30</w>
       <h>60</h>
@@ -1020,7 +1092,7 @@ fg=orange</panel_attributes>
     </coordinates>
     <panel_attributes>lt=.
 Top
-</panel_attributes>
+transparency=0</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1033,7 +1105,7 @@ Top
     </coordinates>
     <panel_attributes>lt=.
 Left
-</panel_attributes>
+transparency=0</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1045,7 +1117,8 @@ Left
       <h>100</h>
     </coordinates>
     <panel_attributes>lt=.
-Bottom</panel_attributes>
+Bottom
+transparency=0</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1058,7 +1131,7 @@ Bottom</panel_attributes>
     </coordinates>
     <panel_attributes>lt=.
 Center
-</panel_attributes>
+transparency=0</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1071,6 +1144,7 @@ Center
     </coordinates>
     <panel_attributes>Pane
 (for Pane)
+transparency=0
 bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1084,6 +1158,7 @@ bg=orange</panel_attributes>
     </coordinates>
     <panel_attributes>Stage/Pane
 (for Window)
+transparency=0
 bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1096,6 +1171,7 @@ bg=yellow</panel_attributes>
       <h>50</h>
     </coordinates>
     <panel_attributes>MenuBar
+transparency=0
 bg=red</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1108,6 +1184,7 @@ bg=red</panel_attributes>
       <h>50</h>
     </coordinates>
     <panel_attributes>Utilities
+transparency=0
 bg=cyan</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1120,6 +1197,7 @@ bg=cyan</panel_attributes>
       <h>50</h>
     </coordinates>
     <panel_attributes>TableView
+transparency=0
 bg=green</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1133,6 +1211,8 @@ bg=green</panel_attributes>
     </coordinates>
     <panel_attributes>Data Object
 (for TableView)
+transparency=0
+valign=top
 bg=light_gray</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1145,6 +1225,7 @@ bg=light_gray</panel_attributes>
       <h>50</h>
     </coordinates>
     <panel_attributes>Control
+transparency=0
 bg=pink</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1157,7 +1238,8 @@ bg=pink</panel_attributes>
       <h>50</h>
     </coordinates>
     <panel_attributes>Add as tab
-fg=blue</panel_attributes>
+fg=blue
+transparency=0</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1183,6 +1265,8 @@ fg=cyan</panel_attributes>
     </coordinates>
     <panel_attributes>/WriterMenuBarView/
 layer=1
+transparency=0
+valign=center
 bg=red</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1196,6 +1280,8 @@ bg=red</panel_attributes>
     </coordinates>
     <panel_attributes>NoteCardDetailPaneView
 layer=1
+transparency=0
+valign=center
 bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1209,6 +1295,8 @@ bg=orange</panel_attributes>
     </coordinates>
     <panel_attributes>WindowMatterView
 layer=1
+transparency=0
+valign=center
 bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1248,6 +1336,8 @@ fg=orange</panel_attributes>
     </coordinates>
     <panel_attributes>Main
 layer=1
+transparency=0
+valign=center
 bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1286,7 +1376,8 @@ fg=orange</panel_attributes>
       <w>100</w>
       <h>70</h>
     </coordinates>
-    <panel_attributes>main</panel_attributes>
+    <panel_attributes>main
+transparency=0</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>

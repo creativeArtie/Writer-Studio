@@ -13,39 +13,43 @@ enum SectionParseScene implements SectionParser {
     /** Scene 3. */ SCENE_3,             /** Scene 4. */ SCENE_4,
     /** Scene 5. */ SCENE_5,             /** Scene 6. */ SCENE_6;
 
-    private final String lineStarter;
-
-    /** Creates a {@line SectionParseScene}. */
-    private SectionParseScene(){
-        lineStarter = LEVEL_STARTERS.get(LinedParseLevel.OUTLINE).get(ordinal());
-    }
-
     @Override
-    public String getStarter(){
-        return lineStarter;
-    }
+    public Optional<SpanBranch> parse(SetupPointer pointer){
+        ArrayList<Span> children = new ArrayList<>();
+        if(SectionParser.isCurrentLevel(
+            pointer, LinedParseLevel.OUTLINE, ordinal()
+        )){
+            LinedParseLevel.OUTLINE.parse(pointer, children);
+            SectionParser.parseContent(pointer, children);
 
-    @Override
-    public Optional<String> getNextStarter(){
-        if (ordinal() < values().length - 1){
-            return Optional.of(values()[ordinal() + 1].lineStarter);
+        } else {
+            /// not the current out
+            return Optional.empty();
         }
-        return Optional.empty();
+
+        return parseRest(pointer, children);
     }
 
     @Override
-    public LinedParseLevel getHeadParser(){
-        return LinedParseLevel.OUTLINE;
+    public Optional<SpanBranch> parseChild(SetupPointer pointer){
+        ArrayList<Span> children = new ArrayList<>();
+        if (SectionParser.isCurrentLevel(
+            pointer, LinedParseLevel.OUTLINE, ordinal()
+        )){
+            LinedParseLevel.OUTLINE.parse(pointer, children);
+            SectionParser.parseContent(pointer, children);
+        }
+
+        return parseRest(pointer, children);
     }
 
-    @Override
-    public SectionParseScene nextParser(){
-        return values()[ordinal() + 1];
-    }
-
-    @Override
-    public SectionSpan buildSpan(ArrayList<Span> children){
-        argumentNotEmpty(children, "children");
-        return new SectionSpanScene(children, this);
+    private Optional<SpanBranch> parseRest(SetupPointer pointer,
+        ArrayList<Span> children
+    ){
+        if (this != SCENE_6){
+            values()[ordinal() + 1].parseChildren(pointer, children);
+        }
+        return Optional.ofNullable(children.isEmpty()? null:
+            new SectionSpanScene(children, this));
     }
 }

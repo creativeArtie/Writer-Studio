@@ -16,12 +16,21 @@ import static com.creativeartie.writerstudio.main.ParameterChecker.*;
  * <li> Locate itself by location and indexes. </li>
  * </ul>
  */
-public abstract class Span{
+public abstract class Span implements Comparable<Span>{
 
     /// %Part 1: Constructor ###################################################
 
+    private static long counter = Long.MIN_VALUE;
+    private long uniqueId;
+
+    private static synchronized long createId(){
+        return counter++;
+    }
+
     /** Package-ize Span creation.*/
-    Span(){}
+    Span(){
+        uniqueId = createId();
+    }
 
     /// %Part 2: Abstract Get and Set ##########################################
 
@@ -130,6 +139,7 @@ public abstract class Span{
      * @return answer
      */
     public final boolean isDocumentFirst(){
+        if (this instanceof Document) return true;
         return checkLocation(parent -> parent.get(0));
     }
 
@@ -138,6 +148,7 @@ public abstract class Span{
      * @return answer
      */
     public final boolean isDocumentLast(){
+        if (this instanceof Document) return true;
         return checkLocation(parent -> parent.get(parent.size() - 1));
     }
 
@@ -232,5 +243,22 @@ public abstract class Span{
      */
     public final int getStartLine(){
         return getDocument().getLine(getStart());
+    }
+
+    /// %Part 5 Equal Overrides ================================================
+
+    @Override
+    public boolean equals(Object obj){
+        return obj instanceof Span && ((Span)obj).uniqueId == uniqueId;
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(uniqueId);
+    }
+
+    @Override
+    public int compareTo(Span span){
+        return equals(span)? 0: (span.uniqueId > uniqueId? 1: -1);
     }
 }

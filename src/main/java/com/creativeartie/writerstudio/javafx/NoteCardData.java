@@ -7,47 +7,64 @@ import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 
 class NoteCardData{
-    private final ReadOnlyObjectWrapper<Optional<CatalogueIdentity>> noteId;
-    private final ReadOnlyObjectWrapper<SectionSpan> noteSection;
-    private final ReadOnlyObjectWrapper<Optional<FormattedSpan>> noteTitle;
-    private final NoteCardSpan targetNote;
+    private final ReadOnlyBooleanWrapper inUse;
+    private final ReadOnlyObjectWrapper<Object> fieldType;
+    private final ReadOnlyObjectWrapper<Optional<SpanBranch>> dataText;
 
-    NoteCardData(NoteCardSpan span){
-        noteId = new ReadOnlyObjectWrapper<>(span.getSpanIdentity()
-            .filter(id -> id.getMain().equals(AuxiliaryData.TYPE_RESEARCH)));
-        noteSection = new ReadOnlyObjectWrapper<>(span
-            .getParent(SectionSpanHead.class)
-            .map(found -> (SectionSpan) found)
-            .orElse(null));
-        noteTitle = new ReadOnlyObjectWrapper<>(span.getTitle());
-        targetNote = span;
+    NoteCardData(LinedSpanCite line, boolean source, boolean text){
+        boolean use = true;
+        Object field;
+        switch(line.getInfoFieldType()){
+        case SOURCE:
+        case REF:
+            use = ! source;
+            field = line.getInfoFieldType();
+            break;
+        case IN_TEXT:
+        case FOOTNOTE:
+            use = ! text;
+            field = line.getInfoFieldType();
+            break;
+        default:
+            use = false;
+            field = line.leafFromFirst(SpanLeafStyle.FIELD)
+                .map(s -> s.getRaw())
+                .orElse("");
+        }
+        assert field instanceof String || field instanceof InfoFieldType;
+        fieldType = new ReadOnlyObjectWrapper<>(field);
+        dataText = new ReadOnlyObjectWrapper<>(line.getData());
+        inUse = new ReadOnlyBooleanWrapper(use);
     }
 
-    public ReadOnlyObjectProperty<Optional<CatalogueIdentity>> noteIdProperty(){
-        return noteId.getReadOnlyProperty();
+    public ReadOnlyBooleanProperty inUseProperty(){
+        return inUse;
     }
 
-    public Optional<CatalogueIdentity> getNoteId(){
-        return noteId.getValue();
+    public ReadOnlyObjectProperty<Object> fieldTypeProperty(){
+        return fieldType;
     }
 
-    public ReadOnlyObjectProperty<SectionSpan> noteSectionProperty(){
-        return noteSection.getReadOnlyProperty();
+    public ReadOnlyObjectProperty<Optional<SpanBranch>> dataTextProperty(){
+        return dataText;
     }
 
-    public SectionSpan getNoteSection(){
-        return noteSection.getValue();
+    boolean isCitation(){
+        Object found = fieldType.getValue();
+        if (found instanceof InfoFieldType){
+            InfoFieldType type = (InfoFieldType) found;
+            return type == InfoFieldType.SOURCE || type == InfoFieldType.REF;
+        }
+        return false;
     }
 
-    public ReadOnlyObjectProperty<Optional<FormattedSpan>> noteTitleProperty(){
-        return noteTitle.getReadOnlyProperty();
-    }
-
-    public Optional<FormattedSpan> getNoteTitle(){
-        return noteTitle.getValue();
-    }
-
-    public NoteCardSpan getTargetSpan(){
-        return targetNote;
+    boolean isInText(){
+        Object found = fieldType.getValue();
+        if (found instanceof InfoFieldType){
+            InfoFieldType type = (InfoFieldType) found;
+            return type == InfoFieldType.IN_TEXT ||
+                type == InfoFieldType.FOOTNOTE;
+        }
+        return false;
     }
 }

@@ -13,10 +13,10 @@ import com.creativeartie.writerstudio.lang.markup.*;
  */
 final class HeadingsPaneControl extends HeadingsPaneView{
 
-    private WritingText writingText;
-    private int caretPosition;
+    /// %Part 1: Private Fields and Constructor
 
-    private ReadOnlyBooleanProperty textReady;
+    private WritingText writingText;
+
     private BooleanProperty refocusText;
     private ObjectProperty<SpanBranch> lastSelected;
 
@@ -27,83 +27,68 @@ final class HeadingsPaneControl extends HeadingsPaneView{
         headingMap = new TreeMap<>(Comparator.comparingInt(s -> s.getStart()));
     }
 
-    /// %Part 1:  setup children
+    /// %Part 2: Property Binding
+
+    protected void handleSelection(MouseEvent event, SectionSpan span){
+        if (event.getButton().equals(MouseButton.PRIMARY)){
+            lastSelected.setValue(span);
+        }
+    }
+
+    /// %Part 3: Bind Children Properties
 
     @Override
-    protected void setupChildern(WriterSceneControl control){
-        control.writingTextProperty().addListener((d, o, n) -> loadText(n));
-        getHeadingTree().getSelectionModel().selectedItemProperty()
-                .addListener((d, o, n) ->
-            listenHeading(n));
-        getOutlineTree().getSelectionModel().selectedItemProperty()
-                .addListener((d, o, n) ->
-            listenOutline(n));
+    protected void bindChildren(WriterSceneControl control){
+        control.writingTextProperty().addListener(
+            (d, o, n) -> listenWritingText(n)
+        );
         control.getTextPane().getTextArea().caretPositionProperty().addListener(
-            (d, o, n) -> showHeading(n.intValue())
+            (d, o, n) -> listenCaret(n.intValue())
         );
         lastSelected = control.lastSelectedProperty();
-        textReady = control.getTextPane().textReadyProperty();
         refocusText = control.refocusTextProperty();
     }
 
-    /// %Part 1.1: control.writingTextProperty()
-    private void loadText(WritingText text){
+    /// %Part 3.1: control.writingTextProperty()
+
+    private void listenWritingText(WritingText text){
         writingText = text;
         if (text != null){
-            text.addDocEdited(s -> showHeadings());
-            showHeadings();
-            showHeading(text.getEnd());
+            text.addDocEdited(s -> loadHeadings());
+            loadHeadings();
+            listenCaret(text.getEnd());
         } else {
             getHeadingTree().setRoot(new TreeItem<>());
             clearOutline();
         }
     }
 
-    /// %Part 1.2: WritingText.addDocEdited / loadText()
-
-    private void showHeadings(){
+    private void loadHeadings(){
         if (writingText == null) return;
         TreeItem<SectionSpanHead> root = new TreeItem<>();
         headingMap.clear();
         for (SpanBranch child: writingText){
             if (child instanceof SectionSpanHead){
-                root.getChildren().add(showHeadings((SectionSpanHead) child));
+                root.getChildren().add(
+                    loadChildHeadings((SectionSpanHead) child)
+                );
             }
         }
         getHeadingTree().setRoot(root);
     }
 
-    private TreeItem<SectionSpanHead> showHeadings(SectionSpanHead head){
+    private TreeItem<SectionSpanHead> loadChildHeadings(SectionSpanHead head){
         TreeItem<SectionSpanHead> heading = new TreeItem<>(head);
         headingMap.put(head, heading);
         for (SectionSpanHead child: head.getSections()){
-            heading.getChildren().add(showHeadings(child));
+            heading.getChildren().add(loadChildHeadings(child));
         }
         return heading;
     }
 
-    /// %Part 2.2: getHeadingTree().getSelectionModel().selectedItemProperty()
+    /// %Part 3.2: control.getTextPane().getTextArea().caretPositionProperty()
 
-    private void listenHeading(TreeItem<SectionSpanHead> head){
-        if (textReady.getValue() && head != null){
-            lastSelected.setValue(head.getValue());
-            showHeading(head.getValue().getStart());
-        }
-        refocusText.setValue(true);
-    }
-
-    /// %Part 2.3: getOutlineTree().getSelectionModel().selectedItemProperty()
-    private void listenOutline(TreeItem<SectionSpanScene> scene){
-        if (textReady.getValue() && scene != null){
-            lastSelected.setValue(scene.getValue());
-        }
-        refocusText.setValue(true);
-    }
-
-    /// %Part 2.3: control.getTextPane().getTextArea().caretPositionProperty()
-
-    private void showHeading(int position){
-        if (! textReady.getValue()) return;
+    private void listenCaret(int position){
         if (writingText == null) return;
         Optional<SectionSpanHead> head = writingText.locateLeaf(position)
             .flatMap(s -> s.getParent(SectionSpanHead.class));
@@ -149,6 +134,8 @@ final class HeadingsPaneControl extends HeadingsPaneView{
         }
         return item;
     }
+
+    /// %Part 4: Utilities
 
     private void clearOutline(){
         getOutlineTree().setRoot(new TreeItem<>());

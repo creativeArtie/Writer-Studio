@@ -240,7 +240,7 @@ public class DirectoryTest{
 
         ///             01234567890123
         String after = "cat-gory-name";
-        doc.assertDoc(1, after, parsers);
+        doc.assertDoc(1, after);
         commonCategory(doc);
     }
 
@@ -253,7 +253,7 @@ public class DirectoryTest{
 
         ///             01234567890123
         String after = "cat-gory-name";
-        doc.assertDoc(1, after, parsers);
+        doc.assertDoc(1, after);
         commonCategory(doc);
     }
 

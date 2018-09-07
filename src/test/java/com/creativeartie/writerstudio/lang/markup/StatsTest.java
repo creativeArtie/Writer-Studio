@@ -26,6 +26,7 @@ public class StatsTest {
         DocumentAssert doc = assertDoc(1, raw, PARSER);
         StatMainAssert data = new StatMainAssert(doc);
         data.test(3, raw, 0);
+        doc.assertRest();
     }
 
 
@@ -43,6 +44,7 @@ public class StatsTest {
 
         date.test(4,    raw,       0);
         publish.test(4, "publish-count:2|", 0, 2);
+        doc.assertRest();
     }
 
     @Test
@@ -50,9 +52,10 @@ public class StatsTest {
     public void addPublishGoal(){
         String raw = getDate() + "|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
-        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
-            s -> s.setPublishGoal(20),
-            0);
+        doc.setListenTester(ListenerAssert
+            .builder(s -> s.setPublishGoal(20), doc, StatSpanDay.class, 0)
+            .setEdited(0)
+        );
         commonPublishGoal(doc);
     }
 
@@ -61,9 +64,9 @@ public class StatsTest {
     public void editPublishGoal(){
         String raw = getDate() + "|publish-goal:12|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
-        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
-            s -> s.setPublishGoal(20),
-            0, 2);
+        doc.setListenTester(ListenerAssert
+            .builder(s -> s.setPublishGoal(20), doc, StatSpanDay.class, 0)
+            .setEdited(0, 2));
         commonPublishGoal(doc);
     }
 
@@ -87,6 +90,7 @@ public class StatsTest {
 
         date.test(4,    raw,                0);
         publish.test(4, "publish-goal:20|", 0, 2);
+        doc.assertRest();
     }
 
     @Test
@@ -94,7 +98,10 @@ public class StatsTest {
     public void setIntData(){
         String raw = getDate() + "|note-count:2|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
-        doc.call(StatSpanDataInt.class, s -> s.setData(20), 0, 2);
+        doc.setListenTester(ListenerAssert
+            .builder(s -> s.setData(20), doc, StatSpanDataInt.class, 0, 2)
+            .setEdited(0, 2)
+        );
         commonNote(doc);
     }
 
@@ -118,6 +125,7 @@ public class StatsTest {
 
         date.test(4, raw,              0);
         note.test(4, "note-count:20|", 0, 2);
+        doc.assertRest();
     }
 
     @Test
@@ -133,6 +141,7 @@ public class StatsTest {
 
         date.test(4, raw,       0);
         note.test(4, "note-goal:20|", 0, 2);
+        doc.assertRest();
     }
 
     @Test
@@ -149,6 +158,7 @@ public class StatsTest {
 
         date.test(4, raw,       0);
         time.test(4, "time-count:PT20S|", 0, 2);
+        doc.assertRest();
     }
 
     @Test
@@ -156,9 +166,11 @@ public class StatsTest {
     public void addTimeGoal(){
         String raw = getDate() + "|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
-        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
-            s -> s.setTimeGoal(Duration.ofSeconds(20)),
-            0);
+        doc.setListenTester(ListenerAssert
+            .builder(s -> s.setTimeGoal(Duration.ofSeconds(20)), doc,
+                StatSpanDay.class, 0)
+            .setEdited(0)
+        );
         commonTimeGoal(doc);
     }
 
@@ -167,9 +179,11 @@ public class StatsTest {
     public void editTimeGoal(){
         String raw = getDate() + "|time-goal:PT2S|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
-        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
-            s -> s.setTimeGoal(Duration.ofSeconds(20)),
-            0, 2);
+        doc.setListenTester(ListenerAssert
+            .builder(s -> s.setTimeGoal(Duration.ofSeconds(20)), doc,
+                StatSpanDay.class, 0)
+            .setEdited(0, 2)
+        );
         commonTimeGoal(doc);
     }
 
@@ -178,8 +192,11 @@ public class StatsTest {
     public void setTimeData(){
         String raw = getDate() + "|time-goal:PT2S|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
-        doc.call(StatSpanDataTime.class,s -> s.setData(Duration.ofSeconds(20)),
-            0, 2);
+        doc.setListenTester(ListenerAssert
+            .builder(s -> s.setData(Duration.ofSeconds(20)), doc,
+                StatSpanDataTime.class, 0, 2)
+            .setEdited(0, 2)
+        );
         commonTimeGoal(doc);
     }
 
@@ -202,6 +219,7 @@ public class StatsTest {
             .setData(Duration.ofSeconds(20));
         date.test(4, raw,                0);
         time.test(4, "time-goal:PT20S|", 0, 2);
+        doc.assertRest();
     }
 
     @Test
@@ -223,6 +241,7 @@ public class StatsTest {
         date.test(5, raw,         0);
         time.test(4, "time-goal:PT20S|", 0, 2);
         note.test(4, "note-count:20|",  0, 3);
+        doc.assertRest();
     }
 
     @Test
@@ -237,19 +256,15 @@ public class StatsTest {
     public void editText1() throws Exception{
         String raw = getDate() + "|publish-count:20|note-count:2|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
-        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
-            s -> s.startWriting(20, 2), () -> new SpanNode<?>[]{
-                doc.getChild(StatSpanDataInt.class, 0, 2),
-                doc.getChild(StatSpanDataInt.class, 0, 3)
-        });
-        doc.printDocument();
+
+        doc.getChild(StatSpanDay.class, 0).startWriting(20, 2);
         Thread.sleep(2000);
-        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
-            s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
-                doc.getChild(StatSpanDay.class, 0),
-                doc.getChild(StatSpanDataInt.class, 0, 2),
-                doc.getChild(StatSpanDataInt.class, 0, 3)
-        });
+        doc.setListenTester(ListenerAssert
+            .builder(s -> s.stopWriting(20, 20), doc, StatSpanDay.class, 0)
+            .setEdited(0)
+            .setEdited(0, 2)
+            .setEdited(0, 3)
+        );
         commonWordCounter(doc, false);
     }
 
@@ -258,18 +273,15 @@ public class StatsTest {
     public void editText2() throws Exception{
         String raw = getDate() + "|time-count:PT1S|publish-count:2|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
-        doc.call(true, () -> doc.getChild(StatSpanDay.class, 0),
-            s -> s.startWriting(20, 2), () -> new SpanNode<?>[]{
-                doc.getChild(StatSpanDataInt.class, 0, 3),
-                doc.getChild(StatSpanDay.class, 0)
-        });
+
+        doc.getChild(StatSpanDay.class, 0).startWriting(20, 2);
         Thread.sleep(1000);
-        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
-            s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
-                doc.getChild(StatSpanDataTime.class, 0, 2),
-                doc.getChild(StatSpanDataInt.class, 0, 3),
-                doc.getChild(StatSpanDataInt.class, 0, 4)
-        });
+        doc.setListenTester(ListenerAssert
+            .builder(s -> s.stopWriting(20, 20), doc, StatSpanDay.class, 0)
+            .setEdited(0, 2)
+            .setEdited(0, 3)
+            .setEdited(0, 4)
+        );
         commonWordCounter(doc, true);
     }
 
@@ -282,17 +294,12 @@ public class StatsTest {
         String raw = base + "\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
 
-        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
-            s -> s.startWriting(20, 20), () -> new SpanNode<?>[]{
-                doc.getChild(StatSpanDay.class, 0),
-        });
-
+        doc.getChild(StatSpanDay.class, 0).startWriting(20, 20);
         Thread.sleep(2000);
-        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
-            s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
-                doc.getChild(StatSpanDay.class, 0),
-                doc.getChild(StatSpanDataInt.class, 0, 3)
-        });
+        doc.setListenTester(ListenerAssert
+            .builder(s -> s.stopWriting(20, 20), doc, StatSpanDay.class, 0)
+            .setEdited(0)
+        );
 
         commonWordCounter(doc, false);
     }
@@ -303,10 +310,11 @@ public class StatsTest {
         String raw = getDate() + "|time-count:PT2S|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
 
-        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
-            s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
-                doc.getChild(StatSpanDay.class, 0),
-        });
+        doc.setListenTester(ListenerAssert
+            .builder(s -> s.stopWriting(20, 20), doc,
+                StatSpanDay.class, 0)
+            .setEdited(0)
+        );
         commonWordCounter(doc, true);
     }
 
@@ -315,11 +323,11 @@ public class StatsTest {
         String raw = getDate() + "|publish-count:2|note-count:2|time-count:PT2S|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
 
-        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
-            s -> s.stopWriting(20, 20), () -> new SpanNode<?>[]{
-                doc.getChild(StatSpanDataInt.class, 0, 2),
-                doc.getChild(StatSpanDataInt.class, 0, 3)
-        });
+        doc.setListenTester(ListenerAssert
+            .builder(s -> s.stopWriting(20, 20), doc, StatSpanDay.class, 0)
+            .setEdited(0, 2)
+            .setEdited(0, 3)
+        );
         commonWordCounter(doc, false);
     }
 
@@ -328,11 +336,11 @@ public class StatsTest {
         String raw = getDate() + "|publish-count:20|note-count:2|time-count:PT2S|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
 
-        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
-            s -> s.startWriting(20, 20), () -> new SpanNode<?>[]{
-                doc.getChild(StatSpanDataInt.class, 0, 2),
-                doc.getChild(StatSpanDataInt.class, 0, 3),
-        });
+        doc.setListenTester(ListenerAssert
+            .builder(s -> s.startWriting(20, 20), doc, StatSpanDay.class, 0)
+            .setEdited(0, 2)
+            .setEdited(0, 3)
+        );
         commonWordCounter(doc, false);
     }
 
@@ -341,10 +349,10 @@ public class StatsTest {
         String raw = getDate() + "|time-count:PT2S|\n";
         DocumentAssert doc = assertDoc(1, raw, PARSER);
 
-        doc.call(() -> doc.getChild(StatSpanDay.class, 0),
-            s -> s.startWriting(20, 20), () -> new SpanNode<?>[]{
-                doc.getChild(StatSpanDay.class, 0)
-        });
+        doc.setListenTester(ListenerAssert
+            .builder(s -> s.startWriting(20, 20), doc, StatSpanDay.class, 0)
+            .setEdited(0)
+        );
         commonWordCounter(doc, true);
     }
 
@@ -375,5 +383,6 @@ public class StatsTest {
         out.test( 4, "publish-count:20|", 0, (has? 3: 2));
         note.test(4, "note-count:20|",    0, (has? 4: 3));
         time.test(4, "time-count:PT2S|",  0, (has? 2: 4));
+        doc.assertRest();
     }
 }

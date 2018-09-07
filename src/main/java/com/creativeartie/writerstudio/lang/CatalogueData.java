@@ -20,17 +20,10 @@ public final class CatalogueData{
     /// %Part 1: Constructors and Fields #######################################
 
     private final CatalogueMap catalogueParent;
-    private final CatalogueIdentity catelogueKey;
+    private final CatalogueIdentity catalogueKey;
 
     private final ArrayList<SpanBranch> idSpans;
     private final ArrayList<SpanBranch> refSpans;
-
-    private final ArrayList<SpanBranch> externalIds;
-    private final ArrayList<SpanBranch> externalRefs;
-
-    private Optional<List<SpanBranch>> cacheIds;
-    private Optional<List<SpanBranch>> cacheRefs;
-
     /** Creates a {@linkplain CatalogueData}.
      *
      * @param parent
@@ -40,16 +33,20 @@ public final class CatalogueData{
      */
     CatalogueData(CatalogueMap parent, CatalogueIdentity id){
         catalogueParent = argumentNotNull(parent, "parent");
-        catelogueKey = argumentNotNull(id, "id");
+        catalogueKey = argumentNotNull(id, "id");
 
         idSpans = new ArrayList<>();
         refSpans = new ArrayList<>();
 
-        externalIds = new ArrayList<>();
-        externalRefs = new ArrayList<>();
+    }
 
-        cacheIds = Optional.empty();
-        cacheRefs = Optional.empty();
+    CatalogueData(CatalogueData self){
+        catalogueParent = self.catalogueParent;
+        catalogueKey = self.catalogueKey;
+
+        idSpans = new ArrayList<>(self.idSpans);
+        refSpans = new ArrayList<>(self.refSpans);
+
     }
 
     /// %Part 2: States and Readiness ##########################################
@@ -91,7 +88,7 @@ public final class CatalogueData{
      */
     public SpanBranch getTarget(){
         stateCheck(getIds().size() == 1,
-            "Id (" + catelogueKey + ") is in the wrong state.");
+            "Id (" + catalogueKey + ") is in the wrong state.");
 
         return getIds().get(0);
     }
@@ -103,12 +100,7 @@ public final class CatalogueData{
      * @return answer
      */
     public List<SpanBranch> getIds(){
-        if (! cacheIds.isPresent()){
-            ImmutableList.Builder<SpanBranch> builder = ImmutableList.builder();
-            builder.addAll(idSpans).addAll(externalIds);
-            cacheIds = Optional.of(builder.build());
-        }
-        return cacheIds.get();
+        return ImmutableList.copyOf(idSpans);
     }
 
     /** Gets the complete set of refs.
@@ -116,12 +108,7 @@ public final class CatalogueData{
      * @return answer
      */
     public List<SpanBranch> getRefs(){
-        if (! cacheRefs.isPresent()){
-            ImmutableList.Builder<SpanBranch> builder = ImmutableList.builder();
-            builder.addAll(refSpans).addAll(externalRefs);
-            cacheRefs = Optional.of(builder.build());
-        }
-        return cacheRefs.get();
+         return ImmutableList.copyOf(refSpans);
     }
 
     /// %Part 4: Adding a clearing #############################################
@@ -137,26 +124,14 @@ public final class CatalogueData{
         (span.isId()? idSpans: refSpans).add((SpanBranch)span);
     }
 
-    /** Adds a extenral {@link SpanBranch} as a {@linkplain Catalogued}.
-     *
-     * @param span
-     *      adding catalouged span
-     */
-    void addExternal(Catalogued span){
-        argumentNotNull(span, "Span");
-        argumentClass(span, "span", SpanBranch.class);
-
-        (span.isId()? externalIds: externalRefs).add((SpanBranch)span);
-        cacheIds = Optional.empty();
+    void add(CatalogueData data){
+        for (SpanBranch span: data.idSpans){
+            idSpans.add(span);
+        }
+        for (SpanBranch span: data.refSpans){
+            refSpans.add(span);
+        }
     }
-
-    /** Removes all external {@link SpanBranch}. */
-    void clearExternals(){
-        externalRefs.clear();
-        externalIds.clear();
-        cacheIds = Optional.empty();
-    }
-
     /// %Part 5: Other Gets ####################################################
 
     /** Gets the parent map where this {@linkplain CatalogueData} is stored.
@@ -170,14 +145,14 @@ public final class CatalogueData{
      * @return answer
      */
     public CatalogueIdentity getKey(){
-        return catelogueKey;
+        return catalogueKey;
     }
 
     /// %Part 6: Overrides #####################################################
 
     @Override
     public String toString(){
-        return catelogueKey.toString() + ": " +
+        return catalogueKey.toString() + ": " +
             getState().toString() + "\n\tIds{\n\t" +
             getIds().toString().replace("\n", "\n\t\t") + "\n\t}Refs{" +
             getRefs().toString() + "}\n";

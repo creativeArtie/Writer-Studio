@@ -31,7 +31,7 @@ public final class SetupPointer{
         argumentNotNull(raw, "raw");
         argumentNotNull(doc, "doc");
 
-        return new SetupPointer(raw, doc);
+        return new SetupPointer(raw, doc, true);
     }
 
     /** Create a {@link SetupPointer}.
@@ -41,17 +41,20 @@ public final class SetupPointer{
      *      span's document
      * @see SpanBranch#reparseText()
      */
-    static SetupPointer updatePointer(String raw, Document doc){
+    static SetupPointer updatePointer(String raw, Document doc, 
+		boolean first
+	){
         argumentNotEmpty(raw, "raw");
         argumentNotNull(doc, "doc");
 
-        return new SetupPointer(raw, doc);
+        return new SetupPointer(raw, doc, first);
     }
 
     /// %Part 1.1: Instance Constructor ========================================
 
     private final String rawText;
     private final Document document;
+    private final boolean isFirst;
 
     private int lastMarker; /// marker
     private int matchMarker; /// match from
@@ -65,12 +68,13 @@ public final class SetupPointer{
      * @param doc
      *      span's document
      */
-    private SetupPointer(String raw, Document doc){
+    private SetupPointer(String raw, Document doc, boolean first){
         assert raw != null: "Null raw";
         assert doc != null: "Null doc";
 
         rawText = raw;
         document = doc;
+        isFirst = first;
 
         matchMarker = 0;
         nextMarker = 0;
@@ -420,6 +424,12 @@ public final class SetupPointer{
     }
 
     /// %Part 4: Check Methods #################################################
+
+    /** CHeck if the point is at the beginning of the document.
+     */
+    public boolean isFirst(){
+        return isFirst && matchMarker == 0;
+    }
 
     /** Checks if there is still text to be parsed.
      *

@@ -140,8 +140,8 @@ public class LinedPointerTest{
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(12, ".reddit", 0);
         ///             01234567890123456 78
-        String after = "!*abcdef:**test**\n";
-        doc.assertDoc(1, after, parsers);
+        String after = "!@reddit:www.reddit.com";
+        doc.assertDoc(1, after);
         commonLink(doc);
     }
 
@@ -152,8 +152,8 @@ public class LinedPointerTest{
         DocumentAssert doc = assertDoc(1, before, parsers);
         doc.insert(4, "dd", 0, 1);
         ///             01234567890123456 78
-        String after = "!*abcdef:**test**\n";
-        doc.assertDoc(1, after, parsers);
+        String after = "!@reddit:www.reddit.com";
+        doc.assertDoc(1, after);
         commonLink(doc);
     }
 

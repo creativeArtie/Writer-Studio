@@ -4,6 +4,8 @@ import com.creativeartie.writerstudio.lang.markup.*;
 
 class MetaDataPaneControl extends MetaDataPaneView{
 
+    /// %Part 1: Private Fields and Constructor
+
     private WindowMatterControl matterWindow;
     private WritingData writingData;
 
@@ -11,38 +13,49 @@ class MetaDataPaneControl extends MetaDataPaneView{
         matterWindow = new WindowMatterControl();
     }
 
+    /// %Part 2: Property Binding
+    /// %Part 3: Bind Children Properties
+
     @Override
-    protected void setupChildern(WriterSceneControl control){
-        matterWindow.setupProperties(control);
-        control.writingDataProperty().addListener((d, o, n) -> loadData(n));
+    protected void bindChildren(WriterSceneControl control){
+        matterWindow.postLoad(control);
+        control.writingDataProperty().addListener(
+            (d, o, n) -> listenWritingData(n)
+        );
         for (TextTypeInfo info: TextTypeInfo.values()){
-            getInfoField(info).setOnAction(e -> editInfo(info));
+            getInfoField(info).setOnAction(e -> listenInfo(info));
         }
         for (TextTypeMatter matter: TextTypeMatter.values()){
-            getMatterButton(matter).setOnAction(evt -> editMatter(matter));
+            getMatterButton(matter).setOnAction(evt -> listenMatter(matter));
         }
     }
 
-    private void loadData(WritingData data){
+    /// %Part 3.1: control.writingDataProperty()
+
+    private void listenWritingData(WritingData data){
         writingData = data;
         if (data != null){
-            writingData.addDocEdited(s -> updateData());
-            updateData();
+            writingData.addDocEdited(s -> listenWritingData());
+            listenWritingData();
         }
     }
 
-    private void updateData(){
+    private void listenWritingData(){
         if (writingData == null) return;
         for (TextTypeInfo info: TextTypeInfo.values()){
             getInfoField(info).setText(writingData.getInfo(info));
         }
     }
 
-    private void editInfo(TextTypeInfo info){
+    /// %Part 3.2: getInfoField(type).setOnAction(...)
+
+    private void listenInfo(TextTypeInfo info){
         writingData.setInfo(info, getInfoField(info).getText());
     }
 
-    private void editMatter(TextTypeMatter matter){
+    /// %Part 3.3: getMatterButton(type).setOnAction(...)
+
+    private void listenMatter(TextTypeMatter matter){
         matterWindow.setShowMatter(matter);
         matterWindow.show();
     }

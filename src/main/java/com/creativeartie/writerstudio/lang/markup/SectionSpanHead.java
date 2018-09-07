@@ -135,4 +135,9 @@ public final class SectionSpanHead extends SectionSpan {
     public String toString(){
         return "HEAD " + getLevel() + "{" + super.toString() + "}";
     }
+
+    @Override
+    protected final SetupParser getParser(String text){
+        return SectionParseHead.values()[getLevel() - 1];
+    }
 }
