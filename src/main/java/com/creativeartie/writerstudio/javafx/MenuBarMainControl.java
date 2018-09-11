@@ -85,7 +85,7 @@ class MenuBarMainControl extends MenuBarMainView{
         try {
             WritingFile file = getWritingFile();
             if (file != null && file.canSave()){
-                // saveFile();
+                file.save();
             }
             Platform.exit();
         } catch (Exception ex){
