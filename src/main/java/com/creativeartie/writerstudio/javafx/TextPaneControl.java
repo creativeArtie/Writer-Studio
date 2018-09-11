@@ -65,8 +65,6 @@ class TextPaneControl extends TextPaneView {
             DateTimeFormatter.ofPattern(CLOCK_FORMAT).format(LocalTime.now()
         ));
 
-       showStats();
-
        if (writingStat == null) return;
 
         if (stopTime == START){
@@ -76,6 +74,8 @@ class TextPaneControl extends TextPaneView {
             writingStat.stopWriting(writingText);
             stopTime = STOP;
         }
+
+       showStats();
     }
 
     /// %Part 3.2: control.writingStatProperty()
