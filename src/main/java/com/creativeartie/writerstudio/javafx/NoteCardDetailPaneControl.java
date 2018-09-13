@@ -9,7 +9,7 @@ import javafx.scene.text.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 
 import com.creativeartie.writerstudio.javafx.utils.*;
-import com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
+import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
     NoteCardConstants.*;
 
 class NoteCardDetailPaneControl extends NoteCardDetailPaneView{
@@ -41,6 +41,9 @@ class NoteCardDetailPaneControl extends NoteCardDetailPaneView{
         TextFlow title = getNoteTitle();
         title.getChildren().clear();
         TextFlowBuilder.loadFormatText(title, span.getTitle());
+        title.getChildren().forEach(
+            s -> s.getStyleClass().add(NOTE_HEADING_STYLE)
+        );
 
         TextFlow content = getNoteContent();
         content.getChildren().clear();

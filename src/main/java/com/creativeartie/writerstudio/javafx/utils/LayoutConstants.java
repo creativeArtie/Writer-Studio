@@ -179,6 +179,7 @@ public class LayoutConstants{
 
     public static class NoteCardConstants{
         public static final String LIST_ID_STYLE = "list-id";
+        public static final String NOTE_HEADING_STYLE = "note-heading";
 
         public static final String TAB_ID = getString("NoteCards.TabTitleId");
         public static final String EMPTY_LIST = getString("NoteCards.EmptyList");

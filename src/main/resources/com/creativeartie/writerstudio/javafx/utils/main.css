@@ -2,6 +2,10 @@
     -fx-text-alignment:right;
 }
 
+.note-heading{
+    -fx-font-size:1.5em;
+}
+
 .no-text, .no-span, .id-numbered, .display-italics, .unknown-field{
     -fx-font-style:italic;
 }

@@ -18,12 +18,48 @@ public class ExportMatterTest{
         MockContentMatter ans = new MockContentMatter();
         ans.add(new MockContentLine("The itsy-bitsy spider")); /// 0
         ans.add(new MockContentLine("Climed up ", "the water spout")); /// 1
-        ans.add(new MockContentLine("Down cam the rain")); /// 2
-        ans.add(new MockContentLine("And washed the pider out")); /// 3
+        ans.add(new MockContentLine("Down came the rain")); /// 2
+        ans.add(new MockContentLine("And washed the spider out")); /// 3
         ans.add(new MockContentLine("Out came the sun")); /// 4
         ans.add(new MockContentLine("And dried ", "up all the rain")); /// 5
         ans.add(new MockContentLine("And the ", "itsy-bitsy ", "spider")); /// 6
         ans.add(new MockContentLine("Climbed up ", "the spout again")); /// 7
+        return ans;
+    }
+
+    private MockContentMatter newNotedMatter(){
+        MockContentMatter ans = new MockContentMatter();
+
+        MockContentLine line = new MockContentLine();
+        line.add(new MockContentData("This old man, he played "));
+        MockContentData note = new MockContentData("num");
+        note.setFootnote(Optional.of(new MockContentLine("From one to ten")));
+        line.add(note);
+        line.add(new MockContentData("."));
+        ans.add(line);
+
+        line = new MockContentLine();
+        line.add(new MockContentData("He played knick-knack on my "));
+        note = new MockContentData("ex");
+        note.setFootnote(Optional.of(new MockContentLine(
+            "drum, shoe, knee,  door, hive, sticks, gate, spine"
+        )));
+        line.add(note);
+        line.add(new MockContentData(";");
+        ans.add(line);
+
+        ans.add(new MockContentLine("With a knick-knack paddywhack,");
+
+        ans.add(new MockContentLine("Give a dog a bone,"));
+
+        line = new MockContentLine();
+        line.add(new MockContentData("This ");
+        note = new MockContentData("old man");
+        note.setFootnote("last one is 'once again', not 'on my spine'");
+        line.add(note);
+        line.add(new MockContentData(" came rolling home");
+        ans.add(line);
+
         return ans;
     }
 
