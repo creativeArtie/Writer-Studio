@@ -17,7 +17,6 @@ final class HeadingsPaneControl extends HeadingsPaneView{
 
     private WritingText writingText;
 
-    private BooleanProperty refocusText;
     private ObjectProperty<SpanBranch> lastSelected;
 
     private final TreeMap<SectionSpanHead, TreeItem<SectionSpanHead>> headingMap;
@@ -46,7 +45,6 @@ final class HeadingsPaneControl extends HeadingsPaneView{
             (d, o, n) -> listenCaret(n.intValue())
         );
         lastSelected = control.lastSelectedProperty();
-        refocusText = control.refocusTextProperty();
     }
 
     /// %Part 3.1: control.writingTextProperty()
@@ -56,7 +54,6 @@ final class HeadingsPaneControl extends HeadingsPaneView{
         if (text != null){
             text.addDocEdited(s -> loadHeadings());
             loadHeadings();
-            listenCaret(text.getEnd());
         } else {
             getHeadingTree().setRoot(new TreeItem<>());
             clearOutline();
@@ -75,6 +72,7 @@ final class HeadingsPaneControl extends HeadingsPaneView{
             }
         }
         getHeadingTree().setRoot(root);
+        listenCaret(writingText.getEnd());
     }
 
     private TreeItem<SectionSpanHead> loadChildHeadings(SectionSpanHead head){
@@ -117,7 +115,7 @@ final class HeadingsPaneControl extends HeadingsPaneView{
                 getOutlinePane().setExpanded(true);
             }
         } else {
-            getHeadingTree().getSelectionModel().selectLast();
+            getHeadingTree().getSelectionModel().clearSelection();
             clearOutline();
         }
     }

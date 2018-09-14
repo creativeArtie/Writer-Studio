@@ -1,11 +1,13 @@
 package com.creativeartie.writerstudio.javafx;
 
 import java.util.*;
+import javafx.beans.property.*;
 import javafx.collections.*;
 import javafx.collections.transformation.*;
 import javafx.scene.control.*;
 import javafx.scene.text.*;
 
+import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 
 import com.creativeartie.writerstudio.javafx.utils.*;
@@ -18,13 +20,19 @@ class NoteCardDetailPaneControl extends NoteCardDetailPaneView{
     private NoteCardSpan selectedSpan;
     private ShowMeta showMeta;
     private FilteredList<NoteCardData> metaList;
+    private ObjectProperty<SpanBranch> lastSelected;
 
     @Override
     protected void bindChildren(WriterSceneControl control){
         showCardProperty().addListener((d, o, n) -> loadCard(n));
+
+        getToNoteButton().setOnAction(e -> listenToNoteButton());
         getShowMetaBox().getSelectionModel().selectedItemProperty().addListener(
             (d, o, n) -> listenShowMeta(n));
         showMeta = getShowMetaBox().getSelectionModel().getSelectedItem();
+
+        lastSelected = control.lastSelectedProperty();
+
         loadCard(null);
     }
 
@@ -65,6 +73,12 @@ class NoteCardDetailPaneControl extends NoteCardDetailPaneView{
         metaList = new FilteredList<>(list);
         metaList.setPredicate(this::checkData);
         meta.setItems(metaList);
+    }
+
+    private void listenToNoteButton(){
+        if (selectedSpan != null && ! selectedSpan.isRemoved()){
+            lastSelected.setValue(selectedSpan);
+        }
     }
 
     private void listenShowMeta(ShowMeta meta){

@@ -20,7 +20,8 @@ class NoteCardPaneControl extends NoteCardPaneView{
         if (event.getButton().equals(MouseButton.PRIMARY) &&
             note instanceof NoteCardTreeItem)
         {
-            getNoteCardList().setItems(((NoteCardTreeItem<?>)note).getNoteList());
+            getNoteCardList().setItems(((NoteCardTreeItem<?>)note)
+                .getNoteList());
         }
     }
 
@@ -32,11 +33,11 @@ class NoteCardPaneControl extends NoteCardPaneView{
 
     @Override
     protected void bindChildren(WriterSceneControl control){
-        control.writingTextProperty().addListener((d, o, n) -> loadText(n));
+        control.writingTextProperty().addListener((d, o, n) -> listenWritingText(n));
         getNoteDetailPane().postLoad(control);
     }
 
-    private void loadText(WritingText text){
+    private void listenWritingText(WritingText text){
         if (text != null){
             writingText = text;
             text.addDocEdited(s -> updateAll());
@@ -92,10 +93,6 @@ class NoteCardPaneControl extends NoteCardPaneView{
         }
     }
 
-    private void updateLocations(){
-        if (writingText == null) return;
-    }
-
     private NoteCardTreeItem<String> locateItem(TreeItem<String> at, String data){
         for(TreeItem<String> child: at.getChildren()){
             String value = child.getValue();
@@ -106,14 +103,6 @@ class NoteCardPaneControl extends NoteCardPaneView{
         NoteCardTreeItem<String> create = new NoteCardTreeItem<>(data);
         at.getChildren().add(create);
         return create;
-    }
-
-    private void updateList(TreeItem<?> item){
-        if (item instanceof NoteCardTreeItem){
-            getNoteCardList().setItems(((NoteCardTreeItem<?>)item).getNoteList());
-        } else {
-            getNoteCardList().getItems().clear();
-        }
     }
 
     private void updateHeadings(){
@@ -132,9 +121,5 @@ class NoteCardPaneControl extends NoteCardPaneView{
             root.getChildren().add(item);
             updateHeadings(item, child);
         }
-    }
-
-    private void showCard(NoteCardSpan show){
-        getNoteDetailPane().setShowCard(show);
     }
 }

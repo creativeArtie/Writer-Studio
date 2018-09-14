@@ -46,6 +46,7 @@ abstract class NoteCardDetailPaneView extends TabPane{
     private Button addField;
     private Button deleteField;
     private Button removeUnused;
+    private Button toNoteButton;
 
     private SimpleObjectProperty<NoteCardSpan> showCard;
 
@@ -68,10 +69,16 @@ abstract class NoteCardDetailPaneView extends TabPane{
     private Tab buildMainTab(){
         BorderPane pane = new BorderPane();
         noteTitle = new TextFlow();
+
         noteContent = new TextFlow();
         ScrollPane scroll = new ScrollPane(noteContent);
+
+        toNoteButton = new Button(GO_TO_NOTE);
+
         pane.setTop(noteTitle);
         pane.setCenter(scroll);
+        pane.setBottom(toNoteButton);
+
         return new Tab(TAB_CONTENT, pane);
     }
 
@@ -155,6 +162,10 @@ abstract class NoteCardDetailPaneView extends TabPane{
 
     TextFlow getNoteContent(){
         return noteContent;
+    }
+
+    Button getToNoteButton(){
+        return toNoteButton;
     }
 
     ComboBox<ShowMeta> getShowMetaBox(){
