@@ -667,8 +667,7 @@ fg=blue</panel_attributes>
 layer=1
 transparency=0
 valign=center
-bg=orange
-fg=blue</panel_attributes>
+bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1325,8 +1324,7 @@ transparency=0</panel_attributes>
 layer=1
 transparency=0
 valign=center
-bg=light_gray
-fg=blue</panel_attributes>
+bg=light_gray</panel_attributes>
     <additional_attributes/>
   </element>
   <element>

@@ -256,9 +256,9 @@
     ></g
     ><g fill="rgb(200,200,200)" transform="translate(180,530)" stroke="rgb(200,200,200)"
     ><rect x="0.5" width="138.5" height="28.5" y="0.5" clip-path="url(#clipPath9)" stroke="none"
-      /><rect x="0.5" y="0.5" clip-path="url(#clipPath9)" fill="none" width="138.5" height="28.5" stroke="blue"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath9)" fill="none" width="138.5" height="28.5" stroke="black"
     /></g
-    ><g fill="blue" font-size="14px" font-family="sans-serif" transform="translate(180,530)" stroke="blue"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(180,530)"
     ><text x="5" xml:space="preserve" y="20.0547" clip-path="url(#clipPath9)" stroke="none"
       >NoteCardTreeItem</text
     ></g
@@ -498,9 +498,9 @@
     /></g
     ><g fill="rgb(255,165,0)" transform="translate(210,470)" stroke="rgb(255,165,0)"
     ><rect x="0.5" width="148.5" height="28.5" y="0.5" clip-path="url(#clipPath24)" stroke="none"
-      /><rect x="0.5" y="0.5" clip-path="url(#clipPath24)" fill="none" width="148.5" height="28.5" stroke="blue"
+      /><rect x="0.5" y="0.5" clip-path="url(#clipPath24)" fill="none" width="148.5" height="28.5" stroke="black"
     /></g
-    ><g fill="blue" font-size="14px" font-family="sans-serif" transform="translate(210,470)" stroke="blue"
+    ><g font-family="sans-serif" font-size="14px" transform="translate(210,470)"
     ><text x="7" xml:space="preserve" y="20.0547" clip-path="url(#clipPath24)" stroke="none"
       >NoteCardPaneView</text
     ></g
