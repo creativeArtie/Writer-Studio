@@ -41,18 +41,6 @@ bg=pink</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>735</x>
-      <y>854</y>
-      <w>56</w>
-      <h>42</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
-layer=3</panel_attributes>
-    <additional_attributes>10.0;40.0;10.0;10.0;60.0;10.0</additional_attributes>
-  </element>
-  <element>
     <id>UMLClass</id>
     <coordinates>
       <x>721</x>
@@ -1494,7 +1482,7 @@ transparency=0</panel_attributes>
     </coordinates>
     <panel_attributes>lt=&lt;-
 layer=2
-fg=blue</panel_attributes>
+fg=red</panel_attributes>
     <additional_attributes>30.0;400.0;10.0;400.0;10.0;10.0;50.0;10.0</additional_attributes>
   </element>
   <element>
@@ -2203,7 +2191,8 @@ layer=2</panel_attributes>
     <panel_attributes>web browser
 symbol=substate
 layer=1
-transparency=0</panel_attributes>
+transparency=0
+bg=pink</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -2231,7 +2220,8 @@ reseach tab
 type=actclass
 layer=1
 transparency=0
-lt=.</panel_attributes>
+lt=.
+bg=pink</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -2243,7 +2233,8 @@ lt=.</panel_attributes>
       <h>21</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-layer=2</panel_attributes>
+layer=2
+fg=cyan</panel_attributes>
     <additional_attributes>10.0;10.0;460.0;10.0;480.0;10.0</additional_attributes>
   </element>
   <element>
@@ -3988,22 +3979,6 @@ transparency=0</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>777</x>
-      <y>854</y>
-      <w>77</w>
-      <h>21</h>
-    </coordinates>
-    <panel_attributes>set dump file
-lt=.
-type=actclass
-layer=2
-transparency=0
-bg=magenta</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>UMLSyncBarHorizontal</id>
     <coordinates>
       <x>721</x>
@@ -4610,5 +4585,237 @@ fg=red</panel_attributes>
 layer=2
 fg=red</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLTimer</id>
+    <coordinates>
+      <x>952</x>
+      <y>210</y>
+      <w>42</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Time
+transparency=0
+layer=1
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>952</x>
+      <y>42</y>
+      <w>77</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>package
+layer=1
+bg=white
+transparency=0</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>952</x>
+      <y>105</y>
+      <w>77</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>action /
+method
+type=actclass
+layer=1
+transparency=0
+layer=1
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLState</id>
+    <coordinates>
+      <x>1036</x>
+      <y>105</y>
+      <w>77</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>property
+transparency=0
+layer=1
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLState</id>
+    <coordinates>
+      <x>1036</x>
+      <y>140</y>
+      <w>77</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>subsystem
+symbol=substate
+layer=1
+transparency=0
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1029</x>
+      <y>231</y>
+      <w>35</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+layer=2
+bg=white</panel_attributes>
+    <additional_attributes>10.0;10.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1036</x>
+      <y>49</y>
+      <w>77</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>Class
+layer=1
+bg=white
+transparency=0</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLSyncBarHorizontal</id>
+    <coordinates>
+      <x>1029</x>
+      <y>252</y>
+      <w>21</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>lw=5</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>952</x>
+      <y>140</y>
+      <w>77</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>Listenable
+Object
+transparency=0
+lw=2
+layer=1
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>1036</x>
+      <y>210</y>
+      <w>14</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>type=initial
+transparency=0
+layer=1
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>938</x>
+      <y>28</y>
+      <w>196</w>
+      <h>252</h>
+    </coordinates>
+    <panel_attributes>transparency=0
+                        Legend
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+                                     start
+                                     
+                                     method call 
+
+                                     combine/split
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>952</x>
+      <y>175</y>
+      <w>77</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>from
+coding
+layer=1
+transparency=0
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>1036</x>
+      <y>175</y>
+      <w>77</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>from 
+elsewhere
+layer=1
+lt=.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>735</x>
+      <y>854</y>
+      <w>56</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+layer=3</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0;60.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>777</x>
+      <y>854</y>
+      <w>77</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>set dump file
+lt=.
+type=actclass
+layer=2
+transparency=0
+bg=magenta</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>
