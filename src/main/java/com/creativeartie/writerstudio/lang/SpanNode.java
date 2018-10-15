@@ -348,19 +348,31 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
     public final <U extends SpanBranch> Optional<U> spanBefore(Class<U> clazz){
         argumentNotNull(clazz, "clazz");
         int current = getParent().indexOf(this);
-        int i = 0;
-        for (Span search: getParent()){
-            if (i == current){
-                return Optional.empty();
+        for (int i = getParent().indexOf(this) - 1; i >=0; i--){
+            Span span = getParent().get(i);
+            if (clazz.isInstance(span)){
+                return Optional.of(clazz.cast(span));
             }
-            if (clazz.isInstance(search)){
-                return Optional.of(clazz.cast(search));
-            }
-            i++;
         }
-        assert false: "span is not a child.";
-        return null;
+        return Optional.empty();
+    }
 
+    /** Gets the previous sibling {@link SpanBranch}.
+     *
+     * @param clazz
+     *      span class
+     * @return answer
+     */
+    public final <U extends SpanBranch> Optional<U> spanAfter(Class<U> clazz){
+        argumentNotNull(clazz, "clazz");
+        int current = getParent().indexOf(this);
+        for (int i = getParent().indexOf(this) + 1; i < getParent().size(); i++){
+            Span span = getParent().get(i);
+            if (clazz.isInstance(span)){
+                return Optional.of(clazz.cast(span));
+            }
+        }
+        return Optional.empty();
     }
 
     /** Gets a list of children {@link SpanLeaf}.

@@ -126,12 +126,22 @@ public final class WritingFile {
         ));
 
         String stats = String.join("\n", Arrays.asList(
-            "2018-04-11|publish-goal:3|time-goal:PT10M|publish-count:1|note-count:1|time-count:PT20M|",
-            "2018-04-12|publish-goal:3|time-goal:PT10M|publish-count:0|note-count:0|time-count:PT1M|",
-            "2018-06-14|publish-goal:3|time-goal:PT10M|publish-count:10|note-count:2|time-count:PT31M|",
-            "2018-06-16|publish-goal:3|time-goal:PT10M|publish-count:3|note-count:3|time-count:PT12M|",
-            "2018-06-17|publish-goal:6|time-goal:PT10M|publish-count:12|note-count:4|time-count:PT18M|",
-            "2018-07-03|publish-goal:10|time-goal:PT10M|publish-count:18|note-count:5|time-count:PT1M|\n"
+            "2018-09-11|publish-goal:5|time-goal:PT10M|publish-count:8|note-count:1|time-count:PT12M|",
+            "2018-09-12|publish-goal:5|time-goal:PT10M|publish-count:17|note-count:1|time-count:PT13M|",
+            "2018-09-13|publish-goal:5|time-goal:PT10M|publish-count:22|note-count:1|time-count:PT9M|",
+            "2018-09-15|publish-goal:5|time-goal:PT10M|publish-count:29|note-count:1|time-count:PT14M|",
+            "2018-09-16|publish-goal:5|time-goal:PT10M|publish-count:39|note-count:1|time-count:PT20M|",
+            "2018-09-17|publish-goal:5|time-goal:PT10M|publish-count:42|note-count:0|time-count:PT12M|",
+            "2018-09-18|publish-goal:5|time-goal:PT10M|publish-count:46|note-count:2|time-count:PT31M|",
+            "2018-09-19|publish-goal:5|time-goal:PT10M|publish-count:49|note-count:3|time-count:PT12M|",
+            "2018-09-21|publish-goal:5|time-goal:PT10M|publish-count:51|note-count:4|time-count:PT18M|",
+            "2018-09-24|publish-goal:5|time-goal:PT10M|publish-count:62|note-count:5|time-count:PT21M|",
+            "2018-09-25|publish-goal:5|time-goal:PT10M|publish-count:66|note-count:5|time-count:PT31M|",
+            "2018-09-26|publish-goal:5|time-goal:PT10M|publish-count:76|note-count:5|time-count:PT51M|",
+            "2018-09-27|publish-goal:5|time-goal:PT10M|publish-count:81|note-count:5|time-count:PT12M|",
+            "2018-09-28|publish-goal:5|time-goal:PT10M|publish-count:86|note-count:5|time-count:PT21M|",
+            "2018-09-29|publish-goal:5|time-goal:PT10M|publish-count:92|note-count:5|time-count:PT51M|",
+            "2018-09-30|publish-goal:5|time-goal:PT10M|publish-count:101|note-count:5|time-count:PT21M|\n"
         ));
         WritingFile ans = new WritingFile(null, new WritingText(file),
             new WritingStat(stats), new WritingData(data));

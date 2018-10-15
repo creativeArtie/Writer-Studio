@@ -192,7 +192,7 @@ public class LayoutConstants{
         public static final String TAB_EMPTY = getString("NoteCards.EmptyTabTitle");
         public static final String TAB_CONTENT = getString("NoteCards.ContentTabTitle");
         public static final String TAB_META = getString("NoteCards.MetaTabTitle");
-        public static final String GO_TO_NOTE = getString("NoteCards.toNoteText");
+        public static final String GO_TO_NOTE = getString("NoteCards.ToNoteText");
 
         public enum ShowMeta{
             USED("NoteCards.SelectedUseMeta"),
