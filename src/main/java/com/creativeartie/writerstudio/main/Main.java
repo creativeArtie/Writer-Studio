@@ -99,8 +99,8 @@ public class Main extends Application{
      */
     protected void getStartFile(WriterSceneControl writer) throws IOException{
         // writeFile = WritingFile.newSampleFile(new File("../../../src/test/resources/sectionDebug8.txt"));
-        writeFile = WritingFile.newSampleFile(new File("../../../src/back/resources/help-text.txt"));
-        // writeFile = WritingFile.newFile();
+        // writeFile = WritingFile.newSampleFile(new File("../../../src/back/resources/help-text.txt"));
+        writeFile = WritingFile.newFile();
         writer.listenWriterFile((d, o, n) -> writeFile = n);
     }
 }
