@@ -67,7 +67,7 @@ public class WriterSceneControl extends WriterSceneView {
 
     /// %Part 3: Bind Children Properties
 
-    protected void bindChildren(Scene scene){
+    protected void bindChildren(Scene scene){/*
         getMainMenuBar().postLoad(this);
 
         getNoteCardPane().postLoad(this);
@@ -80,8 +80,8 @@ public class WriterSceneControl extends WriterSceneView {
 
         getHeadingPane().postLoad(this);
         getMetaDataPane().postLoad(this);
-        getTextPane().postLoad(this);
-        getResearchPane().postLoad(this);
+       // getTextPane().postLoad(this);
+        // getResearchPane().postLoad(this);*/
 
         refocusTextProperty().addListener((d, o, n) -> listenRefocusText(n));
     }
@@ -90,10 +90,10 @@ public class WriterSceneControl extends WriterSceneView {
         if (refocus){
             Platform.runLater( () -> {
                 getMainTabPane().getSelectionModel().selectFirst();
-                InlineCssTextArea area = getTextPane().getTextArea();
+                /*InlineCssTextArea area = getTextPane().getTextArea();
                 area.requestFollowCaret();
                 area.requestFocus();
-                setRefocusText(false);
+                setRefocusText(false);*/
             });
         }
     }

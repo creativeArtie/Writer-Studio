@@ -6,11 +6,11 @@ class MetaDataPaneControl extends MetaDataPaneView{
 
     /// %Part 1: Private Fields and Constructor
 
-    private WindowMatterControl matterWindow;
+    // private WindowMatterControl matterWindow;
     private WritingData writingData;
 
     MetaDataPaneControl(){
-        matterWindow = new WindowMatterControl();
+        // matterWindow = new WindowMatterControl();
     }
 
     /// %Part 2: Property Binding
@@ -18,7 +18,7 @@ class MetaDataPaneControl extends MetaDataPaneView{
 
     @Override
     protected void bindChildren(WriterSceneControl control){
-        matterWindow.postLoad(control);
+        // matterWindow.postLoad(control);
         control.writingDataProperty().addListener(
             (d, o, n) -> listenWritingData(n)
         );
@@ -55,8 +55,8 @@ class MetaDataPaneControl extends MetaDataPaneView{
 
     /// %Part 3.3: getMatterButton(type).setOnAction(...)
 
-    private void listenMatter(TextTypeMatter matter){
+    private void listenMatter(TextTypeMatter matter){/*
         matterWindow.setShowMatter(matter);
-        matterWindow.show();
+        matterWindow.show();*/
     }
 }

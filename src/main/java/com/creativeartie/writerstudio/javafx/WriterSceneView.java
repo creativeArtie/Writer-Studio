@@ -138,11 +138,11 @@ abstract class WriterSceneView extends BorderPane{
 
     private TabPane buildRightTabs(){
         mainTabs = CommonLayoutUtility.buildTabPane();
-        textPane = new TextPaneControl();
-        CommonLayoutUtility.addTab(mainTabs, TAB_CONTENT, textPane);
+        //textPane = new TextPaneControl();
+        //CommonLayoutUtility.addTab(mainTabs, TAB_CONTENT, textPane);
 
-        researchPane = new ResearchPaneControl();
-        CommonLayoutUtility.addTab(mainTabs, TAB_WEB, researchPane);
+        // researchPane = new ResearchPaneControl();
+        // CommonLayoutUtility.addTab(mainTabs, TAB_WEB, researchPane);
         return mainTabs;
     }
 
