@@ -75,11 +75,11 @@ if (currentOS.isWindows()) {
 
 test {
     // Enable JUnit 5 (Gradle 4.6+).
-    // useJUnitPlatform(){
+    useJUnitPlatform(){
         // "heavy" tests will take a long time to complete
         // "timed" tests requires exact timing, which possibly never happens
-        // excludeTags "heavy", "timed"
-    // }
+        excludeTags "heavy", "timed"
+    }
 
     enableAssertions = 'true'
 
