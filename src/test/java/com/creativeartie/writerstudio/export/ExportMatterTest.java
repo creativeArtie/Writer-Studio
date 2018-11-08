@@ -45,19 +45,21 @@ public class ExportMatterTest{
             "drum, shoe, knee,  door, hive, sticks, gate, spine"
         )));
         line.add(note);
-        line.add(new MockContentData(";");
+        line.add(new MockContentData(";"));
         ans.add(line);
 
-        ans.add(new MockContentLine("With a knick-knack paddywhack,");
+        ans.add(new MockContentLine("With a knick-knack paddywhack,"));
 
         ans.add(new MockContentLine("Give a dog a bone,"));
 
         line = new MockContentLine();
-        line.add(new MockContentData("This ");
+        line.add(new MockContentData("This "));
         note = new MockContentData("old man");
-        note.setFootnote("last one is 'once again', not 'on my spine'");
+        note.setFootnote(Optional.of(
+            new MockContentLine("last one is 'once again', not 'on my spine'")
+        ));
         line.add(note);
-        line.add(new MockContentData(" came rolling home");
+        line.add(new MockContentData(" came rolling home"));
         ans.add(line);
 
         return ans;

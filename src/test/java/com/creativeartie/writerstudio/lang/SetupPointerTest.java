@@ -19,7 +19,7 @@ public class SetupPointerTest{
 
     @Nested
     @DisplayName("Pointer Trim Start With")
-    class TrimStartWith{
+    public class TrimStartWith{
         @Test
         @DisplayName("Empty")
         public void trimStartsWithEmpty(){
