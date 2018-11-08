@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.creativeartie.writerstudio.util.ParameterCheckerTest$NullEqual" tests="7" skipped="0" failures="0" errors="0" timestamp="2018-11-08T19:38:22" hostname="waikin-Satellite-U300" time="0.314">
+  <properties/>
+  <testcase name="sameEqualButFail()" classname="com.creativeartie.writerstudio.util.ParameterCheckerTest$NullEqual" time="0.202"/>
+  <testcase name="notNullFail()" classname="com.creativeartie.writerstudio.util.ParameterCheckerTest$NullEqual" time="0.004"/>
+  <testcase name="notNullPass()" classname="com.creativeartie.writerstudio.util.ParameterCheckerTest$NullEqual" time="0.011"/>
+  <testcase name="sameUnexpectedNull()" classname="com.creativeartie.writerstudio.util.ParameterCheckerTest$NullEqual" time="0.007"/>
+  <testcase name="sameUnexpectedValuePass()" classname="com.creativeartie.writerstudio.util.ParameterCheckerTest$NullEqual" time="0.007"/>
+  <testcase name="sameNullExpectedPass()" classname="com.creativeartie.writerstudio.util.ParameterCheckerTest$NullEqual" time="0.008"/>
+  <testcase name="samePass()" classname="com.creativeartie.writerstudio.util.ParameterCheckerTest$NullEqual" time="0.007"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

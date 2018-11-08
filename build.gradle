@@ -1,134 +1,36 @@
-version = "0.3.3.3-alpha"
+version = "0.3.3.4-alpha"
+subprojects {
+    buildscript {
+        dependencies {
+            classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
+        }
 
-// Set up javafx
-buildscript {
-    dependencies {
-        classpath 'com.google.gradle:osdetector-gradle-plugin:1.6.0'
-        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
+        repositories {
+            mavenLocal()
+            mavenCentral()
+        }
     }
 
+    apply plugin: 'java'
     repositories {
         mavenLocal()
         mavenCentral()
     }
-}
 
-// apply plugins
-apply plugin: 'java'
-apply plugin: 'application'
-apply plugin: 'com.google.osdetector'
+    dependencies {
+        testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.2.0'
+        testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.2.0'
+        testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.2.0'
 
-ext.platform = osdetector.os == 'osx' ? 'mac' : osdetector.os == 'windows' ? 'win' : osdetector.os
+        compile group: 'com.google.guava', name: 'guava', version: '23.5-jre'
+    }
 
-mainClassName='com.creativeartie.writerstudio.main.Main'
+    test {
+        useJUnitPlatform()
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-}
-
-javadoc{
-    doLast{
-        copy{
-            from ("src/main/java"){
-                include "**/doc-files/**"
-            }
-            into "build/docs/javadoc/"
+        // Show test results.
+        testLogging {
+            events "passed", "skipped", "failed"
         }
-    }
-}
-
-compileJava {
-    options.encoding = 'UTF-8'
-    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
-}
-
-compileTestJava {
-    options.encoding = 'UTF-8'
-    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
-}
-
-dependencies {
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.2.0'
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.2.0'
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.2.0'
-
-    compile group: 'com.google.guava', name: 'guava', version: '23.5-jre'
-    compile group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.9.0'
-    compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.9'
-
-    compile "org.openjfx:javafx-base:11:$platform"
-    compile "org.openjfx:javafx-graphics:11:$platform"
-    compile "org.openjfx:javafx-controls:11:$platform"
-    compile "org.openjfx:javafx-web:11:$platform"
-}
-
-def currentOS = org.gradle.internal.os.OperatingSystem.current()
-def platform
-if (currentOS.isWindows()) {
-    platform = 'win'
-} else if (currentOS.isLinux()) {
-    platform = 'linux'
-} else if (currentOS.isMacOsX()) {
-    platform = 'mac'
-}
-
-test {
-    // Enable JUnit 5 (Gradle 4.6+).
-    useJUnitPlatform(){
-        // "heavy" tests will take a long time to complete
-        // "timed" tests requires exact timing, which possibly never happens
-        excludeTags "heavy", "timed"
-    }
-
-    enableAssertions = 'true'
-
-    // Show test results.
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
-
-    doFirst {
-        project.file("build/outputs/").mkdirs()
-    }
-}
-
-task testAll(type: Test){
-    group = 'Verification'
-    description = 'Test all files, (take a lot longer then test)'
-
-    // useJUnitPlatform()
-
-    // Always run tests, even when nothing changed.
-    dependsOn 'cleanTest'
-
-    enableAssertions = 'true'
-
-    // Show test results.
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
-
-    doFirst {
-        project.file("build/outputs/").mkdirs()
-    }
-
-}
-
-compileJava {
-    doFirst {
-        options.compilerArgs = [
-                '--module-path', classpath.asPath,
-                '--add-modules', 'javafx.controls'
-        ]
-    }
-}
-
-run {
-    doFirst {
-        jvmArgs = [
-                '--module-path', classpath.asPath,
-                '--add-modules', 'javafx.controls'
-        ]
     }
 }

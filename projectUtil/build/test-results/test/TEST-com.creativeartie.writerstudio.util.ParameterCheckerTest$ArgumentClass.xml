@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.creativeartie.writerstudio.util.ParameterCheckerTest$ArgumentClass" tests="3" skipped="0" failures="0" errors="0" timestamp="2018-11-08T19:38:23" hostname="waikin-Satellite-U300" time="0.06">
+  <properties/>
+  <testcase name="fail()" classname="com.creativeartie.writerstudio.util.ParameterCheckerTest$ArgumentClass" time="0.039"/>
+  <testcase name="self()" classname="com.creativeartie.writerstudio.util.ParameterCheckerTest$ArgumentClass" time="0.002"/>
+  <testcase name="child()" classname="com.creativeartie.writerstudio.util.ParameterCheckerTest$ArgumentClass" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
