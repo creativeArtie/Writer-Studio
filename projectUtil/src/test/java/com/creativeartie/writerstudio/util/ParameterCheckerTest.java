@@ -54,14 +54,14 @@ public class ParameterCheckerTest {
         @Test
         @DisplayName("Self test")
         public void self(){
-            assertDoesNotThrow(() -> argumentClass(new Integer(3), FIELD,
+            assertDoesNotThrow(() -> argumentClass(Integer.valueOf(3), FIELD,
                 Integer.class));
         }
 
         @Test
         @DisplayName("Child test")
         public void child(){
-            assertDoesNotThrow(() -> argumentClass(new Integer(3), FIELD,
+            assertDoesNotThrow(() -> argumentClass(Integer.valueOf(3), FIELD,
                 Number.class));
         }
 
@@ -69,7 +69,7 @@ public class ParameterCheckerTest {
         @DisplayName("Fail test")
         public void fail(){
             Throwable thrown = assertThrows(IllegalArgumentException.class, () ->
-                 argumentClass(new Integer(3), FIELD, Boolean.class));
+                 argumentClass(Integer.valueOf(3), FIELD, Boolean.class));
             assertEquals(ERROR + " (Integer) is not an instance of Boolean.",
                 thrown.getMessage());
         }

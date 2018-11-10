@@ -36,6 +36,10 @@ subprojects {
             events "passed", "skipped", "failed"
         }
     }
+
+    compileTestJava{
+        options.compilerArgs << '-Xlint'
+    }
 }
 
 project('projectUtil') {
@@ -44,9 +48,10 @@ project('projectUtil') {
 
     compileJava {
         inputs.property("moduleName", moduleName)
-            doFirst {
+        doFirst {
             options.compilerArgs = [
                 '--module-path', classpath.asPath,
+                '-Xlint'
             ]
             classpath = files()
         }
