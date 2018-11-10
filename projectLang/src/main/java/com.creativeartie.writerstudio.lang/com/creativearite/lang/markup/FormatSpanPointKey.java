@@ -6,7 +6,7 @@ import java.util.*;
 
 import com.creativeartie.writerstudio.lang.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** A formatted reference text, mainly to docuement statistics. */
 public final class FormatSpanPointKey extends FormatSpan{

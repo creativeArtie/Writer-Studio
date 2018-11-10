@@ -7,7 +7,7 @@ import com.google.common.base.*;
 import com.creativeartie.writerstudio.lang.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /**  A {@link TextSpan} for meta data in the PDF properties. */
 public final class TextSpanUnkown extends TextSpan<ContentSpan>{

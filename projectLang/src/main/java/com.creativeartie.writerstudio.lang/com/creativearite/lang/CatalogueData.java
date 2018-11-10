@@ -4,7 +4,7 @@ import java.util.*;
 
 import com.google.common.collect.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** A list of {@link SpanBranch} with the same {@link CatalogueIdentity}.
  *

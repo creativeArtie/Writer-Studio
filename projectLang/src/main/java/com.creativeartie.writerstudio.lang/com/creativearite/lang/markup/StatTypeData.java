@@ -4,7 +4,7 @@ import java.util.*;
 
 import com.creativeartie.writerstudio.lang.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 public enum StatTypeData{
     PUBLISH_TOTAL, PUBLISH_GOAL,

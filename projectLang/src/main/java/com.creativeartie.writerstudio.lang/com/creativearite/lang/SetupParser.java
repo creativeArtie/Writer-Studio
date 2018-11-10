@@ -2,7 +2,7 @@ package com.creativeartie.writerstudio.lang;
 
 import java.util.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** Parse a text to create a {@link SpanBranch}.
  *

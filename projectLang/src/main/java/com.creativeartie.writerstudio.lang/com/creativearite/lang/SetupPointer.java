@@ -4,7 +4,7 @@ import java.util.*;
 
 import com.google.common.base.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** Pointer for text.
  *
@@ -41,9 +41,9 @@ public final class SetupPointer{
      *      span's document
      * @see SpanBranch#reparseText()
      */
-    static SetupPointer updatePointer(String raw, Document doc, 
-		boolean first
-	){
+    static SetupPointer updatePointer(String raw, Document doc,
+        boolean first
+    ){
         argumentNotEmpty(raw, "raw");
         argumentNotNull(doc, "doc");
 

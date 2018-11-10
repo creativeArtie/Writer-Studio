@@ -8,9 +8,7 @@ import java.util.zip.*;
 import com.google.common.base.*;
 import com.google.common.io.*;
 
-import com.creativeartie.writerstudio.resource.*;
-
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** Stores associated files in a single zip file.
  *

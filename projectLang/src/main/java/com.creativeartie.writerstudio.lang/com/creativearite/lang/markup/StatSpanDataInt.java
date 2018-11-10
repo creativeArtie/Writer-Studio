@@ -7,7 +7,7 @@ import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.lang.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** A span to store integer data. */
 public final class StatSpanDataInt extends StatSpanData<Integer>{

@@ -7,7 +7,7 @@ import java.util.function.*;
 import com.google.common.cache.*;
 import com.google.common.collect.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** Representation of a text file that is parsed by {@link SetupParser}.
  *

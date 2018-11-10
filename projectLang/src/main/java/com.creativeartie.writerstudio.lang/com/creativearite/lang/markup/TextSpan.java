@@ -6,7 +6,7 @@ import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.lang.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** A line of text in the {@link WritingData}. */
 public abstract class TextSpan<T extends SpanBranch> extends SpanBranch{

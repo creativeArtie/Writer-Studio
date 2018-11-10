@@ -11,7 +11,7 @@ import com.google.common.base.*;
 import com.google.common.io.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** Main document that contain the content.
  *

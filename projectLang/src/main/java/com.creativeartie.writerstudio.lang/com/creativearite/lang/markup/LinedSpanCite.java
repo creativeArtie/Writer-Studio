@@ -7,7 +7,7 @@ import com.google.common.collect.*;
 import com.creativeartie.writerstudio.lang.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** A citation for "Cite Worked" page, footnote or in-text. */
 public class LinedSpanCite extends LinedSpan implements Catalogued{

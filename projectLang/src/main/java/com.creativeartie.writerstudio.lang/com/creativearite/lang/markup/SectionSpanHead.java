@@ -6,7 +6,7 @@ import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** Section with optional heading. */
 public final class SectionSpanHead extends SectionSpan {

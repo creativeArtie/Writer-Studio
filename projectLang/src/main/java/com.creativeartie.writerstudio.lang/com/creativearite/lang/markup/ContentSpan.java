@@ -8,7 +8,7 @@ import com.google.common.base.*;
 
 import com.creativeartie.writerstudio.lang.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** Text that is not formatted */
 public final class ContentSpan extends SpanBranch implements BasicText{

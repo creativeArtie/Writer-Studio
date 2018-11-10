@@ -2,7 +2,7 @@ package com.creativeartie.writerstudio.lang;
 
 import java.util.function.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** A {@link Span} storing the raw text. */
 public final class SpanLeaf extends Span{

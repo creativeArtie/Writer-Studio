@@ -2,7 +2,7 @@ package com.creativeartie.writerstudio.lang.markup;
 
 import com.creativeartie.writerstudio.lang.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** Describe the type of field.
  *

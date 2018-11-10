@@ -4,7 +4,7 @@ import java.util.*;
 
 import com.google.common.collect.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** A map of {@link CatalogueData} identifiable by {@link CatalogueIdentity}.
  *

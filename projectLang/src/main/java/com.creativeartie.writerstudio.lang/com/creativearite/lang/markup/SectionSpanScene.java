@@ -5,7 +5,7 @@ import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.lang.*;
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** Section with a outline as a heading*/
 public final class SectionSpanScene extends SectionSpan {
@@ -87,9 +87,9 @@ public final class SectionSpanScene extends SectionSpan {
     public String toString(){
         return "SCENE " + getLevel() + "{" + super.toString() + "}";
     }
-    
+
     @Override
     protected SetupParser getParser(String text){
-		return SectionParseScene.values()[getLevel() - 1];
-	}
+        return SectionParseScene.values()[getLevel() - 1];
+    }
 }

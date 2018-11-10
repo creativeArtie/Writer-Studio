@@ -4,7 +4,7 @@ import java.util.*;
 
 import com.creativeartie.writerstudio.lang.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** Implements {@code design/ebnf.txt Content}. */
 final class ContentParser extends BasicParseText{

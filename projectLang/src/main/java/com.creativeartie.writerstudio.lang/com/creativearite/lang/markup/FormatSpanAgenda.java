@@ -7,7 +7,7 @@ import com.google.common.collect.*;
 import com.creativeartie.writerstudio.lang.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** An inline to-do text. */
 public final class FormatSpanAgenda extends SpanBranch implements Catalogued{

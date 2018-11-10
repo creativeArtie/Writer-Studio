@@ -7,7 +7,7 @@ import com.google.common.collect.*;
 import com.creativeartie.writerstudio.lang.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** A formatted link with a bookmark or a {@link LinedSpanPointLink} reference. */
 public final class FormatSpanLinkRef extends FormatSpanLink

@@ -7,9 +7,7 @@ import java.util.function.*;
 import com.google.common.cache.*;
 import com.google.common.collect.*;
 
-import com.creativeartie.writerstudio.main.*;
-
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** A list of {@link Span spans} which mainly implements {@linkplain List}.
  *

@@ -8,7 +8,7 @@ import com.google.common.base.*;
 
 import com.creativeartie.writerstudio.lang.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** Grouping of text {@link Span} that creates a {@link CatalogueIdentity}. */
 public final class DirectorySpan extends SpanBranch {

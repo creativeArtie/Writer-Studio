@@ -27,6 +27,7 @@ subprojects {
 
         implementation group: 'com.google.guava', name: 'guava', version: '23.5-jre'
     }
+
     test {
         useJUnitPlatform()
 
@@ -40,6 +41,26 @@ subprojects {
 project('projectUtil') {
 
     ext.moduleName = "com.creativeartie.writerstudio.util"
+
+    compileJava {
+        inputs.property("moduleName", moduleName)
+            doFirst {
+            options.compilerArgs = [
+                '--module-path', classpath.asPath,
+            ]
+            classpath = files()
+        }
+    }
+
+}
+
+project('projectLang') {
+
+    dependencies {
+        implementation project(':projectUtil')
+    }
+
+    ext.moduleName = "com.creativeartie.writerstudio.lang"
 
     compileJava {
         inputs.property("moduleName", moduleName)

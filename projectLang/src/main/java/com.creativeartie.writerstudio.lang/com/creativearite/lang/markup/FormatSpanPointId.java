@@ -6,7 +6,7 @@ import com.google.common.collect.*;
 
 import com.creativeartie.writerstudio.lang.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** A formatted pointer for footnote, endnote and card notes. */
 public final class FormatSpanPointId extends FormatSpan implements Catalogued{

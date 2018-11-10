@@ -2,7 +2,7 @@ package com.creativeartie.writerstudio.lang;
 
 import java.util.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** A key to use for the caches in {@link SpanNode}.
  *

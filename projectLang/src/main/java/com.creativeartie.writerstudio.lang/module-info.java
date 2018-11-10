@@ -1,3 +1,6 @@
-module com.creativeartie.writerstudio.util {
-    exports com.creativeartie.writerstudio.util;
+module com.creativeartie.writerstudio.lang {
+    exports com.creativeartie.writerstudio.lang;
+    exports com.creativeartie.writerstudio.lang.markup;
+    requires com.creativeartie.writerstudio.util;
+    requires com.google.common;
 }

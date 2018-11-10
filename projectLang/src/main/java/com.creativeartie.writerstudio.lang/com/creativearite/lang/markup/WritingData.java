@@ -10,7 +10,7 @@ import com.google.common.base.*;
 import com.google.common.collect.*;
 
 import static com.creativeartie.writerstudio.lang.markup.AuxiliaryData.*;
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** Main writing meta data and other matters.
  *
