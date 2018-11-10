@@ -23,7 +23,7 @@ public class HelloWorld{
     @Test
     @DisplayName("File search")
     public void findTestFile(){
-        File f = new File("build.gradle");
+        File f = new File("src/test/resources/test.txt");
         assertTrue(f.exists());
     }
 
