@@ -10,6 +10,7 @@ import com.creativeartie.writerstudio.pdf.value.*; // LineAlignment, PageAlignme
 import com.creativeartie.writerstudio.resource.*; // WindowText
 
 import static com.creativeartie.writerstudio.main.Checker.*;
+import com.creativeartie.writerstudio.util.ProgramProperties;
 
 /** A {@link Section} for the title page
  */
@@ -53,10 +54,10 @@ final class SectionTitle extends Section {
         PDDocumentInformation info = getPdfDocument().getDocumentInformation();
         info.setAuthor(exportData.getInfo(TextTypeInfo.AUTHOR));
         info.setCreationDate(new GregorianCalendar());
-        info.setCreator(WindowText.PROGRAM_NAME.getText());
+        info.setCreator(ProgramProperties.PROGRAM_NAME.get());
         info.setKeywords(exportData.getInfo(TextTypeInfo.KEYWORDS));
         info.setModificationDate(new GregorianCalendar());
-        info.setProducer(WindowText.PROGRAM_NAME.getText());
+        info.setProducer(ProgramProperties.PROGRAM_NAME.get());
         info.setSubject(exportData.getInfo(TextTypeInfo.SUBJECT));
         info.setTitle(exportData.getInfo(TextTypeInfo.TITLE));
     }

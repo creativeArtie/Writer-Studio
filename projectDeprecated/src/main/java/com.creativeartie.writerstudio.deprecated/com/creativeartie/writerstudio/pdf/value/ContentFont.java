@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import com.google.common.base.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** Information about the font, to be filled by sub-classes. */
 public abstract class ContentFont<T, U extends ContentFont<T, U>>{

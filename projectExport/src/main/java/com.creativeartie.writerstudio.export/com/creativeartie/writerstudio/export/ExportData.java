@@ -2,7 +2,7 @@ package com.creativeartie.writerstudio.export;
 
 import java.util.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 public class ExportData<T extends Number> {
 

@@ -98,7 +98,7 @@ public class PdfFontTest{
         assertEquals("FreeSerif", useFont.getFont().getName(), "In Font");
 
         assertTrue(newFont instanceof PdfFont, "Wrong class.");
-        PdfFont font = (PdfFont) newFont;
+        PdfFont font = newFont;
         assertEquals(outSize * baseSize, font.getHeight(), 1f, "Out height");
         assertEquals(outColor, font.getColor(),                "Out color ");
         assertEquals(outLined, font.isUnderline(),             "Out underline");

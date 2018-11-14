@@ -1,0 +1,1882 @@
+
+> Task :projectLang:test
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > basicDoubleData() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > basicTripleData() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > editText1() FAILED
+    org.opentest4j.MultipleFailuresError at StatsTest.java:365
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > editText2() FAILED
+    org.opentest4j.MultipleFailuresError at StatsTest.java:365
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > basicDay() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > basicNoteTotal() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > editBothAdded() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > editStartCall() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > basicPublishGoal() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > setTimeData() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > editStopCall() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > addPublishGoal() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > editTimeGoal() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > setIntData() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > basicTimeGoal() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > basicPublishTotal() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > editAllNew1() FAILED
+    org.opentest4j.MultipleFailuresError at StatsTest.java:365
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > editAllNew2() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > editPublishGoal() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > addTimeGoal() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > basicTimeTotal() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatsTest > basicUnknown() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatFileTest > updateDay() FAILED
+    org.opentest4j.MultipleFailuresError at StatFileTest.java:109
+
+com.creativeartie.writerstudio.lang.markup.StatFileTest > startedYesterday() SKIPPED
+
+com.creativeartie.writerstudio.lang.markup.StatFileTest > openOldGoal() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatFileTest > openOld() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatFileTest > mulitpleStart() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatFileTest > returningToday() FAILED
+    org.opentest4j.MultipleFailuresError at StatFileTest.java:109
+
+com.creativeartie.writerstudio.lang.markup.StatFileTest > reopen() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatFileTest > mulitpleEnd() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatFileTest > assertNew() PASSED
+
+com.creativeartie.writerstudio.lang.markup.StatFileTest > setGoal() PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[1] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[2] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[3] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[4] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[5] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[6] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[7] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[8] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[9] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[10] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[11] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[12] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[13] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[14] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[15] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[16] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[17] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[18] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[19] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[20] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[21] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[22] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[23] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[24] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[25] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[26] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[27] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[28] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[29] PASSED
+
+com.creativeartie.writerstudio.lang.IDStateTest > test(CatalogueStatus, String, boolean[])[30] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > addBasic() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > removeEscape() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > deleteEmpty(int)[1] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > deleteEmpty(int)[2] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > deleteEmpty(int)[3] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > deleteEmpty(int)[4] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > deleteEmpty(int)[5] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > addChildNoteID() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > insertEmptyFromEmpty() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > changeEscape() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > changeHeadingID() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > changeIDLast() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > addEscape() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > addHeadingID() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > removeBasic() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > removeFirst() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > removeIdEnd() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > addIdLast() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > insertEmpty(int)[1] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > insertEmpty(int)[2] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > insertEmpty(int)[3] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > insertEmpty(int)[4] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > insertEmpty(int)[5] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > addFromEmpty() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > changeChildNoteID() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > addStatus() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > addAgendaID() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > addIdFromEmpty() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > deleteEmptyFromEmpty() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > removeLast() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > changeAgendaID() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > removeAll() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > removesLastSpan() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > changeAgendaContent() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > mergeLineByDelete() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > addBeforeEscape() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > mergeLineByEscape() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentEditTest > removeHeadingID() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > errorNoField() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > editRemoveCite() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > errorUsingError() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > editContent() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > errorEmptyDataWithExraSpaces() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > basicInText() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > basicFootnote() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > basicSource() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > inTextNoColon() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > errorEmptyDataNewLine() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > refID() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > errorWithUnparsed() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > inTextColonNewline() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > inTextNoColonData() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > errorEmptyData() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > errorEmptyDataWithColon() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > editAddField() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > editRemoveField() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > editInsertField() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedCiteTest > sourceWithNote() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedRestTest > agendaEscaped() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedRestTest > agendaEditText() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedRestTest > paragraphBasic() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedRestTest > agendaFull() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedRestTest > paragraphEditText() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedRestTest > paragraphFull() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedRestTest > quoteEditText() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedRestTest > agendaEditCreated() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedRestTest > agendaEditRemoved() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedRestTest > breakEditCreate() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedRestTest > agendaSpaced() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedRestTest > agendaBasic() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedRestTest > agendaEmpty() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedRestTest > quoteBasic() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedRestTest > breakBasic() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedRestTest > quoteEditCreate() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedRestTest > breakEditRemoveByDelete() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedRestTest > breakEditRemoveByInsert() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedRestTest > quoteEditRemove() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[1] SKIPPED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[2] SKIPPED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[3] SKIPPED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[4] SKIPPED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[5] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[6] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[7] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[8] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[9] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[10] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[11] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[12] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[13] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[14] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[15] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[16] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[17] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[18] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[19] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[20] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[21] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[22] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[23] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[24] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[25] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[26] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[27] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[28] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[29] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > link(CatalogueStatus, String, boolean[])[30] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[1] SKIPPED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[2] SKIPPED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[3] SKIPPED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[4] SKIPPED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[5] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[6] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[7] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[8] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[9] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[10] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[11] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[12] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[13] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[14] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[15] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[16] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[17] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[18] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[19] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[20] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[21] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[22] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[23] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[24] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[25] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[26] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[27] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[28] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[29] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SupplementCatalogueTest > footnote(CatalogueStatus, String, boolean[])[30] PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatAgendaTest > missingMiddle() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatAgendaTest > editNewContent() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatAgendaTest > editWithEscape() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatAgendaTest > missingLastColon() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatAgendaTest > missingByNewLine() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatAgendaTest > editNewAgenda() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatAgendaTest > missingNone() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatAgendaTest > editAgendaContent() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatAgendaTest > missingLastTwo() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedNoteTest > editAddID() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedNoteTest > noText() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedNoteTest > editChangeText() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedNoteTest > editChangeId() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedNoteTest > noteComplete() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedNoteTest > noID() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedNoteTest > noIDText() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedNoteTest > noteWithoutNewLine() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedNoteTest > editAddColon() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedNoteTest > noIDColon() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedNoteTest > noIdJustText() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedNoteTest > noColon() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelRestTest > editNumberedLevel() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelRestTest > basicBullet() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelRestTest > editBulletLevel() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelRestTest > bulletLevel1() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelRestTest > bulletLevel6() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelRestTest > basicEmptyBullet() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelRestTest > basicNumbered() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelRestTest > basicNonNumbered() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelRestTest > editText() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$MidLine.midLineNoEnd() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$MidLine.midLineEnd() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$MidLine.midLineEndEarly() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$LastLine.lastLineEnded() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$LastLine.lastLineNoEnd() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$LastLine.lineEndEarly() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$Span.spanEnderEscapedPass() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$Span.spanEnderFail() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$Span.spanEnderPass() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$Span.spanLineEnd() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$Span.spanEscapeEnder() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$Span.spanNoEnder() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$Token.tokenSimple() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$Token.tokenPartialEnder() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$Token.tokenLineEnd() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$Token.tokenEscapeNull() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$Token.tokenSingleEnder() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$Token.tokenDoubleEnder() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$Token.tokenEscapeLineEnd() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$Token.tokenWithEnder() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$Token.tokenEscapeEnder() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$Token.tokenComplexEnder() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$SectionEnd.sectionDoubleWithEscape() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$SectionEnd.sectionEscapedEnd() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$SectionEnd.sectionSingleEnd() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$SectionEnd.sectionDoubleLine() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$SectionEnd.sectionNoEnd() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$SectionEnd.sectionDoubleEnd() PASSED
+
+com.creativeartie.writerstudio.lang.markup.BasicCanParseTest > com.creativeartie.writerstudio.lang.markup.BasicCanParseTest$SectionEnd.sectionEscapedNothing() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatLinkTest > linkNoEnd() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatLinkTest > linkStart() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatLinkTest > refNoText() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatLinkTest > refEmptyText() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatLinkTest > editRefNewContent() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatLinkTest > refWithNewline() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatLinkTest > editRefIdContent() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatLinkTest > refBasic() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatLinkTest > refEmpty() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatLinkTest > refStart() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatLinkTest > editLinkFill() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatLinkTest > editLinkPath() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatLinkTest > linkWithNewline() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatLinkTest > refFull() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatLinkTest > linkFull() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatLinkTest > linkPath() PASSED
+
+com.creativeartie.writerstudio.lang.markup.ContentTest > editRemoveEscape() PASSED
+
+com.creativeartie.writerstudio.lang.markup.ContentTest > spaceSingle() PASSED
+
+com.creativeartie.writerstudio.lang.markup.ContentTest > enderNoText() PASSED
+
+com.creativeartie.writerstudio.lang.markup.ContentTest > editAddTextSimple() PASSED
+
+com.creativeartie.writerstudio.lang.markup.ContentTest > enderNewline() PASSED
+
+com.creativeartie.writerstudio.lang.markup.ContentTest > escapeBasic() PASSED
+
+com.creativeartie.writerstudio.lang.markup.ContentTest > escapeSlash() PASSED
+
+com.creativeartie.writerstudio.lang.markup.ContentTest > escapeSpace() PASSED
+
+com.creativeartie.writerstudio.lang.markup.ContentTest > editNewlineSplit() PASSED
+
+com.creativeartie.writerstudio.lang.markup.ContentTest > editAddEscape() PASSED
+
+com.creativeartie.writerstudio.lang.markup.ContentTest > spaceDoubled() PASSED
+
+com.creativeartie.writerstudio.lang.markup.ContentTest > editAddToEnd() PASSED
+
+com.creativeartie.writerstudio.lang.markup.ContentTest > textCount1() PASSED
+
+com.creativeartie.writerstudio.lang.markup.ContentTest > textCount2() PASSED
+
+com.creativeartie.writerstudio.lang.markup.ContentTest > escapeCutOff() PASSED
+
+com.creativeartie.writerstudio.lang.markup.ContentTest > editUserSplit() PASSED
+
+com.creativeartie.writerstudio.lang.markup.ContentTest > escapeMiddle() PASSED
+
+com.creativeartie.writerstudio.lang.markup.ContentTest > enderUser() PASSED
+
+com.creativeartie.writerstudio.lang.markup.EditionTest > stubBasic() PASSED
+
+com.creativeartie.writerstudio.lang.markup.EditionTest > stubLowercase() PASSED
+
+com.creativeartie.writerstudio.lang.markup.EditionTest > basicOtherDetail() PASSED
+
+com.creativeartie.writerstudio.lang.markup.EditionTest > editSplit() PASSED
+
+com.creativeartie.writerstudio.lang.markup.EditionTest > basicDraft() PASSED
+
+com.creativeartie.writerstudio.lang.markup.EditionTest > basicFinal() PASSED
+
+com.creativeartie.writerstudio.lang.markup.EditionTest > basicOther() PASSED
+
+com.creativeartie.writerstudio.lang.markup.EditionTest > basicFinalEscaped() PASSED
+
+com.creativeartie.writerstudio.lang.markup.EditionTest > basicFinalDetailed() PASSED
+
+com.creativeartie.writerstudio.lang.markup.EditionTest > editToFinal() PASSED
+
+com.creativeartie.writerstudio.lang.markup.EditionTest > editText() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormattedSpanTest > basicBold() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormattedSpanTest > editSetEnabled() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormattedSpanTest > startedUnderline() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormattedSpanTest > basicPointKey() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormattedSpanTest > withEndnote() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormattedSpanTest > complete() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormattedSpanTest > betweenTodos() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormattedSpanTest > basicItalics() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormattedSpanTest > basic() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormattedSpanTest > basicUnderlineCoded() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > editMatterAlginChange() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > editInfoEscpesNew() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > editMixed() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > matterDouble() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > editMatterNew() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > matterSpaces() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > unknownWithText() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > unknownWithSpace() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > matterDouble2LineExtra() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > matterBasic() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > editMatterEditedEscape() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > editInfoNew() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > editInfoOld() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > matterTest(String, String, String)[1] PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > matterTest(String, String, String)[2] PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > matterTest(String, String, String)[3] PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > matterTest(String, String, String)[4] PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > matterTest(String, String, String)[5] PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > matterTest(String, String, String)[6] PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > matterTest(String, String, String)[7] PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > matterDoubleNewExtra() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > infoTest(String, String, String)[1] PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > infoTest(String, String, String)[2] PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > infoTest(String, String, String)[3] PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > infoTest(String, String, String)[4] PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > manyMixed() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > editMatterNewEscape() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > infoEscapes() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > matterDoubleNew() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > editInfoEscapesOld() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > unknownAll() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > infoBasic() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > matterDouble1Line() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > matterDouble2Line() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > matterDouble3Line() PASSED
+
+com.creativeartie.writerstudio.lang.markup.TextFileTest > editMatterEdited() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatCurlyTest > editAddId() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatCurlyTest > editNameChanged() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatCurlyTest > missingMiddle() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatCurlyTest > basicCite() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatCurlyTest > editFootnote() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatCurlyTest > missingLastColon() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatCurlyTest > editCategoryChanged() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatCurlyTest > missingByNewLine() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatCurlyTest > footnote() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatCurlyTest > basicEndnote() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatCurlyTest > editAddCat() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatCurlyTest > editNote() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatCurlyTest > missingLastTwo() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatCurlyTest > editSplitNote() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelHeadTest > editOutlineLevel() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelHeadTest > basicSpacedHeading() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelHeadTest > missingStatus() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelHeadTest > basicHeading() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelHeadTest > editContent() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelHeadTest > deleteOutline() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelHeadTest > misingId() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelHeadTest > missingTitle() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelHeadTest > editLevelByContent() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelHeadTest > missingIdColon() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelHeadTest > missingIdTitle() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelHeadTest > levelHeading1() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelHeadTest > levelHeading6() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelHeadTest > editEdition() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelHeadTest > basicTripleHeading() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelHeadTest > basicOutline() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedLevelHeadTest > editHeadingLevel() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedPointerTest > endnoteTextLess() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedPointerTest > linkPathLess() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedPointerTest > linkNoEnd() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedPointerTest > linkColonLess() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedPointerTest > editLinkPath() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedPointerTest > endnoteFull() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedPointerTest > footnote() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedPointerTest > endnoteIDLess() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedPointerTest > linkFull() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedPointerTest > linkNoId() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedPointerTest > editLinkId() PASSED
+
+com.creativeartie.writerstudio.lang.markup.LinedPointerTest > endnoteColonLess() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[1] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[2] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[3] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[4] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[5] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[6] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[7] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[8] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[9] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[10] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[11] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[12] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[13] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[14] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[15] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[16] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[17] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[18] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[19] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[20] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[21] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[22] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[23] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[24] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[25] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[26] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[27] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[28] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[29] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[30] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[31] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[32] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[33] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[34] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[35] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[36] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[37] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[38] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[39] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[40] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[41] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[42] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[43] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[44] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[45] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[46] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[47] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[48] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[49] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[50] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[51] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[52] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[53] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[54] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[55] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[56] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[57] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[58] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[59] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[60] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[61] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[62] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[63] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[64] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[65] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[66] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[67] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[68] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[69] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[70] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[71] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[72] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[73] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[74] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[75] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[76] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[77] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[78] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[79] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[80] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[81] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[82] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[83] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[84] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[85] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[86] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[87] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[88] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[89] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[90] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[91] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[92] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[93] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[94] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[95] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[96] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[97] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[98] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[99] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[100] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[101] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[102] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[103] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[104] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[105] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[106] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[107] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[108] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[109] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[110] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[111] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[112] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[113] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[114] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[115] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[116] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[117] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[118] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[119] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[120] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[121] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[122] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[123] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[124] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[125] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[126] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[127] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[128] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[129] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[130] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[131] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[132] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[133] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[134] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[135] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[136] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[137] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[138] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[139] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[140] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[141] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[142] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[143] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[144] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[145] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[146] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[147] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[148] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[149] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[150] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[151] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[152] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[153] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[154] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[155] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[156] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[157] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[158] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[159] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[160] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[161] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[162] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[163] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[164] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[165] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[166] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[167] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[168] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[169] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[170] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[171] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[172] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[173] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[174] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[175] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[176] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[177] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[178] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[179] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[180] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[181] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[182] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[183] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[184] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[185] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[186] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[187] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[188] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[189] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[190] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[191] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[192] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[193] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[194] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[195] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[196] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[197] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[198] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[199] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[200] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[201] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[202] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[203] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[204] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[205] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[206] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[207] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[208] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[209] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[210] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[211] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[212] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[213] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[214] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[215] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[216] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[217] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[218] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[219] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[220] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[221] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[222] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[223] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[224] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[225] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[226] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[227] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[228] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[229] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[230] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[231] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[232] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[233] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[234] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[235] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[236] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[237] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[238] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[239] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[240] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[241] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[242] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[243] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[244] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[245] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[246] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[247] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[248] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[249] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[250] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[251] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[252] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[253] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[254] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[255] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[256] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[257] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[258] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[259] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[260] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[261] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[262] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[263] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[264] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[265] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[266] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[267] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[268] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[269] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[270] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[271] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[272] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[273] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[274] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[275] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[276] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[277] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[278] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[279] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[280] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[281] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[282] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[283] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[284] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[285] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[286] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[287] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[288] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[289] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[290] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[291] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[292] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[293] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[294] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[295] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[296] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[297] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[298] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[299] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[300] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[301] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[302] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[303] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[304] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[305] PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionSupplementTest > test(WritingText, Type, List)[306] PASSED
+
+com.creativeartie.writerstudio.lang.markup.NoteCardTest > editAddEscpeNewline() PASSED
+
+com.creativeartie.writerstudio.lang.markup.NoteCardTest > editContent() PASSED
+
+com.creativeartie.writerstudio.lang.markup.NoteCardTest > noteDouble() PASSED
+
+com.creativeartie.writerstudio.lang.markup.NoteCardTest > noteLooped() PASSED
+
+com.creativeartie.writerstudio.lang.markup.NoteCardTest > noteWithId() PASSED
+
+com.creativeartie.writerstudio.lang.markup.NoteCardTest > noteSourceError() PASSED
+
+com.creativeartie.writerstudio.lang.markup.NoteCardTest > editAddParagraph() PASSED
+
+com.creativeartie.writerstudio.lang.markup.NoteCardTest > noteNoId() PASSED
+
+com.creativeartie.writerstudio.lang.markup.NoteCardTest > editAddLineBasic() PASSED
+
+com.creativeartie.writerstudio.lang.markup.NoteCardTest > noteBasic() PASSED
+
+com.creativeartie.writerstudio.lang.markup.NoteCardTest > editSplitById() PASSED
+
+com.creativeartie.writerstudio.lang.markup.WritingTest > reallyLarge() SKIPPED
+
+com.creativeartie.writerstudio.lang.markup.WritingTest > getLeaves() PASSED
+
+com.creativeartie.writerstudio.lang.markup.WritingTest > getCount() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionEditTest > outlineToParent() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionEditTest > noneToChild() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionEditTest > childToNone() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionEditTest > addLine() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionEditTest > escapeHeading2() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionEditTest > noneToOutline() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionEditTest > outlineAddHeading() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionEditTest > heading4AddHeading3() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionEditTest > outline4AddOutine3() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionEditTest > outlineToNone() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionEditTest > mergeHeading1() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionEditTest > noneToHeading() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionEditTest > splitHeading1() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatKeyTest > startOnly() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatKeyTest > editWordCount() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatKeyTest > statErrorMisspell() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatKeyTest > editRemoveText() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatKeyTest > statPageNumber() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatKeyTest > noText() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatKeyTest > basic() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatKeyTest > noEnding() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatKeyTest > editAddText() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatKeyTest > editAddEnding() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatKeyTest > statErrorText() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatKeyTest > statWordCount() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatKeyTest > twoWords() PASSED
+
+com.creativeartie.writerstudio.lang.markup.FormatKeyTest > noSpacesOnly() PASSED
+
+com.creativeartie.writerstudio.lang.markup.DirectoryTest > editCategoryChanged() PASSED
+
+com.creativeartie.writerstudio.lang.markup.DirectoryTest > enderNewline() PASSED
+
+com.creativeartie.writerstudio.lang.markup.DirectoryTest > categoryEmpty() PASSED
+
+com.creativeartie.writerstudio.lang.markup.DirectoryTest > editSplitNewline() PASSED
+
+com.creativeartie.writerstudio.lang.markup.DirectoryTest > categoryDouble() PASSED
+
+com.creativeartie.writerstudio.lang.markup.DirectoryTest > categoryEscape() PASSED
+
+com.creativeartie.writerstudio.lang.markup.DirectoryTest > nameEmpty() PASSED
+
+com.creativeartie.writerstudio.lang.markup.DirectoryTest > categorySingle() PASSED
+
+com.creativeartie.writerstudio.lang.markup.DirectoryTest > editCategoryAdded() PASSED
+
+com.creativeartie.writerstudio.lang.markup.DirectoryTest > nameOnly() PASSED
+
+com.creativeartie.writerstudio.lang.markup.DirectoryTest > editSplitUser() PASSED
+
+com.creativeartie.writerstudio.lang.markup.DirectoryTest > categorySpaceSecond() PASSED
+
+com.creativeartie.writerstudio.lang.markup.DirectoryTest > enderUser() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionTest > editAddOutline() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionTest > sectionWithStuff() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionTest > sectionWithSubheading() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionTest > editHeading1ToChild() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionTest > sectionNoHeading() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionTest > sectionWithNote() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionTest > sectionWithOutline() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionTest > editSection6() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionTest > editChangeOutline() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionTest > editChangeSection1_1() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionTest > sectionWithHeading() PASSED
+
+com.creativeartie.writerstudio.lang.markup.SectionTest > editRemoveOutline() PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[1] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[2] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[3] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[4] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[5] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[6] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[7] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[8] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[9] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[10] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[11] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[12] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[13] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[14] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[15] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[16] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[17] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[18] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[19] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[20] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[21] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[22] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[23] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[24] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[25] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[26] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[27] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[28] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[29] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[30] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[31] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[32] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[33] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[34] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[35] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[36] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[37] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[38] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[39] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[40] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLine(int, boolean, int[], int)[41] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[1] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[2] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[3] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[4] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[5] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[6] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[7] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[8] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[9] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[10] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[11] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[12] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[13] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[14] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[15] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[16] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[17] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[18] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[19] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[20] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[21] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[22] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[23] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[24] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[25] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[26] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[27] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[28] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[29] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[30] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[31] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[32] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[33] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[34] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[35] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[36] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[37] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[38] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[39] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[40] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByIndex(int, boolean, int[])[41] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByStream(boolean, int[], int, boolean)[1] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByStream(boolean, int[], int, boolean)[2] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByStream(boolean, int[], int, boolean)[3] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByStream(boolean, int[], int, boolean)[4] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByStream(boolean, int[], int, boolean)[5] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByStream(boolean, int[], int, boolean)[6] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByStream(boolean, int[], int, boolean)[7] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByStream(boolean, int[], int, boolean)[8] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByStream(boolean, int[], int, boolean)[9] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByStream(boolean, int[], int, boolean)[10] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByStream(boolean, int[], int, boolean)[11] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByStream(boolean, int[], int, boolean)[12] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByStream(boolean, int[], int, boolean)[13] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByStream(boolean, int[], int, boolean)[14] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testLeafByStream(boolean, int[], int, boolean)[15] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[1] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[2] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[3] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[4] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[5] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[6] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[7] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[8] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[9] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[10] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[11] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[12] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[13] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[14] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[15] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[16] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[17] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[18] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[19] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[20] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[21] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[22] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[23] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[24] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[25] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[26] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[27] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[28] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[29] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[30] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[31] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[32] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[33] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[34] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[35] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[36] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[37] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[38] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[39] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[40] PASSED
+
+com.creativeartie.writerstudio.lang.DocumentAccessTest > testColumn(int, boolean, int[], int)[41] PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$RollBack.rollBackBeginEnd() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$RollBack.rollBackMiddle() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$RollBack.rollBackBegin() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$RollBack.rollBackBeginLate() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$NextChars.nextCharsAlll() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$NextChars.nextCharsEmpty() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$NextChars.nextCharsSplit() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$NextChars.nextCharsTooShort() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$GetTo.getToEmpty() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$GetTo.getToExtra() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$GetTo.getToPart1() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$GetTo.getToPart2() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$GetTo.getToAll() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$Match.matchesEmpty() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$Match.matchesExtra() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$Match.matchSimple() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$StartWith.startWithStringNext() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$StartWith.startWithStringTrue() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$StartWith.startWithStringEmpty() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$StartWith.startWithStringFalse() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$StartWith.startWithStringSpace() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$TrimStartWith.trimStartsWithSpaces() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$TrimStartWith.trimStartsWithEmpty() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$TrimStartWith.trimStartsWithToken() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$TrimStartWith.trimStartsWithSpaceToken() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$TrimStartWith.trimStartsWithNext() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$TrimStartWith.trimStartsWithText() PASSED
+
+com.creativeartie.writerstudio.lang.SetupPointerTest > com.creativeartie.writerstudio.lang.SetupPointerTest$TrimStartWith.trimStartsWithSpaceText() PASSED
+
+com.creativeartie.writerstudio.lang.IDOrderTest > noSubcategory() PASSED
+
+com.creativeartie.writerstudio.lang.IDOrderTest > longList() PASSED
+
+com.creativeartie.writerstudio.lang.IDOrderTest > sameCategory1() PASSED
+
+com.creativeartie.writerstudio.lang.IDOrderTest > sameCateogry2() PASSED
+
+com.creativeartie.writerstudio.lang.IDOrderTest > differentSubCategory() PASSED
+
+com.creativeartie.writerstudio.lang.IDOrderTest > emptySubcategory() PASSED
+
+> Task :projectLang:test FAILED
+7 actionable tasks: 1 executed, 6 up-to-date

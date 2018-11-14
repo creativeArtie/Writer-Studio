@@ -2,23 +2,30 @@
 // projectUtil/src/main/resource/com/creativeartie/writerstudio/util/main.properties
 version = "0.3.3.4-alpha"
 
-subprojects {
-    buildscript {
-        dependencies {
-            classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
-        }
-
-        repositories {
-            mavenLocal()
-            mavenCentral()
-        }
+buildscript {
+    dependencies {
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
+        classpath "com.google.gradle:osdetector-gradle-plugin:1.6.0"
     }
 
-    apply plugin: 'java'
     repositories {
         mavenLocal()
         mavenCentral()
     }
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'com.google.osdetector'
+
+
+subprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    apply plugin: 'java'
 
     dependencies {
         testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.2.0'
@@ -77,4 +84,85 @@ project('projectLang') {
         }
     }
 
+}
+
+project('projectDeprecated') {
+    dependencies {
+        implementation project(':projectUtil')
+        implementation project(':projectLang')
+        compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.9'
+    }
+
+    ext.moduleName = "com.creativeartie.writerstudio.deprecated"
+
+    compileJava {
+        inputs.property("moduleName", moduleName)
+            doFirst {
+            options.compilerArgs = [
+                '--module-path', classpath.asPath,
+            ]
+            classpath = files()
+        }
+    }
+
+}
+
+project('projectExport') {
+    dependencies {
+        implementation project(':projectUtil')
+        implementation project(':projectLang')
+        compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.9'
+    }
+
+    ext.moduleName = "com.creativeartie.writerstudio.export"
+
+    compileJava {
+        inputs.property("moduleName", moduleName)
+            doFirst {
+            options.compilerArgs = [
+                '--module-path', classpath.asPath,
+            ]
+            classpath = files()
+        }
+    }
+
+}
+
+
+project('projectJavafx') {
+
+
+    ext.platform = osdetector.os == 'osx' ? 'mac' : osdetector.os == 'windows' ? 'win' : osdetector.os
+
+    dependencies {
+        implementation project(':projectUtil')
+        implementation project(':projectLang')
+        implementation project(':projectDeprecated')
+
+        compile "org.openjfx:javafx-base:11:$platform"
+        compile "org.openjfx:javafx-graphics:11:$platform"
+        compile "org.openjfx:javafx-controls:11:$platform"
+        compile "org.openjfx:javafx-web:11:$platform"
+    }
+
+    ext.moduleName = "com.creativeartie.writerstudio.export"
+
+    compileJava {
+        inputs.property("moduleName", moduleName)
+            doFirst {
+            options.compilerArgs = [
+                '--module-path', classpath.asPath,
+                '--add-modules', 'javafx.controls'
+            ]
+            classpath = files()
+        }
+    }
+    run {
+        doFirst {
+            jvmArgs = [
+                    '--module-path', classpath.asPath,
+                    '--add-modules', 'javafx.controls'
+            ]
+        }
+    }
 }

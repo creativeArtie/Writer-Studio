@@ -9,9 +9,9 @@ import static com.google.common.base.Preconditions.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.lang.Span;
 import com.creativeartie.writerstudio.main.*;
-import com.creativeartie.writerstudio.javafx.utils.*;
+// import com.creativeartie.writerstudio.javafx.utils.*;
 
-public enum WindowText {
+public enum WindowText {/*
     PROGRAM_NAME("MainWindow.Title"),
     EMPTY_TEXT("CommonText.NoText"),
     EMPTY_NA("CommonText.NA"),
@@ -210,5 +210,5 @@ public enum WindowText {
 
     public String getText(){
         return getDisplay(bundleKey);
-    }
+    }*/
 }

@@ -13,7 +13,7 @@ import com.creativeartie.writerstudio.lang.*;
 import com.creativeartie.writerstudio.lang.markup.*;
 import com.creativeartie.writerstudio.javafx.utils.*;
 
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 import static com.creativeartie.writerstudio.javafx.utils.LayoutConstants.
     TextPaneConstants.*;

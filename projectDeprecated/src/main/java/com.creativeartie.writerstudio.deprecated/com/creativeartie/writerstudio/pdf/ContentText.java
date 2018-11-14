@@ -14,7 +14,7 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.*; // PDAnnotationLink
 import com.creativeartie.writerstudio.pdf.value.*; // ContentFont, ContentPostEditor
 import com.creativeartie.writerstudio.lang.*; // SpanBranch
 import static com.creativeartie.writerstudio.main.Checker.*;
-import static com.creativeartie.writerstudio.main.ParameterChecker.*;
+import static com.creativeartie.writerstudio.util.ParameterChecker.*;
 
 /** Stores a text and its properties.
  *
