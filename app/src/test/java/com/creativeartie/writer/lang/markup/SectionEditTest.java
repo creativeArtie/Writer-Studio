@@ -221,8 +221,6 @@ public class SectionEditTest {
 
     private WritingText setup(String raw, TreeAsserter structure){
         testFile = new WritingText(raw);
-        SpanNode<?> target = testFile;
-
         testStructure = structure;
         return testFile;
     }

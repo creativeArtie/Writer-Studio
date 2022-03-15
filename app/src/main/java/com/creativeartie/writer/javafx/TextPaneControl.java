@@ -203,7 +203,8 @@ class TextPaneControl extends TextPaneView {
             System.err.println(writingText);
             System.err.println("Text in interface and in document mismatch");
             System.err.println("reparsing all");
-            Thread.currentThread().dumpStack();
+            Thread.currentThread();
+			Thread.dumpStack();
             System.err.println("problem change: " + change);
             System.err.println("😧");
             System.err.println("interface text: \n" + getTextArea().getText());

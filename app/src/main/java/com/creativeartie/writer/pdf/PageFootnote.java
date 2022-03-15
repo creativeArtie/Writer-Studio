@@ -160,10 +160,8 @@ final class PageFootnote {
     PageFootnote insertPending(DivisionText.Line line){
         checkNotNull(line, "line");
 
-        int i = 0;
         for (ContentText content: line){
             content.getFootnote().ifPresent(s -> insertPending(s));
-            i++;
         }
         return this;
     }

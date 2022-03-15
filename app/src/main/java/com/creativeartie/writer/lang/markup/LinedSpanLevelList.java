@@ -8,7 +8,6 @@ import static com.creativeartie.writer.main.ParameterChecker.*;
 
 /** A bullet or numbered line item. */
 public class LinedSpanLevelList extends LinedSpanLevel {
-    private LinedParseLevel spanReparser;
     private final CacheKeyMain<Boolean> cacheType;
     private final CacheKeyMain<Integer> cachePublish;
     private final CacheKeyMain<Integer> cacheNote;

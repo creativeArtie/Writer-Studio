@@ -24,7 +24,6 @@ public abstract class WindowStatView extends Stage{
     private Spinner<Integer> minuteSpinner;
 
     WindowStatView(){
-        Stage ans = new Stage();
         setTitle(WINDOW_TITLE);
         setResizable(false);
         setScene(buildScene());

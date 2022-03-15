@@ -53,8 +53,6 @@ public class LinedSpanNote extends LinedSpan{
     private final CacheKeyOptional<CatalogueIdentity> cacheId;
     private final CacheKeyMain<String> cacheLookup;
     private final CacheKeyMain<Integer> cacheNote;
-    private final CacheKeyMain<Boolean> cacheFirst;
-
     /** Creates a {@linkplain LinedSpanNote}.
      *
      * @param children
@@ -67,7 +65,7 @@ public class LinedSpanNote extends LinedSpan{
         cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
         cacheLookup = CacheKeyMain.stringKey();
         cacheNote = CacheKeyMain.integerKey();
-        cacheFirst = CacheKeyMain.booleanKey();
+        CacheKeyMain.booleanKey();
     }
 
     /** Gets the formatted content.

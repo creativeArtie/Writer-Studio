@@ -39,7 +39,6 @@ class WindowMatterControl extends WindowMatterView{
 
     private void listenShowMatter(TextTypeMatter matter){
         if (getShowMatter() == null) return;
-        String title = null;
         setTitle(getString(matter));
 
         if (writingData != null){

@@ -31,8 +31,7 @@ enum LinedParseRest implements SetupParser {
         ArrayList<Span> children = new ArrayList<>();
 
         if (pointer.startsWith(children, LINED_NOTE)){
-            /// Create note id
-            Optional<DirectorySpan> id = Optional.empty();
+            Optional.empty();
             if (pointer.trimStartsWith(children, DIRECTORY_BEGIN)){
                 DirectoryParser.ID_NOTE.parse(pointer, children);
                 pointer.startsWith(children, DIRECTORY_END);

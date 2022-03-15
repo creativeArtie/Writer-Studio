@@ -10,8 +10,6 @@ import static com.creativeartie.writer.main.ParameterChecker.*;
 public final class FormatSpanPointKey extends FormatSpan{
     private final FormatParsePointKey spanReparser;
     private final CacheKeyMain<FormatTypeField> cacheField;
-    private final CacheKeyMain<String> cacheValue;
-
     /** Creates a {@linkplain FormatSpanLinkRef}.
      *
      * @param children
@@ -28,7 +26,7 @@ public final class FormatSpanPointKey extends FormatSpan{
         spanReparser = argumentNotNull(reparser, "reparser");
 
         cacheField = new CacheKeyMain<>(FormatTypeField.class);
-        cacheValue = CacheKeyMain.stringKey();
+        CacheKeyMain.stringKey();
     }
 
     public FormatTypeField getField(){

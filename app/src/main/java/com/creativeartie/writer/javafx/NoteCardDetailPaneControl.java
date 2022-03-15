@@ -15,7 +15,6 @@ import com.creativeartie.writer.javafx.utils.LayoutConstants.
 class NoteCardDetailPaneControl extends NoteCardDetailPaneView{
     /// %Part 1: setupChildren
 
-    private NoteCardSpan selectedSpan;
     private ShowMeta showMeta;
     private FilteredList<NoteCardData> metaList;
 
@@ -29,7 +28,6 @@ class NoteCardDetailPaneControl extends NoteCardDetailPaneView{
     }
 
     private void loadCard(NoteCardSpan span){
-        selectedSpan = span;
         if (span == null){
             getTabs().clear();
             getTabs().add(getEmptyTab());

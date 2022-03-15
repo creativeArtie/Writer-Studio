@@ -18,7 +18,7 @@ public enum FileResource{
     ABOUT_CSS("about", ".css"), META_CSS("meta", ".css");
 
     private static final String[] LOCATION = new String[]{
-        "com", "creativeartie", "writerstudio", "javafx", "utils"
+        "com", "creativeartie", "writer", "javafx", "utils"
     };
     private final String baseString;
     private final String fileExt;
@@ -37,7 +37,11 @@ public enum FileResource{
 
     public String getCssPath(){
         stateCheck(ordinal() > BSD.ordinal(), "Nort supported for " + this);
-        return String.join("/", LOCATION) + "/" + baseString + fileExt;
+        
+        String result = String.join("/", LOCATION) + "/" + baseString + fileExt;
+        assert FileResource.class.getResource(result) != null;
+        	
+        return result;
     }
 
     URL getResourceFile(){

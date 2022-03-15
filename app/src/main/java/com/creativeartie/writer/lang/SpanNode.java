@@ -19,10 +19,10 @@ import static com.creativeartie.writer.main.ParameterChecker.*;
  * <li> Adding and removing listeners.</li>
  * <li> Implements {@link List} class.</li>
  * </ul>
- * @param <T>
+ * @param <S>
  *      Type of span stored
  */
-public abstract class SpanNode<T extends Span> extends Span implements List<T>{
+public abstract class SpanNode<S extends Span> extends Span implements List<S>{
 
     /// %Part 1: Constructor & Fields ##########################################
 
@@ -34,10 +34,10 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
     private final Cache<CacheKeyOptional<?>, Optional<?>> docOptionalCache;
     private final Cache<CacheKeyList<?>, List<?>> docListCache;
 
-    private final HashSet<Consumer<SpanNode<T>>> childEditedListeners;
-    private final HashSet<Consumer<SpanNode<T>>> spanRemovedListeners;
-    private final HashSet<Consumer<SpanNode<T>>> spanEditedListeners;
-    private final HashSet<Consumer<SpanNode<T>>> docEditedListeners;
+    private final HashSet<Consumer<SpanNode<S>>> childEditedListeners;
+    private final HashSet<Consumer<SpanNode<S>>> spanRemovedListeners;
+    private final HashSet<Consumer<SpanNode<S>>> spanEditedListeners;
+    private final HashSet<Consumer<SpanNode<S>>> docEditedListeners;
     private boolean editedChild;
     private boolean editedTarget;
 
@@ -117,7 +117,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      *      new children spans
      * @see #SpanBranch#reparseText(String, SetupParser)
      */
-    final void updateSpan(List<T> spans){
+    final void updateSpan(List<S> spans){
         setChildren(spans);
         setEdited();
         getParent().updateParent();
@@ -145,7 +145,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      * @see SpanBranch#SpanBranch(List)
      * @see #updateSpan(List)
      */
-    abstract void setChildren(List<T> spans);
+    abstract void setChildren(List<S> spans);
 
     /** Recrusively update the parent or document span.
      *
@@ -168,7 +168,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      */
     final void setRemove(){
         getDocument().removeSpan(this);
-        for (T child: this){
+        for (S child: this){
             if (child instanceof SpanBranch) ((SpanBranch)child).setRemove();
         }
     }
@@ -244,8 +244,8 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      * @see #fireRemoveListeners()
      * @see #fireListeners()
      */
-    private final void fire(HashSet<Consumer<SpanNode<T>>> listeners){
-        for (Consumer<SpanNode<T>> listener: listeners) listener.accept(this);
+    private final void fire(HashSet<Consumer<SpanNode<S>>> listeners){
+        for (Consumer<SpanNode<S>> listener: listeners) listener.accept(this);
     }
 
     /// %Part 3: Get Span ######################################################
@@ -616,7 +616,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      * @param listener
      *      span listener
      */
-    public void addSpanEdited(Consumer<SpanNode<T>> listener){
+    public void addSpanEdited(Consumer<SpanNode<S>> listener){
         spanEditedListeners.add(listener);
     }
 
@@ -625,7 +625,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      * @param listener
      *      span listener
      */
-    public void removeSpanEdited(Consumer<SpanNode<T>> listener){
+    public void removeSpanEdited(Consumer<SpanNode<S>> listener){
         spanEditedListeners.remove(listener);
     }
 
@@ -634,7 +634,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      * @param listener
      *      span listener
      */
-    public void addSpanRemoved(Consumer<SpanNode<T>> listener){
+    public void addSpanRemoved(Consumer<SpanNode<S>> listener){
         spanRemovedListeners.add(listener);
     }
 
@@ -643,7 +643,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      * @param listener
      *      span listener
      */
-    public void removeSpanRemoved(Consumer<SpanNode<T>> listener){
+    public void removeSpanRemoved(Consumer<SpanNode<S>> listener){
         spanRemovedListeners.remove(listener);
     }
 
@@ -652,7 +652,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      * @param listener
      *      span listener
      */
-    public void addChildEdited(Consumer<SpanNode<T>> listener){
+    public void addChildEdited(Consumer<SpanNode<S>> listener){
         childEditedListeners.add(listener);
     }
 
@@ -661,7 +661,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      * @param listener
      *      span listener
      */
-    public void removeChildEdited(Consumer<SpanNode<T>> listener){
+    public void removeChildEdited(Consumer<SpanNode<S>> listener){
         childEditedListeners.remove(listener);
     }
 
@@ -672,7 +672,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      * @param listener
      *      span listener
      */
-    public void addDocEdited(Consumer<SpanNode<T>> listener){
+    public void addDocEdited(Consumer<SpanNode<S>> listener){
         docEditedListeners.add(listener);
     }
 
@@ -683,7 +683,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
      * @param listener
      *      span listener
      */
-    public void removeDocEdited(Consumer<SpanNode<T>> listener){
+    public void removeDocEdited(Consumer<SpanNode<S>> listener){
         docEditedListeners.remove(listener);
     }
 
@@ -711,25 +711,25 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
     /// %Part 6.2: List Methods ================================================
 
     /// Implements List (ForwardList cannot be the super class)
-    public abstract List<T> delegate();
+    public abstract List<S> delegate();
 
     @Override
-    public boolean add(T e){
+    public boolean add(S e){
         return delegate().add(e);
     }
 
     @Override
-    public void add(int index, T element){
+    public void add(int index, S element){
         delegate().add(index, element);
     }
 
     @Override
-    public boolean addAll(Collection<? extends T> c){
+    public boolean addAll(Collection<? extends S> c){
         return delegate().addAll(c);
     }
 
     @Override
-    public boolean addAll(int index, Collection<? extends T> c){
+    public boolean addAll(int index, Collection<? extends S> c){
         return delegate().addAll(index, c);
     }
 
@@ -754,7 +754,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
     }
 
     @Override
-    public T get(int index){
+    public S get(int index){
         return delegate().get(index);
     }
 
@@ -774,7 +774,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
     }
 
     @Override
-    public Iterator<T> iterator(){
+    public Iterator<S> iterator(){
         return delegate().iterator();
     }
 
@@ -784,17 +784,17 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
     }
 
     @Override
-    public ListIterator<T> listIterator(){
+    public ListIterator<S> listIterator(){
         return delegate().listIterator();
     }
 
     @Override
-    public ListIterator<T> listIterator(int index){
+    public ListIterator<S> listIterator(int index){
         return delegate().listIterator(index);
     }
 
     @Override
-    public T remove(int index){
+    public S remove(int index){
         return delegate().remove(index);
     }
 
@@ -809,7 +809,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
     }
 
     @Override
-    public void replaceAll(UnaryOperator<T> operator){
+    public void replaceAll(UnaryOperator<S> operator){
         delegate().replaceAll(operator);
     }
 
@@ -819,7 +819,7 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
     }
 
     @Override
-    public T set(int index, T element){
+    public S set(int index, S element){
         return delegate().set(index, element);
     }
 
@@ -829,17 +829,17 @@ public abstract class SpanNode<T extends Span> extends Span implements List<T>{
     }
 
     @Override
-    public void sort(Comparator<? super T> c){
+    public void sort(Comparator<? super S> c){
         delegate().sort(c);
     }
 
     @Override
-    public Spliterator<T> spliterator(){
+    public Spliterator<S> spliterator(){
         return delegate().spliterator();
     }
 
     @Override
-    public List<T> subList(int fromIndex, int toIndex){
+    public List<S> subList(int fromIndex, int toIndex){
         return delegate().subList(fromIndex, toIndex);
     }
 

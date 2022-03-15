@@ -186,7 +186,8 @@ public class StatFileTest {
         WritingText after = new WritingText("Hello World! One two Three");
 
         test.startWriting(before);
-        Thread.currentThread().sleep(1000);
+        Thread.currentThread();
+		Thread.sleep(1000);
         test.stopWriting(after);
 
         today.setPublishTotal(5).setTimeTotal(20);
@@ -217,7 +218,8 @@ public class StatFileTest {
         WritingText after = new WritingText("Hello World! One two Three");
 
         test.startWriting(before);
-        Thread.currentThread().sleep(1000);
+        Thread.currentThread();
+		Thread.sleep(1000);
         test.stopWriting(after);
 
         today.setPublishTotal(5).setTimeTotal(1);
@@ -238,7 +240,8 @@ public class StatFileTest {
         WritingText after = new WritingText("Hello World! One two Three");
 
         test.startWriting(before);
-        Thread.currentThread().sleep(1000);
+        Thread.currentThread();
+		Thread.sleep(1000);
         test.startWriting(after);
 
         today.setPublishTotal(5);
@@ -259,7 +262,8 @@ public class StatFileTest {
         WritingText after = new WritingText("Hello World! One two Three");
 
         test.stopWriting(before);
-        Thread.currentThread().sleep(1000);
+        Thread.currentThread();
+		Thread.sleep(1000);
         test.stopWriting(after);
 
         today.setPublishTotal(5);

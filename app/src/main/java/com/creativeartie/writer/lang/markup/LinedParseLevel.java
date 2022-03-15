@@ -54,7 +54,6 @@ enum LinedParseLevel implements SetupParser {
         argumentNotNull(pointer, "pointer");
         ArrayList<Span> children = new ArrayList<>();
 
-        boolean isFirst = true;
         for(String token: Lists.reverse(LEVEL_STARTERS.get(this))){
             /// reverse is needed b/c !# will match all outline headings
             if (pointer.startsWith(children, token)){

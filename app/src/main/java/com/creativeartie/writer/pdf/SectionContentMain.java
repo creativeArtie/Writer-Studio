@@ -162,7 +162,6 @@ class SectionContentMain extends SectionContent<LinedSpan> {
      * @return answer
      * @see #parseSpan(LinedSpan)
      */
-    @SuppressWarnings("fallthrough")
     private DivisionText parse(LinedSpanLevelSection span) throws IOException{
         assert span != null: "Null span";
 

@@ -20,8 +20,6 @@ abstract class DataControl<T extends DataInput> extends DataView<T>{
     private WritingText writingText;
     private int caretPosition;
     private ObjectProperty<SpanBranch> lastSelected;
-    private BooleanProperty refocusText;
-
     DataControl(String text){
         super(text);
     }
@@ -44,7 +42,7 @@ abstract class DataControl<T extends DataInput> extends DataView<T>{
             (d, o, n) -> listenCaret(n.intValue())
         );
         lastSelected = control.lastSelectedProperty();
-        refocusText = control.refocusTextProperty();
+        control.refocusTextProperty();
     }
 
     /// %Part 3.1: control.writingTextProperty()

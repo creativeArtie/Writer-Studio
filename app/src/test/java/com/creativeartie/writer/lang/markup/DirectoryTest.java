@@ -215,8 +215,6 @@ public class DirectoryTest{
     }
 
     private void commonUnparsed(DocumentAssert doc, String last){
-        ///           012       3    4567
-        String raw = "abc" + last + "abc";
         DirectoryAssert id = new DirectoryAssert(doc)
             .setPurpose(DirectoryType.RESEARCH)
             .setIdentity(buildId("abc"))

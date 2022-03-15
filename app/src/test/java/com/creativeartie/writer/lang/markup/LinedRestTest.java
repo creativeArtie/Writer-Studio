@@ -89,7 +89,7 @@ public class LinedRestTest {
     public void agendaBasic(){
         String raw = "!!abc**ab";
         DocumentAssert doc = assertDoc(1, raw, parsers);
-        doc.assertDoc(1, "!!abc**ab", parsers);
+        DocumentAssert.assertDoc(1, "!!abc**ab", parsers);
         commonAgenda(doc);
     }
 

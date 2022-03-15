@@ -17,8 +17,6 @@ final class SectionTitle extends Section {
     private WritingData exportData;
 
     private PageContent outputPage;
-    private float areaWidth;
-
     /** Only construcutor.
      *
      * @param parent
@@ -29,7 +27,7 @@ final class SectionTitle extends Section {
         parentDoc = parent;
         outputPage = new PageContent(this);
 
-        areaWidth = outputPage.getRenderWidth();
+        outputPage.getRenderWidth();
     }
 
     /** Render the title page.

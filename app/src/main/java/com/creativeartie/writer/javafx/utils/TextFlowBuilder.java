@@ -54,7 +54,6 @@ public final class TextFlowBuilder {
 
     public static TextFlow loadMetaText(TextSpanMatter print){
         TextFlow node = new TextFlow();
-        String align;
         switch(print.getDataType()){
         case RIGHT:
             node.getStyleClass().add("display-right");

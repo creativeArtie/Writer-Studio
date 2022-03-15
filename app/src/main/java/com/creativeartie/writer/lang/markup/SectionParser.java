@@ -64,7 +64,6 @@ interface SectionParser extends SetupParser {
         ArrayList<Span> children
     ){
         Optional<SpanBranch> child = parseChild(pointer);
-        boolean found = false;
         while (child.isPresent()){
             children.add(child.get());
             child = parseChild(pointer);

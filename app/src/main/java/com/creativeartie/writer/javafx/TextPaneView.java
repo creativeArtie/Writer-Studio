@@ -46,11 +46,11 @@ abstract class TextPaneView extends BorderPane {
 
         CommonLayoutUtility.setWidthPrecent(parent, LABEL_WIDTH);
         parent.add(buildStatsLabel(), 1, 0);
-        parent.setHalignment(statLabel, HPos.CENTER);
+        GridPane.setHalignment(statLabel, HPos.CENTER);
 
         CommonLayoutUtility.setWidthPrecent(parent, LABEL_WIDTH);
         parent.add(buildTimeLabel(), 2, 0);
-        parent.setHalignment(clockLabel, HPos.RIGHT);
+        GridPane.setHalignment(clockLabel, HPos.RIGHT);
 
         return parent;
     }

@@ -93,7 +93,7 @@ public abstract class Span implements Comparable<Span>{
      */
     public <T> Optional<T> getParent(Class<T> clazz){
         argumentNotNull(clazz, "clazz");
-        ImmutableList.Builder<SpanBranch> builder = ImmutableList.builder();
+        ImmutableList.builder();
         SpanNode<?> parent = getParent();
         while(parent instanceof SpanBranch){
             if (clazz.isInstance(parent)){

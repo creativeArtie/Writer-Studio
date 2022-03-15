@@ -18,8 +18,6 @@ public final class AuxiliaryData{
     /** Maximum number of levels:       {@value} */
     public static final int LEVEL_MAX = 6;
 
-    /// Leveled Line begin part token for numbered and bullet
-    private static final String LEVEL_BEGIN    = "\t";
     /// Leveled line begin part tokens
     private static final String LEVEL_BULLET   = "-";
     private static final String LEVEL_HEADING  = "=";
@@ -470,7 +468,6 @@ public final class AuxiliaryData{
 
     /// %Part 4.1: Common Constants ============================================
 
-    private static final String TEXT_SUB = "-";
     public static final String TEXT_SEPARATOR = "|";
     public static final CharMatcher TEXT_KEY_TEXT = STAT_KEY_TEXT;
 

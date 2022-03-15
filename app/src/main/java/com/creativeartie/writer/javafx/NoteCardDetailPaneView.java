@@ -40,10 +40,6 @@ abstract class NoteCardDetailPaneView extends TabPane{
     private Tab metaTab;
     private TableView<NoteCardData> noteMetaTable;
     private ComboBox<ShowMeta> showMetaBox;
-    private Button addField;
-    private Button deleteField;
-    private Button removeUnused;
-
     private SimpleObjectProperty<NoteCardSpan> showCard;
 
     NoteCardDetailPaneView(){

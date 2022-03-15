@@ -13,7 +13,6 @@ public class DataInputNote implements DataInput{
     private ReadOnlyObjectWrapper<Optional<CatalogueIdentity>> noteId;
     private ReadOnlyStringWrapper noteLookupText;
     private ReadOnlyIntegerWrapper noteLocation;
-    private ReadOnlyBooleanWrapper noteBookmark;
     private ReadOnlyObjectWrapper<Optional<FormattedSpan>> noteData;
     private LinedSpanPointNote targetNote;
 

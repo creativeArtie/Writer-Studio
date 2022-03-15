@@ -145,9 +145,6 @@ public class LinedCiteTest {
         String raw = "!>sdaf\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        CiteLineAssert cite = new CiteLineAssert(doc)
-            .setInfoType(InfoFieldType.ERROR);
-
         doc.assertKey(  0, 2, "!>",   0, 0);
         doc.assertField(2, 6, "sdaf", 0, 1);
         doc.assertKey(  6, 7, "\n",   0, 2);
@@ -158,9 +155,6 @@ public class LinedCiteTest {
     public void errorEmptyDataWithColon(){
         String raw = "!>sdaf:\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
-
-        CiteLineAssert cite = new CiteLineAssert(doc)
-            .setInfoType(InfoFieldType.ERROR);
 
         doc.assertKey(  0, 2, "!>",   0, 0);
         doc.assertField(2, 6, "sdaf", 0, 1);
@@ -173,9 +167,6 @@ public class LinedCiteTest {
     public void errorEmptyDataWithExraSpaces(){
         String raw = "!>sdaf:  \n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
-
-        CiteLineAssert cite = new CiteLineAssert(doc)
-            .setInfoType(InfoFieldType.ERROR);
 
         doc.assertKey(  0,  2, "!>",   0, 0);
         doc.assertField(2,  6, "sdaf", 0, 1);
@@ -332,7 +323,7 @@ public class LinedCiteTest {
         doc.delete(19, 20, 0);
         ///             01234567890123
         String after = "!>source|in-text:abc";
-        doc.assertDoc(1, after, parsers);
+        DocumentAssert.assertDoc(1, after, parsers);
         commonIntext(doc);
     }
 

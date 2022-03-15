@@ -107,7 +107,7 @@ public final class FormatSpanLinkRef extends FormatSpanLink
 
     @Override
     protected String toChildString(){
-        Optional<DirectorySpan> id = spanFromFirst(DirectorySpan.class);
+        spanFromFirst(DirectorySpan.class);
         String data = spanFromFirst(DirectorySpan.class)
             .map(s -> s.toString())
             .orElse("null");

@@ -56,7 +56,6 @@ final class ContentText {
         ){
             holder.add(new ContentText(word, font, false));
         }
-        int i = 0;
         boolean isFirst = true;
         ArrayList<ContentText> ans = new ArrayList<>();
         if (whitespace.indexIn(text) == 0){

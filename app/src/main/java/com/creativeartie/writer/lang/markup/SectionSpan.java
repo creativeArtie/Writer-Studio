@@ -15,7 +15,6 @@ public abstract class SectionSpan extends SpanBranch {
     private final CacheKeyMain<String> cacheDetail;
     private final CacheKeyList<NoteCardSpan> cacheNotes;
     private final CacheKeyList<LinedSpan> cacheLines;
-    private final SectionParser spanReparser;
     private final CacheKeyMain<Integer> cachePublish;
     private final CacheKeyMain<Integer> cacheNote;
 
@@ -28,7 +27,7 @@ public abstract class SectionSpan extends SpanBranch {
      */
     SectionSpan(List<Span> children, SectionParser reparser){
         super(children);
-        spanReparser = argumentNotNull(reparser, "reparser");
+        argumentNotNull(reparser, "reparser");
 
         cacheHeading = new CacheKeyOptional<>(LinedSpanLevelSection.class);
         cacheEdition = new CacheKeyMain<>(EditionType.class);

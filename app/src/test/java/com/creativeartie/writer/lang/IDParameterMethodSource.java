@@ -14,8 +14,6 @@ public abstract class IDParameterMethodSource {
     }
 
     public static Stream<Arguments> provideText(IDParameterMethodSource source){
-        String id = source.getIdText();
-        String ref = source.getRefText();
         return Stream.of(
             source.buildArgument(UNUSED,    true),
             source.buildArgument(MULTIPLE,  true,  true),

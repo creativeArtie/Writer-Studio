@@ -38,8 +38,6 @@ public enum HintText {
     FORMAT_AGENDA("FormatAgenda"),   FORMAT_REF_KEY("OtherRefKey");
 
     private static final String LABEL   = "LabelText.";
-    private static final String TOOLTIP = "TooltipText.";
-
     private String keyPostfix;
 
     private HintText(String postfix){

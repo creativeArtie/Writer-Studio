@@ -17,7 +17,6 @@ final class HeadingsPaneControl extends HeadingsPaneView{
 
     private WritingText writingText;
 
-    private BooleanProperty refocusText;
     private ObjectProperty<SpanBranch> lastSelected;
 
     private final TreeMap<SectionSpanHead, TreeItem<SectionSpanHead>> headingMap;
@@ -46,7 +45,7 @@ final class HeadingsPaneControl extends HeadingsPaneView{
             (d, o, n) -> listenCaret(n.intValue())
         );
         lastSelected = control.lastSelectedProperty();
-        refocusText = control.refocusTextProperty();
+        control.refocusTextProperty();
     }
 
     /// %Part 3.1: control.writingTextProperty()

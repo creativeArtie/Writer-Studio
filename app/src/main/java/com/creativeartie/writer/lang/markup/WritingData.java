@@ -39,14 +39,14 @@ public final class WritingData extends Document{
         super(text, TextParser.PARSER);
         ImmutableList.Builder<CacheKeyList<TextSpanMatter>> print =
             ImmutableList.builder();
-        for (TextTypeMatter area: TextTypeMatter.values()){
+        for (@SuppressWarnings("unused") TextTypeMatter area: TextTypeMatter.values()){
             print.add(new CacheKeyList<>(TextSpanMatter.class));
         }
         cachePrint = print.build();
 
         ImmutableList.Builder<CacheKeyMain<String>> meta =
             ImmutableList.builder();
-        for (TextTypeInfo area: TextTypeInfo.values()){
+        for (@SuppressWarnings("unused") TextTypeInfo area: TextTypeInfo.values()){
             meta.add(new CacheKeyMain<>(String.class));
         }
         cacheMeta = meta.build();

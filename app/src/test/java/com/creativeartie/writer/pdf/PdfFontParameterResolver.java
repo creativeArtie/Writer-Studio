@@ -7,9 +7,8 @@ public class PdfFontParameterResolver implements ParameterResolver{
     @Override
     public Object resolveParameter(ParameterContext parameter,
             ExtensionContext extension) throws ParameterResolutionException {
-        try {
-            WritingExporter build = new WritingExporter("build/outputs/tmp.pdf");
-            return build.new PdfFont();
+        try (WritingExporter build = new WritingExporter("build/outputs/tmp.pdf")) {
+				return build.new PdfFont();
         } catch (Exception ex){
             throw new ParameterResolutionException("WritingExporter failed.",
                 ex);

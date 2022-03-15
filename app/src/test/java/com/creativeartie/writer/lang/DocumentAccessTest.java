@@ -221,7 +221,7 @@ public class DocumentAccessTest{
             assertTrue(index < parent.size(),
                 () -> "Index (" + index + ") is not in range(" + parent.size()
                     + "):" + parent);
-            span = ((SpanNode<SpanNode>)span).get(index);
+            span = ((SpanNode<SpanNode<?>>)span).get(index);
         }
         return span;
     }

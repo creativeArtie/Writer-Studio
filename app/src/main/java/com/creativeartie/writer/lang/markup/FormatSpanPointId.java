@@ -13,8 +13,6 @@ public final class FormatSpanPointId extends FormatSpan implements Catalogued{
 
     private final CacheKeyOptional<SpanBranch> cacheTarget;
     private final CacheKeyOptional<CatalogueIdentity> cacheId;
-    private final CacheKeyMain<String> cacheOutput;
-
     /** Creates a {@linkplain FormatSpanPointId}.
      *
      * @param children
@@ -33,7 +31,7 @@ public final class FormatSpanPointId extends FormatSpan implements Catalogued{
 
         cacheTarget = new CacheKeyOptional<>(SpanBranch.class);
         cacheId = new CacheKeyOptional<>(CatalogueIdentity.class);
-        cacheOutput = CacheKeyMain.stringKey();
+        CacheKeyMain.stringKey();
     }
 
     /** Gets the type of note it is pointing to. */

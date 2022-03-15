@@ -48,7 +48,7 @@ public abstract class SpanBranch extends SpanNode<Span> {
 
         /// no text = delete
         if (text == null || text.isEmpty()){
-            StringBuilder builder = new StringBuilder();
+            new StringBuilder();
             removeSpan();
             return;
         }

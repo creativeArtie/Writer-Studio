@@ -19,7 +19,6 @@ public class BranchSectionAsserts {
 
         private int[] noteTitle;
         private ArrayList<int[]> noteContents;
-        private int[] inText;
         private int[] noteSource;
         private int noteTotal;
         private String lookupText;
@@ -28,7 +27,6 @@ public class BranchSectionAsserts {
             super(NoteCardAssert.class, doc);
             noteTitle = null;
             noteContents = new ArrayList<>();
-            inText = null;
             noteSource = null;
             noteTotal = 1;
             lookupText = "";
@@ -48,7 +46,6 @@ public class BranchSectionAsserts {
 
         /** For {@link NoteCardSpan#getInTextLine()} (no defualt) */
         public NoteCardAssert setInText(int ... indexes){
-            inText = indexes;
             return this;
         }
 

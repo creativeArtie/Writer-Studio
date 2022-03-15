@@ -202,7 +202,6 @@ public final class ParameterChecker {
     }
 
     public static <T> T indexEquals(T test, String field, T expect){
-        String message = " does not equals " + expect;
         argumentNotNull(test, field);
         if (test != expect){
             throw new IndexOutOfBoundsException(createStart(field) +

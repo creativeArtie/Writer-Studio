@@ -9,9 +9,6 @@ import static com.creativeartie.writer.main.ParameterChecker.*;
 /** A formatted {@link BasicText}. */
 public final class FormatSpanContent extends FormatSpan implements BasicText{
 
-    /// Stuff for reparsing
-    private final FormatParseContent spanReparser;
-
     private final CacheKeyMain<String> cacheText;
     private final CacheKeyMain<String> cacheTrimmed;
     private final CacheKeyMain<Boolean> cacheSpaceBegin;
@@ -30,7 +27,7 @@ public final class FormatSpanContent extends FormatSpan implements BasicText{
     FormatSpanContent(List<Span> spanChildren, boolean[] formats,
             FormatParseContent reparser){
         super(spanChildren, formats);
-        spanReparser = argumentNotNull(reparser, "reparser");
+        argumentNotNull(reparser, "reparser");
 
         cacheText = CacheKeyMain.stringKey();
         cacheTrimmed = CacheKeyMain.stringKey();

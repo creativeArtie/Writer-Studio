@@ -11,7 +11,6 @@ import static com.creativeartie.writer.main.ParameterChecker.*;
 public final class FormatSpanLinkDirect extends FormatSpanLink {
 
     private final FormatParseLinkDirect spanReparser;
-    private final CacheKeyOptional<SpanBranch> cacheTarget;
     private final CacheKeyMain<String> cachePath;
     private final CacheKeyMain<String> cacheText;
 
@@ -30,7 +29,7 @@ public final class FormatSpanLinkDirect extends FormatSpanLink {
         super(spanChildren, formats);
         spanReparser = argumentNotNull(reparser, "reparser");
 
-        cacheTarget = new CacheKeyOptional<>(SpanBranch.class);
+        new CacheKeyOptional<>(SpanBranch.class);
         cachePath = CacheKeyMain.stringKey();
         cacheText = CacheKeyMain.stringKey();
     }

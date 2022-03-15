@@ -52,7 +52,6 @@ public class CodeStyleBuilder {
         }
 
         leaf.getParent(EditionSpan.class).ifPresent(span ->{
-            String style = "";
             switch (span.getEditionType()){
             case STUB:
                 styles.add("Stub");

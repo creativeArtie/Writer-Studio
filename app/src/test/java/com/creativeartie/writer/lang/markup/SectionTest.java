@@ -178,7 +178,7 @@ public class SectionTest {
         /// outline 3 = lines[3];
         String sec2 = lines[4] + lines[5];
 
-        String full = String.join("", lines);
+        String.join("", lines);
         HeadSectionAssert head1 = new HeadSectionAssert(doc) /// 0
             .setPublishCount(2)   .setNoteCount(0)
             .setPublishTotal(7)   .setNoteTotal(1)
@@ -202,10 +202,7 @@ public class SectionTest {
             .setEdition(EditionType.NONE)
             .setPublish(2)    .setNote(0).setLevel(2)
             .setFormattedSpan(0, 1, 0, 1);
-        ParagraphLineAssert line2 = new ParagraphLineAssert(doc) /// 0, 1, 1
-            .setPublish(3)    .setNote(0)
-            .setFormattedSpan(0, 1, 1, 0);
-
+        
         SceneSectionAssert head1_1_1 = new SceneSectionAssert(doc) /// 0, 1, 2
             .setPublishCount(0) .setNoteCount(1)
             .setPublishTotal(0) .setNoteTotal(1)

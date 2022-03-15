@@ -89,10 +89,6 @@ class NoteCardPaneControl extends NoteCardPaneView{
         }
     }
 
-    private void updateLocations(){
-        if (writingText == null) return;
-    }
-
     private NoteCardTreeItem<String> locateItem(TreeItem<String> at, String data){
         for(TreeItem<String> child: at.getChildren()){
             String value = child.getValue();
@@ -103,14 +99,6 @@ class NoteCardPaneControl extends NoteCardPaneView{
         NoteCardTreeItem<String> create = new NoteCardTreeItem<>(data);
         at.getChildren().add(create);
         return create;
-    }
-
-    private void updateList(TreeItem<?> item){
-        if (item instanceof NoteCardTreeItem){
-            getNoteCardList().setItems(((NoteCardTreeItem<?>)item).getNoteList());
-        } else {
-            getNoteCardList().getItems().clear();
-        }
     }
 
     private void updateHeadings(){
@@ -129,9 +117,5 @@ class NoteCardPaneControl extends NoteCardPaneView{
             root.getChildren().add(item);
             updateHeadings(item, child);
         }
-    }
-
-    private void showCard(NoteCardSpan show){
-        getNoteDetailPane().setShowCard(show);
     }
 }

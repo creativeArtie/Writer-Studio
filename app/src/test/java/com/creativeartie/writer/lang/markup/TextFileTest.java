@@ -78,8 +78,6 @@ public class TextFileTest {
         }
     }
 
-    private static SetupParser PARSER = TextParser.PARSER;
-
     @Test
     public void infoBasic(){
         String raw = "meta-keywords|text|key-1, key-2, key-etc\n";

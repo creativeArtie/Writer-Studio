@@ -70,11 +70,9 @@ final class MatterArea extends ForwardingList<Division> {
     MatterArea render() throws IOException{
         contentStream.beginText();
 
-        /// Initital placement
-        float leading = 0;
         float x = outputPage.getStartX();
         if (! isEmpty()){
-            leading = get(0).getStartY();
+            get(0).getStartY();
         }
         float y = outputPage.getStartY(this);
         moveText(x, y);

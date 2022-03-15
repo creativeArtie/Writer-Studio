@@ -40,7 +40,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'com.creativeartie.writer.App'
+    mainClass = 'com.creativeartie.writer.main.Main'
 }
 
 tasks.named('test') {

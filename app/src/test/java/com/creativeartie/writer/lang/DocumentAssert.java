@@ -101,7 +101,6 @@ public class DocumentAssert {
     /// Gets a child,
     private Span assertChild(int ... indexes){
         Span pointer = testDocument;
-        ArrayList<Executable> search = new ArrayList<>();
         for (int i: indexes){
             SpanNode<?> parent = (SpanNode<?>) pointer;
             SpanNode<?> test = pointer instanceof SpanNode? (SpanNode<?>) pointer:

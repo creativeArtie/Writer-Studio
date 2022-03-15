@@ -92,9 +92,6 @@ abstract class NoteCardPaneView extends GridPane{
     private TreeView<String> idTree;
     private TreeView<SectionSpanHead> locationTree;
 
-    private Button insertBeforeButton;
-    private Button insertAfterButton;
-    private Button deleteButton;
     private ListView<NoteCardSpan> noteCardsList;
 
     private NoteCardDetailPaneControl noteDetailPane;

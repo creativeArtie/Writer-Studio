@@ -53,7 +53,7 @@ public class LinedLevelRestTest {
         String raw = "-----@id:Text abc\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        SpanBranch content = doc.assertChild(1, "@id:Text abc", 0, 1);
+        doc.assertChild(1, "@id:Text abc", 0, 1);
 
         ListLevelLineAssert bullet = new ListLevelLineAssert(doc)
             .setNumbered(false).setLevel(5)
@@ -77,7 +77,7 @@ public class LinedLevelRestTest {
         String raw = "-" + text + "\n";
         DocumentAssert doc = assertDoc(1, raw, parsers);
 
-        IDBuilder id = doc.addRef(FormatCurlyTest.buildNoteId("hello"),
+        doc.addRef(FormatCurlyTest.buildNoteId("hello"),
             CatalogueStatus.NOT_FOUND, 1);
         doc.addId(FormatAgendaTest.buildId("09"), 0);
 
