@@ -42,8 +42,7 @@ public class DocumentAssert {
 
     public static DocumentAssert assertDoc(int childrenSize, String rawText,
             SetupParser ... parsers){
-        SetupParser[] input = SetupParser.combine(parsers, END_PARSER);
-        Document test = new Document(rawText, input){};
+        Document test = new Document(rawText, END_PARSER){};
         return assertDoc(childrenSize, rawText, test);
     }
 

@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.*;
 
+import com.google.common.base.Preconditions;
 import com.google.common.cache.*;
 import com.google.common.collect.*;
 
@@ -23,7 +24,7 @@ public abstract class Document extends SpanNode<SpanBranch>{
 
     /// %Part 1: Constructors and Fields #######################################
 
-    private SetupParser[] documentParsers;
+    private SetupParser documentParser;
     private int fireReady;
     private ArrayList<SpanNode<?>> removeSpan;
 
@@ -43,9 +44,9 @@ public abstract class Document extends SpanNode<SpanBranch>{
      * @param parsers
      *      text parsers
      */
-    protected Document(String raw, SetupParser ... parsers){
+    protected Document(String raw, SetupParser parser){
         argumentNotNull(raw, "raw");
-        documentParsers = argumentNotEmpty(parsers, "parser");
+        documentParser = Preconditions.checkNotNull(parser);
         fireReady = 0;
         removeSpan = new ArrayList<>();
 
@@ -256,15 +257,13 @@ public abstract class Document extends SpanNode<SpanBranch>{
             counter++; /// != ptr location
 
             /// Finding the correct SetupParser to build span from
-            for(SetupParser s: documentParsers){
-                Optional<?> span = s.parse(ptr);
-                /// Span has been created
-                if (span.isPresent()){
-                    SpanBranch found = (SpanBranch)span.get();
-                    found.setParent(this);
-                    documentChildren.add(found);
-                    break;
-                }
+            Optional<?> span = documentParser.parse(ptr);
+            /// Span has been created
+            if (span.isPresent()){
+                SpanBranch found = (SpanBranch)span.get();
+                found.setParent(this);
+                documentChildren.add(found);
+                break;
             }
         }
     }

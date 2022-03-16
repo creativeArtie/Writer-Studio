@@ -9,8 +9,8 @@ import static com.creativeartie.writer.lang.CatalogueStatus.*;
 /// Create document for all different type of {@link CataloguStatus} formation.
 public abstract class IDParameterMethodSource {
 
-    public static Document newDocument(String text, SetupParser ... parsers){
-        return new Document(text, parsers){};
+    public static Document newDocument(String text, SetupParser parser){
+        return new Document(text, parser){};
     }
 
     public static Stream<Arguments> provideText(IDParameterMethodSource source){
