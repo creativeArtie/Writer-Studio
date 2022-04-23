@@ -1,0 +1,8 @@
+.heading{
+    -fx-fill: purple;
+    -fx-font-weight: bold;
+}
+
+.paragraph {
+	-fx-fill: black;
+}
