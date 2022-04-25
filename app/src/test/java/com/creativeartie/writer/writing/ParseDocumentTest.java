@@ -1,80 +1,69 @@
 package com.creativeartie.writer.writing;
 
+import java.lang.reflect.*;
 import java.util.regex.*;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.*;
+import org.junit.jupiter.params.provider.*;
 
 @DisplayName("Document ID")
 class ParseDocumentTest {
 
-private static Pattern pattern =
-Pattern.compile(ParseDocument.Phrases.TOKEN.format_syntax);
+    private static Pattern idText;
 
-@Nested
-@DisplayName("Allowed ID Matches")
-static class MatchIdTest {
+    @BeforeAll
+    static void createPatterns() throws Exception {
+        Field word = ParseDocument.class.getDeclaredField("ID_TEXT");
+        word.setAccessible(true);
+        idText = Pattern.compile((String) word.get(new String()));
+    }
 
-@Test
-void testEnglish() {
-    Matcher match = pattern.matcher("abc");
-    Assertions.assertTrue(match.find());
-    Assertions.assertEquals("abc", match.group());
-}
+    @ParameterizedTest
+    @ValueSource(strings = { "abc", "百科全書", "あらゆる", "한국어", "العربية", "123",
+        "Hello World_fun", "  Hello  " })
+    void matchIdTextTest(String value) {
+        Matcher match = idText.matcher(value);
+        Assertions.assertTrue(match.find());
+        Assertions.assertEquals(value.trim(), match.group());
+    }
 
-@Test
-void testChinese() {
-    Matcher match = pattern.matcher("百科全書");
-    Assertions.assertTrue(match.find());
-    Assertions.assertEquals("百科全書", match.group());
-}
+    @ParameterizedTest
+    @ValueSource(strings = { "   ", "@#$%" })
+    void noIdTextMatches(String value) {
+        Assertions.assertFalse(idText.matcher(value).find());
+    }
 
-@Test
-void testJapanese() {
-    Matcher match = pattern.matcher("あらゆる");
-    Assertions.assertTrue(match.find());
-    Assertions.assertEquals("あらゆる", match.group());
-}
+    @ParameterizedTest
+    @ValueSource(strings = { "abc-231", "  cat-id  ", "   adf dsf - ad- dfd" })
+    void matchIdTest(String value) {
+        Pattern idPhrase =
+            Pattern.compile(ParseDocument.Phrases.ID.format_syntax);
+        Matcher match = idPhrase.matcher(value);
+        Assertions.assertTrue(match.find());
+        Assertions.assertEquals(value.trim(), match.group());
+    }
 
-@Test
-void testKorean() {
-    Matcher match = pattern.matcher("한국어");
-    Assertions.assertTrue(match.find());
-    Assertions.assertEquals("한국어", match.group());
-}
+    @ParameterizedTest
+    @CsvSource({ "{^ade},1,true", "{^123},1,true", "{^end,1,true",
+        "{$dfas},1,false" })
+    void matchFootnote(String value, int enumIdx, boolean pass) {
+        ParseDocument.Phrases use = ParseDocument.Phrases.values()[enumIdx];
+        Pattern footnote = Pattern.compile(use.format_syntax);
+        Matcher match = footnote.matcher(value);
 
-@Test
-void testArabic() {
-    Matcher match = pattern.matcher("العربية");
-    Assertions.assertTrue(match.find());
-    Assertions.assertEquals("العربية", match.group());
-}
+        if (pass) {
+            Assertions.assertTrue(match.find());
 
-@Test
-void testNumber() {
-    Matcher match = pattern.matcher("123");
-    Assertions.assertTrue(match.find());
-    Assertions.assertEquals("123", match.group());
-}
-
-@Test
-void testWords() {
-    Matcher match = pattern.matcher("Hello World_fun");
-    Assertions.assertTrue(match.find());
-    Assertions.assertEquals("Hello World_fun", match.group());
-}
-
-@Test
-void testSpaced() {
-    Matcher match = pattern.matcher("  Hello  ");
-    Assertions.assertTrue(match.find());
-    Assertions.assertEquals("Hello", match.group());
-}
-}
-
-@Test
-void nonMatches() {
-    Assertions.assertAll(()->Assertions.assertFalse(pattern.matcher("  ").find()),
-        ()->Assertions.assertFalse(pattern.matcher("@#$%").find()));
-}
-
+            int index = value.lastIndexOf('}');
+            String expect =
+                value.substring(2, index == -1 ? value.length() : index);
+            Assertions.assertAll(
+                () -> Assertions.assertEquals(expect, match.group("ID")),
+                () -> Assertions.assertEquals(value, match.group(use.name()))
+            );
+        } else {
+            Assertions.assertFalse(match.find());
+        }
+    }
 }
