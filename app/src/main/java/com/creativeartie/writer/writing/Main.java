@@ -7,7 +7,7 @@ import javafx.stage.*;
 
 public class Main extends Application {
 
-    private MainData mainText = new MainData();
+    private WritingCoderPane mainText = new WritingCoderPane();
 
     public static void main(String[] args) {
         launch(args);
@@ -17,7 +17,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         BorderPane mainPane = setup();
-        Scene scene = new Scene(mainPane);
+        Scene scene = new Scene(mainPane, 400, 200);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

@@ -1,8 +1,12 @@
-.heading{
-    -fx-fill: purple;
-    -fx-font-weight: bold;
+.identifier {
+	-fx-background-color: blue;
 }
 
-.paragraph {
-	-fx-fill: black;
+.name {
+	-fx-font-weight: bold;
+}
+
+.operator {
+	-fx-font-weight: lighter;
+	-fx-filled: darkgray
 }
