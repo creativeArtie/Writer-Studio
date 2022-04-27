@@ -10,46 +10,6 @@ import org.junit.jupiter.params.provider.*;
 
 class IDSpanTest {
 
-    private StyleBuilder builder;
-
-    @BeforeEach
-    void createBuilder() {
-        builder = new StyleBuilder();
-    }
-
-    @ParameterizedTest
-    @ValueSource(
-        strings = { "abc", "百科全書", "あらゆる", "한국어", "العربية", "123",
-            "Hello World Fun", "Hello" }
-    )
-    void notCatTest(String value) {
-        IDSpan test = new IDSpan(value, builder);
-        Assertions.assertAll(
-            "Name",
-            () -> Assertions
-                .assertTrue(test.getCategories().isEmpty(), "Category"),
-            () -> Assertions.assertEquals(value.trim(), test.getName(), "ID")
-        );
-
-        String[] expectStyles =
-            { TypedStyles.NAME.getStyle(), TypedStyles.IDER.getStyle() };
-        boolean isFirst = true;
-        for (StyleSpan<Collection<String>> span : builder.getStyles()) {
-            boolean current = isFirst;
-            Assertions.assertAll(
-                "Style",
-                () -> Assertions
-                    .assertEquals(value.length(), span.getLength(), "Length"),
-                () -> Assertions.assertArrayEquals(
-                    expectStyles, span.getStyle().toArray(new String[2]),
-                    "Classes"
-                ),
-                () -> Assertions.assertTrue(current, "More then one span found")
-            );
-            isFirst = false;
-        }
-    }
-
     static Stream<Arguments> categroyProvider() {
         // @formatter:off
         return Stream.of(
@@ -86,6 +46,46 @@ class IDSpanTest {
         // @formatter:on
     }
 
+    private StyleBuilder builder;
+
+    @BeforeEach
+    void createBuilder() {
+        builder = new StyleBuilder();
+    }
+
+    @ParameterizedTest
+    @ValueSource(
+        strings = { "abc", "百科全書", "あらゆる", "한국어", "العربية", "123",
+            "Hello World Fun", "Hello" }
+    )
+    void notCatTest(String value) {
+        final IDSpan test = new IDSpan(value, builder);
+        Assertions.assertAll(
+            "Name",
+            () -> Assertions
+                .assertTrue(test.getCategories().isEmpty(), "Category"),
+            () -> Assertions.assertEquals(value.trim(), test.getName(), "ID")
+        );
+
+        final String[] expectStyles =
+            { TypedStyles.NAME.getStyle(), TypedStyles.IDER.getStyle() };
+        boolean isFirst = true;
+        for (final StyleSpan<Collection<String>> span : builder.getStyles()) {
+            final boolean current = isFirst;
+            Assertions.assertAll(
+                "Style",
+                () -> Assertions
+                    .assertEquals(value.length(), span.getLength(), "Length"),
+                () -> Assertions.assertArrayEquals(
+                    expectStyles, span.getStyle().toArray(new String[2]),
+                    "Classes"
+                ),
+                () -> Assertions.assertTrue(current, "More then one span found")
+            );
+            isFirst = false;
+        }
+    }
+
     @ParameterizedTest
     @MethodSource("categroyProvider")
     void withCatTest(
@@ -94,7 +94,7 @@ class IDSpanTest {
     ) {
         assert expectedLengths.size() == isNames.size() :
             expectedLengths.size() + "==" + isNames.size();
-        IDSpan test = new IDSpan(raw, builder);
+        final IDSpan test = new IDSpan(raw, builder);
         Assertions.assertAll(
             "Names",
             () -> Assertions.assertArrayEquals(
@@ -103,15 +103,15 @@ class IDSpanTest {
         );
 
         int i = 0;
-        String[] expectedIdStyles =
+        final String[] expectedIdStyles =
             { TypedStyles.NAME.getStyle(), TypedStyles.IDER.getStyle() };
-        String[] expectedSepStyles =
+        final String[] expectedSepStyles =
             { TypedStyles.OPER.getStyle(), TypedStyles.IDER.getStyle() };
 
-        for (StyleSpan<Collection<String>> span : builder.getStyles()) {
+        for (final StyleSpan<Collection<String>> span : builder.getStyles()) {
             Assertions
                 .assertTrue(i < expectedLengths.size(), "Too many spans.");
-            int idx = i;
+            final int idx = i;
             Assertions.assertAll(
                 "Styles at " + i,
                 () -> Assertions.assertArrayEquals(

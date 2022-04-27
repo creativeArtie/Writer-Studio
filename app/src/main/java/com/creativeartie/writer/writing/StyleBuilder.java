@@ -9,17 +9,7 @@ import com.google.common.base.*;
 import com.google.common.collect.*;
 
 public class StyleBuilder {
-    private StyleSpansBuilder<Collection<String>> styleSpans;
     private static final boolean debug = true;
-
-    public StyleBuilder() {
-        styleSpans = new StyleSpansBuilder<>();
-        if (debug) System.out.println();
-    }
-
-    StyleSpans<Collection<String>> listStyleSpans(String text) {
-        return styleSpans.create();
-    }
 
     private static void
         printMessage(Matcher matcher, String group, TypedStyles... styles) {
@@ -39,8 +29,10 @@ public class StyleBuilder {
         }
 
         String classes = "";
-        for (TypedStyles style : styles) {
-            if (classes != "") classes += ", ";
+        for (final TypedStyles style : styles) {
+            if (classes != "") {
+                classes += ", ";
+            }
             classes += style.name();
         }
         System.out.printf(
@@ -49,26 +41,27 @@ public class StyleBuilder {
         );
     }
 
-    protected void addStyle(Matcher matcher, TypedStyles... styles) {
+    private final StyleSpansBuilder<Collection<String>> styleSpans;
 
-        Preconditions.checkArgument(matcher.group() != null, "Match is null");
-        printMessage(matcher, "", styles);
-        ImmutableList.Builder<String> builder = ImmutableList.builder();
-
-        for (TypedStyles style : styles) builder.add(style.getStyle());
-        styleSpans.add(builder.build(), matcher.end() - matcher.start());
+    public StyleBuilder() {
+        styleSpans = new StyleSpansBuilder<>();
+        if (debug) {
+            System.out.println();
+        }
     }
 
     protected void
-        addStyleGroup(Matcher matcher, Enum<?> group, TypedStyles... styles) {
-        String groupName = group.name();
+        addStyle(Matcher matcher, Enum<?> group, TypedStyles... styles) {
+        final String groupName = group.name();
         Preconditions
             .checkArgument(matcher.group(groupName) != null, "Match is null");
 
         printMessage(matcher, groupName, styles);
-        ImmutableList.Builder<String> builder = ImmutableList.builder();
+        final ImmutableList.Builder<String> builder = ImmutableList.builder();
 
-        for (TypedStyles style : styles) builder.add(style.getStyle());
+        for (final TypedStyles style : styles) {
+            builder.add(style.getStyle());
+        }
 
         styleSpans.add(
             builder.build(), matcher.end(groupName) - matcher.start(groupName)
@@ -76,7 +69,19 @@ public class StyleBuilder {
 
     }
 
-    public StyleSpans<Collection<String>> getStyles() {
+    protected void addStyle(Matcher matcher, TypedStyles... styles) {
+
+        Preconditions.checkArgument(matcher.group() != null, "Match is null");
+        printMessage(matcher, "", styles);
+        final ImmutableList.Builder<String> builder = ImmutableList.builder();
+
+        for (final TypedStyles style : styles) {
+            builder.add(style.getStyle());
+        }
+        styleSpans.add(builder.build(), matcher.end() - matcher.start());
+    }
+
+    StyleSpans<Collection<String>> getStyles() {
         return styleSpans.create();
     }
 }
