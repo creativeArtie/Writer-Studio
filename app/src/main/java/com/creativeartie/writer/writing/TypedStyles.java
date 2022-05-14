@@ -1,7 +1,8 @@
 package com.creativeartie.writer.writing;
 
 public enum TypedStyles {
-    IDER("identifier"), OPER("operator"), NAME("name");
+    IDER("identifier"), OPER("operator"), NAME("name"), ERROR("error"),
+    FOOT("footnote"), ENDR("endnote"), SRCR("source");
 
     private String styleName;
 

@@ -52,8 +52,7 @@ public class WritingCoderPane extends CodeArea {
     }
 
     private StyleSpans<Collection<String>> computeHighlighting(String text) {
-        StyleBuilder builder = new StyleBuilder();
-        rootSpan = new IDSpan(text, builder);
+        DocBuilder builder = new DocBuilder();
         return builder.getStyles();
     }
 }
