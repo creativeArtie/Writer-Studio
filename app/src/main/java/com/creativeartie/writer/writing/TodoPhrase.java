@@ -6,8 +6,10 @@ import com.google.common.base.*;
 
 public class TodoPhrase extends Span {
 
+    private final String todoText;
+
     private enum Patterns {
-        START("\\{"), TEXT("[^\\}]*"), END("\\}"),
+        START("\\{!"), TEXT("[^\\}]*"), END("\\}"),
         FULL(START.toString() + TEXT + END);
 
         final String rawPattern;
@@ -27,9 +29,29 @@ public class TodoPhrase extends Span {
             namePattern(Patterns.END) + "?"
     );
 
-    TodoPhrase(String text, DocBuilder builder) {
-        Matcher matched = phrasePattern.matcher(text);
+    TodoPhrase(String value, DocBuilder docBuilder) {
+        Matcher matched = phrasePattern.matcher(value);
         Preconditions.checkArgument(matched.find(), "Text not found.");
+        docBuilder.addStyle(
+            matched, Patterns.START, TypedStyles.TODO, TypedStyles.OPERATOR
+        );
+        String text = matched.group(Patterns.TEXT.name());
+        if (text == null) {
+            todoText = "";
+        } else {
+            docBuilder.addStyle(
+                matched, Patterns.TEXT, TypedStyles.TODO, TypedStyles.TEXT
+            );
+            todoText = text;
+        }
+        if (matched.group(Patterns.END.name()) != null) {
+            docBuilder.addStyle(
+                matched, Patterns.END, TypedStyles.TODO, TypedStyles.OPERATOR
+            );
+        }
+    }
 
+    public String getTodoText() {
+        return todoText;
     }
 }

@@ -57,7 +57,6 @@ class RefPhraseTest {
                 builder, 2, (idx) -> lengths[idx], (idx) -> styles[idx]
             )
         );
-
     }
 
     protected void editStyle(IdGroups group) {
