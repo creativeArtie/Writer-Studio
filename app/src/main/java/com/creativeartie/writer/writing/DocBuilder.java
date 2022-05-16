@@ -35,9 +35,10 @@ public class DocBuilder {
         }
     }
 
-    private static final boolean debug = false;
+    private static final boolean debug = true;
+    private String docText;
 
-    private static void
+    private void
         printMessage(Matcher matcher, String group, TypedStyles... styles) {
         if (!debug) return;
         String groupName, groupText;
@@ -53,10 +54,27 @@ public class DocBuilder {
             groupStart = matcher.start(group);
             groupEnd = matcher.end(group);
         }
+        docText += groupText;
         System.out.printf(
             "For %8s (%2d - %2d) is styled %s: %s\n", groupName, groupStart,
             groupEnd, Arrays.toString(styles), "\"" + groupText + "\""
         );
+    }
+
+    private StyleSpans<Collection<String>>
+        printStyle(StyleSpans<Collection<String>> styleSpans) {
+        if (!debug) return styleSpans;
+        int start = 0;
+        System.out.println(docText);
+        for (StyleSpan<Collection<String>> style : styleSpans) {
+            System.out.printf(
+                "%s: \"%s\"\n", Joiner.on(" ").join(style.getStyle()),
+                docText.substring(start, start + style.getLength())
+            );
+            start += style.getLength();
+        }
+        System.out.println();
+        return styleSpans;
     }
 
     private List<String> inheritedStyles;
@@ -75,6 +93,7 @@ public class DocBuilder {
         inheritedStyles = ImmutableList.of();
         idList = ArrayListMultimap.create();
         postCall = new ArrayList<>();
+        docText = "";
     }
 
     protected int
@@ -105,6 +124,7 @@ public class DocBuilder {
 
     protected int addTextStyle(String text, TypedStyles... styles) {
         Preconditions.checkArgument(!text.isEmpty(), "Text is empty");
+        docText += text;
 
         if (debug) System.out.printf(
             "For text of length %3d is styled %s: %s\n", text.length(),
@@ -121,7 +141,8 @@ public class DocBuilder {
         for (final StyleData data : styleList) {
             styleSpans.add(data.styleClasses.build(), data.textLength);
         }
-        return styleSpans.create();
+        return printStyle(styleSpans.create());
+
     }
 
     void insertStyles(int position, TypedStyles... styles) {

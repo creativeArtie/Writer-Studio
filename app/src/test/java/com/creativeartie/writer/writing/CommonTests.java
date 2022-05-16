@@ -6,8 +6,6 @@ import org.fxmisc.richtext.model.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.*;
 
-import com.google.common.base.*;
-
 public class CommonTests {
 
     public interface SpanLengthProvider {
@@ -46,18 +44,4 @@ public class CommonTests {
             Assertions.assertAll("Style at " + index, tests);
         }
     }
-
-    public static void printStyle(String text, DocBuilder builder) {
-        int start = 0;
-        System.out.println(text);
-        for (StyleSpan<Collection<String>> style : builder.getStyles()) {
-            System.out.printf(
-                "%s: \"%s\"\n", Joiner.on(" ").join(style.getStyle()),
-                text.substring(start, start + style.getLength())
-            );
-            start += style.getLength();
-        }
-        System.out.println();
-    }
-
 }

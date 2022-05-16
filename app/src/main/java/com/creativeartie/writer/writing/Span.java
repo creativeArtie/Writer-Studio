@@ -23,4 +23,16 @@ public abstract class Span {
     protected static String match(Matcher matcher, Enum<?> group) {
         return matcher.group(group.name());
     }
+
+    protected static String namePattern(Enum<?> value, String pattern) {
+        return namePattern(value.name(), pattern);
+    }
+
+    protected static String namePattern(String name, String pattern) {
+        return "(?<" + name + ">" + pattern + ")";
+    }
+
+    protected static String namePattern(Enum<?> value) {
+        return namePattern(value.name(), value.toString());
+    }
 }

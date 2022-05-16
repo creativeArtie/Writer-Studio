@@ -13,66 +13,59 @@ import com.google.common.collect.*;
  *
  * @author wai
  */
-public final class IdSpan extends Span {
+public final class Identifier extends Span {
     /**
-     * Pattern groups use in {@link GROUPS}.
+     * Pattern groups use in {@link Pattern}.
      *
      * @author wai-kin
      */
-    private enum Groups {
-        NAME(ID_PART), SEP(ID_SPACES + "-" + ID_SPACES);
+    private enum Patterns {
+        /** List of possible characters in a name */
+        CHARS("[\\p{IsIdeographic}\\p{IsAlphabetic}\\p{IsDigit}]+"),
+        /** List of spaces available. @see #OPTIONAL */
+        SPACERS("( |_|\t)+"),
+        /** List of spaces available. @see #SPACERS */
+        OPTIONAL("( |_|\t)*"),
+        /** The category/id name. */
+        NAME(CHARS + "(" + OPTIONAL + CHARS + ")*"),
+        /** Separator between names */
+        SEP(OPTIONAL + "-" + OPTIONAL),
+        /** For {@link #getIdPattern()} */
+        FULL(OPTIONAL + NAME.toString() + "(" + SEP + NAME + ")*" + OPTIONAL);
 
-        private final String PATTERN;
+        private final String rawPattern;
+        private final String namedPattern;
 
-        Groups(String pattern) {
-            PATTERN = "(?<" + name() + ">" + pattern + ")";
+        Patterns(String pattern) {
+            rawPattern = pattern;
+            namedPattern = namePattern(this);
+        }
 
+        @Override
+        public String toString() {
+            return rawPattern;
         }
     }
 
-    static String getIdName() {
+    static String getPhraseName() {
         return "ID";
     }
 
-    static String getIdPattern() {
-        return "(<" + getIdName() + ">" + TEXT_ID + ")";
+    static String getPhrasePattern(boolean withName) {
+        return withName ?
+            namePattern(getPhraseName(), Patterns.FULL.rawPattern) :
+            Patterns.FULL.rawPattern;
     }
 
-    /** characters relevant to the id, not including the collapsed spaces */
-    private final static String ALLOWED_ID_CHAR =
-        "[\\p{IsIdeographic}\\p{IsAlphabetic}\\p{IsDigit}]+";
-
-    /**
-     * Spaces in the id, {@link SPACES} needs it not optional
-     *
-     * @see ID_SPACES
-     */
-    private static final String RE_SPACES = " |_|\t";
-
-    /**
-     * Other optional spaces in the id
-     *
-     * @see RE_SPACES
-     */
-    private static final String ID_SPACES = "(" + RE_SPACES + ")*";
-
-    /** The name or category of the id */
-    private final static String ID_PART =
-        ALLOWED_ID_CHAR + "(" + ID_SPACES + ALLOWED_ID_CHAR + ")*";
-
-    /**
-     * The complete ID
-     */
-    private static final String TEXT_ID = ID_SPACES + "?" + ID_PART + "(" +
-        ID_SPACES + "-" + ID_SPACES + ID_PART + ")*" + ID_SPACES + "?";
-
     /** Pre-compiled spaces pattern */
-    private static final Pattern SPACES = Pattern.compile(RE_SPACES);
+    private static final Pattern spacesPat =
+        Pattern.compile(Patterns.SPACERS.rawPattern);
     /** Pre-compiled check pattern */
-    private static final Pattern CHECK = Pattern.compile("^" + TEXT_ID + "$");
+    private static final Pattern checkPat =
+        Pattern.compile("^" + Patterns.FULL.rawPattern + "$");
     /** Pre-compiled breaking id pattern */
-    private static final Pattern GROUPS =
-        Pattern.compile(Groups.NAME.PATTERN + "|" + Groups.SEP.PATTERN);
+    private static final Pattern parsePat = Pattern
+        .compile(Patterns.NAME.namedPattern + "|" + Patterns.SEP.namedPattern);
 
     /**
      * Collapse spaces for an id.
@@ -84,7 +77,7 @@ public final class IdSpan extends Span {
     private static String simplizeName(Matcher match) {
         return Joiner.on(" ").join(
             Splitter.on(CharMatcher.anyOf(" \t_")).omitEmptyStrings()
-                .trimResults().split(match.group(Groups.NAME.name()))
+                .trimResults().split(match.group(Patterns.NAME.name()))
         );
 
     }
@@ -99,17 +92,17 @@ public final class IdSpan extends Span {
 
     private final String idName;
 
-    public IdSpan(
+    Identifier(
         IdGroups group, String text, DocBuilder docBuilder, boolean isId
     ) {
         idType = group;
         isIdentitfier = isId;
         ImmutableList.Builder<Integer> positions = ImmutableList.builder();
-        TypedStyles idStyle = TypedStyles.IDER;
+        TypedStyles idStyle = TypedStyles.ID;
         TypedStyles grpType = group.toTypedStyles();
 
         // No match
-        if (!CHECK.matcher(text).find()) {
+        if (!checkPat.matcher(text).find()) {
             idName = "";
             idCategories = ImmutableList.of();
             docBuilder.addTextStyle(text, grpType, idStyle, TypedStyles.ERROR);
@@ -121,23 +114,24 @@ public final class IdSpan extends Span {
             ImmutableList.builder();
 
         // Start space padding
-        Matcher spaces = SPACES.matcher(text);
+        Matcher spaces = spacesPat.matcher(text);
         // ! spaces in the middle isn't the start of the id !
         if (spaces.find() && (spaces.start() == 0)) {
             positions.add(
-                docBuilder.addStyle(spaces, grpType, idStyle, TypedStyles.OPER)
+                docBuilder
+                    .addStyle(spaces, grpType, idStyle, TypedStyles.OPERATOR)
             );
         }
 
         // Parts of an id
-        Matcher match = GROUPS.matcher(text);
+        Matcher match = parsePat.matcher(text);
         String name = "";
         int start = 0;
-        while (match.find()) if (match.group(Groups.NAME.name()) != null) {
+        while (match.find()) if (match.group(Patterns.NAME.name()) != null) {
             // A name is found
             positions.add(
                 docBuilder.addStyle(
-                    match, Groups.NAME, grpType, idStyle, TypedStyles.NAME
+                    match, Patterns.NAME, grpType, idStyle, TypedStyles.NAME
                 )
             );
             // Last name found is a category, not an id
@@ -147,11 +141,11 @@ public final class IdSpan extends Span {
             name = simplizeName(match);
             start = match.end();
 
-        } else if (match.group(Groups.SEP.name()) != null) {
+        } else if (match.group(Patterns.SEP.name()) != null) {
             // A separator is found
             positions.add(
                 docBuilder.addStyle(
-                    match, Groups.SEP, grpType, idStyle, TypedStyles.OPER
+                    match, Patterns.SEP, grpType, idStyle, TypedStyles.OPERATOR
                 )
             );
         }
@@ -159,7 +153,8 @@ public final class IdSpan extends Span {
         // end space padding
         if (spaces.find(start)) {
             positions.add(
-                docBuilder.addStyle(spaces, grpType, idStyle, TypedStyles.OPER)
+                docBuilder
+                    .addStyle(spaces, grpType, idStyle, TypedStyles.OPERATOR)
             );
         }
 
@@ -189,6 +184,7 @@ public final class IdSpan extends Span {
     }
 
     public String getId() {
+        if (idCategories.isEmpty()) return idName;
         return Joiner.on("-").join(idCategories) + "-" + idName;
     }
 
