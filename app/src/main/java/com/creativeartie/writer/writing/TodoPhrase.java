@@ -24,6 +24,16 @@ public class TodoPhrase extends Span {
         }
     }
 
+    static String getPhraseName() {
+        return "Todo";
+    }
+
+    static String getPhrasePattern(boolean withName) {
+        String pattern =
+            Patterns.START.toString() + Patterns.TEXT + Patterns.END;
+        return withName ? namePattern(getPhraseName(), pattern) : pattern;
+    }
+
     private static Pattern phrasePattern = Pattern.compile(
         namePattern(Patterns.START) + namePattern(Patterns.TEXT) +
             namePattern(Patterns.END) + "?"

@@ -15,15 +15,21 @@ public final class RefPhrase extends Span {
             textPattern = pattern;
         }
 
-        static String listPatterns() {
+        static String listPatterns(boolean withName) {
             String patterns = "";
             for (Types type : values()) {
                 if (!patterns.isEmpty()) {
                     patterns += "|";
                 }
-                patterns += "(?<" + type.name() + ">" + type.textPattern + ")";
+                patterns +=
+                    withName ? Span.namePattern(type) : type.textPattern;
             }
             return "(" + patterns + ")";
+        }
+
+        @Override
+        public String toString() {
+            return textPattern;
         }
     }
 
@@ -31,7 +37,7 @@ public final class RefPhrase extends Span {
     private static final String endPat = "\\}?";
 
     private static final Pattern PATTERN = Pattern.compile(
-        Types.listPatterns() + Identifier.getPhrasePattern(true) +
+        Types.listPatterns(true) + Identifier.getPhrasePattern(true) +
             namePattern(endPatName, endPat)
     );
 
@@ -40,14 +46,8 @@ public final class RefPhrase extends Span {
     }
 
     static String getPhrasePattern(boolean withName) {
-        String pattern = "";
-        for (Types type : Types.values()) {
-            if (!pattern.isEmpty()) {
-                pattern += "|";
-            }
-            pattern += type.textPattern;
-        }
-        pattern += Identifier.getPhrasePattern(false) + endPat + ")";
+        String pattern = Types.listPatterns(false);
+        pattern += Identifier.getPhrasePattern(false) + endPat;
         return withName ? namePattern(getPhraseName(), pattern) : pattern;
     }
 

@@ -35,12 +35,12 @@ public class DocBuilder {
         }
     }
 
-    private static final boolean debug = true;
+    private final boolean isDebug;
     private String docText;
 
     private void
         printMessage(Matcher matcher, String group, TypedStyles... styles) {
-        if (!debug) return;
+        if (!isDebug) return;
         String groupName, groupText;
         int groupStart, groupEnd;
         if (group.isBlank()) {
@@ -63,9 +63,8 @@ public class DocBuilder {
 
     private StyleSpans<Collection<String>>
         printStyle(StyleSpans<Collection<String>> styleSpans) {
-        if (!debug) return styleSpans;
+        if (!isDebug) return styleSpans;
         int start = 0;
-        System.out.println(docText);
         for (StyleSpan<Collection<String>> style : styleSpans) {
             System.out.printf(
                 "%s: \"%s\"\n", Joiner.on(" ").join(style.getStyle()),
@@ -85,11 +84,12 @@ public class DocBuilder {
 
     private final ArrayList<PostCall> postCall;
 
-    public DocBuilder() {
-        styleList = new ArrayList<>();
-        if (debug) {
+    public DocBuilder(boolean debug) {
+        isDebug = debug;
+        if (isDebug) {
             System.out.println();
         }
+        styleList = new ArrayList<>();
         inheritedStyles = ImmutableList.of();
         idList = ArrayListMultimap.create();
         postCall = new ArrayList<>();
@@ -126,7 +126,7 @@ public class DocBuilder {
         Preconditions.checkArgument(!text.isEmpty(), "Text is empty");
         docText += text;
 
-        if (debug) System.out.printf(
+        if (isDebug) System.out.printf(
             "For text of length %3d is styled %s: %s\n", text.length(),
             Arrays.toString(styles), text
         );
@@ -146,7 +146,7 @@ public class DocBuilder {
     }
 
     void insertStyles(int position, TypedStyles... styles) {
-        if (debug) System.out.printf(
+        if (isDebug) System.out.printf(
             "For span with index %3d add styles: \"%s\"\n", position,
             Arrays.toString(styles)
         );

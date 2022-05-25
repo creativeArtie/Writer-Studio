@@ -15,7 +15,7 @@ class RefPhraseTest {
 
     @BeforeEach
     public void setup() {
-        builder = new DocBuilder();
+        builder = new DocBuilder(true);
         optStyles[0] = "";
         idNameStyles[0] = "";
         idOptStyles[0] = "";

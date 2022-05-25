@@ -71,7 +71,7 @@ class IdentifierTest {
 
     @BeforeEach
     void createBuilder() {
-        builder = new DocBuilder();
+        builder = new DocBuilder(true);
     }
 
     @Test

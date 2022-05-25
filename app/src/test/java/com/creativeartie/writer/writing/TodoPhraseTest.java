@@ -29,7 +29,7 @@ class TodoPhraseTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        builder = new DocBuilder();
+        builder = new DocBuilder(true);
     }
 
     @Test

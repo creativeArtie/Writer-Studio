@@ -52,7 +52,7 @@ public class WritingCoderPane extends CodeArea {
     }
 
     private StyleSpans<Collection<String>> computeHighlighting(String text) {
-        DocBuilder builder = new DocBuilder();
+        DocBuilder builder = new DocBuilder(false);
         return builder.getStyles();
     }
 }
