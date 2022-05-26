@@ -26,8 +26,8 @@ public class DocBuilder {
         }
 
         private void addStyles(TypedStyles... styles) {
-            final ImmutableList.Builder<String> builder =
-                ImmutableList.builder();
+            final ImmutableList.Builder<String> builder = ImmutableList
+                .builder();
             for (final TypedStyles style : styles) {
                 builder.add(style.getStyle());
             }
@@ -38,8 +38,9 @@ public class DocBuilder {
     private final boolean isDebug;
     private String docText;
 
-    private void
-        printMessage(Matcher matcher, String group, TypedStyles... styles) {
+    private void printMessage(
+        Matcher matcher, String group, TypedStyles... styles
+    ) {
         if (!isDebug) return;
         String groupName, groupText;
         int groupStart, groupEnd;
@@ -61,14 +62,15 @@ public class DocBuilder {
         );
     }
 
-    private StyleSpans<Collection<String>>
-        printStyle(StyleSpans<Collection<String>> styleSpans) {
+    private StyleSpans<Collection<String>> printStyle(
+        StyleSpans<Collection<String>> styleSpans
+    ) {
         if (!isDebug) return styleSpans;
         int start = 0;
         for (StyleSpan<Collection<String>> style : styleSpans) {
             System.out.printf(
-                "%s: \"%s\"\n", Joiner.on(" ").join(style.getStyle()),
-                docText.substring(start, start + style.getLength())
+                "%s: \"%s\"\n", Joiner.on(" ").join(style.getStyle()), docText
+                    .substring(start, start + style.getLength())
             );
             start += style.getLength();
         }
@@ -96,16 +98,19 @@ public class DocBuilder {
         docText = "";
     }
 
-    protected int
-        addStyle(Matcher matcher, Enum<?> group, TypedStyles... styles) {
+    protected int addStyle(
+        Matcher matcher, Enum<?> group, TypedStyles... styles
+    ) {
         final String name = group.name();
         return addStyle(matcher, name, styles);
     }
 
-    protected int
-        addStyle(Matcher matcher, String name, TypedStyles... styles) {
-        Preconditions
-            .checkArgument(matcher.group(name) != null, "Match is null");
+    protected int addStyle(
+        Matcher matcher, String name, TypedStyles... styles
+    ) {
+        Preconditions.checkArgument(
+            matcher.group(name) != null, "Match is null"
+        );
 
         printMessage(matcher, name, styles);
 
@@ -127,8 +132,8 @@ public class DocBuilder {
         docText += text;
 
         if (isDebug) System.out.printf(
-            "For text of length %3d is styled %s: %s\n", text.length(),
-            Arrays.toString(styles), text
+            "For text of length %3d is styled %s: %s\n", text.length(), Arrays
+                .toString(styles), text
         );
         styleList.add(new StyleData(text.length(), styles));
         return styleList.size() - 1;
@@ -147,8 +152,8 @@ public class DocBuilder {
 
     void insertStyles(int position, TypedStyles... styles) {
         if (isDebug) System.out.printf(
-            "For span with index %3d add styles: \"%s\"\n", position,
-            Arrays.toString(styles)
+            "For span with index %3d add styles: \"%s\"\n", position, Arrays
+                .toString(styles)
         );
         styleList.get(position).addStyles(styles);
     }

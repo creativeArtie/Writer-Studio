@@ -1,9 +1,20 @@
 package com.creativeartie.writer.writing;
 
 public enum TypedStyles {
-    ID("identifier"), OPERATOR("operator"), NAME("name"), TEXT("text"),
-    ERROR("error"), FOOTNOTE("footnote"), ENDNOTE("endnote"), SOURCE("source"),
-    TODO("todo"), ITALICS("italics"), UNDERLINE("underline"), BOLD("bold"),
+    ID("identifier"), OPERATOR("operator"), NAME("name"), TEXT("text"), ERROR(
+        "error"
+    ),
+
+    // @orderFor IdGroups
+    FOOTNOTE("footnote"), ENDNOTE("endnote"), SOURCE("source"),
+    // @endOrder
+
+    TODO("todo"),
+
+    // @orderFor TextPhrase.Word and TextPhrase.Format
+    BOLD("bold"), ITALICS("italics"), UNDERLINE("underline"),
+    // @endOrder TextPhrase.Word
+
     ESCAPE("escape"), PARAGRAPH("paragraph");
 
     private String styleName;

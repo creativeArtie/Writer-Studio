@@ -21,8 +21,8 @@ public final class RefPhrase extends Span {
                 if (!patterns.isEmpty()) {
                     patterns += "|";
                 }
-                patterns +=
-                    withName ? Span.namePattern(type) : type.textPattern;
+                patterns += withName ? Span.namePattern(type) :
+                    type.textPattern;
             }
             return "(" + patterns + ")";
         }

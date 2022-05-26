@@ -4,10 +4,9 @@ import org.junit.jupiter.api.*;
 
 class TodoPhraseTest {
 
-    private static final String textStyle[] =
-        { TypedStyles.TODO.getStyle(), TypedStyles.TEXT.getStyle() },
-        optStyle[] =
-            { TypedStyles.TODO.getStyle(), TypedStyles.OPERATOR.getStyle() };
+    private static final String textStyle[] = { TypedStyles.TODO.getStyle(),
+        TypedStyles.TEXT.getStyle() }, optStyle[] = { TypedStyles.TODO
+            .getStyle(), TypedStyles.OPERATOR.getStyle() };
 
     private static final int startLength = 2, textLength = 4, endLength = 1;
 
@@ -19,10 +18,9 @@ class TodoPhraseTest {
         Assertions.assertAll(
             () -> Assertions.assertEquals(
                 hasText ? "help" : "", test.getTodoText(), "text"
-            ),
-            () -> CommonTests.assertSpanStyles(
-                builder, lengths.length, (idx) -> lengths[idx],
-                (idx) -> styles[idx]
+            ), () -> CommonTests.assertSpanStyles(
+                builder, lengths.length, (idx) -> lengths[idx], (
+                    idx) -> styles[idx]
             )
         );
     }
@@ -45,8 +43,8 @@ class TodoPhraseTest {
     void testNoEnd() {
         TodoPhrase test = new TodoPhrase("{!help", builder);
         assertCommon(
-            test, new int[] { startLength, textLength },
-            new String[][] { optStyle, textStyle }, true
+            test, new int[] { startLength, textLength }, new String[][] {
+                optStyle, textStyle }, true
         );
     }
 

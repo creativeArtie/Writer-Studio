@@ -9,8 +9,9 @@ public class TodoPhrase extends Span {
     private final String todoText;
 
     private enum Patterns {
-        START("\\{!"), TEXT("[^\\}]*"), END("\\}"),
-        FULL(START.toString() + TEXT + END);
+        START("\\{!"), TEXT("[^\\}]*"), END("\\}"), FULL(
+            START.toString() + TEXT + END
+        );
 
         final String rawPattern;
 
@@ -29,14 +30,15 @@ public class TodoPhrase extends Span {
     }
 
     static String getPhrasePattern(boolean withName) {
-        String pattern =
-            Patterns.START.toString() + Patterns.TEXT + Patterns.END;
+        String pattern = Patterns.START.toString() + Patterns.TEXT +
+            Patterns.END;
         return withName ? namePattern(getPhraseName(), pattern) : pattern;
     }
 
     private static Pattern phrasePattern = Pattern.compile(
-        namePattern(Patterns.START) + namePattern(Patterns.TEXT) +
-            namePattern(Patterns.END) + "?"
+        namePattern(Patterns.START) + namePattern(Patterns.TEXT) + namePattern(
+            Patterns.END
+        ) + "?"
     );
 
     TodoPhrase(String value, DocBuilder docBuilder) {

@@ -7,9 +7,9 @@ import org.junit.jupiter.params.provider.*;
 class RefPhraseTest {
 
     private String optStyles[] = { "", TypedStyles.OPERATOR.getStyle() },
-        idNameStyles[] =
-            { "", TypedStyles.ID.getStyle(), TypedStyles.NAME.getStyle() },
-        idOptStyles[] = { "", TypedStyles.OPERATOR.getStyle() };
+        idNameStyles[] = { "", TypedStyles.ID.getStyle(), TypedStyles.NAME
+            .getStyle() }, idOptStyles[] = { "", TypedStyles.OPERATOR
+                .getStyle() };
 
     private DocBuilder builder;
 

@@ -20,9 +20,9 @@ public class WritingCoderPane extends CodeArea {
         setParagraphGraphicFactory(LineNumberFactory.get(this));
 
         multiPlainChanges().successionEnds(Duration.ofMillis(500))
-            .retainLatestUntilLater(executor)
-            .supplyTask(this::computeHighlightingAsync)
-            .awaitLatest(multiPlainChanges()).filterMap(t -> {
+            .retainLatestUntilLater(executor).supplyTask(
+                this::computeHighlightingAsync
+            ).awaitLatest(multiPlainChanges()).filterMap(t -> {
                 if (t.isSuccess()) return Optional.of(t.get());
                 t.getFailure().printStackTrace();
                 return Optional.empty();
@@ -46,8 +46,9 @@ public class WritingCoderPane extends CodeArea {
         return task;
     }
 
-    private void
-        applyHighlighting(StyleSpans<Collection<String>> highlighting) {
+    private void applyHighlighting(
+        StyleSpans<Collection<String>> highlighting
+    ) {
         setStyleSpans(0, highlighting);
     }
 

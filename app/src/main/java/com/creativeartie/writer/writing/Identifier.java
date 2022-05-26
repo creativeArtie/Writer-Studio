@@ -52,20 +52,23 @@ public final class Identifier extends Span {
     }
 
     static String getPhrasePattern(boolean withName) {
-        return withName ?
-            namePattern(getPhraseName(), Patterns.FULL.rawPattern) :
-            Patterns.FULL.rawPattern;
+        return withName ? namePattern(
+            getPhraseName(), Patterns.FULL.rawPattern
+        ) : Patterns.FULL.rawPattern;
     }
 
     /** Pre-compiled spaces pattern */
-    private static final Pattern spacesPat =
-        Pattern.compile(Patterns.SPACERS.rawPattern);
+    private static final Pattern spacesPat = Pattern.compile(
+        Patterns.SPACERS.rawPattern
+    );
     /** Pre-compiled check pattern */
-    private static final Pattern checkPat =
-        Pattern.compile("^" + Patterns.FULL.rawPattern + "$");
+    private static final Pattern checkPat = Pattern.compile(
+        "^" + Patterns.FULL.rawPattern + "$"
+    );
     /** Pre-compiled breaking id pattern */
-    private static final Pattern parsePat = Pattern
-        .compile(Patterns.NAME.namedPattern + "|" + Patterns.SEP.namedPattern);
+    private static final Pattern parsePat = Pattern.compile(
+        Patterns.NAME.namedPattern + "|" + Patterns.SEP.namedPattern
+    );
 
     /**
      * Collapse spaces for an id.
@@ -110,16 +113,17 @@ public final class Identifier extends Span {
             return;
         }
 
-        final ImmutableList.Builder<String> catBuilder =
-            ImmutableList.builder();
+        final ImmutableList.Builder<String> catBuilder = ImmutableList
+            .builder();
 
         // Start space padding
         Matcher spaces = spacesPat.matcher(text);
         // ! spaces in the middle isn't the start of the id !
         if (spaces.find() && (spaces.start() == 0)) {
             positions.add(
-                docBuilder
-                    .addStyle(spaces, grpType, idStyle, TypedStyles.OPERATOR)
+                docBuilder.addStyle(
+                    spaces, grpType, idStyle, TypedStyles.OPERATOR
+                )
             );
         }
 
@@ -153,8 +157,9 @@ public final class Identifier extends Span {
         // end space padding
         if (spaces.find(start)) {
             positions.add(
-                docBuilder
-                    .addStyle(spaces, grpType, idStyle, TypedStyles.OPERATOR)
+                docBuilder.addStyle(
+                    spaces, grpType, idStyle, TypedStyles.OPERATOR
+                )
             );
         }
 

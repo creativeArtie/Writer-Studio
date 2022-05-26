@@ -17,12 +17,12 @@ class IdentifierTest {
         TypedStyles.ID.getStyle(), TypedStyles.OPERATOR.getStyle() };
     static final String[] NAME_STYLE = { TypedStyles.FOOTNOTE.getStyle(),
         TypedStyles.ID.getStyle(), TypedStyles.NAME.getStyle() };
-    static final String[] SEP_ERR_STYLE =
-        { TypedStyles.FOOTNOTE.getStyle(), TypedStyles.ID.getStyle(),
-            TypedStyles.OPERATOR.getStyle(), TypedStyles.ERROR.getStyle() };
-    static final String[] NAME_ERR_STYLE =
-        { TypedStyles.FOOTNOTE.getStyle(), TypedStyles.ID.getStyle(),
-            TypedStyles.NAME.getStyle(), TypedStyles.ERROR.getStyle() };
+    static final String[] SEP_ERR_STYLE = { TypedStyles.FOOTNOTE.getStyle(),
+        TypedStyles.ID.getStyle(), TypedStyles.OPERATOR.getStyle(),
+        TypedStyles.ERROR.getStyle() };
+    static final String[] NAME_ERR_STYLE = { TypedStyles.FOOTNOTE.getStyle(),
+        TypedStyles.ID.getStyle(), TypedStyles.NAME.getStyle(),
+        TypedStyles.ERROR.getStyle() };
 
     static Stream<Arguments> categroyProvider() {
         // @formatter:off
@@ -99,8 +99,9 @@ class IdentifierTest {
     @ParameterizedTest(name = "{displayName}[{index}]: \"{0}\"")
     @ValueSource(strings = { "  ", " *()&$%&^", "-dfsf", "dfdd-", "-" })
     void testErrorId(String raw) {
-        final Identifier test =
-            new Identifier(IdGroups.FOOTNOTE, raw, builder, false);
+        final Identifier test = new Identifier(
+            IdGroups.FOOTNOTE, raw, builder, false
+        );
         Assertions.assertAll(
             () -> Assertions.assertEquals("", test.getName(), "name"),
             () -> Assertions.assertArrayEquals(
@@ -116,13 +117,14 @@ class IdentifierTest {
     @ParameterizedTest(name = "{displayName}[{index}]: \"{0}\"")
     @MethodSource("categroyProvider")
     void testIdwithCategory(
-        String raw, String expectName, List<String> expectCat,
-        List<Integer> expectedLengths, List<Boolean> isNames
+        String raw, String expectName, List<String> expectCat, List<
+            Integer> expectedLengths, List<Boolean> isNames
     ) {
-        assert expectedLengths.size() == isNames.size() :
-            expectedLengths.size() + "==" + isNames.size();
-        final Identifier test =
-            new Identifier(IdGroups.FOOTNOTE, raw, builder, false);
+        assert expectedLengths.size() == isNames.size() : expectedLengths
+            .size() + "==" + isNames.size();
+        final Identifier test = new Identifier(
+            IdGroups.FOOTNOTE, raw, builder, false
+        );
         List<String> names = new ArrayList<>();
         for (String part : Splitter.on("-").split(raw)) {
             names.add(
@@ -134,16 +136,15 @@ class IdentifierTest {
         }
         String expectedId = Joiner.on("-").join(names);
         Assertions.assertAll(
-            "Basic",
-            () -> Assertions.assertArrayEquals(
+            "Basic", () -> Assertions.assertArrayEquals(
                 expectCat.toArray(), test.getCategories().toArray(), "Category"
-            ),
-            () -> Assertions.assertEquals(expectName, test.getName(), "Name"),
-            () -> Assertions.assertEquals(expectedId, test.getId(), "Id")
+            ), () -> Assertions.assertEquals(
+                expectName, test.getName(), "Name"
+            ), () -> Assertions.assertEquals(expectedId, test.getId(), "Id")
         );
         CommonTests.assertSpanStyles(
-            builder, isNames.size(), (idx) -> expectedLengths.get(idx),
-            (idx) -> isNames.get(idx) ? NAME_STYLE : SEP_STYLE
+            builder, isNames.size(), (idx) -> expectedLengths.get(idx), (
+                idx) -> isNames.get(idx) ? NAME_STYLE : SEP_STYLE
         );
     }
 
@@ -154,14 +155,15 @@ class IdentifierTest {
             "Hello World Fun", "Hello" }
     )
     void testIdWithoutCategories(String value) {
-        final Identifier test =
-            new Identifier(IdGroups.FOOTNOTE, value, builder, false);
+        final Identifier test = new Identifier(
+            IdGroups.FOOTNOTE, value, builder, false
+        );
         Assertions.assertAll(
-            "Name",
-            () -> Assertions
-                .assertTrue(test.getCategories().isEmpty(), "Category"),
-            () -> Assertions.assertEquals(value.trim(), test.getName(), "Name"),
-            () -> Assertions.assertEquals(value.trim(), test.getId(), "Id")
+            "Name", () -> Assertions.assertTrue(
+                test.getCategories().isEmpty(), "Category"
+            ), () -> Assertions.assertEquals(
+                value.trim(), test.getName(), "Name"
+            ), () -> Assertions.assertEquals(value.trim(), test.getId(), "Id")
         );
 
         CommonTests.assertSpanStyles(
@@ -187,8 +189,8 @@ class IdentifierTest {
         final String[][] expectedStyles = { NAME_STYLE, SEP_STYLE, NAME_STYLE,
             NAME_ERR_STYLE, SEP_ERR_STYLE, NAME_ERR_STYLE };
         CommonTests.assertSpanStyles(
-            builder, 6, (idx) -> expectedLength[idx],
-            (idx) -> expectedStyles[idx]
+            builder, 6, (idx) -> expectedLength[idx], (
+                idx) -> expectedStyles[idx]
         );
     }
 
@@ -204,11 +206,11 @@ class IdentifierTest {
         // aded-23aded-23
         // @formatter:on
         final int expectedLength[] = { 4, 1, 6, 1, 2 };
-        final String[][] expectedStyles =
-            { NAME_STYLE, SEP_STYLE, NAME_STYLE, SEP_STYLE, NAME_STYLE };
+        final String[][] expectedStyles = { NAME_STYLE, SEP_STYLE, NAME_STYLE,
+            SEP_STYLE, NAME_STYLE };
         CommonTests.assertSpanStyles(
-            builder, 5, (idx) -> expectedLength[idx],
-            (idx) -> expectedStyles[idx]
+            builder, 5, (idx) -> expectedLength[idx], (
+                idx) -> expectedStyles[idx]
         );
     }
 
@@ -224,11 +226,11 @@ class IdentifierTest {
         // aded-23aded-23
         // @formatter:on
         final int expectedLength[] = { 4, 1, 6, 1, 2 };
-        final String[][] expectedStyles =
-            { NAME_STYLE, SEP_STYLE, NAME_STYLE, SEP_STYLE, NAME_STYLE };
+        final String[][] expectedStyles = { NAME_STYLE, SEP_STYLE, NAME_STYLE,
+            SEP_STYLE, NAME_STYLE };
         CommonTests.assertSpanStyles(
-            builder, 5, (idx) -> expectedLength[idx],
-            (idx) -> expectedStyles[idx]
+            builder, 5, (idx) -> expectedLength[idx], (
+                idx) -> expectedStyles[idx]
         );
     }
 
@@ -243,11 +245,11 @@ class IdentifierTest {
         // aded-23
         // @formatter:on
         final int expectedLength[] = { 4, 1, 2 };
-        final String[][] expectedStyles =
-            { NAME_ERR_STYLE, SEP_ERR_STYLE, NAME_ERR_STYLE };
+        final String[][] expectedStyles = { NAME_ERR_STYLE, SEP_ERR_STYLE,
+            NAME_ERR_STYLE };
         CommonTests.assertSpanStyles(
-            builder, 3, (idx) -> expectedLength[idx],
-            (idx) -> expectedStyles[idx]
+            builder, 3, (idx) -> expectedLength[idx], (
+                idx) -> expectedStyles[idx]
         );
     }
 
