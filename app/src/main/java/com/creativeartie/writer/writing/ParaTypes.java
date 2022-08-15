@@ -1,11 +1,11 @@
 package com.creativeartie.writer.writing;
 
 public enum ParaTypes {
-    NORMAL(TextPhrase.TextEnders.NONE);
+    NORMAL(LinePhrase.LineEnders.NONE);
 
-    private TextPhrase.TextEnders lineEnder;
+    private LinePhrase.LineEnders lineEnder;
 
-    ParaTypes(TextPhrase.TextEnders ender) {
+    ParaTypes(LinePhrase.LineEnders ender) {
         lineEnder = ender;
     }
 
@@ -14,7 +14,7 @@ public enum ParaTypes {
             .ordinal()];
     }
 
-    public TextPhrase.TextEnders getEnder() {
+    public LinePhrase.LineEnders getEnder() {
         return lineEnder;
     }
 }

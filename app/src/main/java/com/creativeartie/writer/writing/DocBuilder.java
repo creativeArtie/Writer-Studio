@@ -99,10 +99,23 @@ public class DocBuilder {
     }
 
     protected int addStyle(
+        Matcher matcher, Enum<?> group, List<TypedStyles> styles
+    ) {
+        return addStyle(matcher, group, styles.toArray(new TypedStyles[0]));
+
+    }
+
+    protected int addStyle(
         Matcher matcher, Enum<?> group, TypedStyles... styles
     ) {
         final String name = group.name();
         return addStyle(matcher, name, styles);
+    }
+
+    protected int addStyle(
+        Matcher matcher, String name, List<TypedStyles> styles
+    ) {
+        return addStyle(matcher, name, styles.toArray(new TypedStyles[0]));
     }
 
     protected int addStyle(
@@ -120,11 +133,19 @@ public class DocBuilder {
         return styleList.size() - 1;
     }
 
+    protected int addStyle(Matcher matcher, List<TypedStyles> styles) {
+        return addStyle(matcher, styles.toArray(new TypedStyles[0]));
+    }
+
     protected int addStyle(Matcher matcher, TypedStyles... styles) {
         Preconditions.checkArgument(matcher.group() != null, "Match is null");
         printMessage(matcher, "", styles);
         styleList.add(new StyleData(matcher.end() - matcher.start(), styles));
         return styleList.size() - 1;
+    }
+
+    protected int addTextStyle(String text, List<TypedStyles> styles) {
+        return addTextStyle(text, styles.toArray(new TypedStyles[0]));
     }
 
     protected int addTextStyle(String text, TypedStyles... styles) {

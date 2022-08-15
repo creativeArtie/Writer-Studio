@@ -21,10 +21,11 @@ class RefPhraseTest {
         idOptStyles[0] = "";
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "{displayName}: \"{1}\" ({0})")
     @CsvSource(
         { "FOOTNOTE, {^hello}", "ENDNOTE, {*hello}", "SOURCE, {>hello}" }
     )
+    @DisplayName("Complete Note Test")
     void testNotes(String type, String raw) {
         IdGroups group = IdGroups.valueOf(type);
         editStyle(group);
@@ -43,6 +44,7 @@ class RefPhraseTest {
     }
 
     @Test
+    @DisplayName("No ending: {^hello")
     void testNoEnd() {
         IdGroups expectGroup = IdGroups.FOOTNOTE;
         editStyle(expectGroup);
@@ -55,6 +57,24 @@ class RefPhraseTest {
             () -> Assertions.assertEquals(expectGroup, test.getType(), "Type"),
             () -> CommonTests.assertSpanStyles(
                 builder, 2, (idx) -> lengths[idx], (idx) -> styles[idx]
+            )
+        );
+    }
+
+    @Test
+    @DisplayName("No id: {^}")
+    void testNoId() {
+        Assertions.assertThrows(
+            IllegalArgumentException.class, () -> new RefPhrase("{^}", builder)
+        );
+    }
+
+    @Test
+    @DisplayName("No note type: {Hello}")
+    void testNoStart() {
+        Assertions.assertThrows(
+            IllegalArgumentException.class, () -> new RefPhrase(
+                "{Hello}", builder
             )
         );
     }
