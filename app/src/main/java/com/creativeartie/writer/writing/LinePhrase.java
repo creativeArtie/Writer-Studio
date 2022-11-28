@@ -8,9 +8,9 @@ import com.google.common.collect.*;
 public class LinePhrase extends Span {
 
     private enum FormatPatterns {
-        // @orderFor Word.Word and TypedStyles
+        // @orderFor LinePhrase.TextPhrase and SpanStyles
         BOLD("\\*"), ITALICS("`"), UNDERLINE("_"),
-        // @endOrder Word.Word
+        // @endOrder
 
         REF_START("\\{"), ESCAPE("\\\\");
 
@@ -40,8 +40,9 @@ public class LinePhrase extends Span {
         private TextPhrase(
             String text, DocBuilder docBuilder, boolean... formats
         ) {
+            super(docBuilder);
             StringBuilder string = new StringBuilder();
-            ImmutableList.Builder<TypedStyles> baseStyles = ImmutableList
+            ImmutableList.Builder<SpanStyles> baseStyles = ImmutableList
                 .builder();
             baseStyles.addAll(otherStyles);
             hasFormat = formats;
@@ -49,24 +50,24 @@ public class LinePhrase extends Span {
             for (boolean format : formats) {
                 if (format) {
                     baseStyles.add(
-                        TypedStyles.values()[TypedStyles.BOLD.ordinal() + i]
+                        SpanStyles.values()[SpanStyles.BOLD.ordinal() + i]
                     );
                 }
                 i++;
             }
 
-            TypedStyles textStyle[] = ImmutableList.builder().addAll(
+            SpanStyles textStyle[] = ImmutableList.builder().addAll(
                 baseStyles.build()
-            ).add(TypedStyles.TEXT).build().toArray(new TypedStyles[0]);
-            TypedStyles escOptStyle[] = ImmutableList.builder().addAll(
+            ).add(SpanStyles.TEXT).build().toArray(new SpanStyles[0]);
+            SpanStyles escOptStyle[] = ImmutableList.builder().addAll(
                 baseStyles.build()
-            ).add(TypedStyles.ESCAPE, TypedStyles.OPERATOR).build().toArray(
-                new TypedStyles[0]
+            ).add(SpanStyles.ESCAPE, SpanStyles.OPERATOR).build().toArray(
+                new SpanStyles[0]
             );
-            TypedStyles escTxtStyle[] = ImmutableList.builder().addAll(
+            SpanStyles escTxtStyle[] = ImmutableList.builder().addAll(
                 baseStyles.build()
-            ).add(TypedStyles.ESCAPE, TypedStyles.TEXT).build().toArray(
-                new TypedStyles[0]
+            ).add(SpanStyles.ESCAPE, SpanStyles.TEXT).build().toArray(
+                new SpanStyles[0]
             );
 
             Matcher match = lineType.getEnder().wordPattern.matcher(text);
@@ -75,14 +76,14 @@ public class LinePhrase extends Span {
                 System.out.println(find);
                 if (find != null) {
                     string.append(find);
-                    docBuilder.addStyle(match, txtName, textStyle);
+                    addStyle(match, txtName, textStyle);
                     continue;
                 }
                 find = match.group(escape);
                 if (find != null) {
                     string.append(find.charAt(1));
-                    docBuilder.addTextStyle("\\", escOptStyle);
-                    docBuilder.addTextStyle(find.substring(1), escTxtStyle);
+                    addTextStyle("\\", escOptStyle);
+                    addTextStyle(find.substring(1), escTxtStyle);
                 }
             }
 
@@ -157,22 +158,21 @@ public class LinePhrase extends Span {
 
     }
 
-    private final ParaTypes lineType;
-    private final ImmutableList<TypedStyles> otherStyles;
+    private final LineTypes lineType;
+    private final ImmutableList<SpanStyles> otherStyles;
     private final ImmutableList<Span> childrenSpans;
 
     LinePhrase(
-        String text, DocBuilder docBuilder, ParaTypes type,
-        TypedStyles... others
+        String text, DocBuilder docBuilder, LineTypes type, SpanStyles... others
     ) {
+        super(docBuilder);
         lineType = type;
-        otherStyles = new ImmutableList.Builder<TypedStyles>().add(
+        otherStyles = new ImmutableList.Builder<SpanStyles>().add(
             type.getStyle()
         ).add(others).build();
 
-        ImmutableList<TypedStyles> optStyle = new ImmutableList.Builder<
-            TypedStyles>().addAll(otherStyles).add(TypedStyles.OPERATOR)
-                .build();
+        ImmutableList<SpanStyles> optStyle = new ImmutableList.Builder<
+            SpanStyles>().addAll(otherStyles).add(SpanStyles.OPERATOR).build();
 
         LineEnders ender = type.getEnder();
 
@@ -193,7 +193,7 @@ public class LinePhrase extends Span {
                 if (find != null) {
                     int idx = pattern.ordinal();
                     formats[idx] = !formats[idx];
-                    docBuilder.addStyle(matcher, pattern, optStyle);
+                    addStyle(matcher, pattern, optStyle);
                     continue findLoop;
                 }
             }

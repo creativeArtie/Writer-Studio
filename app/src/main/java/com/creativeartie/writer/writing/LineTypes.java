@@ -1,16 +1,16 @@
 package com.creativeartie.writer.writing;
 
-public enum ParaTypes {
+public enum LineTypes {
     NORMAL(LinePhrase.LineEnders.NONE);
 
     private LinePhrase.LineEnders lineEnder;
 
-    ParaTypes(LinePhrase.LineEnders ender) {
+    LineTypes(LinePhrase.LineEnders ender) {
         lineEnder = ender;
     }
 
-    public TypedStyles getStyle() {
-        return TypedStyles.values()[ordinal() + TypedStyles.PARAGRAPH
+    public SpanStyles getStyle() {
+        return SpanStyles.values()[ordinal() + SpanStyles.PARAGRAPH
             .ordinal()];
     }
 

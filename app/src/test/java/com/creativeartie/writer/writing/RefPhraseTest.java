@@ -6,9 +6,9 @@ import org.junit.jupiter.params.provider.*;
 
 class RefPhraseTest {
 
-    private String optStyles[] = { "", TypedStyles.OPERATOR.getStyle() },
-        idNameStyles[] = { "", TypedStyles.ID.getStyle(), TypedStyles.NAME
-            .getStyle() }, idOptStyles[] = { "", TypedStyles.OPERATOR
+    private String optStyles[] = { "", SpanStyles.OPERATOR.getStyle() },
+        idNameStyles[] = { "", SpanStyles.ID.getStyle(), SpanStyles.NAME
+            .getStyle() }, idOptStyles[] = { "", SpanStyles.OPERATOR
                 .getStyle() };
 
     private DocBuilder builder;
@@ -27,13 +27,13 @@ class RefPhraseTest {
     )
     @DisplayName("Complete Note Test")
     void testNotes(String type, String raw) {
-        IdGroups group = IdGroups.valueOf(type);
+        IdTypes group = IdTypes.valueOf(type);
         editStyle(group);
 
         final int lengths[] = { 2, 5, 1 };
         final String[][] styles = { optStyles, idNameStyles, idOptStyles };
 
-        RefPhrase test = new RefPhrase(raw, builder);
+        IdRefPhrase test = new IdRefPhrase(raw, builder);
         Assertions.assertAll(
             () -> Assertions.assertEquals("hello", test.getId().getId(), "Id"),
             () -> Assertions.assertEquals(group, test.getType(), "Type"),
@@ -46,12 +46,12 @@ class RefPhraseTest {
     @Test
     @DisplayName("No ending: {^hello")
     void testNoEnd() {
-        IdGroups expectGroup = IdGroups.FOOTNOTE;
+        IdTypes expectGroup = IdTypes.FOOTNOTE;
         editStyle(expectGroup);
 
         final int lengths[] = { 2, 5 };
         final String[][] styles = { optStyles, idNameStyles };
-        RefPhrase test = new RefPhrase("{^hello", builder);
+        IdRefPhrase test = new IdRefPhrase("{^hello", builder);
         Assertions.assertAll(
             () -> Assertions.assertEquals("hello", test.getId().getId(), "Id"),
             () -> Assertions.assertEquals(expectGroup, test.getType(), "Type"),
@@ -65,7 +65,7 @@ class RefPhraseTest {
     @DisplayName("No id: {^}")
     void testNoId() {
         Assertions.assertThrows(
-            IllegalArgumentException.class, () -> new RefPhrase("{^}", builder)
+            IllegalArgumentException.class, () -> new IdRefPhrase("{^}", builder)
         );
     }
 
@@ -73,13 +73,13 @@ class RefPhraseTest {
     @DisplayName("No note type: {Hello}")
     void testNoStart() {
         Assertions.assertThrows(
-            IllegalArgumentException.class, () -> new RefPhrase(
+            IllegalArgumentException.class, () -> new IdRefPhrase(
                 "{Hello}", builder
             )
         );
     }
 
-    protected void editStyle(IdGroups group) {
+    protected void editStyle(IdTypes group) {
         optStyles[0] = group.toTypedStyles().getStyle();
         idNameStyles[0] = group.toTypedStyles().getStyle();
         idOptStyles[0] = group.toTypedStyles().getStyle();

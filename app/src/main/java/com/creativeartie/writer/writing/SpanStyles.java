@@ -1,25 +1,25 @@
 package com.creativeartie.writer.writing;
 
-public enum TypedStyles {
+public enum SpanStyles {
     ID("identifier"), OPERATOR("operator"), NAME("name"), TEXT("text"), ERROR(
         "error"
     ),
 
-    // @orderFor IdGroups
+    // @orderFor IdTypes
     FOOTNOTE("footnote"), ENDNOTE("endnote"), SOURCE("source"),
     // @endOrder
 
     TODO("todo"),
 
-    // @orderFor TextPhrase.Word and TextPhrase.Format
+    // @orderFor LinePhrase.TextPhrase and LinePhrase.Format
     BOLD("bold"), ITALICS("italics"), UNDERLINE("underline"),
-    // @endOrder TextPhrase.Word
+    // @endOrder
 
     ESCAPE("escape"), PARAGRAPH("paragraph");
 
     private String styleName;
 
-    TypedStyles(String name) {
+    SpanStyles(String name) {
         styleName = name;
     }
 

@@ -17,22 +17,22 @@ class TextPhraseTest {
     }
 
     private LinePhrase createTest(String text) {
-        return createTest(text, ParaTypes.NORMAL);
+        return createTest(text, LineTypes.NORMAL);
     }
 
-    private LinePhrase createTest(String text, ParaTypes ender) {
+    private LinePhrase createTest(String text, LineTypes ender) {
         return new LinePhrase(text, docBuilder, ender);
     }
 
     @ParameterizedTest
     @CsvSource({ "*,BOLD", "`,ITALICS", "_,UNDERLINE" })
     void testFormat(String format, String type) {
-        String textStyle[] = { TypedStyles.PARAGRAPH.getStyle(),
-            TypedStyles.TEXT.getStyle() };
-        String formatStyle[] = { TypedStyles.PARAGRAPH.getStyle(), TypedStyles
-            .valueOf(type).getStyle(), TypedStyles.TEXT.getStyle() };
-        String optStyle[] = { TypedStyles.PARAGRAPH.getStyle(),
-            TypedStyles.OPERATOR.getStyle() };
+        String textStyle[] = { SpanStyles.PARAGRAPH.getStyle(),
+            SpanStyles.TEXT.getStyle() };
+        String formatStyle[] = { SpanStyles.PARAGRAPH.getStyle(), SpanStyles
+            .valueOf(type).getStyle(), SpanStyles.TEXT.getStyle() };
+        String optStyle[] = { SpanStyles.PARAGRAPH.getStyle(),
+            SpanStyles.OPERATOR.getStyle() };
         String expectedText[] = { "Start", format, "text", format, "end" };
         String text = Joiner.on("").join(expectedText);
 

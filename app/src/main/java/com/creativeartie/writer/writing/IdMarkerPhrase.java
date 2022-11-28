@@ -13,7 +13,7 @@ import com.google.common.collect.*;
  *
  * @author wai
  */
-public final class Identifier extends Span {
+public final class IdMarkerPhrase extends Span {
     /**
      * Pattern groups use in {@link Pattern}.
      *
@@ -85,7 +85,7 @@ public final class Identifier extends Span {
 
     }
 
-    private final IdGroups idType;
+    private final IdTypes idType;
 
     private final boolean isIdentitfier;
 
@@ -95,20 +95,21 @@ public final class Identifier extends Span {
 
     private final String idName;
 
-    Identifier(
-        IdGroups group, String text, DocBuilder docBuilder, boolean isId
+    IdMarkerPhrase(
+        IdTypes group, String text, DocBuilder docBuilder, boolean isId
     ) {
+        super(docBuilder);
         idType = group;
         isIdentitfier = isId;
         ImmutableList.Builder<Integer> positions = ImmutableList.builder();
-        TypedStyles idStyle = TypedStyles.ID;
-        TypedStyles grpType = group.toTypedStyles();
+        SpanStyles idStyle = SpanStyles.ID;
+        SpanStyles grpType = group.toTypedStyles();
 
         // No match
         if (!checkPat.matcher(text).find()) {
             idName = "";
             idCategories = ImmutableList.of();
-            docBuilder.addTextStyle(text, grpType, idStyle, TypedStyles.ERROR);
+            addTextStyle(text, grpType, idStyle, SpanStyles.ERROR);
             spanStylePositions = ImmutableList.of();
             return;
         }
@@ -121,9 +122,7 @@ public final class Identifier extends Span {
         // ! spaces in the middle isn't the start of the id !
         if (spaces.find() && (spaces.start() == 0)) {
             positions.add(
-                docBuilder.addStyle(
-                    spaces, grpType, idStyle, TypedStyles.OPERATOR
-                )
+                addStyle(spaces, grpType, idStyle, SpanStyles.OPERATOR)
             );
         }
 
@@ -134,8 +133,8 @@ public final class Identifier extends Span {
         while (match.find()) if (match.group(Patterns.NAME.name()) != null) {
             // A name is found
             positions.add(
-                docBuilder.addStyle(
-                    match, Patterns.NAME, grpType, idStyle, TypedStyles.NAME
+                addStyle(
+                    match, Patterns.NAME, grpType, idStyle, SpanStyles.NAME
                 )
             );
             // Last name found is a category, not an id
@@ -148,8 +147,8 @@ public final class Identifier extends Span {
         } else if (match.group(Patterns.SEP.name()) != null) {
             // A separator is found
             positions.add(
-                docBuilder.addStyle(
-                    match, Patterns.SEP, grpType, idStyle, TypedStyles.OPERATOR
+                addStyle(
+                    match, Patterns.SEP, grpType, idStyle, SpanStyles.OPERATOR
                 )
             );
         }
@@ -157,9 +156,7 @@ public final class Identifier extends Span {
         // end space padding
         if (spaces.find(start)) {
             positions.add(
-                docBuilder.addStyle(
-                    spaces, grpType, idStyle, TypedStyles.OPERATOR
-                )
+                addStyle(spaces, grpType, idStyle, SpanStyles.OPERATOR)
             );
         }
 
@@ -168,17 +165,17 @@ public final class Identifier extends Span {
         spanStylePositions = positions.build();
 
         if (isRef()) {
-            docBuilder.addCleanup((builder) -> {
+            docBuilder.addCheckedIdStyle((builder) -> {
                 if (!builder.containsId(idType, getId())) {
                     for (int idx : spanStylePositions) {
-                        builder.insertStyles(idx, TypedStyles.ERROR);
+                        builder.insertStyles(idx, SpanStyles.ERROR);
                     }
                 }
             });
         } else {
             if (!docBuilder.putId(idType, getId())) {
                 for (int idx : spanStylePositions) {
-                    docBuilder.insertStyles(idx, TypedStyles.ERROR);
+                    docBuilder.insertStyles(idx, SpanStyles.ERROR);
                 }
             }
         }

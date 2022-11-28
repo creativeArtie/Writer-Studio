@@ -4,10 +4,12 @@ import java.util.regex.*;
 
 import com.google.common.base.*;
 
-public final class RefPhrase extends Span {
+public final class IdRefPhrase extends Span {
 
     private enum Types {
+        // @orderFor IdTypes
         FOOTNOTE("\\{\\^"), ENDNOTE("\\{\\*"), SOURCE("\\{\\>");
+        // @endOrder
 
         private final String textPattern;
 
@@ -37,7 +39,7 @@ public final class RefPhrase extends Span {
     private static final String endPat = "\\}?";
 
     private static final Pattern PATTERN = Pattern.compile(
-        Types.listPatterns(true) + Identifier.getPhrasePattern(true) +
+        Types.listPatterns(true) + IdMarkerPhrase.getPhrasePattern(true) +
             namePattern(endPatName, endPat)
     );
 
@@ -47,14 +49,15 @@ public final class RefPhrase extends Span {
 
     static String getPhrasePattern(boolean withName) {
         String pattern = Types.listPatterns(false);
-        pattern += Identifier.getPhrasePattern(false) + endPat;
+        pattern += IdMarkerPhrase.getPhrasePattern(false) + endPat;
         return withName ? namePattern(getPhraseName(), pattern) : pattern;
     }
 
-    private final IdGroups refType;
-    private final Identifier idName;
+    private final IdTypes refType;
+    private final IdMarkerPhrase idName;
 
-    RefPhrase(String text, DocBuilder docBuilder) {
+    IdRefPhrase(String text, DocBuilder docBuilder) {
+        super(docBuilder);
         Matcher match = PATTERN.matcher(text);
         Preconditions.checkArgument(match.find(), "Text pattern not found");
         Types found = null;
@@ -67,23 +70,22 @@ public final class RefPhrase extends Span {
 
         }
         assert found != null;
-        refType = IdGroups.values()[found.ordinal()];
-        docBuilder.addStyle(
-            match, found, refType.toTypedStyles(), TypedStyles.OPERATOR
+        refType = IdTypes.values()[found.ordinal()];
+        addStyle(match, found, refType.toTypedStyles(), SpanStyles.OPERATOR);
+        idName = new IdMarkerPhrase(
+            refType, match.group(IdMarkerPhrase.getPhraseName()), docBuilder,
+            false
         );
-        idName = new Identifier(
-            refType, match.group(Identifier.getPhraseName()), docBuilder, false
-        );
-        docBuilder.addStyle(
-            match, endPatName, refType.toTypedStyles(), TypedStyles.OPERATOR
+        addStyle(
+            match, endPatName, refType.toTypedStyles(), SpanStyles.OPERATOR
         );
     }
 
-    public Identifier getId() {
+    public IdMarkerPhrase getId() {
         return idName;
     }
 
-    public IdGroups getType() {
+    public IdTypes getType() {
         return refType;
     }
 

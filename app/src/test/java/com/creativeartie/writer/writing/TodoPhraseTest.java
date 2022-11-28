@@ -4,9 +4,9 @@ import org.junit.jupiter.api.*;
 
 class TodoPhraseTest {
 
-    private static final String textStyle[] = { TypedStyles.TODO.getStyle(),
-        TypedStyles.TEXT.getStyle() }, optStyle[] = { TypedStyles.TODO
-            .getStyle(), TypedStyles.OPERATOR.getStyle() };
+    private static final String textStyle[] = { SpanStyles.TODO.getStyle(),
+        SpanStyles.TEXT.getStyle() }, optStyle[] = { SpanStyles.TODO
+            .getStyle(), SpanStyles.OPERATOR.getStyle() };
 
     private static final int startLength = 2, textLength = 4, endLength = 1;
 

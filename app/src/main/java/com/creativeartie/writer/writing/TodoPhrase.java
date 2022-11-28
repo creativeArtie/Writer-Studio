@@ -42,23 +42,24 @@ public class TodoPhrase extends Span {
     );
 
     TodoPhrase(String value, DocBuilder docBuilder) {
+        super(docBuilder);
         Matcher matched = phrasePattern.matcher(value);
         Preconditions.checkArgument(matched.find(), "Text not found.");
-        docBuilder.addStyle(
-            matched, Patterns.START, TypedStyles.TODO, TypedStyles.OPERATOR
+        addStyle(
+            matched, Patterns.START, SpanStyles.TODO, SpanStyles.OPERATOR
         );
         String text = matched.group(Patterns.TEXT.name());
         if (text == null) {
             todoText = "";
         } else {
-            docBuilder.addStyle(
-                matched, Patterns.TEXT, TypedStyles.TODO, TypedStyles.TEXT
+            addStyle(
+                matched, Patterns.TEXT, SpanStyles.TODO, SpanStyles.TEXT
             );
             todoText = text;
         }
         if (matched.group(Patterns.END.name()) != null) {
-            docBuilder.addStyle(
-                matched, Patterns.END, TypedStyles.TODO, TypedStyles.OPERATOR
+            addStyle(
+                matched, Patterns.END, SpanStyles.TODO, SpanStyles.OPERATOR
             );
         }
     }

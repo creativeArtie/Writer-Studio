@@ -11,18 +11,18 @@ import com.google.common.base.*;
 
 class IdentifierTest {
 
-    static final String[] ERROR_STYLE = { TypedStyles.FOOTNOTE.getStyle(),
-        TypedStyles.ID.getStyle(), TypedStyles.ERROR.getStyle() };
-    static final String[] SEP_STYLE = { TypedStyles.FOOTNOTE.getStyle(),
-        TypedStyles.ID.getStyle(), TypedStyles.OPERATOR.getStyle() };
-    static final String[] NAME_STYLE = { TypedStyles.FOOTNOTE.getStyle(),
-        TypedStyles.ID.getStyle(), TypedStyles.NAME.getStyle() };
-    static final String[] SEP_ERR_STYLE = { TypedStyles.FOOTNOTE.getStyle(),
-        TypedStyles.ID.getStyle(), TypedStyles.OPERATOR.getStyle(),
-        TypedStyles.ERROR.getStyle() };
-    static final String[] NAME_ERR_STYLE = { TypedStyles.FOOTNOTE.getStyle(),
-        TypedStyles.ID.getStyle(), TypedStyles.NAME.getStyle(),
-        TypedStyles.ERROR.getStyle() };
+    static final String[] ERROR_STYLE = { SpanStyles.FOOTNOTE.getStyle(),
+        SpanStyles.ID.getStyle(), SpanStyles.ERROR.getStyle() };
+    static final String[] SEP_STYLE = { SpanStyles.FOOTNOTE.getStyle(),
+        SpanStyles.ID.getStyle(), SpanStyles.OPERATOR.getStyle() };
+    static final String[] NAME_STYLE = { SpanStyles.FOOTNOTE.getStyle(),
+        SpanStyles.ID.getStyle(), SpanStyles.NAME.getStyle() };
+    static final String[] SEP_ERR_STYLE = { SpanStyles.FOOTNOTE.getStyle(),
+        SpanStyles.ID.getStyle(), SpanStyles.OPERATOR.getStyle(),
+        SpanStyles.ERROR.getStyle() };
+    static final String[] NAME_ERR_STYLE = { SpanStyles.FOOTNOTE.getStyle(),
+        SpanStyles.ID.getStyle(), SpanStyles.NAME.getStyle(),
+        SpanStyles.ERROR.getStyle() };
 
     static Stream<Arguments> categroyProvider() {
         // @formatter:off
@@ -76,8 +76,8 @@ class IdentifierTest {
 
     @Test
     void testDuplicatedPointers() {
-        new Identifier(IdGroups.FOOTNOTE, "aded-23", builder, true);
-        new Identifier(IdGroups.FOOTNOTE, "aded-23", builder, true);
+        new IdMarkerPhrase(IdTypes.FOOTNOTE, "aded-23", builder, true);
+        new IdMarkerPhrase(IdTypes.FOOTNOTE, "aded-23", builder, true);
         builder.runCleanup();
 
         // @formatter:off
@@ -99,8 +99,8 @@ class IdentifierTest {
     @ParameterizedTest(name = "{displayName}[{index}]: \"{0}\"")
     @ValueSource(strings = { "  ", " *()&$%&^", "-dfsf", "dfdd-", "-" })
     void testErrorId(String raw) {
-        final Identifier test = new Identifier(
-            IdGroups.FOOTNOTE, raw, builder, false
+        final IdMarkerPhrase test = new IdMarkerPhrase(
+            IdTypes.FOOTNOTE, raw, builder, false
         );
         Assertions.assertAll(
             () -> Assertions.assertEquals("", test.getName(), "name"),
@@ -122,8 +122,8 @@ class IdentifierTest {
     ) {
         assert expectedLengths.size() == isNames.size() : expectedLengths
             .size() + "==" + isNames.size();
-        final Identifier test = new Identifier(
-            IdGroups.FOOTNOTE, raw, builder, false
+        final IdMarkerPhrase test = new IdMarkerPhrase(
+            IdTypes.FOOTNOTE, raw, builder, false
         );
         List<String> names = new ArrayList<>();
         for (String part : Splitter.on("-").split(raw)) {
@@ -155,8 +155,8 @@ class IdentifierTest {
             "Hello World Fun", "Hello" }
     )
     void testIdWithoutCategories(String value) {
-        final Identifier test = new Identifier(
-            IdGroups.FOOTNOTE, value, builder, false
+        final IdMarkerPhrase test = new IdMarkerPhrase(
+            IdTypes.FOOTNOTE, value, builder, false
         );
         Assertions.assertAll(
             "Name", () -> Assertions.assertTrue(
@@ -172,13 +172,13 @@ class IdentifierTest {
     }
 
     void testMismatchReferencePointer() {
-        new Identifier(IdGroups.ENDNOTE, "aded-23", builder, true);
-        new Identifier(IdGroups.FOOTNOTE, "aded-23", builder, false);
+        new IdMarkerPhrase(IdTypes.ENDNOTE, "aded-23", builder, true);
+        new IdMarkerPhrase(IdTypes.FOOTNOTE, "aded-23", builder, false);
         builder.runCleanup();
-        final String NAME_STYLE[] = { TypedStyles.ENDNOTE.getStyle(),
-            TypedStyles.ID.getStyle(), TypedStyles.NAME.getStyle() };
-        final String SEP_STYLE[] = { TypedStyles.ENDNOTE.getStyle(),
-            TypedStyles.ID.getStyle(), TypedStyles.OPERATOR.getStyle() };
+        final String NAME_STYLE[] = { SpanStyles.ENDNOTE.getStyle(),
+            SpanStyles.ID.getStyle(), SpanStyles.NAME.getStyle() };
+        final String SEP_STYLE[] = { SpanStyles.ENDNOTE.getStyle(),
+            SpanStyles.ID.getStyle(), SpanStyles.OPERATOR.getStyle() };
 
         // @formatter:off
         //     1  1234 12
@@ -196,8 +196,8 @@ class IdentifierTest {
 
     @Test
     void testReferenceToEarlierPointer() {
-        new Identifier(IdGroups.FOOTNOTE, "aded-23", builder, true);
-        new Identifier(IdGroups.FOOTNOTE, "aded-23", builder, false);
+        new IdMarkerPhrase(IdTypes.FOOTNOTE, "aded-23", builder, true);
+        new IdMarkerPhrase(IdTypes.FOOTNOTE, "aded-23", builder, false);
         builder.runCleanup();
 
         // @formatter:off
@@ -216,8 +216,8 @@ class IdentifierTest {
 
     @Test
     void testReferenceToLaterPointer() {
-        new Identifier(IdGroups.FOOTNOTE, "aded-23", builder, false);
-        new Identifier(IdGroups.FOOTNOTE, "aded-23", builder, true);
+        new IdMarkerPhrase(IdTypes.FOOTNOTE, "aded-23", builder, false);
+        new IdMarkerPhrase(IdTypes.FOOTNOTE, "aded-23", builder, true);
         builder.runCleanup();
 
         // @formatter:off
@@ -236,7 +236,7 @@ class IdentifierTest {
 
     @Test
     void testReferenceToNoPointer() {
-        new Identifier(IdGroups.FOOTNOTE, "aded-23", builder, false);
+        new IdMarkerPhrase(IdTypes.FOOTNOTE, "aded-23", builder, false);
         builder.runCleanup();
 
         // @formatter:off
