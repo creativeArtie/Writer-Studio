@@ -1,11 +1,18 @@
 package com.creativeartie.writer.writing;
 
+/**
+ * List of css styles for the manuscript. The order is important to switch
+ * between patterns and class names.
+ *
+ * @see    IdTypes#toTypedStyles()
+ * @author wai
+ */
 public enum SpanStyles {
     ID("identifier"), OPERATOR("operator"), NAME("name"), TEXT("text"), ERROR(
         "error"
     ),
 
-    // @orderFor IdTypes
+    // @orderFor IdTypes#toTypedStyles
     FOOTNOTE("footnote"), ENDNOTE("endnote"), SOURCE("source"),
     // @endOrder
 
@@ -15,7 +22,11 @@ public enum SpanStyles {
     BOLD("bold"), ITALICS("italics"), UNDERLINE("underline"),
     // @endOrder
 
-    ESCAPE("escape"), PARAGRAPH("paragraph");
+    ESCAPE("escape"),
+
+    // @orderFor LineTypes
+    PARAGRAPH("paragraph");
+    // @endOrder
 
     private String styleName;
 

@@ -3,210 +3,178 @@ package com.creativeartie.writer.writing;
 import java.util.*;
 import java.util.regex.*;
 
-import com.google.common.collect.*;
-
 public class LinePhrase extends Span {
 
-    private enum FormatPatterns {
-        // @orderFor LinePhrase.TextPhrase and SpanStyles
-        BOLD("\\*"), ITALICS("`"), UNDERLINE("_"),
-        // @endOrder
+    private enum Patterns {
+        BOLD("\\*"), ITALICS("\\`"), UNDERLINE("\\_"), ESCAPE("\\\\.");
 
-        REF_START("\\{"), ESCAPE("\\\\");
+        private static String enderPattern = "";
+
+        private final String rawPattern;
+        private final String namedPattern;
+
+        Patterns(String pattern) {
+            rawPattern = pattern;
+            namedPattern = namePattern(this);
+        }
+
+        private static String getEndPattern() {
+            if (enderPattern == "") {
+                for (Patterns pat : values()) {
+                    enderPattern += pat.toString().substring(0, 2);
+                }
+            }
+            return enderPattern;
+        }
+
+        private SpanStyles toTypeStyle() {
+            return SpanStyles.valueOf(name());
+        }
 
         @Override
         public String toString() {
-            return rawPat;
-        }
-
-        private final String rawPat;
-
-        FormatPatterns(String pat) {
-            rawPat = pat;
+            return rawPattern;
         }
     }
 
-    public class TextPhrase extends Span {
-        static {
-            String keys = "";
-            for (FormatPatterns pattern : FormatPatterns.values()) {
-                keys += pattern.rawPat;
-            }
-            commonKeys = keys;
-        }
-        private final String storedText;
-        private final boolean hasFormat[];
+    public static enum TextEnders {
+        TABLE("\\|"), REF("\\}"), HEADING("#"), LINKS(">"), NONE("");
 
-        private TextPhrase(
-            String text, DocBuilder docBuilder, boolean... formats
-        ) {
-            super(docBuilder);
-            StringBuilder string = new StringBuilder();
-            ImmutableList.Builder<SpanStyles> baseStyles = ImmutableList
-                .builder();
-            baseStyles.addAll(otherStyles);
-            hasFormat = formats;
-            int i = 0;
-            for (boolean format : formats) {
-                if (format) {
-                    baseStyles.add(
-                        SpanStyles.values()[SpanStyles.BOLD.ordinal() + i]
-                    );
-                }
-                i++;
-            }
+        private final String partPattern;
+        private String rawPattern;
+        private String namedPattern;
+        private Pattern textPattern;
 
-            SpanStyles textStyle[] = ImmutableList.builder().addAll(
-                baseStyles.build()
-            ).add(SpanStyles.TEXT).build().toArray(new SpanStyles[0]);
-            SpanStyles escOptStyle[] = ImmutableList.builder().addAll(
-                baseStyles.build()
-            ).add(SpanStyles.ESCAPE, SpanStyles.OPERATOR).build().toArray(
-                new SpanStyles[0]
-            );
-            SpanStyles escTxtStyle[] = ImmutableList.builder().addAll(
-                baseStyles.build()
-            ).add(SpanStyles.ESCAPE, SpanStyles.TEXT).build().toArray(
-                new SpanStyles[0]
-            );
-
-            Matcher match = lineType.getEnder().wordPattern.matcher(text);
-            while (match.find()) {
-                String find = match.group(txtName);
-                System.out.println(find);
-                if (find != null) {
-                    string.append(find);
-                    addStyle(match, txtName, textStyle);
-                    continue;
-                }
-                find = match.group(escape);
-                if (find != null) {
-                    string.append(find.charAt(1));
-                    addTextStyle("\\", escOptStyle);
-                    addTextStyle(find.substring(1), escTxtStyle);
-                }
-            }
-
-            storedText = string.toString();
+        static String getPhraseName() {
+            return "text";
         }
 
-        public String getText() {
-            return storedText;
+        String getPhrasePattern(boolean withName) {
+            return withName ? namePattern(getPhraseName(), createRegex(false)) :
+                createRegex(false);
+        }
+
+        TextEnders(String pattern) {
+            partPattern = pattern;
+            rawPattern = null;
+            namedPattern = null;
+        }
+
+        String getPattern(boolean withName) {
+            if (rawPattern == null) {
+                rawPattern = "[^" + partPattern + Patterns.getEndPattern() +
+                    ">\\{]+";
+                namedPattern = namePattern(getPhraseName(), rawPattern);
+            }
+            return withName ? namedPattern : rawPattern;
+        }
+
+        @Override
+        public String toString() {
+            return rawPattern;
+        }
+
+        private String createRegex(boolean withName) {
+            String builder = TodoPhrase.getPhrasePattern(withName) + "|" +
+                IdRefPhrase.getPhrasePattern(withName);
+            for (Patterns pat : Patterns.values()) {
+                builder += "|" + (withName ? pat.namedPattern : pat.rawPattern);
+            }
+            builder += "|" + getPattern(withName);
+            return builder;
+        }
+
+        public Pattern getTextPattern() {
+            if (textPattern == null) {
+                textPattern = Pattern.compile(createRegex(true));
+            }
+            return textPattern;
+        }
+    }
+
+    public class TextSpan {
+
+        private boolean[] textFormats;
+        private String textString;
+
+        private TextSpan(String text, boolean... formats) {
+            textString = text;
+            textFormats = formats;
         }
 
         public boolean isBold() {
-            return hasFormat[FormatPatterns.BOLD.ordinal()];
+            return textFormats[Patterns.BOLD.ordinal()];
         }
 
         public boolean isItalics() {
-            return hasFormat[FormatPatterns.ITALICS.ordinal()];
+            return textFormats[Patterns.ITALICS.ordinal()];
         }
 
         public boolean isUnderline() {
-            return hasFormat[FormatPatterns.UNDERLINE.ordinal()];
-        }
-    }
-
-    private static String commonKeys;
-
-    static {
-        String keys = "";
-        for (FormatPatterns pattern : FormatPatterns.values()) {
-            keys += pattern.rawPat;
-        }
-        commonKeys = keys;
-    }
-
-    private static String escapePattern = "\\\\.";
-    private static final String txtName = "TXT", escape = "ESC";
-
-    public enum LineEnders {
-        TABLE("|"), REF("}"), HEADING("#"), LINKS(">"), NONE("");
-
-        private String rawTextPat, rawWordPat;
-        private Pattern wordPattern;
-        private Pattern textPattern;
-
-        LineEnders(String ender) {
-            String wordPat = "[^" + commonKeys + ender + "]+";
-            wordPattern = Pattern.compile(
-                Span.namePattern(txtName, wordPat) + "|" + Span.namePattern(
-                    escape, escapePattern
-                )
-            );
-
-            rawWordPat = wordPat + "|" + escapePattern;
-            rawTextPat = "[^" + ender + "\n]+|" + escapePattern;
-
-            String pattern = "";
-            pattern += Span.namePattern(FormatPatterns.BOLD) + "|";
-            pattern += Span.namePattern(FormatPatterns.ITALICS) + "|";
-            pattern += Span.namePattern(FormatPatterns.UNDERLINE) + "|";
-            pattern += Span.namePattern(txtName, rawWordPat);
-            textPattern = Pattern.compile(pattern);
-
+            return textFormats[Patterns.UNDERLINE.ordinal()];
         }
 
-        public String getTextName() {
-            return "TEXT";
+        public boolean[] getFormats() {
+            return textFormats;
         }
 
-        public String getTextPattern(boolean withName) {
-            return withName ? Span.namePattern(getTextName(), rawTextPat) :
-                "(" + rawTextPat + ")";
+        public String getText() {
+            return textString;
         }
 
     }
 
-    private final LineTypes lineType;
-    private final ImmutableList<SpanStyles> otherStyles;
-    private final ImmutableList<Span> childrenSpans;
+    static String getPhraseName() {
+        return "line";
+    }
 
-    LinePhrase(
-        String text, DocBuilder docBuilder, LineTypes type, SpanStyles... others
-    ) {
+    private ArrayList<TextSpan> childrenSpans;
+
+    public LinePhrase(String text, DocBuilder docBuilder, TextEnders ender) {
         super(docBuilder);
-        lineType = type;
-        otherStyles = new ImmutableList.Builder<SpanStyles>().add(
-            type.getStyle()
-        ).add(others).build();
-
-        ImmutableList<SpanStyles> optStyle = new ImmutableList.Builder<
-            SpanStyles>().addAll(otherStyles).add(SpanStyles.OPERATOR).build();
-
-        LineEnders ender = type.getEnder();
-
-        Matcher matcher = ender.textPattern.matcher(text);
+        childrenSpans = new ArrayList<>();
         boolean formats[] = { false, false, false };
+        TreeSet<SpanStyles> styles = new TreeSet<>();
+        Matcher matched = ender.getTextPattern().matcher(text);
+        while (matched.find()) {
+            String value = null;
+            for (Patterns pattern : Patterns.values()) {
+                if (pattern.ordinal() >= Patterns.ESCAPE.ordinal()) break;
+                if ((value = matched.group(pattern.name())) != null) {
+                    formats[pattern.ordinal()] = !formats[pattern.ordinal()];
 
-        ImmutableList<FormatPatterns> formatList = new ImmutableList.Builder<
-            FormatPatterns>().add(
-                FormatPatterns.BOLD, FormatPatterns.ITALICS,
-                FormatPatterns.UNDERLINE
-            ).build();
+                    if (formats[pattern.ordinal()]) {
+                        addStyle(matched, pattern, styles, SpanStyles.OPERATOR);
+                        styles.add(pattern.toTypeStyle());
 
-        ImmutableList.Builder<Span> spanBuilder = ImmutableList.builder();
-
-        findLoop: while (matcher.find()) {
-            for (FormatPatterns pattern : formatList) {
-                String find = Span.match(matcher, pattern);
-                if (find != null) {
-                    int idx = pattern.ordinal();
-                    formats[idx] = !formats[idx];
-                    addStyle(matcher, pattern, optStyle);
-                    continue findLoop;
+                    } else {
+                        styles.remove(pattern.toTypeStyle());
+                        addStyle(matched, pattern, styles, SpanStyles.OPERATOR);
+                    }
+                    break;
                 }
             }
-            String find = matcher.group(txtName);
-            if (find != null) {
-                spanBuilder.add(new TextPhrase(find, docBuilder, formats));
-            }
-        }
 
-        childrenSpans = spanBuilder.build();
+            if (value != null) continue;
+
+            if ((value = matched.group(Patterns.ESCAPE.name())) != null) {
+                childrenSpans.add(new TextSpan(value.charAt(1) + "", formats));
+                addStyle(matched, Patterns.ESCAPE, styles, SpanStyles.ESCAPE);
+                continue;
+            }
+
+            if ((value = matched.group(TodoPhrase.getPhraseName())) != null) {
+                new TodoPhrase(value, docBuilder);
+                matched.find();
+            }
+
+            value = matched.group(TextEnders.getPhraseName());
+            childrenSpans.add(new TextSpan(value, formats));
+            addStyle(matched, styles, SpanStyles.TEXT);
+        }
     }
 
-    public List<Span> getChildren() {
+    public ArrayList<TextSpan> getChildren() {
         return childrenSpans;
     }
 }

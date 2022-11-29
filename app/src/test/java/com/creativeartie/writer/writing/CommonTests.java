@@ -21,10 +21,12 @@ public class CommonTests {
     }
 
     public static void assertSpanStyles(
-        DocBuilder builder, int size, SpanLengthProvider expectLength,
-        SpanStylesProvider expectClasses, SpanExecutableProvider... others
+        boolean runTest, DocBuilder builder, int size,
+        SpanLengthProvider expectLength, SpanStylesProvider expectClasses,
+        SpanExecutableProvider... others
     ) {
         StyleSpans<Collection<String>> styles = builder.getStyles();
+        if (!runTest) return;
         Assertions.assertEquals(size, styles.getSpanCount(), "Span Counts");
         int index = 0;
         for (StyleSpan<Collection<String>> style : styles) {

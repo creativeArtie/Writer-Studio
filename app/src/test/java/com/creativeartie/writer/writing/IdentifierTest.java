@@ -88,7 +88,7 @@ class IdentifierTest {
         final int expectedLength[] = { 4, 1, 2, 4, 1, 2 };
         final String[][] expectedStyles = { NAME_STYLE, SEP_STYLE, NAME_STYLE,
             NAME_ERR_STYLE, SEP_ERR_STYLE, NAME_ERR_STYLE };
-        CommonTests.assertSpanStyles(builder, 6, (idx) -> {
+        CommonTests.assertSpanStyles(true, builder, 6, (idx) -> {
             return expectedLength[idx];
         }, (idx) -> {
             return expectedStyles[idx];
@@ -109,7 +109,7 @@ class IdentifierTest {
             ), () -> Assertions.assertEquals("", test.getId(), "id")
         );
         CommonTests.assertSpanStyles(
-            builder, 1, (index) -> raw.length(), (index) -> ERROR_STYLE
+            true, builder, 1, (index) -> raw.length(), (index) -> ERROR_STYLE
         );
     }
 
@@ -143,7 +143,7 @@ class IdentifierTest {
             ), () -> Assertions.assertEquals(expectedId, test.getId(), "Id")
         );
         CommonTests.assertSpanStyles(
-            builder, isNames.size(), (idx) -> expectedLengths.get(idx), (
+            true, builder, isNames.size(), (idx) -> expectedLengths.get(idx), (
                 idx) -> isNames.get(idx) ? NAME_STYLE : SEP_STYLE
         );
     }
@@ -167,7 +167,7 @@ class IdentifierTest {
         );
 
         CommonTests.assertSpanStyles(
-            builder, 1, (idx) -> value.length(), (idx) -> NAME_STYLE
+            true, builder, 1, (idx) -> value.length(), (idx) -> NAME_STYLE
         );
     }
 
@@ -189,7 +189,7 @@ class IdentifierTest {
         final String[][] expectedStyles = { NAME_STYLE, SEP_STYLE, NAME_STYLE,
             NAME_ERR_STYLE, SEP_ERR_STYLE, NAME_ERR_STYLE };
         CommonTests.assertSpanStyles(
-            builder, 6, (idx) -> expectedLength[idx], (
+            true, builder, 6, (idx) -> expectedLength[idx], (
                 idx) -> expectedStyles[idx]
         );
     }
@@ -209,7 +209,7 @@ class IdentifierTest {
         final String[][] expectedStyles = { NAME_STYLE, SEP_STYLE, NAME_STYLE,
             SEP_STYLE, NAME_STYLE };
         CommonTests.assertSpanStyles(
-            builder, 5, (idx) -> expectedLength[idx], (
+            true, builder, 5, (idx) -> expectedLength[idx], (
                 idx) -> expectedStyles[idx]
         );
     }
@@ -229,7 +229,7 @@ class IdentifierTest {
         final String[][] expectedStyles = { NAME_STYLE, SEP_STYLE, NAME_STYLE,
             SEP_STYLE, NAME_STYLE };
         CommonTests.assertSpanStyles(
-            builder, 5, (idx) -> expectedLength[idx], (
+            true, builder, 5, (idx) -> expectedLength[idx], (
                 idx) -> expectedStyles[idx]
         );
     }
@@ -248,7 +248,7 @@ class IdentifierTest {
         final String[][] expectedStyles = { NAME_ERR_STYLE, SEP_ERR_STYLE,
             NAME_ERR_STYLE };
         CommonTests.assertSpanStyles(
-            builder, 3, (idx) -> expectedLength[idx], (
+            true, builder, 3, (idx) -> expectedLength[idx], (
                 idx) -> expectedStyles[idx]
         );
     }

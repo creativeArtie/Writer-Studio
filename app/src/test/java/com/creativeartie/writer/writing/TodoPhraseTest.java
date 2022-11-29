@@ -19,7 +19,7 @@ class TodoPhraseTest {
             () -> Assertions.assertEquals(
                 hasText ? "help" : "", test.getTodoText(), "text"
             ), () -> CommonTests.assertSpanStyles(
-                builder, lengths.length, (idx) -> lengths[idx], (
+                true, builder, lengths.length, (idx) -> lengths[idx], (
                     idx) -> styles[idx]
             )
         );

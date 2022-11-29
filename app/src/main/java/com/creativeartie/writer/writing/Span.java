@@ -104,18 +104,51 @@ public abstract class Span {
     }
 
     protected int addStyle(
-        Matcher matcher, String name, List<SpanStyles> styles
+        Matcher matcher, Enum<?> group, SpanStyles[] others,
+        SpanStyles... styles
+    ) {
+        return addStyle(matcher, group, Arrays.asList(others), styles);
+    }
+
+    protected int addStyle(
+        Matcher matcher, Enum<?> group, Collection<SpanStyles> others,
+        SpanStyles... styles
+    ) {
+        ArrayList<SpanStyles> combine = new ArrayList<>();
+        combine.addAll(others);
+        combine.addAll(Arrays.asList(styles));
+
+        return addStyle(matcher, group, combine);
+    }
+
+    protected int addStyle(
+        Matcher matcher, String name, Collection<SpanStyles> styles
     ) {
         return docRoot.addStyle(matcher, name, combineStyles(styles));
     }
 
-    protected int addStyle(
-        Matcher matcher, String name, SpanStyles... styles
-    ) {
+    protected int addStyle(Matcher matcher, String name, SpanStyles... styles) {
         return addStyle(matcher, name, Arrays.asList(styles));
     }
 
-    protected int addStyle(Matcher matcher, List<SpanStyles> styles) {
+    protected int addStyle(
+        Matcher matcher, String name, SpanStyles[] others, SpanStyles... styles
+    ) {
+        return addStyle(matcher, name, Arrays.asList(others), styles);
+    }
+
+    protected int addStyle(
+        Matcher matcher, String name, Collection<SpanStyles> others,
+        SpanStyles... styles
+    ) {
+        ArrayList<SpanStyles> combine = new ArrayList<>();
+        combine.addAll(others);
+        combine.addAll(Arrays.asList(styles));
+
+        return addStyle(matcher, name, combine);
+    }
+
+    protected int addStyle(Matcher matcher, Collection<SpanStyles> styles) {
         return docRoot.addStyle(matcher, combineStyles(styles));
     }
 
@@ -123,11 +156,27 @@ public abstract class Span {
         return addStyle(matcher, Arrays.asList(styles));
     }
 
+    protected int addStyle(
+        Matcher matcher, SpanStyles[] others, SpanStyles... styles
+    ) {
+        return addStyle(matcher, Arrays.asList(others), styles);
+    }
+
+    protected int addStyle(
+        Matcher matcher, Collection<SpanStyles> others, SpanStyles... styles
+    ) {
+        ArrayList<SpanStyles> combine = new ArrayList<>();
+        combine.addAll(others);
+        combine.addAll(Arrays.asList(styles));
+
+        return addStyle(matcher, combine);
+    }
+
     protected int addTextStyle(String text, SpanStyles... styles) {
         return addTextStyle(text, Arrays.asList(styles));
     }
 
-    protected int addTextStyle(String text, List<SpanStyles> styles) {
+    protected int addTextStyle(String text, Collection<SpanStyles> styles) {
         return docRoot.addTextStyle(text, combineStyles(styles));
     }
 
@@ -136,7 +185,7 @@ public abstract class Span {
     }
 
     protected ImmutableList<SpanStyles> combineStyles(
-        List<SpanStyles> styles
+        Collection<SpanStyles> styles
     ) {
         ImmutableList.Builder<SpanStyles> builder = ImmutableList.builder();
         return builder.addAll(styles).addAll(inheritedStyles).build();

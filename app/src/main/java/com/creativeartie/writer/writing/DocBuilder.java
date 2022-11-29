@@ -80,6 +80,11 @@ public class DocBuilder {
             groupEnd = matcher.end(group);
         }
         docText += groupText;
+        // System.out.printf(
+        // "For %8s (%2d - %2d) is styled %s: %s (format: %s)\n", groupName,
+        // groupStart, groupEnd, styles, "\"" + groupText + "\"", matcher
+        // .pattern().pattern()
+        // );
         System.out.printf(
             "For %8s (%2d - %2d) is styled %s: %s\n", groupName, groupStart,
             groupEnd, styles, "\"" + groupText + "\""
@@ -98,7 +103,8 @@ public class DocBuilder {
             );
             start += style.getLength();
         }
-        System.out.println();
+        System.out.println("Input text (btw quotes): \"" + docText + "\"");
+
         return styleSpans;
     }
 
@@ -213,7 +219,8 @@ public class DocBuilder {
      */
     void insertStyles(int position, SpanStyles... styles) {
         if (isDebug) System.out.printf(
-            "For span with index %3d add styles: \"%s\"\n", position, styles
+            "For span with index %3d add new styles: %s\n", position, Arrays
+                .asList(styles)
         );
         styleList.get(position).addStyles(Arrays.asList(styles));
     }

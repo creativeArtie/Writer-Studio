@@ -1,20 +1,21 @@
 package com.creativeartie.writer.writing;
 
 public enum LineTypes {
-    NORMAL(LinePhrase.LineEnders.NONE);
+    // @orderFor SpanStyles
+    NORMAL(LinePhrase.TextEnders.NONE);
+    // @endOrder
 
-    private LinePhrase.LineEnders lineEnder;
+    private LinePhrase.TextEnders lineEnder;
 
-    LineTypes(LinePhrase.LineEnders ender) {
+    LineTypes(LinePhrase.TextEnders ender) {
         lineEnder = ender;
     }
 
     public SpanStyles getStyle() {
-        return SpanStyles.values()[ordinal() + SpanStyles.PARAGRAPH
-            .ordinal()];
+        return SpanStyles.values()[ordinal() + SpanStyles.PARAGRAPH.ordinal()];
     }
 
-    public LinePhrase.LineEnders getEnder() {
+    public LinePhrase.TextEnders getEnder() {
         return lineEnder;
     }
 }
