@@ -92,12 +92,13 @@ public class LinePhrase extends Span {
         }
     }
 
-    public class TextSpan {
+    public class TextSpan extends Span {
 
         private boolean[] textFormats;
         private String textString;
 
-        private TextSpan(String text, boolean... formats) {
+        private TextSpan(String text, DocBuilder doc, boolean... formats) {
+            super(doc);
             textString = text;
             textFormats = formats;
         }
@@ -128,7 +129,7 @@ public class LinePhrase extends Span {
         return "line";
     }
 
-    private ArrayList<TextSpan> childrenSpans;
+    private ArrayList<Span> childrenSpans;
 
     public LinePhrase(String text, DocBuilder docBuilder, TextEnders ender) {
         super(docBuilder);
@@ -158,23 +159,25 @@ public class LinePhrase extends Span {
             if (value != null) continue;
 
             if ((value = matched.group(Patterns.ESCAPE.name())) != null) {
-                childrenSpans.add(new TextSpan(value.charAt(1) + "", formats));
+                childrenSpans.add(
+                    new TextSpan(value.charAt(1) + "", docBuilder, formats)
+                );
                 addStyle(matched, Patterns.ESCAPE, styles, SpanStyles.ESCAPE);
                 continue;
             }
 
             if ((value = matched.group(TodoPhrase.getPhraseName())) != null) {
-                new TodoPhrase(value, docBuilder);
+                childrenSpans.add(new TodoPhrase(value, docBuilder));
                 matched.find();
             }
 
             value = matched.group(TextEnders.getPhraseName());
-            childrenSpans.add(new TextSpan(value, formats));
+            childrenSpans.add(new TextSpan(value, docBuilder, formats));
             addStyle(matched, styles, SpanStyles.TEXT);
         }
     }
 
-    public ArrayList<TextSpan> getChildren() {
+    public ArrayList<Span> getChildren() {
         return childrenSpans;
     }
 }

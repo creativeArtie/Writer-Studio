@@ -37,9 +37,10 @@ class RefPhraseTest {
         Assertions.assertAll(
             () -> Assertions.assertEquals("hello", test.getId().getId(), "Id"),
             () -> Assertions.assertEquals(group, test.getType(), "Type"),
-            () -> CommonTests.assertSpanStyles(
-                true, builder, 3, (idx) -> lengths[idx], (idx) -> styles[idx]
-            )
+            () -> new SpanTester(builder, 3).addSpanLength(
+                (idx) -> lengths[idx]
+            ).addSpanStyle((idx) -> styles[idx]).assertAll()
+
         );
     }
 
@@ -55,9 +56,9 @@ class RefPhraseTest {
         Assertions.assertAll(
             () -> Assertions.assertEquals("hello", test.getId().getId(), "Id"),
             () -> Assertions.assertEquals(expectGroup, test.getType(), "Type"),
-            () -> CommonTests.assertSpanStyles(
-                true, builder, 2, (idx) -> lengths[idx], (idx) -> styles[idx]
-            )
+            () -> new SpanTester(builder, 2).addSpanLength(
+                (idx) -> lengths[idx]
+            ).addSpanStyle((idx) -> styles[idx]).assertAll()
         );
     }
 
@@ -65,7 +66,9 @@ class RefPhraseTest {
     @DisplayName("No id: {^}")
     void testNoId() {
         Assertions.assertThrows(
-            IllegalArgumentException.class, () -> new IdRefPhrase("{^}", builder)
+            IllegalArgumentException.class, () -> new IdRefPhrase(
+                "{^}", builder
+            )
         );
     }
 

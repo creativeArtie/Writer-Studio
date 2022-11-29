@@ -5,8 +5,8 @@ import org.junit.jupiter.api.*;
 class TodoPhraseTest {
 
     private static final String textStyle[] = { SpanStyles.TODO.getStyle(),
-        SpanStyles.TEXT.getStyle() }, optStyle[] = { SpanStyles.TODO
-            .getStyle(), SpanStyles.OPERATOR.getStyle() };
+        SpanStyles.TEXT.getStyle() }, optStyle[] = { SpanStyles.TODO.getStyle(),
+            SpanStyles.OPERATOR.getStyle() };
 
     private static final int startLength = 2, textLength = 4, endLength = 1;
 
@@ -18,10 +18,9 @@ class TodoPhraseTest {
         Assertions.assertAll(
             () -> Assertions.assertEquals(
                 hasText ? "help" : "", test.getTodoText(), "text"
-            ), () -> CommonTests.assertSpanStyles(
-                true, builder, lengths.length, (idx) -> lengths[idx], (
-                    idx) -> styles[idx]
-            )
+            ), () -> new SpanTester(builder, lengths.length).addSpanLength(
+                (idx) -> lengths[idx]
+            ).addSpanStyle((idx) -> styles[idx]).assertAll()
         );
     }
 

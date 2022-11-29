@@ -1,13 +1,14 @@
 package com.creativeartie.writer.writing;
 
+import java.util.*;
+
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
-import com.creativeartie.writer.writing.LinePhrase.*;
 import com.google.common.base.*;
 
-class TextPhraseTest {
+class LinePhraseTest {
 
     private DocBuilder docBuilder;
 
@@ -31,30 +32,30 @@ class TextPhraseTest {
         String formatStyle[] = { SpanStyles.valueOf(type).getStyle(),
             SpanStyles.TEXT.getStyle() };
         String optStyle[] = { SpanStyles.OPERATOR.getStyle() };
-        String expectedText[] = { "Start", format, "text", format, "end" };
-        String text = Joiner.on("").join(expectedText);
+        String rawText[] = { "Start", format, "text", format, "end" };
+        String text = Joiner.on("").join(rawText);
 
         String[][] expectedStyle = { textStyle, optStyle, formatStyle, optStyle,
             textStyle };
         int[] expectedLengths = { 5, 1, 4, 1, 3 };
         LinePhrase test = createTest(text);
 
-        int i = 0;
-        for (TextSpan child : test.getChildren()) {
-            int idx = i;
-            Assertions.assertAll(
-                "children", () -> Assertions.assertEquals(
-                    child.getClass(), TextSpan.class, "class"
-                ), () -> Assertions.assertEquals(
-                    expectedText[idx], ((TextSpan) child).getText(), "text"
-                )
+        String expectText[] = { "Start", "text", "end" };
+        String actualText[] = new String[test.getChildren().size()];
+        Iterator<Span> texts = test.getChildren().iterator();
+        for (int i = 0; i < actualText.length; i++) {
+            Span child = texts.next();
+            Assertions.assertEquals(
+                LinePhrase.TextSpan.class, child.getClass(), "Class for span " +
+                    Integer.toString(i)
             );
-            i += 2;
+            actualText[i] = ((LinePhrase.TextSpan) child).getText();
         }
-        CommonTests.assertSpanStyles(
-            true, docBuilder, 5, (idx) -> expectedLengths[idx], (
-                idx) -> expectedStyle[idx]
-        );
+        Assertions.assertArrayEquals(expectText, actualText, "Output text");
+
+        new SpanTester(docBuilder, 5).addSpanLength(
+            (idx) -> expectedLengths[idx]
+        ).addSpanStyle((idx) -> expectedStyle[idx]).assertAll();
     }
 
     @Test
@@ -73,10 +74,9 @@ class TextPhraseTest {
         int[] expectedLenghts = { 3, 2, 9, 1, 5 };
 
         createTest(inputText);
-        CommonTests.assertSpanStyles(
-            true, docBuilder, 5, (idx) -> expectedLenghts[idx], (
-                idx) -> expectedStyles[idx]
-        );
+        new SpanTester(docBuilder, 5).addSpanLength(
+            (idx) -> expectedLenghts[idx]
+        ).addSpanStyle((idx) -> expectedStyles[idx]).assertAll();
     }
 
 }
