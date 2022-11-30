@@ -71,17 +71,16 @@ class LinePhraseTest {
             .getStyle() };
         // @formatter:off
         //                     12         1
-        //                  123  123456789 12345
-        String inputText = "abc{!todo text} todo";
+        //                  123  123456789 123456
+        String inputText = "abc{!todo text} other";
         // @formatter:on
         String[][] expectedStyles = { basic, todoOp, todoText, todoOp, basic };
-        int[] expectedLenghts = { 3, 2, 9, 1, 5 };
+        int[] expectedLenghts = { 3, 2, 9, 1, 6 };
 
         LinePhrase test = createTest(inputText);
         new ChildSpanTester().addTextSpan("abc", false, false, false)
-            .addTodoSpan("text").addTextSpan("todo", false, false, false).test(
-                test
-            );
+            .addTodoSpan("todo text").addTextSpan(" other", false, false, false)
+            .test(test);
 
         new SpanStyleTester(docBuilder, 5).addSpanLength(
             (idx) -> expectedLenghts[idx]
