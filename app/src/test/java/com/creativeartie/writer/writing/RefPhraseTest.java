@@ -37,9 +37,9 @@ class RefPhraseTest {
         Assertions.assertAll(
             () -> Assertions.assertEquals("hello", test.getId().getId(), "Id"),
             () -> Assertions.assertEquals(group, test.getType(), "Type"),
-            () -> new SpanTester(builder, 3).addSpanLength(
+            () -> new SpanStyleTester(builder, 3).addSpanLength(
                 (idx) -> lengths[idx]
-            ).addSpanStyle((idx) -> styles[idx]).assertAll()
+            ).addSpanStyle((idx) -> styles[idx]).assertStyles()
 
         );
     }
@@ -56,9 +56,9 @@ class RefPhraseTest {
         Assertions.assertAll(
             () -> Assertions.assertEquals("hello", test.getId().getId(), "Id"),
             () -> Assertions.assertEquals(expectGroup, test.getType(), "Type"),
-            () -> new SpanTester(builder, 2).addSpanLength(
+            () -> new SpanStyleTester(builder, 2).addSpanLength(
                 (idx) -> lengths[idx]
-            ).addSpanStyle((idx) -> styles[idx]).assertAll()
+            ).addSpanStyle((idx) -> styles[idx]).assertStyles()
         );
     }
 

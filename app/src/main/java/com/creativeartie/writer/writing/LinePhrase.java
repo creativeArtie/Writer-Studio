@@ -3,7 +3,7 @@ package com.creativeartie.writer.writing;
 import java.util.*;
 import java.util.regex.*;
 
-public class LinePhrase extends Span {
+public class LinePhrase extends Span implements SpanBranch {
 
     private enum Patterns {
         BOLD("\\*"), ITALICS("\\`"), UNDERLINE("\\_"), ESCAPE("\\\\.");
@@ -100,7 +100,7 @@ public class LinePhrase extends Span {
         private TextSpan(String text, DocBuilder doc, boolean... formats) {
             super(doc);
             textString = text;
-            textFormats = formats;
+            textFormats = Arrays.copyOf(formats, 3);
         }
 
         public boolean isBold() {
@@ -169,8 +169,8 @@ public class LinePhrase extends Span {
             if ((value = matched.group(TodoPhrase.getPhraseName())) != null) {
                 childrenSpans.add(new TodoPhrase(value, docBuilder));
                 matched.find();
+                continue;
             }
-
             value = matched.group(TextEnders.getPhraseName());
             childrenSpans.add(new TextSpan(value, docBuilder, formats));
             addStyle(matched, styles, SpanStyles.TEXT);
@@ -179,5 +179,15 @@ public class LinePhrase extends Span {
 
     public ArrayList<Span> getChildren() {
         return childrenSpans;
+    }
+
+    @Override
+    public Iterator<Span> iterator() {
+        return childrenSpans.iterator();
+    }
+
+    @Override
+    public int size() {
+        return childrenSpans.size();
     }
 }

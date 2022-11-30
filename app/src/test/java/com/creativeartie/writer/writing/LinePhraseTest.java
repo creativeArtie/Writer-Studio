@@ -1,7 +1,5 @@
 package com.creativeartie.writer.writing;
 
-import java.util.*;
-
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
@@ -28,9 +26,9 @@ class LinePhraseTest {
     @ParameterizedTest
     @CsvSource({ "*,BOLD", "`,ITALICS", "_,UNDERLINE" })
     void testFormat(String format, String type) {
+        SpanStyles font = SpanStyles.valueOf(type);
         String textStyle[] = { SpanStyles.TEXT.getStyle() };
-        String formatStyle[] = { SpanStyles.valueOf(type).getStyle(),
-            SpanStyles.TEXT.getStyle() };
+        String formatStyle[] = { font.getStyle(), SpanStyles.TEXT.getStyle() };
         String optStyle[] = { SpanStyles.OPERATOR.getStyle() };
         String rawText[] = { "Start", format, "text", format, "end" };
         String text = Joiner.on("").join(rawText);
@@ -38,24 +36,30 @@ class LinePhraseTest {
         String[][] expectedStyle = { textStyle, optStyle, formatStyle, optStyle,
             textStyle };
         int[] expectedLengths = { 5, 1, 4, 1, 3 };
+
         LinePhrase test = createTest(text);
 
-        String expectText[] = { "Start", "text", "end" };
-        String actualText[] = new String[test.getChildren().size()];
-        Iterator<Span> texts = test.getChildren().iterator();
-        for (int i = 0; i < actualText.length; i++) {
-            Span child = texts.next();
-            Assertions.assertEquals(
-                LinePhrase.TextSpan.class, child.getClass(), "Class for span " +
-                    Integer.toString(i)
-            );
-            actualText[i] = ((LinePhrase.TextSpan) child).getText();
+        ChildSpanTester childrenTester = new ChildSpanTester();
+        childrenTester.addTextSpan("Start", false, false, false);
+        switch (font) {
+        case BOLD:
+            childrenTester.addTextSpan("text", true, false, false);
+            break;
+        case ITALICS:
+            childrenTester.addTextSpan("text", false, true, false);
+            break;
+        case UNDERLINE:
+            childrenTester.addTextSpan("text", false, false, true);
+            break;
+        default:
+            break;
         }
-        Assertions.assertArrayEquals(expectText, actualText, "Output text");
+        childrenTester.addTextSpan("end", false, false, false);
+        childrenTester.test(test);
 
-        new SpanTester(docBuilder, 5).addSpanLength(
+        new SpanStyleTester(docBuilder, 5).addSpanLength(
             (idx) -> expectedLengths[idx]
-        ).addSpanStyle((idx) -> expectedStyle[idx]).assertAll();
+        ).addSpanStyle((idx) -> expectedStyle[idx]).assertStyles();
     }
 
     @Test
@@ -73,10 +77,15 @@ class LinePhraseTest {
         String[][] expectedStyles = { basic, todoOp, todoText, todoOp, basic };
         int[] expectedLenghts = { 3, 2, 9, 1, 5 };
 
-        createTest(inputText);
-        new SpanTester(docBuilder, 5).addSpanLength(
+        LinePhrase test = createTest(inputText);
+        new ChildSpanTester().addTextSpan("abc", false, false, false)
+            .addTodoSpan("text").addTextSpan("todo", false, false, false).test(
+                test
+            );
+
+        new SpanStyleTester(docBuilder, 5).addSpanLength(
             (idx) -> expectedLenghts[idx]
-        ).addSpanStyle((idx) -> expectedStyles[idx]).assertAll();
+        ).addSpanStyle((idx) -> expectedStyles[idx]).assertStyles();
     }
 
 }

@@ -89,11 +89,11 @@ class IdentifierTest {
         final String[][] expectedStyles = { NAME_STYLE, SEP_STYLE, NAME_STYLE,
             NAME_ERR_STYLE, SEP_ERR_STYLE, NAME_ERR_STYLE };
 
-        new SpanTester(builder, 6).addSpanLength((idx) -> {
+        new SpanStyleTester(builder, 6).addSpanLength((idx) -> {
             return expectedLength[idx];
         }).addSpanStyle((idx) -> {
             return expectedStyles[idx];
-        }).assertAll();
+        }).assertStyles();
     }
 
     @DisplayName("Error ID Test")
@@ -109,8 +109,8 @@ class IdentifierTest {
                 new String[] {}, test.getCategories().toArray(), "categories"
             ), () -> Assertions.assertEquals("", test.getId(), "id")
         );
-        new SpanTester(builder, 1).addSpanLength((index) -> raw.length())
-            .addSpanStyle((index) -> ERROR_STYLE).assertAll();
+        new SpanStyleTester(builder, 1).addSpanLength((index) -> raw.length())
+            .addSpanStyle((index) -> ERROR_STYLE).assertStyles();
     }
 
     @DisplayName("Id With Categories")
@@ -142,10 +142,10 @@ class IdentifierTest {
                 expectName, test.getName(), "Name"
             ), () -> Assertions.assertEquals(expectedId, test.getId(), "Id")
         );
-        new SpanTester(builder, isNames.size()).addSpanLength(
+        new SpanStyleTester(builder, isNames.size()).addSpanLength(
             (idx) -> expectedLengths.get(idx)
         ).addSpanStyle((idx) -> isNames.get(idx) ? NAME_STYLE : SEP_STYLE)
-            .assertAll();
+            .assertStyles();
 
     }
 
@@ -167,8 +167,8 @@ class IdentifierTest {
             ), () -> Assertions.assertEquals(value.trim(), test.getId(), "Id")
         );
 
-        new SpanTester(builder, 1).addSpanLength((idx) -> value.length())
-            .addSpanStyle((idx) -> NAME_STYLE).assertAll();
+        new SpanStyleTester(builder, 1).addSpanLength((idx) -> value.length())
+            .addSpanStyle((idx) -> NAME_STYLE).assertStyles();
     }
 
     void testMismatchReferencePointer() {
@@ -188,8 +188,8 @@ class IdentifierTest {
         final int expectedLength[] = { 4, 1, 2, 4, 1, 2 };
         final String[][] expectedStyles = { NAME_STYLE, SEP_STYLE, NAME_STYLE,
             NAME_ERR_STYLE, SEP_ERR_STYLE, NAME_ERR_STYLE };
-        new SpanTester(builder, 6).addSpanLength((idx) -> expectedLength[idx])
-            .addSpanStyle((idx) -> expectedStyles[idx]).assertAll();
+        new SpanStyleTester(builder, 6).addSpanLength((idx) -> expectedLength[idx])
+            .addSpanStyle((idx) -> expectedStyles[idx]).assertStyles();
     }
 
     @Test
@@ -206,8 +206,8 @@ class IdentifierTest {
         final int expectedLength[] = { 4, 1, 6, 1, 2 };
         final String[][] expectedStyles = { NAME_STYLE, SEP_STYLE, NAME_STYLE,
             SEP_STYLE, NAME_STYLE };
-        new SpanTester(builder, 5).addSpanLength((idx) -> expectedLength[idx])
-            .addSpanStyle((idx) -> expectedStyles[idx]).assertAll();
+        new SpanStyleTester(builder, 5).addSpanLength((idx) -> expectedLength[idx])
+            .addSpanStyle((idx) -> expectedStyles[idx]).assertStyles();
     }
 
     @Test
@@ -224,8 +224,8 @@ class IdentifierTest {
         final int expectedLength[] = { 4, 1, 6, 1, 2 };
         final String[][] expectedStyles = { NAME_STYLE, SEP_STYLE, NAME_STYLE,
             SEP_STYLE, NAME_STYLE };
-        new SpanTester(builder, 5).addSpanLength((idx) -> expectedLength[idx])
-            .addSpanStyle((idx) -> expectedStyles[idx]).assertAll();
+        new SpanStyleTester(builder, 5).addSpanLength((idx) -> expectedLength[idx])
+            .addSpanStyle((idx) -> expectedStyles[idx]).assertStyles();
     }
 
     @Test
@@ -241,8 +241,8 @@ class IdentifierTest {
         final int expectedLength[] = { 4, 1, 2 };
         final String[][] expectedStyles = { NAME_ERR_STYLE, SEP_ERR_STYLE,
             NAME_ERR_STYLE };
-        new SpanTester(builder, 3).addSpanLength((idx) -> expectedLength[idx])
-            .addSpanStyle((idx) -> expectedStyles[idx]).assertAll();
+        new SpanStyleTester(builder, 3).addSpanLength((idx) -> expectedLength[idx])
+            .addSpanStyle((idx) -> expectedStyles[idx]).assertStyles();
     }
 
 }

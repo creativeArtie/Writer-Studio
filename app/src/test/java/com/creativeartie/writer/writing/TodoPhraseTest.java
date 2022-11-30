@@ -18,9 +18,9 @@ class TodoPhraseTest {
         Assertions.assertAll(
             () -> Assertions.assertEquals(
                 hasText ? "help" : "", test.getTodoText(), "text"
-            ), () -> new SpanTester(builder, lengths.length).addSpanLength(
+            ), () -> new SpanStyleTester(builder, lengths.length).addSpanLength(
                 (idx) -> lengths[idx]
-            ).addSpanStyle((idx) -> styles[idx]).assertAll()
+            ).addSpanStyle((idx) -> styles[idx]).assertStyles()
         );
     }
 
