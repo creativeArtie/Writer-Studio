@@ -85,7 +85,8 @@ public class WritingCoderPane extends CodeArea {
      * @see         #computeHighlightingAsync()
      */
     private StyleSpans<Collection<String>> computeHighlighting(String text) {
-        DocBuilder builder = new DocBuilder(false);
+        DocBuilder builder = new DocBuilder(true);
+        new LinePhrase(text, builder, LinePhrase.TextEnders.NONE);
         return builder.getStyles();
     }
 }
