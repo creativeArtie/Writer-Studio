@@ -7,8 +7,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
-import com.google.common.base.*;
-
 class IdentifierTest {
 
     static final String[] ERROR_STYLE = { SpanStyles.FOOTNOTE.getStyle(),
@@ -103,12 +101,9 @@ class IdentifierTest {
         final IdMarkerPhrase test = new IdMarkerPhrase(
             IdTypes.FOOTNOTE, raw, builder, false
         );
-        Assertions.assertAll(
-            () -> Assertions.assertEquals("", test.getName(), "name"),
-            () -> Assertions.assertArrayEquals(
-                new String[] {}, test.getCategories().toArray(), "categories"
-            ), () -> Assertions.assertEquals("", test.getId(), "id")
-        );
+        SpanTester.createIdMarkerTester(
+            IdTypes.FOOTNOTE, false, new ArrayList<String>(), ""
+        ).testSpan(test);
         new SpanStyleTester(builder, 1).addSpanLength((index) -> raw.length())
             .addSpanStyle((index) -> ERROR_STYLE).assertStyles();
     }
@@ -122,26 +117,15 @@ class IdentifierTest {
     ) {
         assert expectedLengths.size() == isNames.size() : expectedLengths
             .size() + "==" + isNames.size();
+
         final IdMarkerPhrase test = new IdMarkerPhrase(
             IdTypes.FOOTNOTE, raw, builder, false
         );
-        List<String> names = new ArrayList<>();
-        for (String part : Splitter.on("-").split(raw)) {
-            names.add(
-                Joiner.on(" ").join(
-                    Splitter.on(CharMatcher.anyOf(" \t_")).omitEmptyStrings()
-                        .split(part)
-                )
-            );
-        }
-        String expectedId = Joiner.on("-").join(names);
-        Assertions.assertAll(
-            "Basic", () -> Assertions.assertArrayEquals(
-                expectCat.toArray(), test.getCategories().toArray(), "Category"
-            ), () -> Assertions.assertEquals(
-                expectName, test.getName(), "Name"
-            ), () -> Assertions.assertEquals(expectedId, test.getId(), "Id")
-        );
+
+        SpanTester.createIdMarkerTester(
+            IdTypes.FOOTNOTE, false, expectCat, expectName
+        ).testSpan(test);
+
         new SpanStyleTester(builder, isNames.size()).addSpanLength(
             (idx) -> expectedLengths.get(idx)
         ).addSpanStyle((idx) -> isNames.get(idx) ? NAME_STYLE : SEP_STYLE)
@@ -159,13 +143,9 @@ class IdentifierTest {
         final IdMarkerPhrase test = new IdMarkerPhrase(
             IdTypes.FOOTNOTE, value, builder, false
         );
-        Assertions.assertAll(
-            "Name", () -> Assertions.assertTrue(
-                test.getCategories().isEmpty(), "Category"
-            ), () -> Assertions.assertEquals(
-                value.trim(), test.getName(), "Name"
-            ), () -> Assertions.assertEquals(value.trim(), test.getId(), "Id")
-        );
+        SpanTester.createIdMarkerTester(
+            IdTypes.FOOTNOTE, false, new ArrayList<>(), value.trim()
+        ).testSpan(test);
 
         new SpanStyleTester(builder, 1).addSpanLength((idx) -> value.length())
             .addSpanStyle((idx) -> NAME_STYLE).assertStyles();
@@ -188,8 +168,9 @@ class IdentifierTest {
         final int expectedLength[] = { 4, 1, 2, 4, 1, 2 };
         final String[][] expectedStyles = { NAME_STYLE, SEP_STYLE, NAME_STYLE,
             NAME_ERR_STYLE, SEP_ERR_STYLE, NAME_ERR_STYLE };
-        new SpanStyleTester(builder, 6).addSpanLength((idx) -> expectedLength[idx])
-            .addSpanStyle((idx) -> expectedStyles[idx]).assertStyles();
+        new SpanStyleTester(builder, 6).addSpanLength(
+            (idx) -> expectedLength[idx]
+        ).addSpanStyle((idx) -> expectedStyles[idx]).assertStyles();
     }
 
     @Test
@@ -206,8 +187,9 @@ class IdentifierTest {
         final int expectedLength[] = { 4, 1, 6, 1, 2 };
         final String[][] expectedStyles = { NAME_STYLE, SEP_STYLE, NAME_STYLE,
             SEP_STYLE, NAME_STYLE };
-        new SpanStyleTester(builder, 5).addSpanLength((idx) -> expectedLength[idx])
-            .addSpanStyle((idx) -> expectedStyles[idx]).assertStyles();
+        new SpanStyleTester(builder, 5).addSpanLength(
+            (idx) -> expectedLength[idx]
+        ).addSpanStyle((idx) -> expectedStyles[idx]).assertStyles();
     }
 
     @Test
@@ -224,8 +206,9 @@ class IdentifierTest {
         final int expectedLength[] = { 4, 1, 6, 1, 2 };
         final String[][] expectedStyles = { NAME_STYLE, SEP_STYLE, NAME_STYLE,
             SEP_STYLE, NAME_STYLE };
-        new SpanStyleTester(builder, 5).addSpanLength((idx) -> expectedLength[idx])
-            .addSpanStyle((idx) -> expectedStyles[idx]).assertStyles();
+        new SpanStyleTester(builder, 5).addSpanLength(
+            (idx) -> expectedLength[idx]
+        ).addSpanStyle((idx) -> expectedStyles[idx]).assertStyles();
     }
 
     @Test
@@ -241,8 +224,9 @@ class IdentifierTest {
         final int expectedLength[] = { 4, 1, 2 };
         final String[][] expectedStyles = { NAME_ERR_STYLE, SEP_ERR_STYLE,
             NAME_ERR_STYLE };
-        new SpanStyleTester(builder, 3).addSpanLength((idx) -> expectedLength[idx])
-            .addSpanStyle((idx) -> expectedStyles[idx]).assertStyles();
+        new SpanStyleTester(builder, 3).addSpanLength(
+            (idx) -> expectedLength[idx]
+        ).addSpanStyle((idx) -> expectedStyles[idx]).assertStyles();
     }
 
 }

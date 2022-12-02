@@ -1,10 +1,12 @@
 package com.creativeartie.writer.writing;
 
+import java.util.*;
+
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
-class RefPhraseTest {
+class IdRefPhraseTest {
 
     private String optStyles[] = { "", SpanStyles.OPERATOR.getStyle() },
         idNameStyles[] = { "", SpanStyles.ID.getStyle(), SpanStyles.NAME
@@ -35,11 +37,12 @@ class RefPhraseTest {
 
         IdRefPhrase test = new IdRefPhrase(raw, builder);
         Assertions.assertAll(
-            () -> Assertions.assertEquals("hello", test.getId().getId(), "Id"),
-            () -> Assertions.assertEquals(group, test.getType(), "Type"),
-            () -> new SpanStyleTester(builder, 3).addSpanLength(
-                (idx) -> lengths[idx]
-            ).addSpanStyle((idx) -> styles[idx]).assertStyles()
+            () -> SpanTester.createIdRefPhraseTest(
+                group, false, new ArrayList<>(), "hello"
+            ).testSpan(test), () -> new SpanStyleTester(builder, 3)
+                .addSpanLength((idx) -> lengths[idx]).addSpanStyle(
+                    (idx) -> styles[idx]
+                ).assertStyles()
 
         );
     }

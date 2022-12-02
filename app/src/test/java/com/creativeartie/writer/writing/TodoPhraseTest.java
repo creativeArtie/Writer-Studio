@@ -22,6 +22,7 @@ class TodoPhraseTest {
                 (idx) -> lengths[idx]
             ).addSpanStyle((idx) -> styles[idx]).assertStyles()
         );
+
     }
 
     @BeforeEach

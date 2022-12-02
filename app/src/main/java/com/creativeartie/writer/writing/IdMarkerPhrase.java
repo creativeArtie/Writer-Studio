@@ -181,6 +181,10 @@ public final class IdMarkerPhrase extends Span {
         }
     }
 
+    public IdTypes getIdType() {
+        return idType;
+    }
+
     public List<String> getCategories() {
         return idCategories;
     }

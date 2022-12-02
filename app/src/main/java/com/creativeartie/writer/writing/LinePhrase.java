@@ -168,7 +168,11 @@ public class LinePhrase extends Span implements SpanBranch {
 
             if ((value = matched.group(TodoPhrase.getPhraseName())) != null) {
                 childrenSpans.add(new TodoPhrase(value, docBuilder));
-                // matched.find();
+                continue;
+            }
+
+            if ((value = matched.group(IdRefPhrase.getPhraseName())) != null) {
+                childrenSpans.add(new IdRefPhrase(value, docBuilder));
                 continue;
             }
             value = matched.group(TextEnders.getPhraseName());

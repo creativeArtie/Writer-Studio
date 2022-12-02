@@ -39,7 +39,7 @@ class LinePhraseTest {
 
         LinePhrase test = createTest(text);
 
-        ChildSpanTester childrenTester = new ChildSpanTester();
+        SpanTester childrenTester = new SpanTester();
         childrenTester.addTextSpan("Start", false, false, false);
         switch (font) {
         case BOLD:
@@ -78,7 +78,7 @@ class LinePhraseTest {
         int[] expectedLenghts = { 3, 2, 9, 1, 6 };
 
         LinePhrase test = createTest(inputText);
-        new ChildSpanTester().addTextSpan("abc", false, false, false)
+        new SpanTester().addTextSpan("abc", false, false, false)
             .addTodoSpan("todo text").addTextSpan(" other", false, false, false)
             .test(test);
 
