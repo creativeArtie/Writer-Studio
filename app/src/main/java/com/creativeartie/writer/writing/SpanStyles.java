@@ -8,13 +8,14 @@ package com.creativeartie.writer.writing;
  * @author wai
  */
 public enum SpanStyles {
-    ID("identifier"), OPERATOR("operator"), NAME("name"), TEXT("text"), ERROR(
-        "error"
-    ),
+    ID("identifier"), OPERATOR("operator"), NAME("name"), TEXT("text"),
+    ERROR("error"),
 
     // @orderFor IdTypes#toTypedStyles
     FOOTNOTE("footnote"), ENDNOTE("endnote"), SOURCE("source"),
     // @endOrder
+
+    LINK("link"),
 
     TODO("todo"),
 

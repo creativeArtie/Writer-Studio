@@ -91,15 +91,13 @@ public abstract class Span {
 
     private List<SpanStyles> inheritedStyles;
 
-    protected int addStyle(
-        Matcher matcher, Enum<?> group, List<SpanStyles> styles
-    ) {
+    protected int
+        addStyle(Matcher matcher, Enum<?> group, List<SpanStyles> styles) {
         return addStyle(matcher, group.name(), styles);
     }
 
-    protected int addStyle(
-        Matcher matcher, Enum<?> group, SpanStyles... styles
-    ) {
+    protected int
+        addStyle(Matcher matcher, Enum<?> group, SpanStyles... styles) {
         return addStyle(matcher, group.name(), Arrays.asList(styles));
     }
 
@@ -121,9 +119,8 @@ public abstract class Span {
         return addStyle(matcher, group, combine);
     }
 
-    protected int addStyle(
-        Matcher matcher, String name, Collection<SpanStyles> styles
-    ) {
+    protected int
+        addStyle(Matcher matcher, String name, Collection<SpanStyles> styles) {
         return docRoot.addStyle(matcher, name, combineStyles(styles));
     }
 
@@ -156,9 +153,8 @@ public abstract class Span {
         return addStyle(matcher, Arrays.asList(styles));
     }
 
-    protected int addStyle(
-        Matcher matcher, SpanStyles[] others, SpanStyles... styles
-    ) {
+    protected int
+        addStyle(Matcher matcher, SpanStyles[] others, SpanStyles... styles) {
         return addStyle(matcher, Arrays.asList(others), styles);
     }
 
@@ -184,9 +180,8 @@ public abstract class Span {
         inheritedStyles = ImmutableList.copyOf(styles);
     }
 
-    protected ImmutableList<SpanStyles> combineStyles(
-        Collection<SpanStyles> styles
-    ) {
+    protected ImmutableList<SpanStyles>
+        combineStyles(Collection<SpanStyles> styles) {
         ImmutableList.Builder<SpanStyles> builder = ImmutableList.builder();
         return builder.addAll(styles).addAll(inheritedStyles).build();
     }

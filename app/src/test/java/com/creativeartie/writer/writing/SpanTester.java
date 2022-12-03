@@ -34,16 +34,15 @@ public class SpanTester {
         return this;
     }
 
-    protected static ChildSpanExecutor<TextSpan> createTextSpanTester(
-        String text, boolean... formats
-    ) {
+    protected static ChildSpanExecutor<TextSpan>
+        createTextSpanTester(String text, boolean... formats) {
         return new ChildSpanExecutor<TextSpan>(TextSpan.class) {
             @Override
             void testSpan(TextSpan child) {
                 Assertions.assertAll(
-                    () -> Assertions.assertEquals(
-                        text, child.getText(), "text "
-                    ), () -> Assertions.assertArrayEquals(
+                    () -> Assertions
+                        .assertEquals(text, child.getText(), "text "),
+                    () -> Assertions.assertArrayEquals(
                         formats, child.getFormats(), "formats "
                     )
                 );
@@ -63,9 +62,9 @@ public class SpanTester {
             @Override
             void testSpan(IdMarkerPhrase child) {
                 Assertions.assertAll(
-                    () -> Assertions.assertEquals(
-                        idType, child.getIdType(), "type"
-                    ), () -> {
+                    () -> Assertions
+                        .assertEquals(idType, child.getIdType(), "type"),
+                    () -> {
                         if (isId) {
                             Assertions.assertTrue(child.isId(), "isId");
                             Assertions.assertFalse(child.isRef(), "isRef");
@@ -73,12 +72,14 @@ public class SpanTester {
                             Assertions.assertTrue(child.isRef(), "isRef");
                             Assertions.assertFalse(child.isId(), "isId");
                         }
-                    }, () -> Assertions.assertArrayEquals(
+                    },
+                    () -> Assertions.assertArrayEquals(
                         idCategories.toArray(), child.getCategories().toArray(),
                         "categories"
-                    ), () -> Assertions.assertEquals(
-                        idName, child.getName(), "name"
-                    ), () -> Assertions.assertEquals(
+                    ),
+                    () -> Assertions
+                        .assertEquals(idName, child.getName(), "name"),
+                    () -> Assertions.assertEquals(
                         buildId(idCategories, idName), child.getId()
                     )
                 );
@@ -86,12 +87,9 @@ public class SpanTester {
         };
     }
 
-    protected static ChildSpanExecutor<TodoPhrase> createTodoPhraseTester(
-        String todo
-    ) {
-        return new SpanTester.ChildSpanExecutor<TodoPhrase>(
-            TodoPhrase.class
-        ) {
+    protected static ChildSpanExecutor<TodoPhrase>
+        createTodoPhraseTester(String todo) {
+        return new SpanTester.ChildSpanExecutor<TodoPhrase>(TodoPhrase.class) {
             @Override
             void testSpan(TodoPhrase child) {
                 Assertions.assertEquals(todo, child.getTodoText(), "Todo Text");
@@ -109,7 +107,8 @@ public class SpanTester {
                 Assertions.assertAll(
                     () -> createIdMarkerTester(
                         idType, isId, idCategories, idName
-                    ).testSpan(child.getId()), () -> Assertions.assertEquals(
+                    ).testSpan(child.getId()),
+                    () -> Assertions.assertEquals(
                         buildId(idCategories, idName), child.getId()
                     ), () -> Assertions.assertEquals(idType, child.getType())
                 );
@@ -119,7 +118,46 @@ public class SpanTester {
         };
     }
 
-    protected static String buildId(List<String> idCategories, String idName) {
+    protected static ChildSpanExecutor<BasicText.EscapeText>
+        createEscapeText(char expect) {
+        return new ChildSpanExecutor<BasicText.EscapeText>(
+            BasicText.EscapeText.class
+        ) {
+
+            @Override
+            void testSpan(BasicText.EscapeText child) {
+                Assertions.assertEquals(expect + "", child.getText());
+
+            }
+
+        };
+    }
+
+    protected SpanTester addEscapeText(char expect) {
+        testers.add(createEscapeText(expect));
+        return this;
+    }
+
+    protected SpanTester addAtomicTest(String expect) {
+        testers.add(createAtomicText(expect));
+        return this;
+    }
+
+    protected static ChildSpanExecutor<BasicText.AtomicText>
+        createAtomicText(String expect) {
+        return new ChildSpanExecutor<BasicText.AtomicText>(
+            BasicText.AtomicText.class
+        ) {
+
+            @Override
+            void testSpan(BasicText.AtomicText child) {
+                Assertions.assertEquals(expect, child.getText());
+            }
+
+        };
+    }
+
+    private static String buildId(List<String> idCategories, String idName) {
         String id = Joiner.on("-").join(idCategories);
         if (id.length() != 0) {
             id += "-";
