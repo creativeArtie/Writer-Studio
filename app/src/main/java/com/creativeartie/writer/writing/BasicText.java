@@ -83,6 +83,10 @@ public class BasicText extends Span implements SpanBranch {
         }
     }
 
+    public String getText() {
+        return outputText;
+    }
+
     @Override
     public Iterator<Span> iterator() {
         return spanChildren.iterator();
