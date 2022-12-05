@@ -6,10 +6,17 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
-class BasicTextPatternsTest {
+class BasicTextPatternsTest extends PatternTestBase {
 
-    @BeforeEach
-    void setUp() throws Exception {
+    @BeforeAll
+    static void displayPattern() {
+        String raw = "abc";
+        for (BasicTextPatterns pattern : BasicTextPatterns.values()) {
+            System.out.printf(
+                "%10s: %s\n", pattern.getPatternName(),
+                pattern.matcher(raw).pattern().pattern()
+            );
+        }
     }
 
     @ParameterizedTest
@@ -18,37 +25,25 @@ class BasicTextPatternsTest {
             "Hello World Fun", "  Hello" }
     )
     void testBasicId(String raw) {
-        Matcher matcher = BasicTextPatterns.ID.match(raw);
-        Assertions.assertTrue(matcher.find());
-        Assertions.assertEquals(raw, BasicTextPart.TEXT.group(matcher));
-        Assertions.assertFalse(matcher.find());
+        Matcher matcher = BasicTextPatterns.ID.matcher(raw);
+        assertGroup(raw, matcher, BasicTextPart.TEXT, 1);
+        assertEnd(matcher);
     }
 
     @Test
     void testEscapedId() {
-        Matcher matcher = BasicTextPatterns.ID.match("avdd\\-ade");
-        Assertions.assertTrue(matcher.find(), "group 1");
-        Assertions
-            .assertEquals("avdd", BasicTextPart.TEXT.group(matcher), "group 1");
-
-        Assertions.assertTrue(matcher.find(), "group 2");
-        Assertions.assertEquals(
-            "\\-", BasicTextPart.ESCAPE.group(matcher), "group 2"
-        );
-
-        Assertions.assertTrue(matcher.find(), "group 3");
-        Assertions
-            .assertEquals("ade", BasicTextPart.TEXT.group(matcher), "group 3");
-
-        Assertions.assertFalse(matcher.find(), "end group");
+        Matcher matcher = BasicTextPatterns.ID.matcher("avdd\\-ade");
+        assertGroup("avdd", matcher, BasicTextPart.TEXT, 1);
+        assertGroup("\\-", matcher, BasicTextPart.ESCAPE, 2);
+        assertGroup("ade", matcher, BasicTextPart.TEXT, 3);
+        assertEnd(matcher);
     }
 
     @Test
     void testWithLeftover() {
-        Matcher matcher = BasicTextPatterns.ID.match("aded-");
-        Assertions.assertTrue(matcher.find());
-        Assertions.assertEquals("aded", BasicTextPart.TEXT.group(matcher));
-        Assertions.assertFalse(matcher.find());
+        Matcher matcher = BasicTextPatterns.ID.matcher("aded-");
+        assertGroup("aded", matcher, BasicTextPart.TEXT, 1);
+        assertEnd(matcher);
     }
 
 }

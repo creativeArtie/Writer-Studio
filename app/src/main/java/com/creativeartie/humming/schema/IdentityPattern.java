@@ -25,7 +25,7 @@ public enum IdentityPattern implements PatternEnum {
         return fullPattern;
     }
 
-    public static Matcher match(String text) {
+    public static Matcher matcher(String text) {
         if (checkPattern == null) {
             checkPattern = Pattern.compile("^" + getFullPattern() + "$");
             matchPattern = PatternEnum.compilePattern(IdentityPattern.values());
@@ -50,5 +50,10 @@ public enum IdentityPattern implements PatternEnum {
     @Override
     public String getPatternName() {
         return name();
+    }
+
+    @Override
+    public boolean runFind() {
+        return true;
     }
 }

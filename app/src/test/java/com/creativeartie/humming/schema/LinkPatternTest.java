@@ -1,45 +1,84 @@
 package com.creativeartie.humming.schema;
 
-import java.util.*;
 import java.util.regex.*;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.*;
+import org.junit.jupiter.params.provider.*;
 
-import com.google.common.base.*;
-import com.google.common.collect.*;
-
-class LinkPatternTest {
-
-    private List<String> correctParts;
+/*
+ * testing LinkPattern. All passed test is copy of {@link #testFull} with small
+ * edits.
+ */
+class LinkPatternTest extends PatternTestBase {
 
     @BeforeAll
-    void setUp() throws Exception {
-        correctParts =
-            ImmutableList.of("<", "http://example.com", "|", "Example", ">");
+    static void displayTest() {
+        System.out.println(LinkPattern.matcher("{@ad}").pattern().pattern());
     }
 
     @Test
     void testFull() {
-        String raw = Joiner.on(' ').join(correctParts);
-        Matcher match = LinkPattern.match(raw);
-        Assertions.assertTrue(match.find(), "group 1");
-        Assertions.assertEquals("<", LinkPattern.START.group(match), "group 1");
+        String raw = "{@http://example.com|Example}";
+        Matcher match = LinkPattern.matcher(raw);
 
-        Assertions.assertTrue(match.find(), "group 2");
-        Assertions.assertEquals(
-            " http://example.com ", LinkPattern.LINK.group(match), "group 2"
-        );
+        assertGroup("{@", match, LinkPattern.START, 1);
+        assertGroup("http://example.com", match, LinkPattern.LINK, 2);
+        assertGroup("|", match, LinkPattern.SEP, 3);
+        assertGroup("Example", match, LinkPattern.TEXT, 4);
+        assertGroup("}", match, LinkPattern.END, 5);
+        assertEnd(match);
+    }
 
-        Assertions.assertTrue(match.find(), "group 3");
-        Assertions.assertEquals("|", LinkPattern.SEP.group(match), "group 3");
+    @Test
+    void testNoEnd() {
+        String raw = "{@http://example.com|Example";
+        Matcher match = LinkPattern.matcher(raw);
 
-        Assertions.assertTrue(match.find(), "group 4");
-        Assertions.assertEquals(
-            " Example ", LinkPattern.TEXT.group(match), "group 4"
-        );
+        assertGroup("{@", match, LinkPattern.START, 1);
+        assertGroup("http://example.com", match, LinkPattern.LINK, 2);
+        assertGroup("|", match, LinkPattern.SEP, 3);
+        assertGroup("Example", match, LinkPattern.TEXT, 4);
+        assertEnd(match);
+    }
 
-        Assertions.assertTrue(match.find(), "group 5");
-        Assertions.assertEquals(">", LinkPattern.TEXT.group(match), "group 5");
+    @Test
+    void testNoText() {
+        String raw = "{@http://example.com|}";
+        Matcher match = LinkPattern.matcher(raw);
+
+        assertGroup("{@", match, LinkPattern.START, 1);
+        assertGroup("http://example.com", match, LinkPattern.LINK, 2);
+        assertGroup("|", match, LinkPattern.SEP, 3);
+        assertGroup("}", match, LinkPattern.END, 4);
+        assertEnd(match);
+    }
+
+    @Test
+    void testLinkOnlyWithEnd() {
+        String raw = "{@http://example.com}";
+        Matcher match = LinkPattern.matcher(raw);
+
+        assertGroup("{@", match, LinkPattern.START, 1);
+        assertGroup("http://example.com", match, LinkPattern.LINK, 2);
+        assertGroup("}", match, LinkPattern.END, 3);
+        assertEnd(match);
+    }
+
+    @Test
+    void testLinkOnlyAndNoEnd() {
+        String raw = "{@http://example.com";
+        Matcher match = LinkPattern.matcher(raw);
+
+        assertGroup("{@", match, LinkPattern.START, 1);
+        assertGroup("http://example.com", match, LinkPattern.LINK, 2);
+        assertEnd(match);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "{@|adde}", "{}" })
+    void testErrors(String raw) {
+        assertFail(() -> LinkPattern.matcher(raw));
     }
 
 }

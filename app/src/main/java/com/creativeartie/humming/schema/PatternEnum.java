@@ -8,19 +8,32 @@ interface PatternEnum {
 
     String getPatternName();
 
+    boolean runFind();
+
     default String getNamedPattern() {
         return namePattern(getPatternName(), getRawPattern());
     }
 
+    default String getPattern(boolean withName) {
+        return withName ? getNamedPattern() : getRawPattern();
+    }
+
     /**
-     * Use the matcher: same as
-     * {@code matcher.group(PatternEnum.VALUE.getPatternName()} which is longer
-     * then {@code PatternEnum.VALUE.match(matcher)}
+     * Use the matcher. Almost the same as
+     * {@code matcher.group(PatternEnum.VALUE.getPatternName()} (aka.
+     * {@code PatternEnum.VALUE.match(matcher)} ) but it will also do a find
+     * call as needed.
      *
      * @param  matcher
-     * @return
+     *                 matcher to use
+     * @return         result of matcher or null (if none found)
      */
     default String group(Matcher matcher) {
+        if (runFind()) {
+            if (!matcher.find()) {
+                return null;
+            }
+        }
         return matcher.group(getPatternName());
     }
 

@@ -5,37 +5,38 @@ import java.util.regex.*;
 import com.google.common.base.*;
 
 public enum LinkPattern implements PatternEnum {
-    START("{@"), LINK(BasicTextPatterns.LINK.getRawPattern()), SEP("\\|"),
-    TEXT(BasicTextPatterns.SPECIAL.getRawPattern()), END("}");
+    START("\\{\\@"), LINK(BasicTextPatterns.LINK.getRawPattern()), SEP("\\|"),
+    TEXT(BasicTextPatterns.SPECIAL.getRawPattern()), END("\\}");
 
     private static String fullPattern;
-    private static Pattern checkPattern;
-    private static Pattern matchPattern;
+    private static Pattern basePattern;
 
-    public static String getFullPattern() {
+    private static String getFullPattern(boolean withName) {
         if (fullPattern == null) {
             // @formatter:off
             fullPattern =
-                START.getRawPattern() + "(" +
-                    LINK.getRawPattern() + "(" +
-                        SEP.getRawPattern() + TEXT.getRawPattern() + "?" +
-                    ")?" +
-                ")?" + END.getRawPattern() + "?"
+                START.getPattern(withName) +
+                LINK.getPattern(withName) + "(" +
+                    SEP.getPattern(withName) + TEXT.getPattern(withName) + "?" +
+                ")?" +
+                END.getPattern(withName) + "?"
                 ;
              // @formatter:on
         }
         return fullPattern;
     }
 
-    public static Matcher match(String text) {
-        if (checkPattern == null) {
-            checkPattern = Pattern.compile(getFullPattern());
-            matchPattern = PatternEnum.compilePattern(values());
+    public static String getFullPattern() {
+        return getFullPattern(false);
+    }
+
+    public static Matcher matcher(String text) {
+        if (basePattern == null) {
+            basePattern = Pattern.compile(getFullPattern(true));
         }
-        Preconditions.checkArgument(
-            checkPattern.matcher(text).find(), "Pattern does not match"
-        );
-        return matchPattern.matcher(text);
+        Matcher match = basePattern.matcher(text);
+        Preconditions.checkArgument(match.find(), "Pattern does not match");
+        return match;
     }
 
     private final String pattern;
@@ -52,6 +53,11 @@ public enum LinkPattern implements PatternEnum {
     @Override
     public String getPatternName() {
         return name();
+    }
+
+    @Override
+    public boolean runFind() {
+        return false;
     }
 
 }

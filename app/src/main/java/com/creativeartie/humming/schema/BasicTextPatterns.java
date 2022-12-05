@@ -20,7 +20,7 @@ public enum BasicTextPatterns implements PatternEnum {
         // @formatter:on
     }
 
-    public Matcher match(String text) {
+    public Matcher matcher(String text) {
         if (compiledPattern == null) {
             compiledPattern = Pattern.compile(
             // @formatter:off
@@ -42,5 +42,10 @@ public enum BasicTextPatterns implements PatternEnum {
     @Override
     public String getPatternName() {
         return name();
+    }
+
+    @Override
+    public boolean runFind() {
+        return true;
     }
 }
