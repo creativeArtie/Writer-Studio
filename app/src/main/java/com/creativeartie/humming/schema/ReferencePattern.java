@@ -4,7 +4,7 @@ import java.util.regex.*;
 
 public enum ReferencePattern implements PatternEnum {
     FOOTNOTE("\\^"), ENDNOTE("\\*"), SOURCE("\\>"), REF("\\%"), START("\\{"),
-    ID(IdentityPattens.getFullPattern()), END("\\}");
+    ID(IdentityPattern.getFullPattern()), END("\\}");
 
     private static String fullPattern;
     private static Pattern checkPattern;

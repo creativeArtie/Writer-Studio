@@ -2,7 +2,9 @@ package com.creativeartie.humming.schema;
 
 import java.util.regex.*;
 
-public enum IdentityPattens implements PatternEnum {
+import com.google.common.base.*;
+
+public enum IdentityPattern implements PatternEnum {
     SEP("\\-"), NAME(BasicTextPatterns.ID.getRawPattern());
 
     private static String fullPattern;
@@ -25,16 +27,18 @@ public enum IdentityPattens implements PatternEnum {
 
     public static Matcher match(String text) {
         if (checkPattern == null) {
-            checkPattern = Pattern.compile(getFullPattern());
-            matchPattern = PatternEnum.compilePattern(IdentityPattens.values());
+            checkPattern = Pattern.compile("^" + getFullPattern() + "$");
+            matchPattern = PatternEnum.compilePattern(IdentityPattern.values());
         }
-        assert checkPattern.matcher(text).find();
+        Preconditions.checkArgument(
+            checkPattern.matcher(text).find(), "Pattern does not match Id"
+        );
         return matchPattern.matcher(text);
     }
 
     private String pattern;
 
-    private IdentityPattens(String pat) {
+    private IdentityPattern(String pat) {
         pattern = pat;
     }
 

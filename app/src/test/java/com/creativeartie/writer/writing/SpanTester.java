@@ -109,7 +109,7 @@ public class SpanTester {
                         idType, isId, idCategories, idName
                     ).testSpan(child.getId()),
                     () -> Assertions.assertEquals(
-                        buildId(idCategories, idName), child.getId()
+                        buildId(idCategories, idName), child.getId().getId()
                     ), () -> Assertions.assertEquals(idType, child.getType())
                 );
 

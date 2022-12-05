@@ -12,7 +12,15 @@ interface PatternEnum {
         return namePattern(getPatternName(), getRawPattern());
     }
 
-    default String match(Matcher matcher) {
+    /**
+     * Use the matcher: same as
+     * {@code matcher.group(PatternEnum.VALUE.getPatternName()} which is longer
+     * then {@code PatternEnum.VALUE.match(matcher)}
+     *
+     * @param  matcher
+     * @return
+     */
+    default String group(Matcher matcher) {
         return matcher.group(getPatternName());
     }
 
@@ -31,7 +39,7 @@ interface PatternEnum {
             if (!pattern.isEmpty()) {
                 pattern.append("|");
             }
-            pattern.append("(" + value.getNamedPattern() + ")+");
+            pattern.append("(" + value.getNamedPattern() + ")");
         }
         return Pattern.compile(pattern.toString());
     }

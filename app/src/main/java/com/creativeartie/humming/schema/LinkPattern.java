@@ -2,6 +2,8 @@ package com.creativeartie.humming.schema;
 
 import java.util.regex.*;
 
+import com.google.common.base.*;
+
 public enum LinkPattern implements PatternEnum {
     START("{@"), LINK(BasicTextPatterns.LINK.getRawPattern()), SEP("\\|"),
     TEXT(BasicTextPatterns.SPECIAL.getRawPattern()), END("}");
@@ -30,7 +32,9 @@ public enum LinkPattern implements PatternEnum {
             checkPattern = Pattern.compile(getFullPattern());
             matchPattern = PatternEnum.compilePattern(values());
         }
-        assert checkPattern.matcher(text).find();
+        Preconditions.checkArgument(
+            checkPattern.matcher(text).find(), "Pattern does not match"
+        );
         return matchPattern.matcher(text);
     }
 
