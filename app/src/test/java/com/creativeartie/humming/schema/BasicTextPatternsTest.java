@@ -39,10 +39,19 @@ class BasicTextPatternsTest extends PatternTestBase {
         assertEnd(matcher);
     }
 
-    @Test
-    void testWithLeftover() {
-        Matcher matcher = BasicTextPatterns.ID.matcher("aded-");
-        assertGroup("aded", matcher, BasicTextPart.TEXT, 1);
+    @ParameterizedTest
+    @CsvSource(
+        { "n,ID", "-,ID", "|,LINK", "},LINK", "n,LINK", "},SPECIAL",
+            "n,SPECIAL" }
+    )
+    void testWithLeftover(String ender, String type) {
+        if (ender.equals("n")) {
+            ender = "\n";
+        }
+        BasicTextPatterns tester = BasicTextPatterns.valueOf(type);
+        String raw = "text" + ender;
+        Matcher matcher = tester.matcher(raw);
+        assertGroup("text", matcher, BasicTextPart.TEXT, 1);
         assertEnd(matcher);
     }
 

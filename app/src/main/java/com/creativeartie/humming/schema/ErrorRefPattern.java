@@ -4,32 +4,20 @@ import java.util.regex.*;
 
 import com.google.common.base.*;
 
-public enum ReferencePattern implements PatternEnum {
-    FOOTNOTE("\\^"), ENDNOTE("\\*"), SOURCE("\\>"), REF("\\%"), START("\\{"),
-    ID(IdentityPattern.getFullPattern()), END("\\}");
+public enum ErrorRefPattern implements PatternEnum {
+    START("\\{"), TEXT(BasicTextPatterns.SPECIAL.getRawPattern()), END("\\}");
 
     private static String fullPattern;
     private static Pattern matchPattern;
 
-    public static String getFullPattern() {
-        if (fullPattern == null) {
-            fullPattern = getFullPattern(false);
-        }
-        return fullPattern;
+    private static String getFullPattern(boolean withName) {
+        return START.getPattern(withName) + TEXT.getPattern(withName) + "?" +
+            END.getPattern(withName) + "?";
     }
 
-    private static String getFullPattern(boolean withName) {
-        return
-        // @formatter:off
-            START.getPattern(withName) + "(" +
-                FOOTNOTE.getPattern(withName) + "|" +
-                ENDNOTE.getPattern(withName) + "|" +
-                SOURCE.getPattern(withName) + "|" +
-                REF.getPattern(withName) +
-            ")" + ID.getPattern(withName) +
-            END.getPattern(withName) + "?";
-         // @formatter:on
-
+    public static String getFullPattern() {
+        if (fullPattern == null) fullPattern = getFullPattern(false);
+        return fullPattern;
     }
 
     public static Matcher matcher(String text) {
@@ -37,13 +25,13 @@ public enum ReferencePattern implements PatternEnum {
             matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
         }
         Matcher answer = matchPattern.matcher(text);
-        Preconditions.checkArgument(answer.find(), "Pattern not found");
+        Preconditions.checkArgument(answer.find(), "Pattern not matched");
         return answer;
     }
 
     private final String pattern;
 
-    private ReferencePattern(String pat) {
+    private ErrorRefPattern(String pat) {
         pattern = pat;
     }
 
@@ -61,4 +49,5 @@ public enum ReferencePattern implements PatternEnum {
     public boolean runFind() {
         return false;
     }
+
 }

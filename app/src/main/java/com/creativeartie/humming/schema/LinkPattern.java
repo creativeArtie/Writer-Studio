@@ -12,27 +12,27 @@ public enum LinkPattern implements PatternEnum {
     private static Pattern basePattern;
 
     private static String getFullPattern(boolean withName) {
+        return
+        // @formatter:off
+            START.getPattern(withName) +
+            LINK.getPattern(withName) + "(" +
+                SEP.getPattern(withName) + TEXT.getPattern(withName) + "?" +
+            ")?" +
+            END.getPattern(withName) + "?"
+            ;
+         // @formatter:on
+    }
+
+    public static String getFullPattern() {
         if (fullPattern == null) {
-            // @formatter:off
-            fullPattern =
-                START.getPattern(withName) +
-                LINK.getPattern(withName) + "(" +
-                    SEP.getPattern(withName) + TEXT.getPattern(withName) + "?" +
-                ")?" +
-                END.getPattern(withName) + "?"
-                ;
-             // @formatter:on
+            fullPattern = getFullPattern(false);
         }
         return fullPattern;
     }
 
-    public static String getFullPattern() {
-        return getFullPattern(false);
-    }
-
     public static Matcher matcher(String text) {
         if (basePattern == null) {
-            basePattern = Pattern.compile(getFullPattern(true));
+            basePattern = Pattern.compile("^" + getFullPattern(true) + "$");
         }
         Matcher match = basePattern.matcher(text);
         Preconditions.checkArgument(match.find(), "Pattern does not match");
