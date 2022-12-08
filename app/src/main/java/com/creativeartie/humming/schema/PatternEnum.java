@@ -3,6 +3,8 @@ package com.creativeartie.humming.schema;
 import java.util.*;
 import java.util.regex.*;
 
+import com.creativeartie.humming.document.*;
+
 interface PatternEnum {
     String getRawPattern();
 

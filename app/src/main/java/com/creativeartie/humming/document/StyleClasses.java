@@ -1,4 +1,4 @@
-package com.creativeartie.humming.schema;
+package com.creativeartie.humming.document;
 
 public enum StyleClasses {
     ;

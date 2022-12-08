@@ -1,8 +1,6 @@
-package com.creativeartie.humming.schema;
+package com.creativeartie.humming.document;
 
 import java.util.*;
-
-import com.creativeartie.humming.document.*;
 
 public interface Span {
 

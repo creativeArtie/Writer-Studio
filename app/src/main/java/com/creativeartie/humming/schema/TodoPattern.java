@@ -2,33 +2,41 @@ package com.creativeartie.humming.schema;
 
 import java.util.regex.*;
 
+import com.google.common.base.*;
+
 public enum TodoPattern implements PatternEnum {
-    START("{!"), TEXT(BasicTextPatterns.SPECIAL.getRawPattern()), END("}");
+    START("\\{\\!"), TEXT(BasicTextPatterns.SPECIAL.getRawPattern()),
+    END("\\}");
 
     private static String fullPattern;
-    private static Pattern checkPattern;
     private static Pattern matchPattern;
+
+    private static String getFullPattern(boolean withName) {
+        return
+        // @formatter:off
+            START.getPattern(withName) +
+            TEXT.getPattern(withName) + "?" +
+            END.getPattern(withName) + "?"
+            ;
+         // @formatter:on
+    }
 
     public static String getFullPattern() {
         if (fullPattern == null) {
             // @formatter:off
-            fullPattern =
-                START.getRawPattern() +
-                TEXT.getRawPattern() + "?" +
-                END.getRawPattern() + "?"
-                ;
+            fullPattern = getFullPattern(false);
              // @formatter:on
         }
         return fullPattern;
     }
 
     public static Matcher matcher(String text) {
-        if (checkPattern == null) {
-            checkPattern = Pattern.compile(getFullPattern());
-            matchPattern = PatternEnum.compilePattern(values());
+        if (matchPattern == null) {
+            matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
         }
-        assert checkPattern.matcher(text).find();
-        return matchPattern.matcher(text);
+        Matcher match = matchPattern.matcher(text);
+        Preconditions.checkArgument(match.find(), "No pattern found.");
+        return match;
     }
 
     private final String pattern;
@@ -49,7 +57,7 @@ public enum TodoPattern implements PatternEnum {
 
     @Override
     public boolean runFind() {
-        return true;
+        return false;
     }
 
 }

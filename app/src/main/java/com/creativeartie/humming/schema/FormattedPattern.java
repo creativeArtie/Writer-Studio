@@ -17,7 +17,8 @@ public enum FormattedPattern implements PatternEnum {
             }
             fullPattern += LinkPattern.getFullPattern() + "|";
             fullPattern += TodoPattern.getFullPattern() + "|";
-            fullPattern += ReferencePattern.getFullPattern();
+            fullPattern += ReferencePattern.getFullPattern() + "|";
+            fullPattern += ErrorRefPattern.getFullPattern();
 
         }
         return fullPattern;
