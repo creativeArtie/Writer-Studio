@@ -1,36 +1,68 @@
 package com.creativeartie.humming.schema;
 
+import java.util.*;
 import java.util.regex.*;
 
+import com.google.common.base.*;
+
 public enum FormattedPattern implements PatternEnum {
-    BOLD("\\*"), UNDERLINE("_"), ITALICS("`");
+    BOLD("\\*"), UNDERLINE("_"), ITALICS("`"),
+    LINK(LinkPattern.getFullPattern()), TODO(TodoPattern.getFullPattern()),
+    REFER(ReferencePattern.getFullPattern()),
+    ERR(ErrorRefPattern.getFullPattern()), TEXT("");
 
-    private static String fullPattern;
-    private static Pattern checkPattern;
-    private static Pattern matchPattern;
+    private static TreeMap<BasicTextPatterns, String> fullPatterns;
+    private static TreeMap<BasicTextPatterns, Pattern> checkPatterns;
+    private static TreeMap<BasicTextPatterns, Pattern> matchPatterns;
 
-    public static String getFullPattern() {
-        if (fullPattern == null) {
-            fullPattern = "";
-            for (PatternEnum pattern : values()) {
-                fullPattern += pattern.getRawPattern() + "|";
-            }
-            fullPattern += LinkPattern.getFullPattern() + "|";
-            fullPattern += TodoPattern.getFullPattern() + "|";
-            fullPattern += ReferencePattern.getFullPattern() + "|";
-            fullPattern += ErrorRefPattern.getFullPattern();
+    private static String
+        getFullPattern(boolean withName, BasicTextPatterns subtype) {
+        StringBuilder pattern = new StringBuilder();
 
+        for (PatternEnum pat : values()) {
+            if (pat == TEXT) break;
+            pattern.append(pat.getPattern(withName) + "|");
         }
-        return fullPattern;
+        pattern.append(
+            withName ? PatternEnum
+                .namePattern(TEXT.getPatternName(), subtype.getRawPattern()) :
+                subtype.getRawPattern()
+        );
+        return pattern.toString();
     }
 
-    public static Matcher matcher(String text) {
-        if (checkPattern == null) {
-            checkPattern = Pattern.compile(getFullPattern());
-            matchPattern = PatternEnum.compilePattern(values());
+    public static String getFullPattern(BasicTextPatterns subtype) {
+        if (fullPatterns == null) {
+            fullPatterns = new TreeMap<>();
         }
-        assert checkPattern.matcher(text).find();
-        return matchPattern.matcher(text);
+        if (!fullPatterns.containsKey(subtype)) {
+            String answer = getFullPattern(false, subtype);
+            fullPatterns.put(subtype, answer);
+            return answer;
+
+        }
+        return fullPatterns.get(subtype);
+    }
+
+    public static Matcher matcher(String text, BasicTextPatterns subtype) {
+        if (checkPatterns == null) {
+            checkPatterns = new TreeMap<>();
+            matchPatterns = new TreeMap<>();
+        }
+        Pattern check, match;
+        if (!checkPatterns.containsKey(subtype)) {
+            check =
+                Pattern.compile("^(" + getFullPattern(true, subtype) + ")*");
+            checkPatterns.put(subtype, check);
+            match = Pattern.compile(getFullPattern(true, subtype));
+            matchPatterns.put(subtype, match);
+        } else {
+            check = checkPatterns.get(subtype);
+            match = matchPatterns.get(subtype);
+        }
+        Preconditions
+            .checkArgument(check.matcher(text).find(), "Pattern not found");
+        return match.matcher(text);
     }
 
     private final String pattern;
