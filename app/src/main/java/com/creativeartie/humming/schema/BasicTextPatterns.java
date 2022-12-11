@@ -3,8 +3,9 @@ package com.creativeartie.humming.schema;
 import java.util.regex.*;
 
 public enum BasicTextPatterns implements PatternEnum {
-    ID("[\\p{IsIdeographic}\\p{IsAlphabetic}\\p{IsDigit} _]+"),
-    LINK("[^\\|\\}\\n]+"), SPECIAL("[^\\}\\n]+"), TEXT("[^\\n]+");
+    ID("[\\p{IsIdeographic}\\p{IsAlphabetic}\\p{IsDigit} _\t]+"),
+    LINK("[^\\|\\}\\n]+"), SPECIAL("[^\\}\\n]+"), TEXT("[^\\n]+"),
+    HEADING("[^\\n\\#]+");
 
     private final String textPattern;
     private final String basePattern;

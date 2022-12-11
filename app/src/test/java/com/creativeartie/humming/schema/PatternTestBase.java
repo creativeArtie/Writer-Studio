@@ -6,11 +6,13 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.*;
 
 public class PatternTestBase {
-    protected void assertGroup(
+    protected String assertGroup(
         String expect, Matcher match, PatternEnum pattern, int group
     ) {
         String message = "Match " + Integer.toString(group);
-        Assertions.assertEquals(expect, pattern.group(match), message);
+        String matched = pattern.group(match);
+        Assertions.assertEquals(expect, matched, message);
+        return matched;
 
     }
 
