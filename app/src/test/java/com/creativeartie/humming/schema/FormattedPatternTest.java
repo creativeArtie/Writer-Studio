@@ -6,7 +6,7 @@ import org.junit.jupiter.api.*;
 
 import com.google.common.base.*;
 
-class FormattedPatternTest extends PatternTestBase {
+class FormattedPatternTest extends PatternTestBase<FormattedPattern> {
 
     @BeforeAll
     static void setUpBeforeClass() throws Exception {

@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.*;
  * testing LinkPattern. All passed test is copy of {@link #testFull} with small
  * edits.
  */
-class LinkPatternTest extends PatternTestBase {
+class LinkPatternTest extends PatternTestBase<LinkPattern> {
 
     @BeforeAll
     static void displayTest() {

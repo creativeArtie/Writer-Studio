@@ -4,7 +4,7 @@ import java.util.regex.*;
 
 import org.junit.jupiter.api.*;
 
-class ErrorRefPatternTest extends PatternTestBase {
+class ErrorRefPatternTest extends PatternTestBase<ErrorRefPattern> {
 
     @BeforeAll
     static void displayPattern() throws Exception {

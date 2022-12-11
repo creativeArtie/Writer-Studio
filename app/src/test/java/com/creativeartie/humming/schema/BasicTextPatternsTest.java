@@ -6,7 +6,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
-class BasicTextPatternsTest extends PatternTestBase {
+class BasicTextPatternsTest extends PatternTestBase<BasicTextPart> {
 
     @BeforeAll
     static void displayPattern() {

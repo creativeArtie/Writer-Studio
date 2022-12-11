@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.*;
 import com.creativeartie.humming.schema.HeadingLinePattern.*;
 import com.google.common.base.*;
 
-class HeadingLinePatternTest extends PatternTestBase {
+class HeadingLinePatternTest extends PatternTestBase<HeadingLinePattern> {
 
     @BeforeAll
     static void displayPattern() throws Exception {
@@ -38,16 +38,48 @@ class HeadingLinePatternTest extends PatternTestBase {
         assertGroup("==", match, HeadingLinePattern.LEVEL, 2);
         assertGroup("*Hello* `World`!!!! ", match, HeadingLinePattern.TEXT, 3);
         assertGroup("#stub", match, HeadingLinePattern.STATUS, 4);
+        assertGroup(" 1", match, HeadingLinePattern.DETAILS, 5);
         assertEnd(match);
     }
 
     @Test
     void testHeading() {
         Matcher match =
-            HeadingLinePattern.matcher("==*Hello* `World`!!!! #OUtLine ");
+            HeadingLinePattern.matcher("==*Hello* `World`!!!! #OUtLine");
+        assertGroup("==", match, HeadingLinePattern.LEVEL, 1);
+        assertGroup("*Hello* `World`!!!! ", match, HeadingLinePattern.TEXT, 2);
+        assertGroup("#OUtLine", match, HeadingLinePattern.STATUS, 3);
+        assertEnd(match);
+    }
+
+    @Test
+    void testNoStatus() {
+        Matcher match = HeadingLinePattern.matcher("=====Hello World");
+        assertGroup("=====", match, HeadingLinePattern.LEVEL, 1);
+        assertGroup("Hello World", match, HeadingLinePattern.TEXT, 2);
+    }
+
+    @Test
+    void testStatusOnly() {
+        Matcher match = HeadingLinePattern.matcher("==#final");
+        assertGroup("==", match, HeadingLinePattern.LEVEL, 1);
+        assertGroup("#final", match, HeadingLinePattern.STATUS, 2);
+        assertEnd(match);
+    }
+
+    @Test
+    void testJustHeading() {
+        Matcher match = HeadingLinePattern.matcher("!==");
+        assertGroup("!", match, HeadingLinePattern.OUTLINE, 1);
         assertGroup("==", match, HeadingLinePattern.LEVEL, 2);
-        assertGroup("*Hello* `World`!!!! ", match, HeadingLinePattern.TEXT, 3);
-        assertGroup("#OUtLine", match, HeadingLinePattern.STATUS, 4);
+        assertEnd(match);
+    }
+
+    @Test
+    void testTooLong() {
+        Matcher match = HeadingLinePattern.matcher("=======");
+        assertGroup("======", match, HeadingLinePattern.LEVEL, 1);
+        assertGroup("=", match, HeadingLinePattern.TEXT, 2);
         assertEnd(match);
     }
 

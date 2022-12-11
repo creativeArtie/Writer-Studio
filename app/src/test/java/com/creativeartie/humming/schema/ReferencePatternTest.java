@@ -6,7 +6,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
-class ReferencePatternTest extends PatternTestBase {
+class ReferencePatternTest extends PatternTestBase<ReferencePattern> {
 
     @BeforeAll
     static void displayPattern() throws Exception {
