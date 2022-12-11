@@ -5,7 +5,7 @@ import java.util.regex.*;
 import com.google.common.base.*;
 
 public enum IdentityPattern implements PatternEnum {
-    SEP("\\-"), NAME(BasicTextPatterns.ID.getRawPattern());
+    SEP(":"), NAME(BasicTextPatterns.ID.getRawPattern());
 
     private static String fullPattern;
     private static Pattern checkPattern;

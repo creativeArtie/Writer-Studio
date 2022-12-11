@@ -15,17 +15,17 @@ class IdentityPattenTest extends PatternTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "{deadsa", "cat-", "category-id}" })
+    @ValueSource(strings = { "{deadsa", "cat:", "category:id}" })
     void testFailedId(String test) {
         assertFail(() -> IdentityPattern.matcher(test));
     }
 
     @Test
     void testPassedId() {
-        Matcher match = IdentityPattern.matcher("category-id");
+        Matcher match = IdentityPattern.matcher("category:id");
 
         assertGroup("category", match, IdentityPattern.NAME, 1);
-        assertGroup("-", match, IdentityPattern.SEP, 2);
+        assertGroup(":", match, IdentityPattern.SEP, 2);
         assertGroup("id", match, IdentityPattern.NAME, 3);
         assertEnd(match);
     }
