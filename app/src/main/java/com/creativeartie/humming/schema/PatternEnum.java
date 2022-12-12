@@ -10,6 +10,12 @@ interface PatternEnum {
 
     String getPatternName();
 
+    /**
+     * Should {@linkplain Matcher#find()} needs to be called. Often return
+     * {@code false} is not called because the pattern have a specific order
+     *
+     * @return {@code true} if needed.
+     */
     boolean runFind();
 
     default String getNamedPattern() {
