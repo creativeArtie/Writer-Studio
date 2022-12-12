@@ -23,7 +23,7 @@ interface PatternEnum {
     }
 
     default String getPattern(boolean withName) {
-        return withName ? getNamedPattern() : getRawPattern();
+        return withName ? getNamedPattern() : "(" + getRawPattern() + ")";
     }
 
     /**

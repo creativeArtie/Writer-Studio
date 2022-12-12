@@ -4,9 +4,9 @@ import java.util.regex.*;
 
 import com.google.common.base.*;
 
-public enum ListPattern implements PatternEnum {
-    NUMBERED("\\#{1,6}"), BULLET("\\-{1,6}"),
-    TEXT(FormattedPattern.getFullPattern(BasicTextPatterns.TEXT));
+public enum BasicLinePatterns implements PatternEnum {
+    QUOTE("\\>"), AGENDA("!"), TEXT(FormattedPattern.TEXT.getRawPattern()),
+    BREAK("\\*\\*\\*");
 
     private static String fullPattern;
     private static Pattern matchPattern;
@@ -15,9 +15,11 @@ public enum ListPattern implements PatternEnum {
         return
         // @formatter:off
             "(" +
-                NUMBERED.getPattern(withName) + "|" +
-                BULLET.getPattern(withName) +
-            ")" + TEXT.getPattern(withName) + "?";
+                "(" +
+                    QUOTE.getPattern(withName) + "|" +
+                    AGENDA.getPattern(withName) +
+                ")?" + TEXT.getPattern(withName) + "?" +
+           ")|" + BREAK.getPattern(withName);
         // @formatter:on
     }
 
@@ -39,7 +41,7 @@ public enum ListPattern implements PatternEnum {
 
     private final String rawPattern;
 
-    private ListPattern(String pat) {
+    private BasicLinePatterns(String pat) {
         rawPattern = pat;
     }
 
