@@ -27,7 +27,9 @@ public class PatternTestBase<T extends PatternEnum> {
     }
 
     protected void assertEnd(Matcher match) {
-        if (patternClass.getEnumConstants()[0].runFind()) {
+        if (patternClass == null) {
+            Assertions.assertEquals(0, match.end(), "Search end");
+        } else if (patternClass.getEnumConstants()[0].runFind()) {
             Assertions.assertFalse(match.find(), "Search end");
         } else {
             Assertions.assertEquals(expectedLength, match.end(), "Search end");

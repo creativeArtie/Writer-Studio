@@ -13,7 +13,8 @@ public enum BasicLinePatterns implements PatternEnum {
         QUOTER("\\>"), TODOER("\\!"),
         FORMATTED(
             FormattedPattern.getFullPattern(BasicTextPatterns.TEXT) + "?"
-        ), TEXT(BasicTextPatterns.TEXT.getRawPattern() + "?"), BREAKER("\\*+");
+        ), TEXT("(" + BasicTextPatterns.TEXT.getRawPattern() + ")?"),
+        BREAKER("\\*+");
 
         private String rawPattern;
 
