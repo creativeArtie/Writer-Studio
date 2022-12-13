@@ -6,6 +6,8 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
+import com.creativeartie.humming.schema.BasicTextPatterns.*;
+
 class BasicTextPatternsTest extends PatternTestBase<BasicTextPart> {
 
     @BeforeAll
@@ -26,16 +28,16 @@ class BasicTextPatternsTest extends PatternTestBase<BasicTextPart> {
     )
     void testBasicId(String raw) {
         Matcher matcher = BasicTextPatterns.ID.matcher(raw);
-        assertGroup(raw, matcher, BasicTextPart.TEXT, 1);
+        assertGroup(raw, matcher, BasicTextPatterns.BasicTextPart.TEXT, 1);
         assertEnd(matcher);
     }
 
     @Test
     void testEscapedId() {
         Matcher matcher = BasicTextPatterns.ID.matcher("avdd\\-ade");
-        assertGroup("avdd", matcher, BasicTextPart.TEXT, 1);
-        assertGroup("\\-", matcher, BasicTextPart.ESCAPE, 2);
-        assertGroup("ade", matcher, BasicTextPart.TEXT, 3);
+        assertGroup("avdd", matcher, BasicTextPatterns.BasicTextPart.TEXT, 1);
+        assertGroup("\\-", matcher, BasicTextPatterns.BasicTextPart.ESCAPE, 2);
+        assertGroup("ade", matcher, BasicTextPatterns.BasicTextPart.TEXT, 3);
         assertEnd(matcher);
     }
 
@@ -51,7 +53,7 @@ class BasicTextPatternsTest extends PatternTestBase<BasicTextPart> {
         BasicTextPatterns tester = BasicTextPatterns.valueOf(type);
         String raw = "text" + ender;
         Matcher matcher = tester.matcher(raw);
-        assertGroup("text", matcher, BasicTextPart.TEXT, 1);
+        assertGroup("text", matcher, BasicTextPatterns.BasicTextPart.TEXT, 1);
         assertEnd(matcher);
     }
 

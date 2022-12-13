@@ -5,48 +5,74 @@ import java.util.regex.*;
 import com.google.common.base.*;
 
 public enum BasicLinePatterns implements PatternEnum {
-    QUOTE("\\>"), AGENDA("!"), TEXT(FormattedPattern.TEXT.getRawPattern()),
-    BREAK("\\*\\*\\*");
+    QUOTE(BasicLinePart.QUOTER, BasicLinePart.FORMATTED),
+    AGENDA(BasicLinePart.TODOER, BasicLinePart.TEXT),
+    TEXT(BasicLinePart.FORMATTED), BREAK(BasicLinePart.BREAKER);
 
-    private static String fullPattern;
-    private static Pattern matchPattern;
+    enum BasicLinePart implements PatternEnum {
+        QUOTER("\\>"), TODOER("\\!"),
+        FORMATTED(
+            FormattedPattern.getFullPattern(BasicTextPatterns.TEXT) + "?"
+        ), TEXT(BasicTextPatterns.TEXT.getRawPattern() + "?"), BREAKER("\\*+");
 
-    private static String getFullPattern(boolean withName) {
-        return
-        // @formatter:off
-            "(" +
-                "(" +
-                    QUOTE.getPattern(withName) + "|" +
-                    AGENDA.getPattern(withName) +
-                ")?" + TEXT.getPattern(withName) + "?" +
-           ")|" + BREAK.getPattern(withName);
-        // @formatter:on
-    }
+        private String rawPattern;
 
-    public static String getFullPattern() {
-        if (fullPattern == null) {
-            fullPattern = getFullPattern(false);
+        BasicLinePart(String pattern) {
+            rawPattern = pattern;
         }
-        return fullPattern;
+
+        @Override
+        public String getRawPattern() {
+            return rawPattern;
+        }
+
+        @Override
+        public String getPatternName() {
+            return name();
+        }
     }
 
-    public static Matcher matcher(String text) {
+    private final BasicLinePart[] patternParts;
+
+    private Pattern matchPattern;
+
+    private String rawPattern;
+
+    private BasicLinePatterns(BasicLinePart... parts) {
+        patternParts = parts;
+
+    }
+
+    private Matcher matches(String text) {
         if (matchPattern == null) {
-            matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
+            matchPattern = Pattern.compile("^" + buildPattern(true) + "$");
         }
-        Matcher matcher = matchPattern.matcher(text);
-        Preconditions.checkArgument(matcher.find(), "Pattern not match");
-        return matcher;
+        return matchPattern.matcher(text);
     }
 
-    private final String rawPattern;
+    public boolean find(String text) {
+        return matches(text).find();
+    }
 
-    private BasicLinePatterns(String pat) {
-        rawPattern = pat;
+    public Matcher matcher(String text) {
+        Matcher match = matches(text);
+        Preconditions.checkArgument(match.find(), "Pattern not found");
+        return match;
+    }
+
+    private String buildPattern(boolean withName) {
+        StringBuilder builder = new StringBuilder();
+        for (BasicLinePart part : patternParts) {
+            builder.append(part.getPattern(withName));
+        }
+        return builder.toString();
     }
 
     @Override
     public String getRawPattern() {
+        if (rawPattern == null) {
+            rawPattern = buildPattern(false);
+        }
         return rawPattern;
     }
 
@@ -54,10 +80,4 @@ public enum BasicLinePatterns implements PatternEnum {
     public String getPatternName() {
         return name();
     }
-
-    @Override
-    public boolean runFind() {
-        return false;
-    }
-
 }

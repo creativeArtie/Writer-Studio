@@ -17,18 +17,21 @@ public enum FormattedPattern implements PatternEnum {
 
     private static String
         getFullPattern(boolean withName, BasicTextPatterns subtype) {
-        StringBuilder pattern = new StringBuilder();
+        if (withName) {
+            StringBuilder pattern = new StringBuilder();
 
-        for (PatternEnum pat : values()) {
-            if (pat == TEXT) break;
-            pattern.append(pat.getPattern(withName) + "|");
+            for (PatternEnum pat : values()) {
+                if (pat == TEXT) break;
+                pattern.append(pat.getPattern(withName) + "|");
+            }
+            pattern.append(
+                withName ? PatternEnum.namePattern(
+                    TEXT.getPatternName(), subtype.getRawPattern()
+                ) : subtype.getRawPattern()
+            );
+            return pattern.toString();
         }
-        pattern.append(
-            withName ? PatternEnum
-                .namePattern(TEXT.getPatternName(), subtype.getRawPattern()) :
-                subtype.getRawPattern()
-        );
-        return pattern.toString();
+        return subtype.getPattern(withName);
     }
 
     public static String getFullPattern(BasicTextPatterns subtype) {
@@ -73,6 +76,9 @@ public enum FormattedPattern implements PatternEnum {
 
     @Override
     public String getRawPattern() {
+        Preconditions.checkState(
+            !pattern.isEmpty(), "No pattern for FormmatedPattern." + name()
+        );
         return pattern;
     }
 

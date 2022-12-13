@@ -16,7 +16,9 @@ interface PatternEnum {
      *
      * @return {@code true} if needed.
      */
-    boolean runFind();
+    default boolean runFind() {
+        return false;
+    }
 
     default String getNamedPattern() {
         return namePattern(getPatternName(), getRawPattern());

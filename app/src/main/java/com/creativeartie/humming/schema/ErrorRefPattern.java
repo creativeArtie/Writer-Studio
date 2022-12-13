@@ -45,9 +45,4 @@ public enum ErrorRefPattern implements PatternEnum {
         return name();
     }
 
-    @Override
-    public boolean runFind() {
-        return false;
-    }
-
 }

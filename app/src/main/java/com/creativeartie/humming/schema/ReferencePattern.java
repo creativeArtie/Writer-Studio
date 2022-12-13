@@ -56,9 +56,4 @@ public enum ReferencePattern implements PatternEnum {
     public String getPatternName() {
         return name();
     }
-
-    @Override
-    public boolean runFind() {
-        return false;
-    }
 }

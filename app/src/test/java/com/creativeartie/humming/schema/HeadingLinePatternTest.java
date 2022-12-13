@@ -33,10 +33,12 @@ class HeadingLinePatternTest extends PatternTestBase<HeadingLinePattern> {
     @Test
     void testOutline() {
         Matcher match =
-            HeadingLinePattern.matcher("!==*Hello* `World`!!!! #stub 1");
+            HeadingLinePattern.matcher("!==\\=*Hello* `World`!!!! #stub 1");
         assertGroup("!", match, HeadingLinePattern.OUTLINE, 1);
         assertGroup("==", match, HeadingLinePattern.LEVEL, 2);
-        assertGroup("*Hello* `World`!!!! ", match, HeadingLinePattern.TEXT, 3);
+        assertGroup(
+            "\\=*Hello* `World`!!!! ", match, HeadingLinePattern.TEXT, 3
+        );
         assertGroup("#stub", match, HeadingLinePattern.STATUS, 4);
         assertGroup(" 1", match, HeadingLinePattern.DETAILS, 5);
         assertEnd(match);

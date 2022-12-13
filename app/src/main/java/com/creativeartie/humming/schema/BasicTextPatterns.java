@@ -7,6 +7,32 @@ public enum BasicTextPatterns implements PatternEnum {
     LINK("[^\\|\\}\\n]+"), SPECIAL("[^\\}\\n]+"), TEXT("[^\\n]+"),
     HEADING("[^\\n\\#]+");
 
+    enum BasicTextPart implements PatternEnum {
+        ESCAPE("\\\\."), TEXT("");
+
+        private final String pattern;
+
+        BasicTextPart(String pat) {
+            pattern = pat;
+        }
+
+        @Override
+        public String getRawPattern() {
+            return pattern;
+        }
+
+        @Override
+        public String getPatternName() {
+            return name();
+        }
+
+        @Override
+        public boolean runFind() {
+            return true;
+        }
+
+    }
+
     private final String textPattern;
     private final String basePattern;
     private Pattern compiledPattern;

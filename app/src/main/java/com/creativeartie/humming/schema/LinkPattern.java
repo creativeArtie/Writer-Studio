@@ -55,9 +55,4 @@ public enum LinkPattern implements PatternEnum {
         return name();
     }
 
-    @Override
-    public boolean runFind() {
-        return false;
-    }
-
 }
