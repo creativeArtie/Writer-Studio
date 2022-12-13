@@ -5,7 +5,7 @@ import java.util.regex.*;
 public enum BasicTextPatterns implements PatternEnum {
     ID("[\\p{IsIdeographic}\\p{IsAlphabetic}\\p{IsDigit} _\t]+"),
     LINK("[^\\|\\}\\n]+"), SPECIAL("[^\\}\\n]+"), TEXT("[^\\n]+"),
-    HEADING("[^\\n\\#]+");
+    HEADING("[^\\n\\#]+"), CITE("[\\p{IsAlphabetic}_]+");
 
     enum BasicTextPart implements PatternEnum {
         ESCAPE("\\\\."), TEXT("");
