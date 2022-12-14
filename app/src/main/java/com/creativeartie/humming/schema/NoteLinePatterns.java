@@ -11,10 +11,13 @@ public enum NoteLinePatterns implements PatternEnum {
             return // @formatter:off
                 NoteLineParts.STARTER.getPattern(withName) +
                 NoteLineParts.HEADING.getPattern(withName) +
-                NoteLineParts.TITLE.getPattern(withName) +
+                NoteLineParts.TITLE.getPattern(withName)  + "?"+
                 "(" +
                     NoteLineParts.IDER.getPattern(withName) +
-                    NoteLineParts.ID.getPattern(withName) +
+                    "(" +
+                        NoteLineParts.ID.getPattern(withName) + "|" +
+                        NoteLineParts.ERROR.getPattern(withName) +
+                    ")?" +
                 ")?";
             //@formatter:on
         }
@@ -38,9 +41,11 @@ public enum NoteLinePatterns implements PatternEnum {
             return // @formatter:off
                 NoteLineParts.STARTER.getPattern(withName) +
                 NoteLineParts.SOURCE.getPattern(withName) +
-                NoteLineParts.FIELD.getPattern(withName) + "?" +
-                NoteLineParts.SOURCE.getPattern(withName) + "?" +
-                NoteLineParts.VALUE.getPattern(withName);
+                "((" +
+                    NoteLineParts.FIELD.getPattern(withName) +
+                    NoteLineParts.SOURCER.getPattern(withName) +
+                    NoteLineParts.VALUE.getPattern(withName) +
+                ")|" + NoteLineParts.ERROR.getPattern(withName) + ")";
             //@formatter:on
         }
 
@@ -51,6 +56,7 @@ public enum NoteLinePatterns implements PatternEnum {
         TEXT(FormattedPattern.getFullPattern(BasicTextPatterns.TEXT)),
         TITLE(FormattedPattern.getFullPattern(BasicTextPatterns.HEADING)),
         IDER("#"), ID(IdentityPattern.getFullPattern()),
+        ERROR(BasicTextPatterns.TEXT.getRawPattern()),
         FIELD(BasicTextPatterns.CITE.getRawPattern()),
         VALUE(BasicTextPatterns.TEXT.getRawPattern());
 
