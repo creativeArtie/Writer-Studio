@@ -2,8 +2,6 @@ package com.creativeartie.humming.schema;
 
 import java.util.regex.*;
 
-import com.google.common.base.*;
-
 public enum NoteLinePatterns implements PatternEnum {
     HEADING() {
         @Override
@@ -89,21 +87,14 @@ public enum NoteLinePatterns implements PatternEnum {
         return null;
     }
 
-    private Matcher getMatcher(String text) {
+    public Matcher matcher(String text) {
         if (matchPattern == null) {
             matchPattern = Pattern.compile("^" + getValuePattern(true) + "$");
         }
-        return matchPattern.matcher(text);
-    }
+        Matcher match = matchPattern.matcher(text);
 
-    public boolean find(String text) {
-        return getMatcher(text).find();
-    }
-
-    public Matcher matcher(String text) {
-        Matcher match = getMatcher(text);
-        Preconditions.checkArgument(match.find(), "Pattern not found.");
-        return match;
+        if (match.find()) return match;
+        return null;
     }
 
     protected abstract String getValuePattern(boolean withName);

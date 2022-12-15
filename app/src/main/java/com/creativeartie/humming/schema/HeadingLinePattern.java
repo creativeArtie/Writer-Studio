@@ -56,21 +56,13 @@ public enum HeadingLinePattern implements PatternEnum {
         return fullPattern;
     }
 
-    private static Matcher createMatcher(String text) {
+    public static Matcher matcher(String text) {
         if (matchPattern == null) {
             matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
         }
-        return matchPattern.matcher(text);
-    }
-
-    public static boolean find(String text) {
-        return createMatcher(text).find();
-    }
-
-    public static Matcher matcher(String text) {
-        Matcher matcher = createMatcher(text);
-        Preconditions.checkArgument(matcher.find(), "Pattern not found");
-        return matcher;
+        Matcher matcher = matchPattern.matcher(text);
+        if (matcher.find()) return matcher;
+        return null;
 
     }
 

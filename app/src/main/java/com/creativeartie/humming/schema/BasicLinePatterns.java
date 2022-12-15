@@ -2,8 +2,6 @@ package com.creativeartie.humming.schema;
 
 import java.util.regex.*;
 
-import com.google.common.base.*;
-
 public enum BasicLinePatterns implements PatternEnum {
     QUOTE(BasicLinePart.QUOTER, BasicLinePart.FORMATTED),
     AGENDA(BasicLinePart.TODOER, BasicLinePart.TEXT),
@@ -44,21 +42,13 @@ public enum BasicLinePatterns implements PatternEnum {
 
     }
 
-    private Matcher matches(String text) {
+    public Matcher matcher(String text) {
         if (matchPattern == null) {
             matchPattern = Pattern.compile("^" + buildPattern(true) + "$");
         }
-        return matchPattern.matcher(text);
-    }
-
-    public boolean find(String text) {
-        return matches(text).find();
-    }
-
-    public Matcher matcher(String text) {
-        Matcher match = matches(text);
-        Preconditions.checkArgument(match.find(), "Pattern not found");
-        return match;
+        Matcher match = matchPattern.matcher(text);
+        if (match.find()) return match;
+        return null;
     }
 
     private String buildPattern(boolean withName) {

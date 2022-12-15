@@ -2,8 +2,6 @@ package com.creativeartie.humming.schema;
 
 import java.util.regex.*;
 
-import com.google.common.base.*;
-
 public enum ListLinePattern implements PatternEnum {
     NUMBERED("\\#{1,6}"), BULLET("\\-{1,6}"),
     TEXT(FormattedPattern.getFullPattern(BasicTextPatterns.TEXT));
@@ -33,8 +31,8 @@ public enum ListLinePattern implements PatternEnum {
             matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
         }
         Matcher matcher = matchPattern.matcher(text);
-        Preconditions.checkArgument(matcher.find(), "Pattern not match");
-        return matcher;
+        if (matcher.find()) return matcher;
+        return null;
     }
 
     private final String rawPattern;

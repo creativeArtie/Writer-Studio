@@ -3,6 +3,8 @@ package com.creativeartie.humming.schema;
 import java.util.regex.*;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.*;
+import org.junit.jupiter.params.provider.*;
 
 import com.creativeartie.humming.schema.BasicLinePatterns.*;
 
@@ -71,6 +73,14 @@ class BasicLinePatternsTest extends PatternTestBase<BasicLinePart> {
         Matcher match = BasicLinePatterns.QUOTE.matcher(">");
         assertGroup(">", match, BasicLinePart.QUOTER, 1);
         assertEnd(match);
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "add,BREAK", "!ddd,QUOTE", ">quote,AGENDA" })
+    void testError(String text, String linePattern) {
+        BasicLinePatterns pattern = BasicLinePatterns.valueOf(linePattern);
+        Assertions.assertNull(pattern.matcher(text));
+
     }
 
 }

@@ -7,7 +7,7 @@ import com.google.common.base.*;
 
 public enum FormattedPattern implements PatternEnum {
     BOLD("\\*"), UNDERLINE("_"), ITALICS("`"),
-    LINK(LinkPattern.getFullPattern()), TODO(TodoPattern.getFullPattern()),
+    LINK(LinkDirectPattern.getFullPattern()), TODO(TodoPattern.getFullPattern()),
     REFER(ReferencePattern.getFullPattern()),
     ERR(ErrorRefPattern.getFullPattern()), TEXT("");
 

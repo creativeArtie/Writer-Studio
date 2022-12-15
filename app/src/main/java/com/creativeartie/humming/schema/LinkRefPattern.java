@@ -4,9 +4,10 @@ import java.util.regex.*;
 
 import com.google.common.base.*;
 
-public enum LinkPattern implements PatternEnum {
-    START("\\{\\@"), LINK(BasicTextPatterns.LINK.getRawPattern()), SEP("\\|"),
-    TEXT(BasicTextPatterns.SPECIAL.getRawPattern()), END("\\}");
+public enum LinkRefPattern implements PatternEnum {
+    START("\\{#"), ID(IdentityPattern.getFullPattern()), SEP("\\|"),
+    TEXT(BasicTextPatterns.SPECIAL.getRawPattern()), END("\\}"),
+    ERROR(BasicTextPatterns.SPECIAL.getRawPattern());
 
     private static String fullPattern;
     private static Pattern basePattern;
@@ -15,10 +16,13 @@ public enum LinkPattern implements PatternEnum {
         return
         // @formatter:off
             START.getPattern(withName) +
-            LINK.getPattern(withName) + "(" +
-                SEP.getPattern(withName) + TEXT.getPattern(withName) + "?" +
-            ")?" +
-            END.getPattern(withName) + "?"
+            "(" +
+                ID.getPattern(withName) +
+                "(" +
+                    SEP.getPattern(withName) + TEXT.getPattern(withName) + "?" +
+                ")?" +
+                ")|" + ERROR.getRawPattern() + ")" +
+            ")" + END.getPattern(withName) + "?"
             ;
          // @formatter:on
     }
@@ -41,7 +45,7 @@ public enum LinkPattern implements PatternEnum {
 
     private final String pattern;
 
-    private LinkPattern(String pat) {
+    private LinkRefPattern(String pat) {
         pattern = pat;
     }
 
