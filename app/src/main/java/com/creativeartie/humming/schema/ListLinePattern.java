@@ -2,9 +2,11 @@ package com.creativeartie.humming.schema;
 
 import java.util.regex.*;
 
+/**
+ * Lines that are part a numbered/bullet lists.
+ */
 public enum ListLinePattern implements PatternEnum {
-    NUMBERED("\\#{1,6}"), BULLET("\\-{1,6}"),
-    TEXT(FormattedPattern.getFullPattern(BasicTextPatterns.TEXT));
+    NUMBERED("\\#{1,6}"), BULLET("\\-{1,6}"), TEXT(FormattedPattern.getFullPattern(BasicTextPatterns.TEXT));
 
     private static String fullPattern;
     private static Pattern matchPattern;
@@ -30,14 +32,15 @@ public enum ListLinePattern implements PatternEnum {
         if (matchPattern == null) {
             matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
         }
-        Matcher matcher = matchPattern.matcher(text);
-        if (matcher.find()) return matcher;
+        final Matcher matcher = matchPattern.matcher(text);
+        if (matcher.find())
+            return matcher;
         return null;
     }
 
     private final String rawPattern;
 
-    private ListLinePattern(String pat) {
+    ListLinePattern(String pat) {
         rawPattern = pat;
     }
 
@@ -50,5 +53,4 @@ public enum ListLinePattern implements PatternEnum {
     public String getPatternName() {
         return name();
     }
-
 }

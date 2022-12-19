@@ -153,7 +153,7 @@ public class Document {
 
     /**
      * Add style
-     *
+     * 
      * @param  matcher
      *                 the matcher to use
      * @param  styles

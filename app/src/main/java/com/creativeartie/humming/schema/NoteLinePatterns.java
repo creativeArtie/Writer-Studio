@@ -2,6 +2,11 @@ package com.creativeartie.humming.schema;
 
 import java.util.regex.*;
 
+/**
+ * Lines that can be grouped into a single note with heading and sources.
+ *
+ * @see ReferencePattern#SOURCE
+ */
 public enum NoteLinePatterns implements PatternEnum {
     HEADING() {
         @Override
@@ -54,7 +59,7 @@ public enum NoteLinePatterns implements PatternEnum {
 
         private String rawPattern;
 
-        private NoteLineParts(String pattern) {
+        NoteLineParts(String pattern) {
             rawPattern = pattern;
         }
 
@@ -84,7 +89,7 @@ public enum NoteLinePatterns implements PatternEnum {
         if (matchPattern == null) {
             matchPattern = Pattern.compile("^" + getValuePattern(true) + "$");
         }
-        Matcher match = matchPattern.matcher(text);
+        final Matcher match = matchPattern.matcher(text);
 
         if (match.find())
             return match;

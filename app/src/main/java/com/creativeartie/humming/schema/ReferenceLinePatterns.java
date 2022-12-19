@@ -2,6 +2,12 @@ package com.creativeartie.humming.schema;
 
 import java.util.regex.*;
 
+/**
+ * Lines that describes footnotes, end notes, and links.
+ *
+ * @see LinkRefPattern
+ * @see ReferencePattern
+ */
 public enum ReferenceLinePatterns implements PatternEnum {
     FOOTNOTE {
         @Override
@@ -58,7 +64,7 @@ public enum ReferenceLinePatterns implements PatternEnum {
 
         private final String rawPattern;
 
-        private RefLineParts(String pattern) {
+        RefLineParts(String pattern) {
             rawPattern = pattern;
         }
 
@@ -90,7 +96,7 @@ public enum ReferenceLinePatterns implements PatternEnum {
         if (matchPattern == null) {
             matchPattern = Pattern.compile("^" + getValuePattern(true) + "$");
         }
-        Matcher match = matchPattern.matcher(text);
+        final Matcher match = matchPattern.matcher(text);
 
         if (match.find())
             return match;

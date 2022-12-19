@@ -16,7 +16,7 @@ class RefernceLinePatternTest extends PatternTestBase<RefLineParts> {
 
     @Test
     void testLink() {
-        Matcher matcher = ReferenceLinePatterns.LINK.matcher("!@test=www.example.com");
+        final Matcher matcher = ReferenceLinePatterns.LINK.matcher("!@test=www.example.com");
         assertGroup("!", matcher, RefLineParts.START, 1);
         assertGroup("@", matcher, RefLineParts.LINK, 2);
         assertGroup("test", matcher, RefLineParts.ID, 3);
@@ -27,7 +27,7 @@ class RefernceLinePatternTest extends PatternTestBase<RefLineParts> {
 
     @Test
     void testLinkError() {
-        Matcher matcher = ReferenceLinePatterns.LINK.matcher("!@www.example.com");
+        final Matcher matcher = ReferenceLinePatterns.LINK.matcher("!@www.example.com");
         assertGroup("!", matcher, RefLineParts.START, 1);
         assertGroup("@", matcher, RefLineParts.LINK, 2);
         assertGroup("www.example.com", matcher, RefLineParts.ERROR, 3);
@@ -41,7 +41,7 @@ class RefernceLinePatternTest extends PatternTestBase<RefLineParts> {
 
     @Test
     void testFootnote() {
-        Matcher matcher = ReferenceLinePatterns.FOOTNOTE.matcher("!^test=note");
+        final Matcher matcher = ReferenceLinePatterns.FOOTNOTE.matcher("!^test=note");
         assertGroup("!", matcher, RefLineParts.START, 1);
         assertGroup("^", matcher, RefLineParts.FOOTNOTE, 2);
         assertGroup("test", matcher, RefLineParts.ID, 3);
@@ -52,7 +52,7 @@ class RefernceLinePatternTest extends PatternTestBase<RefLineParts> {
 
     @Test
     void testFootnoteError() {
-        Matcher matcher = ReferenceLinePatterns.FOOTNOTE.matcher("!^test-note");
+        final Matcher matcher = ReferenceLinePatterns.FOOTNOTE.matcher("!^test-note");
         assertGroup("!", matcher, RefLineParts.START, 1);
         assertGroup("^", matcher, RefLineParts.FOOTNOTE, 2);
         assertGroup("test-note", matcher, RefLineParts.ERROR, 3);
@@ -66,7 +66,7 @@ class RefernceLinePatternTest extends PatternTestBase<RefLineParts> {
 
     @Test
     void testEndnote() {
-        Matcher matcher = ReferenceLinePatterns.ENDNOTE.matcher("!*test=note");
+        final Matcher matcher = ReferenceLinePatterns.ENDNOTE.matcher("!*test=note");
         assertGroup("!", matcher, RefLineParts.START, 1);
         assertGroup("*", matcher, RefLineParts.ENDNOTE, 2);
         assertGroup("test", matcher, RefLineParts.ID, 3);
@@ -77,7 +77,7 @@ class RefernceLinePatternTest extends PatternTestBase<RefLineParts> {
 
     @Test
     void testEndnoteError() {
-        Matcher matcher = ReferenceLinePatterns.ENDNOTE.matcher("!*test++note");
+        final Matcher matcher = ReferenceLinePatterns.ENDNOTE.matcher("!*test++note");
         assertGroup("!", matcher, RefLineParts.START, 1);
         assertGroup("*", matcher, RefLineParts.ENDNOTE, 2);
         assertGroup("test++note", matcher, RefLineParts.ERROR, 5);

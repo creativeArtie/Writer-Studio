@@ -2,17 +2,29 @@ package com.creativeartie.humming.schema;
 
 import java.util.regex.*;
 
+/**
+ * Patterns for simple lines (without endings). The list of lines included are:
+ * <ul>
+ * <li>Quote: quote blocks for printing
+ * <li>Agenda: a line describing that something need to be do (line variant of
+ * {@link TodoPattern}).
+ * <li>Text: a normal text
+ * <li>Break: a section break
+ * </ul>
+ * This should be call last
+ *
+ * @see HeadingLinePattern
+ * @see NoteLinePatterns
+ * @see ListLinePattern
+ * @see ReferenceLinePatterns
+ */
 public enum BasicLinePatterns implements PatternEnum {
-    QUOTE(BasicLinePart.QUOTER, BasicLinePart.FORMATTED),
-    AGENDA(BasicLinePart.TODOER, BasicLinePart.TEXT),
+    QUOTE(BasicLinePart.QUOTER, BasicLinePart.FORMATTED), AGENDA(BasicLinePart.TODOER, BasicLinePart.TEXT),
     TEXT(BasicLinePart.FORMATTED), BREAK(BasicLinePart.BREAKER);
 
     enum BasicLinePart implements PatternEnum {
-        QUOTER("\\>"), TODOER("\\!"),
-        FORMATTED(
-            FormattedPattern.getFullPattern(BasicTextPatterns.TEXT) + "?"
-        ), TEXT("(" + BasicTextPatterns.TEXT.getRawPattern() + ")?"),
-        BREAKER("\\*+");
+        QUOTER("\\>"), TODOER("\\!"), FORMATTED(FormattedPattern.getFullPattern(BasicTextPatterns.TEXT) + "?"),
+        TEXT("(" + BasicTextPatterns.TEXT.getRawPattern() + ")?"), BREAKER("\\*+");
 
         private String rawPattern;
 
@@ -32,28 +44,26 @@ public enum BasicLinePatterns implements PatternEnum {
     }
 
     private final BasicLinePart[] patternParts;
-
     private Pattern matchPattern;
-
     private String rawPattern;
 
-    private BasicLinePatterns(BasicLinePart... parts) {
+    BasicLinePatterns(BasicLinePart... parts) {
         patternParts = parts;
-
     }
 
     public Matcher matcher(String text) {
         if (matchPattern == null) {
             matchPattern = Pattern.compile("^" + buildPattern(true) + "$");
         }
-        Matcher match = matchPattern.matcher(text);
-        if (match.find()) return match;
+        final Matcher match = matchPattern.matcher(text);
+        if (match.find())
+            return match;
         return null;
     }
 
     private String buildPattern(boolean withName) {
-        StringBuilder builder = new StringBuilder();
-        for (BasicLinePart part : patternParts) {
+        final StringBuilder builder = new StringBuilder();
+        for (final BasicLinePart part : patternParts) {
             builder.append(part.getPattern(withName));
         }
         return builder.toString();

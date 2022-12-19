@@ -4,6 +4,11 @@ import java.util.regex.*;
 
 import com.google.common.base.*;
 
+/**
+ * Direct link span
+ *
+ * @see LinkRefSpan
+ */
 public enum LinkDirectPattern implements PatternEnum {
     START("\\{\\@@"), LINK(BasicTextPatterns.LINK.getRawPattern()), SEP("\\|"),
     TEXT(BasicTextPatterns.SPECIAL.getRawPattern()), END("\\}");
@@ -34,14 +39,14 @@ public enum LinkDirectPattern implements PatternEnum {
         if (basePattern == null) {
             basePattern = Pattern.compile("^" + getFullPattern(true) + "$");
         }
-        Matcher match = basePattern.matcher(text);
+        final Matcher match = basePattern.matcher(text);
         Preconditions.checkArgument(match.find(), "Pattern does not match");
         return match;
     }
 
     private final String pattern;
 
-    private LinkDirectPattern(String pat) {
+    LinkDirectPattern(String pat) {
         pattern = pat;
     }
 

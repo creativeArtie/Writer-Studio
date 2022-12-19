@@ -12,8 +12,8 @@ public class PatternTestBase<T extends PatternEnum> {
     private Class<? extends PatternEnum> patternClass;
 
     protected String assertGroup(String expect, Matcher match, T pattern, int group) {
-        String message = "Matching " + pattern.getPatternName() + " group " + Integer.toString(group);
-        String matched = pattern.group(match);
+        final String message = "Matching " + pattern.getPatternName() + " group " + Integer.toString(group);
+        final String matched = pattern.group(match);
         Assertions.assertEquals(expect, matched, message);
         expectedLength += expect.length();
         patternClass = pattern.getClass();

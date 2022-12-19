@@ -28,17 +28,22 @@ public enum IdentityPattern implements PatternEnum {
     public static Matcher matcher(String text) {
         if (checkPattern == null) {
             checkPattern = Pattern.compile("^" + getFullPattern() + "$");
-            matchPattern = PatternEnum.compilePattern(IdentityPattern.values());
+            final StringBuilder pattern = new StringBuilder();
+            for (final PatternEnum value : IdentityPattern.values()) {
+                if (!pattern.isEmpty()) {
+                    pattern.append("|");
+                }
+                pattern.append("(" + value.getNamedPattern() + ")");
+            }
+            matchPattern = Pattern.compile(pattern.toString());
         }
-        Preconditions.checkArgument(
-            checkPattern.matcher(text).find(), "Pattern does not match Id"
-        );
+        Preconditions.checkArgument(checkPattern.matcher(text).find(), "Pattern does not match Id");
         return matchPattern.matcher(text);
     }
 
     private String pattern;
 
-    private IdentityPattern(String pat) {
+    IdentityPattern(String pat) {
         pattern = pat;
     }
 

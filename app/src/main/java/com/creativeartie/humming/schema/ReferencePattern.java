@@ -4,9 +4,24 @@ import java.util.regex.*;
 
 import com.google.common.base.*;
 
+/**
+ * List of references, excluding links. Links references are defined in
+ * {@link LinkRefPattern}. Spans declared here are:
+ * <ul>
+ * <li>{@link ReferenceLinePatterns#FOOTNOTE foot note}
+ * <li>{@link ReferenceLinePatterns#ENDNOTE end note}
+ * <li>{@link NoteLinePatterns#HEADING sources and notes}
+ * <li>References TODO add reference items
+ * </ul>
+ *
+ * @see LinkRefPattern
+ * @see TodoPattern
+ * @see LinkDirectPattern
+ * @see ErrorRefPattern
+ */
 public enum ReferencePattern implements PatternEnum {
-    FOOTNOTE("\\^"), ENDNOTE("\\*"), SOURCE("\\>"), REF("\\%"), START("\\{"),
-    ID(IdentityPattern.getFullPattern()), END("\\}");
+    FOOTNOTE("\\^"), ENDNOTE("\\*"), SOURCE("\\>"), REF("\\%"), START("\\{"), ID(IdentityPattern.getFullPattern()),
+    END("\\}");
 
     private static String fullPattern;
     private static Pattern matchPattern;
@@ -29,21 +44,20 @@ public enum ReferencePattern implements PatternEnum {
             ")" + ID.getPattern(withName) +
             END.getPattern(withName) + "?";
          // @formatter:on
-
     }
 
     public static Matcher matcher(String text) {
         if (matchPattern == null) {
             matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
         }
-        Matcher answer = matchPattern.matcher(text);
+        final Matcher answer = matchPattern.matcher(text);
         Preconditions.checkArgument(answer.find(), "Pattern not found");
         return answer;
     }
 
     private final String pattern;
 
-    private ReferencePattern(String pat) {
+    ReferencePattern(String pat) {
         pattern = pat;
     }
 

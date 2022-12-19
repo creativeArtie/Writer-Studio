@@ -17,7 +17,7 @@ class HeadingLinePatternTest extends PatternTestBase<HeadingLinePattern> {
     @ParameterizedTest
     @CsvSource({ "#stub,STUB", "#outLine,OUTLINE", "#DRAFT 12,DRAFT", "#random add,OTHERS" })
     void testStatus(String input, String pattern) {
-        StatusPattern expect = StatusPattern.valueOf(pattern);
+        final StatusPattern expect = StatusPattern.valueOf(pattern);
         Assertions.assertEquals(expect, StatusPattern.getStatus(input));
     }
 
@@ -29,7 +29,7 @@ class HeadingLinePatternTest extends PatternTestBase<HeadingLinePattern> {
 
     @Test
     void testOutline() {
-        Matcher match = HeadingLinePattern.matcher("!==\\=*Hello* `World`!!!! #stub 1");
+        final Matcher match = HeadingLinePattern.matcher("!==\\=*Hello* `World`!!!! #stub 1");
         assertGroup("!", match, HeadingLinePattern.OUTLINE, 1);
         assertGroup("==", match, HeadingLinePattern.LEVEL, 2);
         assertGroup("\\=*Hello* `World`!!!! ", match, HeadingLinePattern.TEXT, 3);
@@ -40,7 +40,7 @@ class HeadingLinePatternTest extends PatternTestBase<HeadingLinePattern> {
 
     @Test
     void testHeading() {
-        Matcher match = HeadingLinePattern.matcher("==*Hello* `World`!!!! #OUtLine");
+        final Matcher match = HeadingLinePattern.matcher("==*Hello* `World`!!!! #OUtLine");
         assertGroup("==", match, HeadingLinePattern.LEVEL, 1);
         assertGroup("*Hello* `World`!!!! ", match, HeadingLinePattern.TEXT, 2);
         assertGroup("#OUtLine", match, HeadingLinePattern.STATUS, 3);
@@ -49,14 +49,14 @@ class HeadingLinePatternTest extends PatternTestBase<HeadingLinePattern> {
 
     @Test
     void testNoStatus() {
-        Matcher match = HeadingLinePattern.matcher("=====Hello World");
+        final Matcher match = HeadingLinePattern.matcher("=====Hello World");
         assertGroup("=====", match, HeadingLinePattern.LEVEL, 1);
         assertGroup("Hello World", match, HeadingLinePattern.TEXT, 2);
     }
 
     @Test
     void testStatusOnly() {
-        Matcher match = HeadingLinePattern.matcher("==#final");
+        final Matcher match = HeadingLinePattern.matcher("==#final");
         assertGroup("==", match, HeadingLinePattern.LEVEL, 1);
         assertGroup("#final", match, HeadingLinePattern.STATUS, 2);
         assertEnd(match);
@@ -64,7 +64,7 @@ class HeadingLinePatternTest extends PatternTestBase<HeadingLinePattern> {
 
     @Test
     void testJustHeading() {
-        Matcher match = HeadingLinePattern.matcher("!==");
+        final Matcher match = HeadingLinePattern.matcher("!==");
         assertGroup("!", match, HeadingLinePattern.OUTLINE, 1);
         assertGroup("==", match, HeadingLinePattern.LEVEL, 2);
         assertEnd(match);
@@ -72,7 +72,7 @@ class HeadingLinePatternTest extends PatternTestBase<HeadingLinePattern> {
 
     @Test
     void testTooLong() {
-        Matcher match = HeadingLinePattern.matcher("=======");
+        final Matcher match = HeadingLinePattern.matcher("=======");
         assertGroup("======", match, HeadingLinePattern.LEVEL, 1);
         assertGroup("=", match, HeadingLinePattern.TEXT, 2);
         assertEnd(match);

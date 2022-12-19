@@ -18,7 +18,7 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testNoteHeadingWithGoodId() {
-        Matcher match = NoteLinePatterns.HEADING.matcher("!%=avd #cat:id");
+        final Matcher match = NoteLinePatterns.HEADING.matcher("!%=avd #cat:id");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
         assertGroup("%=", match, NoteLineParts.HEADING, 2);
         assertGroup("avd ", match, NoteLineParts.TITLE, 3);
@@ -29,7 +29,7 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testNoteHeadingWithBadId() {
-        Matcher match = NoteLinePatterns.HEADING.matcher("!%=avd #cat?id");
+        final Matcher match = NoteLinePatterns.HEADING.matcher("!%=avd #cat?id");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
         assertGroup("%=", match, NoteLineParts.HEADING, 2);
         assertGroup("avd ", match, NoteLineParts.TITLE, 3);
@@ -40,7 +40,7 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testNoteHeadingWithEmptyId() {
-        Matcher match = NoteLinePatterns.HEADING.matcher("!%=avd #");
+        final Matcher match = NoteLinePatterns.HEADING.matcher("!%=avd #");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
         assertGroup("%=", match, NoteLineParts.HEADING, 2);
         assertGroup("avd ", match, NoteLineParts.TITLE, 3);
@@ -50,7 +50,7 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testNoteHeadingWithNoId() {
-        Matcher match = NoteLinePatterns.HEADING.matcher("!%=avd");
+        final Matcher match = NoteLinePatterns.HEADING.matcher("!%=avd");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
         assertGroup("%=", match, NoteLineParts.HEADING, 2);
         assertGroup("avd", match, NoteLineParts.TITLE, 3);
@@ -59,7 +59,7 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testNoteHeadingWithNoHeading() {
-        Matcher match = NoteLinePatterns.HEADING.matcher("!%=#cat?id");
+        final Matcher match = NoteLinePatterns.HEADING.matcher("!%=#cat?id");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
         assertGroup("%=", match, NoteLineParts.HEADING, 2);
         assertGroup("#", match, NoteLineParts.IDER, 3);
@@ -69,7 +69,7 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testEmptyNoteHeading() {
-        Matcher match = NoteLinePatterns.HEADING.matcher("!%=");
+        final Matcher match = NoteLinePatterns.HEADING.matcher("!%=");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
         assertGroup("%=", match, NoteLineParts.HEADING, 2);
         assertEnd(match);
@@ -77,7 +77,7 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testNote() {
-        Matcher match = NoteLinePatterns.NOTE.matcher("!%details");
+        final Matcher match = NoteLinePatterns.NOTE.matcher("!%details");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
         assertGroup("%", match, NoteLineParts.NOTE, 2);
         assertGroup("details", match, NoteLineParts.TEXT, 3);
@@ -86,7 +86,7 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testEmptyNote() {
-        Matcher match = NoteLinePatterns.NOTE.matcher("!%");
+        final Matcher match = NoteLinePatterns.NOTE.matcher("!%");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
         assertGroup("%", match, NoteLineParts.NOTE, 2);
         assertEnd(match);
@@ -94,7 +94,7 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testCorrectSource() {
-        Matcher match = NoteLinePatterns.SOURCE.matcher("!>author:john smith");
+        final Matcher match = NoteLinePatterns.SOURCE.matcher("!>author:john smith");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
         assertGroup(">", match, NoteLineParts.SOURCE, 2);
         assertGroup("author", match, NoteLineParts.FIELD, 3);
@@ -105,7 +105,7 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testErrorSource() {
-        Matcher match = NoteLinePatterns.SOURCE.matcher("!>author\\:john smith");
+        final Matcher match = NoteLinePatterns.SOURCE.matcher("!>author\\:john smith");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
         assertGroup(">", match, NoteLineParts.SOURCE, 2);
         assertGroup("author\\:john smith", match, NoteLineParts.ERROR, 3);

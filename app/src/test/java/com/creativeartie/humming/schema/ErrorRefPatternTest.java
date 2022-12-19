@@ -12,7 +12,7 @@ class ErrorRefPatternTest extends PatternTestBase<ErrorRefPattern> {
 
     @Test
     void testFull() {
-        Matcher match = ErrorRefPattern.matcher("{addd}");
+        final Matcher match = ErrorRefPattern.matcher("{addd}");
         assertGroup("{", match, ErrorRefPattern.START, 1);
         assertGroup("addd", match, ErrorRefPattern.TEXT, 2);
         assertGroup("}", match, ErrorRefPattern.END, 3);
@@ -21,7 +21,7 @@ class ErrorRefPatternTest extends PatternTestBase<ErrorRefPattern> {
 
     @Test
     void testTextless() {
-        Matcher match = ErrorRefPattern.matcher("{}");
+        final Matcher match = ErrorRefPattern.matcher("{}");
         assertGroup("{", match, ErrorRefPattern.START, 1);
         assertGroup("}", match, ErrorRefPattern.END, 2);
         assertEnd(match);
@@ -29,7 +29,7 @@ class ErrorRefPatternTest extends PatternTestBase<ErrorRefPattern> {
 
     @Test
     void testNoEnd() {
-        Matcher match = ErrorRefPattern.matcher("{addd");
+        final Matcher match = ErrorRefPattern.matcher("{addd");
         assertGroup("{", match, ErrorRefPattern.START, 1);
         assertGroup("addd", match, ErrorRefPattern.TEXT, 2);
         assertEnd(match);
@@ -37,7 +37,7 @@ class ErrorRefPatternTest extends PatternTestBase<ErrorRefPattern> {
 
     @Test
     void testStartOnly() {
-        Matcher match = ErrorRefPattern.matcher("{");
+        final Matcher match = ErrorRefPattern.matcher("{");
         assertGroup("{", match, ErrorRefPattern.START, 1);
         assertEnd(match);
     }

@@ -11,8 +11,8 @@ import com.creativeartie.humming.schema.BasicTextPatterns.*;
 class BasicTextPatternsTest extends PatternTestBase<BasicTextPart> {
     @BeforeAll
     static void displayPattern() {
-        String raw = "abc";
-        for (BasicTextPatterns pattern : BasicTextPatterns.values()) {
+        final String raw = "abc";
+        for (final BasicTextPatterns pattern : BasicTextPatterns.values()) {
             splitPrintPattern(pattern.getPatternName(), pattern.matcher(raw));
         }
     }
@@ -20,14 +20,14 @@ class BasicTextPatternsTest extends PatternTestBase<BasicTextPart> {
     @ParameterizedTest
     @ValueSource(strings = { "abc", "百科全書", "あらゆる", "한국어", "العربية", "123", "Hello World Fun", "  Hello" })
     void testBasicId(String raw) {
-        Matcher matcher = BasicTextPatterns.ID.matcher(raw);
+        final Matcher matcher = BasicTextPatterns.ID.matcher(raw);
         assertGroup(raw, matcher, BasicTextPatterns.BasicTextPart.TEXT, 1);
         assertEnd(matcher);
     }
 
     @Test
     void testEscapedId() {
-        Matcher matcher = BasicTextPatterns.ID.matcher("avdd\\-ade");
+        final Matcher matcher = BasicTextPatterns.ID.matcher("avdd\\-ade");
         assertGroup("avdd", matcher, BasicTextPatterns.BasicTextPart.TEXT, 1);
         assertGroup("\\-", matcher, BasicTextPatterns.BasicTextPart.ESCAPE, 2);
         assertGroup("ade", matcher, BasicTextPatterns.BasicTextPart.TEXT, 3);
@@ -40,9 +40,9 @@ class BasicTextPatternsTest extends PatternTestBase<BasicTextPart> {
         if (ender.equals("n")) {
             ender = "\n";
         }
-        BasicTextPatterns tester = BasicTextPatterns.valueOf(type);
-        String raw = "text" + ender;
-        Matcher matcher = tester.matcher(raw);
+        final BasicTextPatterns tester = BasicTextPatterns.valueOf(type);
+        final String raw = "text" + ender;
+        final Matcher matcher = tester.matcher(raw);
         assertGroup("text", matcher, BasicTextPatterns.BasicTextPart.TEXT, 1);
         assertEnd(matcher);
     }

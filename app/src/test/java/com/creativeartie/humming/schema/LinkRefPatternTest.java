@@ -12,7 +12,7 @@ class LinkRefPatternTest extends PatternTestBase<LinkRefPattern> {
 
     @Test
     void testFull() {
-        Matcher match = LinkRefPattern.matcher("{@cat:id|title}");
+        final Matcher match = LinkRefPattern.matcher("{@cat:id|title}");
         assertGroup("{@", match, LinkRefPattern.START, 0);
         assertGroup("cat:id", match, LinkRefPattern.ID, 1);
         assertGroup("|", match, LinkRefPattern.SEP, 2);
@@ -23,7 +23,7 @@ class LinkRefPatternTest extends PatternTestBase<LinkRefPattern> {
 
     @Test
     void testNoEnd() {
-        Matcher match = LinkRefPattern.matcher("{@cat:id|title");
+        final Matcher match = LinkRefPattern.matcher("{@cat:id|title");
         assertGroup("{@", match, LinkRefPattern.START, 0);
         assertGroup("cat:id", match, LinkRefPattern.ID, 1);
         assertGroup("|", match, LinkRefPattern.SEP, 2);
@@ -33,7 +33,7 @@ class LinkRefPatternTest extends PatternTestBase<LinkRefPattern> {
 
     @Test
     void testSepOnly() {
-        Matcher match = LinkRefPattern.matcher("{@cat:id|}");
+        final Matcher match = LinkRefPattern.matcher("{@cat:id|}");
         assertGroup("{@", match, LinkRefPattern.START, 0);
         assertGroup("cat:id", match, LinkRefPattern.ID, 1);
         assertGroup("|", match, LinkRefPattern.SEP, 2);
@@ -43,7 +43,7 @@ class LinkRefPatternTest extends PatternTestBase<LinkRefPattern> {
 
     @Test
     void testNoTitle() {
-        Matcher match = LinkRefPattern.matcher("{@cat:id}");
+        final Matcher match = LinkRefPattern.matcher("{@cat:id}");
         assertGroup("{@", match, LinkRefPattern.START, 0);
         assertGroup("cat:id", match, LinkRefPattern.ID, 1);
         assertGroup("}", match, LinkRefPattern.END, 3);
@@ -52,7 +52,7 @@ class LinkRefPatternTest extends PatternTestBase<LinkRefPattern> {
 
     @Test
     void testError() {
-        Matcher match = LinkRefPattern.matcher("{@cat-id}");
+        final Matcher match = LinkRefPattern.matcher("{@cat-id}");
         assertGroup("{@", match, LinkRefPattern.START, 0);
         assertGroup("cat-id", match, LinkRefPattern.ERROR, 1);
         assertGroup("}", match, LinkRefPattern.END, 3);

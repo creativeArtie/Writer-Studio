@@ -2,10 +2,12 @@ package com.creativeartie.humming.schema;
 
 import java.util.regex.*;
 
+/**
+ * Patterns for basic text with escape chars.
+ */
 public enum BasicTextPatterns implements PatternEnum {
-    ID("[\\p{IsIdeographic}\\p{IsAlphabetic}\\p{IsDigit} _\t]+"),
-    LINK("[^\\|\\}\\n]+"), SPECIAL("[^\\}\\n]+"), TEXT("[^\\n]+"),
-    HEADING("[^\\n\\#]+"), CITE("[\\p{IsAlphabetic}_]+");
+    ID("[\\p{IsIdeographic}\\p{IsAlphabetic}\\p{IsDigit} _\t]+"), LINK("[^\\|\\}\\n]+"), SPECIAL("[^\\}\\n]+"),
+    TEXT("[^\\n]+"), HEADING("[^\\n\\#]+"), CITE("[\\p{IsAlphabetic}_]+");
 
     enum BasicTextPart implements PatternEnum {
         ESCAPE("\\\\."), TEXT("");
@@ -30,14 +32,13 @@ public enum BasicTextPatterns implements PatternEnum {
         public boolean runFind() {
             return true;
         }
-
     }
 
     private final String textPattern;
     private final String basePattern;
     private Pattern compiledPattern;
 
-    private BasicTextPatterns(String pat) {
+    BasicTextPatterns(String pat) {
         textPattern = pat;
         // @formatter:off
         basePattern = "(" +

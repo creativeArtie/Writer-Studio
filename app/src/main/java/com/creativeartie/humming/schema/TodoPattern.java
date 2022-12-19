@@ -4,9 +4,14 @@ import java.util.regex.*;
 
 import com.google.common.base.*;
 
+/**
+ * A placeholder for text in the text. A span version of
+ * {@link BasicLinePatterns#AGENDA}
+ *
+ * @see BasicLinePatterns#AGENDA
+ */
 public enum TodoPattern implements PatternEnum {
-    START("\\{\\!"), TEXT(BasicTextPatterns.SPECIAL.getRawPattern()),
-    END("\\}");
+    START("\\{\\!"), TEXT(BasicTextPatterns.SPECIAL.getRawPattern()), END("\\}");
 
     private static String fullPattern;
     private static Pattern matchPattern;
@@ -34,14 +39,14 @@ public enum TodoPattern implements PatternEnum {
         if (matchPattern == null) {
             matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
         }
-        Matcher match = matchPattern.matcher(text);
+        final Matcher match = matchPattern.matcher(text);
         Preconditions.checkArgument(match.find(), "No pattern found.");
         return match;
     }
 
     private final String pattern;
 
-    private TodoPattern(String pat) {
+    TodoPattern(String pat) {
         pattern = pat;
     }
 
@@ -54,5 +59,4 @@ public enum TodoPattern implements PatternEnum {
     public String getPatternName() {
         return name();
     }
-
 }

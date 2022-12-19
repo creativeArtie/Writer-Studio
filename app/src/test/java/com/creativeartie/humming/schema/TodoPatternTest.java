@@ -12,8 +12,8 @@ class TodoPatternTest extends PatternTestBase<TodoPattern> {
 
     @Test
     void testFullPattern() {
-        String raw = "{!Test}";
-        Matcher match = TodoPattern.matcher(raw);
+        final String raw = "{!Test}";
+        final Matcher match = TodoPattern.matcher(raw);
         assertGroup("{!", match, TodoPattern.START, 1);
         assertGroup("Test", match, TodoPattern.TEXT, 2);
         assertGroup("}", match, TodoPattern.END, 3);
@@ -22,8 +22,8 @@ class TodoPatternTest extends PatternTestBase<TodoPattern> {
 
     @Test
     void testNoEnd() {
-        String raw = "{!Test";
-        Matcher match = TodoPattern.matcher(raw);
+        final String raw = "{!Test";
+        final Matcher match = TodoPattern.matcher(raw);
         assertGroup("{!", match, TodoPattern.START, 1);
         assertGroup("Test", match, TodoPattern.TEXT, 2);
         assertEnd(match);
@@ -31,8 +31,8 @@ class TodoPatternTest extends PatternTestBase<TodoPattern> {
 
     @Test
     void testNoText() {
-        String raw = "{!}";
-        Matcher match = TodoPattern.matcher(raw);
+        final String raw = "{!}";
+        final Matcher match = TodoPattern.matcher(raw);
         assertGroup("{!", match, TodoPattern.START, 1);
         assertGroup("}", match, TodoPattern.END, 2);
         assertEnd(match);
@@ -40,8 +40,8 @@ class TodoPatternTest extends PatternTestBase<TodoPattern> {
 
     @Test
     void testStartOnly() {
-        String raw = "{!";
-        Matcher match = TodoPattern.matcher(raw);
+        final String raw = "{!";
+        final Matcher match = TodoPattern.matcher(raw);
         assertGroup("{!", match, TodoPattern.START, 1);
         assertEnd(match);
     }

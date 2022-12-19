@@ -4,6 +4,12 @@ import java.util.regex.*;
 
 import com.google.common.base.*;
 
+/**
+ * Reference link span to a {@link ReferenceLinePatterns#LINK}
+ *
+ * @see LinkRefSpan
+ * @see ReferenceLinePatterns
+ */
 public enum LinkRefPattern implements PatternEnum {
     START("\\{@"), ID(IdentityPattern.getFullPattern()), SEP("\\|"), TEXT(BasicTextPatterns.SPECIAL.getRawPattern()),
     END("\\}"), ERROR(BasicTextPatterns.SPECIAL.getRawPattern());
@@ -36,14 +42,14 @@ public enum LinkRefPattern implements PatternEnum {
         if (basePattern == null) {
             basePattern = Pattern.compile("^" + getFullPattern(true) + "$");
         }
-        Matcher match = basePattern.matcher(text);
+        final Matcher match = basePattern.matcher(text);
         Preconditions.checkArgument(match.find(), "Pattern does not match");
         return match;
     }
 
     private final String pattern;
 
-    private LinkRefPattern(String pat) {
+    LinkRefPattern(String pat) {
         pattern = pat;
     }
 

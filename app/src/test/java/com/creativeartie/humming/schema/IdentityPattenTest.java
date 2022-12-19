@@ -21,7 +21,7 @@ class IdentityPattenTest extends PatternTestBase<IdentityPattern> {
 
     @Test
     void testPassedId() {
-        Matcher match = IdentityPattern.matcher("category:id");
+        final Matcher match = IdentityPattern.matcher("category:id");
 
         assertGroup("category", match, IdentityPattern.NAME, 1);
         assertGroup(":", match, IdentityPattern.SEP, 2);

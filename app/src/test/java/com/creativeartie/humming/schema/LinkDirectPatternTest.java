@@ -18,8 +18,8 @@ class LinkDirectPatternTest extends PatternTestBase<LinkDirectPattern> {
 
     @Test
     void testFull() {
-        String raw = "{@@http://example.com|Example}";
-        Matcher match = LinkDirectPattern.matcher(raw);
+        final String raw = "{@@http://example.com|Example}";
+        final Matcher match = LinkDirectPattern.matcher(raw);
 
         assertGroup("{@@", match, LinkDirectPattern.START, 1);
         assertGroup("http://example.com", match, LinkDirectPattern.LINK, 2);
@@ -31,8 +31,8 @@ class LinkDirectPatternTest extends PatternTestBase<LinkDirectPattern> {
 
     @Test
     void testNoEnd() {
-        String raw = "{@@http://example.com|Example";
-        Matcher match = LinkDirectPattern.matcher(raw);
+        final String raw = "{@@http://example.com|Example";
+        final Matcher match = LinkDirectPattern.matcher(raw);
 
         assertGroup("{@@", match, LinkDirectPattern.START, 1);
         assertGroup("http://example.com", match, LinkDirectPattern.LINK, 2);
@@ -43,8 +43,8 @@ class LinkDirectPatternTest extends PatternTestBase<LinkDirectPattern> {
 
     @Test
     void testNoText() {
-        String raw = "{@@http://example.com|}";
-        Matcher match = LinkDirectPattern.matcher(raw);
+        final String raw = "{@@http://example.com|}";
+        final Matcher match = LinkDirectPattern.matcher(raw);
 
         assertGroup("{@@", match, LinkDirectPattern.START, 1);
         assertGroup("http://example.com", match, LinkDirectPattern.LINK, 2);
@@ -55,8 +55,8 @@ class LinkDirectPatternTest extends PatternTestBase<LinkDirectPattern> {
 
     @Test
     void testLinkOnlyWithEnd() {
-        String raw = "{@@http://example.com}";
-        Matcher match = LinkDirectPattern.matcher(raw);
+        final String raw = "{@@http://example.com}";
+        final Matcher match = LinkDirectPattern.matcher(raw);
 
         assertGroup("{@@", match, LinkDirectPattern.START, 1);
         assertGroup("http://example.com", match, LinkDirectPattern.LINK, 2);
@@ -66,8 +66,8 @@ class LinkDirectPatternTest extends PatternTestBase<LinkDirectPattern> {
 
     @Test
     void testLinkOnlyAndNoEnd() {
-        String raw = "{@@http://example.com";
-        Matcher match = LinkDirectPattern.matcher(raw);
+        final String raw = "{@@http://example.com";
+        final Matcher match = LinkDirectPattern.matcher(raw);
 
         assertGroup("{@@", match, LinkDirectPattern.START, 1);
         assertGroup("http://example.com", match, LinkDirectPattern.LINK, 2);

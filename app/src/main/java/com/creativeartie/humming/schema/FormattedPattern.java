@@ -5,29 +5,30 @@ import java.util.regex.*;
 
 import com.google.common.base.*;
 
+// TODO allow footnote references in footnote lines?
+/**
+ * A line of text with formatting and special spans.
+ */
 public enum FormattedPattern implements PatternEnum {
-    BOLD("\\*"), UNDERLINE("_"), ITALICS("`"),
-    LINK(LinkDirectPattern.getFullPattern()), TODO(TodoPattern.getFullPattern()),
-    REFER(ReferencePattern.getFullPattern()),
-    ERR(ErrorRefPattern.getFullPattern()), TEXT("");
+    BOLD("\\*"), UNDERLINE("_"), ITALICS("`"), LINK(LinkDirectPattern.getFullPattern()),
+    TODO(TodoPattern.getFullPattern()), REFER(ReferencePattern.getFullPattern()), ERR(ErrorRefPattern.getFullPattern()),
+    TEXT("");
 
     private static TreeMap<BasicTextPatterns, String> fullPatterns;
     private static TreeMap<BasicTextPatterns, Pattern> checkPatterns;
     private static TreeMap<BasicTextPatterns, Pattern> matchPatterns;
 
-    private static String
-        getFullPattern(boolean withName, BasicTextPatterns subtype) {
+    private static String getFullPattern(boolean withName, BasicTextPatterns subtype) {
         if (withName) {
-            StringBuilder pattern = new StringBuilder();
-
-            for (PatternEnum pat : values()) {
-                if (pat == TEXT) break;
+            final StringBuilder pattern = new StringBuilder();
+            for (final PatternEnum pat : values()) {
+                if (pat == TEXT)
+                    break;
                 pattern.append(pat.getPattern(withName) + "|");
             }
             pattern.append(
-                withName ? PatternEnum.namePattern(
-                    TEXT.getPatternName(), subtype.getRawPattern()
-                ) : subtype.getRawPattern()
+                    withName ? PatternEnum.namePattern(TEXT.getPatternName(), subtype.getRawPattern()) :
+                            subtype.getRawPattern()
             );
             return pattern.toString();
         }
@@ -39,10 +40,9 @@ public enum FormattedPattern implements PatternEnum {
             fullPatterns = new TreeMap<>();
         }
         if (!fullPatterns.containsKey(subtype)) {
-            String answer = getFullPattern(false, subtype);
+            final String answer = getFullPattern(false, subtype);
             fullPatterns.put(subtype, answer);
             return answer;
-
         }
         return fullPatterns.get(subtype);
     }
@@ -54,8 +54,7 @@ public enum FormattedPattern implements PatternEnum {
         }
         Pattern check, match;
         if (!checkPatterns.containsKey(subtype)) {
-            check =
-                Pattern.compile("^(" + getFullPattern(true, subtype) + ")*");
+            check = Pattern.compile("^(" + getFullPattern(true, subtype) + ")*");
             checkPatterns.put(subtype, check);
             match = Pattern.compile(getFullPattern(true, subtype));
             matchPatterns.put(subtype, match);
@@ -63,22 +62,19 @@ public enum FormattedPattern implements PatternEnum {
             check = checkPatterns.get(subtype);
             match = matchPatterns.get(subtype);
         }
-        Preconditions
-            .checkArgument(check.matcher(text).find(), "Pattern not found");
+        Preconditions.checkArgument(check.matcher(text).find(), "Pattern not found");
         return match.matcher(text);
     }
 
     private final String pattern;
 
-    private FormattedPattern(String pat) {
+    FormattedPattern(String pat) {
         pattern = pat;
     }
 
     @Override
     public String getRawPattern() {
-        Preconditions.checkState(
-            !pattern.isEmpty(), "No pattern for FormmatedPattern." + name()
-        );
+        Preconditions.checkState(!pattern.isEmpty(), "No pattern for FormmatedPattern." + name());
         return pattern;
     }
 
@@ -91,5 +87,4 @@ public enum FormattedPattern implements PatternEnum {
     public boolean runFind() {
         return true;
     }
-
 }

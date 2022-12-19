@@ -4,6 +4,14 @@ import java.util.regex.*;
 
 import com.google.common.base.*;
 
+/**
+ * For special spans that causes issues.
+ *
+ * @see LinkDirectPattern
+ * @see LinkRefPattern
+ * @see ReferencePattern
+ * @see TodoPattern
+ */
 public enum ErrorRefPattern implements PatternEnum {
     START("\\{"), TEXT(BasicTextPatterns.SPECIAL.getRawPattern()), END("\\}");
 
@@ -11,12 +19,12 @@ public enum ErrorRefPattern implements PatternEnum {
     private static Pattern matchPattern;
 
     private static String getFullPattern(boolean withName) {
-        return START.getPattern(withName) + TEXT.getPattern(withName) + "?" +
-            END.getPattern(withName) + "?";
+        return START.getPattern(withName) + TEXT.getPattern(withName) + "?" + END.getPattern(withName) + "?";
     }
 
     public static String getFullPattern() {
-        if (fullPattern == null) fullPattern = getFullPattern(false);
+        if (fullPattern == null)
+            fullPattern = getFullPattern(false);
         return fullPattern;
     }
 
@@ -24,14 +32,14 @@ public enum ErrorRefPattern implements PatternEnum {
         if (matchPattern == null) {
             matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
         }
-        Matcher answer = matchPattern.matcher(text);
+        final Matcher answer = matchPattern.matcher(text);
         Preconditions.checkArgument(answer.find(), "Pattern not matched");
         return answer;
     }
 
     private final String pattern;
 
-    private ErrorRefPattern(String pat) {
+    ErrorRefPattern(String pat) {
         pattern = pat;
     }
 
@@ -44,5 +52,4 @@ public enum ErrorRefPattern implements PatternEnum {
     public String getPatternName() {
         return name();
     }
-
 }
