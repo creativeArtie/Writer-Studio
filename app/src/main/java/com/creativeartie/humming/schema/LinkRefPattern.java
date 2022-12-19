@@ -19,8 +19,7 @@ public enum LinkRefPattern implements PatternEnum {
                 ID.getPattern(withName) +
                 "(" +
                     SEP.getPattern(withName) + TEXT.getPattern(withName) + "?" +
-                ")?" +
-                ")|" + ERROR.getRawPattern() + ")" +
+                ")?|" + ERROR.getPattern(withName) +
             ")" + END.getPattern(withName) + "?"
             ;
          // @formatter:on
