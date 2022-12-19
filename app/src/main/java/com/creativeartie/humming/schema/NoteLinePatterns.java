@@ -21,7 +21,6 @@ public enum NoteLinePatterns implements PatternEnum {
         }
     },
     NOTE() {
-
         @Override
         protected String getValuePattern(boolean withName) {
             return // @formatter:off
@@ -30,10 +29,8 @@ public enum NoteLinePatterns implements PatternEnum {
                 NoteLineParts.TEXT.getPattern(withName) + "?";
             //@formatter:on
         }
-
     },
     SOURCE {
-
         @Override
         protected String getValuePattern(boolean withName) {
             return // @formatter:off
@@ -46,17 +43,14 @@ public enum NoteLinePatterns implements PatternEnum {
                 ")|" + NoteLineParts.ERROR.getPattern(withName) + ")";
             //@formatter:on
         }
-
     };
 
     enum NoteLineParts implements PatternEnum {
-        STARTER("!"), NOTE("%"), HEADING("="), SOURCE(">"), SOURCER(":"),
+        STARTER("!"), NOTE("%"), HEADING("%="), SOURCE(">"), SOURCER(":"),
         TEXT(FormattedPattern.getFullPattern(BasicTextPatterns.TEXT)),
-        TITLE(FormattedPattern.getFullPattern(BasicTextPatterns.HEADING)),
-        IDER("#"), ID(IdentityPattern.getFullPattern()),
-        ERROR(BasicTextPatterns.TEXT.getRawPattern()),
-        FIELD(BasicTextPatterns.CITE.getRawPattern()),
-        VALUE(BasicTextPatterns.TEXT.getRawPattern());
+        TITLE(FormattedPattern.getFullPattern(BasicTextPatterns.HEADING)), IDER("#"),
+        ID(IdentityPattern.getFullPattern()), ERROR(BasicTextPatterns.TEXT.getRawPattern()),
+        FIELD(BasicTextPatterns.CITE.getRawPattern()), VALUE(BasicTextPatterns.TEXT.getRawPattern());
 
         private String rawPattern;
 
@@ -73,7 +67,6 @@ public enum NoteLinePatterns implements PatternEnum {
         public String getPatternName() {
             return name();
         }
-
     }
 
     private String rawPattern;
@@ -93,7 +86,8 @@ public enum NoteLinePatterns implements PatternEnum {
         }
         Matcher match = matchPattern.matcher(text);
 
-        if (match.find()) return match;
+        if (match.find())
+            return match;
         return null;
     }
 
@@ -103,5 +97,4 @@ public enum NoteLinePatterns implements PatternEnum {
     public String getPatternName() {
         return name();
     }
-
 }

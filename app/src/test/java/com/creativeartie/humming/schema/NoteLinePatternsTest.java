@@ -3,22 +3,24 @@ package com.creativeartie.humming.schema;
 import java.util.regex.*;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.*;
+import org.junit.jupiter.params.provider.*;
 
 import com.creativeartie.humming.schema.NoteLinePatterns.*;
 
 class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
     @BeforeAll
     static void displayPatterns() throws Exception {
-        splitPrintPattern("Heading", NoteLinePatterns.HEADING.matcher("!=abc"));
+        splitPrintPattern("Heading", NoteLinePatterns.HEADING.matcher("!%=abc"));
         splitPrintPattern("Note", NoteLinePatterns.NOTE.matcher("!%abc"));
         splitPrintPattern("Source", NoteLinePatterns.SOURCE.matcher("!>author:john smith"));
     }
 
     @Test
     void testNoteHeadingWithGoodId() {
-        Matcher match = NoteLinePatterns.HEADING.matcher("!=avd #cat:id");
+        Matcher match = NoteLinePatterns.HEADING.matcher("!%=avd #cat:id");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
-        assertGroup("=", match, NoteLineParts.HEADING, 2);
+        assertGroup("%=", match, NoteLineParts.HEADING, 2);
         assertGroup("avd ", match, NoteLineParts.TITLE, 3);
         assertGroup("#", match, NoteLineParts.IDER, 4);
         assertGroup("cat:id", match, NoteLineParts.ID, 5);
@@ -27,9 +29,9 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testNoteHeadingWithBadId() {
-        Matcher match = NoteLinePatterns.HEADING.matcher("!=avd #cat?id");
+        Matcher match = NoteLinePatterns.HEADING.matcher("!%=avd #cat?id");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
-        assertGroup("=", match, NoteLineParts.HEADING, 2);
+        assertGroup("%=", match, NoteLineParts.HEADING, 2);
         assertGroup("avd ", match, NoteLineParts.TITLE, 3);
         assertGroup("#", match, NoteLineParts.IDER, 4);
         assertGroup("cat?id", match, NoteLineParts.ERROR, 5);
@@ -38,9 +40,9 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testNoteHeadingWithEmptyId() {
-        Matcher match = NoteLinePatterns.HEADING.matcher("!=avd #");
+        Matcher match = NoteLinePatterns.HEADING.matcher("!%=avd #");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
-        assertGroup("=", match, NoteLineParts.HEADING, 2);
+        assertGroup("%=", match, NoteLineParts.HEADING, 2);
         assertGroup("avd ", match, NoteLineParts.TITLE, 3);
         assertGroup("#", match, NoteLineParts.IDER, 4);
         assertEnd(match);
@@ -48,18 +50,18 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testNoteHeadingWithNoId() {
-        Matcher match = NoteLinePatterns.HEADING.matcher("!=avd");
+        Matcher match = NoteLinePatterns.HEADING.matcher("!%=avd");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
-        assertGroup("=", match, NoteLineParts.HEADING, 2);
+        assertGroup("%=", match, NoteLineParts.HEADING, 2);
         assertGroup("avd", match, NoteLineParts.TITLE, 3);
         assertEnd(match);
     }
 
     @Test
     void testNoteHeadingWithNoHeading() {
-        Matcher match = NoteLinePatterns.HEADING.matcher("!=#cat?id");
+        Matcher match = NoteLinePatterns.HEADING.matcher("!%=#cat?id");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
-        assertGroup("=", match, NoteLineParts.HEADING, 2);
+        assertGroup("%=", match, NoteLineParts.HEADING, 2);
         assertGroup("#", match, NoteLineParts.IDER, 3);
         assertGroup("cat?id", match, NoteLineParts.ERROR, 4);
         assertEnd(match);
@@ -67,9 +69,9 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testEmptyNoteHeading() {
-        Matcher match = NoteLinePatterns.HEADING.matcher("!=");
+        Matcher match = NoteLinePatterns.HEADING.matcher("!%=");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
-        assertGroup("=", match, NoteLineParts.HEADING, 2);
+        assertGroup("%=", match, NoteLineParts.HEADING, 2);
         assertEnd(match);
     }
 
@@ -108,5 +110,15 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
         assertGroup(">", match, NoteLineParts.SOURCE, 2);
         assertGroup("author\\:john smith", match, NoteLineParts.ERROR, 3);
         assertEnd(match);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "=text", "!! todo ", "!=outline" })
+    void testNonNote(String text) {
+        Assertions.assertAll(
+                () -> Assertions.assertNull(NoteLinePatterns.HEADING.matcher(text), "Heading"),
+                () -> Assertions.assertNull(NoteLinePatterns.NOTE.matcher(text), "Note"),
+                () -> Assertions.assertNull(NoteLinePatterns.SOURCE.matcher(text), "Source")
+        );
     }
 }

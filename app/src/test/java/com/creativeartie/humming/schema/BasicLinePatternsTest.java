@@ -25,6 +25,11 @@ class BasicLinePatternsTest extends PatternTestBase<BasicLinePart> {
     }
 
     @Test
+    void testNonBreak() {
+        Assertions.assertNull(BasicLinePatterns.BREAK.matcher("abc"));
+    }
+
+    @Test
     void testNormal() {
         Matcher match = BasicLinePatterns.TEXT.matcher("\\a{aded}");
         assertGroup("\\a{aded}", match, BasicLinePart.FORMATTED, 1);

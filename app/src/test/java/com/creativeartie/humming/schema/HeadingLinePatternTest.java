@@ -21,6 +21,12 @@ class HeadingLinePatternTest extends PatternTestBase<HeadingLinePattern> {
         Assertions.assertEquals(expect, StatusPattern.getStatus(input));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = { "", "!todo text", "normal text", "!*footnote=note data" })
+    void testNonHeading(String text) {
+        Assertions.assertNull(HeadingLinePattern.matcher(text));
+    }
+
     @Test
     void testOutline() {
         Matcher match = HeadingLinePattern.matcher("!==\\=*Hello* `World`!!!! #stub 1");
