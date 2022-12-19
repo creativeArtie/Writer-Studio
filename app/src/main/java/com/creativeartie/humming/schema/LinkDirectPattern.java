@@ -5,7 +5,7 @@ import java.util.regex.*;
 import com.google.common.base.*;
 
 public enum LinkDirectPattern implements PatternEnum {
-    START("\\{\\@"), LINK(BasicTextPatterns.LINK.getRawPattern()), SEP("\\|"),
+    START("\\{\\@@"), LINK(BasicTextPatterns.LINK.getRawPattern()), SEP("\\|"),
     TEXT(BasicTextPatterns.SPECIAL.getRawPattern()), END("\\}");
 
     private static String fullPattern;
@@ -54,5 +54,4 @@ public enum LinkDirectPattern implements PatternEnum {
     public String getPatternName() {
         return name();
     }
-
 }
