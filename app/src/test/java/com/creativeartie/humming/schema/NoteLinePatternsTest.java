@@ -7,19 +7,11 @@ import org.junit.jupiter.api.*;
 import com.creativeartie.humming.schema.NoteLinePatterns.*;
 
 class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
-
     @BeforeAll
     static void displayPatterns() throws Exception {
-        System.out.println(
-            NoteLinePatterns.HEADING.matcher("!=abc").pattern().pattern()
-        );
-        System.out.println(
-            NoteLinePatterns.NOTE.matcher("!%abc").pattern().pattern()
-        );
-        System.out.println(
-            NoteLinePatterns.SOURCE.matcher("!>author:john smith").pattern()
-                .pattern()
-        );
+        splitPrintPattern("Heading", NoteLinePatterns.HEADING.matcher("!=abc"));
+        splitPrintPattern("Note", NoteLinePatterns.NOTE.matcher("!%abc"));
+        splitPrintPattern("Source", NoteLinePatterns.SOURCE.matcher("!>author:john smith"));
     }
 
     @Test
@@ -111,12 +103,10 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testErrorSource() {
-        Matcher match =
-            NoteLinePatterns.SOURCE.matcher("!>author\\:john smith");
+        Matcher match = NoteLinePatterns.SOURCE.matcher("!>author\\:john smith");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
         assertGroup(">", match, NoteLineParts.SOURCE, 2);
         assertGroup("author\\:john smith", match, NoteLineParts.ERROR, 3);
         assertEnd(match);
     }
-
 }

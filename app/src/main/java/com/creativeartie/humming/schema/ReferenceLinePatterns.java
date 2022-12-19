@@ -4,7 +4,6 @@ import java.util.regex.*;
 
 public enum ReferenceLinePatterns implements PatternEnum {
     FOOTNOTE {
-
         @Override
         protected String getValuePattern(boolean withName) {
             return // @formatter:off
@@ -18,11 +17,9 @@ public enum ReferenceLinePatterns implements PatternEnum {
                     ")|" + RefLineParts.ERROR.getPattern(withName) +
                 ")";
          // @formatter:on
-
         }
     },
     ENDNOTE {
-
         @Override
         protected String getValuePattern(boolean withName) {
             return // @formatter:off
@@ -39,7 +36,6 @@ public enum ReferenceLinePatterns implements PatternEnum {
         }
     },
     LINK {
-
         @Override
         protected String getValuePattern(boolean withName) {
             return // @formatter:off
@@ -57,10 +53,8 @@ public enum ReferenceLinePatterns implements PatternEnum {
     };
 
     public enum RefLineParts implements PatternEnum {
-        START("!"), FOOTNOTE("\\^"), ENDNOTE("\\*"), LINK("\\@"), SEP("="),
-        ID(IdentityPattern.getFullPattern()),
-        TEXT(BasicTextPatterns.TEXT.getRawPattern()),
-        ERROR(BasicTextPatterns.TEXT.getRawPattern());
+        START("!"), FOOTNOTE("\\^"), ENDNOTE("\\*"), LINK("\\@"), SEP("="), ID(IdentityPattern.getFullPattern()),
+        TEXT(BasicTextPatterns.TEXT.getRawPattern()), ERROR(BasicTextPatterns.TEXT.getRawPattern());
 
         private final String rawPattern;
 
@@ -77,7 +71,6 @@ public enum ReferenceLinePatterns implements PatternEnum {
         public String getPatternName() {
             return name();
         }
-
     }
 
     protected abstract String getValuePattern(boolean withName);
@@ -99,7 +92,8 @@ public enum ReferenceLinePatterns implements PatternEnum {
         }
         Matcher match = matchPattern.matcher(text);
 
-        if (match.find()) return match;
+        if (match.find())
+            return match;
         return null;
     }
 
@@ -107,5 +101,4 @@ public enum ReferenceLinePatterns implements PatternEnum {
     public String getPatternName() {
         return name();
     }
-
 }

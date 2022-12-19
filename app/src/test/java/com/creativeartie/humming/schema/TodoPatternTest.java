@@ -5,10 +5,9 @@ import java.util.regex.*;
 import org.junit.jupiter.api.*;
 
 class TodoPatternTest extends PatternTestBase<TodoPattern> {
-
     @BeforeAll
     static void displayPattern() throws Exception {
-        System.out.println(TodoPattern.matcher("{!ad}").pattern().pattern());
+        splitPrintPattern(TodoPattern.matcher("{!ad}"));
     }
 
     @Test
@@ -46,5 +45,4 @@ class TodoPatternTest extends PatternTestBase<TodoPattern> {
         assertGroup("{!", match, TodoPattern.START, 1);
         assertEnd(match);
     }
-
 }

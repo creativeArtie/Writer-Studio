@@ -7,10 +7,9 @@ import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
 class IdentityPattenTest extends PatternTestBase<IdentityPattern> {
-
     @BeforeAll
     static void displayPattern() {
-        System.out.println(IdentityPattern.matcher("abc").pattern().pattern());
+        splitPrintPattern("Matcher", IdentityPattern.matcher("abc"));
         System.out.println(IdentityPattern.getFullPattern());
     }
 
@@ -29,5 +28,4 @@ class IdentityPattenTest extends PatternTestBase<IdentityPattern> {
         assertGroup("id", match, IdentityPattern.NAME, 3);
         assertEnd(match);
     }
-
 }

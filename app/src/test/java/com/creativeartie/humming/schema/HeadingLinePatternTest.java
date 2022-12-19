@@ -7,24 +7,15 @@ import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
 import com.creativeartie.humming.schema.HeadingLinePattern.*;
-import com.google.common.base.*;
 
 class HeadingLinePatternTest extends PatternTestBase<HeadingLinePattern> {
-
     @BeforeAll
     static void displayPattern() throws Exception {
-        String pattern =
-            HeadingLinePattern.matcher("!=abc").pattern().pattern();
-        pattern = Joiner.on("\n(?").join(Splitter.on("(?").split(pattern));
-        System.out.println(pattern);
-
+        splitPrintPattern(HeadingLinePattern.matcher("!=abc"));
     }
 
     @ParameterizedTest
-    @CsvSource(
-        { "#stub,STUB", "#outLine,OUTLINE", "#DRAFT 12,DRAFT",
-            "#random add,OTHERS" }
-    )
+    @CsvSource({ "#stub,STUB", "#outLine,OUTLINE", "#DRAFT 12,DRAFT", "#random add,OTHERS" })
     void testStatus(String input, String pattern) {
         StatusPattern expect = StatusPattern.valueOf(pattern);
         Assertions.assertEquals(expect, StatusPattern.getStatus(input));
@@ -32,13 +23,10 @@ class HeadingLinePatternTest extends PatternTestBase<HeadingLinePattern> {
 
     @Test
     void testOutline() {
-        Matcher match =
-            HeadingLinePattern.matcher("!==\\=*Hello* `World`!!!! #stub 1");
+        Matcher match = HeadingLinePattern.matcher("!==\\=*Hello* `World`!!!! #stub 1");
         assertGroup("!", match, HeadingLinePattern.OUTLINE, 1);
         assertGroup("==", match, HeadingLinePattern.LEVEL, 2);
-        assertGroup(
-            "\\=*Hello* `World`!!!! ", match, HeadingLinePattern.TEXT, 3
-        );
+        assertGroup("\\=*Hello* `World`!!!! ", match, HeadingLinePattern.TEXT, 3);
         assertGroup("#stub", match, HeadingLinePattern.STATUS, 4);
         assertGroup(" 1", match, HeadingLinePattern.DETAILS, 5);
         assertEnd(match);
@@ -46,8 +34,7 @@ class HeadingLinePatternTest extends PatternTestBase<HeadingLinePattern> {
 
     @Test
     void testHeading() {
-        Matcher match =
-            HeadingLinePattern.matcher("==*Hello* `World`!!!! #OUtLine");
+        Matcher match = HeadingLinePattern.matcher("==*Hello* `World`!!!! #OUtLine");
         assertGroup("==", match, HeadingLinePattern.LEVEL, 1);
         assertGroup("*Hello* `World`!!!! ", match, HeadingLinePattern.TEXT, 2);
         assertGroup("#OUtLine", match, HeadingLinePattern.STATUS, 3);
@@ -84,5 +71,4 @@ class HeadingLinePatternTest extends PatternTestBase<HeadingLinePattern> {
         assertGroup("=", match, HeadingLinePattern.TEXT, 2);
         assertEnd(match);
     }
-
 }

@@ -3,6 +3,7 @@
 	<name>hummingbird-writer</name>
 	<comment></comment>
 	<projects>
+		<project>app</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -7,11 +7,9 @@ import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
 class ReferencePatternTest extends PatternTestBase<ReferencePattern> {
-
     @BeforeAll
     static void displayPattern() throws Exception {
-        System.out
-            .println(ReferencePattern.matcher("{^ad}").pattern().pattern());
+        splitPrintPattern(ReferencePattern.matcher("{^ad}"));
     }
 
     @ParameterizedTest
@@ -44,5 +42,4 @@ class ReferencePatternTest extends PatternTestBase<ReferencePattern> {
     void testError(String raw) {
         assertFail(() -> ReferencePattern.matcher(raw));
     }
-
 }

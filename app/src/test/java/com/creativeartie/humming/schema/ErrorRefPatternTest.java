@@ -5,11 +5,9 @@ import java.util.regex.*;
 import org.junit.jupiter.api.*;
 
 class ErrorRefPatternTest extends PatternTestBase<ErrorRefPattern> {
-
     @BeforeAll
     static void displayPattern() throws Exception {
-        System.out
-            .println(ErrorRefPattern.matcher("{dda}").pattern().pattern());
+        splitPrintPattern(ErrorRefPattern.matcher("{dda}"));
     }
 
     @Test
@@ -43,5 +41,4 @@ class ErrorRefPatternTest extends PatternTestBase<ErrorRefPattern> {
         assertGroup("{", match, ErrorRefPattern.START, 1);
         assertEnd(match);
     }
-
 }

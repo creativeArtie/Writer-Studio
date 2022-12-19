@@ -4,15 +4,10 @@ import java.util.regex.*;
 
 import org.junit.jupiter.api.*;
 
-import com.google.common.base.*;
-
 class ListLinePatternTest extends PatternTestBase<ListLinePattern> {
-
     @BeforeAll
     static void displayPattern() throws Exception {
-        String pattern = ListLinePattern.matcher("#").pattern().pattern();
-        pattern = Joiner.on("\n(?").join(Splitter.on("(?").split(pattern));
-        System.out.println(pattern);
+        splitPrintPattern(ListLinePattern.matcher("#"));
     }
 
     @Test
@@ -38,5 +33,4 @@ class ListLinePatternTest extends PatternTestBase<ListLinePattern> {
         assertGroup("--", match, ListLinePattern.TEXT, 2);
         assertEnd(match);
     }
-
 }

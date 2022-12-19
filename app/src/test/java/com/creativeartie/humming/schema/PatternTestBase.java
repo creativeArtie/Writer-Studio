@@ -5,25 +5,36 @@ import java.util.regex.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.*;
 
-public class PatternTestBase<T extends PatternEnum> {
+import com.google.common.base.*;
 
+public class PatternTestBase<T extends PatternEnum> {
     private int expectedLength;
     private Class<? extends PatternEnum> patternClass;
 
-    protected String
-        assertGroup(String expect, Matcher match, T pattern, int group) {
-        String message = "Match " + Integer.toString(group);
+    protected String assertGroup(String expect, Matcher match, T pattern, int group) {
+        String message = "Matching " + pattern.getPatternName() + " group " + Integer.toString(group);
         String matched = pattern.group(match);
         Assertions.assertEquals(expect, matched, message);
         expectedLength += expect.length();
         patternClass = pattern.getClass();
         return matched;
-
     }
 
     @BeforeEach
     protected void resetCounter() {
         expectedLength = 0;
+    }
+
+    public static void splitPrintPattern(String name, Matcher match) {
+        System.out.println(name);
+        splitPrintPattern(match);
+        System.out.println();
+    }
+
+    public static void splitPrintPattern(Matcher match) {
+        System.out.println(
+                Joiner.on("\n(?").join(Splitter.on("(?").split(match.pattern().pattern())).replaceFirst("\n", "")
+        );
     }
 
     protected void assertEnd(Matcher match) {
@@ -38,6 +49,5 @@ public class PatternTestBase<T extends PatternEnum> {
 
     protected void assertFail(Executable test) {
         Assertions.assertThrows(IllegalArgumentException.class, test);
-
     }
 }

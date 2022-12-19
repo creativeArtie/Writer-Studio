@@ -10,11 +10,10 @@ import org.junit.jupiter.params.provider.*;
  * testing LinkPattern. All passed test is copy of {@link #testFull} with small
  * edits.
  */
-class LinkPatternTest extends PatternTestBase<LinkDirectPattern> {
-
+class LinkDirectPatternTest extends PatternTestBase<LinkDirectPattern> {
     @BeforeAll
     static void displayTest() {
-        System.out.println(LinkDirectPattern.matcher("{@ad}").pattern().pattern());
+        splitPrintPattern(LinkDirectPattern.matcher("{@ad}"));
     }
 
     @Test
@@ -80,5 +79,4 @@ class LinkPatternTest extends PatternTestBase<LinkDirectPattern> {
     void testErrors(String raw) {
         assertFail(() -> LinkDirectPattern.matcher(raw));
     }
-
 }

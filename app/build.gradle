@@ -42,8 +42,6 @@ application {
     // Define the main class for the application.
     mainClass = 'com.creativeartie.writer.writing.Main'
 }
-
-tasks.named('test') {
-    // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
-}
+test {
+   useJUnitPlatform()
+  }

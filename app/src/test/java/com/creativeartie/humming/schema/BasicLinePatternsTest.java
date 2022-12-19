@@ -9,20 +9,12 @@ import org.junit.jupiter.params.provider.*;
 import com.creativeartie.humming.schema.BasicLinePatterns.*;
 
 class BasicLinePatternsTest extends PatternTestBase<BasicLinePart> {
-
     @BeforeAll
     static void displayPattern() throws Exception {
-        System.out.println(
-            BasicLinePatterns.BREAK.matcher("***").pattern().pattern()
-        );
-        System.out
-            .println(BasicLinePatterns.TEXT.matcher("abc").pattern().pattern());
-        System.out.println(
-            BasicLinePatterns.AGENDA.matcher("!avd").pattern().pattern()
-        );
-        System.out.println(
-            BasicLinePatterns.QUOTE.matcher(">add").pattern().pattern()
-        );
+        splitPrintPattern("Break", BasicLinePatterns.BREAK.matcher("***"));
+        splitPrintPattern("Text", BasicLinePatterns.TEXT.matcher("abc"));
+        splitPrintPattern("Agenda", BasicLinePatterns.AGENDA.matcher("!avd"));
+        splitPrintPattern("Quote", BasicLinePatterns.QUOTE.matcher(">add"));
     }
 
     @Test
@@ -80,7 +72,5 @@ class BasicLinePatternsTest extends PatternTestBase<BasicLinePart> {
     void testError(String text, String linePattern) {
         BasicLinePatterns pattern = BasicLinePatterns.valueOf(linePattern);
         Assertions.assertNull(pattern.matcher(text));
-
     }
-
 }

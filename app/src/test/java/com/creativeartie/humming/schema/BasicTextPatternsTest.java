@@ -9,23 +9,16 @@ import org.junit.jupiter.params.provider.*;
 import com.creativeartie.humming.schema.BasicTextPatterns.*;
 
 class BasicTextPatternsTest extends PatternTestBase<BasicTextPart> {
-
     @BeforeAll
     static void displayPattern() {
         String raw = "abc";
         for (BasicTextPatterns pattern : BasicTextPatterns.values()) {
-            System.out.printf(
-                "%10s: %s\n", pattern.getPatternName(),
-                pattern.matcher(raw).pattern().pattern()
-            );
+            splitPrintPattern(pattern.getPatternName(), pattern.matcher(raw));
         }
     }
 
     @ParameterizedTest
-    @ValueSource(
-        strings = { "abc", "百科全書", "あらゆる", "한국어", "العربية", "123",
-            "Hello World Fun", "  Hello" }
-    )
+    @ValueSource(strings = { "abc", "百科全書", "あらゆる", "한국어", "العربية", "123", "Hello World Fun", "  Hello" })
     void testBasicId(String raw) {
         Matcher matcher = BasicTextPatterns.ID.matcher(raw);
         assertGroup(raw, matcher, BasicTextPatterns.BasicTextPart.TEXT, 1);
@@ -42,10 +35,7 @@ class BasicTextPatternsTest extends PatternTestBase<BasicTextPart> {
     }
 
     @ParameterizedTest
-    @CsvSource(
-        { "n,ID", "-,ID", "|,LINK", "},LINK", "n,LINK", "},SPECIAL",
-            "n,SPECIAL" }
-    )
+    @CsvSource({ "n,ID", "-,ID", "|,LINK", "},LINK", "n,LINK", "},SPECIAL", "n,SPECIAL" })
     void testWithLeftover(String ender, String type) {
         if (ender.equals("n")) {
             ender = "\n";
@@ -56,5 +46,4 @@ class BasicTextPatternsTest extends PatternTestBase<BasicTextPart> {
         assertGroup("text", matcher, BasicTextPatterns.BasicTextPart.TEXT, 1);
         assertEnd(matcher);
     }
-
 }
