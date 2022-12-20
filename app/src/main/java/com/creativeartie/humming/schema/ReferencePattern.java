@@ -2,8 +2,6 @@ package com.creativeartie.humming.schema;
 
 import java.util.regex.*;
 
-import com.google.common.base.*;
-
 /**
  * List of references, excluding links. Links references are defined in
  * {@link LinkRefPattern}. Spans declared here are:
@@ -51,8 +49,8 @@ public enum ReferencePattern implements PatternEnum {
             matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
         }
         final Matcher answer = matchPattern.matcher(text);
-        Preconditions.checkArgument(answer.find(), "Pattern not found");
-        return answer;
+        if (answer.find()) return answer;
+        return null;
     }
 
     private final String pattern;

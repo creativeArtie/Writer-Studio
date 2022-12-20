@@ -22,8 +22,7 @@ public enum FormattedPattern implements PatternEnum {
         if (withName) {
             final StringBuilder pattern = new StringBuilder();
             for (final PatternEnum pat : values()) {
-                if (pat == TEXT)
-                    break;
+                if (pat == TEXT) break;
                 pattern.append(pat.getPattern(withName) + "|");
             }
             pattern.append(
@@ -62,8 +61,9 @@ public enum FormattedPattern implements PatternEnum {
             check = checkPatterns.get(subtype);
             match = matchPatterns.get(subtype);
         }
-        Preconditions.checkArgument(check.matcher(text).find(), "Pattern not found");
-        return match.matcher(text);
+        if (check.matcher(text).find()) return match.matcher(text);
+
+        return null;
     }
 
     private final String pattern;

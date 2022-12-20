@@ -2,8 +2,6 @@ package com.creativeartie.humming.schema;
 
 import java.util.regex.*;
 
-import com.google.common.base.*;
-
 public enum IdentityPattern implements PatternEnum {
     SEP(":"), NAME(BasicTextPatterns.ID.getRawPattern());
 
@@ -37,8 +35,9 @@ public enum IdentityPattern implements PatternEnum {
             }
             matchPattern = Pattern.compile(pattern.toString());
         }
-        Preconditions.checkArgument(checkPattern.matcher(text).find(), "Pattern does not match Id");
-        return matchPattern.matcher(text);
+        if (checkPattern.matcher(text).find()) return matchPattern.matcher(text);
+
+        return null;
     }
 
     private String pattern;

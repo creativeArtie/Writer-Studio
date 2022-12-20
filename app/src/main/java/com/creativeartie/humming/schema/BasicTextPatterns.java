@@ -9,7 +9,7 @@ public enum BasicTextPatterns implements PatternEnum {
     ID("[\\p{IsIdeographic}\\p{IsAlphabetic}\\p{IsDigit} _\t]+"), LINK("[^\\|\\}\\n]+"), SPECIAL("[^\\}\\n]+"),
     TEXT("[^\\n]+"), HEADING("[^\\n\\#]+"), CITE("[\\p{IsAlphabetic}_]+");
 
-    enum BasicTextPart implements PatternEnum {
+    public enum BasicTextPart implements PatternEnum {
         ESCAPE("\\\\."), TEXT("");
 
         private final String pattern;
@@ -59,7 +59,8 @@ public enum BasicTextPatterns implements PatternEnum {
             // @formatter:on
             );
         }
-        return compiledPattern.matcher(text);
+        Matcher match = compiledPattern.matcher(text);
+        return match;
     }
 
     @Override

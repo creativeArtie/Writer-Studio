@@ -1,5 +1,7 @@
 package com.creativeartie.humming.schema;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.regex.*;
 
 import org.junit.jupiter.api.*;
@@ -40,6 +42,6 @@ class ReferencePatternTest extends PatternTestBase<ReferencePattern> {
     @ParameterizedTest
     @ValueSource(strings = { "{#avd}", "{^^abc}", "{^", "{^}" })
     void testError(String raw) {
-        assertFail(() -> ReferencePattern.matcher(raw));
+        assertNull(ReferencePattern.matcher(raw));
     }
 }

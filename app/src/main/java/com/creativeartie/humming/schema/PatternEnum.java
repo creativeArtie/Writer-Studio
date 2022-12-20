@@ -1,9 +1,6 @@
 package com.creativeartie.humming.schema;
 
-import java.util.*;
 import java.util.regex.*;
-
-import com.creativeartie.humming.document.*;
 
 /**
  * Base class of all Pattern
@@ -66,8 +63,7 @@ interface PatternEnum {
     /**
      * Use the matcher. Almost the same as
      * {@code matcher.group(PatternEnum.VALUE.getPatternName()} (aka.
-     * {@code PatternEnum.VALUE.match(matcher)} ) but it will also do a find call as
-     * needed.
+     * {@code PatternEnum.VALUE.match(matcher)} )
      *
      * @param matcher
      *        matcher to use
@@ -75,15 +71,7 @@ interface PatternEnum {
      * @return result of matcher or null (if none found)
      */
     default String group(Matcher matcher) {
-        if (runFind() && !matcher.find()) {
-            return null;
-        }
         return matcher.group(getPatternName());
-    }
-
-    /// TODO delete/move PatternEnum#addStyles?
-    default void addStyles(Span span, StyleClasses... styles) {
-        final ArrayList<StyleClasses> all = new ArrayList<>(span.getInheritedStyles());
     }
 
     /**

@@ -11,7 +11,21 @@ public class PatternTestBase<T extends PatternEnum> {
     private int expectedLength;
     private Class<? extends PatternEnum> patternClass;
 
+    /**
+     * Asserts a PatternEnum against an expected text
+     *
+     * @param expect
+     * @param match
+     *        the Matcher, will call {@linkplain Matcher#find()} as needed
+     * @param pattern
+     * @param group
+     *
+     * @return
+     */
     protected String assertGroup(String expect, Matcher match, T pattern, int group) {
+        if (pattern.runFind()) {
+            match.find();
+        }
         final String message = "Matching " + pattern.getPatternName() + " group " + Integer.toString(group);
         final String matched = pattern.group(match);
         Assertions.assertEquals(expect, matched, message);

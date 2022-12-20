@@ -20,13 +20,12 @@ import com.google.common.collect.*;
  * @author wai
  */
 public class Document {
-
     /**
      * Adds styles that is unknown until the syntax is
      *
      * @author wai
      */
-    public static interface CheckedIdStyle {
+    public static interface PostBuildExecutor {
         public void update(Document builder);
     }
 
@@ -41,8 +40,7 @@ public class Document {
         }
 
         private void addStyles(List<SpanStyles> styles) {
-            final ImmutableList.Builder<String> builder =
-                ImmutableList.builder();
+            final ImmutableList.Builder<String> builder = ImmutableList.builder();
             for (final SpanStyles style : styles) {
                 builder.add(style.getStyle());
             }
@@ -57,15 +55,15 @@ public class Document {
      * printing style for debugging purposes.
      *
      * @param matcher
-     *                the matcher to use
+     *        the matcher to use
      * @param group
-     *                the matcher group to use
+     *        the matcher group to use
      * @param styles
-     *                what style has been added
+     *        what style has been added
      */
-    private void
-        printMessage(Matcher matcher, String group, List<SpanStyles> styles) {
-        if (!isDebug) return;
+    private void printMessage(Matcher matcher, String group, List<SpanStyles> styles) {
+        if (!isDebug)
+            return;
         String groupName, groupText;
         int groupStart, groupEnd;
         if (group.isBlank()) {
@@ -80,25 +78,24 @@ public class Document {
             groupEnd = matcher.end(group);
         }
         docText += groupText;
-        // System.out.printf(
-        // "For %8s (%2d - %2d) is styled %s: %s (format: %s)\n", groupName,
-        // groupStart, groupEnd, styles, "\"" + groupText + "\"", matcher
-        // .pattern().pattern()
-        // );
         System.out.printf(
-            "For %8s (%2d - %2d) is styled %s: %s\n", groupName, groupStart,
-            groupEnd, styles, "\"" + groupText + "\""
+                "For %8s (%2d - %2d) is styled %s: %s (format: %s)\n", groupName, groupStart, groupEnd, styles,
+                "\"" + groupText + "\"", matcher.pattern().pattern()
+        );
+        System.out.printf(
+                "For %8s (%2d - %2d) is styled %s: %s\n", groupName, groupStart, groupEnd, styles,
+                "\"" + groupText + "\""
         );
     }
 
-    private StyleSpans<Collection<String>>
-        printStyle(StyleSpans<Collection<String>> styleSpans) {
-        if (!isDebug) return styleSpans;
+    private StyleSpans<Collection<String>> printStyle(StyleSpans<Collection<String>> styleSpans) {
+        if (!isDebug)
+            return styleSpans;
         int start = 0;
         for (StyleSpan<Collection<String>> style : styleSpans) {
             System.out.printf(
-                "%s: \"%s\"\n", Joiner.on(" ").join(style.getStyle()),
-                docText.substring(start, start + style.getLength())
+                    "%s: \"%s\"\n", Joiner.on(" ").join(style.getStyle()),
+                    docText.substring(start, start + style.getLength())
             );
             start += style.getLength();
         }
@@ -113,7 +110,7 @@ public class Document {
     private ArrayListMultimap<IdTypes, String> idList;
 
     // Methods add more styles for ids
-    private final ArrayList<CheckedIdStyle> checkedIdStyle;
+    private final ArrayList<PostBuildExecutor> postBuildExecutors;
 
     public Document(boolean debug) {
         isDebug = debug;
@@ -122,44 +119,44 @@ public class Document {
         }
         styleList = new ArrayList<>();
         idList = ArrayListMultimap.create();
-        checkedIdStyle = new ArrayList<>();
+        postBuildExecutors = new ArrayList<>();
         docText = "";
     }
 
     /**
      * Add style with a group name
      *
-     * @param  matcher
-     *                 the matcher to use
-     * @param  group
-     *                 the name of the group
-     * @param  styles
-     *                 the style classes to add
-     * @return         the index of this style
-     * @see            #addStyle(Matcher, String, SpanStyles...)
+     * @param matcher
+     *        the matcher to use
+     * @param group
+     *        the name of the group
+     * @param styles
+     *        the style classes to add
+     *
+     * @return the index of this style
+     *
+     * @see #addStyle(Matcher, String, SpanStyles...)
      */
-    protected int
-        addStyle(Matcher matcher, String name, List<SpanStyles> styles) {
-        Preconditions
-            .checkArgument(matcher.group(name) != null, "Match is null");
+    protected int addStyle(Matcher matcher, String name, List<SpanStyles> styles) {
+        Preconditions.checkArgument(matcher.group(name) != null, "Match is null");
 
         printMessage(matcher, name, styles);
 
-        styleList.add(
-            new StyleData(matcher.end(name) - matcher.start(name), styles)
-        );
+        styleList.add(new StyleData(matcher.end(name) - matcher.start(name), styles));
         return styleList.size() - 1;
     }
 
     /**
      * Add style
-     * 
-     * @param  matcher
-     *                 the matcher to use
-     * @param  styles
-     *                 the style classes to add
-     * @return         the index of this style
-     * @see            #addStyle(Matcher, SpanStyles...)
+     *
+     * @param matcher
+     *        the matcher to use
+     * @param styles
+     *        the style classes to add
+     *
+     * @return the index of this style
+     *
+     * @see #addStyle(Matcher, SpanStyles...)
      */
     protected int addStyle(Matcher matcher, List<SpanStyles> styles) {
         Preconditions.checkArgument(matcher.group() != null, "Match is null");
@@ -171,21 +168,21 @@ public class Document {
     /**
      * Add style without names
      *
-     * @param  text
-     *                the text to use
-     * @param  styles
-     *                the styles class to add
-     * @return        the index of this style
-     * @see           #addTextStyle(String, SpanStyles...)
+     * @param text
+     *        the text to use
+     * @param styles
+     *        the styles class to add
+     *
+     * @return the index of this style
+     *
+     * @see #addTextStyle(String, SpanStyles...)
      */
     protected int addTextStyle(String text, List<SpanStyles> styles) {
         Preconditions.checkArgument(!text.isEmpty(), "Text is empty");
         docText += text;
 
-        if (isDebug) System.out.printf(
-            "For text of length %3d is styled %s: %s\n", text.length(), styles,
-            text
-        );
+        if (isDebug)
+            System.out.printf("For text of length %3d is styled %s: %s\n", text.length(), styles, text);
         styleList.add(new StyleData(text.length(), styles));
         return styleList.size() - 1;
     }
@@ -196,9 +193,7 @@ public class Document {
      * @return the list of styles
      */
     StyleSpans<Collection<String>> getStyles() {
-        final StyleSpansBuilder<Collection<String>> styleSpans =
-            new StyleSpansBuilder<>();
-
+        final StyleSpansBuilder<Collection<String>> styleSpans = new StyleSpansBuilder<>();
         for (final StyleData data : styleList) {
             styleSpans.add(data.styleClasses.build(), data.textLength);
         }
@@ -209,26 +204,25 @@ public class Document {
      * add styles into a {@link StyleSpan}.
      *
      * @param position
-     *                 the location of {@linkplain StyleSpan}.
+     *        the location of {@linkplain StyleSpan}.
      * @param styles
-     *                 the styles to add
+     *        the styles to add
      */
     void insertStyles(int position, SpanStyles... styles) {
-        if (isDebug) System.out.printf(
-            "For span with index %3d add new styles: %s\n", position,
-            Arrays.asList(styles)
-        );
+        if (isDebug)
+            System.out.printf("For span with index %3d add new styles: %s\n", position, Arrays.asList(styles));
         styleList.get(position).addStyles(Arrays.asList(styles));
     }
 
     /**
      * Adds a id
      *
-     * @param  group
-     *               the type of id
-     * @param  name
-     *               the name of id
-     * @return       {@code true} if the id doesn't exist previously
+     * @param group
+     *        the type of id
+     * @param name
+     *        the name of id
+     *
+     * @return {@code true} if the id doesn't exist previously
      */
     boolean putId(IdTypes group, String name) {
         if (idList.containsEntry(group, name)) {
@@ -240,11 +234,12 @@ public class Document {
     /**
      * Check if the id is found
      *
-     * @param  group
-     *               the type of id
-     * @param  name
-     *               the name of id
-     * @return       {@code true} if the id exist
+     * @param group
+     *        the type of id
+     * @param name
+     *        the name of id
+     *
+     * @return {@code true} if the id exist
      */
     boolean containsId(IdTypes group, String name) {
         return idList.containsEntry(group, name);
@@ -254,17 +249,17 @@ public class Document {
      * add method to add styles to a id checked.
      *
      * @param caller
-     *               the method to call
+     *        the method to call
      */
-    void addCheckedIdStyle(CheckedIdStyle caller) {
-        checkedIdStyle.add(caller);
+    void addCheckedIdStyle(PostBuildExecutor caller) {
+        postBuildExecutors.add(caller);
     }
 
     /**
      * Style clean up
      */
     public void runCleanup() {
-        for (CheckedIdStyle caller : checkedIdStyle) {
+        for (PostBuildExecutor caller : postBuildExecutors) {
             caller.update(this);
         }
     }

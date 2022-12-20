@@ -16,7 +16,7 @@ class IdentityPattenTest extends PatternTestBase<IdentityPattern> {
     @ParameterizedTest
     @ValueSource(strings = { "{deadsa", "cat:", "category:id}" })
     void testFailedId(String test) {
-        assertFail(() -> IdentityPattern.matcher(test));
+        Assertions.assertNull(IdentityPattern.matcher(test));
     }
 
     @Test
