@@ -7,18 +7,32 @@ import com.google.common.collect.*;
 public class SpanBranch extends ForwardingList<Span> implements Span {
     private ArrayList<Span> childrenSpans;
     private final Document spanRoot;
-    private ImmutableList<StyleClasses> inheritedStyles;
+    private ArrayList<StyleClasses> inheritedStyles;
 
-    protected SpanBranch(Document root) {
+    protected SpanBranch(Document root, StyleClasses... classes) {
         spanRoot = root;
-        inheritedStyles = ImmutableList.of();
+        inheritedStyles = new ArrayList<>();
+        inheritedStyles.addAll(Arrays.asList(classes));
         childrenSpans = new ArrayList<>();
     }
 
-    protected SpanBranch(SpanBranch parent) {
+    protected SpanBranch(SpanBranch parent, StyleClasses... classes) {
         spanRoot = parent.getRoot();
-        inheritedStyles = ImmutableList.copyOf(parent.getInheritedStyles());
+        inheritedStyles = new ArrayList<>();
+        inheritedStyles.addAll(parent.getInheritedStyles());
+        inheritedStyles.addAll(Arrays.asList(classes));
         childrenSpans = new ArrayList<>();
+    }
+
+    protected boolean addStyle(StyleClasses style) {
+        if (inheritedStyles.contains(style)) {
+            return false;
+        }
+        return inheritedStyles.add(style);
+    }
+
+    protected boolean removeStyle(StyleClasses style) {
+        return inheritedStyles.remove(style);
     }
 
     @Override
@@ -56,5 +70,18 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
             }
         }
         return children.build();
+    }
+
+    @Override
+    public final boolean cleanUp() {
+        boolean isEdited = false;
+        for (Span child : childrenSpans) {
+            isEdited = child.cleanUp() ? true : isEdited;
+        }
+        return isEdited;
+    }
+
+    protected boolean cleanUpSelf() {
+        return false;
     }
 }

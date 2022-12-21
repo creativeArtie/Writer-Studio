@@ -63,7 +63,7 @@ interface PatternEnum {
     /**
      * Use the matcher. Almost the same as
      * {@code matcher.group(PatternEnum.VALUE.getPatternName()} (aka.
-     * {@code PatternEnum.VALUE.match(matcher)} )
+     * {@code PatternEnum.VALUE.group(matcher)} )
      *
      * @param matcher
      *        matcher to use
