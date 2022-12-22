@@ -4,12 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.*;
 
-import com.creativeartie.humming.schema.*;
-
 class SpanTextTest extends SpanBranchTestBase {
     @Test
     void testTextEsape() {
-        SpanText text = new SpanText(newParent(), BasicTextPatterns.ID, "abc\\:");
+        SpanText text = SpanText.newId(newParent(), "abc\\:");
         addStyleTest("abc", StyleClasses.TEXT);
         addStyleTest("\\:", StyleClasses.ESCAPE);
         testStyles(text);
@@ -18,7 +16,7 @@ class SpanTextTest extends SpanBranchTestBase {
 
     @Test
     void testEsapeText() {
-        SpanText text = new SpanText(newParent(), BasicTextPatterns.ID, "\\:abc");
+        SpanText text = SpanText.newId(newParent(), "\\:abc");
         addStyleTest("\\:", StyleClasses.ESCAPE);
         addStyleTest("abc", StyleClasses.TEXT);
         testStyles(text);
@@ -27,7 +25,7 @@ class SpanTextTest extends SpanBranchTestBase {
 
     @Test
     void testLong() {
-        SpanText text = new SpanText(newParent(), BasicTextPatterns.ID, "abc\\:efg\\topq");
+        SpanText text = SpanText.newId(newParent(), "abc\\:efg\\topq");
         addStyleTest("abc", StyleClasses.TEXT);
         addStyleTest("\\:", StyleClasses.ESCAPE);
         addStyleTest("efg", StyleClasses.TEXT);

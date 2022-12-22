@@ -7,10 +7,12 @@ import com.google.common.collect.*;
 public class SpanBranch extends ForwardingList<Span> implements Span {
     private ArrayList<Span> childrenSpans;
     private final Document spanRoot;
+    private final Optional<SpanBranch> spanParent;
     private ArrayList<StyleClasses> inheritedStyles;
 
     protected SpanBranch(Document root, StyleClasses... classes) {
         spanRoot = root;
+        spanParent = Optional.empty();
         inheritedStyles = new ArrayList<>();
         inheritedStyles.addAll(Arrays.asList(classes));
         childrenSpans = new ArrayList<>();
@@ -18,8 +20,8 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
 
     protected SpanBranch(SpanBranch parent, StyleClasses... classes) {
         spanRoot = parent.getRoot();
+        spanParent = Optional.of(parent);
         inheritedStyles = new ArrayList<>();
-        inheritedStyles.addAll(parent.getInheritedStyles());
         inheritedStyles.addAll(Arrays.asList(classes));
         childrenSpans = new ArrayList<>();
     }
@@ -41,7 +43,11 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
     }
 
     List<StyleClasses> getInheritedStyles() {
-        return inheritedStyles;
+        ImmutableList.Builder<StyleClasses> classes = ImmutableList.builder();
+        if (spanParent.isPresent()) {
+            classes.addAll(spanParent.get().getInheritedStyles());
+        }
+        return classes.addAll(inheritedStyles).build();
     }
 
     @Override
@@ -78,10 +84,15 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
         for (Span child : childrenSpans) {
             isEdited = child.cleanUp() ? true : isEdited;
         }
-        return isEdited;
+        return cleanUpSelf() ? isEdited : false;
     }
 
     protected boolean cleanUpSelf() {
         return false;
+    }
+
+    @Override
+    public Optional<SpanBranch> getParent() {
+        return spanParent;
     }
 }

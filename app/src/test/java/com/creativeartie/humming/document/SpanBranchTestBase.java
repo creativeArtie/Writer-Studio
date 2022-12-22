@@ -16,10 +16,14 @@ public class SpanBranchTestBase {
     }
 
     @BeforeEach
-    protected void refreshList() {
+    protected void beforeEach() {
+        refreshLists();
+        rootDoc = new Document();
+    }
+
+    protected void refreshLists() {
         expectedStyles.clear();
         expectedText.clear();
-        rootDoc = new Document();
     }
 
     protected static SpanBranch newParent() {
@@ -31,8 +35,8 @@ public class SpanBranchTestBase {
         expectedStyles.add(styles);
     }
 
-    protected void runCleanUp() {
-        rootDoc.runCleanup();
+    protected Document getDocument() {
+        return rootDoc;
     }
 
     protected void testStyles(SpanBranch parent) {

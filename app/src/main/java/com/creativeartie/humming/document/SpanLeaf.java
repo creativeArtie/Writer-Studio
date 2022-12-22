@@ -35,4 +35,9 @@ public final class SpanLeaf implements Span {
     public boolean cleanUp() {
         return false;
     }
+
+    @Override
+    public Optional<SpanBranch> getParent() {
+        return Optional.of(parentSpan);
+    }
 }

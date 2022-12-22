@@ -12,15 +12,6 @@ import java.util.*;
  * @author wai
  */
 public class Document {
-    /**
-     * Adds styles that is unknown until the syntax is
-     *
-     * @author wai
-     */
-    public static interface PostBuildExecutor {
-        public void update(Document builder, SpanBranch child);
-    }
-
     // List of ids
     private TreeMap<String, Integer> idList;
 

@@ -10,20 +10,12 @@ import com.google.common.base.*;
 import com.google.common.collect.*;
 
 class IdentitySpanTest extends SpanBranchTestBase {
-    public static IdentitySpan createIdPointer(String text, IdentitySpan.IdGroup group) {
-        return new IdentitySpan(newParent(), text, group, false);
-    }
-
-    public static IdentitySpan createIdAddress(String text, IdentitySpan.IdGroup group) {
-        return new IdentitySpan(newParent(), text, group, true);
-    }
-
     public static IdentitySpan createIdPointer(String text) {
-        return createIdPointer(text, IdentitySpan.IdGroup.FOOTNOTE);
+        return IdentitySpan.newPointerId(newParent(), text, IdentitySpan.IdGroup.FOOTNOTE);
     }
 
     public static IdentitySpan createIdAddress(String text) {
-        return createIdAddress(text, IdentitySpan.IdGroup.FOOTNOTE);
+        return IdentitySpan.newAddressId(newParent(), text, IdentitySpan.IdGroup.FOOTNOTE);
     }
 
     public static void testId(String name, IdentitySpan test, String... categories) {
@@ -67,5 +59,27 @@ class IdentitySpanTest extends SpanBranchTestBase {
         addStyleTest("id", StyleClasses.ID, StyleClasses.TEXT);
         testStyles(id);
         testId("id", id, "cat1", "cat2", "cat3");
+    }
+
+    @Test
+    void testOnlyPointer() {
+        IdentitySpan id = createIdPointer("error");
+        getDocument().addChild(id);
+        getDocument().runCleanup();
+        addStyleTest("error", StyleClasses.ID, StyleClasses.ERROR, StyleClasses.TEXT);
+        testStyles(id);
+    }
+
+    @Test
+    void testLaterPointer() {
+        IdentitySpan id = createIdPointer("later");
+        getDocument().addChild(id);
+        IdentitySpan address = createIdAddress("later");
+        getDocument().addChild(address);
+        getDocument().runCleanup();
+        addStyleTest("later", StyleClasses.ID, StyleClasses.TEXT);
+
+        testStyles(id);
+        testStyles(address);
     }
 }

@@ -14,30 +14,44 @@ public class IdentitySpan extends SpanBranch {
 
     private List<String> idCategories;
     private String idName;
-    private boolean isAnId;
+    private boolean isPointer;
     private IdGroup idGroup;
 
-    protected IdentitySpan(SpanBranch parent, String text, IdGroup group, boolean isId) {
-        super(parent, StyleClasses.ID);
+    public static IdentitySpan newPointerId(SpanBranch parent, String text, IdGroup group) {
+        IdentitySpan span = new IdentitySpan(parent, text, group, true);
+        return parseText(span, text);
+    }
+
+    public static IdentitySpan newAddressId(SpanBranch parent, String text, IdGroup group) {
+        IdentitySpan span = new IdentitySpan(parent, text, group, false);
+        return parseText(span, text);
+    }
+
+    private static IdentitySpan parseText(IdentitySpan span, String text) {
         Matcher matcher = IdentityPattern.matcher(text);
         ImmutableList.Builder<String> builder = ImmutableList.builder();
         String name = "";
         while (matcher.find()) {
             name = IdentityPattern.NAME.group(matcher);
-            SpanText id = new SpanText(this, BasicTextPatterns.ID, name);
+            SpanText id = SpanText.newId(span, name);
             name = id.getText();
-            add(id);
+            span.add(id);
             if (matcher.find()) {
                 String sep = IdentityPattern.SEP.group(matcher);
                 builder.add(name);
-                add(new SpanLeaf(this, sep.length(), StyleClasses.OPERATOR));
+                span.add(new SpanLeaf(span, sep.length(), StyleClasses.OPERATOR));
             }
         }
-        idCategories = builder.build();
-        idName = name;
-        isAnId = isId;
+        span.idCategories = builder.build();
+        span.idName = name;
+        if (!span.isPointer) span.getRoot().putId(span);
+        return span;
+    }
+
+    private IdentitySpan(SpanBranch parent, String text, IdGroup group, boolean isPtr) {
+        super(parent, StyleClasses.ID);
+        isPointer = isPtr;
         idGroup = group;
-        if (isAnId) getRoot().putId(this);
     }
 
     public List<String> getCategories() {
