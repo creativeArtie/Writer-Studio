@@ -10,6 +10,10 @@ public final class SpanLeaf implements Span {
     private final StyleClasses styleClass;
     private final int styleLength;
 
+    protected SpanLeaf(SpanBranch parent, int length) {
+        this(parent, length, StyleClasses.OPERATOR);
+    }
+
     protected SpanLeaf(SpanBranch parent, int length, StyleClasses style) {
         spanRoot = parent.getRoot();
         parentSpan = parent;

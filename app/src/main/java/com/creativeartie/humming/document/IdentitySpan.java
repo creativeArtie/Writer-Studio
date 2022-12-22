@@ -8,21 +8,17 @@ import com.google.common.base.*;
 import com.google.common.collect.*;
 
 public class IdentitySpan extends SpanBranch {
-    public enum IdGroup {
-        FOOTNOTE, ENDNOTE
-    }
-
     private List<String> idCategories;
     private String idName;
     private boolean isPointer;
-    private IdGroup idGroup;
+    private IdentityGroup idGroup;
 
-    public static IdentitySpan newPointerId(SpanBranch parent, String text, IdGroup group) {
+    public static IdentitySpan newPointerId(SpanBranch parent, String text, IdentityGroup group) {
         IdentitySpan span = new IdentitySpan(parent, text, group, true);
         return parseText(span, text);
     }
 
-    public static IdentitySpan newAddressId(SpanBranch parent, String text, IdGroup group) {
+    public static IdentitySpan newAddressId(SpanBranch parent, String text, IdentityGroup group) {
         IdentitySpan span = new IdentitySpan(parent, text, group, false);
         return parseText(span, text);
     }
@@ -39,7 +35,7 @@ public class IdentitySpan extends SpanBranch {
             if (matcher.find()) {
                 String sep = IdentityPattern.SEP.group(matcher);
                 builder.add(name);
-                span.add(new SpanLeaf(span, sep.length(), StyleClasses.OPERATOR));
+                span.add(new SpanLeaf(span, sep.length()));
             }
         }
         span.idCategories = builder.build();
@@ -48,10 +44,14 @@ public class IdentitySpan extends SpanBranch {
         return span;
     }
 
-    private IdentitySpan(SpanBranch parent, String text, IdGroup group, boolean isPtr) {
+    private IdentitySpan(SpanBranch parent, String text, IdentityGroup group, boolean isPtr) {
         super(parent, StyleClasses.ID);
         isPointer = isPtr;
         idGroup = group;
+    }
+
+    public IdentityGroup getIdGroup() {
+        return idGroup;
     }
 
     public List<String> getCategories() {

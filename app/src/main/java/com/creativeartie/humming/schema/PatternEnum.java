@@ -5,7 +5,7 @@ import java.util.regex.*;
 /**
  * Base class of all Pattern
  */
-interface PatternEnum {
+public interface PatternEnum {
     /**
      * Get the raw pattern. Does not contain any name
      *

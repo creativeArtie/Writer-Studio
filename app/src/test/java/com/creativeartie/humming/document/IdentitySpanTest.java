@@ -11,11 +11,11 @@ import com.google.common.collect.*;
 
 class IdentitySpanTest extends SpanBranchTestBase {
     public static IdentitySpan createIdPointer(String text) {
-        return IdentitySpan.newPointerId(newParent(), text, IdentitySpan.IdGroup.FOOTNOTE);
+        return IdentitySpan.newPointerId(newParent(), text, IdentityGroup.FOOTNOTE);
     }
 
     public static IdentitySpan createIdAddress(String text) {
-        return IdentitySpan.newAddressId(newParent(), text, IdentitySpan.IdGroup.FOOTNOTE);
+        return IdentitySpan.newAddressId(newParent(), text, IdentityGroup.FOOTNOTE);
     }
 
     public static void testId(String name, IdentitySpan test, String... categories) {
