@@ -18,7 +18,7 @@ class IdentitySpanTest extends SpanBranchTestBase {
         return IdentitySpan.newAddressId(newParent(), text, IdentityGroup.FOOTNOTE);
     }
 
-    public static void testId(String name, IdentitySpan test, String... categories) {
+    public static void testId(String name, Identity test, String... categories) {
         String fullName =
                 Joiner.on(":").join(ImmutableList.builder().addAll(Arrays.asList(categories)).add(name).build());
         Assertions.assertAll(

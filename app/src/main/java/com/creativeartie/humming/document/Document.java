@@ -33,7 +33,7 @@ public class Document {
      *
      * @return {@code true} if the id doesn't exist previously
      */
-    void putId(IdentitySpan id) {
+    void putId(Identity id) {
         String name = id.getInternalId();
         if (idList.containsKey(name)) idList.put(name, idList.get(name) + 1);
         else idList.put(name, 1);
@@ -49,7 +49,7 @@ public class Document {
      *
      * @return {@code true} if the id exist
      */
-    boolean isCorrect(IdentitySpan id) {
+    boolean isCorrect(Identity id) {
         String name = id.getInternalId();
         return idList.containsKey(name) && idList.get(name) == 1;
     }

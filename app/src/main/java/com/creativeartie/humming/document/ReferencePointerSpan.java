@@ -5,7 +5,7 @@ import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 
-public class ReferencePointerSpan extends SpanBranch {
+public class ReferencePointerSpan extends SpanBranch implements Identity {
     public static ReferencePointerSpan createSpan(SpanBranch parent, String text) {
         Matcher match = ReferencePattern.matcher(text);
         if (match == null) return null;
@@ -39,24 +39,29 @@ public class ReferencePointerSpan extends SpanBranch {
         return span;
     }
 
-    private IdentitySpan idPointer;
+    private Identity idPointer;
 
+    @Override
     public IdentityGroup getIdGroup() {
         return idPointer.getIdGroup();
     }
 
+    @Override
     public List<String> getCategories() {
         return idPointer.getCategories();
     }
 
+    @Override
     public String getId() {
         return idPointer.getId();
     }
 
+    @Override
     public String getFullId() {
         return idPointer.getFullId();
     }
 
+    @Override
     public String getInternalId() {
         return idPointer.getInternalId();
     }
