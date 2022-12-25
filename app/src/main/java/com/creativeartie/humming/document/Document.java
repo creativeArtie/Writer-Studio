@@ -58,6 +58,26 @@ public class Document {
         docChildren.add(child);
     }
 
+    int getStartIndex(Span span) {
+        return getIndex(span, true);
+    }
+
+    int getEndIndex(Span span) {
+        return getIndex(span, false);
+    }
+
+    private int getIndex(Span untilSpan, boolean isStart) {
+        int index = 0;
+        for (SpanBranch child : docChildren) {
+            int found = child.getLength(isStart, untilSpan);
+            index += Math.abs(found);
+            if (found <= 0) { // negative = cut short, 0 = cut before even begin
+                return index;
+            }
+        }
+        return index;
+    }
+
     /**
      * Style clean up
      */

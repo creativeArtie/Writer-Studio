@@ -8,4 +8,14 @@ public interface Span {
     Optional<SpanBranch> getParent();
 
     public boolean cleanUp();
+
+    public default int getStartIndex() {
+        return getRoot().getStartIndex(this);
+    }
+
+    default int getEndIndex() {
+        return getRoot().getEndIndex(this);
+    }
+
+    public String getId();
 }

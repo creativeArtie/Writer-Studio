@@ -9,6 +9,8 @@ public final class SpanLeaf implements Span {
     private final SpanBranch parentSpan;
     private final StyleClasses styleClass;
     private final int styleLength;
+    private final int spanId;
+    private static int countId = 0;
 
     protected SpanLeaf(SpanBranch parent, int length) {
         this(parent, length, StyleClasses.OPERATOR);
@@ -19,6 +21,7 @@ public final class SpanLeaf implements Span {
         parentSpan = parent;
         styleLength = length;
         styleClass = style;
+        spanId = countId++;
     }
 
     @Override
@@ -43,5 +46,10 @@ public final class SpanLeaf implements Span {
     @Override
     public Optional<SpanBranch> getParent() {
         return Optional.of(parentSpan);
+    }
+
+    @Override
+    public String getId() {
+        return "Leaf" + Integer.toString(spanId);
     }
 }

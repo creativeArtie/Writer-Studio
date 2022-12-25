@@ -8,6 +8,8 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
     private ArrayList<Span> childrenSpans;
     private final Document spanRoot;
     private final Optional<SpanBranch> spanParent;
+    private final int spanId;
+    private static int countId;
     private ArrayList<StyleClasses> inheritedStyles;
 
     protected SpanBranch(Document root, StyleClasses... classes) {
@@ -16,6 +18,7 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
         inheritedStyles = new ArrayList<>();
         inheritedStyles.addAll(Arrays.asList(classes));
         childrenSpans = new ArrayList<>();
+        spanId = countId++;
     }
 
     protected SpanBranch(SpanBranch parent, StyleClasses... classes) {
@@ -24,6 +27,7 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
         inheritedStyles = new ArrayList<>();
         inheritedStyles.addAll(Arrays.asList(classes));
         childrenSpans = new ArrayList<>();
+        spanId = countId++;
     }
 
     protected boolean addStyle(StyleClasses style) {
@@ -94,5 +98,57 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
     @Override
     public Optional<SpanBranch> getParent() {
         return spanParent;
+    }
+
+    /**
+     * get the length of the text
+     *
+     * @param forStart
+     *        {@code true} for starting index, otherwise ending index
+     * @param untilSpan
+     *        which span to stop
+     *
+     * @return index of the span, with negative meaning length is cut short
+     */
+    protected int getLength(boolean forStart, Span untilSpan) {
+        int length = 0;
+        for (Span child : this) {
+            // find at child + is searching for start index
+            if (forStart && untilSpan == child) {
+                return length * -1;
+            }
+            if (child instanceof SpanBranch) {
+                int found = ((SpanBranch) child).getLength(forStart, untilSpan);
+                if (found <= 0) { // negative = cut short, 0 = cut before even begin
+                    return (length + Math.abs(found)) * -1;
+                }
+                length += found;
+            } else if (child instanceof SpanLeaf) {
+                length += ((SpanLeaf) child).getLength();
+            }
+            // find at child + is searching for end index
+            if (!forStart && untilSpan == child) {
+                return length * -1;
+            }
+        }
+        return length;
+    }
+
+    @Override
+    public String getId() {
+        return "Branch" + Integer.toString(spanId);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof SpanBranch) {
+            return hashCode() == obj.hashCode();
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
     }
 }
