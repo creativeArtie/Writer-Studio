@@ -111,6 +111,20 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
      * @return index of the span, with negative meaning length is cut short
      */
     protected int getLength(boolean forStart, Span untilSpan) {
+        return getCacheLength(forStart, untilSpan);
+    }
+
+    /**
+     * get the length of the text5
+     *
+     * @param forStart
+     *        {@code true} for starting index, otherwise ending index
+     * @param untilSpan
+     *        which span to stop
+     *
+     * @return index of the span, with negative meaning length is cut short
+     */
+    private int getCacheLength(boolean forStart, Span untilSpan) {
         int length = 0;
         for (Span child : this) {
             // find at child + is searching for start index

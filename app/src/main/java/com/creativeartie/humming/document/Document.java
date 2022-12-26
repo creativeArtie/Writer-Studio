@@ -1,6 +1,9 @@
 package com.creativeartie.humming.document;
 
 import java.util.*;
+import java.util.concurrent.*;
+
+import com.google.common.collect.*;
 
 /**
  * Stores information about the writing text files. This includes
@@ -11,7 +14,7 @@ import java.util.*;
  *
  * @author wai
  */
-public class Document {
+public class Document extends ForwardingList<SpanBranch> {
     // List of ids
     private TreeMap<String, Integer> idList;
 
@@ -54,24 +57,31 @@ public class Document {
         return idList.containsKey(name) && idList.get(name) == 1;
     }
 
-    public void addChild(SpanBranch child) {
-        docChildren.add(child);
+    @Override
+    public boolean add(SpanBranch child) {
+        return docChildren.add(child);
     }
 
-    int getStartIndex(Span span) {
+    int getStartIndex(Span span) throws ExecutionException {
         return getIndex(span, true);
     }
 
-    int getEndIndex(Span span) {
+    int getEndIndex(Span span) throws ExecutionException {
         return getIndex(span, false);
     }
 
-    private int getIndex(Span untilSpan, boolean isStart) {
+    private int getIndex(Span untilSpan, boolean isStart) throws ExecutionException {
         int index = 0;
         for (SpanBranch child : docChildren) {
             int found = child.getLength(isStart, untilSpan);
+            if (isStart && untilSpan == child) {
+                return index;
+            }
             index += Math.abs(found);
             if (found <= 0) { // negative = cut short, 0 = cut before even begin
+                return index;
+            }
+            if (!isStart && untilSpan == child) {
                 return index;
             }
         }
@@ -85,5 +95,10 @@ public class Document {
         for (SpanBranch child : docChildren) {
             child.cleanUp();
         }
+    }
+
+    @Override
+    public List<SpanBranch> delegate() {
+        return docChildren;
     }
 }

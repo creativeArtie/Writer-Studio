@@ -1,6 +1,7 @@
 package com.creativeartie.humming.document;
 
 import java.util.*;
+import java.util.concurrent.*;
 
 public interface Span {
     Document getRoot();
@@ -9,11 +10,11 @@ public interface Span {
 
     public boolean cleanUp();
 
-    public default int getStartIndex() {
+    public default int getStartIndex() throws ExecutionException {
         return getRoot().getStartIndex(this);
     }
 
-    default int getEndIndex() {
+    default int getEndIndex() throws ExecutionException {
         return getRoot().getEndIndex(this);
     }
 
