@@ -1,5 +1,6 @@
 package com.creativeartie.humming.document;
 
+import java.util.*;
 import java.util.stream.*;
 
 import org.junit.jupiter.api.*;
@@ -207,5 +208,18 @@ class SpanIndexTest {
                 () -> Assertions.assertEquals(end, testing.getEndIndex(), "End index")
         );
         System.out.println("\t\tPASSED");
+    }
+
+    @ParameterizedTest(name = "{index} => Child: {3}")
+    @MethodSource("provideParameters")
+    void testfindChild(int start, int end, int index1, int[] indexes, String displayName) {
+        ArrayList<Integer> expect = new ArrayList<>();
+        expect.add(index1);
+        Span child = doc.get(index1);
+        for (int i : indexes) {
+            child = ((SpanBranch) child).get(i);
+            expect.add(i);
+        }
+        Assertions.assertArrayEquals(expect.toArray(), doc.findChild(child).toArray());
     }
 }

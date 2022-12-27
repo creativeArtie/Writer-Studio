@@ -26,6 +26,33 @@ public class Document extends ForwardingList<SpanBranch> {
         docChildren = new ArrayList<>();
     }
 
+    public List<Integer> findChild(Span span) {
+        List<Span> spans = ImmutableList.copyOf(docChildren);
+        return findChild(span, spans);
+    }
+
+    private List<Integer> findChild(Span span, List<Span> children) {
+        ArrayList<Integer> answer = new ArrayList<>();
+        int i = 0;
+        for (Span child : children) {
+            if (child == span) {
+                answer = new ArrayList<>();
+                answer.add(i);
+                return answer;
+            }
+            if (child instanceof SpanBranch) {
+                List<Integer> addList = findChild(span, ((SpanBranch) child));
+                if (!addList.isEmpty()) {
+                    answer.add(i);
+                    answer.addAll(addList);
+                    return answer;
+                }
+            }
+            i++;
+        }
+        return answer;
+    }
+
     /**
      * Adds a id
      *
