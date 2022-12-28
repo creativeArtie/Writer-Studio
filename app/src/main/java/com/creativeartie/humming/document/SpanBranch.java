@@ -101,58 +101,6 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
         return getRoot().findChild(span, this);
     }
 
-    /**
-     * get the length of the text
-     *
-     * @param forStart
-     *        {@code true} for starting index, otherwise ending index
-     * @param untilSpan
-     *        which span to stop
-     *
-     * @return index of the span, with negative meaning length is cut short
-     *
-     * @throws ExecutionException
-     */
-    protected int getLength(boolean forStart, Span untilSpan) throws ExecutionException {
-        return getCacheLength(forStart, untilSpan);
-    }
-
-    /**
-     * get the length of the text5
-     *
-     * @param forStart
-     *        {@code true} for starting index, otherwise ending index
-     * @param untilSpan
-     *        which span to stop
-     *
-     * @return index of the span, with negative meaning length is cut short
-     *
-     * @throws ExecutionException
-     */
-    private int getCacheLength(boolean forStart, Span untilSpan) throws ExecutionException {
-        int length = 0;
-        for (Span child : this) {
-            // find at child + is searching for start index
-            if (forStart && untilSpan == child) {
-                return length * -1;
-            }
-            if (child instanceof SpanBranch) {
-                int found = ((SpanBranch) child).getLength(forStart, untilSpan);
-                if (found <= 0) { // negative = cut short, 0 = cut before even begin
-                    return (length + Math.abs(found)) * -1;
-                }
-                length += found;
-            } else if (child instanceof SpanLeaf) {
-                length += ((SpanLeaf) child).getLength();
-            }
-            // find at child + is searching for end index
-            if (!forStart && untilSpan == child) {
-                return length * -1;
-            }
-        }
-        return length;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof SpanBranch) {

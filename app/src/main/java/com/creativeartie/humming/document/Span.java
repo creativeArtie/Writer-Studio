@@ -11,12 +11,12 @@ public interface Span {
     public boolean cleanUp();
 
     public default int getStartIndex() throws ExecutionException {
-        return getRoot().getStartIndex(this);
+        return Document.getCacheIndex(this, true);
     }
 
     public int getLength() throws ExecutionException;
 
     default int getEndIndex() throws ExecutionException {
-        return getRoot().getEndIndex(this);
+        return Document.getCacheIndex(this, false);
     }
 }

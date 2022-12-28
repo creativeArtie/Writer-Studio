@@ -65,7 +65,7 @@ class IdentitySpanTest extends SpanBranchTestBase {
     void testOnlyPointer() {
         IdentitySpan id = createIdPointer("error");
         getDocument().add(id);
-        getDocument().runCleanup();
+        getDocument().cleanUp();
         addStyleTest("error", StyleClasses.ID, StyleClasses.ERROR, StyleClasses.TEXT);
         testStyles(id);
     }
@@ -76,7 +76,7 @@ class IdentitySpanTest extends SpanBranchTestBase {
         getDocument().add(id);
         IdentitySpan address = createIdAddress("later");
         getDocument().add(address);
-        getDocument().runCleanup();
+        getDocument().cleanUp();
         addStyleTest("later", StyleClasses.ID, StyleClasses.TEXT);
 
         testStyles(id);

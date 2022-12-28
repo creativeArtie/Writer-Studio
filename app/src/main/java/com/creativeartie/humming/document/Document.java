@@ -8,8 +8,9 @@ import com.google.common.collect.*;
 /**
  * Stores information about the writing text files. This includes
  * <ul>
- * <li>A list of id and their references
+ * <li>list of id and their references
  * <li>list of styles and the ability to rebuild them
+ * <li>list of children span and how to find them
  * </ul>
  *
  * @author wai
@@ -89,41 +90,6 @@ public class Document extends ForwardingList<SpanBranch> implements Span {
         return docChildren.add(child);
     }
 
-    int getStartIndex(Span span) throws ExecutionException {
-        return getIndex(span, true);
-    }
-
-    int getEndIndex(Span span) throws ExecutionException {
-        return getIndex(span, false);
-    }
-
-    private int getIndex(Span untilSpan, boolean isStart) throws ExecutionException {
-        int index = 0;
-        for (SpanBranch child : docChildren) {
-            int found = child.getLength(isStart, untilSpan);
-            if (isStart && untilSpan == child) {
-                return index;
-            }
-            index += Math.abs(found);
-            if (found <= 0) { // negative = cut short, 0 = cut before even begin
-                return index;
-            }
-            if (!isStart && untilSpan == child) {
-                return index;
-            }
-        }
-        return index;
-    }
-
-    /**
-     * Style clean up
-     */
-    public void runCleanup() {
-        for (SpanBranch child : docChildren) {
-            child.cleanUp();
-        }
-    }
-
     @Override
     public List<SpanBranch> delegate() {
         return docChildren;
@@ -131,25 +97,26 @@ public class Document extends ForwardingList<SpanBranch> implements Span {
 
     @Override
     public boolean addAll(Collection<? extends SpanBranch> c) {
-        // TODO Auto-generated method stub
-        return false;
+        return docChildren.addAll(c);
     }
 
     @Override
     public Document getRoot() {
-        // TODO Auto-generated method stub
-        return null;
+        return this;
     }
 
     @Override
     public Optional<SpanBranch> getParent() {
-        // TODO Auto-generated method stub
         return Optional.empty();
     }
 
     @Override
     public boolean cleanUp() {
-        return false;
+        boolean changed = false;
+        for (SpanBranch child : docChildren) {
+            changed = changed || child.cleanUp();
+        }
+        return changed;
     }
 
     @Override
@@ -166,5 +133,22 @@ public class Document extends ForwardingList<SpanBranch> implements Span {
     @Override
     public int getEndIndex() throws ExecutionException {
         return getLength();
+    }
+
+    @SuppressWarnings("unchecked")
+    protected static int getCacheIndex(Span span, boolean isStart) throws ExecutionException {
+        List<Integer> targetIndexes = span.getRoot().findChild(span);
+        ForwardingList<? extends Span> parent = span.getRoot();
+        int length = 0;
+        for (int targetIndex : targetIndexes) {
+            for (int childIndex = 0; childIndex < targetIndex; childIndex++) {
+                length += parent.get(childIndex).getLength();
+            }
+            if (parent.get(targetIndex) instanceof SpanLeaf) {
+                return length + (isStart ? 0 : parent.get(targetIndex).getLength());
+            }
+            parent = (ForwardingList<? extends Span>) parent.get(targetIndex);
+        }
+        return length + (isStart ? 0 : ((SpanBranch) parent).getLength());
     }
 }

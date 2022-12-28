@@ -15,8 +15,9 @@ class SpanIndexTest {
     private static String span2 = "{*id}";
     private static String spans = span1 + span2;
     private static Document doc;
+    private static final String displayNamePost = " {index} => {3} indexes: {2}";
 
-    private static Arguments getArguments(int start, int end, int index1, int... indexes) {
+    private static Arguments getArguments(int start, int end, int... indexes) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < spans.length(); i++) {
             if (i < start || i >= end) {
@@ -30,7 +31,7 @@ class SpanIndexTest {
         for (int index : indexes) {
             builder.add(index);
         }
-        return Arguments.of(start, end, index1, builder.build(), extractText);
+        return Arguments.of(start, end, builder.build(), extractText);
     }
 
     @BeforeAll
@@ -185,49 +186,47 @@ class SpanIndexTest {
         return builder.build();
     }
 
-    private Span getChild(int start, List<Integer> indexes) {
-        Span test = doc.get(start);
+    private Span getChild(List<Integer> indexes) {
+        Span test = null;
         for (int idx : indexes) {
-            Assertions.assertInstanceOf(SpanBranch.class, test);
-            test = ((SpanBranch) test).get(idx);
+            if (test == null) {
+                test = doc.get(idx);
+            } else {
+                Assertions.assertInstanceOf(SpanBranch.class, test);
+                test = ((SpanBranch) test).get(idx);
+            }
         }
         return test;
     }
 
-    @ParameterizedTest(name = "Start {index} => {4} indexes: {2} {3}")
+    @ParameterizedTest(name = "Start" + displayNamePost)
     @MethodSource("provideParameters")
-    void testStartIndex(int start, int end, int index1, List<Integer> indexes, String displayName)
-            throws ExecutionException {
-        Span test = getChild(index1, indexes);
+    void testStartIndex(int start, int end, List<Integer> indexes, String displayName) throws ExecutionException {
+        Span test = getChild(indexes);
         Span testing = test;
         Assertions.assertEquals(start, testing.getStartIndex(), "Start index");
     }
 
-    @ParameterizedTest(name = "End {index} => {4} indexes: {2} {3}")
+    @ParameterizedTest(name = "End" + displayNamePost)
     @MethodSource("provideParameters")
-    void testEndIndex(int start, int end, int index1, List<Integer> indexes, String displayName)
-            throws ExecutionException {
-        Span test = getChild(index1, indexes);
+    void testEndIndex(int start, int end, List<Integer> indexes, String displayName) throws ExecutionException {
+        Span test = getChild(indexes);
         Span testing = test;
         Assertions.assertEquals(end, testing.getEndIndex(), "End index");
     }
 
-    @ParameterizedTest(name = "Find {index} => {4} indexes: {2} {3}")
+    @ParameterizedTest(name = "Find" + displayNamePost)
     @MethodSource("provideParameters")
-    void testfindChild(int start, int end, int index1, List<Integer> indexes, String displayName) {
-        ArrayList<Integer> expect = new ArrayList<>();
-        expect.add(index1);
-        expect.addAll(indexes);
-        Span child = getChild(index1, indexes);
-        Assertions.assertArrayEquals(expect.toArray(), doc.findChild(child).toArray());
+    void testfindChild(int start, int end, List<Integer> indexes, String displayName) {
+        Span child = getChild(indexes);
+        Assertions.assertArrayEquals(indexes.toArray(), doc.findChild(child).toArray());
     }
 
-    @ParameterizedTest(name = "Length {index} => {4} indexes: {2} {3}")
+    @ParameterizedTest(name = "Length" + displayNamePost)
     @MethodSource("provideParameters")
-    void testLength(int start, int end, int index1, List<Integer> indexes, String displayName)
-            throws ExecutionException {
+    void testLength(int start, int end, List<Integer> indexes, String displayName) throws ExecutionException {
         int length = end - start;
-        Span child = getChild(index1, indexes);
+        Span child = getChild(indexes);
         Assertions.assertEquals(length, child.getLength());
     }
 }
