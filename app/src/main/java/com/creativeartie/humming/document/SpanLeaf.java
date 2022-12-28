@@ -1,7 +1,6 @@
 package com.creativeartie.humming.document;
 
 import java.util.*;
-import java.util.concurrent.*;
 
 import com.google.common.collect.*;
 
@@ -33,7 +32,7 @@ public final class SpanLeaf implements Span {
     }
 
     @Override
-    public int getLength() throws ExecutionException {
+    public int getLength() {
         return styleLength;
     }
 

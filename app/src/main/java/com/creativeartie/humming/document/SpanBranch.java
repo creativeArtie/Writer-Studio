@@ -111,6 +111,10 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
 
     @Override
     public int getLength() throws ExecutionException {
+        return getRoot().getCacheLength(this);
+    }
+
+    protected int getCacheLength() throws ExecutionException {
         int len = 0;
         for (Span child : this) {
             len += child.getLength();

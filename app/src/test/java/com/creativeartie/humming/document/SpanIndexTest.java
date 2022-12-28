@@ -217,7 +217,7 @@ class SpanIndexTest {
 
     @ParameterizedTest(name = "Find" + displayNamePost)
     @MethodSource("provideParameters")
-    void testfindChild(int start, int end, List<Integer> indexes, String displayName) {
+    void testfindChild(int start, int end, List<Integer> indexes, String displayName) throws ExecutionException {
         Span child = getChild(indexes);
         Assertions.assertArrayEquals(indexes.toArray(), doc.findChild(child).toArray());
     }
@@ -228,5 +228,10 @@ class SpanIndexTest {
         int length = end - start;
         Span child = getChild(indexes);
         Assertions.assertEquals(length, child.getLength());
+    }
+
+    @AfterAll
+    public static void printStats() {
+        doc.printCacheStats();
     }
 }

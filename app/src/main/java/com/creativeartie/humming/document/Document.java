@@ -3,6 +3,7 @@ package com.creativeartie.humming.document;
 import java.util.*;
 import java.util.concurrent.*;
 
+import com.google.common.cache.*;
 import com.google.common.collect.*;
 
 /**
@@ -21,15 +22,41 @@ public class Document extends ForwardingList<SpanBranch> implements Span {
 
     // Methods add more styles for ids
     private final ArrayList<SpanBranch> docChildren;
+    private LoadingCache<Span, List<Integer>> findChildCache;
+    private LoadingCache<SpanBranch, Integer> lengthsCache;
+    private LoadingCache<Span, Integer> startIdxCache, endIdxCache;
 
     public Document() {
         idList = new TreeMap<>();
         docChildren = new ArrayList<>();
+        findChildCache = CacheBuilder.newBuilder().recordStats().build(new CacheLoader<Span, List<Integer>>() {
+            @Override
+            public List<Integer> load(Span key) {
+                return findChild(key, ImmutableList.copyOf(docChildren));
+            }
+        });
+        lengthsCache = CacheBuilder.newBuilder().recordStats().build(new CacheLoader<SpanBranch, Integer>() {
+            @Override
+            public Integer load(SpanBranch key) throws ExecutionException {
+                return key.getCacheLength();
+            }
+        });
+        startIdxCache = CacheBuilder.newBuilder().recordStats().build(new CacheLoader<Span, Integer>() {
+            @Override
+            public Integer load(Span key) throws ExecutionException {
+                return getCacheIndex(key, true);
+            }
+        });
+        endIdxCache = CacheBuilder.newBuilder().recordStats().build(new CacheLoader<Span, Integer>() {
+            @Override
+            public Integer load(Span key) throws ExecutionException {
+                return getCacheIndex(key, false);
+            }
+        });
     }
 
-    public List<Integer> findChild(Span span) {
-        List<Span> spans = ImmutableList.copyOf(docChildren);
-        return findChild(span, spans);
+    public List<Integer> findChild(Span span) throws ExecutionException {
+        return findChildCache.get(span);
     }
 
     protected List<Integer> findChild(Span span, List<Span> children) {
@@ -126,7 +153,7 @@ public class Document extends ForwardingList<SpanBranch> implements Span {
     }
 
     @Override
-    public int getStartIndex() throws ExecutionException {
+    public int getStartIndex() {
         return 0;
     }
 
@@ -136,7 +163,7 @@ public class Document extends ForwardingList<SpanBranch> implements Span {
     }
 
     @SuppressWarnings("unchecked")
-    protected static int getCacheIndex(Span span, boolean isStart) throws ExecutionException {
+    private static int getCacheIndex(Span span, boolean isStart) throws ExecutionException {
         List<Integer> targetIndexes = span.getRoot().findChild(span);
         ForwardingList<? extends Span> parent = span.getRoot();
         int length = 0;
@@ -150,5 +177,24 @@ public class Document extends ForwardingList<SpanBranch> implements Span {
             parent = (ForwardingList<? extends Span>) parent.get(targetIndex);
         }
         return length + (isStart ? 0 : ((SpanBranch) parent).getLength());
+    }
+
+    protected int getCacheLength(SpanBranch span) throws ExecutionException {
+        return lengthsCache.get(span);
+    }
+
+    protected int getCacheStart(Span span) throws ExecutionException {
+        return startIdxCache.get(span);
+    }
+
+    protected int getCacheEnd(Span span) throws ExecutionException {
+        return endIdxCache.get(span);
+    }
+
+    public void printCacheStats() {
+        System.out.printf("findChildCache %s\n", findChildCache.stats());
+        System.out.printf("  lengthsCache %s\n", lengthsCache.stats());
+        System.out.printf(" startIdxCache %s\n", startIdxCache.stats());
+        System.out.printf("   endIdxCache %s\n", endIdxCache.stats());
     }
 }
