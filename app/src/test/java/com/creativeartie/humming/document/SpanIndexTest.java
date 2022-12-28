@@ -1,17 +1,19 @@
 package com.creativeartie.humming.document;
 
 import java.util.*;
+import java.util.concurrent.*;
 import java.util.stream.*;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
+import com.google.common.collect.*;
+
 class SpanIndexTest {
     private static String span1 = "{^cat\\:more:id}";
     private static String span2 = "{*id}";
     private static String spans = span1 + span2;
-    private static int testIndex;
     private static Document doc;
 
     private static Arguments getArguments(int start, int end, int index1, int... indexes) {
@@ -24,16 +26,11 @@ class SpanIndexTest {
             }
         }
         String extractText = stringBuilder.toString();
-        String indexText = Integer.toString(index1);
+        ImmutableList.Builder<Integer> builder = ImmutableList.builder();
         for (int index : indexes) {
-            indexText += ", ";
-            indexText += Integer.toString(index);
+            builder.add(index);
         }
-        indexText = "[" + indexText + "]";
-
-        String displayName = String.format("%2d:%-16s %s", testIndex, extractText, indexText);
-        testIndex++;
-        return Arguments.of(start, end, index1, indexes, displayName);
+        return Arguments.of(start, end, index1, builder.build(), extractText);
     }
 
     @BeforeAll
@@ -46,7 +43,6 @@ class SpanIndexTest {
     private static Stream<Arguments> provideParameters() {
         Stream.Builder<Arguments> builder = Stream.builder();
         int mainIndex = -1, spanIndex = -1, idIndex = -1, textIndex = -1;
-        testIndex = 0;
 
         // ++++++++++++++++
         // {^cat\\:more:id}{*id}
@@ -189,37 +185,49 @@ class SpanIndexTest {
         return builder.build();
     }
 
-    @ParameterizedTest(name = "{4}")
-    @MethodSource("provideParameters")
-    void testWithArgumentsSource(int start, int end, int index1, int[] index, String displayName) {
-        System.out.println(displayName);
-
-        Span test = doc.get(index1);
-        int i = 0;
-        for (int idx : index) {
+    private Span getChild(int start, List<Integer> indexes) {
+        Span test = doc.get(start);
+        for (int idx : indexes) {
             Assertions.assertInstanceOf(SpanBranch.class, test);
-            System.out.printf("At index (%d): %d\n", i, idx);
             test = ((SpanBranch) test).get(idx);
-            i++;
         }
-        Span testing = test;
-        Assertions.assertAll(
-                () -> Assertions.assertEquals(start, testing.getStartIndex(), "Start index"),
-                () -> Assertions.assertEquals(end, testing.getEndIndex(), "End index")
-        );
-        System.out.println("\t\tPASSED");
+        return test;
     }
 
-    @ParameterizedTest(name = "{index} => Child: {3}")
+    @ParameterizedTest(name = "Start {index} => {4} indexes: {2} {3}")
     @MethodSource("provideParameters")
-    void testfindChild(int start, int end, int index1, int[] indexes, String displayName) {
+    void testStartIndex(int start, int end, int index1, List<Integer> indexes, String displayName)
+            throws ExecutionException {
+        Span test = getChild(index1, indexes);
+        Span testing = test;
+        Assertions.assertEquals(start, testing.getStartIndex(), "Start index");
+    }
+
+    @ParameterizedTest(name = "End {index} => {4} indexes: {2} {3}")
+    @MethodSource("provideParameters")
+    void testEndIndex(int start, int end, int index1, List<Integer> indexes, String displayName)
+            throws ExecutionException {
+        Span test = getChild(index1, indexes);
+        Span testing = test;
+        Assertions.assertEquals(end, testing.getEndIndex(), "End index");
+    }
+
+    @ParameterizedTest(name = "Find {index} => {4} indexes: {2} {3}")
+    @MethodSource("provideParameters")
+    void testfindChild(int start, int end, int index1, List<Integer> indexes, String displayName) {
         ArrayList<Integer> expect = new ArrayList<>();
         expect.add(index1);
-        Span child = doc.get(index1);
-        for (int i : indexes) {
-            child = ((SpanBranch) child).get(i);
-            expect.add(i);
-        }
+        expect.addAll(indexes);
+        Span child = getChild(index1, indexes);
         Assertions.assertArrayEquals(expect.toArray(), doc.findChild(child).toArray());
+    }
+
+    @ParameterizedTest(name = "Length {index} => {4} indexes: {2} {3}")
+    @MethodSource("provideParameters")
+    void testLength(int start, int end, int index1, List<Integer> indexes, String displayName)
+            throws ExecutionException {
+        int length = end - start;
+        Span child = getChild(index1, indexes);
+        Assertions.assertEquals(length, child.getLength());
     }
 }

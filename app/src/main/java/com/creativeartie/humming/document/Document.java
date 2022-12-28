@@ -14,7 +14,7 @@ import com.google.common.collect.*;
  *
  * @author wai
  */
-public class Document extends ForwardingList<SpanBranch> {
+public class Document extends ForwardingList<SpanBranch> implements Span {
     // List of ids
     private TreeMap<String, Integer> idList;
 
@@ -31,7 +31,7 @@ public class Document extends ForwardingList<SpanBranch> {
         return findChild(span, spans);
     }
 
-    private List<Integer> findChild(Span span, List<Span> children) {
+    protected List<Integer> findChild(Span span, List<Span> children) {
         ArrayList<Integer> answer = new ArrayList<>();
         int i = 0;
         for (Span child : children) {
@@ -127,5 +127,44 @@ public class Document extends ForwardingList<SpanBranch> {
     @Override
     public List<SpanBranch> delegate() {
         return docChildren;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends SpanBranch> c) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public Document getRoot() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Optional<SpanBranch> getParent() {
+        // TODO Auto-generated method stub
+        return Optional.empty();
+    }
+
+    @Override
+    public boolean cleanUp() {
+        return false;
+    }
+
+    @Override
+    public int getLength() throws ExecutionException {
+        if (isEmpty()) return 0;
+        return get(size() - 1).getEndIndex();
+    }
+
+    @Override
+    public int getStartIndex() throws ExecutionException {
+        return 0;
+    }
+
+    @Override
+    public int getEndIndex() throws ExecutionException {
+        return getLength();
     }
 }

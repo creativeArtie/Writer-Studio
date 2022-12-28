@@ -14,9 +14,9 @@ public interface Span {
         return getRoot().getStartIndex(this);
     }
 
+    public int getLength() throws ExecutionException;
+
     default int getEndIndex() throws ExecutionException {
         return getRoot().getEndIndex(this);
     }
-
-    public String getId();
 }

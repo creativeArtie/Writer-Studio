@@ -1,6 +1,7 @@
 package com.creativeartie.humming.document;
 
 import java.util.*;
+import java.util.concurrent.*;
 
 import com.google.common.collect.*;
 
@@ -8,8 +9,6 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
     private ArrayList<Span> childrenSpans;
     private final Document spanRoot;
     private final Optional<SpanBranch> spanParent;
-    private final int spanId;
-    private static int countId;
     private ArrayList<StyleClasses> inheritedStyles;
 
     protected SpanBranch(Document root, StyleClasses... classes) {
@@ -18,7 +17,6 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
         inheritedStyles = new ArrayList<>();
         inheritedStyles.addAll(Arrays.asList(classes));
         childrenSpans = new ArrayList<>();
-        spanId = countId++;
     }
 
     protected SpanBranch(SpanBranch parent, StyleClasses... classes) {
@@ -27,7 +25,6 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
         inheritedStyles = new ArrayList<>();
         inheritedStyles.addAll(Arrays.asList(classes));
         childrenSpans = new ArrayList<>();
-        spanId = countId++;
     }
 
     protected boolean addStyle(StyleClasses style) {
@@ -100,6 +97,10 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
         return spanParent;
     }
 
+    public List<Integer> findChild(Span span) {
+        return getRoot().findChild(span, this);
+    }
+
     /**
      * get the length of the text
      *
@@ -109,8 +110,10 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
      *        which span to stop
      *
      * @return index of the span, with negative meaning length is cut short
+     *
+     * @throws ExecutionException
      */
-    protected int getLength(boolean forStart, Span untilSpan) {
+    protected int getLength(boolean forStart, Span untilSpan) throws ExecutionException {
         return getCacheLength(forStart, untilSpan);
     }
 
@@ -123,8 +126,10 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
      *        which span to stop
      *
      * @return index of the span, with negative meaning length is cut short
+     *
+     * @throws ExecutionException
      */
-    private int getCacheLength(boolean forStart, Span untilSpan) {
+    private int getCacheLength(boolean forStart, Span untilSpan) throws ExecutionException {
         int length = 0;
         for (Span child : this) {
             // find at child + is searching for start index
@@ -149,11 +154,6 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
     }
 
     @Override
-    public String getId() {
-        return "Branch" + Integer.toString(spanId);
-    }
-
-    @Override
     public boolean equals(Object obj) {
         if (obj instanceof SpanBranch) {
             return hashCode() == obj.hashCode();
@@ -162,7 +162,11 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
     }
 
     @Override
-    public int hashCode() {
-        return getId().hashCode();
+    public int getLength() throws ExecutionException {
+        int len = 0;
+        for (Span child : this) {
+            len += child.getLength();
+        }
+        return len;
     }
 }
