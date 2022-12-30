@@ -17,8 +17,23 @@ import com.google.common.collect.*;
  * @author wai
  */
 public class Document extends ForwardingList<SpanBranch> implements Span {
-    // List of ids
-    private TreeMap<String, Integer> idList;
+    private IdentityStorage idStorage;
+
+    public boolean isIdUnique(IdentitySpan span) {
+        return idStorage.isIdUnique(span);
+    }
+
+    public int getPointerCount(IdentitySpan span) {
+        return idStorage.getPointerCount(span);
+    }
+
+    public void addId(IdentitySpan id) {
+        idStorage.addId(id);
+    }
+
+    public void removeId(IdentitySpan id) {
+        idStorage.removeId(id);
+    }
 
     // Methods add more styles for ids
     private final ArrayList<SpanBranch> docChildren;
@@ -27,7 +42,7 @@ public class Document extends ForwardingList<SpanBranch> implements Span {
     private LoadingCache<Span, Integer> startIdxCache, endIdxCache;
 
     public Document() {
-        idList = new TreeMap<>();
+        idStorage = new IdentityStorage();
         docChildren = new ArrayList<>();
         findChildCache = CacheBuilder.newBuilder().recordStats().build(new CacheLoader<Span, List<Integer>>() {
             @Override
@@ -79,37 +94,6 @@ public class Document extends ForwardingList<SpanBranch> implements Span {
             i++;
         }
         return answer;
-    }
-
-    /**
-     * Adds a id
-     *
-     * @param group
-     *        the type of id
-     * @param name
-     *        the name of id
-     *
-     * @return {@code true} if the id doesn't exist previously
-     */
-    void putId(Identity id) {
-        String name = id.getInternalId();
-        if (idList.containsKey(name)) idList.put(name, idList.get(name) + 1);
-        else idList.put(name, 1);
-    }
-
-    /**
-     * Check if the id is found
-     *
-     * @param group
-     *        the type of id
-     * @param name
-     *        the name of id
-     *
-     * @return {@code true} if the id exist
-     */
-    boolean isCorrect(Identity id) {
-        String name = id.getInternalId();
-        return idList.containsKey(name) && idList.get(name) == 1;
     }
 
     @Override

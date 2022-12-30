@@ -1,11 +1,10 @@
 package com.creativeartie.humming.document;
 
-import java.util.*;
 import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 
-public class ReferencePointerSpan extends SpanBranch implements Identity {
+public class ReferencePointerSpan extends SpanBranch {
     public static ReferencePointerSpan createSpan(SpanBranch parent, String text) {
         Matcher match = ReferencePattern.matcher(text);
         if (match == null) return null;
@@ -39,34 +38,13 @@ public class ReferencePointerSpan extends SpanBranch implements Identity {
         return span;
     }
 
-    private Identity idPointer;
-
-    @Override
-    public IdentityGroup getIdGroup() {
-        return idPointer.getIdGroup();
-    }
-
-    @Override
-    public List<String> getCategories() {
-        return idPointer.getCategories();
-    }
-
-    @Override
-    public String getId() {
-        return idPointer.getId();
-    }
-
-    @Override
-    public String getFullId() {
-        return idPointer.getFullId();
-    }
-
-    @Override
-    public String getInternalId() {
-        return idPointer.getInternalId();
-    }
+    private IdentitySpan idPointer;
 
     private ReferencePointerSpan(SpanBranch parent, StyleClasses... classes) {
         super(parent, classes);
+    }
+
+    public IdentitySpan getPointer() {
+        return idPointer;
     }
 }

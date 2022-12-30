@@ -1,13 +1,14 @@
 package com.creativeartie.humming.document;
 
 import java.util.*;
+import java.util.concurrent.*;
 import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 import com.google.common.base.*;
 import com.google.common.collect.*;
 
-public class IdentitySpan extends SpanBranch implements Identity {
+public class IdentitySpan extends SpanBranch {
     private List<String> idCategories;
     private String idName;
     private boolean isPointer;
@@ -40,7 +41,7 @@ public class IdentitySpan extends SpanBranch implements Identity {
         }
         span.idCategories = builder.build();
         span.idName = name;
-        if (!span.isPointer) span.getRoot().putId(span);
+        span.getRoot().addId(span);
         return span;
     }
 
@@ -50,35 +51,42 @@ public class IdentitySpan extends SpanBranch implements Identity {
         idGroup = group;
     }
 
-    @Override
     public IdentityGroup getIdGroup() {
         return idGroup;
     }
 
-    @Override
     public List<String> getCategories() {
         return idCategories;
     }
 
-    @Override
     public String getId() {
         return idName;
     }
 
-    @Override
     public String getFullId() {
         if (idCategories.isEmpty()) return idName;
 
         return Joiner.on(":").join(idCategories) + ":" + idName;
     }
 
-    @Override
     public String getInternalId() {
         return idGroup.name() + ":" + getFullId();
     }
 
     @Override
     public boolean cleanUpSelf() {
-        return getRoot().isCorrect(this) ? removeStyle(StyleClasses.ERROR) : addStyle(StyleClasses.ERROR);
+        return getRoot().isIdUnique(this) ? removeStyle(StyleClasses.ERROR) : addStyle(StyleClasses.ERROR);
+    }
+
+    public int getPosition() throws ExecutionException {
+        return getStartIndex();
+    }
+
+    public boolean isPointer() {
+        return isPointer;
+    }
+
+    public boolean isAddress() {
+        return !isPointer;
     }
 }
