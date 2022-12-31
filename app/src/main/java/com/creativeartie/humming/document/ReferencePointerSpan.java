@@ -4,7 +4,7 @@ import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 
-public class ReferencePointerSpan extends SpanBranch {
+public class ReferencePointerSpan extends SpanBranch implements IdentitySpan.IdentityHolder {
     public static ReferencePointerSpan createSpan(SpanBranch parent, String text) {
         Matcher match = ReferencePattern.matcher(text);
         if (match == null) return null;
@@ -46,5 +46,10 @@ public class ReferencePointerSpan extends SpanBranch {
 
     public IdentitySpan getPointer() {
         return idPointer;
+    }
+
+    @Override
+    public int getIdPosition() {
+        return getStartIndex();
     }
 }

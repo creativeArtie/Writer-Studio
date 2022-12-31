@@ -4,8 +4,8 @@ import java.util.*;
 
 public class IdentityStorage {
     public class Manager implements Comparable<Manager> {
-        private ArrayList<IdentitySpan> pointerIds;
-        private ArrayList<IdentitySpan> addressIds;
+        private ArrayList<IdentityBase> pointerIds;
+        private ArrayList<IdentityBase> addressIds;
         private final String fullIdName;
 
         private Manager(String name) {
@@ -23,10 +23,10 @@ public class IdentityStorage {
         }
 
         public void cleanUpIds() {
-            for (IdentitySpan ptr : pointerIds) {
+            for (IdentityBase ptr : pointerIds) {
                 ((Span) ptr).cleanUp();
             }
-            for (IdentitySpan address : addressIds) {
+            for (IdentityBase address : addressIds) {
                 ((Span) address).cleanUp();
             }
         }
@@ -63,7 +63,7 @@ public class IdentityStorage {
         parentStorage = Optional.empty();
     }
 
-    public boolean isIdUnique(IdentitySpan span) {
+    public boolean isIdUnique(IdentityBase span) {
         Manager name = new Manager(span.getInternalId());
         Manager manager = idManager.floor(name);
         boolean isUnique = false;
@@ -81,7 +81,7 @@ public class IdentityStorage {
         return isUnique;
     }
 
-    public int getPointerCount(IdentitySpan span) {
+    public int getPointerCount(IdentityBase span) {
         Manager name = new Manager(span.getInternalId());
         Manager manager = idManager.floor(name);
         int count = 0;
@@ -94,7 +94,7 @@ public class IdentityStorage {
         return count;
     }
 
-    public void addId(IdentitySpan id) {
+    public void addId(IdentityBase id) {
         Manager name = new Manager(id.getInternalId());
         Manager manager = idManager.floor(name);
         if (manager == null) {
@@ -108,7 +108,7 @@ public class IdentityStorage {
         }
     }
 
-    public void removeId(IdentitySpan id) {
+    public void removeId(IdentityBase id) {
         Manager name = new Manager(id.getInternalId());
         Manager manager = idManager.floor(name);
         if (manager == null) return;

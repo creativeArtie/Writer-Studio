@@ -1,18 +1,22 @@
 package com.creativeartie.humming.document;
 
 import java.util.*;
-import java.util.concurrent.*;
 import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 import com.google.common.base.*;
 import com.google.common.collect.*;
 
-public class IdentitySpan extends SpanBranch {
+public class IdentitySpan extends IdentityBase {
     private List<String> idCategories;
     private String idName;
     private boolean isPointer;
     private IdentityGroup idGroup;
+    private IdentityHolder parentSpan;
+
+    public interface IdentityHolder {
+        public int getIdPosition();
+    }
 
     public static IdentitySpan newPointerId(SpanBranch parent, String text, IdentityGroup group) {
         IdentitySpan span = new IdentitySpan(parent, text, group, true);
@@ -47,30 +51,25 @@ public class IdentitySpan extends SpanBranch {
 
     private IdentitySpan(SpanBranch parent, String text, IdentityGroup group, boolean isPtr) {
         super(parent, StyleClasses.ID);
+        Preconditions.checkArgument(parent instanceof IdentityHolder);
         isPointer = isPtr;
         idGroup = group;
+        parentSpan = (IdentityHolder) parent;
     }
 
+    @Override
     public IdentityGroup getIdGroup() {
         return idGroup;
     }
 
+    @Override
     public List<String> getCategories() {
         return idCategories;
     }
 
+    @Override
     public String getId() {
         return idName;
-    }
-
-    public String getFullId() {
-        if (idCategories.isEmpty()) return idName;
-
-        return Joiner.on(":").join(idCategories) + ":" + idName;
-    }
-
-    public String getInternalId() {
-        return idGroup.name() + ":" + getFullId();
     }
 
     @Override
@@ -78,15 +77,13 @@ public class IdentitySpan extends SpanBranch {
         return getRoot().isIdUnique(this) ? removeStyle(StyleClasses.ERROR) : addStyle(StyleClasses.ERROR);
     }
 
-    public int getPosition() throws ExecutionException {
-        return getStartIndex();
+    @Override
+    public int getPosition() {
+        return parentSpan.getIdPosition();
     }
 
+    @Override
     public boolean isPointer() {
         return isPointer;
-    }
-
-    public boolean isAddress() {
-        return !isPointer;
     }
 }

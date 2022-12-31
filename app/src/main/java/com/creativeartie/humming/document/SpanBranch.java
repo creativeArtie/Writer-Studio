@@ -1,7 +1,6 @@
 package com.creativeartie.humming.document;
 
 import java.util.*;
-import java.util.concurrent.*;
 
 import com.google.common.collect.*;
 
@@ -110,11 +109,11 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
     }
 
     @Override
-    public int getLength() throws ExecutionException {
+    public int getLength() {
         return getRoot().getCacheLength(this);
     }
 
-    protected int getCacheLength() throws ExecutionException {
+    protected int getCacheLength() {
         int len = 0;
         for (Span child : this) {
             len += child.getLength();

@@ -4,10 +4,23 @@ import java.util.*;
 
 import org.junit.jupiter.api.*;
 
+import com.creativeartie.humming.document.IdentitySpan.*;
+
 public class SpanBranchTestBase {
     private static ArrayList<String> expectedText;
     private static ArrayList<StyleClasses[]> expectedStyles;
     private static Document rootDoc;
+
+    private static class HolderSpan extends SpanBranch implements IdentityHolder {
+        protected HolderSpan(Document root, StyleClasses... classes) {
+            super(root, classes);
+        }
+
+        @Override
+        public int getIdPosition() {
+            return 0;
+        }
+    }
 
     @BeforeAll
     private static void setup() {
@@ -27,7 +40,7 @@ public class SpanBranchTestBase {
     }
 
     protected static SpanBranch newParent() {
-        return new SpanBranch(rootDoc);
+        return new HolderSpan(rootDoc);
     }
 
     protected void addStyleTest(String text, StyleClasses... styles) {
