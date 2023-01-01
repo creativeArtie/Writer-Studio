@@ -15,7 +15,7 @@ class ReferencePatternTest extends PatternTestBase<ReferencePattern> {
     }
 
     @ParameterizedTest
-    @CsvSource({ "^,FOOTNOTE", "*,ENDNOTE", ">,SOURCE", "%,REF" })
+    @CsvSource({ "^,FOOTNOTE", "*,ENDNOTE", ">,SOURCE", "%,REF", "+,IMAGE" })
     void testFullRef(String test, String type) {
         final String raw = "{" + test + "cat:id}";
         final ReferencePattern pattern = ReferencePattern.valueOf(type);

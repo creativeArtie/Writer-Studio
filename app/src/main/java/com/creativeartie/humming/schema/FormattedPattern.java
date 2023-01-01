@@ -10,9 +10,8 @@ import com.google.common.base.*;
  * A line of text with formatting and special spans.
  */
 public enum FormattedPattern implements PatternEnum {
-    BOLD("\\*"), UNDERLINE("_"), ITALICS("`"), LINK(LinkDirectPattern.getFullPattern()),
-    TODO(TodoPattern.getFullPattern()), REFER(ReferencePattern.getFullPattern()), ERR(ErrorRefPattern.getFullPattern()),
-    TEXT("");
+    BOLD("\\*"), UNDERLINE("_"), ITALICS("`"), TODO(TodoPattern.getFullPattern()),
+    REFER(ReferencePattern.getFullPattern()), ERR(ErrorRefPattern.getFullPattern()), TEXT("");
 
     private static TreeMap<BasicTextPatterns, String> fullPatterns;
     private static TreeMap<BasicTextPatterns, Pattern> checkPatterns;

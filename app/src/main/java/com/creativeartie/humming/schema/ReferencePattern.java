@@ -4,7 +4,7 @@ import java.util.regex.*;
 
 /**
  * List of references, excluding links. Links references are defined in
- * {@link LinkRefPattern}. Spans declared here are:
+ * {@link ImageRefPattern}. Spans declared here are:
  * <ul>
  * <li>{@link ReferenceLinePatterns#FOOTNOTE foot note}
  * <li>{@link ReferenceLinePatterns#ENDNOTE end note}
@@ -12,14 +12,14 @@ import java.util.regex.*;
  * <li>References TODO add reference items
  * </ul>
  *
- * @see LinkRefPattern
+ * @see ImageRefPattern
  * @see TodoPattern
- * @see LinkDirectPattern
+ * @see ImageDirectPattern
  * @see ErrorRefPattern
  */
 public enum ReferencePattern implements PatternEnum {
-    FOOTNOTE("\\^"), ENDNOTE("\\*"), SOURCE("\\>"), REF("\\%"), START("\\{"), ID(IdentityPattern.getFullPattern()),
-    END("\\}");
+    FOOTNOTE("\\^"), ENDNOTE("\\*"), SOURCE("\\>"), REF("\\%"), IMAGE("\\+"), START("\\{"),
+    ID(IdentityPattern.getFullPattern()), END("\\}");
 
     private static String fullPattern;
     private static Pattern matchPattern;
@@ -38,7 +38,8 @@ public enum ReferencePattern implements PatternEnum {
                 FOOTNOTE.getPattern(withName) + "|" +
                 ENDNOTE.getPattern(withName) + "|" +
                 SOURCE.getPattern(withName) + "|" +
-                REF.getPattern(withName) +
+                REF.getPattern(withName) + "|" +
+                IMAGE.getPattern(withName) +
             ")" + ID.getPattern(withName) +
             END.getPattern(withName) + "?";
          // @formatter:on

@@ -5,7 +5,7 @@ import java.util.regex.*;
 /**
  * Lines that describes footnotes, end notes, and links.
  *
- * @see LinkRefPattern
+ * @see ImageRefPattern
  * @see ReferencePattern
  */
 public enum ReferenceLinePatterns implements PatternEnum {
@@ -41,7 +41,7 @@ public enum ReferenceLinePatterns implements PatternEnum {
          // @formatter:on
         }
     },
-    LINK {
+    IMAGE {
         @Override
         protected String getValuePattern(boolean withName) {
             return // @formatter:off

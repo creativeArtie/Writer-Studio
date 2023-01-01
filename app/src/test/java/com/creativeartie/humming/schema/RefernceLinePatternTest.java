@@ -9,14 +9,14 @@ import com.creativeartie.humming.schema.ReferenceLinePatterns.*;
 class RefernceLinePatternTest extends PatternTestBase<RefLineParts> {
     @BeforeAll
     public static void printPattern() {
-        splitPrintPattern("Link", ReferenceLinePatterns.LINK.matcher("!@test"));
+        splitPrintPattern("Link", ReferenceLinePatterns.IMAGE.matcher("!@test"));
         splitPrintPattern("Footnote", ReferenceLinePatterns.FOOTNOTE.matcher("!^id:note"));
         splitPrintPattern("Endnote", ReferenceLinePatterns.ENDNOTE.matcher("!*id:endnot"));
     }
 
     @Test
     void testLink() {
-        final Matcher matcher = ReferenceLinePatterns.LINK.matcher("!@test=www.example.com");
+        final Matcher matcher = ReferenceLinePatterns.IMAGE.matcher("!@test=www.example.com");
         assertGroup("!", matcher, RefLineParts.START, 1);
         assertGroup("@", matcher, RefLineParts.LINK, 2);
         assertGroup("test", matcher, RefLineParts.ID, 3);
@@ -27,7 +27,7 @@ class RefernceLinePatternTest extends PatternTestBase<RefLineParts> {
 
     @Test
     void testLinkError() {
-        final Matcher matcher = ReferenceLinePatterns.LINK.matcher("!@www.example.com");
+        final Matcher matcher = ReferenceLinePatterns.IMAGE.matcher("!@www.example.com");
         assertGroup("!", matcher, RefLineParts.START, 1);
         assertGroup("@", matcher, RefLineParts.LINK, 2);
         assertGroup("www.example.com", matcher, RefLineParts.ERROR, 3);
@@ -36,7 +36,7 @@ class RefernceLinePatternTest extends PatternTestBase<RefLineParts> {
 
     @Test
     void testNonLink() {
-        Assertions.assertNull(ReferenceLinePatterns.LINK.matcher("!!"));
+        Assertions.assertNull(ReferenceLinePatterns.IMAGE.matcher("!!"));
     }
 
     @Test

@@ -7,8 +7,8 @@ import com.google.common.base.*;
 /**
  * For special spans that causes issues.
  *
- * @see LinkDirectPattern
- * @see LinkRefPattern
+ * @see ImageDirectPattern
+ * @see ImageRefPattern
  * @see ReferencePattern
  * @see TodoPattern
  */
