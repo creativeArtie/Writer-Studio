@@ -1,7 +1,5 @@
 package com.creativeartie.humming.schema;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.regex.*;
 
 import org.junit.jupiter.api.*;
@@ -39,9 +37,22 @@ class ReferencePatternTest extends PatternTestBase<ReferencePattern> {
         assertEnd(match);
     }
 
+    @Test
+    void testError() {
+        final Matcher match = ReferencePattern.matcher("{addd}");
+        assertGroup("{", match, ReferencePattern.START, 1);
+        assertGroup("addd", match, ReferencePattern.ERROR, 2);
+        assertGroup("}", match, ReferencePattern.END, 3);
+        assertEnd(match);
+    }
+
     @ParameterizedTest
-    @ValueSource(strings = { "{#avd}", "{^^abc}", "{^", "{^}" })
-    void testError(String raw) {
-        assertNull(ReferencePattern.matcher(raw));
+    @CsvSource({ "{#avd},#avd,true", "{^^abc},^^abc,true", "{^,^,false", "{^},^,true", "{addd},addd,true" })
+    void testError(String raw, String text, boolean hasEnd) {
+        final Matcher match = ReferencePattern.matcher(raw);
+        assertGroup("{", match, ReferencePattern.START, 1);
+        assertGroup(text, match, ReferencePattern.ERROR, 2);
+        if (hasEnd) assertGroup("}", match, ReferencePattern.END, 3);
+        assertEnd(match);
     }
 }

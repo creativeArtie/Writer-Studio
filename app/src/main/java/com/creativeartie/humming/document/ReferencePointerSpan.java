@@ -1,5 +1,6 @@
 package com.creativeartie.humming.document;
 
+import java.util.*;
 import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
@@ -22,15 +23,22 @@ public class ReferencePointerSpan extends SpanBranch implements IdentitySpan.Ide
             group = IdentityGroup.SOURCE;
         } else if ((raw = ReferencePattern.REF.group(match)) != null) {
             group = IdentityGroup.REF;
+        } else if ((raw = ReferencePattern.IMAGE.group(match)) != null) {
+            group = IdentityGroup.IMAGE;
         }
-        span.add(new SpanLeaf(span, raw.length()));
-        span.addStyle(group.getStyleClass());
-
-        raw = ReferencePattern.ID.group(match);
-        IdentitySpan id = IdentitySpan.newPointerId(span, raw, group);
-        span.add(id);
-        span.idPointer = id;
-
+        if (group != null) {
+            span.add(new SpanLeaf(span, raw.length()));
+            span.addStyle(group.getStyleClass());
+        } else {
+            span.addStyle(StyleClasses.ERROR);
+        }
+        if ((raw = ReferencePattern.ID.group(match)) != null) {
+            IdentitySpan id = IdentitySpan.newPointerId(span, raw, group);
+            span.add(id);
+            span.idPointer = Optional.of(id);
+        } else if ((raw = ReferencePattern.ERROR.group(match)) != null) {
+            span.add(TextSpan.newSpecial(span, raw));
+        }
         raw = ReferencePattern.END.group(match);
         if (raw != null) {
             span.add(new SpanLeaf(span, raw.length()));
@@ -38,13 +46,14 @@ public class ReferencePointerSpan extends SpanBranch implements IdentitySpan.Ide
         return span;
     }
 
-    private IdentitySpan idPointer;
+    private Optional<IdentitySpan> idPointer;
 
     private ReferencePointerSpan(SpanBranch parent, StyleClasses... classes) {
         super(parent, classes);
+        idPointer = Optional.empty();
     }
 
-    public IdentitySpan getPointer() {
+    public Optional<IdentitySpan> getPointer() {
         return idPointer;
     }
 

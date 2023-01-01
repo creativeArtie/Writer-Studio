@@ -19,7 +19,7 @@ import java.util.regex.*;
  */
 public enum ReferencePattern implements PatternEnum {
     FOOTNOTE("\\^"), ENDNOTE("\\*"), SOURCE("\\>"), REF("\\%"), IMAGE("\\+"), START("\\{"),
-    ID(IdentityPattern.getFullPattern()), END("\\}");
+    ID(IdentityPattern.getFullPattern()), ERROR(BasicTextPatterns.SPECIAL.getRawPattern()), END("\\}");
 
     private static String fullPattern;
     private static Pattern matchPattern;
@@ -34,14 +34,16 @@ public enum ReferencePattern implements PatternEnum {
     private static String getFullPattern(boolean withName) {
         return
         // @formatter:off
-            START.getPattern(withName) + "(" +
-                FOOTNOTE.getPattern(withName) + "|" +
-                ENDNOTE.getPattern(withName) + "|" +
-                SOURCE.getPattern(withName) + "|" +
-                REF.getPattern(withName) + "|" +
-                IMAGE.getPattern(withName) +
-            ")" + ID.getPattern(withName) +
-            END.getPattern(withName) + "?";
+            START.getPattern(withName) + "((" +
+                "(" +
+                    FOOTNOTE.getPattern(withName) + "|" +
+                    ENDNOTE.getPattern(withName) + "|" +
+                    SOURCE.getPattern(withName) + "|" +
+                    REF.getPattern(withName) + "|" +
+                    IMAGE.getPattern(withName) +
+                ")" + ID.getPattern(withName) +
+            ")|(" + ERROR.getPattern(withName) + ")?" +
+            ")" + END.getPattern(withName) + "?";
          // @formatter:on
     }
 

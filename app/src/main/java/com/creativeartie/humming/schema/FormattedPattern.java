@@ -11,7 +11,7 @@ import com.google.common.base.*;
  */
 public enum FormattedPattern implements PatternEnum {
     BOLD("\\*"), UNDERLINE("_"), ITALICS("`"), TODO(TodoPattern.getFullPattern()),
-    REFER(ReferencePattern.getFullPattern()), ERR(ErrorRefPattern.getFullPattern()), TEXT("");
+    REFER(ReferencePattern.getFullPattern()), TEXT("");
 
     private static TreeMap<BasicTextPatterns, String> fullPatterns;
     private static TreeMap<BasicTextPatterns, Pattern> checkPatterns;

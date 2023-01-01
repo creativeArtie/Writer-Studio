@@ -27,7 +27,7 @@ class FormattedPatternTest extends PatternTestBase<FormattedPattern> {
         final Matcher match = FormattedPattern.matcher("{!avd}{^add}{dadd}add", BasicTextPatterns.TEXT);
         assertGroup("{!avd}", match, FormattedPattern.TODO, 1);
         assertGroup("{^add}", match, FormattedPattern.REFER, 2);
-        assertGroup("{dadd}", match, FormattedPattern.ERR, 3);
+        assertGroup("{dadd}", match, FormattedPattern.REFER, 3);
         assertGroup("add", match, FormattedPattern.TEXT, 4);
         assertEnd(match);
     }

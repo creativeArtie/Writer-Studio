@@ -39,6 +39,16 @@ class BasicSpanTest extends SpanBranchTestBase {
     }
 
     @Test
+    void testErrorRef() {
+        ReferencePointerSpan span = ReferencePointerSpan.createSpan(newParent(), "{cat:id}");
+        Assertions.assertNotNull(span);
+        addStyleTest("{", StyleClasses.ERROR, StyleClasses.OPERATOR);
+        addStyleTest("cat:id", StyleClasses.ERROR, StyleClasses.TEXT);
+        addStyleTest("}", StyleClasses.ERROR, StyleClasses.OPERATOR);
+        testStyles(span);
+    }
+
+    @Test
     void testTodo() {
         TodoSpan span = TodoSpan.newSpan(newParent(), "{!abc}");
         Assertions.assertNotNull(span);
