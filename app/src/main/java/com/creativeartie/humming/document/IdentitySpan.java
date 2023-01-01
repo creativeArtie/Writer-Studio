@@ -34,7 +34,7 @@ public class IdentitySpan extends IdentityBase {
         String name = "";
         while (matcher.find()) {
             name = IdentityPattern.NAME.group(matcher);
-            SpanText id = SpanText.newId(span, name);
+            TextSpan id = TextSpan.newId(span, name);
             name = id.getText();
             span.add(id);
             if (matcher.find()) {

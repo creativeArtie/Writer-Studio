@@ -1,7 +1,6 @@
 package com.creativeartie.humming.document;
 
 import java.util.*;
-import java.util.concurrent.*;
 
 import com.google.common.base.*;
 
@@ -33,5 +32,5 @@ public abstract class IdentityBase extends SpanBranch {
         return !isPointer();
     }
 
-    public abstract int getPosition() throws ExecutionException;
+    public abstract int getPosition();
 }

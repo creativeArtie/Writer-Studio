@@ -2,9 +2,9 @@ package com.creativeartie.humming.document;
 
 import org.junit.jupiter.api.*;
 
-class ReferencePointerSpanTest extends SpanBranchTestBase {
+class BasicSpanTest extends SpanBranchTestBase {
     @Test
-    void testFull() {
+    void testFullRef() {
         ReferencePointerSpan span = ReferencePointerSpan.createSpan(newParent(), "{^cat:id}");
         Assertions.assertNotNull(span);
         addStyleTest("{", StyleClasses.FOOTNOTE, StyleClasses.OPERATOR);
@@ -17,7 +17,7 @@ class ReferencePointerSpanTest extends SpanBranchTestBase {
     }
 
     @Test
-    void testPart() {
+    void testPartRef() {
         ReferencePointerSpan span = ReferencePointerSpan.createSpan(newParent(), "{*cat:id");
         Assertions.assertNotNull(span);
         addStyleTest("{", StyleClasses.ENDNOTE, StyleClasses.OPERATOR);
@@ -25,6 +25,26 @@ class ReferencePointerSpanTest extends SpanBranchTestBase {
         addStyleTest("cat", StyleClasses.ENDNOTE, StyleClasses.ID, StyleClasses.TEXT);
         addStyleTest("-", StyleClasses.ENDNOTE, StyleClasses.ID, StyleClasses.OPERATOR);
         addStyleTest("id", StyleClasses.ENDNOTE, StyleClasses.ID, StyleClasses.TEXT);
+        testStyles(span);
+    }
+
+    @Test
+    void testPositions() {
+        ReferencePointerSpan test1 = ReferencePointerSpan.createSpan(newParent(), "{*cat:id}");
+        getDocument().add(test1);
+        ReferencePointerSpan test2 = ReferencePointerSpan.createSpan(newParent(), "{^test}");
+        getDocument().add(test2);
+        Assertions.assertEquals(0, test1.getIdPosition(), "Test 1 position");
+        Assertions.assertEquals(9, test2.getIdPosition(), "Test 2 position");
+    }
+
+    @Test
+    void testTodo() {
+        TodoSpan span = TodoSpan.newSpan(newParent(), "{!abc}");
+        Assertions.assertNotNull(span);
+        addStyleTest("{!", StyleClasses.TODO, StyleClasses.OPERATOR);
+        addStyleTest("abc", StyleClasses.TODO, StyleClasses.TEXT);
+        addStyleTest("}", StyleClasses.TODO, StyleClasses.OPERATOR);
         testStyles(span);
     }
 }

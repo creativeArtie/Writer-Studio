@@ -4,14 +4,18 @@ import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 
-public class SpanText extends SpanBranch {
+public class TextSpan extends SpanBranch {
     private String spanText;
 
-    public static SpanText newId(SpanBranch parent, String text) {
-        return parseText(new SpanText(parent), BasicTextPatterns.ID, text);
+    public static TextSpan newSpecial(SpanBranch parent, String text) {
+        return parseText(new TextSpan(parent), BasicTextPatterns.SPECIAL, text);
     }
 
-    private static SpanText parseText(SpanText span, BasicTextPatterns pattern, String text) {
+    public static TextSpan newId(SpanBranch parent, String text) {
+        return parseText(new TextSpan(parent), BasicTextPatterns.ID, text);
+    }
+
+    private static TextSpan parseText(TextSpan span, BasicTextPatterns pattern, String text) {
         Matcher match = pattern.matcher(text);
         StringBuilder builder = new StringBuilder();
         while (match.find()) {
@@ -29,7 +33,7 @@ public class SpanText extends SpanBranch {
         return span;
     }
 
-    private SpanText(SpanBranch parent) {
+    private TextSpan(SpanBranch parent) {
         super(parent);
     }
 

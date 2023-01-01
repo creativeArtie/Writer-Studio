@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.*;
 
-class SpanTextTest extends SpanBranchTestBase {
+class TextSpanTest extends SpanBranchTestBase {
     @Test
     void testTextEsape() {
-        SpanText text = SpanText.newId(newParent(), "abc\\:");
+        TextSpan text = TextSpan.newId(newParent(), "abc\\:");
         addStyleTest("abc", StyleClasses.TEXT);
         addStyleTest("\\:", StyleClasses.ESCAPE);
         testStyles(text);
@@ -16,7 +16,7 @@ class SpanTextTest extends SpanBranchTestBase {
 
     @Test
     void testEsapeText() {
-        SpanText text = SpanText.newId(newParent(), "\\:abc");
+        TextSpan text = TextSpan.newId(newParent(), "\\:abc");
         addStyleTest("\\:", StyleClasses.ESCAPE);
         addStyleTest("abc", StyleClasses.TEXT);
         testStyles(text);
@@ -25,7 +25,7 @@ class SpanTextTest extends SpanBranchTestBase {
 
     @Test
     void testLong() {
-        SpanText text = SpanText.newId(newParent(), "abc\\:efg\\topq");
+        TextSpan text = TextSpan.newId(newParent(), "abc\\:efg\\topq");
         addStyleTest("abc", StyleClasses.TEXT);
         addStyleTest("\\:", StyleClasses.ESCAPE);
         addStyleTest("efg", StyleClasses.TEXT);
