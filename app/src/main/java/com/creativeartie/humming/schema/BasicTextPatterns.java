@@ -6,8 +6,30 @@ import java.util.regex.*;
  * Patterns for basic text with escape chars.
  */
 public enum BasicTextPatterns implements PatternEnum {
-    ID("[\\p{IsIdeographic}\\p{IsAlphabetic}\\p{IsDigit} _\t]+"), LINK("[^\\|\\}\\n]+"), SPECIAL("[^\\}\\n]+"),
-    TEXT("[^\\n]+"), HEADING("[^\\n\\#]+"), CITE("[\\p{IsAlphabetic}_]+");
+    ID("\\p{IsIdeographic}\\p{IsAlphabetic}\\p{IsDigit} _\t", false), SPECIAL("\\}\\n", true), TEXT("\\n", true),
+    HEADING("\\n\\#", true), CITE("\\p{IsAlphabetic}_", false);
+
+    public enum BasicFormatParts {
+        BOLD("\\*"), UNDERLINE("_"), ITALICS("`"), REF("\\{");
+
+        private static String listPatterns() {
+            StringBuilder builder = new StringBuilder();
+            for (BasicFormatParts part : values()) {
+                builder.append(part.rawPattern);
+            }
+            return builder.toString();
+        }
+
+        public String getPattern() {
+            return rawPattern;
+        }
+
+        private String rawPattern;
+
+        private BasicFormatParts(String pattern) {
+            rawPattern = pattern;
+        }
+    }
 
     public enum BasicTextPart implements PatternEnum {
         ESCAPE("\\\\."), TEXT("");
@@ -27,23 +49,18 @@ public enum BasicTextPatterns implements PatternEnum {
         public String getPatternName() {
             return name();
         }
-
-        @Override
-        public boolean runFind() {
-            return true;
-        }
     }
 
     private final String textPattern;
     private final String basePattern;
     private Pattern compiledPattern;
 
-    BasicTextPatterns(String pat) {
-        textPattern = pat;
+    BasicTextPatterns(String pat, boolean isNegate) {
+        textPattern = isNegate ? ("[^" + pat + BasicFormatParts.listPatterns() + "]+") : ("[" + pat + "]+");
         // @formatter:off
         basePattern = "(" +
                 BasicTextPart.ESCAPE.getRawPattern() + "|" +
-                pat +
+                textPattern +
             ")+";
         // @formatter:on
     }
@@ -71,10 +88,5 @@ public enum BasicTextPatterns implements PatternEnum {
     @Override
     public String getPatternName() {
         return name();
-    }
-
-    @Override
-    public boolean runFind() {
-        return true;
     }
 }

@@ -6,7 +6,7 @@ import java.util.regex.*;
  * Lines that are part a numbered/bullet lists.
  */
 public enum ListLinePattern implements PatternEnum {
-    NUMBERED("\\#{1,6}"), BULLET("\\-{1,6}"), TEXT(FormattedPattern.getFullPattern(BasicTextPatterns.TEXT));
+    NUMBERED("\\#{1,6}"), BULLET("\\-{1,6}"), TEXT(TextLinePatterns.BASIC.getRawPattern());
 
     private static String fullPattern;
     private static Pattern matchPattern;
@@ -33,8 +33,7 @@ public enum ListLinePattern implements PatternEnum {
             matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
         }
         final Matcher matcher = matchPattern.matcher(text);
-        if (matcher.find())
-            return matcher;
+        if (matcher.find()) return matcher;
         return null;
     }
 

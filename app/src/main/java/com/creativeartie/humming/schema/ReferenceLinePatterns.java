@@ -40,27 +40,11 @@ public enum ReferenceLinePatterns implements PatternEnum {
                 ")";
          // @formatter:on
         }
-    },
-    IMAGE {
-        @Override
-        protected String getValuePattern(boolean withName) {
-            return // @formatter:off
-                RefLineParts.START.getPattern(withName) +
-                RefLineParts.LINK.getPattern(withName) +
-                "(" +
-                    "(" +
-                        RefLineParts.ID.getPattern(withName) +
-                        RefLineParts.SEP.getPattern(withName) +
-                        RefLineParts.TEXT.getPattern(withName) +
-                    ")|" + RefLineParts.ERROR.getPattern(withName) +
-                ")";
-         // @formatter:on
-        }
     };
 
     public enum RefLineParts implements PatternEnum {
-        START("!"), FOOTNOTE("\\^"), ENDNOTE("\\*"), LINK("\\@"), SEP("="), ID(IdentityPattern.getFullPattern()),
-        TEXT(BasicTextPatterns.TEXT.getRawPattern()), ERROR(BasicTextPatterns.TEXT.getRawPattern());
+        START("!"), FOOTNOTE("\\^"), ENDNOTE("\\*"), SEP("="), ID(IdentityPattern.getFullPattern()),
+        TEXT(TextLinePatterns.NOTE.getRawPattern()), ERROR(BasicTextPatterns.TEXT.getRawPattern());
 
         private final String rawPattern;
 
@@ -98,8 +82,7 @@ public enum ReferenceLinePatterns implements PatternEnum {
         }
         final Matcher match = matchPattern.matcher(text);
 
-        if (match.find())
-            return match;
+        if (match.find()) return match;
         return null;
     }
 

@@ -55,9 +55,4 @@ public enum IdentityPattern implements PatternEnum {
     public String getPatternName() {
         return name();
     }
-
-    @Override
-    public boolean runFind() {
-        return true;
-    }
 }

@@ -23,8 +23,11 @@ class IdentityPattenTest extends PatternTestBase<IdentityPattern> {
     void testPassedId() {
         final Matcher match = IdentityPattern.matcher("category:id");
 
+        match.find();
         assertGroup("category", match, IdentityPattern.NAME, 1);
+        match.find();
         assertGroup(":", match, IdentityPattern.SEP, 2);
+        match.find();
         assertGroup("id", match, IdentityPattern.NAME, 3);
         assertEnd(match);
     }

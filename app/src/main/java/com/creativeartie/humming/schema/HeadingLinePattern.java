@@ -8,8 +8,8 @@ import com.google.common.base.*;
  * Headings for print and to describe scenes in an outline
  */
 public enum HeadingLinePattern implements PatternEnum {
-    OUTLINE("!"), LEVEL("\\={1,6}"), TEXT(FormattedPattern.getFullPattern(BasicTextPatterns.HEADING)),
-    STATUS("\\#[a-zA-Z]*"), DETAILS(BasicTextPatterns.TEXT.getRawPattern());
+    OUTLINE("!"), LEVEL("\\={1,6}"), TEXT(TextLinePatterns.HEADING.getRawPattern()), STATUS("\\#[a-zA-Z]*"),
+    DETAILS(BasicTextPatterns.TEXT.getRawPattern());
 
     public enum StatusPattern {
         STUB, OUTLINE, DRAFT, FINAL, OTHERS;
@@ -58,8 +58,7 @@ public enum HeadingLinePattern implements PatternEnum {
             matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
         }
         final Matcher matcher = matchPattern.matcher(text);
-        if (matcher.find())
-            return matcher;
+        if (matcher.find()) return matcher;
         return null;
     }
 

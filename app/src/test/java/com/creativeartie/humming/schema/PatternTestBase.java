@@ -9,7 +9,6 @@ import com.google.common.base.*;
 
 public class PatternTestBase<T extends PatternEnum> {
     private int expectedLength;
-    private Class<? extends PatternEnum> patternClass;
 
     /**
      * Asserts a PatternEnum against an expected text
@@ -23,14 +22,10 @@ public class PatternTestBase<T extends PatternEnum> {
      * @return
      */
     protected String assertGroup(String expect, Matcher match, T pattern, int group) {
-        if (pattern.runFind()) {
-            match.find();
-        }
         final String message = "Matching " + pattern.getPatternName() + " group " + Integer.toString(group);
         final String matched = pattern.group(match);
         Assertions.assertEquals(expect, matched, message);
         expectedLength += expect.length();
-        patternClass = pattern.getClass();
         return matched;
     }
 
@@ -52,13 +47,8 @@ public class PatternTestBase<T extends PatternEnum> {
     }
 
     protected void assertEnd(Matcher match) {
-        if (patternClass == null) {
-            Assertions.assertEquals(0, match.end(), "Search end");
-        } else if (patternClass.getEnumConstants()[0].runFind()) {
-            Assertions.assertFalse(match.find(), "Search end");
-        } else {
-            Assertions.assertEquals(expectedLength, match.end(), "Search end");
-        }
+        Assertions.assertEquals(expectedLength, match.end(), "Search end");
+        Assertions.assertFalse(match.find(), "Search end");
     }
 
     protected void assertFail(Executable test) {

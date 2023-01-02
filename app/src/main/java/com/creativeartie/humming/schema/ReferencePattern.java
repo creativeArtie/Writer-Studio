@@ -42,7 +42,7 @@ public enum ReferencePattern implements PatternEnum {
                     REF.getPattern(withName) + "|" +
                     IMAGE.getPattern(withName) +
                 ")" + ID.getPattern(withName) +
-            ")|(" + ERROR.getPattern(withName) + ")?" +
+                ")|(" + ERROR.getPattern(withName) + ")?" +
             ")" + END.getPattern(withName) + "?";
          // @formatter:on
     }
