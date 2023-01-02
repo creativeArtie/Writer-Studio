@@ -16,23 +16,18 @@ public enum TextLinePatterns implements PatternEnum {
         builder.append(TextLinePart.UNDERLINE.getPattern(withName) + "|");
         builder.append(TextLinePart.ITALICS.getPattern(withName) + "|");
         builder.append(TextLinePart.TODO.getPattern(withName) + "|");
-        if (withRefers) {
-            builder.append(TextLinePart.REFER.getPattern(withName) + "|");
-        }
+        if (withRefers) builder.append(TextLinePart.REFER.getPattern(withName) + "|");
         builder.append(
                 withName ? PatternEnum.namePattern(TextLinePart.TEXT.getPatternName(), textPattern.getRawPattern()) :
                         textPattern.getRawPattern()
         );
-        if (withName) {
-            return builder.toString();
-        } else {
-            return "(" + builder.toString() + ")*";
-        }
+        if (withName) return builder.toString();
+        return "(" + builder.toString() + ")*";
     }
 
     private BasicTextPatterns textPattern;
 
-    private TextLinePatterns(BasicTextPatterns pattern, boolean refers) {
+    TextLinePatterns(BasicTextPatterns pattern, boolean refers) {
         textPattern = pattern;
         withRefers = refers;
     }
@@ -43,7 +38,7 @@ public enum TextLinePatterns implements PatternEnum {
 
         private final String rawPattern;
 
-        private TextLinePart(String pattern) {
+        TextLinePart(String pattern) {
             rawPattern = pattern;
         }
 
@@ -63,18 +58,13 @@ public enum TextLinePatterns implements PatternEnum {
     private String rawPattern;
 
     public Matcher matcher(String text) {
-        if (matchPattern == null) {
-            matchPattern = Pattern.compile(getFullPattern(true));
-        }
-        Matcher match = matchPattern.matcher(text);
-        return match;
+        if (matchPattern == null) matchPattern = Pattern.compile(getFullPattern(true));
+        return matchPattern.matcher(text);
     }
 
     @Override
     public String getRawPattern() {
-        if (rawPattern == null) {
-            rawPattern = getFullPattern(false);
-        }
+        if (rawPattern == null) rawPattern = getFullPattern(false);
         return rawPattern;
     }
 

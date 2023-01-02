@@ -27,8 +27,7 @@ public final class SpanLeaf implements Span {
     }
 
     public List<StyleClasses> getClassStyles() {
-        ImmutableList.Builder<StyleClasses> builder = ImmutableList.builder();
-        return builder.addAll(parentSpan.getInheritedStyles()).add(styleClass).build();
+        return ImmutableList.<StyleClasses>builder().addAll(parentSpan.getInheritedStyles()).add(styleClass).build();
     }
 
     @Override

@@ -27,18 +27,15 @@ public enum TodoPattern implements PatternEnum {
     }
 
     public static String getFullPattern() {
-        if (fullPattern == null) {
-            // @formatter:off
-            fullPattern = getFullPattern(false);
-             // @formatter:on
-        }
+        if (fullPattern ==
+                null) // @formatter:off
+        fullPattern = getFullPattern(false);
+         // @formatter:on
         return fullPattern;
     }
 
     public static Matcher matcher(String text) {
-        if (matchPattern == null) {
-            matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
-        }
+        if (matchPattern == null) matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
         final Matcher match = matchPattern.matcher(text);
         Preconditions.checkArgument(match.find(), "No pattern found.");
         return match;

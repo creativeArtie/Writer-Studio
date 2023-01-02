@@ -14,9 +14,7 @@ public enum BasicTextPatterns implements PatternEnum {
 
         private static String listPatterns() {
             StringBuilder builder = new StringBuilder();
-            for (BasicFormatParts part : values()) {
-                builder.append(part.rawPattern);
-            }
+            for (BasicFormatParts part : values()) builder.append(part.rawPattern);
             return builder.toString();
         }
 
@@ -26,7 +24,7 @@ public enum BasicTextPatterns implements PatternEnum {
 
         private String rawPattern;
 
-        private BasicFormatParts(String pattern) {
+        BasicFormatParts(String pattern) {
             rawPattern = pattern;
         }
     }
@@ -66,18 +64,15 @@ public enum BasicTextPatterns implements PatternEnum {
     }
 
     public Matcher matcher(String text) {
-        if (compiledPattern == null) {
-            compiledPattern = Pattern.compile(
-            // @formatter:off
-                "(" +
-                    BasicTextPart.ESCAPE.getNamedPattern() + "|" +
-                    PatternEnum.namePattern(BasicTextPart.TEXT.name(), textPattern) +
-                ")"
-            // @formatter:on
-            );
-        }
-        Matcher match = compiledPattern.matcher(text);
-        return match;
+        if (compiledPattern == null) compiledPattern = Pattern.compile(
+        // @formatter:off
+            "(" +
+                BasicTextPart.ESCAPE.getNamedPattern() + "|" +
+                PatternEnum.namePattern(BasicTextPart.TEXT.name(), textPattern) +
+            ")"
+        // @formatter:on
+        );
+        return compiledPattern.matcher(text);
     }
 
     @Override

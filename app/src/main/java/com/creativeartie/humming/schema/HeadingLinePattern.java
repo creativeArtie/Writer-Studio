@@ -17,16 +17,10 @@ public enum HeadingLinePattern implements PatternEnum {
         private static Pattern testPattern;
 
         public static StatusPattern getStatus(String text) {
-            if (testPattern == null) {
-                testPattern = Pattern.compile("\\#[^\\n]+");
-            }
+            if (testPattern == null) testPattern = Pattern.compile("\\#[^\\n]+");
             Preconditions.checkArgument(testPattern.matcher(text).find(), "Pattern not found");
             final String name = text.toUpperCase();
-            for (final StatusPattern value : values()) {
-                if (name.startsWith("#" + value.name())) {
-                    return value;
-                }
-            }
+            for (final StatusPattern value : values()) if (name.startsWith("#" + value.name())) return value;
             return OTHERS;
         }
     }
@@ -48,16 +42,12 @@ public enum HeadingLinePattern implements PatternEnum {
     private static Pattern matchPattern;
 
     public static String getFullPattern() {
-        if (fullPattern == null) {
-            fullPattern = getFullPattern(false);
-        }
+        if (fullPattern == null) fullPattern = getFullPattern(false);
         return fullPattern;
     }
 
     public static Matcher matcher(String text) {
-        if (matchPattern == null) {
-            matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
-        }
+        if (matchPattern == null) matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
         final Matcher matcher = matchPattern.matcher(text);
         if (matcher.find()) return matcher;
         return null;

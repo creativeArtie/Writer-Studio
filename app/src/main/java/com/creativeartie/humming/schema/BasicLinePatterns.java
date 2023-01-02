@@ -52,9 +52,7 @@ public enum BasicLinePatterns implements PatternEnum {
     }
 
     public Matcher matcher(String text) {
-        if (matchPattern == null) {
-            matchPattern = Pattern.compile("^" + buildPattern(true) + "$");
-        }
+        if (matchPattern == null) matchPattern = Pattern.compile("^" + buildPattern(true) + "$");
         final Matcher match = matchPattern.matcher(text);
         if (match.find()) return match;
         return null;
@@ -62,18 +60,14 @@ public enum BasicLinePatterns implements PatternEnum {
 
     private String buildPattern(boolean withName) {
         final StringBuilder builder = new StringBuilder();
-        for (final BasicLinePart part : patternParts) {
-            builder.append(part.getPattern(withName));
-        }
+        for (final BasicLinePart part : patternParts) builder.append(part.getPattern(withName));
         builder.append(BasicLinePart.ENDER.getPattern(withName));
         return builder.toString();
     }
 
     @Override
     public String getRawPattern() {
-        if (rawPattern == null) {
-            rawPattern = buildPattern(false);
-        }
+        if (rawPattern == null) rawPattern = buildPattern(false);
         return rawPattern;
     }
 

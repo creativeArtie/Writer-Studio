@@ -10,16 +10,14 @@ public enum IdentityPattern implements PatternEnum {
     private static Pattern matchPattern;
 
     static String getFullPattern() {
-        if (fullPattern == null) {
-            fullPattern =
-            // @formatter:off
+        if (fullPattern == null) fullPattern =
+        // @formatter:off
+            NAME.getRawPattern() +
+            "(" +
+                SEP.getRawPattern() +
                 NAME.getRawPattern() +
-                "(" +
-                    SEP.getRawPattern() +
-                    NAME.getRawPattern() +
-                ")*";
-             // @formatter:on
-        }
+            ")*";
+         // @formatter:on
         return fullPattern;
     }
 
@@ -28,9 +26,7 @@ public enum IdentityPattern implements PatternEnum {
             checkPattern = Pattern.compile("^" + getFullPattern() + "$");
             final StringBuilder pattern = new StringBuilder();
             for (final PatternEnum value : IdentityPattern.values()) {
-                if (!pattern.isEmpty()) {
-                    pattern.append("|");
-                }
+                if (!pattern.isEmpty()) pattern.append("|");
                 pattern.append("(" + value.getNamedPattern() + ")");
             }
             matchPattern = Pattern.compile(pattern.toString());

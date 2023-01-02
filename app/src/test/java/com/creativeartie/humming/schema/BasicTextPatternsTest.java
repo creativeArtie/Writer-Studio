@@ -13,9 +13,8 @@ class BasicTextPatternsTest extends PatternTestBase<BasicTextPart> {
     @BeforeAll
     static void displayPattern() {
         final String raw = "abc";
-        for (final BasicTextPatterns pattern : BasicTextPatterns.values()) {
+        for (final BasicTextPatterns pattern : BasicTextPatterns.values())
             splitPrintPattern(pattern.getPatternName(), pattern.matcher(raw));
-        }
     }
 
     @ParameterizedTest

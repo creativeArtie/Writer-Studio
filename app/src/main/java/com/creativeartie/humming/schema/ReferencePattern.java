@@ -25,9 +25,7 @@ public enum ReferencePattern implements PatternEnum {
     private static Pattern matchPattern;
 
     public static String getFullPattern() {
-        if (fullPattern == null) {
-            fullPattern = getFullPattern(false);
-        }
+        if (fullPattern == null) fullPattern = getFullPattern(false);
         return fullPattern;
     }
 
@@ -48,9 +46,7 @@ public enum ReferencePattern implements PatternEnum {
     }
 
     public static Matcher matcher(String text) {
-        if (matchPattern == null) {
-            matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
-        }
+        if (matchPattern == null) matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
         final Matcher answer = matchPattern.matcher(text);
         if (answer.find()) return answer;
         return null;

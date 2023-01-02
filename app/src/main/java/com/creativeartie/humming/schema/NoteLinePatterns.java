@@ -78,16 +78,13 @@ public enum NoteLinePatterns implements PatternEnum {
 
     @Override
     public String getRawPattern() {
-        if (rawPattern == null) {
-            rawPattern = getValuePattern(false) + NoteLineParts.ENDER.getPattern(false);
-        }
+        if (rawPattern == null) rawPattern = getValuePattern(false) + NoteLineParts.ENDER.getPattern(false);
         return rawPattern;
     }
 
     public Matcher matcher(String text) {
-        if (matchPattern == null) {
+        if (matchPattern == null)
             matchPattern = Pattern.compile("^" + getValuePattern(true) + NoteLineParts.ENDER.getPattern(true) + "$");
-        }
         final Matcher match = matchPattern.matcher(text);
 
         if (match.find()) return match;

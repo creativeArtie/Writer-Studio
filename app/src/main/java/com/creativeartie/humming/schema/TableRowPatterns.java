@@ -51,7 +51,7 @@ public enum TableRowPatterns implements PatternEnum {
 
         private final String rawPattern;
 
-        private TableRowParts(String pattern) {
+        TableRowParts(String pattern) {
             rawPattern = pattern;
         }
 
@@ -77,9 +77,7 @@ public enum TableRowPatterns implements PatternEnum {
         if (rawPattern == null) {
             rawPattern = "";
             for (TableRowParts part : TableRowParts.values()) {
-                if (rawPattern != "") {
-                    rawPattern += "|";
-                }
+                if (rawPattern != "") rawPattern += "|";
                 rawPattern += part.getPattern(false);
             }
         }
@@ -87,9 +85,7 @@ public enum TableRowPatterns implements PatternEnum {
     }
 
     public Matcher matcher(String text) {
-        if (matchPattern == null) {
-            matchPattern = Pattern.compile("^" + getMatchPattern() + "$");
-        }
+        if (matchPattern == null) matchPattern = Pattern.compile("^" + getMatchPattern() + "$");
         Matcher match = matchPattern.matcher(text);
         return match.find() ? match : null;
     }

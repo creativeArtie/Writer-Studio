@@ -70,16 +70,13 @@ public enum ReferenceLinePatterns implements PatternEnum {
 
     @Override
     public String getRawPattern() {
-        if (fullPattern == null) {
-            fullPattern = getValuePattern(false) + RefLineParts.ENDER.getPattern(false);
-        }
+        if (fullPattern == null) fullPattern = getValuePattern(false) + RefLineParts.ENDER.getPattern(false);
         return fullPattern;
     }
 
     public Matcher matcher(String text) {
-        if (matchPattern == null) {
+        if (matchPattern == null)
             matchPattern = Pattern.compile("^" + getValuePattern(true) + RefLineParts.ENDER.getPattern(true) + "$");
-        }
         final Matcher match = matchPattern.matcher(text);
 
         if (match.find()) return match;

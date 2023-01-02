@@ -32,7 +32,7 @@ public enum TableCellPatterns implements PatternEnum {
 
         private final String patternText;
 
-        private CellParts(String pattern) {
+        CellParts(String pattern) {
             patternText = pattern;
         }
 
@@ -54,16 +54,12 @@ public enum TableCellPatterns implements PatternEnum {
 
     @Override
     public String getRawPattern() {
-        if (rawPattern == null) {
-            rawPattern = getFullPattern(false);
-        }
+        if (rawPattern == null) rawPattern = getFullPattern(false);
         return rawPattern;
     }
 
     public Matcher matcher(String text) {
-        if (matchPattern == null) {
-            matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
-        }
+        if (matchPattern == null) matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
         Matcher match = matchPattern.matcher(text);
         return match.find() ? match : null;
     }

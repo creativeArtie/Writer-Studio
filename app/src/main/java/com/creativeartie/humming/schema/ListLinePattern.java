@@ -23,16 +23,12 @@ public enum ListLinePattern implements PatternEnum {
     }
 
     public static String getFullPattern() {
-        if (fullPattern == null) {
-            fullPattern = getFullPattern(false);
-        }
+        if (fullPattern == null) fullPattern = getFullPattern(false);
         return fullPattern;
     }
 
     public static Matcher matcher(String text) {
-        if (matchPattern == null) {
-            matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
-        }
+        if (matchPattern == null) matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
         final Matcher matcher = matchPattern.matcher(text);
         if (matcher.find()) return matcher;
         return null;
