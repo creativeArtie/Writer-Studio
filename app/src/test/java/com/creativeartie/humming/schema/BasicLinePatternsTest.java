@@ -25,6 +25,14 @@ class BasicLinePatternsTest extends PatternTestBase<BasicLinePart> {
     }
 
     @Test
+    void testFullBreak() {
+        final Matcher match = BasicLinePatterns.BREAK.matcher("***\n");
+        assertGroup("***", match, BasicLinePart.BREAKER, 1);
+        assertGroup("\n", match, BasicLinePart.ENDER, 2);
+        assertEnd(match);
+    }
+
+    @Test
     void testNonBreak() {
         Assertions.assertNull(BasicLinePatterns.BREAK.matcher("abc"));
     }

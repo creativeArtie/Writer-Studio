@@ -44,7 +44,7 @@ public enum ReferenceLinePatterns implements PatternEnum {
 
     public enum RefLineParts implements PatternEnum {
         START("!"), FOOTNOTE("\\^"), ENDNOTE("\\*"), SEP("="), ID(IdentityPattern.getFullPattern()),
-        TEXT(TextLinePatterns.NOTE.getRawPattern()), ERROR(BasicTextPatterns.TEXT.getRawPattern());
+        TEXT(TextLinePatterns.NOTE.getRawPattern()), ERROR(BasicTextPatterns.TEXT.getRawPattern()), ENDER("\n?");
 
         private final String rawPattern;
 
@@ -71,14 +71,14 @@ public enum ReferenceLinePatterns implements PatternEnum {
     @Override
     public String getRawPattern() {
         if (fullPattern == null) {
-            fullPattern = getValuePattern(false);
+            fullPattern = getValuePattern(false) + RefLineParts.ENDER.getPattern(false);
         }
         return fullPattern;
     }
 
     public Matcher matcher(String text) {
         if (matchPattern == null) {
-            matchPattern = Pattern.compile("^" + getValuePattern(true) + "$");
+            matchPattern = Pattern.compile("^" + getValuePattern(true) + RefLineParts.ENDER.getPattern(true) + "$");
         }
         final Matcher match = matchPattern.matcher(text);
 

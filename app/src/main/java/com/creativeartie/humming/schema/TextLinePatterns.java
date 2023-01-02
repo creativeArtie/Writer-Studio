@@ -5,7 +5,8 @@ import java.util.regex.*;
 import com.google.common.base.*;
 
 public enum TextLinePatterns implements PatternEnum {
-    BASIC(BasicTextPatterns.TEXT, true), HEADING(BasicTextPatterns.HEADING, true), NOTE(BasicTextPatterns.TEXT, false);
+    BASIC(BasicTextPatterns.TEXT, true), HEADING(BasicTextPatterns.HEADING, true), NOTE(BasicTextPatterns.TEXT, false),
+    CELL(BasicTextPatterns.CELL, true);
 
     private final boolean withRefers;
 

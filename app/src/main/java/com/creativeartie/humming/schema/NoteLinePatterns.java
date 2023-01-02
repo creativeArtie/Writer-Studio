@@ -54,7 +54,7 @@ public enum NoteLinePatterns implements PatternEnum {
         STARTER("!"), NOTE("%"), HEADING("%="), SOURCE(">"), SOURCER(":"), TEXT(TextLinePatterns.BASIC.getRawPattern()),
         TITLE(TextLinePatterns.HEADING.getRawPattern()), IDER("#"), ID(IdentityPattern.getFullPattern()),
         ERROR(BasicTextPatterns.TEXT.getRawPattern()), FIELD(BasicTextPatterns.CITE.getRawPattern()),
-        VALUE(BasicTextPatterns.TEXT.getRawPattern());
+        VALUE(BasicTextPatterns.TEXT.getRawPattern()), ENDER("\n?");
 
         private String rawPattern;
 
@@ -79,14 +79,14 @@ public enum NoteLinePatterns implements PatternEnum {
     @Override
     public String getRawPattern() {
         if (rawPattern == null) {
-            rawPattern = getValuePattern(false);
+            rawPattern = getValuePattern(false) + NoteLineParts.ENDER.getPattern(false);
         }
-        return null;
+        return rawPattern;
     }
 
     public Matcher matcher(String text) {
         if (matchPattern == null) {
-            matchPattern = Pattern.compile("^" + getValuePattern(true) + "$");
+            matchPattern = Pattern.compile("^" + getValuePattern(true) + NoteLineParts.ENDER.getPattern(true) + "$");
         }
         final Matcher match = matchPattern.matcher(text);
 

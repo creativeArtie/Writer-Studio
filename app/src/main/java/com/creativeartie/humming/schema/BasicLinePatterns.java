@@ -24,7 +24,7 @@ public enum BasicLinePatterns implements PatternEnum {
 
     enum BasicLinePart implements PatternEnum {
         QUOTER("\\>"), TODOER("\\!"), FORMATTED("(" + TextLinePatterns.BASIC.getRawPattern() + ")?"),
-        TEXT("(" + BasicTextPatterns.TEXT.getRawPattern() + ")?"), BREAKER("\\*+");
+        TEXT("(" + BasicTextPatterns.TEXT.getRawPattern() + ")?"), BREAKER("\\*+"), ENDER("\n?");
 
         private String rawPattern;
 
@@ -65,6 +65,7 @@ public enum BasicLinePatterns implements PatternEnum {
         for (final BasicLinePart part : patternParts) {
             builder.append(part.getPattern(withName));
         }
+        builder.append(BasicLinePart.ENDER.getPattern(withName));
         return builder.toString();
     }
 

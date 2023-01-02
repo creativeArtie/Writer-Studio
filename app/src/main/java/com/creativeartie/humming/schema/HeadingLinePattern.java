@@ -9,7 +9,7 @@ import com.google.common.base.*;
  */
 public enum HeadingLinePattern implements PatternEnum {
     OUTLINE("!"), LEVEL("\\={1,6}"), TEXT(TextLinePatterns.HEADING.getRawPattern()), STATUS("\\#[a-zA-Z]*"),
-    DETAILS(BasicTextPatterns.TEXT.getRawPattern());
+    DETAILS(BasicTextPatterns.TEXT.getRawPattern()), ENDER("\n?");
 
     public enum StatusPattern {
         STUB, OUTLINE, DRAFT, FINAL, OTHERS;
@@ -39,7 +39,8 @@ public enum HeadingLinePattern implements PatternEnum {
             OUTLINE.getPattern(withName) + "?" +
             LEVEL.getPattern(withName) +
             TEXT.getPattern(withName) + "?" +
-            "(" + STATUS.getPattern(withName) + DETAILS.getPattern(withName) + "?)?";
+            "(" + STATUS.getPattern(withName) + DETAILS.getPattern(withName) + "?)?" +
+            ENDER.getPattern(withName);
         // @formatter:on
     }
 
