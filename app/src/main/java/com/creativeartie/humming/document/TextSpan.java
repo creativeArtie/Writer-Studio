@@ -33,7 +33,7 @@ public class TextSpan extends SpanBranch {
         return parseText(new TextSpan(span, styles), BasicTextPatterns.ID, text);
     }
 
-    public static Span newSpecial(ReferencePointerSpan span, String raw, StyleClasses... styles) {
+    public static TextSpan newSpecial(SpanBranch span, String raw, StyleClasses... styles) {
         return parseText(new TextSpan(span, styles), BasicTextPatterns.SPECIAL, raw);
     }
 

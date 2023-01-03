@@ -13,7 +13,7 @@ public class TodoSpan extends IdentityBase {
         String raw = TodoPattern.START.group(matcher);
         span.add(new SpanLeaf(span, raw.length()));
         if ((raw = TodoPattern.TEXT.group(matcher)) != null) {
-            TextSpan test = TextSpan.builder(span).setPattern(BasicTextPatterns.ID).build(raw);
+            TextSpan test = TextSpan.newSpecial(span, raw, classes);
             span.add(test);
             span.todoText = test.getText();
         }

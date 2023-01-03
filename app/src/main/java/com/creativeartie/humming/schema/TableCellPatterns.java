@@ -34,7 +34,7 @@ public enum TableCellPatterns implements PatternEnum {
     }
 
     public enum TableCellParts implements PatternEnum {
-        START("\\|"), BORDER("\\|"), TEXT(TextLinePatterns.CELL.getRawPattern()), HEADER("="), ROWS("\\^+"),
+        START("\\|"), BORDER("\\|"), TEXT(LineTextPatterns.CELL.getRawPattern()), HEADER("="), ROWS("\\^+"),
         COLS("\\|+");
 
         private final String patternText;

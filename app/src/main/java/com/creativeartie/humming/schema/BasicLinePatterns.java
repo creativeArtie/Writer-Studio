@@ -23,7 +23,7 @@ public enum BasicLinePatterns implements PatternEnum {
     TEXT(BasicLinePart.FORMATTED), BREAK(BasicLinePart.BREAKER);
 
     enum BasicLinePart implements PatternEnum {
-        QUOTER("\\>"), TODOER("\\!"), FORMATTED("(" + TextLinePatterns.BASIC.getRawPattern() + ")?"),
+        QUOTER("\\>"), TODOER("\\!"), FORMATTED("(" + LineTextPatterns.BASIC.getRawPattern() + ")?"),
         TEXT("(" + BasicTextPatterns.TEXT.getRawPattern() + ")?"), BREAKER("\\*+"), ENDER("\n?");
 
         private String rawPattern;

@@ -8,7 +8,7 @@ import com.google.common.base.*;
  * Headings for print and to describe scenes in an outline
  */
 public enum HeadingLinePattern implements PatternEnum {
-    OUTLINE("!"), LEVEL("\\={1,6}"), TEXT(TextLinePatterns.HEADING.getRawPattern()), STATUS("\\#[a-zA-Z]*"),
+    OUTLINE("!"), LEVEL("\\={1,6}"), TEXT(LineTextPatterns.HEADING.getRawPattern()), STATUS("\\#[a-zA-Z]*"),
     DETAILS(BasicTextPatterns.TEXT.getRawPattern()), ENDER("\n?");
 
     public enum StatusPattern {

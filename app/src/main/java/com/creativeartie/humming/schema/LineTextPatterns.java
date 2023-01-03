@@ -4,7 +4,7 @@ import java.util.regex.*;
 
 import com.google.common.base.*;
 
-public enum TextLinePatterns implements PatternEnum {
+public enum LineTextPatterns implements PatternEnum {
     BASIC(BasicTextPatterns.TEXT, true), HEADING(BasicTextPatterns.HEADING, true), NOTE(BasicTextPatterns.TEXT, false),
     CELL(BasicTextPatterns.CELL, true);
 
@@ -12,13 +12,13 @@ public enum TextLinePatterns implements PatternEnum {
 
     private String getFullPattern(boolean withName) {
         StringBuilder builder = new StringBuilder();
-        builder.append(TextLinePart.BOLD.getPattern(withName) + "|");
-        builder.append(TextLinePart.UNDERLINE.getPattern(withName) + "|");
-        builder.append(TextLinePart.ITALICS.getPattern(withName) + "|");
-        builder.append(TextLinePart.TODO.getPattern(withName) + "|");
-        if (withRefers) builder.append(TextLinePart.REFER.getPattern(withName) + "|");
+        builder.append(LineTextPart.BOLD.getPattern(withName) + "|");
+        builder.append(LineTextPart.UNDERLINE.getPattern(withName) + "|");
+        builder.append(LineTextPart.ITALICS.getPattern(withName) + "|");
+        builder.append(LineTextPart.TODO.getPattern(withName) + "|");
+        if (withRefers) builder.append(LineTextPart.REFER.getPattern(withName) + "|");
         builder.append(
-                withName ? PatternEnum.namePattern(TextLinePart.TEXT.getPatternName(), textPattern.getRawPattern()) :
+                withName ? PatternEnum.namePattern(LineTextPart.TEXT.getPatternName(), textPattern.getRawPattern()) :
                         textPattern.getRawPattern()
         );
         if (withName) return builder.toString();
@@ -27,18 +27,18 @@ public enum TextLinePatterns implements PatternEnum {
 
     private BasicTextPatterns textPattern;
 
-    TextLinePatterns(BasicTextPatterns pattern, boolean refers) {
+    LineTextPatterns(BasicTextPatterns pattern, boolean refers) {
         textPattern = pattern;
         withRefers = refers;
     }
 
-    public enum TextLinePart implements PatternEnum {
+    public enum LineTextPart implements PatternEnum {
         BOLD("\\*"), UNDERLINE("_"), ITALICS("`"), TODO(TodoPattern.getFullPattern()),
         REFER(ReferencePattern.getFullPattern()), TEXT("");
 
         private final String rawPattern;
 
-        TextLinePart(String pattern) {
+        LineTextPart(String pattern) {
             rawPattern = pattern;
         }
 
