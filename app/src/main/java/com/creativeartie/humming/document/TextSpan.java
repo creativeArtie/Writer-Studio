@@ -3,16 +3,38 @@ package com.creativeartie.humming.document;
 import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
+import com.google.common.base.*;
 
 public class TextSpan extends SpanBranch {
-    private String spanText;
+    public static class Builder {
+        private TextSpan outputSpan;
+        private BasicTextPatterns usePattern;
 
-    public static TextSpan newSpecial(SpanBranch parent, String text) {
-        return parseText(new TextSpan(parent), BasicTextPatterns.SPECIAL, text);
+        private Builder(SpanBranch parent, StyleClasses... styles) {
+            outputSpan = new TextSpan(parent, styles);
+        }
+
+        public TextSpan build(String text) {
+            Preconditions.checkState(usePattern != null);
+            return parseText(outputSpan, usePattern, text);
+        }
+
+        public Builder setPattern(BasicTextPatterns pattern) {
+            usePattern = pattern;
+            return this;
+        }
     }
 
-    public static TextSpan newId(SpanBranch parent, String text) {
-        return parseText(new TextSpan(parent), BasicTextPatterns.ID, text);
+    public static Builder builder(SpanBranch parent, StyleClasses... styles) {
+        return new Builder(parent, styles);
+    }
+
+    public static TextSpan newId(SpanBranch span, String text, StyleClasses... styles) {
+        return parseText(new TextSpan(span, styles), BasicTextPatterns.ID, text);
+    }
+
+    public static Span newSpecial(ReferencePointerSpan span, String raw, StyleClasses... styles) {
+        return parseText(new TextSpan(span, styles), BasicTextPatterns.SPECIAL, raw);
     }
 
     private static TextSpan parseText(TextSpan span, BasicTextPatterns pattern, String text) {
@@ -33,8 +55,10 @@ public class TextSpan extends SpanBranch {
         return span;
     }
 
-    private TextSpan(SpanBranch parent) {
-        super(parent);
+    private String spanText;
+
+    private TextSpan(SpanBranch parent, StyleClasses... styles) {
+        super(parent, styles);
     }
 
     public String getText() {

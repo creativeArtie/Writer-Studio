@@ -6,11 +6,11 @@ import java.util.regex.*;
 import com.creativeartie.humming.schema.*;
 
 public class ReferencePointerSpan extends SpanBranch implements IdentitySpan.IdentityHolder {
-    public static ReferencePointerSpan createSpan(SpanBranch parent, String text) {
+    public static ReferencePointerSpan createSpan(SpanBranch parent, String text, StyleClasses... classes) {
         Matcher match = ReferencePattern.matcher(text);
         if (match == null) return null;
 
-        ReferencePointerSpan span = new ReferencePointerSpan(parent);
+        ReferencePointerSpan span = new ReferencePointerSpan(parent, classes);
 
         String raw = ReferencePattern.START.group(match);
         span.add(new SpanLeaf(span, raw.length()));
