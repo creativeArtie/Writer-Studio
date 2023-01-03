@@ -22,7 +22,7 @@ public enum TextLinePatterns implements PatternEnum {
                         textPattern.getRawPattern()
         );
         if (withName) return builder.toString();
-        return "(" + builder.toString() + ")*";
+        return "(" + builder.toString() + ")+";
     }
 
     private BasicTextPatterns textPattern;

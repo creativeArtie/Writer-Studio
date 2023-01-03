@@ -6,33 +6,40 @@ public enum TableCellPatterns implements PatternEnum {
     TEXT {
         @Override
         String getFullPattern(boolean withName) {
-            return getExpand(withName) + CellParts.TEXT.getPattern(withName);
+            return getExpand(withName) + TableCellParts.TEXT.getPattern(withName);
         }
     },
-    HEADING
-
-    {
+    HEADING {
         @Override
         String getFullPattern(boolean withName) {
-            return getExpand(withName) + CellParts.HEADER.getPattern(withName) + CellParts.TEXT.getPattern(withName);
+            return getExpand(withName) + TableCellParts.HEADER.getPattern(withName) +
+                    TableCellParts.TEXT.getPattern(withName);
+        }
+    },
+    SUBHEAD {
+        @Override
+        String getFullPattern(boolean withName) {
+            return getExpand(withName) + TableCellParts.HEADER.getPattern(withName) + "?" +
+                    TableCellParts.TEXT.getPattern(withName);
         }
     };
 
     String getExpand(boolean withName) {
         return //@formatter:off
-            CellParts.START.getPattern(withName) + "(" +
-                CellParts.COLS.getPattern(withName) + "*|" +
-                CellParts.ROWS.getPattern(withName) +
-            ")";
+            TableCellParts.START.getPattern(withName) + "(" +
+                TableCellParts.COLS.getPattern(withName) + "|" +
+                TableCellParts.ROWS.getPattern(withName) +
+            ")?";
         //@formatter:on
     }
 
-    public enum CellParts implements PatternEnum {
-        START("\\|"), BORDER("\\|"), TEXT(TextLinePatterns.CELL.getRawPattern()), HEADER("="), ROWS("\\^"), COLS("\\|");
+    public enum TableCellParts implements PatternEnum {
+        START("\\|"), BORDER("\\|"), TEXT(TextLinePatterns.CELL.getRawPattern()), HEADER("="), ROWS("\\^+"),
+        COLS("\\|+");
 
         private final String patternText;
 
-        CellParts(String pattern) {
+        TableCellParts(String pattern) {
             patternText = pattern;
         }
 
