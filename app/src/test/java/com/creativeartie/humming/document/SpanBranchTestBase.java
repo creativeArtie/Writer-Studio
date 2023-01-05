@@ -8,11 +8,11 @@ import com.creativeartie.humming.document.IdentitySpan.*;
 
 public class SpanBranchTestBase {
     private static ArrayList<String> expectedText;
-    private static ArrayList<StyleClasses[]> expectedStyles;
+    private static ArrayList<SpanStyles[]> expectedStyles;
     private static Document rootDoc;
 
     private static class HolderSpan extends SpanBranch implements IdentityHolder {
-        protected HolderSpan(Document root, StyleClasses... classes) {
+        protected HolderSpan(Document root, SpanStyles... classes) {
             super(root, classes);
         }
 
@@ -43,7 +43,7 @@ public class SpanBranchTestBase {
         return new HolderSpan(rootDoc);
     }
 
-    protected void addStyleTest(String text, StyleClasses... styles) {
+    protected void addStyleTest(String text, SpanStyles... styles) {
         expectedText.add(text);
         expectedStyles.add(styles);
     }
@@ -57,7 +57,7 @@ public class SpanBranchTestBase {
         int i = 0;
         Assertions.assertEquals(expectedStyles.size(), testLeaves.size(), "Leaves sizes");
         for (SpanLeaf leaf : testLeaves) {
-            StyleClasses[] expectedStyle = expectedStyles.get(i);
+            StyleClass[] expectedStyle = expectedStyles.get(i);
             int expectedLength = expectedText.get(i).length();
             String messagePost = String.format("For %%s at leaf index %d, text \"%s\"", i, expectedText.get(i));
             Assertions.assertAll(

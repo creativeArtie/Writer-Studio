@@ -6,24 +6,24 @@ import com.creativeartie.humming.schema.*;
 import com.creativeartie.humming.schema.TableCellPatterns.*;
 
 public class TableCell extends SpanBranch {
-    public static TableCell newHeadingCell(SpanBranch parent, String text, StyleClasses... classes) {
+    public static TableCell newHeadingCell(SpanBranch parent, String text) {
         Matcher match = TableCellPatterns.SUBHEAD.matcher(text);
         if (match == null) return null;
-        TableCell span = new TableCell(parent, true, classes);
+        TableCell span = new TableCell(parent, true, SpanStyles.HEADCELL);
 
         return parseText(match, span);
     }
 
-    public static TableCell newTextCell(SpanBranch parent, String text, StyleClasses... classes) {
+    public static TableCell newTextCell(SpanBranch parent, String text) {
         Matcher match = TableCellPatterns.TEXT.matcher(text);
         if (match == null) return null;
-        TableCell span = new TableCell(parent, false, classes);
+        TableCell span = new TableCell(parent, false, SpanStyles.TEXTCELL);
 
         return parseText(match, span);
     }
 
     private static TableCell parseText(Matcher match, TableCell span) {
-        span.add(new SpanLeaf(span, TableCellParts.START.group(match).length()));
+        span.add(new SpanLeaf(span, TableCellParts.START.group(match)));
 
         String raw = null;
         if ((raw = TableCellParts.COLS.group(match)) != null) {
@@ -46,8 +46,8 @@ public class TableCell extends SpanBranch {
     private int colsSpan;
     private int rowsSpan;
 
-    public TableCell(SpanBranch parent, boolean isHead, StyleClasses... classes) {
-        super(parent, classes);
+    public TableCell(SpanBranch parent, boolean isHead, SpanStyles style) {
+        super(parent, style);
         isHeading = isHead;
         colsSpan = 1;
         rowsSpan = 1;

@@ -7,12 +7,12 @@ class BasicSpanTest extends SpanBranchTestBase {
     void testFullRef() {
         ReferencePointerSpan span = ReferencePointerSpan.createSpan(newParent(), "{^cat:id}");
         Assertions.assertNotNull(span);
-        addStyleTest("{", StyleClasses.FOOTNOTE, StyleClasses.OPERATOR);
-        addStyleTest("^", StyleClasses.FOOTNOTE, StyleClasses.OPERATOR);
-        addStyleTest("cat", StyleClasses.FOOTNOTE, StyleClasses.ID, StyleClasses.TEXT);
-        addStyleTest(":", StyleClasses.FOOTNOTE, StyleClasses.ID, StyleClasses.OPERATOR);
-        addStyleTest("id", StyleClasses.FOOTNOTE, StyleClasses.ID, StyleClasses.TEXT);
-        addStyleTest("}", StyleClasses.FOOTNOTE, StyleClasses.OPERATOR);
+        addStyleTest("{", SpanStyles.FOOTREF, SpanStyles.OPERATOR);
+        addStyleTest("^", SpanStyles.FOOTREF, SpanStyles.OPERATOR);
+        addStyleTest("cat", SpanStyles.FOOTREF, SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest(":", SpanStyles.FOOTREF, SpanStyles.ID, SpanStyles.OPERATOR);
+        addStyleTest("id", SpanStyles.FOOTREF, SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest("}", SpanStyles.FOOTREF, SpanStyles.OPERATOR);
         testStyles(span);
     }
 
@@ -20,11 +20,11 @@ class BasicSpanTest extends SpanBranchTestBase {
     void testPartRef() {
         ReferencePointerSpan span = ReferencePointerSpan.createSpan(newParent(), "{*cat:id");
         Assertions.assertNotNull(span);
-        addStyleTest("{", StyleClasses.ENDNOTE, StyleClasses.OPERATOR);
-        addStyleTest("*", StyleClasses.ENDNOTE, StyleClasses.OPERATOR);
-        addStyleTest("cat", StyleClasses.ENDNOTE, StyleClasses.ID, StyleClasses.TEXT);
-        addStyleTest("-", StyleClasses.ENDNOTE, StyleClasses.ID, StyleClasses.OPERATOR);
-        addStyleTest("id", StyleClasses.ENDNOTE, StyleClasses.ID, StyleClasses.TEXT);
+        addStyleTest("{", SpanStyles.ENDREF, SpanStyles.OPERATOR);
+        addStyleTest("*", SpanStyles.ENDREF, SpanStyles.OPERATOR);
+        addStyleTest("cat", SpanStyles.ENDREF, SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest("-", SpanStyles.ENDREF, SpanStyles.ID, SpanStyles.OPERATOR);
+        addStyleTest("id", SpanStyles.ENDREF, SpanStyles.ID, SpanStyles.TEXT);
         testStyles(span);
     }
 
@@ -42,9 +42,9 @@ class BasicSpanTest extends SpanBranchTestBase {
     void testErrorRef() {
         ReferencePointerSpan span = ReferencePointerSpan.createSpan(newParent(), "{cat:id}");
         Assertions.assertNotNull(span);
-        addStyleTest("{", StyleClasses.ERROR, StyleClasses.OPERATOR);
-        addStyleTest("cat:id", StyleClasses.ERROR, StyleClasses.TEXT);
-        addStyleTest("}", StyleClasses.ERROR, StyleClasses.OPERATOR);
+        addStyleTest("{", SpanStyles.ERROR, SpanStyles.OPERATOR);
+        addStyleTest("cat:id", SpanStyles.ERROR, SpanStyles.TEXT);
+        addStyleTest("}", SpanStyles.ERROR, SpanStyles.OPERATOR);
         testStyles(span);
     }
 
@@ -52,9 +52,9 @@ class BasicSpanTest extends SpanBranchTestBase {
     void testTodo() {
         TodoSpan span = TodoSpan.newSpan(newParent(), "{!abc}");
         Assertions.assertNotNull(span);
-        addStyleTest("{!", StyleClasses.TODO, StyleClasses.OPERATOR);
-        addStyleTest("abc", StyleClasses.TODO, StyleClasses.TEXT);
-        addStyleTest("}", StyleClasses.TODO, StyleClasses.OPERATOR);
+        addStyleTest("{!", SpanStyles.TODO, SpanStyles.OPERATOR);
+        addStyleTest("abc", SpanStyles.TODO, SpanStyles.TEXT);
+        addStyleTest("}", SpanStyles.TODO, SpanStyles.OPERATOR);
         testStyles(span);
     }
 }

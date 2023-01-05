@@ -11,14 +11,14 @@ import com.creativeartie.humming.schema.NoteLinePatterns.*;
 class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
     @BeforeAll
     static void displayPatterns() throws Exception {
-        splitPrintPattern("Heading", NoteLinePatterns.HEADING.matcher("!%=abc"));
+        splitPrintPattern("Heading", NoteLinePatterns.SUMMARY.matcher("!%=abc"));
         splitPrintPattern("Note", NoteLinePatterns.NOTE.matcher("!%abc"));
         splitPrintPattern("Source", NoteLinePatterns.SOURCE.matcher("!>author:john smith"));
     }
 
     @Test
     void testNoteHeadingWithGoodId() {
-        final Matcher match = NoteLinePatterns.HEADING.matcher("!%=avd #cat:id");
+        final Matcher match = NoteLinePatterns.SUMMARY.matcher("!%=avd #cat:id");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
         assertGroup("%=", match, NoteLineParts.HEADING, 2);
         assertGroup("avd ", match, NoteLineParts.TITLE, 3);
@@ -29,7 +29,7 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testNoteHeadingWithBadId() {
-        final Matcher match = NoteLinePatterns.HEADING.matcher("!%=avd #cat?id");
+        final Matcher match = NoteLinePatterns.SUMMARY.matcher("!%=avd #cat?id");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
         assertGroup("%=", match, NoteLineParts.HEADING, 2);
         assertGroup("avd ", match, NoteLineParts.TITLE, 3);
@@ -40,7 +40,7 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testNoteHeadingWithEmptyId() {
-        final Matcher match = NoteLinePatterns.HEADING.matcher("!%=avd #");
+        final Matcher match = NoteLinePatterns.SUMMARY.matcher("!%=avd #");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
         assertGroup("%=", match, NoteLineParts.HEADING, 2);
         assertGroup("avd ", match, NoteLineParts.TITLE, 3);
@@ -50,7 +50,7 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testNoteHeadingWithNoId() {
-        final Matcher match = NoteLinePatterns.HEADING.matcher("!%=avd");
+        final Matcher match = NoteLinePatterns.SUMMARY.matcher("!%=avd");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
         assertGroup("%=", match, NoteLineParts.HEADING, 2);
         assertGroup("avd", match, NoteLineParts.TITLE, 3);
@@ -59,7 +59,7 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testNoteHeadingWithNoHeading() {
-        final Matcher match = NoteLinePatterns.HEADING.matcher("!%=#cat?id");
+        final Matcher match = NoteLinePatterns.SUMMARY.matcher("!%=#cat?id");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
         assertGroup("%=", match, NoteLineParts.HEADING, 2);
         assertGroup("#", match, NoteLineParts.IDER, 3);
@@ -69,7 +69,7 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testEmptyNoteHeading() {
-        final Matcher match = NoteLinePatterns.HEADING.matcher("!%=");
+        final Matcher match = NoteLinePatterns.SUMMARY.matcher("!%=");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
         assertGroup("%=", match, NoteLineParts.HEADING, 2);
         assertEnd(match);
@@ -116,7 +116,7 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
     @ValueSource(strings = { "=text", "!! todo ", "!=outline" })
     void testNonNote(String text) {
         Assertions.assertAll(
-                () -> Assertions.assertNull(NoteLinePatterns.HEADING.matcher(text), "Heading"),
+                () -> Assertions.assertNull(NoteLinePatterns.SUMMARY.matcher(text), "Heading"),
                 () -> Assertions.assertNull(NoteLinePatterns.NOTE.matcher(text), "Note"),
                 () -> Assertions.assertNull(NoteLinePatterns.SOURCE.matcher(text), "Source")
         );

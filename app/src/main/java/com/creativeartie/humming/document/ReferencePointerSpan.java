@@ -6,14 +6,14 @@ import java.util.regex.*;
 import com.creativeartie.humming.schema.*;
 
 public class ReferencePointerSpan extends SpanBranch implements IdentitySpan.IdentityHolder {
-    public static ReferencePointerSpan createSpan(SpanBranch parent, String text, StyleClasses... classes) {
+    public static ReferencePointerSpan createSpan(SpanBranch parent, String text, SpanStyles... classes) {
         Matcher match = ReferencePattern.matcher(text);
         if (match == null) return null;
 
         ReferencePointerSpan span = new ReferencePointerSpan(parent, classes);
 
         String raw = ReferencePattern.START.group(match);
-        span.add(new SpanLeaf(span, raw.length()));
+        span.add(new SpanLeaf(span, raw));
         IdentityGroup group = null;
         if ((raw = ReferencePattern.FOOTNOTE.group(match)) != null) {
             group = IdentityGroup.FOOTNOTE;
@@ -27,10 +27,10 @@ public class ReferencePointerSpan extends SpanBranch implements IdentitySpan.Ide
             group = IdentityGroup.IMAGE;
         }
         if (group != null) {
-            span.add(new SpanLeaf(span, raw.length()));
+            span.add(new SpanLeaf(span, raw));
             span.addStyle(group.getStyleClass());
         } else {
-            span.addStyle(StyleClasses.ERROR);
+            span.addStyle(SpanStyles.ERROR);
         }
         if ((raw = ReferencePattern.ID.group(match)) != null) {
             IdentitySpan id = IdentitySpan.newPointerId(span, raw, group);
@@ -41,14 +41,14 @@ public class ReferencePointerSpan extends SpanBranch implements IdentitySpan.Ide
         }
         raw = ReferencePattern.END.group(match);
         if (raw != null) {
-            span.add(new SpanLeaf(span, raw.length()));
+            span.add(new SpanLeaf(span, raw));
         }
         return span;
     }
 
     private Optional<IdentitySpan> idPointer;
 
-    private ReferencePointerSpan(SpanBranch parent, StyleClasses... classes) {
+    private ReferencePointerSpan(SpanBranch parent, SpanStyles... classes) {
         super(parent, classes);
         idPointer = Optional.empty();
     }

@@ -8,7 +8,7 @@ import java.util.regex.*;
  * <ul>
  * <li>{@link ReferenceLinePatterns#FOOTNOTE foot note}
  * <li>{@link ReferenceLinePatterns#ENDNOTE end note}
- * <li>{@link NoteLinePatterns#HEADING sources and notes}
+ * <li>{@link NoteLinePatterns#SUMMARY sources and notes}
  * <li>References TODO add reference items
  * </ul>
  *

@@ -8,8 +8,8 @@ class TextSpanTest extends SpanBranchTestBase {
     @Test
     void testTextEsape() {
         TextSpan text = TextSpan.newId(newParent(), "abc\\:");
-        addStyleTest("abc", StyleClasses.TEXT);
-        addStyleTest("\\:", StyleClasses.ESCAPE);
+        addStyleTest("abc", SpanStyles.TEXT);
+        addStyleTest("\\:", SpanStyles.ESCAPE);
         testStyles(text);
         assertEquals("abc:", text.getText());
     }
@@ -17,8 +17,8 @@ class TextSpanTest extends SpanBranchTestBase {
     @Test
     void testEsapeText() {
         TextSpan text = TextSpan.newId(newParent(), "\\:abc");
-        addStyleTest("\\:", StyleClasses.ESCAPE);
-        addStyleTest("abc", StyleClasses.TEXT);
+        addStyleTest("\\:", SpanStyles.ESCAPE);
+        addStyleTest("abc", SpanStyles.TEXT);
         testStyles(text);
         assertEquals(":abc", text.getText());
     }
@@ -26,11 +26,11 @@ class TextSpanTest extends SpanBranchTestBase {
     @Test
     void testLong() {
         TextSpan text = TextSpan.newId(newParent(), "abc\\:efg\\topq");
-        addStyleTest("abc", StyleClasses.TEXT);
-        addStyleTest("\\:", StyleClasses.ESCAPE);
-        addStyleTest("efg", StyleClasses.TEXT);
-        addStyleTest("\\t", StyleClasses.ESCAPE);
-        addStyleTest("opq", StyleClasses.TEXT);
+        addStyleTest("abc", SpanStyles.TEXT);
+        addStyleTest("\\:", SpanStyles.ESCAPE);
+        addStyleTest("efg", SpanStyles.TEXT);
+        addStyleTest("\\t", SpanStyles.ESCAPE);
+        addStyleTest("opq", SpanStyles.TEXT);
         testStyles(text);
         assertEquals("abc:efgtopq", text.getText());
     }

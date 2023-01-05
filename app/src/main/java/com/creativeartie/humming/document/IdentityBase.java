@@ -5,7 +5,7 @@ import java.util.*;
 import com.google.common.base.*;
 
 public abstract class IdentityBase extends SpanBranch {
-    protected IdentityBase(SpanBranch parent, StyleClasses... classes) {
+    protected IdentityBase(SpanBranch parent, SpanStyles... classes) {
         super(parent, classes);
     }
 

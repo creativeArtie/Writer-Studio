@@ -10,7 +10,7 @@ public class TextSpan extends SpanBranch {
         private TextSpan outputSpan;
         private BasicTextPatterns usePattern;
 
-        private Builder(SpanBranch parent, StyleClasses... styles) {
+        private Builder(SpanBranch parent, SpanStyles... styles) {
             outputSpan = new TextSpan(parent, styles);
         }
 
@@ -25,15 +25,15 @@ public class TextSpan extends SpanBranch {
         }
     }
 
-    public static Builder builder(SpanBranch parent, StyleClasses... styles) {
+    public static Builder builder(SpanBranch parent, SpanStyles... styles) {
         return new Builder(parent, styles);
     }
 
-    public static TextSpan newId(SpanBranch span, String text, StyleClasses... styles) {
+    public static TextSpan newId(SpanBranch span, String text, SpanStyles... styles) {
         return parseText(new TextSpan(span, styles), BasicTextPatterns.ID, text);
     }
 
-    public static TextSpan newSpecial(SpanBranch span, String raw, StyleClasses... styles) {
+    public static TextSpan newSpecial(SpanBranch span, String raw, SpanStyles... styles) {
         return parseText(new TextSpan(span, styles), BasicTextPatterns.SPECIAL, raw);
     }
 
@@ -44,12 +44,12 @@ public class TextSpan extends SpanBranch {
             String raw = BasicTextPatterns.BasicTextPart.TEXT.group(match);
             if (raw != null) {
                 builder.append(raw);
-                span.add(new SpanLeaf(span, raw.length(), StyleClasses.TEXT));
+                span.add(new SpanLeaf(span, raw, SpanStyles.TEXT));
                 continue;
             }
             raw = BasicTextPatterns.BasicTextPart.ESCAPE.group(match);
             builder.append(raw.charAt(1));
-            span.add(new SpanLeaf(span, raw.length(), StyleClasses.ESCAPE));
+            span.add(new SpanLeaf(span, raw, SpanStyles.ESCAPE));
         }
         span.spanText = builder.toString();
         return span;
@@ -57,7 +57,7 @@ public class TextSpan extends SpanBranch {
 
     private String spanText;
 
-    private TextSpan(SpanBranch parent, StyleClasses... styles) {
+    private TextSpan(SpanBranch parent, SpanStyles... styles) {
         super(parent, styles);
     }
 

@@ -7,14 +7,22 @@ import com.google.common.collect.*;
 public final class SpanLeaf implements Span {
     private final Document spanRoot;
     private final SpanBranch parentSpan;
-    private final List<StyleClasses> styleClass;
+    private final List<StyleClass> styleClass;
     private final int styleLength;
 
-    protected SpanLeaf(SpanBranch parent, int length) {
-        this(parent, length, StyleClasses.OPERATOR);
+    protected SpanLeaf(SpanBranch parent, String text) {
+        this(parent, text.length(), SpanStyles.OPERATOR);
     }
 
-    protected SpanLeaf(SpanBranch parent, int length, StyleClasses... styles) {
+    protected SpanLeaf(SpanBranch parent, String text, StyleClass... styles) {
+        this(parent, text.length(), styles);
+    }
+
+    protected SpanLeaf(SpanBranch parent, int length) {
+        this(parent, length, SpanStyles.OPERATOR);
+    }
+
+    protected SpanLeaf(SpanBranch parent, int length, StyleClass... styles) {
         spanRoot = parent.getRoot();
         parentSpan = parent;
         styleLength = length;
@@ -26,8 +34,8 @@ public final class SpanLeaf implements Span {
         return spanRoot;
     }
 
-    public List<StyleClasses> getClassStyles() {
-        return ImmutableList.<StyleClasses>builder().addAll(parentSpan.getInheritedStyles()).addAll(styleClass).build();
+    public List<StyleClass> getClassStyles() {
+        return ImmutableList.<StyleClass>builder().addAll(parentSpan.getInheritedStyles()).addAll(styleClass).build();
     }
 
     @Override

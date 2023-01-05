@@ -30,7 +30,7 @@ class IdentitySpanTest extends SpanBranchTestBase {
     @Test
     void testNoCat() {
         IdentitySpan id = createIdPointer("no cat");
-        addStyleTest("no cat", StyleClasses.ID, StyleClasses.TEXT);
+        addStyleTest("no cat", SpanStyles.ID, SpanStyles.TEXT);
         testStyles(id);
         testId("no cat", id);
     }
@@ -38,11 +38,11 @@ class IdentitySpanTest extends SpanBranchTestBase {
     @Test
     void testWithEscape() {
         IdentitySpan id = createIdPointer("cat\\:egory:id");
-        addStyleTest("cat", StyleClasses.ID, StyleClasses.TEXT);
-        addStyleTest("\\:", StyleClasses.ID, StyleClasses.ESCAPE);
-        addStyleTest("egory", StyleClasses.ID, StyleClasses.TEXT);
-        addStyleTest(":", StyleClasses.ID, StyleClasses.OPERATOR);
-        addStyleTest("id", StyleClasses.ID, StyleClasses.TEXT);
+        addStyleTest("cat", SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest("\\:", SpanStyles.ID, SpanStyles.ESCAPE);
+        addStyleTest("egory", SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest(":", SpanStyles.ID, SpanStyles.OPERATOR);
+        addStyleTest("id", SpanStyles.ID, SpanStyles.TEXT);
         testStyles(id);
         testId("id", id, "cat:egory");
     }
@@ -50,13 +50,13 @@ class IdentitySpanTest extends SpanBranchTestBase {
     @Test
     void testMultiCat() {
         IdentitySpan id = createIdPointer("cat1:cat2:cat3:id");
-        addStyleTest("cat1", StyleClasses.ID, StyleClasses.TEXT);
-        addStyleTest(":", StyleClasses.ID, StyleClasses.OPERATOR);
-        addStyleTest("cat2", StyleClasses.ID, StyleClasses.TEXT);
-        addStyleTest(":", StyleClasses.ID, StyleClasses.OPERATOR);
-        addStyleTest("cat3", StyleClasses.ID, StyleClasses.TEXT);
-        addStyleTest(":", StyleClasses.ID, StyleClasses.OPERATOR);
-        addStyleTest("id", StyleClasses.ID, StyleClasses.TEXT);
+        addStyleTest("cat1", SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest(":", SpanStyles.ID, SpanStyles.OPERATOR);
+        addStyleTest("cat2", SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest(":", SpanStyles.ID, SpanStyles.OPERATOR);
+        addStyleTest("cat3", SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest(":", SpanStyles.ID, SpanStyles.OPERATOR);
+        addStyleTest("id", SpanStyles.ID, SpanStyles.TEXT);
         testStyles(id);
         testId("id", id, "cat1", "cat2", "cat3");
     }
@@ -66,7 +66,7 @@ class IdentitySpanTest extends SpanBranchTestBase {
         IdentitySpan id = createIdPointer("error");
         getDocument().add(id);
         getDocument().cleanUp();
-        addStyleTest("error", StyleClasses.ID, StyleClasses.ERROR, StyleClasses.TEXT);
+        addStyleTest("error", SpanStyles.ID, SpanStyles.ERROR, SpanStyles.TEXT);
         testStyles(id);
     }
 
@@ -77,7 +77,7 @@ class IdentitySpanTest extends SpanBranchTestBase {
         IdentitySpan address = createIdAddress("later");
         getDocument().add(address);
         getDocument().cleanUp();
-        addStyleTest("later", StyleClasses.ID, StyleClasses.TEXT);
+        addStyleTest("later", SpanStyles.ID, SpanStyles.TEXT);
 
         testStyles(id);
         testStyles(address);

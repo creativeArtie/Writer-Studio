@@ -6,28 +6,28 @@ import java.util.regex.*;
 import com.creativeartie.humming.schema.*;
 
 public class TodoSpan extends IdentityBase {
-    public static TodoSpan newSpan(SpanBranch parent, String text, StyleClasses... classes) {
+    public static TodoSpan newSpan(SpanBranch parent, String text, SpanStyles... classes) {
         TodoSpan span = new TodoSpan(parent, classes);
         Matcher matcher = TodoPattern.matcher(text);
 
         String raw = TodoPattern.START.group(matcher);
-        span.add(new SpanLeaf(span, raw.length()));
+        span.add(new SpanLeaf(span, raw));
         if ((raw = TodoPattern.TEXT.group(matcher)) != null) {
             TextSpan test = TextSpan.newSpecial(span, raw, classes);
             span.add(test);
             span.todoText = test.getText();
         }
         if ((raw = TodoPattern.END.group(matcher)) != null) {
-            span.add(new SpanLeaf(span, raw.length()));
+            span.add(new SpanLeaf(span, raw));
         }
         return span;
     }
 
     private String todoText;
 
-    private TodoSpan(SpanBranch parent, StyleClasses... classes) {
+    private TodoSpan(SpanBranch parent, SpanStyles... classes) {
         super(parent, classes);
-        addStyle(StyleClasses.TODO);
+        addStyle(SpanStyles.TODO);
     }
 
     @Override

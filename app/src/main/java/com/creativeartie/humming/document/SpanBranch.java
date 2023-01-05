@@ -8,9 +8,9 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
     private ArrayList<Span> childrenSpans;
     private final Document spanRoot;
     private final Optional<SpanBranch> spanParent;
-    private ArrayList<StyleClasses> inheritedStyles;
+    private ArrayList<StyleClass> inheritedStyles;
 
-    protected SpanBranch(Document root, StyleClasses... classes) {
+    protected SpanBranch(Document root, SpanStyles... classes) {
         spanRoot = root;
         spanParent = Optional.empty();
         inheritedStyles = new ArrayList<>();
@@ -18,7 +18,7 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
         childrenSpans = new ArrayList<>();
     }
 
-    protected SpanBranch(SpanBranch parent, StyleClasses... classes) {
+    protected SpanBranch(SpanBranch parent, StyleClass... classes) {
         spanRoot = parent.getRoot();
         spanParent = Optional.of(parent);
         inheritedStyles = new ArrayList<>();
@@ -26,14 +26,14 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
         childrenSpans = new ArrayList<>();
     }
 
-    protected boolean addStyle(StyleClasses style) {
+    protected boolean addStyle(StyleClass style) {
         if (inheritedStyles.contains(style)) {
             return false;
         }
         return inheritedStyles.add(style);
     }
 
-    protected boolean removeStyle(StyleClasses style) {
+    protected boolean removeStyle(StyleClass style) {
         return inheritedStyles.remove(style);
     }
 
@@ -42,8 +42,8 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
         return spanRoot;
     }
 
-    List<StyleClasses> getInheritedStyles() {
-        ImmutableList.Builder<StyleClasses> classes = ImmutableList.builder();
+    List<StyleClass> getInheritedStyles() {
+        ImmutableList.Builder<StyleClass> classes = ImmutableList.builder();
         if (spanParent.isPresent()) {
             classes.addAll(spanParent.get().getInheritedStyles());
         }

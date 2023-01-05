@@ -40,7 +40,7 @@ public class IdentitySpan extends IdentityBase {
             if (matcher.find()) {
                 String sep = IdentityPattern.SEP.group(matcher);
                 builder.add(name);
-                span.add(new SpanLeaf(span, sep.length()));
+                span.add(new SpanLeaf(span, sep));
             }
         }
         span.idCategories = builder.build();
@@ -50,7 +50,7 @@ public class IdentitySpan extends IdentityBase {
     }
 
     private IdentitySpan(SpanBranch parent, String text, IdentityGroup group, boolean isPtr) {
-        super(parent, StyleClasses.ID);
+        super(parent, SpanStyles.ID);
         Preconditions.checkArgument(parent instanceof IdentityHolder);
         isPointer = isPtr;
         idGroup = group;
@@ -74,7 +74,7 @@ public class IdentitySpan extends IdentityBase {
 
     @Override
     public boolean cleanUpSelf() {
-        return getRoot().isIdUnique(this) ? removeStyle(StyleClasses.ERROR) : addStyle(StyleClasses.ERROR);
+        return getRoot().isIdUnique(this) ? removeStyle(SpanStyles.ERROR) : addStyle(SpanStyles.ERROR);
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.regex.*;
  * @see ReferencePattern#SOURCE
  */
 public enum NoteLinePatterns implements PatternEnum {
-    HEADING() {
+    SUMMARY() {
         @Override
         protected String getValuePattern(boolean withName) {
             return // @formatter:off
