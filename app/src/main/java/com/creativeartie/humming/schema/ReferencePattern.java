@@ -18,7 +18,7 @@ import java.util.regex.*;
  * @see ErrorRefPattern
  */
 public enum ReferencePattern implements PatternEnum {
-    FOOTNOTE("\\^"), ENDNOTE("\\*"), SOURCE("\\>"), REF("\\%"), IMAGE("\\+"), START("\\{"),
+    FOOTREF("\\^"), ENDREF("\\*"), CITEREF("\\>"), METAREF("\\%"), IMAGE("\\+"), START("\\{"),
     ID(IdentityPattern.getFullPattern()), ERROR(BasicTextPatterns.SPECIAL.getRawPattern()), END("\\}");
 
     private static String fullPattern;
@@ -34,10 +34,10 @@ public enum ReferencePattern implements PatternEnum {
         // @formatter:off
             START.getPattern(withName) + "((" +
                 "(" +
-                    FOOTNOTE.getPattern(withName) + "|" +
-                    ENDNOTE.getPattern(withName) + "|" +
-                    SOURCE.getPattern(withName) + "|" +
-                    REF.getPattern(withName) + "|" +
+                    FOOTREF.getPattern(withName) + "|" +
+                    ENDREF.getPattern(withName) + "|" +
+                    CITEREF.getPattern(withName) + "|" +
+                    METAREF.getPattern(withName) + "|" +
                     IMAGE.getPattern(withName) +
                 ")" + ID.getPattern(withName) +
                 ")|(" + ERROR.getPattern(withName) + ")?" +

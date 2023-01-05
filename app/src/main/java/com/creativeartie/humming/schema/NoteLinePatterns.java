@@ -5,7 +5,7 @@ import java.util.regex.*;
 /**
  * Lines that can be grouped into a single note with heading and sources.
  *
- * @see ReferencePattern#SOURCE
+ * @see ReferencePattern#CITEREF
  */
 public enum NoteLinePatterns implements PatternEnum {
     SUMMARY() {

@@ -13,7 +13,7 @@ class ReferencePatternTest extends PatternTestBase<ReferencePattern> {
     }
 
     @ParameterizedTest
-    @CsvSource({ "^,FOOTNOTE", "*,ENDNOTE", ">,SOURCE", "%,REF", "+,IMAGE" })
+    @CsvSource({ "^,FOOTREF", "*,ENDREF", ">,CITEREF", "%,METAREF", "+,IMAGE" })
     void testFullRef(String test, String type) {
         final String raw = "{" + test + "cat:id}";
         final ReferencePattern pattern = ReferencePattern.valueOf(type);
@@ -32,7 +32,7 @@ class ReferencePatternTest extends PatternTestBase<ReferencePattern> {
 
         final Matcher match = ReferencePattern.matcher(raw);
         assertGroup("{", match, ReferencePattern.START, 1);
-        assertGroup("^", match, ReferencePattern.FOOTNOTE, 2);
+        assertGroup("^", match, ReferencePattern.FOOTREF, 2);
         assertGroup("cat:id", match, ReferencePattern.ID, 3);
         assertEnd(match);
     }

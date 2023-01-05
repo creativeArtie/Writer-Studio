@@ -15,14 +15,14 @@ public class ReferencePointerSpan extends SpanBranch implements IdentitySpan.Ide
         String raw = ReferencePattern.START.group(match);
         span.add(new SpanLeaf(span, raw));
         IdentityGroup group = null;
-        if ((raw = ReferencePattern.FOOTNOTE.group(match)) != null) {
+        if ((raw = ReferencePattern.FOOTREF.group(match)) != null) {
             group = IdentityGroup.FOOTNOTE;
-        } else if ((raw = ReferencePattern.ENDNOTE.group(match)) != null) {
+        } else if ((raw = ReferencePattern.ENDREF.group(match)) != null) {
             group = IdentityGroup.ENDNOTE;
-        } else if ((raw = ReferencePattern.SOURCE.group(match)) != null) {
-            group = IdentityGroup.SOURCE;
-        } else if ((raw = ReferencePattern.REF.group(match)) != null) {
-            group = IdentityGroup.REF;
+        } else if ((raw = ReferencePattern.CITEREF.group(match)) != null) {
+            group = IdentityGroup.CITATION;
+        } else if ((raw = ReferencePattern.METAREF.group(match)) != null) {
+            group = IdentityGroup.META;
         } else if ((raw = ReferencePattern.IMAGE.group(match)) != null) {
             group = IdentityGroup.IMAGE;
         }
