@@ -10,7 +10,7 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
     private final Optional<SpanBranch> spanParent;
     private ArrayList<StyleClass> inheritedStyles;
 
-    protected SpanBranch(Document root, SpanStyles... classes) {
+    protected SpanBranch(Document root, StyleClass... classes) {
         spanRoot = root;
         spanParent = Optional.empty();
         inheritedStyles = new ArrayList<>();

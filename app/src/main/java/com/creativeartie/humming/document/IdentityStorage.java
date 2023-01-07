@@ -1,11 +1,41 @@
 package com.creativeartie.humming.document;
 
 import java.util.*;
+import java.util.Optional;
+
+import com.google.common.base.*;
 
 public class IdentityStorage {
+    public interface Identity {
+        public abstract IdentityGroup getIdGroup();
+
+        public abstract List<String> getCategories();
+
+        public abstract String getId();
+
+        public default String getFullId() {
+            List<String> ids = getCategories();
+            if (ids.isEmpty()) return getId();
+
+            return Joiner.on(":").join(ids) + ":" + getId();
+        }
+
+        public default String getInternalId() {
+            return getIdGroup().name() + ":" + getFullId();
+        }
+
+        public abstract boolean isPointer();
+
+        public default boolean isAddress() {
+            return !isPointer();
+        }
+
+        public abstract int getPosition();
+    }
+
     public class Manager implements Comparable<Manager> {
-        private ArrayList<IdentityBase> pointerIds;
-        private ArrayList<IdentityBase> addressIds;
+        private ArrayList<Identity> pointerIds;
+        private ArrayList<Identity> addressIds;
         private final String fullIdName;
 
         private Manager(String name) {
@@ -23,10 +53,10 @@ public class IdentityStorage {
         }
 
         public void cleanUpIds() {
-            for (IdentityBase ptr : pointerIds) {
+            for (Identity ptr : pointerIds) {
                 ((Span) ptr).cleanUp();
             }
-            for (IdentityBase address : addressIds) {
+            for (Identity address : addressIds) {
                 ((Span) address).cleanUp();
             }
         }
@@ -63,7 +93,7 @@ public class IdentityStorage {
         parentStorage = Optional.empty();
     }
 
-    public boolean isIdUnique(IdentityBase span) {
+    public boolean isIdUnique(Identity span) {
         Manager name = new Manager(span.getInternalId());
         Manager manager = idManager.floor(name);
         boolean isUnique = false;
@@ -81,7 +111,7 @@ public class IdentityStorage {
         return isUnique;
     }
 
-    public int getPointerCount(IdentityBase span) {
+    public int getPointerCount(Identity span) {
         Manager name = new Manager(span.getInternalId());
         Manager manager = idManager.floor(name);
         int count = 0;
@@ -94,7 +124,7 @@ public class IdentityStorage {
         return count;
     }
 
-    public void addId(IdentityBase id) {
+    public void addId(Identity id) {
         Manager name = new Manager(id.getInternalId());
         Manager manager = idManager.floor(name);
         if (manager == null) {
@@ -108,7 +138,7 @@ public class IdentityStorage {
         }
     }
 
-    public void removeId(IdentityBase id) {
+    public void removeId(Identity id) {
         Manager name = new Manager(id.getInternalId());
         Manager manager = idManager.floor(name);
         if (manager == null) return;

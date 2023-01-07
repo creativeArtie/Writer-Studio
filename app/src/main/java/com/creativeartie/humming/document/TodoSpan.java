@@ -5,7 +5,7 @@ import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 
-public class TodoSpan extends IdentityBase {
+public class TodoSpan extends SpanBranch implements IdentityStorage.Identity {
     public static TodoSpan newSpan(SpanBranch parent, String text, SpanStyles... classes) {
         TodoSpan span = new TodoSpan(parent, classes);
         Matcher matcher = TodoPattern.matcher(text);
@@ -55,7 +55,7 @@ public class TodoSpan extends IdentityBase {
         return getStartIndex();
     }
 
-    public String getTodoText() {
+    public String getAgenda() {
         return todoText;
     }
 }

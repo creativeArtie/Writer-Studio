@@ -7,14 +7,14 @@ import com.creativeartie.humming.schema.*;
 import com.google.common.base.*;
 import com.google.common.collect.*;
 
-public class IdentitySpan extends IdentityBase {
+public class IdentitySpan extends SpanBranch implements IdentityStorage.Identity {
     private List<String> idCategories;
     private String idName;
     private boolean isPointer;
     private IdentityGroup idGroup;
-    private IdentityHolder parentSpan;
+    private IdentityParent parentSpan;
 
-    public interface IdentityHolder {
+    public interface IdentityParent {
         public int getIdPosition();
     }
 
@@ -51,10 +51,10 @@ public class IdentitySpan extends IdentityBase {
 
     private IdentitySpan(SpanBranch parent, String text, IdentityGroup group, boolean isPtr) {
         super(parent, SpanStyles.ID);
-        Preconditions.checkArgument(parent instanceof IdentityHolder);
+        Preconditions.checkArgument(parent instanceof IdentityParent);
         isPointer = isPtr;
         idGroup = group;
-        parentSpan = (IdentityHolder) parent;
+        parentSpan = (IdentityParent) parent;
     }
 
     @Override

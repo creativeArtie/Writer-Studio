@@ -37,6 +37,14 @@ public class TextSpan extends SpanBranch {
         return parseText(new TextSpan(span, styles), BasicTextPatterns.SPECIAL, raw);
     }
 
+    public static TextSpan newText(SpanBranch span, String raw, SpanStyles... styles) {
+        return parseText(new TextSpan(span, styles), BasicTextPatterns.TEXT, raw);
+    }
+
+    public static TextSpan newHeading(SpanBranch span, String raw, SpanStyles... styles) {
+        return parseText(new TextSpan(span, styles), BasicTextPatterns.HEADING, raw);
+    }
+
     private static TextSpan parseText(TextSpan span, BasicTextPatterns pattern, String text) {
         Matcher match = pattern.matcher(text);
         StringBuilder builder = new StringBuilder();

@@ -5,7 +5,7 @@ import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 
-public class ReferencePointerSpan extends SpanBranch implements IdentitySpan.IdentityHolder {
+public class ReferencePointerSpan extends SpanBranch implements IdentitySpan.IdentityParent {
     public static ReferencePointerSpan createSpan(SpanBranch parent, String text, SpanStyles... classes) {
         Matcher match = ReferencePattern.matcher(text);
         if (match == null) return null;

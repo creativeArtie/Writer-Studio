@@ -10,47 +10,54 @@ public abstract class LineSpan extends SpanBranch {
         LineSpan returns = null;
         Matcher match;
 
-        if ((match = BasicLinePatterns.QUOTE.matcher(text)) != null) returns = new LineSpan(parent, LineStyles.QUOTE) {
-            @Override
-            protected void buildSpan(Matcher match) {
-                add(new SpanLeaf(this, BasicLinePart.QUOTER.group(match)));
-                addText(match, BasicLinePart.TEXT, BasicLinePart.ENDER);
-            }
-        };
+        if ((match = BasicLinePatterns.AGENDA.matcher(text)) != null) returns = new AgendaLine(parent);
+
+        else if ((match = BasicLinePatterns.QUOTE.matcher(text)) != null)
+            returns = new LineSpan(parent, LineStyles.QUOTE) {
+                @Override
+                protected void buildSpan(Matcher match) {
+                    add(new SpanLeaf(this, BasicLinePart.QUOTER.group(match)));
+                    addText(match, BasicLinePart.FORMATTED);
+                    addLineEnd(match, BasicLinePart.ENDER);
+                }
+            };
 
         else if ((match = BasicLinePatterns.BREAK.matcher(text)) != null)
             returns = new LineSpan(parent, LineStyles.BREAK) {
                 @Override
                 protected void buildSpan(Matcher match) {
                     add(new SpanLeaf(this, BasicLinePart.BREAKER.group(match)));
-                    String raw;
-                    if ((raw = BasicLinePart.ENDER.group(match)) != null) {
-                        add(new SpanLeaf(this, raw));
-                    }
+                    addLineEnd(match, BasicLinePart.ENDER);
                 }
             };
+
         else if ((match = BasicLinePatterns.TEXT.matcher(text)) != null)
             returns = new LineSpan(parent, LineStyles.NORMAL) {
                 @Override
                 protected void buildSpan(Matcher match) {
-                    addText(match, BasicLinePart.TEXT, BasicLinePart.ENDER);
+                    addText(match, BasicLinePart.FORMATTED);
+                    addLineEnd(match, BasicLinePart.ENDER);
                 }
             };
-        else {
-            return null;
-        }
+        else return null;
 
         returns.buildSpan(match);
         return returns;
     }
 
-    protected void addText(Matcher match, PatternEnum textPattern, PatternEnum endPattern) {
+    protected void addText(Matcher match, PatternEnum textPattern) {
         String raw;
         if ((raw = textPattern.group(match)) != null) {
             add(LineText.newBasicText(this, raw));
         }
+    }
+
+    protected void addLineEnd(Matcher match, PatternEnum endPattern) {
+        String raw;
         if ((raw = endPattern.group(match)) != null) {
-            add(new SpanLeaf(this, raw));
+            if (!raw.isEmpty()) {
+                add(new SpanLeaf(this, raw));
+            }
         }
     }
 

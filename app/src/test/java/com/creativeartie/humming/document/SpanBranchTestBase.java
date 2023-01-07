@@ -8,11 +8,11 @@ import com.creativeartie.humming.document.IdentitySpan.*;
 
 public class SpanBranchTestBase {
     private static ArrayList<String> expectedText;
-    private static ArrayList<SpanStyles[]> expectedStyles;
+    private static ArrayList<StyleClass[]> expectedStyles;
     private static Document rootDoc;
 
-    private static class HolderSpan extends SpanBranch implements IdentityHolder {
-        protected HolderSpan(Document root, SpanStyles... classes) {
+    private static class HolderSpan extends SpanBranch implements IdentityParent {
+        protected HolderSpan(Document root, StyleClass... classes) {
             super(root, classes);
         }
 
@@ -43,7 +43,7 @@ public class SpanBranchTestBase {
         return new HolderSpan(rootDoc);
     }
 
-    protected void addStyleTest(String text, SpanStyles... styles) {
+    protected void addStyleTest(String text, StyleClass... styles) {
         expectedText.add(text);
         expectedStyles.add(styles);
     }
