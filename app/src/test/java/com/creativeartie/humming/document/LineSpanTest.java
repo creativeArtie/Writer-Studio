@@ -63,11 +63,47 @@ class LineSpanTest extends SpanBranchTestBase {
     }
 
     @Test
+    void testShortBreak() {
+        LineSpan span = LineSpan.newLine(newParent(), "**");
+        addStyleTest("**", LineStyles.BREAK, SpanStyles.OPERATOR);
+        testStyles(span);
+        Assertions.assertEquals(LineStyles.BREAK, span.getLineStyle(), "Line style");
+    }
+
+    @Test
+    void testLongBreak() {
+        LineSpan span = LineSpan.newLine(newParent(), "*******");
+        addStyleTest("*******", LineStyles.BREAK, SpanStyles.OPERATOR);
+        testStyles(span);
+        Assertions.assertEquals(LineStyles.BREAK, span.getLineStyle(), "Line style");
+    }
+
+    @Test
+    void testSingalBreak() {
+        LineSpan span = LineSpan.newLine(newParent(), "*");
+        addStyleTest("*", LineStyles.BREAK, SpanStyles.OPERATOR);
+        testStyles(span);
+        Assertions.assertEquals(LineStyles.BREAK, span.getLineStyle(), "Line style");
+    }
+
+    @Test
     void testFullBreak() {
         LineSpan span = LineSpan.newLine(newParent(), "***\n");
         addStyleTest("***", LineStyles.BREAK, SpanStyles.OPERATOR);
         addStyleTest("\n", LineStyles.BREAK, SpanStyles.OPERATOR);
         testStyles(span);
         Assertions.assertEquals(LineStyles.BREAK, span.getLineStyle(), "Line style");
+    }
+
+    @Test
+    void testAgenda() {
+        LineSpan span = LineSpan.newLine(newParent(), "!***\n");
+        addStyleTest("!", LineStyles.AGENDA, SpanStyles.OPERATOR);
+        addStyleTest("***", LineStyles.AGENDA, SpanStyles.TEXT);
+        addStyleTest("\n", LineStyles.AGENDA, SpanStyles.OPERATOR);
+        testStyles(span);
+        Assertions.assertEquals(LineStyles.AGENDA, span.getLineStyle(), "Line style");
+        Assertions.assertInstanceOf(AgendaLine.class, span);
+        Assertions.assertEquals("***", ((AgendaLine) span).getAgenda());
     }
 }

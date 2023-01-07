@@ -6,7 +6,7 @@ import com.creativeartie.humming.schema.*;
 import com.google.common.base.*;
 
 public class TextSpan extends SpanBranch {
-    public static class Builder {
+    static class Builder {
         private TextSpan outputSpan;
         private BasicTextPatterns usePattern;
 
@@ -25,23 +25,23 @@ public class TextSpan extends SpanBranch {
         }
     }
 
-    public static Builder builder(SpanBranch parent, SpanStyles... styles) {
+    static Builder builder(SpanBranch parent, SpanStyles... styles) {
         return new Builder(parent, styles);
     }
 
-    public static TextSpan newId(SpanBranch span, String text, SpanStyles... styles) {
+    static TextSpan newId(SpanBranch span, String text, SpanStyles... styles) {
         return parseText(new TextSpan(span, styles), BasicTextPatterns.ID, text);
     }
 
-    public static TextSpan newSpecial(SpanBranch span, String raw, SpanStyles... styles) {
+    static TextSpan newSpecial(SpanBranch span, String raw, SpanStyles... styles) {
         return parseText(new TextSpan(span, styles), BasicTextPatterns.SPECIAL, raw);
     }
 
-    public static TextSpan newText(SpanBranch span, String raw, SpanStyles... styles) {
-        return parseText(new TextSpan(span, styles), BasicTextPatterns.TEXT, raw);
+    static TextSpan newSimple(SpanBranch span, String raw, SpanStyles... styles) {
+        return parseText(new TextSpan(span, styles), BasicTextPatterns.SIMPLE, raw);
     }
 
-    public static TextSpan newHeading(SpanBranch span, String raw, SpanStyles... styles) {
+    static TextSpan newHeading(SpanBranch span, String raw, SpanStyles... styles) {
         return parseText(new TextSpan(span, styles), BasicTextPatterns.HEADING, raw);
     }
 

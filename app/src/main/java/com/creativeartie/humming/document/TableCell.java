@@ -6,7 +6,7 @@ import com.creativeartie.humming.schema.*;
 import com.creativeartie.humming.schema.TableCellPatterns.*;
 
 public class TableCell extends SpanBranch {
-    public static TableCell newHeadingCell(SpanBranch parent, String text) {
+    static TableCell newHeadingCell(SpanBranch parent, String text) {
         Matcher match = TableCellPatterns.SUBHEAD.matcher(text);
         if (match == null) return null;
         TableCell span = new TableCell(parent, true, SpanStyles.HEADCELL);
@@ -14,7 +14,7 @@ public class TableCell extends SpanBranch {
         return parseText(match, span);
     }
 
-    public static TableCell newTextCell(SpanBranch parent, String text) {
+    static TableCell newTextCell(SpanBranch parent, String text) {
         Matcher match = TableCellPatterns.TEXT.matcher(text);
         if (match == null) return null;
         TableCell span = new TableCell(parent, false, SpanStyles.TEXTCELL);

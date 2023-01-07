@@ -5,7 +5,7 @@ import org.junit.jupiter.api.*;
 class BasicSpanTest extends SpanBranchTestBase {
     @Test
     void testFullRef() {
-        ReferencePointerSpan span = ReferencePointerSpan.createSpan(newParent(), "{^cat:id}");
+        ReferencePointerSpan span = ReferencePointerSpan.newSpan(newParent(), "{^cat:id}");
         Assertions.assertNotNull(span);
         addStyleTest("{", SpanStyles.FOOTREF, SpanStyles.OPERATOR);
         addStyleTest("^", SpanStyles.FOOTREF, SpanStyles.OPERATOR);
@@ -18,7 +18,7 @@ class BasicSpanTest extends SpanBranchTestBase {
 
     @Test
     void testPartRef() {
-        ReferencePointerSpan span = ReferencePointerSpan.createSpan(newParent(), "{*cat:id");
+        ReferencePointerSpan span = ReferencePointerSpan.newSpan(newParent(), "{*cat:id");
         Assertions.assertNotNull(span);
         addStyleTest("{", SpanStyles.ENDREF, SpanStyles.OPERATOR);
         addStyleTest("*", SpanStyles.ENDREF, SpanStyles.OPERATOR);
@@ -30,9 +30,9 @@ class BasicSpanTest extends SpanBranchTestBase {
 
     @Test
     void testPositions() {
-        ReferencePointerSpan test1 = ReferencePointerSpan.createSpan(newParent(), "{*cat:id}");
+        ReferencePointerSpan test1 = ReferencePointerSpan.newSpan(newParent(), "{*cat:id}");
         getDocument().add(test1);
-        ReferencePointerSpan test2 = ReferencePointerSpan.createSpan(newParent(), "{^test}");
+        ReferencePointerSpan test2 = ReferencePointerSpan.newSpan(newParent(), "{^test}");
         getDocument().add(test2);
         Assertions.assertEquals(0, test1.getIdPosition(), "Test 1 position");
         Assertions.assertEquals(9, test2.getIdPosition(), "Test 2 position");
@@ -40,7 +40,7 @@ class BasicSpanTest extends SpanBranchTestBase {
 
     @Test
     void testErrorRef() {
-        ReferencePointerSpan span = ReferencePointerSpan.createSpan(newParent(), "{cat:id}");
+        ReferencePointerSpan span = ReferencePointerSpan.newSpan(newParent(), "{cat:id}");
         Assertions.assertNotNull(span);
         addStyleTest("{", SpanStyles.ERROR, SpanStyles.OPERATOR);
         addStyleTest("cat:id", SpanStyles.ERROR, SpanStyles.TEXT);

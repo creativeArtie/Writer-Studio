@@ -18,12 +18,12 @@ public class IdentitySpan extends SpanBranch implements IdentityStorage.Identity
         public int getIdPosition();
     }
 
-    public static IdentitySpan newPointerId(SpanBranch parent, String text, IdentityGroup group) {
+    static IdentitySpan newPointerId(SpanBranch parent, String text, IdentityGroup group) {
         IdentitySpan span = new IdentitySpan(parent, text, group, true);
         return parseText(span, text);
     }
 
-    public static IdentitySpan newAddressId(SpanBranch parent, String text, IdentityGroup group) {
+    static IdentitySpan newAddressId(SpanBranch parent, String text, IdentityGroup group) {
         IdentitySpan span = new IdentitySpan(parent, text, group, false);
         return parseText(span, text);
     }

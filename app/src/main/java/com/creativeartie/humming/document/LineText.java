@@ -7,13 +7,13 @@ import com.creativeartie.humming.schema.*;
 import com.creativeartie.humming.schema.LineTextPatterns.*;
 
 public class LineText extends SpanBranch {
-    public static LineText newCellText(SpanBranch parent, String text, SpanStyles... classes) {
+    static LineText newCellText(SpanBranch parent, String text, SpanStyles... classes) {
         Matcher match = LineTextPatterns.CELL.matcher(text);
         if (match == null) return null;
         return parseText(new LineText(parent, classes), match, BasicTextPatterns.CELL);
     }
 
-    public static LineText newBasicText(SpanBranch parent, String text, SpanStyles... classes) {
+    static LineText newBasicText(SpanBranch parent, String text, SpanStyles... classes) {
         Matcher match = LineTextPatterns.BASIC.matcher(text);
         if (match == null) return null;
         return parseText(new LineText(parent, classes), match, BasicTextPatterns.TEXT);
@@ -28,7 +28,7 @@ public class LineText extends SpanBranch {
 
             String raw;
             if ((raw = LineTextPart.REFER.group(match)) != null) {
-                span.add(ReferencePointerSpan.createSpan(span, raw, formatting.toArray(new SpanStyles[0])));
+                span.add(ReferencePointerSpan.newSpan(span, raw, formatting.toArray(new SpanStyles[0])));
             }
             if ((raw = LineTextPart.TODO.group(match)) != null) {
                 span.add(TodoSpan.newSpan(span, raw, formatting.toArray(new SpanStyles[0])));

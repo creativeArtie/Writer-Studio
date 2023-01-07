@@ -23,7 +23,7 @@ public class AgendaLine extends LineSpan implements IdentityParent {
         String raw = BasicLinePatterns.BasicLinePart.TODOER.group(match);
         add(new SpanLeaf(this, raw));
         if ((raw = BasicLinePatterns.BasicLinePart.TEXT.group(match)) != null) {
-            TextSpan child = TextSpan.newText(this, raw);
+            TextSpan child = TextSpan.newSimple(this, raw);
             add(child);
             todoText = child.getText();
         }

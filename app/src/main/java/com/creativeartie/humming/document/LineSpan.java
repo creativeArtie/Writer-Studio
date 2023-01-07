@@ -6,7 +6,7 @@ import com.creativeartie.humming.schema.*;
 import com.creativeartie.humming.schema.BasicLinePatterns.*;
 
 public abstract class LineSpan extends SpanBranch {
-    public static LineSpan newLine(SpanBranch parent, String text) {
+    static LineSpan newLine(SpanBranch parent, String text) {
         LineSpan returns = null;
         Matcher match;
 

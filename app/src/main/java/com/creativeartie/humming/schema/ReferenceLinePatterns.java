@@ -44,7 +44,7 @@ public enum ReferenceLinePatterns implements PatternEnum {
 
     public enum RefLineParts implements PatternEnum {
         START("!"), FOOTNOTE("\\^"), ENDNOTE("\\*"), SEP("="), ID(IdentityPattern.getFullPattern()),
-        TEXT(LineTextPatterns.NOTE.getRawPattern()), ERROR(BasicTextPatterns.TEXT.getRawPattern()), ENDER("\n?");
+        TEXT(LineTextPatterns.NOTE.getRawPattern()), ERROR(BasicTextPatterns.SIMPLE.getRawPattern()), ENDER("\n?");
 
         private final String rawPattern;
 
