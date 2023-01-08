@@ -10,7 +10,9 @@ public abstract class LineSpan extends SpanBranch {
         LineSpan returns = null;
         Matcher match;
 
-        if ((match = BasicLinePatterns.AGENDA.matcher(text)) != null) returns = new AgendaLine(parent);
+        if ((match = HeadingLinePattern.matcher(text)) != null) returns = HeadingLine.newLine(parent, match);
+
+        else if ((match = BasicLinePatterns.AGENDA.matcher(text)) != null) returns = new AgendaLine(parent);
 
         else if ((match = BasicLinePatterns.QUOTE.matcher(text)) != null)
             returns = new LineSpan(parent, LineStyles.QUOTE) {

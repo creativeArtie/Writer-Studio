@@ -7,6 +7,12 @@ import com.creativeartie.humming.schema.*;
 import com.creativeartie.humming.schema.LineTextPatterns.*;
 
 public class LineText extends SpanBranch {
+    static LineText newHeadingText(SpanBranch parent, String text, SpanStyles... classes) {
+        Matcher match = LineTextPatterns.HEADING.matcher(text);
+        if (match == null) return null;
+        return parseText(new LineText(parent, classes), match, BasicTextPatterns.HEADING);
+    }
+
     static LineText newCellText(SpanBranch parent, String text, SpanStyles... classes) {
         Matcher match = LineTextPatterns.CELL.matcher(text);
         if (match == null) return null;
