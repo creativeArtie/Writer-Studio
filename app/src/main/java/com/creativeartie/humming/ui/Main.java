@@ -1,4 +1,4 @@
-package com.creativeartie.writer.writing;
+package com.creativeartie.humming.ui;
 
 import javafx.application.*;
 import javafx.scene.*;

@@ -40,7 +40,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'com.creativeartie.writer.writing.Main'
+    mainClass = 'com.creativeartie.humming.ui.Main'
 }
 test {
    useJUnitPlatform()

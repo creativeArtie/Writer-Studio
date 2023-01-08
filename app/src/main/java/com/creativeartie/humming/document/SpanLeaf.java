@@ -38,6 +38,14 @@ public final class SpanLeaf implements Span {
         return ImmutableList.<StyleClass>builder().addAll(parentSpan.getInheritedStyles()).addAll(styleClass).build();
     }
 
+    public List<String> getCssStyles() {
+        ImmutableList.Builder<String> styles = ImmutableList.builder();
+        for (StyleClass style : getClassStyles()) {
+            styles.add(style.getCssName());
+        }
+        return styles.build();
+    }
+
     @Override
     public int getLength() {
         return styleLength;

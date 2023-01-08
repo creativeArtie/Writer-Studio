@@ -3,6 +3,8 @@ package com.creativeartie.humming.document;
 import java.util.*;
 import java.util.concurrent.*;
 
+import org.fxmisc.richtext.model.*;
+
 import com.google.common.cache.*;
 import com.google.common.collect.*;
 
@@ -204,5 +206,21 @@ public class Document extends ForwardingList<SpanBranch> implements Span {
         System.out.printf("  lengthsCache %s\n", lengthsCache.stats());
         System.out.printf(" startIdxCache %s\n", startIdxCache.stats());
         System.out.printf("   endIdxCache %s\n", endIdxCache.stats());
+    }
+
+    public void updateText(String text) {
+        clear();
+        SpanBranch parent = new SpanBranch(this);
+        add(LineSpan.newLine(parent, text));
+    }
+
+    public StyleSpans<Collection<String>> getStyles() {
+        final StyleSpansBuilder<Collection<String>> styleSpans = new StyleSpansBuilder<>();
+        for (SpanBranch branch : docChildren) {
+            for (SpanLeaf leaf : branch.getLeafs()) {
+                styleSpans.add(leaf.getCssStyles(), leaf.getLength());
+            }
+        }
+        return styleSpans.create();
     }
 }

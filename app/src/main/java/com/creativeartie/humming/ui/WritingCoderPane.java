@@ -1,4 +1,4 @@
-package com.creativeartie.writer.writing;
+package com.creativeartie.humming.ui;
 
 import java.time.*;
 import java.util.*;
@@ -6,6 +6,8 @@ import java.util.concurrent.*;
 
 import org.fxmisc.richtext.*;
 import org.fxmisc.richtext.model.*;
+
+import com.creativeartie.humming.document.*;
 
 import javafx.concurrent.*;
 
@@ -17,25 +19,22 @@ import javafx.concurrent.*;
  * @author wai
  */
 public class WritingCoderPane extends CodeArea {
-
     private ExecutorService executor;
-
-    private Span rootSpan;
+    private Document rootDoc;
 
     public WritingCoderPane() {
         executor = Executors.newSingleThreadExecutor();
         setParagraphGraphicFactory(LineNumberFactory.get(this));
 
         /// update text update only after 500 milliseconds
-        multiPlainChanges().successionEnds(Duration.ofMillis(500))
-            .retainLatestUntilLater(executor).supplyTask(
-                this::computeHighlightingAsync
-            ).awaitLatest(multiPlainChanges()).filterMap(t -> {
-                if (t.isSuccess()) return Optional.of(t.get());
-                t.getFailure().printStackTrace();
-                return Optional.empty();
-            }).subscribe(this::applyHighlighting);
+        multiPlainChanges().successionEnds(Duration.ofMillis(500)).retainLatestUntilLater(executor)
+                .supplyTask(this::computeHighlightingAsync).awaitLatest(multiPlainChanges()).filterMap(t -> {
+                    if (t.isSuccess()) return Optional.of(t.get());
+                    t.getFailure().printStackTrace();
+                    return Optional.empty();
+                }).subscribe(this::applyHighlighting);
         getStylesheets().add("data/text.css");
+        rootDoc = new Document();
     }
 
     /**
@@ -68,25 +67,25 @@ public class WritingCoderPane extends CodeArea {
      * applies the update
      *
      * @param highlighting
-     *                     formatted texts
+     *        formatted texts
      */
-    private void applyHighlighting(
-        StyleSpans<Collection<String>> highlighting
-    ) {
+    private void applyHighlighting(StyleSpans<Collection<String>> highlighting) {
         setStyleSpans(0, highlighting);
     }
 
     /**
      * Computes the actual highlights
      *
-     * @param  text
-     *              the text to format
-     * @return      the results of the formats
-     * @see         #computeHighlightingAsync()
+     * @param text
+     *        the text to format
+     *
+     * @return the results of the formats
+     *
+     * @see #computeHighlightingAsync()
      */
     private StyleSpans<Collection<String>> computeHighlighting(String text) {
-        DocBuilder builder = new DocBuilder(true);
-        new LinePhrase(text, builder, LinePhrase.TextEnders.NONE);
-        return builder.getStyles();
+        rootDoc.updateText(text);
+        rootDoc.cleanUp();
+        return rootDoc.getStyles();
     }
 }
