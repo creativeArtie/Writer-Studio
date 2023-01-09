@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
+import com.google.common.base.*;
 
 public class TodoSpan extends SpanBranch implements IdentityStorage.Identity {
     public static TodoSpan newSpan(SpanBranch parent, String text, SpanStyles... classes) {
@@ -56,6 +57,6 @@ public class TodoSpan extends SpanBranch implements IdentityStorage.Identity {
     }
 
     public String getAgenda() {
-        return todoText;
+        return CharMatcher.whitespace().trimAndCollapseFrom(todoText, ' ');
     }
 }

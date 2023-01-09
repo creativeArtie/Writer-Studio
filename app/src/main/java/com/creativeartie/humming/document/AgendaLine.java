@@ -4,6 +4,7 @@ import java.util.regex.*;
 
 import com.creativeartie.humming.document.IdentitySpan.*;
 import com.creativeartie.humming.schema.*;
+import com.google.common.base.*;
 
 public class AgendaLine extends LineSpan implements IdentityParent {
     private String todoText;
@@ -31,6 +32,6 @@ public class AgendaLine extends LineSpan implements IdentityParent {
     }
 
     public String getAgenda() {
-        return todoText;
+        return CharMatcher.whitespace().trimAndCollapseFrom(todoText, ' ');
     }
 }

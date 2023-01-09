@@ -3,6 +3,7 @@ package com.creativeartie.humming.document;
 import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
+import com.google.common.base.*;
 
 public class HeadingLine extends LineSpan {
     static HeadingLine newLine(SpanBranch parent, Matcher match) {
@@ -90,7 +91,7 @@ public class HeadingLine extends LineSpan {
     }
 
     public String getDetail() {
-        return draftStatus.statusDetail.trim();
+        return CharMatcher.whitespace().trimAndCollapseFrom(draftStatus.statusDetail, ' ');
     }
 
     public int getLevel() {

@@ -70,6 +70,6 @@ public class TextSpan extends SpanBranch {
     }
 
     public String getText() {
-        return spanText;
+        return CharMatcher.whitespace().trimAndCollapseFrom(spanText, ' ');
     }
 }

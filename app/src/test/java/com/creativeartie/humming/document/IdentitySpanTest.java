@@ -36,6 +36,14 @@ class IdentitySpanTest extends SpanBranchTestBase {
     }
 
     @Test
+    void testSpaces() {
+        IdentitySpan id = createIdPointer("   no    cat   ");
+        addStyleTest("   no    cat   ", SpanStyles.ID, SpanStyles.TEXT);
+        testStyles(id);
+        testId("no cat", id);
+    }
+
+    @Test
     void testWithEscape() {
         IdentitySpan id = createIdPointer("cat\\:egory:id");
         addStyleTest("cat", SpanStyles.ID, SpanStyles.TEXT);
