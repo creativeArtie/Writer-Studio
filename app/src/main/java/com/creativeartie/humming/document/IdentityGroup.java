@@ -11,6 +11,8 @@ public enum IdentityGroup {
                 return SpanStyles.ENDREF;
             case FOOTNOTE:
                 return SpanStyles.FOOTREF;
+            case META:
+                return SpanStyles.METAREF;
             default:
                 return SpanStyles.valueOf(name());
         }

@@ -59,13 +59,12 @@ public class SpanBranchTestBase {
         for (SpanLeaf leaf : testLeaves) {
             StyleClass[] expectedStyle = expectedStyles.get(i);
             int expectedLength = expectedText.get(i).length();
-            String messagePost = String.format("For %%s at leaf index %d, text \"%s\"", i, expectedText.get(i));
+            String format = "For %s at leaf index %d, text \"%s\"";
+            String styleText = String.format(format, "styles", i, expectedText.get(i));
+            String styleLength = String.format(format, "styles", i, expectedText.get(i));
             Assertions.assertAll(
-                    () -> Assertions.assertArrayEquals(
-                            expectedStyle, leaf.getClassStyles().toArray(), String.format(messagePost, "styles")
-                    ),
-                    () -> Assertions
-                            .assertEquals(expectedLength, leaf.getLength(), String.format(messagePost, "length"))
+                    () -> Assertions.assertArrayEquals(expectedStyle, leaf.getClassStyles().toArray(), styleText),
+                    () -> Assertions.assertEquals(expectedLength, leaf.getLength(), styleLength)
             );
             i++;
         }

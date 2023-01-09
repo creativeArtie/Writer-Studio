@@ -29,6 +29,7 @@ public class TodoSpan extends SpanBranch implements IdentityStorage.Identity {
     private TodoSpan(SpanBranch parent, SpanStyles... classes) {
         super(parent, classes);
         addStyle(SpanStyles.TODO);
+        todoText = "";
     }
 
     @Override
