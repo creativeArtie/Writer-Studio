@@ -10,8 +10,8 @@ import org.junit.jupiter.params.provider.*;
 class ReferencePointerSpanTest extends SpanBranchTestBase {
     private static Stream<Arguments> provideParameters() {
         return Stream.of(
-                Arguments.of("*", SpanStyles.ENDREF), Arguments.of("^", SpanStyles.FOOTREF),
-                Arguments.of("%", SpanStyles.METAREF), Arguments.of(">", SpanStyles.CITEREF),
+                Arguments.of("*", SpanStyles.ENDNOTE), Arguments.of("^", SpanStyles.FOOTNOTE),
+                Arguments.of("%", SpanStyles.METADATA), Arguments.of(">", SpanStyles.INFO),
                 Arguments.of("+", SpanStyles.IMAGE)
         );
     }
@@ -35,9 +35,9 @@ class ReferencePointerSpanTest extends SpanBranchTestBase {
     void testNoEnd() {
         ReferencePointerSpan test = ReferencePointerSpan.newSpan(newParent(), "{*id");
 
-        addStyleTest("{", SpanStyles.ENDREF, SpanStyles.OPERATOR);
-        addStyleTest("*", SpanStyles.ENDREF, SpanStyles.OPERATOR);
-        addStyleTest("id", SpanStyles.ENDREF, SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest("{", SpanStyles.ENDNOTE, SpanStyles.OPERATOR);
+        addStyleTest("*", SpanStyles.ENDNOTE, SpanStyles.OPERATOR);
+        addStyleTest("id", SpanStyles.ENDNOTE, SpanStyles.ID, SpanStyles.TEXT);
         testStyles(test);
 
         Optional<IdentitySpan> id = test.getPointer();

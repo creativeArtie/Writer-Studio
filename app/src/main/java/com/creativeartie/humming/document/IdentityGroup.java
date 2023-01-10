@@ -6,13 +6,13 @@ public enum IdentityGroup {
     SpanStyles getStyleClass() {
         switch (this) {
             case CITATION:
-                return SpanStyles.CITEREF;
+                return SpanStyles.INFO;
             case ENDNOTE:
-                return SpanStyles.ENDREF;
+                return SpanStyles.ENDNOTE;
             case FOOTNOTE:
-                return SpanStyles.FOOTREF;
+                return SpanStyles.FOOTNOTE;
             case META:
-                return SpanStyles.METAREF;
+                return SpanStyles.METADATA;
             default:
                 return SpanStyles.valueOf(name());
         }

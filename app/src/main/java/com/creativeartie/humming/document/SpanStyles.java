@@ -3,7 +3,7 @@ package com.creativeartie.humming.document;
 public enum SpanStyles implements StyleClass {
     TEXT, ESCAPE, OPERATOR, ID, ERROR,
 
-    FOOTREF, ENDREF, CITEREF, METAREF, IMAGE, TODO,
+    FOOTNOTE, ENDNOTE, INFO, METADATA, IMAGE, TODO,
 
     BOLD, UNDERLINE, ITALICS,
 

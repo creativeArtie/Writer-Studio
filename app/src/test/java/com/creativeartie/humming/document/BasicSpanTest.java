@@ -7,12 +7,12 @@ class BasicSpanTest extends SpanBranchTestBase {
     void testFullRef() {
         ReferencePointerSpan span = ReferencePointerSpan.newSpan(newParent(), "{^cat:id}");
         Assertions.assertNotNull(span);
-        addStyleTest("{", SpanStyles.FOOTREF, SpanStyles.OPERATOR);
-        addStyleTest("^", SpanStyles.FOOTREF, SpanStyles.OPERATOR);
-        addStyleTest("cat", SpanStyles.FOOTREF, SpanStyles.ID, SpanStyles.TEXT);
-        addStyleTest(":", SpanStyles.FOOTREF, SpanStyles.ID, SpanStyles.OPERATOR);
-        addStyleTest("id", SpanStyles.FOOTREF, SpanStyles.ID, SpanStyles.TEXT);
-        addStyleTest("}", SpanStyles.FOOTREF, SpanStyles.OPERATOR);
+        addStyleTest("{", SpanStyles.FOOTNOTE, SpanStyles.OPERATOR);
+        addStyleTest("^", SpanStyles.FOOTNOTE, SpanStyles.OPERATOR);
+        addStyleTest("cat", SpanStyles.FOOTNOTE, SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest(":", SpanStyles.FOOTNOTE, SpanStyles.ID, SpanStyles.OPERATOR);
+        addStyleTest("id", SpanStyles.FOOTNOTE, SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest("}", SpanStyles.FOOTNOTE, SpanStyles.OPERATOR);
         testStyles(span);
     }
 
@@ -20,11 +20,11 @@ class BasicSpanTest extends SpanBranchTestBase {
     void testPartRef() {
         ReferencePointerSpan span = ReferencePointerSpan.newSpan(newParent(), "{*cat:id");
         Assertions.assertNotNull(span);
-        addStyleTest("{", SpanStyles.ENDREF, SpanStyles.OPERATOR);
-        addStyleTest("*", SpanStyles.ENDREF, SpanStyles.OPERATOR);
-        addStyleTest("cat", SpanStyles.ENDREF, SpanStyles.ID, SpanStyles.TEXT);
-        addStyleTest("-", SpanStyles.ENDREF, SpanStyles.ID, SpanStyles.OPERATOR);
-        addStyleTest("id", SpanStyles.ENDREF, SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest("{", SpanStyles.ENDNOTE, SpanStyles.OPERATOR);
+        addStyleTest("*", SpanStyles.ENDNOTE, SpanStyles.OPERATOR);
+        addStyleTest("cat", SpanStyles.ENDNOTE, SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest("-", SpanStyles.ENDNOTE, SpanStyles.ID, SpanStyles.OPERATOR);
+        addStyleTest("id", SpanStyles.ENDNOTE, SpanStyles.ID, SpanStyles.TEXT);
         testStyles(span);
     }
 
