@@ -60,7 +60,7 @@ public enum BasicTextPatterns implements PatternEnum {
     }
 
     BasicTextPatterns() { // For footnote and endnote
-        textPattern = "[^\\n" + BasicFormatParts.listPatterns().substring(1) + "]";
+        textPattern = "[^\\n" + BasicFormatParts.listPatterns().substring(1) + "]+";
         // @formatter:off
         basePattern = "(" +
                 BasicTextPart.ESCAPE.getRawPattern() + "|" +

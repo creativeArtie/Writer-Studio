@@ -38,12 +38,15 @@ public class ReferenceLine extends LineSpan implements IdentitySpan.IdentityPare
         String raw;
         if ((raw = RefLineParts.ID.group(match)) != null) {
             idAddress = Optional.of(IdentitySpan.newAddressId(this, raw, group));
+            add(idAddress.get());
             add(new SpanLeaf(this, RefLineParts.SEP.group(match)));
             add(LineText.newNoteText(this, RefLineParts.TEXT.group(match)));
         } else {
             addStyle(SpanStyles.ERROR);
             add(LineText.newBasicText(this, RefLineParts.ERROR.group(match)));
         }
+
+        addLineEnd(match, RefLineParts.ENDER);
     }
 
     @Override

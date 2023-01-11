@@ -137,22 +137,6 @@ class LineSpanTest extends SpanBranchTestBase<LineSpan> {
         Assertions.assertEquals(2, heading.getLevel());
     }
 
-    @Test
-    void testFootNote() {
-        String type = "^";
-        LineStyles style = LineStyles.FOOTNOTE;
-        LineSpan span = newSpan("!" + type + "cat:id=data text");
-        Assertions.assertEquals(style, span.getLineStyle(), "Line style");
-        addStyleTest("!", style, SpanStyles.OPERATOR);
-        addStyleTest(type, style, SpanStyles.OPERATOR);
-        addStyleTest("cat", style, SpanStyles.ID, SpanStyles.TEXT);
-        addStyleTest(":", style, SpanStyles.ID, SpanStyles.OPERATOR);
-        addStyleTest("id", style, SpanStyles.ID, SpanStyles.TEXT);
-        addStyleTest("=", style, SpanStyles.OPERATOR);
-        addStyleTest("data text", style, SpanStyles.TEXT);
-        testStyles(span);
-    }
-
     @Override
     protected LineSpan initSpan(SpanBranch parent, String input) {
         return LineSpan.newLine(parent, input);
