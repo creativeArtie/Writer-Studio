@@ -6,7 +6,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
-class LineSpanTest extends SpanBranchTestBase {
+class LineSpanTest extends SpanBranchTestBase<LineSpan> {
     private static Stream<Arguments> provideParameters() {
         return Stream.of(
                 Arguments.of(">", LineStyles.QUOTE), Arguments.of("", LineStyles.NORMAL),
@@ -17,103 +17,103 @@ class LineSpanTest extends SpanBranchTestBase {
     @ParameterizedTest
     @MethodSource("provideParameters")
     void testEmptyLine(String starter, LineStyles style) {
-        LineSpan span = LineSpan.newLine(newParent(), starter);
+        LineSpan span = newSpan(starter);
+        Assertions.assertEquals(style, span.getLineStyle(), "Line style");
         if (starter != "") addStyleTest(starter, style, SpanStyles.OPERATOR);
         testStyles(span);
-        Assertions.assertEquals(style, span.getLineStyle(), "Line style");
     }
 
     @ParameterizedTest
     @MethodSource("provideParameters")
     void testEmptyEndLine(String starter, LineStyles style) {
-        LineSpan span = LineSpan.newLine(newParent(), starter + "\n");
+        LineSpan span = newSpan(starter + "\n");
+        Assertions.assertEquals(style, span.getLineStyle(), "Line style");
         if (starter != "") addStyleTest(starter, style, SpanStyles.OPERATOR);
         addStyleTest("\n", style, SpanStyles.OPERATOR);
         testStyles(span);
-        Assertions.assertEquals(style, span.getLineStyle(), "Line style");
     }
 
     @ParameterizedTest
     @MethodSource("provideParameters")
     void testLine(String starter, LineStyles style) {
-        LineSpan span = LineSpan.newLine(newParent(), starter + "abc");
+        LineSpan span = newSpan(starter + "abc");
+        Assertions.assertEquals(style, span.getLineStyle(), "Line style");
         if (starter != "") addStyleTest(starter, style, SpanStyles.OPERATOR);
         addStyleTest("abc", style, SpanStyles.TEXT);
         testStyles(span);
-        Assertions.assertEquals(style, span.getLineStyle(), "Line style");
     }
 
     @ParameterizedTest
     @MethodSource("provideParameters")
     void testEndLine(String starter, LineStyles style) {
-        LineSpan span = LineSpan.newLine(newParent(), starter + "abc\n");
+        LineSpan span = newSpan(starter + "abc\n");
+        Assertions.assertEquals(style, span.getLineStyle(), "Line style");
         if (starter != "") addStyleTest(starter, style, SpanStyles.OPERATOR);
         addStyleTest("abc", style, SpanStyles.TEXT);
         addStyleTest("\n", style, SpanStyles.OPERATOR);
         testStyles(span);
-        Assertions.assertEquals(style, span.getLineStyle(), "Line style");
     }
 
     @Test
     void testShortBreak() {
-        LineSpan span = LineSpan.newLine(newParent(), "**");
+        LineSpan span = newSpan("**");
+        Assertions.assertEquals(LineStyles.BREAK, span.getLineStyle(), "Line style");
         addStyleTest("**", LineStyles.BREAK, SpanStyles.OPERATOR);
         testStyles(span);
-        Assertions.assertEquals(LineStyles.BREAK, span.getLineStyle(), "Line style");
     }
 
     @Test
     void testLongBreak() {
-        LineSpan span = LineSpan.newLine(newParent(), "*******");
+        LineSpan span = newSpan("*******");
+        Assertions.assertEquals(LineStyles.BREAK, span.getLineStyle(), "Line style");
         addStyleTest("*******", LineStyles.BREAK, SpanStyles.OPERATOR);
         testStyles(span);
-        Assertions.assertEquals(LineStyles.BREAK, span.getLineStyle(), "Line style");
     }
 
     @Test
     void testSingleBreak() {
-        LineSpan span = LineSpan.newLine(newParent(), "*");
+        LineSpan span = newSpan("*");
+        Assertions.assertEquals(LineStyles.BREAK, span.getLineStyle(), "Line style");
         addStyleTest("*", LineStyles.BREAK, SpanStyles.OPERATOR);
         testStyles(span);
-        Assertions.assertEquals(LineStyles.BREAK, span.getLineStyle(), "Line style");
     }
 
     @Test
     void testBreak() {
-        LineSpan span = LineSpan.newLine(newParent(), "***");
+        LineSpan span = newSpan("***");
+        Assertions.assertEquals(LineStyles.BREAK, span.getLineStyle(), "Line style");
         addStyleTest("***", LineStyles.BREAK, SpanStyles.OPERATOR);
         testStyles(span);
-        Assertions.assertEquals(LineStyles.BREAK, span.getLineStyle(), "Line style");
     }
 
     @Test
     void testFullBreak() {
-        LineSpan span = LineSpan.newLine(newParent(), "***\n");
+        LineSpan span = newSpan("***\n");
+        Assertions.assertEquals(LineStyles.BREAK, span.getLineStyle(), "Line style");
         addStyleTest("***", LineStyles.BREAK, SpanStyles.OPERATOR);
         addStyleTest("\n", LineStyles.BREAK, SpanStyles.OPERATOR);
         testStyles(span);
-        Assertions.assertEquals(LineStyles.BREAK, span.getLineStyle(), "Line style");
     }
 
     @Test
     void testAgenda() {
-        LineSpan span = LineSpan.newLine(newParent(), "!Hello*\n");
+        LineSpan span = newSpan("!Hello*\n");
+        Assertions.assertEquals(LineStyles.AGENDA, span.getLineStyle(), "Line style");
         addStyleTest("!", LineStyles.AGENDA, SpanStyles.OPERATOR);
         addStyleTest("Hello*", LineStyles.AGENDA, SpanStyles.TEXT);
         addStyleTest("\n", LineStyles.AGENDA, SpanStyles.OPERATOR);
         testStyles(span);
-        Assertions.assertEquals(LineStyles.AGENDA, span.getLineStyle(), "Line style");
         Assertions.assertInstanceOf(AgendaLine.class, span);
         Assertions.assertEquals("Hello*", ((AgendaLine) span).getAgenda());
     }
 
     @Test
     void testHeadingNoStatus() {
-        LineSpan span = LineSpan.newLine(newParent(), "=abc");
+        LineSpan span = newSpan("=abc");
+        Assertions.assertEquals(LineStyles.HEADING, span.getLineStyle(), "Line style");
         addStyleTest("=", LineStyles.HEADING, SpanStyles.OPERATOR);
         addStyleTest("abc", LineStyles.HEADING, SpanStyles.TEXT);
         testStyles(span);
-        Assertions.assertEquals(LineStyles.HEADING, span.getLineStyle(), "Line style");
         Assertions.assertInstanceOf(HeadingLine.class, span);
         HeadingLine heading = (HeadingLine) span;
         Assertions.assertEquals(HeadingLine.DraftStatus.NONE, heading.getStatus());
@@ -123,17 +123,38 @@ class LineSpanTest extends SpanBranchTestBase {
 
     @Test
     void testHeadingDraftStatus() {
-        LineSpan span = LineSpan.newLine(newParent(), "==abc#Draft 1");
+        LineSpan span = newSpan("==abc#Draft 1");
+        Assertions.assertEquals(LineStyles.HEADING, span.getLineStyle(), "Line style");
         addStyleTest("==", LineStyles.HEADING, SpanStyles.OPERATOR);
         addStyleTest("abc", LineStyles.HEADING, SpanStyles.TEXT);
         addStyleTest("#Draft", LineStyles.HEADING, SpanStyles.OPERATOR);
         addStyleTest(" 1", LineStyles.HEADING, SpanStyles.TEXT);
         testStyles(span);
-        Assertions.assertEquals(LineStyles.HEADING, span.getLineStyle(), "Line style");
         Assertions.assertInstanceOf(HeadingLine.class, span);
         HeadingLine heading = (HeadingLine) span;
         Assertions.assertEquals(HeadingLine.DraftStatus.DRAFT, heading.getStatus());
         Assertions.assertEquals("1", heading.getDetail());
         Assertions.assertEquals(2, heading.getLevel());
+    }
+
+    @Test
+    void testFootNote() {
+        String type = "^";
+        LineStyles style = LineStyles.FOOTNOTE;
+        LineSpan span = newSpan("!" + type + "cat:id=data text");
+        Assertions.assertEquals(style, span.getLineStyle(), "Line style");
+        addStyleTest("!", style, SpanStyles.OPERATOR);
+        addStyleTest(type, style, SpanStyles.OPERATOR);
+        addStyleTest("cat", style, SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest(":", style, SpanStyles.ID, SpanStyles.OPERATOR);
+        addStyleTest("id", style, SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest("=", style, SpanStyles.OPERATOR);
+        addStyleTest("data text", style, SpanStyles.TEXT);
+        testStyles(span);
+    }
+
+    @Override
+    protected LineSpan initSpan(SpanBranch parent, String input) {
+        return LineSpan.newLine(parent, input);
     }
 }

@@ -4,10 +4,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.*;
 
-class TextSpanTest extends SpanBranchTestBase {
+class TextSpanTest extends SpanBranchTestBase<TextSpan> {
+    private enum SubTests {
+        ID;
+    }
+
+    private SubTests subTest;
+
     @Test
     void testTextEsape() {
-        TextSpan text = TextSpan.newId(newParent(), "abc\\:");
+        subTest = SubTests.ID;
+        TextSpan text = newSpan("abc\\:");
         addStyleTest("abc", SpanStyles.TEXT);
         addStyleTest("\\:", SpanStyles.ESCAPE);
         testStyles(text);
@@ -16,7 +23,8 @@ class TextSpanTest extends SpanBranchTestBase {
 
     @Test
     void testEsapeText() {
-        TextSpan text = TextSpan.newId(newParent(), "\\:abc");
+        subTest = SubTests.ID;
+        TextSpan text = newSpan("\\:abc");
         addStyleTest("\\:", SpanStyles.ESCAPE);
         addStyleTest("abc", SpanStyles.TEXT);
         testStyles(text);
@@ -25,7 +33,8 @@ class TextSpanTest extends SpanBranchTestBase {
 
     @Test
     void testLong() {
-        TextSpan text = TextSpan.newId(newParent(), "abc\\:efg\\topq");
+        subTest = SubTests.ID;
+        TextSpan text = newSpan("abc\\:efg\\topq");
         addStyleTest("abc", SpanStyles.TEXT);
         addStyleTest("\\:", SpanStyles.ESCAPE);
         addStyleTest("efg", SpanStyles.TEXT);
@@ -33,5 +42,15 @@ class TextSpanTest extends SpanBranchTestBase {
         addStyleTest("opq", SpanStyles.TEXT);
         testStyles(text);
         assertEquals("abc:efgtopq", text.getText());
+    }
+
+    @Override
+    protected TextSpan initSpan(SpanBranch parent, String input) {
+        switch (subTest) {
+            case ID:
+                return TextSpan.newId(parent, input);
+        }
+        fail("Unimplemented test for:" + subTest.toString());
+        return null;
     }
 }

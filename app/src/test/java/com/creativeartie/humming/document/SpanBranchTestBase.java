@@ -6,7 +6,7 @@ import org.junit.jupiter.api.*;
 
 import com.creativeartie.humming.document.IdentitySpan.*;
 
-public class SpanBranchTestBase {
+public abstract class SpanBranchTestBase<T extends SpanBranch> {
     private static ArrayList<String> expectedText;
     private static ArrayList<StyleClass[]> expectedStyles;
     private static Document rootDoc;
@@ -45,10 +45,6 @@ public class SpanBranchTestBase {
         expectedText.clear();
     }
 
-    protected static SpanBranch newParent() {
-        return new HolderSpan(rootDoc);
-    }
-
     protected void addStyleTest(String text, StyleClass... styles) {
         expectedText.add(text);
         expectedStyles.add(styles);
@@ -75,4 +71,22 @@ public class SpanBranchTestBase {
             i++;
         }
     }
+
+    protected T newSpan(String input) {
+        T span = initSpan(new HolderSpan(rootDoc), input);
+        input = input.replaceAll("\n", "␤");
+
+        int start = 0;
+        System.out.println(input);
+        for (SpanLeaf leaf : span.getLeafs()) {
+            int end = start + leaf.getLength();
+            System.out.println(input.substring(start, end) + leaf.getClassStyles().toString());
+
+            start = end;
+        }
+        System.out.println();
+        return span;
+    }
+
+    protected abstract T initSpan(SpanBranch parent, String input);
 }

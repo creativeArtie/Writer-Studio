@@ -7,7 +7,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
-class ReferenceSpanTest extends SpanBranchTestBase {
+class ReferenceSpanTest extends SpanBranchTestBase<ReferenceSpan> {
     private static Stream<Arguments> provideParameters() {
         return Stream.of(
                 Arguments.of("*", SpanStyles.ENDNOTE), Arguments.of("^", SpanStyles.FOOTNOTE),
@@ -19,7 +19,7 @@ class ReferenceSpanTest extends SpanBranchTestBase {
     @ParameterizedTest
     @MethodSource("provideParameters")
     void testFull(String type, SpanStyles style) {
-        ReferenceSpan test = ReferenceSpan.newSpan(newParent(), "{" + type + "id}");
+        ReferenceSpan test = newSpan("{" + type + "id}");
 
         addStyleTest("{", style, SpanStyles.OPERATOR);
         addStyleTest(type, style, SpanStyles.OPERATOR);
@@ -33,7 +33,7 @@ class ReferenceSpanTest extends SpanBranchTestBase {
 
     @Test
     void testNoEnd() {
-        ReferenceSpan test = ReferenceSpan.newSpan(newParent(), "{*id");
+        ReferenceSpan test = newSpan("{*id");
 
         addStyleTest("{", SpanStyles.ENDNOTE, SpanStyles.OPERATOR);
         addStyleTest("*", SpanStyles.ENDNOTE, SpanStyles.OPERATOR);
@@ -46,7 +46,7 @@ class ReferenceSpanTest extends SpanBranchTestBase {
 
     @Test
     void testNoRef() {
-        ReferenceSpan test = ReferenceSpan.newSpan(newParent(), "{id}");
+        ReferenceSpan test = newSpan("{id}");
 
         addStyleTest("{", SpanStyles.ERROR, SpanStyles.OPERATOR);
         addStyleTest("id", SpanStyles.ERROR, SpanStyles.TEXT);
@@ -55,5 +55,10 @@ class ReferenceSpanTest extends SpanBranchTestBase {
 
         Optional<IdentitySpan> id = test.getPointer();
         Assertions.assertFalse(id.isPresent(), "ID isPresent");
+    }
+
+    @Override
+    protected ReferenceSpan initSpan(SpanBranch parent, String input) {
+        return ReferenceSpan.newSpan(parent, input);
     }
 }

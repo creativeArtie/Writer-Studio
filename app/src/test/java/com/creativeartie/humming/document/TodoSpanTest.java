@@ -2,10 +2,10 @@ package com.creativeartie.humming.document;
 
 import org.junit.jupiter.api.*;
 
-class TodoSpanTest extends SpanBranchTestBase {
+class TodoSpanTest extends SpanBranchTestBase<TodoSpan> {
     @Test
     void testFull() {
-        TodoSpan span = TodoSpan.newSpan(newParent(), "{!todo}");
+        TodoSpan span = newSpan("{!todo}");
         addStyleTest("{!", SpanStyles.TODO, SpanStyles.OPERATOR);
         addStyleTest("todo", SpanStyles.TODO, SpanStyles.TEXT);
         addStyleTest("}", SpanStyles.TODO, SpanStyles.OPERATOR);
@@ -15,7 +15,7 @@ class TodoSpanTest extends SpanBranchTestBase {
 
     @Test
     void testNoEnd() {
-        TodoSpan span = TodoSpan.newSpan(newParent(), "{!todo");
+        TodoSpan span = newSpan("{!todo");
         addStyleTest("{!", SpanStyles.TODO, SpanStyles.OPERATOR);
         addStyleTest("todo", SpanStyles.TODO, SpanStyles.TEXT);
         testStyles(span);
@@ -24,7 +24,7 @@ class TodoSpanTest extends SpanBranchTestBase {
 
     @Test
     void testNoText() {
-        TodoSpan span = TodoSpan.newSpan(newParent(), "{!}");
+        TodoSpan span = newSpan("{!}");
         addStyleTest("{!", SpanStyles.TODO, SpanStyles.OPERATOR);
         addStyleTest("}", SpanStyles.TODO, SpanStyles.OPERATOR);
         testStyles(span);
@@ -33,9 +33,14 @@ class TodoSpanTest extends SpanBranchTestBase {
 
     @Test
     void testStartOnly() {
-        TodoSpan span = TodoSpan.newSpan(newParent(), "{!");
+        TodoSpan span = newSpan("{!");
         addStyleTest("{!", SpanStyles.TODO, SpanStyles.OPERATOR);
         testStyles(span);
         Assertions.assertEquals("", span.getAgenda());
+    }
+
+    @Override
+    protected TodoSpan initSpan(SpanBranch parent, String input) {
+        return TodoSpan.newSpan(parent, input);
     }
 }

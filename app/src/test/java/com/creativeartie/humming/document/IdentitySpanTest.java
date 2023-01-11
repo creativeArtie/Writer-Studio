@@ -9,13 +9,25 @@ import org.junit.jupiter.api.*;
 import com.google.common.base.*;
 import com.google.common.collect.*;
 
-class IdentitySpanTest extends SpanBranchTestBase {
-    public static IdentitySpan createIdPointer(String text) {
-        return IdentitySpan.newPointerId(newParent(), text, IdentityGroup.FOOTNOTE);
+class IdentitySpanTest extends SpanBranchTestBase<IdentitySpan> {
+    private boolean isAddress;
+
+    public IdentitySpan createIdPointer(String text) {
+        isAddress = false;
+        return newSpan(text);
     }
 
-    public static IdentitySpan createIdAddress(String text) {
-        return IdentitySpan.newAddressId(newParent(), text, IdentityGroup.FOOTNOTE);
+    public IdentitySpan createIdAddress(String text) {
+        isAddress = true;
+        return newSpan(text);
+    }
+
+    @Override
+    protected IdentitySpan initSpan(SpanBranch parent, String input) {
+        if (isAddress) {
+            return IdentitySpan.newAddressId(parent, input, IdentityGroup.FOOTNOTE);
+        }
+        return IdentitySpan.newPointerId(parent, input, IdentityGroup.FOOTNOTE);
     }
 
     public static void testId(String name, IdentitySpan test, String... categories) {

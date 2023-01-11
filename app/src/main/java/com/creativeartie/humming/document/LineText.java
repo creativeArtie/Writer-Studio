@@ -10,28 +10,28 @@ public class LineText extends SpanBranch {
     static LineText newNoteText(SpanBranch parent, String text, SpanStyles... classes) {
         Matcher match = LineTextPatterns.NOTE.matcher(text);
         if (match == null) return null;
-        return parseText(new LineText(parent, classes), match, BasicTextPatterns.NOTE);
+        return parseText(new LineText(parent, classes), match, BasicTextPatterns.NOTE, false);
     }
 
     static LineText newHeadingText(SpanBranch parent, String text, SpanStyles... classes) {
         Matcher match = LineTextPatterns.HEADING.matcher(text);
         if (match == null) return null;
-        return parseText(new LineText(parent, classes), match, BasicTextPatterns.HEADING);
+        return parseText(new LineText(parent, classes), match, BasicTextPatterns.HEADING, true);
     }
 
     static LineText newCellText(SpanBranch parent, String text, SpanStyles... classes) {
         Matcher match = LineTextPatterns.CELL.matcher(text);
         if (match == null) return null;
-        return parseText(new LineText(parent, classes), match, BasicTextPatterns.CELL);
+        return parseText(new LineText(parent, classes), match, BasicTextPatterns.CELL, true);
     }
 
     static LineText newBasicText(SpanBranch parent, String text, SpanStyles... classes) {
         Matcher match = LineTextPatterns.BASIC.matcher(text);
         if (match == null) return null;
-        return parseText(new LineText(parent, classes), match, BasicTextPatterns.TEXT);
+        return parseText(new LineText(parent, classes), match, BasicTextPatterns.TEXT, true);
     }
 
-    private static LineText parseText(LineText span, Matcher match, BasicTextPatterns pattern) {
+    private static LineText parseText(LineText span, Matcher match, BasicTextPatterns pattern, boolean hasRefers) {
         TreeSet<SpanStyles> formatting = new TreeSet<>();
         while (match.find()) {
             checkStyle(match, span, formatting, LineTextPart.BOLD, SpanStyles.BOLD);
@@ -39,7 +39,7 @@ public class LineText extends SpanBranch {
             checkStyle(match, span, formatting, LineTextPart.UNDERLINE, SpanStyles.UNDERLINE);
 
             String raw;
-            if ((raw = LineTextPart.REFER.group(match)) != null) {
+            if (hasRefers && (raw = LineTextPart.REFER.group(match)) != null) {
                 span.add(ReferenceSpan.newSpan(span, raw, formatting.toArray(new SpanStyles[0])));
             }
             if ((raw = LineTextPart.TODO.group(match)) != null) {

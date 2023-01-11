@@ -72,4 +72,8 @@ public enum LineTextPatterns implements PatternEnum {
     public String getPatternName() {
         return name();
     }
+
+    public boolean hasRefer() {
+        return withRefers;
+    }
 }

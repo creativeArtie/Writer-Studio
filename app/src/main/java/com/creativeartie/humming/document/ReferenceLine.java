@@ -36,12 +36,13 @@ public class ReferenceLine extends LineSpan implements IdentitySpan.IdentityPare
         add(new SpanLeaf(this, RefLineParts.START.group(match)));
         add(new SpanLeaf(this, pattern.group(match)));
         String raw;
-        if ((raw = RefLineParts.ERROR.group(match)) != null) {
-            addStyle(SpanStyles.ERROR);
-            add(LineText.newBasicText(this, raw));
-        } else {
-            idAddress = Optional.of(IdentitySpan.newAddressId(this, RefLineParts.ID.group(match), group));
+        if ((raw = RefLineParts.ID.group(match)) != null) {
+            idAddress = Optional.of(IdentitySpan.newAddressId(this, raw, group));
             add(new SpanLeaf(this, RefLineParts.SEP.group(match)));
+            add(LineText.newNoteText(this, RefLineParts.TEXT.group(match)));
+        } else {
+            addStyle(SpanStyles.ERROR);
+            add(LineText.newBasicText(this, RefLineParts.ERROR.group(match)));
         }
     }
 
