@@ -20,6 +20,12 @@ public class SpanBranchTestBase {
         public int getIdPosition() {
             return 0;
         }
+
+        @Override
+        public Optional<IdentitySpan> getPointer() {
+            // TODO Auto-generated method stub
+            return null;
+        }
     }
 
     @BeforeAll

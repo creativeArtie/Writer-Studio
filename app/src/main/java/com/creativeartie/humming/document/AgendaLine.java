@@ -1,5 +1,6 @@
 package com.creativeartie.humming.document;
 
+import java.util.Optional;
 import java.util.regex.*;
 
 import com.creativeartie.humming.document.IdentitySpan.*;
@@ -33,5 +34,11 @@ public class AgendaLine extends LineSpan implements IdentityParent {
 
     public String getAgenda() {
         return CharMatcher.whitespace().trimAndCollapseFrom(todoText, ' ');
+    }
+
+    @Override
+    public Optional<IdentitySpan> getPointer() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

@@ -14,6 +14,12 @@ class RefernceLinePatternTest extends PatternTestBase<RefLineParts> {
     }
 
     @Test
+    void testAgenda() {
+        Assertions.assertNull(ReferenceLinePatterns.ENDNOTE.matcher("!hello"));
+        Assertions.assertNull(ReferenceLinePatterns.FOOTNOTE.matcher("!hello"));
+    }
+
+    @Test
     void testFootnote() {
         final Matcher matcher = ReferenceLinePatterns.FOOTNOTE.matcher("!^test=note");
         assertGroup("!", matcher, RefLineParts.START, 1);

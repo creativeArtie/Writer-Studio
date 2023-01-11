@@ -9,8 +9,13 @@ public abstract class LineSpan extends SpanBranch {
     static LineSpan newLine(SpanBranch parent, String text) {
         LineSpan returns = null;
         Matcher match;
+        if (false) return null;
+        else if ((match = ReferenceLinePatterns.ENDNOTE.matcher(text)) != null)
+            returns = ReferenceLine.newEndnote(parent);
+        else if ((match = ReferenceLinePatterns.FOOTNOTE.matcher(text)) != null)
+            returns = ReferenceLine.newFootnote(parent);
 
-        if ((match = ListLinePattern.matcher(text)) != null) returns = ListLine.newLine(parent, match);
+        else if ((match = ListLinePattern.matcher(text)) != null) returns = ListLine.newLine(parent, match);
 
         else if ((match = HeadingLinePattern.matcher(text)) != null) returns = HeadingLine.newLine(parent, match);
 

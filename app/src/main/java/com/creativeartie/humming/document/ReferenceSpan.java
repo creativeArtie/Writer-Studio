@@ -5,12 +5,12 @@ import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 
-public class ReferencePointerSpan extends SpanBranch implements IdentitySpan.IdentityParent {
-    static ReferencePointerSpan newSpan(SpanBranch parent, String text, SpanStyles... classes) {
+public class ReferenceSpan extends SpanBranch implements IdentitySpan.IdentityParent {
+    static ReferenceSpan newSpan(SpanBranch parent, String text, SpanStyles... classes) {
         Matcher match = ReferencePattern.matcher(text);
         if (match == null) return null;
 
-        ReferencePointerSpan span = new ReferencePointerSpan(parent, classes);
+        ReferenceSpan span = new ReferenceSpan(parent, classes);
 
         String raw = ReferencePattern.START.group(match);
         span.add(new SpanLeaf(span, raw));
@@ -48,11 +48,12 @@ public class ReferencePointerSpan extends SpanBranch implements IdentitySpan.Ide
 
     private Optional<IdentitySpan> idPointer;
 
-    private ReferencePointerSpan(SpanBranch parent, SpanStyles... classes) {
+    private ReferenceSpan(SpanBranch parent, SpanStyles... classes) {
         super(parent, classes);
         idPointer = Optional.empty();
     }
 
+    @Override
     public Optional<IdentitySpan> getPointer() {
         return idPointer;
     }

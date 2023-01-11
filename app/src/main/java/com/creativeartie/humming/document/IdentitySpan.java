@@ -1,6 +1,7 @@
 package com.creativeartie.humming.document;
 
 import java.util.*;
+import java.util.Optional;
 import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
@@ -16,6 +17,8 @@ public class IdentitySpan extends SpanBranch implements IdentityStorage.Identity
 
     public interface IdentityParent {
         public int getIdPosition();
+
+        Optional<IdentitySpan> getPointer();
     }
 
     static IdentitySpan newPointerId(SpanBranch parent, String text, IdentityGroup group) {

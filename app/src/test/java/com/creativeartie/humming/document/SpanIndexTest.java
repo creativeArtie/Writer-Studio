@@ -37,8 +37,8 @@ class SpanIndexTest {
     @BeforeAll
     public static void setup() {
         doc = new Document();
-        doc.add(ReferencePointerSpan.newSpan(new SpanBranch(doc), span1));
-        doc.add(ReferencePointerSpan.newSpan(new SpanBranch(doc), span2));
+        doc.add(ReferenceSpan.newSpan(new SpanBranch(doc), span1));
+        doc.add(ReferenceSpan.newSpan(new SpanBranch(doc), span2));
     }
 
     private static Stream<Arguments> provideParameters() {

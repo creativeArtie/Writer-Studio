@@ -5,7 +5,7 @@ import org.junit.jupiter.api.*;
 class BasicSpanTest extends SpanBranchTestBase {
     @Test
     void testFullRef() {
-        ReferencePointerSpan span = ReferencePointerSpan.newSpan(newParent(), "{^cat:id}");
+        ReferenceSpan span = ReferenceSpan.newSpan(newParent(), "{^cat:id}");
         Assertions.assertNotNull(span);
         addStyleTest("{", SpanStyles.FOOTNOTE, SpanStyles.OPERATOR);
         addStyleTest("^", SpanStyles.FOOTNOTE, SpanStyles.OPERATOR);
@@ -18,7 +18,7 @@ class BasicSpanTest extends SpanBranchTestBase {
 
     @Test
     void testPartRef() {
-        ReferencePointerSpan span = ReferencePointerSpan.newSpan(newParent(), "{*cat:id");
+        ReferenceSpan span = ReferenceSpan.newSpan(newParent(), "{*cat:id");
         Assertions.assertNotNull(span);
         addStyleTest("{", SpanStyles.ENDNOTE, SpanStyles.OPERATOR);
         addStyleTest("*", SpanStyles.ENDNOTE, SpanStyles.OPERATOR);
@@ -30,9 +30,9 @@ class BasicSpanTest extends SpanBranchTestBase {
 
     @Test
     void testPositions() {
-        ReferencePointerSpan test1 = ReferencePointerSpan.newSpan(newParent(), "{*cat:id}");
+        ReferenceSpan test1 = ReferenceSpan.newSpan(newParent(), "{*cat:id}");
         getDocument().add(test1);
-        ReferencePointerSpan test2 = ReferencePointerSpan.newSpan(newParent(), "{^test}");
+        ReferenceSpan test2 = ReferenceSpan.newSpan(newParent(), "{^test}");
         getDocument().add(test2);
         Assertions.assertEquals(0, test1.getIdPosition(), "Test 1 position");
         Assertions.assertEquals(9, test2.getIdPosition(), "Test 2 position");
@@ -40,7 +40,7 @@ class BasicSpanTest extends SpanBranchTestBase {
 
     @Test
     void testErrorRef() {
-        ReferencePointerSpan span = ReferencePointerSpan.newSpan(newParent(), "{cat:id}");
+        ReferenceSpan span = ReferenceSpan.newSpan(newParent(), "{cat:id}");
         Assertions.assertNotNull(span);
         addStyleTest("{", SpanStyles.ERROR, SpanStyles.OPERATOR);
         addStyleTest("cat:id", SpanStyles.ERROR, SpanStyles.TEXT);

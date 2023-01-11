@@ -97,14 +97,14 @@ class LineSpanTest extends SpanBranchTestBase {
 
     @Test
     void testAgenda() {
-        LineSpan span = LineSpan.newLine(newParent(), "!***\n");
+        LineSpan span = LineSpan.newLine(newParent(), "!Hello*\n");
         addStyleTest("!", LineStyles.AGENDA, SpanStyles.OPERATOR);
-        addStyleTest("***", LineStyles.AGENDA, SpanStyles.TEXT);
+        addStyleTest("Hello*", LineStyles.AGENDA, SpanStyles.TEXT);
         addStyleTest("\n", LineStyles.AGENDA, SpanStyles.OPERATOR);
         testStyles(span);
         Assertions.assertEquals(LineStyles.AGENDA, span.getLineStyle(), "Line style");
         Assertions.assertInstanceOf(AgendaLine.class, span);
-        Assertions.assertEquals("***", ((AgendaLine) span).getAgenda());
+        Assertions.assertEquals("Hello*", ((AgendaLine) span).getAgenda());
     }
 
     @Test
