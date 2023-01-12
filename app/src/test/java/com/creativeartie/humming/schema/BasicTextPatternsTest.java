@@ -54,7 +54,9 @@ class BasicTextPatternsTest extends PatternTestBase<BasicTextPart> {
 
                 Arguments.of("\n", BasicTextPatterns.TEXT), Arguments.of("{", BasicTextPatterns.TEXT),
 
-                Arguments.of("\n", BasicTextPatterns.SIMPLE)
+                Arguments.of("\n", BasicTextPatterns.SIMPLE),
+
+                Arguments.of("\n", BasicTextPatterns.NOTE), Arguments.of("*", BasicTextPatterns.NOTE)
         );
     }
 

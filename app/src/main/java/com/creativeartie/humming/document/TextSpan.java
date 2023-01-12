@@ -45,6 +45,10 @@ public class TextSpan extends SpanBranch {
         return parseText(new TextSpan(span, styles), BasicTextPatterns.HEADING, raw);
     }
 
+    static TextSpan newFieldKey(SpanBranch span, String raw, SpanStyles... styles) {
+        return parseText(new TextSpan(span, styles), BasicTextPatterns.CITE, raw);
+    }
+
     private static TextSpan parseText(TextSpan span, BasicTextPatterns pattern, String text) {
         Matcher match = pattern.matcher(text);
         StringBuilder builder = new StringBuilder();

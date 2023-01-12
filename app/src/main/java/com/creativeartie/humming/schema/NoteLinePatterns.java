@@ -40,20 +40,20 @@ public enum NoteLinePatterns implements PatternEnum {
         protected String getValuePattern(boolean withName) {
             return // @formatter:off
                 NoteLineParts.STARTER.getPattern(withName) +
-                NoteLineParts.SOURCE.getPattern(withName) +
+                NoteLineParts.FIELD.getPattern(withName) +
                 "((" +
-                    NoteLineParts.FIELD.getPattern(withName) +
-                    NoteLineParts.SOURCER.getPattern(withName) +
+                    NoteLineParts.KEY.getPattern(withName) +
+                    NoteLineParts.FIELDER.getPattern(withName) +
                     NoteLineParts.VALUE.getPattern(withName) +
                 ")|" + NoteLineParts.ERROR.getPattern(withName) + ")";
             //@formatter:on
         }
     };
 
-    enum NoteLineParts implements PatternEnum {
-        STARTER("!"), NOTE("%"), HEADING("%="), SOURCE(">"), SOURCER(":"), TEXT(LineTextPatterns.BASIC.getRawPattern()),
+    public enum NoteLineParts implements PatternEnum {
+        STARTER("!"), NOTE("%"), HEADING("%="), FIELD(">"), FIELDER(":"), TEXT(LineTextPatterns.BASIC.getRawPattern()),
         TITLE(LineTextPatterns.HEADING.getRawPattern()), IDER("#"), ID(IdentityPattern.getFullPattern()),
-        ERROR(BasicTextPatterns.SIMPLE.getRawPattern()), FIELD(BasicTextPatterns.CITE.getRawPattern()),
+        ERROR(BasicTextPatterns.SIMPLE.getRawPattern()), KEY(BasicTextPatterns.CITE.getRawPattern()),
         VALUE(BasicTextPatterns.SIMPLE.getRawPattern()), ENDER("\n?");
 
         private String rawPattern;

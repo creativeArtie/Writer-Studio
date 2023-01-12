@@ -96,9 +96,9 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
     void testCorrectSource() {
         final Matcher match = NoteLinePatterns.SOURCE.matcher("!>author:john smith");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
-        assertGroup(">", match, NoteLineParts.SOURCE, 2);
-        assertGroup("author", match, NoteLineParts.FIELD, 3);
-        assertGroup(":", match, NoteLineParts.SOURCER, 4);
+        assertGroup(">", match, NoteLineParts.FIELD, 2);
+        assertGroup("author", match, NoteLineParts.KEY, 3);
+        assertGroup(":", match, NoteLineParts.FIELDER, 4);
         assertGroup("john smith", match, NoteLineParts.VALUE, 5);
         assertEnd(match);
     }
@@ -107,7 +107,7 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
     void testErrorSource() {
         final Matcher match = NoteLinePatterns.SOURCE.matcher("!>author\\:john smith");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
-        assertGroup(">", match, NoteLineParts.SOURCE, 2);
+        assertGroup(">", match, NoteLineParts.FIELD, 2);
         assertGroup("author\\:john smith", match, NoteLineParts.ERROR, 3);
         assertEnd(match);
     }

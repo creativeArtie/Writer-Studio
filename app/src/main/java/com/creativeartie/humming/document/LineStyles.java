@@ -7,7 +7,7 @@ public enum LineStyles implements StyleClass {
 
     NUMBERED, BULLET,
 
-    SUMMARY, NOTE, CITATION,
+    SUMMARY, NOTE, FIELD,
 
     FOOTNOTE, ENDNOTE,
 
