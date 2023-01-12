@@ -9,12 +9,21 @@ class TableCellTest extends SpanBranchTestBase<TableCell> {
         TEXT, HEADING;
     }
 
+    private TableCell newHeadingCell(String text) {
+        subTest = SubTests.HEADING;
+        return newSpan(text);
+    }
+
+    private TableCell newTextCell(String text) {
+        subTest = SubTests.TEXT;
+        return newSpan(text);
+    }
+
     private SubTests subTest;
 
     @Test
     void testCell() {
-        subTest = SubTests.TEXT;
-        TableCell test = newSpan("|abc");
+        TableCell test = newTextCell("|abc");
         addStyleTest("|", SpanStyles.TEXTCELL, SpanStyles.OPERATOR);
         addStyleTest("abc", SpanStyles.TEXTCELL, SpanStyles.TEXT);
         testStyles(test);
@@ -25,8 +34,7 @@ class TableCellTest extends SpanBranchTestBase<TableCell> {
 
     @Test
     void testSpanedFormatedCell() {
-        subTest = SubTests.TEXT;
-        TableCell test = newSpan("||Hello*WORLD*!!");
+        TableCell test = newTextCell("||Hello*WORLD*!!");
         addStyleTest("|", SpanStyles.TEXTCELL, SpanStyles.OPERATOR);
         addStyleTest("|", SpanStyles.TEXTCELL, SpanStyles.OPERATOR);
         addStyleTest("Hello", SpanStyles.TEXTCELL, SpanStyles.TEXT);
@@ -42,8 +50,7 @@ class TableCellTest extends SpanBranchTestBase<TableCell> {
 
     @Test
     void testSpanedTableHeader() {
-        subTest = SubTests.HEADING;
-        TableCell test = newSpan("||Hello*WORLD*!!");
+        TableCell test = newHeadingCell("||Hello*WORLD*!!");
         addStyleTest("|", SpanStyles.HEADCELL, SpanStyles.OPERATOR);
         addStyleTest("|", SpanStyles.HEADCELL, SpanStyles.OPERATOR);
         addStyleTest("Hello", SpanStyles.HEADCELL, SpanStyles.TEXT);
@@ -59,8 +66,7 @@ class TableCellTest extends SpanBranchTestBase<TableCell> {
 
     @Test
     void testTableHeader() {
-        subTest = SubTests.HEADING;
-        TableCell test = newSpan("|=abc");
+        TableCell test = newHeadingCell("|=abc");
         addStyleTest("|", SpanStyles.HEADCELL, SpanStyles.OPERATOR);
         addStyleTest("abc", SpanStyles.HEADCELL, SpanStyles.TEXT);
         testStyles(test);
