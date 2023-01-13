@@ -5,7 +5,7 @@ import java.util.regex.*;
 /**
  * Patterns for basic text with escape chars.
  */
-public enum BasicTextPatterns implements PatternEnum {
+public enum TextSpanPatterns implements PatternEnum {
     ID("\\p{IsIdeographic}\\p{IsAlphabetic}\\p{IsDigit} _\t", false), SPECIAL("\\}\\n", true), TEXT("\\n", true),
     SIMPLE("^\\\\\\n", false), HEADING("\\n\\#", true), KEY("\\p{IsAlphabetic}_", false), CELL("\\|\\n", true), NOTE;
 
@@ -25,12 +25,12 @@ public enum BasicTextPatterns implements PatternEnum {
         }
     }
 
-    public enum BasicTextPart implements PatternEnum {
+    public enum TextSpanParts implements PatternEnum {
         ESCAPE("\\\\."), TEXT("");
 
         private final String pattern;
 
-        BasicTextPart(String pat) {
+        TextSpanParts(String pat) {
             pattern = pat;
         }
 
@@ -49,21 +49,21 @@ public enum BasicTextPatterns implements PatternEnum {
     private final String basePattern;
     private Pattern compiledPattern;
 
-    BasicTextPatterns(String pat, boolean isNegate) {
+    TextSpanPatterns(String pat, boolean isNegate) {
         textPattern = isNegate ? ("[^" + pat + BasicFormatParts.listPatterns() + "]+") : ("[" + pat + "]+");
         // @formatter:off
         basePattern = "(" +
-                BasicTextPart.ESCAPE.getRawPattern() + "|" +
+                TextSpanParts.ESCAPE.getRawPattern() + "|" +
                 textPattern +
             ")+";
         // @formatter:on
     }
 
-    BasicTextPatterns() { // For footnote and endnote
+    TextSpanPatterns() { // For footnote and endnote
         textPattern = "[^\\n" + BasicFormatParts.listPatterns().substring(1) + "]+";
         // @formatter:off
         basePattern = "(" +
-                BasicTextPart.ESCAPE.getRawPattern() + "|" +
+                TextSpanParts.ESCAPE.getRawPattern() + "|" +
                 textPattern +
             ")+";
         // @formatter:on
@@ -73,8 +73,8 @@ public enum BasicTextPatterns implements PatternEnum {
         if (compiledPattern == null) compiledPattern = Pattern.compile(
         // @formatter:off
             "(" +
-                BasicTextPart.ESCAPE.getNamedPattern() + "|" +
-                PatternEnum.namePattern(BasicTextPart.TEXT.name(), textPattern) +
+                TextSpanParts.ESCAPE.getNamedPattern() + "|" +
+                PatternEnum.namePattern(TextSpanParts.TEXT.name(), textPattern) +
             ")"
         // @formatter:on
         );

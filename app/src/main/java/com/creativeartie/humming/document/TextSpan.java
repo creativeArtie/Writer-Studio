@@ -8,7 +8,7 @@ import com.google.common.base.*;
 public class TextSpan extends SpanBranch {
     static class Builder {
         private TextSpan outputSpan;
-        private BasicTextPatterns usePattern;
+        private TextSpanPatterns usePattern;
 
         private Builder(SpanBranch parent, SpanStyles... styles) {
             outputSpan = new TextSpan(parent, styles);
@@ -19,7 +19,7 @@ public class TextSpan extends SpanBranch {
             return parseText(outputSpan, usePattern, text);
         }
 
-        public Builder setPattern(BasicTextPatterns pattern) {
+        public Builder setPattern(TextSpanPatterns pattern) {
             usePattern = pattern;
             return this;
         }
@@ -30,36 +30,36 @@ public class TextSpan extends SpanBranch {
     }
 
     static TextSpan newId(SpanBranch span, String text, SpanStyles... styles) {
-        return parseText(new TextSpan(span, styles), BasicTextPatterns.ID, text);
+        return parseText(new TextSpan(span, styles), TextSpanPatterns.ID, text);
     }
 
     static TextSpan newSpecial(SpanBranch span, String raw, SpanStyles... styles) {
-        return parseText(new TextSpan(span, styles), BasicTextPatterns.SPECIAL, raw);
+        return parseText(new TextSpan(span, styles), TextSpanPatterns.SPECIAL, raw);
     }
 
     static TextSpan newSimple(SpanBranch span, String raw, SpanStyles... styles) {
-        return parseText(new TextSpan(span, styles), BasicTextPatterns.SIMPLE, raw);
+        return parseText(new TextSpan(span, styles), TextSpanPatterns.SIMPLE, raw);
     }
 
     static TextSpan newHeading(SpanBranch span, String raw, SpanStyles... styles) {
-        return parseText(new TextSpan(span, styles), BasicTextPatterns.HEADING, raw);
+        return parseText(new TextSpan(span, styles), TextSpanPatterns.HEADING, raw);
     }
 
     static TextSpan newFieldKey(SpanBranch span, String raw, SpanStyles... styles) {
-        return parseText(new TextSpan(span, styles), BasicTextPatterns.KEY, raw);
+        return parseText(new TextSpan(span, styles), TextSpanPatterns.KEY, raw);
     }
 
-    private static TextSpan parseText(TextSpan span, BasicTextPatterns pattern, String text) {
+    private static TextSpan parseText(TextSpan span, TextSpanPatterns pattern, String text) {
         Matcher match = pattern.matcher(text);
         StringBuilder builder = new StringBuilder();
         while (match.find()) {
-            String raw = BasicTextPatterns.BasicTextPart.TEXT.group(match);
+            String raw = TextSpanPatterns.TextSpanParts.TEXT.group(match);
             if (raw != null) {
                 builder.append(raw);
                 span.add(new SpanLeaf(span, raw, SpanStyles.TEXT));
                 continue;
             }
-            raw = BasicTextPatterns.BasicTextPart.ESCAPE.group(match);
+            raw = TextSpanPatterns.TextSpanParts.ESCAPE.group(match);
             builder.append(raw.charAt(1));
             span.add(new SpanLeaf(span, raw, SpanStyles.ESCAPE));
         }

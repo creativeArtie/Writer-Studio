@@ -22,14 +22,14 @@ public class AgendaLine extends LineSpan implements IdentityParent {
 
     @Override
     protected void buildSpan(Matcher match) {
-        String raw = BasicLinePatterns.BasicLinePart.TODOER.group(match);
+        String raw = LineSpanPatterns.LineSpanParts.TODOER.group(match);
         add(new SpanLeaf(this, raw));
-        if ((raw = BasicLinePatterns.BasicLinePart.TEXT.group(match)) != null) {
+        if ((raw = LineSpanPatterns.LineSpanParts.TEXT.group(match)) != null) {
             TextSpan child = TextSpan.newSimple(this, raw);
             add(child);
             todoText = child.getText();
         }
-        addLineEnd(match, BasicLinePatterns.BasicLinePart.ENDER);
+        addLineEnd(match, LineSpanPatterns.LineSpanParts.ENDER);
     }
 
     public String getAgenda() {

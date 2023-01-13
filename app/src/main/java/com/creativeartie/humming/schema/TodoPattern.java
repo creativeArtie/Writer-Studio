@@ -6,12 +6,12 @@ import com.google.common.base.*;
 
 /**
  * A placeholder for text in the text. A span version of
- * {@link BasicLinePatterns#AGENDA}
+ * {@link LineSpanPatterns#AGENDA}
  *
- * @see BasicLinePatterns#AGENDA
+ * @see LineSpanPatterns#AGENDA
  */
 public enum TodoPattern implements PatternEnum {
-    START("\\{\\!"), TEXT(BasicTextPatterns.SPECIAL.getRawPattern()), END("\\}");
+    START("\\{\\!"), TEXT(TextSpanPatterns.SPECIAL.getRawPattern()), END("\\}");
 
     private static String fullPattern;
     private static Pattern matchPattern;

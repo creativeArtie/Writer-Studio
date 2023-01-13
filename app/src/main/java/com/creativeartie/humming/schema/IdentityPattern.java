@@ -3,7 +3,7 @@ package com.creativeartie.humming.schema;
 import java.util.regex.*;
 
 public enum IdentityPattern implements PatternEnum {
-    SEP(":"), NAME(BasicTextPatterns.ID.getRawPattern());
+    SEP(":"), NAME(TextSpanPatterns.ID.getRawPattern());
 
     private static String fullPattern;
     private static Pattern checkPattern;

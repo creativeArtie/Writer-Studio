@@ -19,7 +19,7 @@ import java.util.regex.*;
  */
 public enum ReferencePattern implements PatternEnum {
     FOOTREF("\\^"), ENDREF("\\*"), CITEREF("\\>"), METAREF("\\%"), IMAGE("\\+"), START("\\{"),
-    ID(IdentityPattern.getFullPattern()), ERROR(BasicTextPatterns.SPECIAL.getRawPattern()), END("\\}");
+    ID(IdentityPattern.getFullPattern()), ERROR(TextSpanPatterns.SPECIAL.getRawPattern()), END("\\}");
 
     private static String fullPattern;
     private static Pattern matchPattern;

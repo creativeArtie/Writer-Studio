@@ -3,7 +3,7 @@ package com.creativeartie.humming.document;
 import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
-import com.creativeartie.humming.schema.BasicLinePatterns.*;
+import com.creativeartie.humming.schema.LineSpanPatterns.*;
 
 public abstract class LineSpan extends SpanBranch {
     static LineSpan newLine(SpanBranch parent, String text) {
@@ -22,33 +22,33 @@ public abstract class LineSpan extends SpanBranch {
 
         else if ((match = HeadingLinePattern.matcher(text)) != null) returns = HeadingLine.newLine(parent, match);
 
-        else if ((match = BasicLinePatterns.AGENDA.matcher(text)) != null) returns = new AgendaLine(parent);
+        else if ((match = LineSpanPatterns.AGENDA.matcher(text)) != null) returns = new AgendaLine(parent);
 
-        else if ((match = BasicLinePatterns.QUOTE.matcher(text)) != null)
+        else if ((match = LineSpanPatterns.QUOTE.matcher(text)) != null)
             returns = new LineSpan(parent, LineStyles.QUOTE) {
                 @Override
                 protected void buildSpan(Matcher match) {
-                    add(new SpanLeaf(this, BasicLinePart.QUOTER.group(match)));
-                    addText(match, BasicLinePart.FORMATTED);
-                    addLineEnd(match, BasicLinePart.ENDER);
+                    add(new SpanLeaf(this, LineSpanParts.QUOTER.group(match)));
+                    addText(match, LineSpanParts.FORMATTED);
+                    addLineEnd(match, LineSpanParts.ENDER);
                 }
             };
 
-        else if ((match = BasicLinePatterns.BREAK.matcher(text)) != null)
+        else if ((match = LineSpanPatterns.BREAK.matcher(text)) != null)
             returns = new LineSpan(parent, LineStyles.BREAK) {
                 @Override
                 protected void buildSpan(Matcher match) {
-                    add(new SpanLeaf(this, BasicLinePart.BREAKER.group(match)));
-                    addLineEnd(match, BasicLinePart.ENDER);
+                    add(new SpanLeaf(this, LineSpanParts.BREAKER.group(match)));
+                    addLineEnd(match, LineSpanParts.ENDER);
                 }
             };
 
-        else if ((match = BasicLinePatterns.TEXT.matcher(text)) != null)
+        else if ((match = LineSpanPatterns.TEXT.matcher(text)) != null)
             returns = new LineSpan(parent, LineStyles.NORMAL) {
                 @Override
                 protected void buildSpan(Matcher match) {
-                    addText(match, BasicLinePart.FORMATTED);
-                    addLineEnd(match, BasicLinePart.ENDER);
+                    addText(match, LineSpanParts.FORMATTED);
+                    addLineEnd(match, LineSpanParts.ENDER);
                 }
             };
         else return null;

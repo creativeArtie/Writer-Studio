@@ -10,28 +10,28 @@ public class LineText extends SpanBranch {
     static LineText newNoteText(SpanBranch parent, String text, SpanStyles... classes) {
         Matcher match = LineTextPatterns.NOTE.matcher(text);
         if (match == null) return null;
-        return parseText(new LineText(parent, classes), match, BasicTextPatterns.NOTE, false);
+        return parseText(new LineText(parent, classes), match, TextSpanPatterns.NOTE, false);
     }
 
     static LineText newHeadingText(SpanBranch parent, String text, SpanStyles... classes) {
         Matcher match = LineTextPatterns.HEADING.matcher(text);
         if (match == null) return null;
-        return parseText(new LineText(parent, classes), match, BasicTextPatterns.HEADING, true);
+        return parseText(new LineText(parent, classes), match, TextSpanPatterns.HEADING, true);
     }
 
     static LineText newCellText(SpanBranch parent, String text, SpanStyles... classes) {
         Matcher match = LineTextPatterns.CELL.matcher(text);
         if (match == null) return null;
-        return parseText(new LineText(parent, classes), match, BasicTextPatterns.CELL, true);
+        return parseText(new LineText(parent, classes), match, TextSpanPatterns.CELL, true);
     }
 
     static LineText newBasicText(SpanBranch parent, String text, SpanStyles... classes) {
         Matcher match = LineTextPatterns.BASIC.matcher(text);
         if (match == null) return null;
-        return parseText(new LineText(parent, classes), match, BasicTextPatterns.TEXT, true);
+        return parseText(new LineText(parent, classes), match, TextSpanPatterns.TEXT, true);
     }
 
-    private static LineText parseText(LineText span, Matcher match, BasicTextPatterns pattern, boolean hasRefers) {
+    private static LineText parseText(LineText span, Matcher match, TextSpanPatterns pattern, boolean hasRefers) {
         TreeSet<SpanStyles> formatting = new TreeSet<>();
         while (match.find()) {
             checkStyle(match, span, formatting, LineTextPart.BOLD, SpanStyles.BOLD);

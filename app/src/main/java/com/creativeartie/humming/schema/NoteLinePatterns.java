@@ -53,8 +53,8 @@ public enum NoteLinePatterns implements PatternEnum {
     public enum NoteLineParts implements PatternEnum {
         STARTER("!"), NOTE("%"), HEADING("%="), FIELD(">"), FIELDER("="), TEXT(LineTextPatterns.BASIC.getRawPattern()),
         TITLE(LineTextPatterns.HEADING.getRawPattern()), IDER("#"), ID(IdentityPattern.getFullPattern()),
-        ERROR(BasicTextPatterns.SIMPLE.getRawPattern()), KEY(BasicTextPatterns.KEY.getRawPattern()),
-        VALUE(BasicTextPatterns.SIMPLE.getRawPattern()), ENDER("\n?");
+        ERROR(TextSpanPatterns.SIMPLE.getRawPattern()), KEY(TextSpanPatterns.KEY.getRawPattern()),
+        VALUE(TextSpanPatterns.SIMPLE.getRawPattern()), ENDER("\n?");
 
         private String rawPattern;
 

@@ -18,17 +18,17 @@ import java.util.regex.*;
  * @see ListLinePattern
  * @see ReferenceLinePatterns
  */
-public enum BasicLinePatterns implements PatternEnum {
-    QUOTE(BasicLinePart.QUOTER, BasicLinePart.FORMATTED), AGENDA(BasicLinePart.TODOER, BasicLinePart.TEXT),
-    TEXT(BasicLinePart.FORMATTED), BREAK(BasicLinePart.BREAKER);
+public enum LineSpanPatterns implements PatternEnum {
+    QUOTE(LineSpanParts.QUOTER, LineSpanParts.FORMATTED), AGENDA(LineSpanParts.TODOER, LineSpanParts.TEXT),
+    TEXT(LineSpanParts.FORMATTED), BREAK(LineSpanParts.BREAKER);
 
-    public enum BasicLinePart implements PatternEnum {
+    public enum LineSpanParts implements PatternEnum {
         QUOTER("\\>"), TODOER("\\!"), FORMATTED("(" + LineTextPatterns.BASIC.getRawPattern() + ")?"),
-        TEXT("(" + BasicTextPatterns.SIMPLE.getRawPattern() + ")?"), BREAKER("\\*+"), ENDER("\n?");
+        TEXT("(" + TextSpanPatterns.SIMPLE.getRawPattern() + ")?"), BREAKER("\\*+"), ENDER("\n?");
 
         private String rawPattern;
 
-        BasicLinePart(String pattern) {
+        LineSpanParts(String pattern) {
             rawPattern = pattern;
         }
 
@@ -43,11 +43,11 @@ public enum BasicLinePatterns implements PatternEnum {
         }
     }
 
-    private final BasicLinePart[] patternParts;
+    private final LineSpanParts[] patternParts;
     private Pattern matchPattern;
     private String rawPattern;
 
-    BasicLinePatterns(BasicLinePart... parts) {
+    LineSpanPatterns(LineSpanParts... parts) {
         patternParts = parts;
     }
 
@@ -60,8 +60,8 @@ public enum BasicLinePatterns implements PatternEnum {
 
     private String buildPattern(boolean withName) {
         final StringBuilder builder = new StringBuilder();
-        for (final BasicLinePart part : patternParts) builder.append(part.getPattern(withName));
-        builder.append(BasicLinePart.ENDER.getPattern(withName));
+        for (final LineSpanParts part : patternParts) builder.append(part.getPattern(withName));
+        builder.append(LineSpanParts.ENDER.getPattern(withName));
         return builder.toString();
     }
 

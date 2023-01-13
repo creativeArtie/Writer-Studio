@@ -5,8 +5,8 @@ import java.util.regex.*;
 import com.google.common.base.*;
 
 public enum LineTextPatterns implements PatternEnum {
-    BASIC(BasicTextPatterns.TEXT, true), HEADING(BasicTextPatterns.HEADING, true), NOTE(BasicTextPatterns.TEXT, false),
-    CELL(BasicTextPatterns.CELL, true);
+    BASIC(TextSpanPatterns.TEXT, true), HEADING(TextSpanPatterns.HEADING, true), NOTE(TextSpanPatterns.TEXT, false),
+    CELL(TextSpanPatterns.CELL, true);
 
     private final boolean withRefers;
 
@@ -25,9 +25,9 @@ public enum LineTextPatterns implements PatternEnum {
         return "(" + builder.toString() + ")+";
     }
 
-    private BasicTextPatterns textPattern;
+    private TextSpanPatterns textPattern;
 
-    LineTextPatterns(BasicTextPatterns pattern, boolean refers) {
+    LineTextPatterns(TextSpanPatterns pattern, boolean refers) {
         textPattern = pattern;
         withRefers = refers;
     }
