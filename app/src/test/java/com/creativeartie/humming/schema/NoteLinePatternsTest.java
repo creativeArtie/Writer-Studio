@@ -13,7 +13,7 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
     static void displayPatterns() throws Exception {
         splitPrintPattern("Heading", NoteLinePatterns.SUMMARY.matcher("!%=abc"));
         splitPrintPattern("Note", NoteLinePatterns.NOTE.matcher("!%abc"));
-        splitPrintPattern("Source", NoteLinePatterns.SOURCE.matcher("!>author:john smith"));
+        splitPrintPattern("Source", NoteLinePatterns.FIELD.matcher("!>author:john smith"));
     }
 
     @Test
@@ -94,21 +94,21 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
 
     @Test
     void testCorrectSource() {
-        final Matcher match = NoteLinePatterns.SOURCE.matcher("!>author:john smith");
+        final Matcher match = NoteLinePatterns.FIELD.matcher("!>author=john smith");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
         assertGroup(">", match, NoteLineParts.FIELD, 2);
         assertGroup("author", match, NoteLineParts.KEY, 3);
-        assertGroup(":", match, NoteLineParts.FIELDER, 4);
+        assertGroup("=", match, NoteLineParts.FIELDER, 4);
         assertGroup("john smith", match, NoteLineParts.VALUE, 5);
         assertEnd(match);
     }
 
     @Test
     void testErrorSource() {
-        final Matcher match = NoteLinePatterns.SOURCE.matcher("!>author\\:john smith");
+        final Matcher match = NoteLinePatterns.FIELD.matcher("!>author\\=john smith");
         assertGroup("!", match, NoteLineParts.STARTER, 1);
         assertGroup(">", match, NoteLineParts.FIELD, 2);
-        assertGroup("author\\:john smith", match, NoteLineParts.ERROR, 3);
+        assertGroup("author\\=john smith", match, NoteLineParts.ERROR, 3);
         assertEnd(match);
     }
 
@@ -118,7 +118,7 @@ class NoteLinePatternsTest extends PatternTestBase<NoteLineParts> {
         Assertions.assertAll(
                 () -> Assertions.assertNull(NoteLinePatterns.SUMMARY.matcher(text), "Heading"),
                 () -> Assertions.assertNull(NoteLinePatterns.NOTE.matcher(text), "Note"),
-                () -> Assertions.assertNull(NoteLinePatterns.SOURCE.matcher(text), "Source")
+                () -> Assertions.assertNull(NoteLinePatterns.FIELD.matcher(text), "Source")
         );
     }
 }

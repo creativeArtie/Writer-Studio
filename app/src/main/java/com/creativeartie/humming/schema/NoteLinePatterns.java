@@ -35,7 +35,7 @@ public enum NoteLinePatterns implements PatternEnum {
             //@formatter:on
         }
     },
-    SOURCE {
+    FIELD {
         @Override
         protected String getValuePattern(boolean withName) {
             return // @formatter:off
@@ -51,9 +51,9 @@ public enum NoteLinePatterns implements PatternEnum {
     };
 
     public enum NoteLineParts implements PatternEnum {
-        STARTER("!"), NOTE("%"), HEADING("%="), FIELD(">"), FIELDER(":"), TEXT(LineTextPatterns.BASIC.getRawPattern()),
+        STARTER("!"), NOTE("%"), HEADING("%="), FIELD(">"), FIELDER("="), TEXT(LineTextPatterns.BASIC.getRawPattern()),
         TITLE(LineTextPatterns.HEADING.getRawPattern()), IDER("#"), ID(IdentityPattern.getFullPattern()),
-        ERROR(BasicTextPatterns.SIMPLE.getRawPattern()), KEY(BasicTextPatterns.CITE.getRawPattern()),
+        ERROR(BasicTextPatterns.SIMPLE.getRawPattern()), KEY(BasicTextPatterns.KEY.getRawPattern()),
         VALUE(BasicTextPatterns.SIMPLE.getRawPattern()), ENDER("\n?");
 
         private String rawPattern;

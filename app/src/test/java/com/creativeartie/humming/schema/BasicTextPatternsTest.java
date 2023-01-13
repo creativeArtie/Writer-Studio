@@ -41,22 +41,25 @@ class BasicTextPatternsTest extends PatternTestBase<BasicTextPart> {
     static Stream<? extends Arguments> getLeftOvers() {
         return Stream.<Arguments>of(
 
-                Arguments.of(" ", BasicTextPatterns.CITE), Arguments.of(":", BasicTextPatterns.CITE),
+                Arguments.of(" ", BasicTextPatterns.KEY), Arguments.of(":", BasicTextPatterns.KEY),
+                Arguments.of("\\", BasicTextPatterns.KEY),
 
                 Arguments.of("\n", BasicTextPatterns.HEADING), Arguments.of("#", BasicTextPatterns.HEADING),
-                Arguments.of("{", BasicTextPatterns.HEADING),
+                Arguments.of("{", BasicTextPatterns.HEADING), Arguments.of("\\", BasicTextPatterns.HEADING),
 
                 Arguments.of("\n", BasicTextPatterns.ID), Arguments.of("-", BasicTextPatterns.ID),
-                Arguments.of("*", BasicTextPatterns.ID),
+                Arguments.of("*", BasicTextPatterns.ID), Arguments.of("\\", BasicTextPatterns.ID),
 
                 Arguments.of("}", BasicTextPatterns.SPECIAL), Arguments.of("\n", BasicTextPatterns.SPECIAL),
-                Arguments.of("*", BasicTextPatterns.SPECIAL),
+                Arguments.of("*", BasicTextPatterns.SPECIAL), Arguments.of("\\", BasicTextPatterns.SPECIAL),
 
                 Arguments.of("\n", BasicTextPatterns.TEXT), Arguments.of("{", BasicTextPatterns.TEXT),
+                Arguments.of("\\", BasicTextPatterns.TEXT),
 
-                Arguments.of("\n", BasicTextPatterns.SIMPLE),
+                Arguments.of("\n", BasicTextPatterns.SIMPLE), Arguments.of("\\", BasicTextPatterns.SIMPLE),
 
-                Arguments.of("\n", BasicTextPatterns.NOTE), Arguments.of("*", BasicTextPatterns.NOTE)
+                Arguments.of("\n", BasicTextPatterns.NOTE), Arguments.of("*", BasicTextPatterns.NOTE),
+                Arguments.of("\\", BasicTextPatterns.NOTE)
         );
     }
 

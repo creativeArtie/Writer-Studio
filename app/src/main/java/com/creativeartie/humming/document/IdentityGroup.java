@@ -1,11 +1,11 @@
 package com.creativeartie.humming.document;
 
 public enum IdentityGroup {
-    FOOTNOTE, ENDNOTE, CITATION, META, IMAGE, TODO;
+    FOOTNOTE, ENDNOTE, NOTE, META, IMAGE, TODO;
 
     SpanStyles getStyleClass() {
         switch (this) {
-            case CITATION:
+            case NOTE:
                 return SpanStyles.INFO;
             case ENDNOTE:
                 return SpanStyles.ENDNOTE;

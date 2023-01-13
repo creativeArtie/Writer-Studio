@@ -10,6 +10,9 @@ public abstract class LineSpan extends SpanBranch {
         LineSpan returns = null;
         Matcher match;
         if (false) return null;
+        else if ((match = NoteLinePatterns.SUMMARY.matcher(text)) != null) returns = new NoteSummaryLine(parent);
+        else if ((match = NoteLinePatterns.NOTE.matcher(text)) != null) returns = new NoteDetailLine(parent);
+        else if ((match = NoteLinePatterns.FIELD.matcher(text)) != null) returns = new NoteFieldLine(parent);
         else if ((match = ReferenceLinePatterns.ENDNOTE.matcher(text)) != null)
             returns = ReferenceLine.newEndnote(parent);
         else if ((match = ReferenceLinePatterns.FOOTNOTE.matcher(text)) != null)

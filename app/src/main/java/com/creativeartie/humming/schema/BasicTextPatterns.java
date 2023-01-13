@@ -7,10 +7,10 @@ import java.util.regex.*;
  */
 public enum BasicTextPatterns implements PatternEnum {
     ID("\\p{IsIdeographic}\\p{IsAlphabetic}\\p{IsDigit} _\t", false), SPECIAL("\\}\\n", true), TEXT("\\n", true),
-    SIMPLE("^\\n", false), HEADING("\\n\\#", true), CITE("\\p{IsAlphabetic}_", false), CELL("\\|\\n", true), NOTE;
+    SIMPLE("^\\\\\\n", false), HEADING("\\n\\#", true), KEY("\\p{IsAlphabetic}_", false), CELL("\\|\\n", true), NOTE;
 
     private enum BasicFormatParts {
-        REF("\\{"), BOLD("\\*"), UNDERLINE("_"), ITALICS("`");
+        REF("\\{"), BOLD("\\*"), UNDERLINE("_"), ITALICS("`"), ESCAPE("\\\\");
 
         private static String listPatterns() {
             StringBuilder builder = new StringBuilder();

@@ -25,7 +25,7 @@ public class NoteSummaryLine extends LineSpan implements IdentitySpan.IdentityPa
         if ((raw = NoteLinePatterns.NoteLineParts.IDER.group(match)) != null) {
             add(new SpanLeaf(this, raw));
             if ((raw = NoteLinePatterns.NoteLineParts.ID.group(match)) != null) {
-                noteId = Optional.of(IdentitySpan.newAddressId(this, raw, IdentityGroup.CITATION));
+                noteId = Optional.of(IdentitySpan.newAddressId(this, raw, IdentityGroup.NOTE));
                 add(noteId.get());
             }
         }

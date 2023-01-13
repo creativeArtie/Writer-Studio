@@ -46,7 +46,7 @@ public class TextSpan extends SpanBranch {
     }
 
     static TextSpan newFieldKey(SpanBranch span, String raw, SpanStyles... styles) {
-        return parseText(new TextSpan(span, styles), BasicTextPatterns.CITE, raw);
+        return parseText(new TextSpan(span, styles), BasicTextPatterns.KEY, raw);
     }
 
     private static TextSpan parseText(TextSpan span, BasicTextPatterns pattern, String text) {

@@ -8,7 +8,7 @@ public class NoteFieldLine extends LineSpan {
     private String noteKey;
     private String noteValue;
 
-    public NoteFieldLine(SpanBranch parent, LineStyles style) {
+    public NoteFieldLine(SpanBranch parent) {
         super(parent, LineStyles.FIELD);
         noteKey = "";
         noteValue = "";

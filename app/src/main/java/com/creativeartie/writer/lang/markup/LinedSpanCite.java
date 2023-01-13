@@ -32,7 +32,7 @@ public class LinedSpanCite extends LinedSpan implements Catalogued{
      *
      * @param children
      *      span children
-     * @see LinedParseRest#CITE
+     * @see LinedParseRest#KEY
      */
     LinedSpanCite(List<Span> children){
         super(children);

@@ -16,7 +16,7 @@ public class NoteDetailLine extends LineSpan {
         add(new SpanLeaf(this, NoteLinePatterns.NoteLineParts.STARTER.group(match)));
         add(new SpanLeaf(this, NoteLinePatterns.NoteLineParts.NOTE.group(match)));
         if ((raw = NoteLinePatterns.NoteLineParts.TEXT.group(match)) != null) {
-            add(LineText.newBasicText(null, raw));
+            add(LineText.newBasicText(this, raw));
         }
         addLineEnd(match, NoteLinePatterns.NoteLineParts.ENDER);
     }

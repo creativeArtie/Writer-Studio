@@ -20,7 +20,7 @@ public class ReferenceSpan extends SpanBranch implements IdentitySpan.IdentityPa
         } else if ((raw = ReferencePattern.ENDREF.group(match)) != null) {
             group = IdentityGroup.ENDNOTE;
         } else if ((raw = ReferencePattern.CITEREF.group(match)) != null) {
-            group = IdentityGroup.CITATION;
+            group = IdentityGroup.NOTE;
         } else if ((raw = ReferencePattern.METAREF.group(match)) != null) {
             group = IdentityGroup.META;
         } else if ((raw = ReferencePattern.IMAGE.group(match)) != null) {
