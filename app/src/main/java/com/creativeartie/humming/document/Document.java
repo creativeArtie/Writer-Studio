@@ -1,10 +1,12 @@
 package com.creativeartie.humming.document;
 
 import java.util.*;
+import java.util.Optional;
 import java.util.concurrent.*;
 
 import org.fxmisc.richtext.model.*;
 
+import com.google.common.base.*;
 import com.google.common.cache.*;
 import com.google.common.collect.*;
 
@@ -210,8 +212,23 @@ public class Document extends ForwardingList<SpanBranch> implements Span {
 
     public void updateText(String text) {
         clear();
-        SpanBranch parent = new SpanBranch(this);
-        add(LineSpan.newLine(parent, text));
+        findChildCache.invalidateAll();
+        lengthsCache.invalidateAll();
+        startIdxCache.invalidateAll();
+        endIdxCache.invalidateAll();
+
+        Division parent = new SectionDivision(this);
+        add(parent);
+        List<String> texts = Splitter.on('\n').splitToList(text);
+        int line = 1;
+        for (String raw : texts) {
+            raw += (line == texts.size() ? "" : "\n");
+            Optional<Division> next = parent.addLine(raw);
+            if (next.isPresent()) {
+                parent = next.get();
+            }
+            line++;
+        }
     }
 
     public StyleSpans<Collection<String>> getStyles() {
