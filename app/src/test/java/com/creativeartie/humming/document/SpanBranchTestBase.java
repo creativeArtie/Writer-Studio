@@ -23,7 +23,7 @@ public abstract class SpanBranchTestBase<T extends SpanBranch> extends SpanTestB
     }
 
     protected T newSpan(String input) {
-        T span = initSpan(new HolderSpan(rootDoc), input);
+        T span = initSpan(new HolderSpan(getDocument()), input);
         printSpan(span, input);
         return span;
     }

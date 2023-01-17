@@ -4,8 +4,6 @@ import java.util.*;
 import java.util.Optional;
 import java.util.concurrent.*;
 
-import org.fxmisc.richtext.model.*;
-
 import com.google.common.base.*;
 import com.google.common.cache.*;
 import com.google.common.collect.*;
@@ -231,13 +229,13 @@ public class Document extends ForwardingList<SpanBranch> implements Span {
         }
     }
 
-    public StyleSpans<Collection<String>> getStyles() {
-        final StyleSpansBuilder<Collection<String>> styleSpans = new StyleSpansBuilder<>();
-        for (SpanBranch branch : docChildren) {
-            for (SpanLeaf leaf : branch.getLeafs()) {
-                styleSpans.add(leaf.getCssStyles(), leaf.getLength());
+    public <T> List<T> convertLeaves(Function<SpanLeaf, T> convert) {
+        ImmutableList.Builder<T> leaves = ImmutableList.builder();
+        for (SpanBranch child : docChildren) {
+            for (SpanLeaf leaf : child.getLeafs()) {
+                leaves.add(convert.apply(leaf));
             }
         }
-        return styleSpans.create();
+        return leaves.build();
     }
 }

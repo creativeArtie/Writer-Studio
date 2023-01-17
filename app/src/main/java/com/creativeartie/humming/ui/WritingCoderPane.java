@@ -86,6 +86,8 @@ public class WritingCoderPane extends CodeArea {
     private StyleSpans<Collection<String>> computeHighlighting(String text) {
         rootDoc.updateText(text);
         rootDoc.cleanUp();
-        return rootDoc.getStyles();
+        final StyleSpansBuilder<Collection<String>> styleSpans = new StyleSpansBuilder<>();
+        styleSpans.addAll(rootDoc.convertLeaves((leaf) -> new StyleSpan<>(leaf.getCssStyles(), leaf.getLength())));
+        return styleSpans.create();
     }
 }

@@ -24,9 +24,9 @@ public class SectionDivision extends Division {
             if (sectionLevel == 1) {
                 SectionDivision sibling = new SectionDivision(getRoot());
                 getRoot().add(sibling);
-                return Optional.of(sibling);
+                return sibling.addHeading(heading);
             }
-            return Optional.of((SectionDivision) getParent().get());
+            return ((SectionDivision) getParent().get()).addHeading(heading);
         }
 
         SectionDivision child = new SectionDivision(this, sectionLevel + 1);
