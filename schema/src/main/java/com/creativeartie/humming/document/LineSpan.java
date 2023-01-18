@@ -9,8 +9,8 @@ public abstract class LineSpan extends SpanBranch {
     static LineSpan newLine(SpanBranch parent, String text) {
         LineSpan returns = null;
         Matcher match;
-        if (false) return null;
-        else if ((match = NoteLinePatterns.SUMMARY.matcher(text)) != null) returns = new NoteSummaryLine(parent);
+        // TODO add table rows and heading
+        if ((match = NoteLinePatterns.SUMMARY.matcher(text)) != null) returns = new NoteSummaryLine(parent);
         else if ((match = NoteLinePatterns.NOTE.matcher(text)) != null) returns = new NoteDetailLine(parent);
         else if ((match = NoteLinePatterns.FIELD.matcher(text)) != null) returns = new NoteFieldLine(parent);
         else if ((match = ReferenceLinePatterns.ENDNOTE.matcher(text)) != null)
