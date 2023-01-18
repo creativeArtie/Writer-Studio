@@ -4,3 +4,9 @@
 # Ignore Gradle build output directory
 app/build
 app/bin
+
+schema/build
+schema/bin
+
+old/build
+old/bin

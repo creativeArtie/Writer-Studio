@@ -1,0 +1,45 @@
+.identifier{
+	-fx-stroke:blue;
+} 
+
+.name {
+	-fx-stroke:blue;
+	-fx-font-weight: bold;
+}
+
+.error {}
+
+.operator {
+	-fx-stroke: gray
+}
+
+.text{
+}
+
+.footnote {}
+
+.endnote{}
+
+.source{
+	-rtfx-background-color: lightgray
+}
+
+.todo {
+	-rtfx-background-color: gold;
+}
+
+
+.bold {
+	-fx-font-weight: bolder;
+}
+
+.italics{
+}
+
+.underline{
+}
+
+.escape {
+	-rtfx-border-stroke-color: lightgray;
+	-rtfx-border-stroke-width: 1
+}

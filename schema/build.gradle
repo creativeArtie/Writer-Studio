@@ -1,0 +1,24 @@
+plugins {
+    id 'java-library'
+    id 'eclipse'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
+}
+
+javafx {
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.web' ]
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+
+    implementation 'com.google.guava:guava:30.1.1-jre'
+}
+
+test {
+   useJUnitPlatform()
+}

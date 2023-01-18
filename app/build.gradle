@@ -29,12 +29,11 @@ dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:30.1.1-jre'
 
-    // https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox
-    implementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '3.0.0-RC1'
-
     // https://mvnrepository.com/artifact/org.fxmisc.richtext/richtextfx
     implementation group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.10.9'
-
+    
+    
+    implementation project(':schema')
 
 }
 
