@@ -1,44 +1,16 @@
 package com.creativeartie.humming.ui;
 
 import javafx.application.*;
-import javafx.scene.*;
-import javafx.scene.layout.*;
-import javafx.stage.*;
 
 /**
- * Stores the main function
+ * Stores the main function. This followed the code in here <a href=
+ * "https://stackoverflow.com/questions/70175403/how-to-generate-javafx-jar-from-gradle-including-all-dependencies">
+ * here</a>
  *
  * @author wai-kin
  */
-public class Main extends Application {
-
-    /**
-     * Main window. TODO WritingCoderPane is temporary.
-     */
-    private WritingCoderPane mainText = new WritingCoderPane();
-
+public class Main {
     public static void main(String[] args) {
-        launch(args);
+        Application.launch(App.class, args);
     }
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        BorderPane mainPane = setup();
-        Scene scene = new Scene(mainPane, 400, 200);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
-    /** Develop the main pane. TODO maybe set to delete. */
-    BorderPane setup() {
-        BorderPane mainPane = new BorderPane();
-        mainPane.setCenter(mainText);
-        return mainPane;
-    }
-
-    @Override
-    public void stop() {
-        mainText.shutdown();
-    }
-
 }

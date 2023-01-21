@@ -8,7 +8,6 @@ javafx {
     modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.web' ]
 }
 
-
 repositories {
     mavenCentral()
 }
