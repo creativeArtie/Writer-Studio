@@ -83,23 +83,31 @@ class IdentitySpanTest extends SpanBranchTestBase<IdentitySpan> {
 
     @Test
     void testOnlyPointer() {
-        IdentitySpan id = createIdPointer("error");
-        getDocument().add(id);
-        getDocument().cleanUp();
-        addStyleTest("error", SpanStyles.ID, SpanStyles.ERROR, SpanStyles.TEXT);
-        testStyles(id);
+        getDocument().updateText("{^error}");
+        addStyleTest("error", LineStyles.NORMAL, SpanStyles.FOOTNOTE, SpanStyles.ID, SpanStyles.ERROR, SpanStyles.TEXT);
+        SpanBranch division = getDocument().get(0);
+        SpanBranch normal = (SpanBranch) division.get(0);
+        SpanBranch text = (SpanBranch) normal.get(0);
+        ReferenceSpan ref = (ReferenceSpan) text.get(0);
+        testStyles(ref.getPointer().get());
     }
 
     @Test
     void testLaterPointer() {
-        IdentitySpan id = createIdPointer("later");
-        getDocument().add(id);
-        IdentitySpan address = createIdAddress("later");
-        getDocument().add(address);
-        getDocument().cleanUp();
-        addStyleTest("later", SpanStyles.ID, SpanStyles.TEXT);
+        getDocument().updateText("{^later}\n!^later=data");
 
-        testStyles(id);
-        testStyles(address);
+        SpanBranch division = getDocument().get(0);
+        SpanBranch normal = (SpanBranch) division.get(0);
+        SpanBranch text = (SpanBranch) normal.get(0);
+        ReferenceSpan ref = (ReferenceSpan) text.get(0);
+
+        ReferenceLine footnote = (ReferenceLine) division.get(1);
+
+        addStyleTest("ptrid", LineStyles.NORMAL, SpanStyles.FOOTNOTE, SpanStyles.ID, SpanStyles.TEXT);
+        testStyles(ref.getPointer().get());
+
+        refreshLists();
+        addStyleTest("refid", LineStyles.FOOTNOTE, SpanStyles.ID, SpanStyles.TEXT);
+        testStyles(footnote.getPointer().get());
     }
 }

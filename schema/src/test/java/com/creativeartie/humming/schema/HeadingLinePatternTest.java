@@ -27,6 +27,7 @@ class HeadingLinePatternTest extends PatternTestBase<HeadingLinePattern> {
         Assertions.assertNull(HeadingLinePattern.matcher(text));
     }
 
+    @Test
     void testFormatedHeading() {
         final Matcher match = HeadingLinePattern.matcher("==abc*abc*{!todo}");
         assertGroup("==", match, HeadingLinePattern.LEVEL, 1);

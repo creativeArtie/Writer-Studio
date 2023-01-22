@@ -46,10 +46,7 @@ class TextSpanTest extends SpanBranchTestBase<TextSpan> {
 
     @Override
     protected TextSpan initSpan(SpanBranch parent, String input) {
-        switch (subTest) {
-            case ID:
-                return TextSpan.newId(parent, input);
-        }
+        if (subTest == SubTests.ID) return TextSpan.newId(parent, input);
         fail("Unimplemented test for:" + subTest.toString());
         return null;
     }

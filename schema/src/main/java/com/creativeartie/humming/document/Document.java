@@ -18,7 +18,7 @@ import com.google.common.collect.*;
  *
  * @author wai
  */
-public class Document extends ForwardingList<SpanBranch> implements Span {
+public class Document extends ForwardingList<Division> implements Span {
     private IdentityStorage idStorage;
 
     public boolean isIdUnique(IdentitySpan span) {
@@ -38,7 +38,7 @@ public class Document extends ForwardingList<SpanBranch> implements Span {
     }
 
     // Methods add more styles for ids
-    private final ArrayList<SpanBranch> docChildren;
+    private final ArrayList<Division> docChildren;
     private LoadingCache<Span, List<Integer>> findChildCache;
     private LoadingCache<SpanBranch, Integer> lengthsCache;
     private LoadingCache<Span, Integer> startIdxCache, endIdxCache;
@@ -105,17 +105,17 @@ public class Document extends ForwardingList<SpanBranch> implements Span {
     }
 
     @Override
-    public boolean add(SpanBranch child) {
+    public boolean add(Division child) {
         return docChildren.add(child);
     }
 
     @Override
-    public List<SpanBranch> delegate() {
+    public List<Division> delegate() {
         return docChildren;
     }
 
     @Override
-    public boolean addAll(Collection<? extends SpanBranch> c) {
+    public boolean addAll(Collection<? extends Division> c) {
         return docChildren.addAll(c);
     }
 
@@ -227,6 +227,7 @@ public class Document extends ForwardingList<SpanBranch> implements Span {
             }
             line++;
         }
+        cleanUp();
     }
 
     public <T> List<T> convertLeaves(Function<SpanLeaf, T> convert) {

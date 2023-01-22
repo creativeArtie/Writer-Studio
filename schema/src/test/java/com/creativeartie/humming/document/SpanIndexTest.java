@@ -1,7 +1,6 @@
 package com.creativeartie.humming.document;
 
 import java.util.*;
-import java.util.concurrent.*;
 import java.util.stream.*;
 
 import org.junit.jupiter.api.*;
@@ -11,19 +10,19 @@ import org.junit.jupiter.params.provider.*;
 import com.google.common.collect.*;
 
 class SpanIndexTest {
-    private static String span1 = "{^cat\\:more:id}";
-    private static String span2 = "{*id}";
-    private static String spans = span1 + span2;
+    private static String useText = "Hello World!{^note}\n!^note:*test* only\\!";
     private static Document doc;
-    private static final String displayNamePost = " {index} => {3} indexes: {2}";
+    private static final String displayNamePost = " {4} indexes: {2}";
+    private static int testIndex;
 
-    private static Arguments getArguments(int start, int end, int... indexes) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < spans.length(); i++) {
+    private static Arguments getArguments(int start, int end, Class<?> spanClass, int... indexes) {
+        StringBuilder stringBuilder = new StringBuilder(String.format(" %02d => ", testIndex));
+        for (int i = 0; i < useText.length(); i++) {
             if (i < start || i >= end) {
                 stringBuilder.append('_');
             } else {
-                stringBuilder.append(spans.charAt(i));
+                if (useText.charAt(i) == '\n') stringBuilder.append('␤');
+                else stringBuilder.append(useText.charAt(i));
             }
         }
         String extractText = stringBuilder.toString();
@@ -31,158 +30,81 @@ class SpanIndexTest {
         for (int index : indexes) {
             builder.add(index);
         }
-        return Arguments.of(start, end, builder.build(), extractText);
+        testIndex++;
+        return Arguments.of(start, end, builder.build(), spanClass, extractText);
     }
 
     @BeforeAll
     public static void setup() {
         doc = new Document();
-        doc.add(ReferenceSpan.newSpan(new SpanBranch(doc), span1));
-        doc.add(ReferenceSpan.newSpan(new SpanBranch(doc), span2));
+        doc.updateText(useText);
+        String display = useText.replace('\n', '␤');
+        for (SpanBranch child : doc) {
+            displaySpanBranch(child, display, 0);
+        }
+    }
+
+    private static void printClass(SpanBranch branch, String text, int depth) {
+        String spacing = "";
+        for (int i = 0; i < depth; i++) {
+            spacing += "+";
+        }
+        int start = branch.getStartIndex();
+        int end = branch.getEndIndex();
+        StringBuilder out = new StringBuilder();
+        for (int i = 0; i < text.length(); i++) {
+            if (i < start || i >= end) {
+                out.append('_');
+            } else {
+                out.append(text.charAt(i));
+            }
+        }
+        System.out.printf("%7s%15s:%s\n", spacing, branch.getClass().getSimpleName(), out);
+    }
+
+    private static void displaySpanBranch(SpanBranch branch, String text, int depth) {
+        if (branch instanceof SectionDivision) System.out.println("Hello");
+        for (Span child : branch) {
+            printClass(branch, text, depth);
+            if (child instanceof SpanBranch) {
+                displaySpanBranch((SpanBranch) child, text, depth + 1);
+            }
+        }
     }
 
     private static Stream<Arguments> provideParameters() {
+        testIndex = 1;
         Stream.Builder<Arguments> builder = Stream.builder();
-        int mainIndex = -1, spanIndex = -1, idIndex = -1, textIndex = -1;
 
-        // ++++++++++++++++
-        // {^cat\\:more:id}{*id}
-        // 01234 567890123456789
-        // 00000 000001111111111
-        mainIndex++;
-        builder.accept(getArguments(0, 15, mainIndex)); // 0
+        int divIdx = 0;
+        // Hello World!{^note}␤!^note:*test* only\!
+        // +++++++++++++++++++++++++++++++++++++++++
+        // 01234567890123456789012345678901234567890
+        // 00000000001111111111222222222233333333334
+        builder.accept(getArguments(0, 40, Division.class, divIdx)); // 1
 
-        // +
-        // {^cat\\:more:id}{*id}
-        // 01234 567890123456789
-        // 00000 000001111111111
-        spanIndex++;
-        builder.accept(getArguments(0, 1, mainIndex, spanIndex)); // 1
+        int lineIdx = 0;
+        // Hello World!{^note}␤!^note:*test* only\!
+        // ++++++++++++++++++++
+        // 01234567890123456789012345678901234567890
+        // 00000000001111111111222222222233333333334
+        builder.accept(getArguments(0, 20, LineSpan.class, divIdx, lineIdx)); // 2
 
-        // .+
-        // {^cat\\:more:id}{*id}
-        // 01234 567890123456789
-        // 00000 000001111111111
-        spanIndex++;
-        builder.accept(getArguments(1, 2, mainIndex, spanIndex));// 2
+        int ltxtIdx = 0;
+        // Hello World!{^note}␤!^note:*test* only\!
+        // +++++++++++++++++++
+        // 01234567890123456789012345678901234567890
+        // 00000000001111111111222222222233333333334
+        builder.accept(getArguments(0, 19, LineText.class, divIdx, lineIdx, ltxtIdx)); // 3
 
-        // ..+++ +++++++++
-        // {^cat\\:more:id}{*id}
-        // 01234 567890123456789
-        // 00000 000001111111111
-        spanIndex++;
-        builder.accept(getArguments(2, 14, mainIndex, spanIndex));// 3
+        int textIdx = 0;
+        // Hello World!{^note}␤!^note:*test* only\!
+        // ++++++++++++
+        // 01234567890123456789012345678901234567890
+        // 00000000001111111111222222222233333333344
+        builder.accept(getArguments(0, 12, TextSpan.class, divIdx, lineIdx, ltxtIdx, textIdx)); // 4
+        textIdx = -1;
 
-        // ..+++ ++++++
-        // {^cat\\:more:id}{*id}
-        // 01234 567890123456789
-        // 00000 000001111111111
-        idIndex++;
-        builder.accept(getArguments(2, 11, mainIndex, spanIndex, idIndex));// 4
-
-        // ..+++
-        // {^cat\\:more:id}{*id}
-        // 01234 567890123456789
-        // 00000 000001111111111
-        textIndex++;
-        builder.accept(getArguments(2, 5, mainIndex, spanIndex, idIndex, textIndex));// 5
-
-        // ..... ++
-        // {^cat\\:more:id}{*id}
-        // 01234 567890123456789
-        // 00000 000001111111111
-        textIndex++;
-        builder.accept(getArguments(5, 7, mainIndex, spanIndex, idIndex, textIndex));// 6
-
-        // ..... ..++++
-        // {^cat\\:more:id}{*id}
-        // 01234 567890123456789
-        // 00000 000001111111111
-        textIndex++;
-        builder.accept(getArguments(7, 11, mainIndex, spanIndex, idIndex, textIndex));// 7
-
-        // ..... ......+
-        // {^cat\\:more:id}{*id}
-        // 01234 567890123456789
-        // 00000 000001111111111
-        idIndex++;
-        textIndex = -1;
-        builder.accept(getArguments(11, 12, mainIndex, spanIndex, idIndex));// 8
-
-        // ..... .......++
-        // {^cat\\:more:id}{*id}
-        // 01234 567890123456789
-        // 00000 000001111111111
-        idIndex++;
-        builder.accept(getArguments(12, 14, mainIndex, spanIndex, idIndex));// 9
-
-        // ..... .......++
-        // {^cat\\:more:id}{*id}
-        // 01234 567890123456789
-        // 00000 000001111111111
-        textIndex++;
-        builder.accept(getArguments(12, 14, mainIndex, spanIndex, idIndex, textIndex));// 10
-
-        // ..... .........+
-        // {^cat\\:more:id}{*id}
-        // 01234 567890123456789
-        // 00000 000001111111111
-        spanIndex++;
-        idIndex = -1;
-        textIndex = -1;
-        builder.accept(getArguments(14, 15, mainIndex, spanIndex));// 11
-
-        // ..... ..........+++++
-        // {^cat\\:more:id}{*id}
-        // 01234 567890123456789
-        // 00000 000001111111111
-        mainIndex++;
-        spanIndex = -1;
-        builder.accept(getArguments(15, 20, mainIndex));// 12
-
-        // ..... ..........+
-        // {^cat\\:more:id}{*id}
-        // 01234 567890123456789
-        // 00000 000001111111111
-        spanIndex++;
-        builder.accept(getArguments(15, 16, mainIndex, spanIndex));// 13
-
-        // ..... ...........+
-        // {^cat\\:more:id}{*id}
-        // 01234 567890123456789
-        // 00000 000001111111111
-        spanIndex++;
-        builder.accept(getArguments(16, 17, mainIndex, spanIndex));// 14
-
-        // ..... ............++
-        // {^cat\\:more:id}{*id}
-        // 01234 567890123456789
-        // 00000 000001111111111
-        spanIndex++;
-        builder.accept(getArguments(17, 19, mainIndex, spanIndex));// 15
-
-        // ..... ............++
-        // {^cat\\:more:id}{*id}
-        // 01234 567890123456789
-        // 00000 000001111111111
-        idIndex++;
-        builder.accept(getArguments(17, 19, mainIndex, spanIndex, idIndex));
-
-        // ..... ............++
-        // {^cat\\:more:id}{*id}
-        // 01234 567890123456789
-        // 00000 000001111111111
-        textIndex++;
-        builder.accept(getArguments(17, 19, mainIndex, spanIndex, idIndex, textIndex));// 16
-
-        // ..... ..............+
-        // {^cat\\:more:id}{*id}
-        // 01234 567890123456789
-        // 00000 000001111111111
-        spanIndex++;
-        idIndex = -1;
-        textIndex = -1;
-        builder.accept(getArguments(19, 20, mainIndex, spanIndex));
         return builder.build();
     }
 
@@ -201,7 +123,7 @@ class SpanIndexTest {
 
     @ParameterizedTest(name = "Start" + displayNamePost)
     @MethodSource("provideParameters")
-    void testStartIndex(int start, int end, List<Integer> indexes, String displayName) throws ExecutionException {
+    void testStartIndex(int start, int end, List<Integer> indexes, Class<?> spanClass, String displayName) {
         Span test = getChild(indexes);
         Span testing = test;
         Assertions.assertEquals(start, testing.getStartIndex(), "Start index");
@@ -209,7 +131,7 @@ class SpanIndexTest {
 
     @ParameterizedTest(name = "End" + displayNamePost)
     @MethodSource("provideParameters")
-    void testEndIndex(int start, int end, List<Integer> indexes, String displayName) throws ExecutionException {
+    void testEndIndex(int start, int end, List<Integer> indexes, Class<?> spanClass, String displayName) {
         Span test = getChild(indexes);
         Span testing = test;
         Assertions.assertEquals(end, testing.getEndIndex(), "End index");
@@ -217,17 +139,37 @@ class SpanIndexTest {
 
     @ParameterizedTest(name = "Find" + displayNamePost)
     @MethodSource("provideParameters")
-    void testfindChild(int start, int end, List<Integer> indexes, String displayName) throws ExecutionException {
+    void testfindChild(int start, int end, List<Integer> indexes, Class<?> spanClass, String displayName) {
         Span child = getChild(indexes);
         Assertions.assertArrayEquals(indexes.toArray(), doc.findChild(child).toArray());
     }
 
     @ParameterizedTest(name = "Length" + displayNamePost)
     @MethodSource("provideParameters")
-    void testLength(int start, int end, List<Integer> indexes, String displayName) throws ExecutionException {
+    void testLength(int start, int end, List<Integer> indexes, Class<?> spanClass, String displayName) {
         int length = end - start;
         Span child = getChild(indexes);
         Assertions.assertEquals(length, child.getLength());
+    }
+
+    @ParameterizedTest(name = "Class" + displayNamePost)
+    @MethodSource("provideParameters")
+    void testClass(int start, int end, List<Integer> indexes, Class<?> spanClass, String displayName) {
+        Span child = getChild(indexes);
+        Assertions.assertInstanceOf(spanClass, child);
+    }
+
+    @Test
+    void testDocIndexes() {
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(0, doc.getStartIndex()),
+                () -> Assertions.assertEquals(40, doc.getEndIndex()), () -> Assertions.assertEquals(40, doc.getLength())
+        );
+    }
+
+    @Test
+    void testDocSize() {
+        Assertions.assertEquals(1, doc.size());
     }
 
     @AfterAll
