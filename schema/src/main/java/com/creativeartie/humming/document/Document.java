@@ -49,7 +49,7 @@ public class Document extends ForwardingList<Division> implements Span {
         findChildCache = CacheBuilder.newBuilder().recordStats().build(new CacheLoader<Span, List<Integer>>() {
             @Override
             public List<Integer> load(Span key) {
-                return findChild(key, ImmutableList.copyOf(docChildren));
+                return getFindChildCache(key, ImmutableList.copyOf(docChildren));
             }
         });
         lengthsCache = CacheBuilder.newBuilder().recordStats().build(new CacheLoader<SpanBranch, Integer>() {
@@ -82,7 +82,7 @@ public class Document extends ForwardingList<Division> implements Span {
         }
     }
 
-    protected List<Integer> findChild(Span span, List<Span> children) {
+    protected List<Integer> getFindChildCache(Span span, List<Span> children) {
         ArrayList<Integer> answer = new ArrayList<>();
         int i = 0;
         for (Span child : children) {
@@ -92,7 +92,7 @@ public class Document extends ForwardingList<Division> implements Span {
                 return answer;
             }
             if (child instanceof SpanBranch) {
-                List<Integer> addList = findChild(span, ((SpanBranch) child));
+                List<Integer> addList = getFindChildCache(span, ((SpanBranch) child));
                 if (!addList.isEmpty()) {
                     answer.add(i);
                     answer.addAll(addList);
@@ -154,7 +154,6 @@ public class Document extends ForwardingList<Division> implements Span {
         return getLength();
     }
 
-    @SuppressWarnings("unchecked")
     private static int getCacheIndex(Span span, boolean isStart) {
         List<Integer> targetIndexes = span.getRoot().findChild(span);
         ForwardingList<? extends Span> parent = span.getRoot();
@@ -166,7 +165,7 @@ public class Document extends ForwardingList<Division> implements Span {
             if (parent.get(targetIndex) instanceof SpanLeaf) {
                 return length + (isStart ? 0 : parent.get(targetIndex).getLength());
             }
-            parent = (ForwardingList<? extends Span>) parent.get(targetIndex);
+            parent = (SpanBranch) parent.get(targetIndex);
         }
         return length + (isStart ? 0 : ((SpanBranch) parent).getLength());
     }
@@ -221,7 +220,8 @@ public class Document extends ForwardingList<Division> implements Span {
         int line = 1;
         for (String raw : texts) {
             raw += (line == texts.size() ? "" : "\n");
-            Optional<Division> next = parent.addLine(raw);
+            LineSpan span = LineSpan.newLine(parent, raw);
+            Optional<Division> next = parent.addLine(span, span.getLineStyle());
             if (next.isPresent()) {
                 parent = next.get();
             }

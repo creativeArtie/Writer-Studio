@@ -7,7 +7,7 @@ import com.google.common.collect.*;
 public class SpanBranch extends ForwardingList<Span> implements Span {
     private ArrayList<Span> childrenSpans;
     private final Document spanRoot;
-    private final Optional<SpanBranch> spanParent;
+    private Optional<SpanBranch> spanParent;
     private ArrayList<StyleClass> inheritedStyles;
 
     protected SpanBranch(Document root, StyleClass... classes) {
@@ -52,11 +52,15 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
 
     @Override
     public boolean add(Span e) {
+        if (e instanceof SpanBranch) ((SpanBranch) e).spanParent = Optional.of(this);
         return childrenSpans.add(e);
     }
 
     @Override
     public boolean addAll(Collection<? extends Span> c) {
+        c.forEach((span) -> {
+            if (span instanceof SpanBranch) ((SpanBranch) span).spanParent = Optional.of(this);
+        });
         return childrenSpans.addAll(c);
     }
 
@@ -97,7 +101,7 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
     }
 
     public List<Integer> findChild(Span span) {
-        return getRoot().findChild(span, this);
+        return getRoot().getFindChildCache(span, this);
     }
 
     @Override
@@ -119,5 +123,14 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
             len += child.getLength();
         }
         return len;
+    }
+
+    @Override
+    public String toString() {
+        String simpleName = getClass().getSimpleName();
+        if (simpleName == "") {
+            simpleName = "LineSpan";
+        }
+        return simpleName + super.toString();
     }
 }

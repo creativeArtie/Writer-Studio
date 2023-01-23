@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.*;
 import com.google.common.collect.*;
 
 class SpanIndexTest {
-    private static String useText = "Hello World!{^note}\n!^note:*test* only\\!";
+    private static String useText = "Hello World!{^note}\n!^note:*test* only\\!\n=Chapter 1";
     private static Document doc;
     private static final String displayNamePost = " {4} indexes: {2}";
     private static int testIndex;
@@ -77,33 +77,41 @@ class SpanIndexTest {
         Stream.Builder<Arguments> builder = Stream.builder();
 
         int divIdx = 0;
-        // Hello World!{^note}␤!^note:*test* only\!
-        // +++++++++++++++++++++++++++++++++++++++++
-        // 01234567890123456789012345678901234567890
-        // 00000000001111111111222222222233333333334
-        builder.accept(getArguments(0, 40, Division.class, divIdx)); // 1
+        // Hello World!{^note}␤!^note:*test* only\!␤Chapter 1
+        // ++++++++++++++++++++++++++++++++++++++++++
+        // 012345678901234567890123456789012345678901234567890
+        // 000000000011111111112222222222333333333344444444445
+        builder.accept(getArguments(0, 41, Division.class, divIdx)); // 1
 
         int lineIdx = 0;
-        // Hello World!{^note}␤!^note:*test* only\!
+        // Hello World!{^note}␤!^note:*test* only\!␤Chapter 1
         // ++++++++++++++++++++
-        // 01234567890123456789012345678901234567890
-        // 00000000001111111111222222222233333333334
+        // 012345678901234567890123456789012345678901234567890
+        // 000000000011111111112222222222333333333344444444445
         builder.accept(getArguments(0, 20, LineSpan.class, divIdx, lineIdx)); // 2
 
         int ltxtIdx = 0;
-        // Hello World!{^note}␤!^note:*test* only\!
+        // Hello World!{^note}␤!^note:*test* only\!␤Chapter 1
         // +++++++++++++++++++
-        // 01234567890123456789012345678901234567890
-        // 00000000001111111111222222222233333333334
+        // 012345678901234567890123456789012345678901234567890
+        // 000000000011111111112222222222333333333344444444445
         builder.accept(getArguments(0, 19, LineText.class, divIdx, lineIdx, ltxtIdx)); // 3
 
         int textIdx = 0;
-        // Hello World!{^note}␤!^note:*test* only\!
+        // Hello World!{^note}␤!^note:*test* only\!␤Chapter 1
         // ++++++++++++
-        // 01234567890123456789012345678901234567890
-        // 00000000001111111111222222222233333333344
+        // 012345678901234567890123456789012345678901234567890
+        // 000000000011111111112222222222333333333344444444445
         builder.accept(getArguments(0, 12, TextSpan.class, divIdx, lineIdx, ltxtIdx, textIdx)); // 4
+
         textIdx = -1;
+
+        divIdx = 1;
+        // Hello World!{^note}␤!^note:*test* only\!␤Chapter 1
+        // ------------------------------------------+++++++++
+        // 012345678901234567890123456789012345678901234567890
+        // 000000000011111111112222222222333333333344444444445
+        builder.accept(getArguments(41, 51, SectionDivision.class, divIdx));
 
         return builder.build();
     }
@@ -159,17 +167,26 @@ class SpanIndexTest {
         Assertions.assertInstanceOf(spanClass, child);
     }
 
+    @ParameterizedTest(name = "Length" + displayNamePost)
+    @MethodSource("provideParameters")
+    void testParent(int start, int end, List<Integer> indexes, Class<?> spanClass, String displayName) {
+        Span child = getChild(indexes);
+        Span parent = getChild(indexes.subList(0, indexes.size() - 1));
+        if (parent == null) Assertions.assertFalse(child.getParent().isPresent());
+        else Assertions.assertSame(parent, child.getParent().get());
+    }
+
     @Test
     void testDocIndexes() {
         Assertions.assertAll(
                 () -> Assertions.assertEquals(0, doc.getStartIndex()),
-                () -> Assertions.assertEquals(40, doc.getEndIndex()), () -> Assertions.assertEquals(40, doc.getLength())
+                () -> Assertions.assertEquals(51, doc.getEndIndex()), () -> Assertions.assertEquals(51, doc.getLength())
         );
     }
 
     @Test
-    void testDocSize() {
-        Assertions.assertEquals(1, doc.size());
+    void fail() {
+        Assertions.fail("Indexes are wrong!!");
     }
 
     @AfterAll

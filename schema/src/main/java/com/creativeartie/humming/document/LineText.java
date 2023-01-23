@@ -55,10 +55,11 @@ public class LineText extends SpanBranch {
     private static void checkStyle(
             Matcher match, LineText span, TreeSet<SpanStyles> formatting, LineTextPart finder, SpanStyles style
     ) {
-        if ((finder.group(match)) != null) {
+        String raw;
+        if ((raw = finder.group(match)) != null) {
             if (formatting.contains(style)) formatting.remove(style);
             else formatting.add(style);
-            span.add(new SpanLeaf(span, 1, SpanStyles.OPERATOR));
+            span.add(new SpanLeaf(span, raw, SpanStyles.OPERATOR));
         }
     }
 

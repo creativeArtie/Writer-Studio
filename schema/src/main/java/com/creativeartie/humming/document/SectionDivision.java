@@ -37,9 +37,8 @@ public class SectionDivision extends Division {
     }
 
     @Override
-    protected Optional<Division> addLine(String text) {
-        LineSpan line = LineSpan.newLine(this, text);
-        switch (line.getLineStyle()) {
+    protected Optional<Division> addLine(LineSpan line, LineStyles style) {
+        switch (style) {
             case BULLET:
                 break;
             case FIELD:

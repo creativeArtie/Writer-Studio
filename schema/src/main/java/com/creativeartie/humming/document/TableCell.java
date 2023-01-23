@@ -28,12 +28,12 @@ public class TableCell extends SpanBranch {
         String raw = null;
         if ((raw = TableCellParts.COLS.group(match)) != null) {
             int colSpan = raw.length();
-            span.add(new SpanLeaf(span, colSpan));
+            span.add(new SpanLeaf(span, raw));
             span.colsSpan += colSpan;
         }
         if ((raw = TableCellParts.ROWS.group(match)) != null) {
             int rowSpan = raw.length();
-            span.add(new SpanLeaf(span, rowSpan));
+            span.add(new SpanLeaf(span, raw));
             span.rowsSpan += rowSpan;
         }
 

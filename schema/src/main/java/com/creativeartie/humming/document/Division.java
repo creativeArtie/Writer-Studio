@@ -11,5 +11,5 @@ public abstract class Division extends SpanBranch {
         super(parent, classes);
     }
 
-    protected abstract Optional<Division> addLine(String text);
+    protected abstract Optional<Division> addLine(LineSpan line, LineStyles style);
 }

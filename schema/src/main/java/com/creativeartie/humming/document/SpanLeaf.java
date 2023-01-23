@@ -9,23 +9,17 @@ public final class SpanLeaf implements Span {
     private final SpanBranch parentSpan;
     private final List<StyleClass> styleClass;
     private final int styleLength;
+    private final String referText;
 
     protected SpanLeaf(SpanBranch parent, String text) {
-        this(parent, text.length(), SpanStyles.OPERATOR);
+        this(parent, text, SpanStyles.OPERATOR);
     }
 
     protected SpanLeaf(SpanBranch parent, String text, StyleClass... styles) {
-        this(parent, text.length(), styles);
-    }
-
-    protected SpanLeaf(SpanBranch parent, int length) {
-        this(parent, length, SpanStyles.OPERATOR);
-    }
-
-    protected SpanLeaf(SpanBranch parent, int length, StyleClass... styles) {
         spanRoot = parent.getRoot();
         parentSpan = parent;
-        styleLength = length;
+        referText = text;
+        styleLength = text.length();
         styleClass = Arrays.asList(styles);
     }
 
@@ -59,5 +53,10 @@ public final class SpanLeaf implements Span {
     @Override
     public Optional<SpanBranch> getParent() {
         return Optional.of(parentSpan);
+    }
+
+    @Override
+    public String toString() {
+        return referText;
     }
 }
