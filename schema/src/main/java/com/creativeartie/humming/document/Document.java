@@ -42,6 +42,7 @@ public class Document extends ForwardingList<Division> implements Span {
     private LoadingCache<Span, List<Integer>> findChildCache;
     private LoadingCache<SpanBranch, Integer> lengthsCache;
     private LoadingCache<Span, Integer> startIdxCache, endIdxCache;
+    private LoadingCache<Integer, List<Span>> locateChildrenCache;
 
     public Document() {
         idStorage = new IdentityStorage();
@@ -70,6 +71,38 @@ public class Document extends ForwardingList<Division> implements Span {
                 return getCacheIndex(key, false);
             }
         });
+        locateChildrenCache = CacheBuilder.newBuilder().recordStats().build(new CacheLoader<Integer, List<Span>>() {
+            @Override
+            public List<Span> load(Integer key) {
+                return getLocateChildrenCache(key, Document.this);
+            }
+        });
+    }
+
+    public List<Span> locateChildren(int location) {
+        try {
+            return locateChildrenCache.get(location);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            System.exit(-1);
+            return new ArrayList<>();
+        }
+    }
+
+    private List<Span> getLocateChildrenCache(int location, List<? extends Span> children) {
+        ImmutableList.Builder<Span> answer = ImmutableList.builder();
+        for (Span child : children) {
+            if (child.getEndIndex() > location) {
+                answer.add(child);
+                if (child instanceof SpanBranch) {
+                    answer.addAll(getLocateChildrenCache(location, (SpanBranch) child));
+                    return answer.build();
+                } else {
+                    return answer.build();
+                }
+            }
+        }
+        return answer.build();
     }
 
     public List<Integer> findChild(Span span) {
@@ -205,14 +238,17 @@ public class Document extends ForwardingList<Division> implements Span {
         System.out.printf("  lengthsCache %s\n", lengthsCache.stats());
         System.out.printf(" startIdxCache %s\n", startIdxCache.stats());
         System.out.printf("   endIdxCache %s\n", endIdxCache.stats());
+        System.out.printf("   locateCache %s\n", locateChildrenCache.stats());
     }
 
     public void updateText(String text) {
         clear();
+
         findChildCache.invalidateAll();
         lengthsCache.invalidateAll();
         startIdxCache.invalidateAll();
         endIdxCache.invalidateAll();
+        locateChildrenCache.invalidateAll();
 
         Division parent = new SectionDivision(this);
         add(parent);

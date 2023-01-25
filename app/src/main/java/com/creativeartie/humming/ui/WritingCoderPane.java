@@ -5,11 +5,15 @@ import java.util.*;
 import java.util.concurrent.*;
 
 import org.fxmisc.richtext.*;
+import org.fxmisc.richtext.event.*;
 import org.fxmisc.richtext.model.*;
 
 import com.creativeartie.humming.document.*;
 
 import javafx.concurrent.*;
+import javafx.geometry.*;
+import javafx.scene.control.*;
+import javafx.stage.*;
 
 /**
  * The main writing area. Code copied from <a href=
@@ -34,6 +38,37 @@ public class WritingCoderPane extends CodeArea {
                     return Optional.empty();
                 }).subscribe(this::applyHighlighting);
         getStylesheets().add("data/text.css");
+
+        Popup popup = new Popup();
+        Label popupMsg = new Label();
+        popupMsg.setStyle("-fx-background-color: black;" + "-fx-text-fill: white;" + "-fx-padding: 5;");
+        popup.getContent().add(popupMsg);
+
+        setMouseOverTextDelay(Duration.ofSeconds(1));
+        addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_BEGIN, e -> {
+            int chIdx = e.getCharacterIndex();
+            Point2D pos = e.getScreenPosition();
+            String name = "";
+            for (Span child : rootDoc.locateChildren(chIdx)) {
+                String simpleName = child.getClass().getSimpleName();
+                if (child instanceof LineSpan) {
+                    simpleName = ((LineSpan) child).getLineStyle().toString();
+                } else if (child instanceof SpanLeaf) {
+                    name += child.toString();
+                } else if (simpleName == "") {
+                    simpleName = "LineSpan";
+                }
+                if (name != "") {
+                    name += ", ";
+                }
+                name += simpleName;
+            }
+            popupMsg.setText(getText(chIdx, chIdx + 1) + name);
+            popup.show(WritingCoderPane.this, pos.getX(), pos.getY() + 10);
+        });
+        addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_END, e -> {
+            popup.hide();
+        });
         rootDoc = new Document();
     }
 

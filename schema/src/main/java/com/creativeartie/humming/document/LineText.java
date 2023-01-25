@@ -59,7 +59,7 @@ public class LineText extends SpanBranch {
         if ((raw = finder.group(match)) != null) {
             if (formatting.contains(style)) formatting.remove(style);
             else formatting.add(style);
-            span.add(new SpanLeaf(span, raw, SpanStyles.OPERATOR));
+            span.add(new SpanLeaf(span, raw));
         }
     }
 
