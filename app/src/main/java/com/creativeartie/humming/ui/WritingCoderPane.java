@@ -50,18 +50,18 @@ public class WritingCoderPane extends CodeArea {
             Point2D pos = e.getScreenPosition();
             String name = "";
             for (Span child : rootDoc.locateChildren(chIdx)) {
-                String simpleName = child.getClass().getSimpleName();
+                String appendText = child.getClass().getSimpleName();
                 if (child instanceof LineSpan) {
-                    simpleName = ((LineSpan) child).getLineStyle().toString();
+                    appendText = ((LineSpan) child).getLineStyle().toString();
                 } else if (child instanceof SpanLeaf) {
-                    name += child.toString();
-                } else if (simpleName == "") {
-                    simpleName = "LineSpan";
+                    appendText = ((SpanLeaf) child).getStyle().toString();
+                } else if (appendText == "") {
+                    appendText = "LineSpan";
                 }
                 if (name != "") {
                     name += ", ";
                 }
-                name += simpleName;
+                name += appendText;
             }
             popupMsg.setText(getText(chIdx, chIdx + 1) + name);
             popup.show(WritingCoderPane.this, pos.getX(), pos.getY() + 10);

@@ -151,4 +151,8 @@ public class IdentityStorage {
             idManager.remove(manager);
         }
     }
+
+    public void clear() {
+        idManager.clear();
+    }
 }

@@ -249,6 +249,7 @@ public class Document extends ForwardingList<Division> implements Span {
         startIdxCache.invalidateAll();
         endIdxCache.invalidateAll();
         locateChildrenCache.invalidateAll();
+        idStorage.clear();
 
         Division parent = new SectionDivision(this);
         add(parent);
