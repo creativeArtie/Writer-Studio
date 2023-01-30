@@ -39,11 +39,6 @@ public class BasicSpanTest {
             return data;
         }
 
-        private String getSimpleName(Span span) {
-            String name = span.getClass().getSimpleName();
-            return name == "" ? "LineSpan" : name;
-        }
-
         private Span getSpan(boolean isPrint) {
             List<Integer> indexes = getIndexes();
             assert useDoc != null;
@@ -153,6 +148,15 @@ public class BasicSpanTest {
         // @formatter:on
     }
 
+    private static String getSimpleName(Span span) {
+        if (span instanceof SpanLeaf) {
+            return ((SpanLeaf) span).getStyle().toString();
+        } else if (span instanceof LineSpan) {
+            return ((LineSpan) span).getLineStyle().toString();
+        }
+        return span.getClass().getSimpleName();
+    }
+
     private static Document useDoc;
     private static List<TestData> testData;
 
@@ -192,7 +196,7 @@ public class BasicSpanTest {
         return args.build();
     }
 
-    @ParameterizedTest()
+    @ParameterizedTest(name = "basic[{index}] => {1}")
     @MethodSource("provideBasic")
     public void testBasic(int i, TestData data) {
         String name = data.spanClass.getSimpleName();
@@ -239,6 +243,20 @@ public class BasicSpanTest {
     @MethodSource("provideRaws")
     public void testRaws(String expectRaw, SpanLeaf test, String display) {
         Assertions.assertEquals(expectRaw, test.toString());
+    }
+
+    @Test
+    public void testLeaves() {
+        ImmutableList.Builder<String> expected = ImmutableList.builder();
+        for (TestData data : testData) {
+            if (data.spanClass == SpanLeaf.class) {
+                Optional<Span> found = data.getSpanTry();
+                found.ifPresent((span) -> expected.add(data.spanText));
+            }
+        }
+        Assertions.assertArrayEquals(
+                expected.build().toArray(), useDoc.convertLeaves((leaf) -> leaf.toString()).toArray()
+        );
     }
 
     private static Stream<Arguments> provideStart() {
@@ -307,9 +325,59 @@ public class BasicSpanTest {
         return args.build();
     }
 
-    @ParameterizedTest(name = "findChild[{index}] => {1}")
+    @ParameterizedTest(name = "findChild[{index}] => {2}")
     @MethodSource("provideFindChild")
     public void testFindChild(Object[] expectedIdexes, Span child, String display) {
         Assertions.assertArrayEquals(expectedIdexes, useDoc.findChild(child).toArray());
+    }
+
+    @AfterAll
+    public static void printCacheRecord() {
+        useDoc.printCacheStats();
+    }
+
+    private static Stream<Arguments> provideLocateSpans() {
+        Stream.Builder<Arguments> args = Stream.builder();
+        for (int i = 0; i < testData.get(0).spanText.length(); i++) {
+            TestData expectLeaf = null;
+            for (TestData expectSpan : testData) {
+                if (expectSpan.spanClass != SpanLeaf.class) continue;
+                if (i >= expectSpan.textPrefix.length() &&
+                        i <= (expectSpan.textPrefix.length() + expectSpan.textPostfix.length())) {
+                    expectLeaf = expectSpan;
+                }
+            }
+            assert expectLeaf != null;
+
+            ArrayList<Span> expectedSpans = new ArrayList<>();
+            Span parent = useDoc;
+            for (int index : expectLeaf.getIndexes()) {
+                if (parent instanceof Document) {
+                    parent = ((Document) parent).get(index);
+                } else if (parent instanceof SpanBranch) {
+                    expectedSpans.add(parent);
+                    parent = ((SpanBranch) parent).get(index);
+                }
+            }
+            assert parent instanceof SpanLeaf;
+            expectedSpans.add(parent); // <- should be leaf
+            args.accept(Arguments.of(expectedSpans.toArray(new Span[0]), i));
+        }
+        return args.build();
+    }
+
+    @ParameterizedTest(name = "locate[{index}] => {1}")
+    @MethodSource("provideLocateSpans")
+    public void testLocateSpans(Span[] list, int index) {
+        for (Span span : list) {
+            System.out.print(getSimpleName(span) + ">");
+        }
+        System.out.println();
+        for (Span span : useDoc.locateChildren(index)) {
+            System.out.print(getSimpleName(span) + ">");
+        }
+        System.out.println();
+        System.out.println();
+        Assertions.assertArrayEquals(list, useDoc.locateChildren(index).toArray());
     }
 }
