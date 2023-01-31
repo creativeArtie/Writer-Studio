@@ -60,7 +60,7 @@ public class TextSpan extends SpanBranch {
                 continue;
             }
             raw = TextSpanPatterns.TextSpanParts.ESCAPE.group(match);
-            builder.append(raw.charAt(1));
+            if (raw.length() == 2) builder.append(raw.charAt(1));
             span.add(new SpanLeaf(span, raw, SpanStyles.ESCAPE));
         }
         span.spanText = builder.toString();

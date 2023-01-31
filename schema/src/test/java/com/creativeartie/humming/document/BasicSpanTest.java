@@ -343,7 +343,7 @@ public class BasicSpanTest {
             for (TestData expectSpan : testData) {
                 if (expectSpan.spanClass != SpanLeaf.class) continue;
                 if (i >= expectSpan.textPrefix.length() &&
-                        i <= (expectSpan.textPrefix.length() + expectSpan.textPostfix.length())) {
+                        i <= (expectSpan.textPrefix.length() + expectSpan.spanText.length())) {
                     expectLeaf = expectSpan;
                 }
             }
@@ -351,6 +351,7 @@ public class BasicSpanTest {
 
             ArrayList<Span> expectedSpans = new ArrayList<>();
             Span parent = useDoc;
+            String display = "";
             for (int index : expectLeaf.getIndexes()) {
                 if (parent instanceof Document) {
                     parent = ((Document) parent).get(index);
@@ -358,23 +359,31 @@ public class BasicSpanTest {
                     expectedSpans.add(parent);
                     parent = ((SpanBranch) parent).get(index);
                 }
+                display += getSimpleName(parent) + ">";
             }
             assert parent instanceof SpanLeaf;
-            expectedSpans.add(parent); // <- should be leaf
-            args.accept(Arguments.of(expectedSpans.toArray(new Span[0]), i));
+            expectedSpans.add(parent);
+            display += parent.toString().replace("\n", "␤");
+            args.accept(Arguments.of(expectedSpans.toArray(new Span[0]), i, display));
         }
         return args.build();
     }
 
-    @ParameterizedTest(name = "locate[{index}] => {1}")
+    @ParameterizedTest(name = "locate [{1}] = {2}")
     @MethodSource("provideLocateSpans")
-    public void testLocateSpans(Span[] list, int index) {
+    public void testLocateSpans(Span[] list, int index, String display) {
         for (Span span : list) {
             System.out.print(getSimpleName(span) + ">");
+            if (span instanceof SpanLeaf) {
+                System.out.print(span.toString());
+            }
         }
         System.out.println();
         for (Span span : useDoc.locateChildren(index)) {
             System.out.print(getSimpleName(span) + ">");
+            if (span instanceof SpanLeaf) {
+                System.out.print(span.toString());
+            }
         }
         System.out.println();
         System.out.println();

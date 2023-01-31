@@ -39,28 +39,34 @@ class TextSpanPatternsTest extends PatternTestBase<TextSpanParts> {
         assertEnd(matcher);
     }
 
+    @ParameterizedTest
+    @EnumSource(TextSpanPatterns.class)
+    void testEscapeEndless(TextSpanPatterns pattern) {
+        final Matcher matcher = pattern.matcher("\\");
+        matcher.find();
+        assertGroup("\\", matcher, TextSpanPatterns.TextSpanParts.ESCAPE, 1);
+        assertEnd(matcher);
+    }
+
     static Stream<? extends Arguments> getLeftOvers() {
         return Stream.<Arguments>of(
 
                 Arguments.of(" ", TextSpanPatterns.KEY), Arguments.of(":", TextSpanPatterns.KEY),
-                Arguments.of("\\", TextSpanPatterns.KEY),
 
                 Arguments.of("\n", TextSpanPatterns.HEADING), Arguments.of("#", TextSpanPatterns.HEADING),
-                Arguments.of("{", TextSpanPatterns.HEADING), Arguments.of("\\", TextSpanPatterns.HEADING),
+                Arguments.of("{", TextSpanPatterns.HEADING),
 
                 Arguments.of("\n", TextSpanPatterns.ID), Arguments.of("-", TextSpanPatterns.ID),
-                Arguments.of("*", TextSpanPatterns.ID), Arguments.of("\\", TextSpanPatterns.ID),
+                Arguments.of("*", TextSpanPatterns.ID),
 
                 Arguments.of("}", TextSpanPatterns.SPECIAL), Arguments.of("\n", TextSpanPatterns.SPECIAL),
-                Arguments.of("*", TextSpanPatterns.SPECIAL), Arguments.of("\\", TextSpanPatterns.SPECIAL),
+                Arguments.of("*", TextSpanPatterns.SPECIAL),
 
                 Arguments.of("\n", TextSpanPatterns.TEXT), Arguments.of("{", TextSpanPatterns.TEXT),
-                Arguments.of("\\", TextSpanPatterns.TEXT),
 
-                Arguments.of("\n", TextSpanPatterns.SIMPLE), Arguments.of("\\", TextSpanPatterns.SIMPLE),
+                Arguments.of("\n", TextSpanPatterns.SIMPLE),
 
-                Arguments.of("\n", TextSpanPatterns.NOTE), Arguments.of("*", TextSpanPatterns.NOTE),
-                Arguments.of("\\", TextSpanPatterns.NOTE)
+                Arguments.of("\n", TextSpanPatterns.NOTE), Arguments.of("*", TextSpanPatterns.NOTE)
         );
     }
 

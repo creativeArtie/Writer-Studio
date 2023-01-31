@@ -6,7 +6,7 @@ import org.junit.jupiter.api.*;
 
 class TextSpanTest extends SpanBranchTestBase<TextSpan> {
     private enum SubTests {
-        ID;
+        ID, SIMPLE;
     }
 
     private SubTests subTest;
@@ -44,9 +44,19 @@ class TextSpanTest extends SpanBranchTestBase<TextSpan> {
         assertEquals("abc:efgtopq", text.getText());
     }
 
+    @Test
+    void testEscapeEnd() {
+        subTest = SubTests.SIMPLE;
+        TextSpan text = newSpan("\\");
+        addStyleTest("\\", SpanStyles.ESCAPE);
+        testStyles(text);
+        assertEquals("", text.getText());
+    }
+
     @Override
     protected TextSpan initSpan(SpanBranch parent, String input) {
         if (subTest == SubTests.ID) return TextSpan.newId(parent, input);
+        else if (subTest == SubTests.SIMPLE) return TextSpan.newSimple(parent, input);
         fail("Unimplemented test for:" + subTest.toString());
         return null;
     }
