@@ -29,7 +29,6 @@ public class WritingCoderPane extends CodeArea {
         executor = Executors.newSingleThreadExecutor();
         setParagraphGraphicFactory(LineNumberFactory.get(this));
 
-        /// update text update only after 500 milliseconds
         textProperty().addListener((observable, oldValue, newValue) -> {
             rootDoc.updateText(newValue);
             if (newValue.isEmpty()) return;

@@ -18,8 +18,9 @@ public class SectionDivision extends Division {
     private Optional<Division> addHeading(HeadingLine heading) {
         if (heading.getLevel() <= sectionLevel) {
             if (isEmpty() && heading.getLevel() == sectionLevel) {
+                System.err.printf("branch covered %b %b\n", isEmpty(), heading.getLevel() == sectionLevel);
                 add(heading);
-                return Optional.empty();
+                return Optional.of(this);
             }
             if (sectionLevel == 1) {
                 SectionDivision sibling = new SectionDivision(getRoot());
@@ -40,22 +41,22 @@ public class SectionDivision extends Division {
     protected Optional<Division> addLine(LineSpan line, LineStyles style) {
         switch (style) {
             case BULLET:
-                break;
-            case FIELD:
-                break;
+            case NUMBERED:
+                ListDivision division = new ListDivision(this, (ListLine) line);
+                return division.addLine(line, style);
             case HEADER:
                 break;
             case HEADING:
                 return addHeading((HeadingLine) line);
-            case NOTE:
-                break;
-            case NUMBERED:
-                break;
             case OUTLINE:
                 break;
             case ROW:
                 break;
             case SUMMARY:
+                break;
+            case FIELD:
+                break;
+            case NOTE:
                 break;
             default:
                 add(line);

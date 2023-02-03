@@ -81,8 +81,8 @@ class SectionDivisionTest extends SpanTestBase<SpanBranch> {
 
     @Test
     void testWithSubheadings() {
-        newDoc("=heading 1.1\n==Heading 2.1\nContent\n==Heading 2.2\n===heading 3\n=heading 1.2");
-        Assertions.assertEquals(2, getDocument().size(), "Doc size");
+        newDoc("=heading 1.1\n==Heading 2.1\nContent\n==Heading 2.2\n===heading 2.2.1\n=heading 2\n=heading 3");
+        Assertions.assertEquals(3, getDocument().size(), "Doc size");
         addStyleTest("=", LineStyles.HEADING, SpanStyles.OPERATOR);
         addStyleTest("heading 1.1", LineStyles.HEADING, SpanStyles.TEXT);
         addStyleTest("\n", LineStyles.HEADING, SpanStyles.OPERATOR);
@@ -99,11 +99,15 @@ class SectionDivisionTest extends SpanTestBase<SpanBranch> {
         addStyleTest("\n", LineStyles.HEADING, SpanStyles.OPERATOR);
 
         addStyleTest("===", LineStyles.HEADING, SpanStyles.OPERATOR);
-        addStyleTest("heading 3", LineStyles.HEADING, SpanStyles.TEXT);
+        addStyleTest("heading 2.2.1", LineStyles.HEADING, SpanStyles.TEXT);
         addStyleTest("\n", LineStyles.HEADING, SpanStyles.OPERATOR);
 
         addStyleTest("=", LineStyles.HEADING, SpanStyles.OPERATOR);
-        addStyleTest("heading 1.2", LineStyles.HEADING, SpanStyles.TEXT);
+        addStyleTest("heading 2", LineStyles.HEADING, SpanStyles.TEXT);
+        addStyleTest("\n", LineStyles.HEADING, SpanStyles.OPERATOR);
+
+        addStyleTest("=", LineStyles.HEADING, SpanStyles.OPERATOR);
+        addStyleTest("heading 3", LineStyles.HEADING, SpanStyles.TEXT);
         testStyles();
     }
 
