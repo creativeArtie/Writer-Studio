@@ -242,29 +242,34 @@ public class Document extends ForwardingList<Division> implements Span {
     }
 
     public void updateText(String text) {
-        clear();
+        try {
+            clear();
 
-        findChildCache.invalidateAll();
-        lengthsCache.invalidateAll();
-        startIdxCache.invalidateAll();
-        endIdxCache.invalidateAll();
-        locateChildrenCache.invalidateAll();
-        idStorage.clear();
+            findChildCache.invalidateAll();
+            lengthsCache.invalidateAll();
+            startIdxCache.invalidateAll();
+            endIdxCache.invalidateAll();
+            locateChildrenCache.invalidateAll();
+            idStorage.clear();
 
-        Division parent = new SectionDivision(this);
-        add(parent);
-        List<String> texts = Splitter.on('\n').splitToList(text);
-        int line = 1;
-        for (String raw : texts) {
-            raw += (line == texts.size() ? "" : "\n");
-            LineSpan span = LineSpan.newLine(parent, raw);
-            Optional<Division> next = parent.addLine(span, span.getLineStyle());
-            if (next.isPresent()) {
-                parent = next.get();
+            Division parent = new SectionDivision(this);
+            add(parent);
+            List<String> texts = Splitter.on('\n').splitToList(text);
+            int line = 1;
+            for (String raw : texts) {
+                raw += (line == texts.size() ? "" : "\n");
+                LineSpan span = LineSpan.newLine(parent, raw);
+                Optional<Division> next = parent.addLine(span, span.getLineStyle());
+                if (next.isPresent()) {
+                    parent = next.get();
+                }
+                line++;
             }
-            line++;
+            cleanUp();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.exit(-1);
         }
-        cleanUp();
     }
 
     public <T> List<T> convertLeaves(Function<SpanLeaf, T> convert) {
