@@ -26,7 +26,7 @@ public enum TextSpanPatterns implements PatternEnum {
     }
 
     public enum TextSpanParts implements PatternEnum {
-        ESCAPE("\\\\.?"), TEXT("");
+        ESCAPE("(\\\\.|\\\\$)"), TEXT("");
 
         private final String pattern;
 

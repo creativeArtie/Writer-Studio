@@ -18,7 +18,6 @@ public class SectionDivision extends Division {
     private Optional<Division> addHeading(HeadingLine heading) {
         if (heading.getLevel() <= sectionLevel) {
             if (isEmpty() && heading.getLevel() == sectionLevel) {
-                System.err.printf("branch covered %b %b\n", isEmpty(), heading.getLevel() == sectionLevel);
                 add(heading);
                 return Optional.of(this);
             }
