@@ -1,7 +1,5 @@
 package com.creativeartie.humming.ui;
 
-import com.creativeartie.humming.main.*;
-
 import javafx.fxml.*;
 import javafx.scene.control.*;
 
@@ -12,10 +10,5 @@ public class HelpTipController {
     private Label outlineText;
 
     @FXML
-    protected void initialize() {
-        InterfaceText.HEADING_TEXT.setText(headingText);
-        InterfaceText.OUTLINE_TEXT.setText(outlineText);
-    }
-
-    public HelpTipController() {}
+    protected void initialize() {}
 }

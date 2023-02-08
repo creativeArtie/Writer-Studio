@@ -7,13 +7,27 @@
 <?import org.fxmisc.richtext.*?>
 
 <BorderPane fx:controller="com.creativeartie.humming.ui.MainWindowController" 
-    xmlns:fx="http://javafx.com/fxml">
-    <center>
-		<CodeArea></CodeArea>
-	</center>
-	<bottom>
-		<GridPane>
-			<fx:include source="helpTip.fxml" fx:id="helpTips" />
-		</GridPane>
-	</bottom>
+	xmlns:fx="http://javafx.com/fxml">
+	<center><SplitPane orientation="VERTICAL">
+		<TabPane prefHeight="100" tabClosingPolicy="UNAVAILABLE">
+			<Tab text="%tab.research"></Tab>
+			<Tab text="%tab.todo"></Tab>
+			<Tab text="%tab.notes"></Tab>
+			<Tab text="%tab.setting"></Tab>
+		</TabPane>
+
+		<SplitPane>
+			<TabPane tabClosingPolicy="UNAVAILABLE" side="LEFT">
+				<Tab text="%tab.toc"></Tab>
+				<Tab text="%tab.files"></Tab>
+				<Tab text="%tab.goals"></Tab>
+			</TabPane>
+			<TabPane>
+			</TabPane>
+		</SplitPane>
+	</SplitPane></center>
+	
+	<bottom><GridPane>
+		<fx:include source="helpTip.fxml" fx:id="helpTips" />
+	</GridPane></bottom>
 </BorderPane>

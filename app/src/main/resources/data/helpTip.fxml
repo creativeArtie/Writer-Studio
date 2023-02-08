@@ -8,6 +8,6 @@
 <GridPane fx:controller="com.creativeartie.humming.ui.HelpTipController"
 	xmlns:fx="http://javafx.com/fxml"
 >
-	<Label text="Heading Line" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" fx:id="headingText"/> 
-	<Label text="Outline Line" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2" fx:id="outlineText"/> 
+	<Label text="%highlight.headingText" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" fx:id="headingText"/> 
+	<Label text="%highlight.outlineText" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2" fx:id="outlineText"/> 
 </GridPane>

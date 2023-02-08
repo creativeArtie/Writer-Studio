@@ -1,5 +1,7 @@
 package com.creativeartie.humming.ui;
 
+import java.util.*;
+
 import com.creativeartie.humming.main.*;
 
 import javafx.application.*;
@@ -22,10 +24,11 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // BorderPane mainPane = setup();
-        // Scene scene = new Scene(mainPane, 400, 200);
-        Parent root = FXMLLoader.load(DataFiles.MAIN_FXML.getFile());
-        Scene scene = new Scene(root, 400, 200);
+        FXMLLoader loader = new FXMLLoader();
+        loader.setResources(ResourceBundle.getBundle("data.uiText"));
+        loader.setLocation(DataFiles.MAIN_FXML.getFile());
+        Parent root = loader.load();
+        Scene scene = new Scene(root, 800, 600);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Writer App");
         primaryStage.show();
