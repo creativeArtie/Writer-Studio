@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane fx:controller="com.creativeartie.humming.ui.HelpTipController"
+	xmlns:fx="http://javafx.com/fxml"
+>
+	<Label text="Heading Line" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" fx:id="headingText"/> 
+	<Label text="Outline Line" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2" fx:id="outlineText"/> 
+</GridPane>

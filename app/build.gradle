@@ -29,7 +29,7 @@ repositories {
 apply plugin: 'com.github.johnrengelman.shadow'
 
 javafx {
-    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.web' ]
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.web']
 }
 
 dependencies {
@@ -51,7 +51,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'com.creativeartie.humming.ui.Main'
+    mainClass = 'com.creativeartie.humming.main.Main'
 }
 
 test {

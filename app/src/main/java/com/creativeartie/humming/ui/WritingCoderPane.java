@@ -9,6 +9,7 @@ import org.fxmisc.richtext.event.*;
 import org.fxmisc.richtext.model.*;
 
 import com.creativeartie.humming.document.*;
+import com.creativeartie.humming.main.*;
 
 import javafx.geometry.*;
 import javafx.scene.control.*;

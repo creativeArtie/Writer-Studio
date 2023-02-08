@@ -1,4 +1,6 @@
-package com.creativeartie.humming.ui;
+package com.creativeartie.humming.main;
+
+import com.creativeartie.humming.ui.*;
 
 import javafx.application.*;
 
