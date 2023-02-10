@@ -4,10 +4,10 @@ import java.util.*;
 
 import com.google.common.collect.*;
 
-public class SpanBranch extends ForwardingList<Span> implements Span {
+public class SpanBranch extends ForwardingList<Span> implements SpanParent {
     private ArrayList<Span> childrenSpans;
     private final Document spanRoot;
-    private Optional<SpanBranch> spanParent;
+    private Optional<SpanParent> spanParent;
     private ArrayList<StyleClass> inheritedStyles;
 
     protected SpanBranch(Document root, StyleClass... classes) {
@@ -42,7 +42,8 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
         return spanRoot;
     }
 
-    List<StyleClass> getInheritedStyles() {
+    @Override
+    public List<StyleClass> getInheritedStyles() {
         ImmutableList.Builder<StyleClass> classes = ImmutableList.builder();
         if (spanParent.isPresent()) {
             classes.addAll(spanParent.get().getInheritedStyles());
@@ -69,6 +70,7 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
         return childrenSpans;
     }
 
+    @Override
     public List<SpanLeaf> getLeafs() {
         ImmutableList.Builder<SpanLeaf> children = ImmutableList.builder();
         for (Span child : childrenSpans) {
@@ -96,10 +98,14 @@ public class SpanBranch extends ForwardingList<Span> implements Span {
     }
 
     @Override
-    public Optional<SpanBranch> getParent() {
+    public Optional<SpanParent> getParent() {
+        if (spanParent.isEmpty()) {
+            return Optional.of(spanRoot);
+        }
         return spanParent;
     }
 
+    @Override
     public List<Integer> findChild(Span span) {
         return getRoot().getFindChildCache(span, this);
     }

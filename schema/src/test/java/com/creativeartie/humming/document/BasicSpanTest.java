@@ -48,7 +48,7 @@ public class BasicSpanTest {
                     if (isPrint) System.out.print(getSimpleName(parent) + ">");
                     if (parent instanceof Document) {
                         parent = ((Document) parent).get(i);
-                    } else if (parent instanceof SpanBranch) {
+                    } else if (parent instanceof SpanParent) {
                         parent = ((SpanBranch) parent).get(i);
                     }
                 }
@@ -355,7 +355,7 @@ public class BasicSpanTest {
             for (int index : expectLeaf.getIndexes()) {
                 if (parent instanceof Document) {
                     parent = ((Document) parent).get(index);
-                } else if (parent instanceof SpanBranch) {
+                } else if (parent instanceof SpanParent) {
                     expectedSpans.add(parent);
                     parent = ((SpanBranch) parent).get(index);
                 }

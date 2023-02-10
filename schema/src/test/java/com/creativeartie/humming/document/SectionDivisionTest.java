@@ -29,6 +29,8 @@ class SectionDivisionTest extends SpanTestBase<SpanBranch> {
         addStyleTest(".", LineStyles.QUOTE, SpanStyles.TEXT);
         testStyles();
 
+        Assertions.assertEquals(1, getDocument().size(), "Doc size");
+
         SpanBranch branch = getDocument().get(0);
         Assertions.assertInstanceOf(SectionDivision.class, branch);
         SectionDivision test = (SectionDivision) branch;
@@ -48,6 +50,8 @@ class SectionDivisionTest extends SpanTestBase<SpanBranch> {
         addStyleTest("Some content.", LineStyles.NORMAL, SpanStyles.TEXT);
         testStyles();
 
+        Assertions.assertEquals(1, getDocument().size(), "Doc size");
+
         SpanBranch branch = getDocument().get(0);
         Assertions.assertInstanceOf(SectionDivision.class, branch);
         SectionDivision test = (SectionDivision) branch;
@@ -66,6 +70,8 @@ class SectionDivisionTest extends SpanTestBase<SpanBranch> {
         addStyleTest("Some content.", LineStyles.NORMAL, SpanStyles.TEXT);
         testStyles();
 
+        Assertions.assertEquals(1, getDocument().size(), "Doc size");
+
         Span child = getDocument().get(0);
         Assertions.assertInstanceOf(SectionDivision.class, child);
         SectionDivision test = (SectionDivision) child;
@@ -80,35 +86,71 @@ class SectionDivisionTest extends SpanTestBase<SpanBranch> {
     }
 
     @Test
-    void testWithSubheadings() {
-        newDoc("=heading 1.1\n==Heading 2.1\nContent\n==Heading 2.2\n===heading 2.2.1\n=heading 2\n=heading 3");
-        Assertions.assertEquals(3, getDocument().size(), "Doc size");
-        addStyleTest("=", LineStyles.HEADING, SpanStyles.OPERATOR);
-        addStyleTest("heading 1.1", LineStyles.HEADING, SpanStyles.TEXT);
+    void testWithSub() {
+        newDoc("=heading\n===heading 3\n==heading");
+        addStyleTest("=", LineStyles.HEADING, SpanStyles.OPERATOR); // 1
+        addStyleTest("heading", LineStyles.HEADING, SpanStyles.TEXT);
         addStyleTest("\n", LineStyles.HEADING, SpanStyles.OPERATOR);
 
-        addStyleTest("==", LineStyles.HEADING, SpanStyles.OPERATOR);
-        addStyleTest("Heading 2.1", LineStyles.HEADING, SpanStyles.TEXT);
-        addStyleTest("\n", LineStyles.HEADING, SpanStyles.OPERATOR);
-
-        addStyleTest("Content", LineStyles.NORMAL, SpanStyles.TEXT);
-        addStyleTest("\n", LineStyles.NORMAL, SpanStyles.OPERATOR);
-
-        addStyleTest("==", LineStyles.HEADING, SpanStyles.OPERATOR);
-        addStyleTest("Heading 2.2", LineStyles.HEADING, SpanStyles.TEXT);
-        addStyleTest("\n", LineStyles.HEADING, SpanStyles.OPERATOR);
-
-        addStyleTest("===", LineStyles.HEADING, SpanStyles.OPERATOR);
-        addStyleTest("heading 2.2.1", LineStyles.HEADING, SpanStyles.TEXT);
-        addStyleTest("\n", LineStyles.HEADING, SpanStyles.OPERATOR);
-
-        addStyleTest("=", LineStyles.HEADING, SpanStyles.OPERATOR);
-        addStyleTest("heading 2", LineStyles.HEADING, SpanStyles.TEXT);
-        addStyleTest("\n", LineStyles.HEADING, SpanStyles.OPERATOR);
-
-        addStyleTest("=", LineStyles.HEADING, SpanStyles.OPERATOR);
+        addStyleTest("===", LineStyles.HEADING, SpanStyles.OPERATOR); // 1.1.1
         addStyleTest("heading 3", LineStyles.HEADING, SpanStyles.TEXT);
+        addStyleTest("\n", LineStyles.HEADING, SpanStyles.OPERATOR);
+
+        addStyleTest("==", LineStyles.HEADING, SpanStyles.OPERATOR); // 1.2
+        addStyleTest("heading", LineStyles.HEADING, SpanStyles.TEXT);
         testStyles();
+
+        Assertions.assertEquals(1, getDocument().size(), "Doc size");
+
+        Span child = getDocument().get(0); // 1
+        Assertions.assertInstanceOf(SectionDivision.class, child);
+        SectionDivision section1 = (SectionDivision) child;
+        Assertions.assertEquals(1, section1.getLevel(), "Child level");
+        Assertions.assertEquals(3, section1.size(), "Child size");
+
+        child = section1.get(1); // 1.1
+        Assertions.assertInstanceOf(SectionDivision.class, child);
+        SectionDivision test = (SectionDivision) child;
+        Assertions.assertEquals(2, test.getLevel(), "Child level");
+        Assertions.assertEquals(1, test.size(), "Child size");
+
+        child = test.get(0); // 1.1.1
+        Assertions.assertInstanceOf(SectionDivision.class, child);
+        test = (SectionDivision) child;
+        Assertions.assertEquals(3, test.getLevel(), "Child level");
+        Assertions.assertEquals(1, test.size(), "Child size");
+
+        child = section1.get(2); // 1.2
+        Assertions.assertInstanceOf(SectionDivision.class, child);
+        test = (SectionDivision) child;
+        Assertions.assertEquals(2, test.getLevel(), "Child level");
+        Assertions.assertEquals(1, test.size(), "Child size");
+    }
+
+    @Test
+    void testDouble() {
+        newDoc("=heading\n=heading");
+        addStyleTest("=", LineStyles.HEADING, SpanStyles.OPERATOR); // 1
+        addStyleTest("heading", LineStyles.HEADING, SpanStyles.TEXT);
+        addStyleTest("\n", LineStyles.HEADING, SpanStyles.OPERATOR);
+
+        addStyleTest("=", LineStyles.HEADING, SpanStyles.OPERATOR); // 2
+        addStyleTest("heading", LineStyles.HEADING, SpanStyles.TEXT);
+        testStyles();
+
+        Assertions.assertEquals(2, getDocument().size(), "Doc size");
+
+        Span child = getDocument().get(0); // 2
+        Assertions.assertInstanceOf(SectionDivision.class, child);
+        SectionDivision test = (SectionDivision) child;
+        Assertions.assertEquals(1, test.getLevel(), "Child level");
+        Assertions.assertEquals(1, test.size(), "Child size");
+
+        child = getDocument().get(1); // 3
+        Assertions.assertInstanceOf(SectionDivision.class, child);
+        test = (SectionDivision) child;
+        Assertions.assertEquals(1, test.getLevel(), "Child level");
+        Assertions.assertEquals(1, test.size(), "Child size");
     }
 
     protected void newDoc(String input) {

@@ -5,7 +5,7 @@ import java.util.*;
 public interface Span {
     Document getRoot();
 
-    Optional<SpanBranch> getParent();
+    Optional<SpanParent> getParent();
 
     public boolean cleanUp();
 

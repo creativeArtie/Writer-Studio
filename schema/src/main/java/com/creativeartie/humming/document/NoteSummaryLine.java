@@ -34,8 +34,7 @@ public class NoteSummaryLine extends LineSpan implements IdentitySpan.IdentityPa
 
     @Override
     public int getIdPosition() {
-        Optional<SpanBranch> parent = getParent();
-        return parent.isPresent() ? parent.get().getStartIndex() : 0;
+        return getStartIndex();
     }
 
     @Override

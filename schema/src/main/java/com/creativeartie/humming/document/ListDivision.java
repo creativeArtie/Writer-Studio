@@ -6,8 +6,8 @@ public class ListDivision extends Division {
     private final boolean isBullet;
     private final int listLevel;
 
-    public ListDivision(SpanBranch parent, ListLine line) {
-        super(parent);
+    public ListDivision(SpanBranch spanParent, ListLine line) {
+        super(spanParent);
         listLevel = 1;
         isBullet = line.getLineStyle() == LineStyles.BULLET;
     }
@@ -27,12 +27,13 @@ public class ListDivision extends Division {
                 return Optional.of(this);
             } else {
                 // different type + same level = go to SectionDivision + new list
-                Optional<SpanBranch> parent = getParent();
-                assert parent.isPresent();
-                while (parent.get() instanceof ListDivision) {
-                    parent = parent.get().getParent();
+                Optional<SpanParent> search = getParent();
+                assert search.isPresent();
+                while (search.get() instanceof ListDivision) {
+                    search = search.get().getParent();
                 }
-                ListDivision newList = new ListDivision(parent.get(), line);
+                SectionDivision parent = (SectionDivision) search.get();
+                ListDivision newList = new ListDivision(parent, line);
                 return newList.addLine(line);
             }
         } else if (level > listLevel) {
@@ -43,7 +44,7 @@ public class ListDivision extends Division {
             return Optional.of(child);
         }
         // shadower level = go back to parent
-        Optional<SpanBranch> parent = getParent();
+        Optional<SpanParent> parent = getParent();
         assert parent.isPresent();
         if (parent.get() instanceof ListDivision) {
             return ((ListDivision) parent.get()).addLine(line);

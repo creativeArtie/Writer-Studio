@@ -16,24 +16,27 @@ public class SectionDivision extends Division {
     }
 
     private Optional<Division> addHeading(HeadingLine heading) {
-        if (heading.getLevel() <= sectionLevel) {
-            if (isEmpty() && heading.getLevel() == sectionLevel) {
+        if (sectionLevel == heading.getLevel()) {
+            if (isEmpty()) {
                 add(heading);
                 return Optional.of(this);
             }
-            if (sectionLevel == 1) {
-                SectionDivision sibling = new SectionDivision(getRoot());
-                getRoot().add(sibling);
-                return sibling.addHeading(heading);
-            }
-            return ((SectionDivision) getParent().get()).addHeading(heading);
-        }
+            Optional<SpanParent> search = getParent();
+            assert search.isPresent();
 
-        SectionDivision child = new SectionDivision(this, sectionLevel + 1);
-        add(child);
-        if (child.sectionLevel == sectionLevel + 1) child.add(heading);
-        else return child.addHeading(heading);
-        return Optional.of(child);
+            SpanParent parent = search.get();
+            SectionDivision division = new SectionDivision(this, heading.getLevel());
+            parent.add(division);
+            division.add(heading);
+            return Optional.of(division);
+        } else if (sectionLevel < heading.getLevel()) {
+            SectionDivision division = new SectionDivision(this, sectionLevel + 1);
+            add(division);
+            return division.addHeading(heading);
+        } // else if (sectionLevel > heading.getLevel()
+        Optional<SpanParent> search = getParent();
+        assert search.isPresent() && search.get() instanceof SectionDivision;
+        return ((SectionDivision) search.get()).addHeading(heading);
     }
 
     @Override

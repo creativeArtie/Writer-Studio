@@ -18,7 +18,7 @@ import com.google.common.collect.*;
  *
  * @author wai
  */
-public class Document extends ForwardingList<Division> implements Span {
+public class Document extends ForwardingList<Division> implements SpanParent {
     private IdentityStorage idStorage;
 
     public boolean isIdUnique(IdentitySpan span) {
@@ -94,7 +94,7 @@ public class Document extends ForwardingList<Division> implements Span {
         for (Span child : children) {
             if (child.getEndIndex() > location) {
                 answer.add(child);
-                if (child instanceof SpanBranch) {
+                if (child instanceof SpanParent) {
                     answer.addAll(getLocateChildrenCache(location, (SpanBranch) child));
                     return answer.build();
                 } else {
@@ -105,6 +105,7 @@ public class Document extends ForwardingList<Division> implements Span {
         return answer.build();
     }
 
+    @Override
     public List<Integer> findChild(Span span) {
         try {
             return findChildCache.get(span);
@@ -124,7 +125,7 @@ public class Document extends ForwardingList<Division> implements Span {
                 answer.add(i);
                 return answer;
             }
-            if (child instanceof SpanBranch) {
+            if (child instanceof SpanParent) {
                 List<Integer> addList = getFindChildCache(span, ((SpanBranch) child));
                 if (!addList.isEmpty()) {
                     answer.add(i);
@@ -139,6 +140,7 @@ public class Document extends ForwardingList<Division> implements Span {
 
     @Override
     public boolean add(Division child) {
+        child.setParent(this);
         return docChildren.add(child);
     }
 
@@ -158,7 +160,7 @@ public class Document extends ForwardingList<Division> implements Span {
     }
 
     @Override
-    public Optional<SpanBranch> getParent() {
+    public Optional<SpanParent> getParent() {
         return Optional.empty();
     }
 
@@ -280,5 +282,23 @@ public class Document extends ForwardingList<Division> implements Span {
             }
         }
         return leaves.build();
+    }
+
+    @Override
+    public List<SpanLeaf> getLeafs() {
+        return convertLeaves((leaf) -> leaf);
+    }
+
+    @Override
+    public List<StyleClass> getInheritedStyles() {
+        return ImmutableList.of();
+    }
+
+    @Override
+    public boolean add(Span span) {
+        if (span instanceof Division) {
+            return add((Division) span);
+        }
+        return false;
     }
 }

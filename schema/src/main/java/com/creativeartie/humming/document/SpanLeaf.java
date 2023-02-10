@@ -6,16 +6,16 @@ import com.google.common.collect.*;
 
 public final class SpanLeaf implements Span {
     private final Document spanRoot;
-    private final SpanBranch parentSpan;
+    private final SpanParent parentSpan;
     private final SpanStyles styleClass;
     private final int styleLength;
     private final String referText;
 
-    protected SpanLeaf(SpanBranch parent, String text) {
+    protected SpanLeaf(SpanParent parent, String text) {
         this(parent, text, SpanStyles.OPERATOR);
     }
 
-    protected SpanLeaf(SpanBranch parent, String text, SpanStyles style) {
+    protected SpanLeaf(SpanParent parent, String text, SpanStyles style) {
         spanRoot = parent.getRoot();
         parentSpan = parent;
         referText = text;
@@ -51,7 +51,7 @@ public final class SpanLeaf implements Span {
     }
 
     @Override
-    public Optional<SpanBranch> getParent() {
+    public Optional<SpanParent> getParent() {
         return Optional.of(parentSpan);
     }
 
