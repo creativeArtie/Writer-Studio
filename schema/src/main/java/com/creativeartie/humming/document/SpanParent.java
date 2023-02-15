@@ -10,4 +10,6 @@ public interface SpanParent extends Span {
     List<StyleClass> getInheritedStyles();
 
     boolean add(Span division);
+
+    int size();
 }

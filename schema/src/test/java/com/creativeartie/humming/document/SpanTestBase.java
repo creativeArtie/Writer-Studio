@@ -30,7 +30,10 @@ public abstract class SpanTestBase<T extends SpanBranch> {
     protected void beforeEach() {
         refreshLists();
         rootDoc = new Document();
+        moreBeforeEach();
     }
+
+    protected void moreBeforeEach() {}
 
     protected void refreshLists() {
         expectedStyles.clear();
