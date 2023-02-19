@@ -48,6 +48,7 @@ public abstract class DivisionTestBase<T extends Division> extends SpanTestBase<
                 int i = 0;
                 for (Object data : spanData) {
                     tests.add(testChild(i, data, tested));
+                    i++;
                 }
             }
             tests.add(() -> Assertions.assertEquals(childrenSize, child.size()));

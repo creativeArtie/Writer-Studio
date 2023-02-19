@@ -104,10 +104,6 @@ class SectionDivisionTest extends DivisionTestBase<SectionDivision> {
 
     @Override
     protected Executable testChild(int index, Object expect, SectionDivision child) {
-        switch (index) {
-            case 0:
-                return () -> Assertions.assertEquals(expect, child.getLevel());
-        }
-        return null;
+        return () -> Assertions.assertEquals(expect, child.getLevel(), "getLevel");
     }
 }

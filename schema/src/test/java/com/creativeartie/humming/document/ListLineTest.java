@@ -11,7 +11,7 @@ class ListLineTest extends SpanBranchTestBase<ListLine> {
         addStyleTest("\n", LineStyles.BULLET, SpanStyles.OPERATOR);
         testStyles(test);
         Assertions.assertInstanceOf(ListLine.class, test);
-        Assertions.assertEquals(2, ((ListLine) test).getLevel());
+        Assertions.assertEquals(2, ((ListSpan) test).getLevel());
     }
 
     @Test
@@ -22,7 +22,7 @@ class ListLineTest extends SpanBranchTestBase<ListLine> {
         addStyleTest("\n", LineStyles.NUMBERED, SpanStyles.OPERATOR);
         testStyles(test);
         Assertions.assertInstanceOf(ListLine.class, test);
-        Assertions.assertEquals(1, ((ListLine) test).getLevel());
+        Assertions.assertEquals(1, ((ListSpan) test).getLevel());
     }
 
     @Test
@@ -32,7 +32,7 @@ class ListLineTest extends SpanBranchTestBase<ListLine> {
         addStyleTest("\n", LineStyles.NUMBERED, SpanStyles.OPERATOR);
         testStyles(test);
         Assertions.assertInstanceOf(ListLine.class, test);
-        Assertions.assertEquals(1, ((ListLine) test).getLevel());
+        Assertions.assertEquals(1, ((ListSpan) test).getLevel());
     }
 
     @Test
@@ -42,7 +42,7 @@ class ListLineTest extends SpanBranchTestBase<ListLine> {
         addStyleTest("numbered", LineStyles.NUMBERED, SpanStyles.TEXT);
         testStyles(test);
         Assertions.assertInstanceOf(ListLine.class, test);
-        Assertions.assertEquals(1, ((ListLine) test).getLevel());
+        Assertions.assertEquals(1, ((ListSpan) test).getLevel());
     }
 
     @Test
@@ -50,7 +50,7 @@ class ListLineTest extends SpanBranchTestBase<ListLine> {
         LineSpan test = newSpan("#");
         addStyleTest("#", LineStyles.NUMBERED, SpanStyles.OPERATOR);
         testStyles(test);
-        Assertions.assertEquals(1, ((ListLine) test).getLevel());
+        Assertions.assertEquals(1, ((ListSpan) test).getLevel());
     }
 
     @Override

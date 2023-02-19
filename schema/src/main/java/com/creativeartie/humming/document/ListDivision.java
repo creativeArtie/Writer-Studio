@@ -2,20 +2,23 @@ package com.creativeartie.humming.document;
 
 import java.util.*;
 
-public class ListDivision extends Division {
+public class ListDivision extends Division implements ListSpan {
     private final boolean isBullet;
     private final int listLevel;
+    private int listPosition;
 
     public ListDivision(SpanBranch spanParent, ListLine line) {
         super(spanParent);
         listLevel = 1;
         isBullet = line.getLineStyle() == LineStyles.BULLET;
+        listPosition = 1;
     }
 
     private ListDivision(SpanBranch parent, ListLine line, int level) {
         super(parent);
         listLevel = level;
         isBullet = line.getLineStyle() == LineStyles.BULLET;
+        listPosition = 1;
     }
 
     protected Optional<Division> addLine(ListLine line) {
@@ -24,33 +27,24 @@ public class ListDivision extends Division {
             if (line.getLineStyle() == LineStyles.BULLET ? isBullet : !isBullet) {
                 // same type + same level = add to this
                 add(line);
+                line.setPosition(size());
                 return Optional.of(this);
             } else {
                 // different type + same level = go to SectionDivision + new list
-                Optional<SpanParent> search = getParent();
-                assert search.isPresent();
-                while (search.get() instanceof ListDivision) {
-                    search = search.get().getParent();
-                }
-                SectionDivision parent = (SectionDivision) search.get();
+                SectionDivision parent = findParent(SectionDivision.class).get();
                 ListDivision newList = new ListDivision(parent, line);
+                parent.add(newList);
                 return newList.addLine(line);
             }
         } else if (level > listLevel) {
             // deeper level = create child
             ListDivision child = new ListDivision(this, line, listLevel + 1);
-            if (child.listLevel == line.getLevel()) child.add(line);
-            else return child.addLine(line);
-            return Optional.of(child);
+            add(child);
+            child.listPosition = size();
+            return child.addLine(line);
         }
         // shadower level = go back to parent
-        Optional<SpanParent> parent = getParent();
-        assert parent.isPresent();
-        if (parent.get() instanceof ListDivision) {
-            return ((ListDivision) parent.get()).addLine(line);
-        }
-
-        return Optional.empty();
+        return findParent(ListDivision.class).map((span) -> (Division) span);
     }
 
     @Override
@@ -63,15 +57,22 @@ public class ListDivision extends Division {
             case NUMBERED:
                 return addLine((ListLine) line);
             default:
-                return Optional.of((Division) getParent().get());
+                return findParent(SectionDivision.class).map((span) -> (Division) span);
         }
     }
 
+    @Override
     public boolean isBullet() {
         return isBullet;
     }
 
-    public int getListLevel() {
+    @Override
+    public int getPosition() {
+        return listPosition;
+    }
+
+    @Override
+    public int getLevel() {
         return listLevel;
     }
 }

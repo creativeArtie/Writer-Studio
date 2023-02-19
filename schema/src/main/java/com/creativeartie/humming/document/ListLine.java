@@ -4,7 +4,7 @@ import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 
-public class ListLine extends LineSpan {
+public class ListLine extends LineSpan implements ListSpan {
     static ListLine newLine(SpanBranch parent, Matcher match) {
         if (ListLinePattern.BULLET.group(match) == null) {
             return new ListLine(parent, LineStyles.NUMBERED);
@@ -12,11 +12,13 @@ public class ListLine extends LineSpan {
         return new ListLine(parent, LineStyles.BULLET);
     }
 
-    private int nestLevel;
+    private int listLevel;
+    private int listPosition;
 
     private ListLine(SpanBranch parent, LineStyles style) {
         super(parent, style);
-        nestLevel = 0;
+        listLevel = 0;
+        listPosition = 1;
     }
 
     @Override
@@ -26,12 +28,27 @@ public class ListLine extends LineSpan {
             raw = ListLinePattern.NUMBERED.group(match);
         }
         add(new SpanLeaf(this, raw));
-        nestLevel = raw.length();
+        listLevel = raw.length();
         addText(match, ListLinePattern.TEXT);
         addLineEnd(match, ListLinePattern.ENDER);
     }
 
+    @Override
     public int getLevel() {
-        return nestLevel;
+        return listLevel;
+    }
+
+    void setPosition(int pos) {
+        listPosition = pos;
+    }
+
+    @Override
+    public int getPosition() {
+        return listPosition;
+    }
+
+    @Override
+    public boolean isBullet() {
+        return useParent(ListDivision.class).isBullet();
     }
 }

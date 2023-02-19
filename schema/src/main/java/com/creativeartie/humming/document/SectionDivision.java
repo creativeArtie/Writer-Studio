@@ -21,12 +21,8 @@ public class SectionDivision extends Division {
                 add(heading);
                 return Optional.of(this);
             }
-            Optional<SpanParent> search = getParent();
-            assert search.isPresent();
-
-            SpanParent parent = search.get();
             SectionDivision division = new SectionDivision(this, heading.getLevel());
-            parent.add(division);
+            addChild(division);
             division.add(heading);
             return Optional.of(division);
         } else if (sectionLevel < heading.getLevel()) {
@@ -34,9 +30,7 @@ public class SectionDivision extends Division {
             add(division);
             return division.addHeading(heading);
         } // else if (sectionLevel > heading.getLevel()
-        Optional<SpanParent> search = getParent();
-        assert search.isPresent() && search.get() instanceof SectionDivision;
-        return ((SectionDivision) search.get()).addHeading(heading);
+        return useParent(SectionDivision.class).addHeading(heading);
     }
 
     @Override
@@ -45,6 +39,7 @@ public class SectionDivision extends Division {
             case BULLET:
             case NUMBERED:
                 ListDivision division = new ListDivision(this, (ListLine) line);
+                add(division);
                 return division.addLine(line, style);
             case HEADER:
                 break;
