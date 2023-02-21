@@ -5,8 +5,6 @@ import java.util.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.*;
 
-import com.google.common.base.*;
-
 public abstract class DivisionTestBase<T extends Division> extends SpanTestBase<SpanBranch> {
     private Class<T> checkClass;
 
@@ -24,19 +22,35 @@ public abstract class DivisionTestBase<T extends Division> extends SpanTestBase<
         private int childrenSize;
         private String spanName;
         private Object[] spanData;
+        private boolean isReady[];
 
-        protected TestChild(int i, Class<?> clazz, int size, String name, Object... data) {
-            children = new ArrayList<>();
-            spanClass = clazz;
-            childrenSize = size;
-            index = i;
+        private TestChild(String name, int idx) {
             spanName = name;
-            spanData = data;
+            children = new ArrayList<>();
+            index = idx;
+            isReady = new boolean[] { false, false, false };
         }
 
-        protected TestChild newChild(int index, Class<?> childClass, int size, String name, Object... data) {
-            Preconditions.checkElementIndex(index, childrenSize);
-            TestChild child = new TestChild(index, childClass, size, name, data);
+        protected TestChild setClass(Class<?> clazz) {
+            spanClass = clazz;
+            isReady[0] = true;
+            return this;
+        }
+
+        protected TestChild setChildrenSize(int size) {
+            childrenSize = size;
+            isReady[1] = true;
+            return this;
+        }
+
+        protected TestChild setData(Object... expect) {
+            spanData = expect;
+            isReady[2] = true;
+            return this;
+        }
+
+        protected TestChild newChildAtIndex(String name, int idx) {
+            TestChild child = new TestChild(name, idx);
             children.add(child);
             return child;
         }
@@ -47,13 +61,18 @@ public abstract class DivisionTestBase<T extends Division> extends SpanTestBase<
             if (checkClass.isInstance(test)) {
                 T tested = checkClass.cast(test);
                 int i = 0;
+                assert isReady[2] == true : "Data not set";
 
                 for (Object data : spanData) {
                     tests.add(testChild(i, data, tested));
                     i++;
                 }
             }
+
+            assert isReady[1] == true : "Child size not set";
             tests.add(() -> Assertions.assertEquals(childrenSize, test.size(), "child size"));
+
+            assert isReady[0] == true : "Child class not set";
             tests.add(() -> Assertions.assertInstanceOf(spanClass, test, "child class"));
             Assertions.assertAll(spanName, tests.toArray(new Executable[tests.size()]));
 
@@ -141,14 +160,14 @@ public abstract class DivisionTestBase<T extends Division> extends SpanTestBase<
 
     private TestChild rootChild;
 
-    protected TestChild addChild(int index, Class<?> childClass, int childrenSize, String name, Object... data) {
+    protected TestChild newChildAtIndex(String name, int idx) {
         rootChild.childrenSize += 1;
-        return rootChild.newChild(index, childClass, childrenSize, name, data);
+        return rootChild.newChildAtIndex(name, idx);
     }
 
     @Override
     protected void moreBeforeEach() {
-        rootChild = new TestChild(0, Document.class, 0, "root");
+        rootChild = new TestChild("root", 0).setChildrenSize(0).setClass(Document.class);
     }
 
     protected void newDoc(String input) {

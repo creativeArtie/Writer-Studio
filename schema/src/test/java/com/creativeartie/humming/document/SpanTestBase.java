@@ -41,7 +41,7 @@ public abstract class SpanTestBase<T extends SpanBranch> {
     }
 
     protected void addStyleTest(String text, StyleClass... styles) {
-        expectedText.add(text);
+        expectedText.add(text.replace('\n', '␤'));
         expectedStyles.add(styles);
     }
 
@@ -61,6 +61,7 @@ public abstract class SpanTestBase<T extends SpanBranch> {
         int i = 0;
         int startIdx = 0;
         Assertions.assertEquals(expectedStyles.size(), testLeaves.size(), "Leaves sizes");
+
         for (SpanLeaf leaf : testLeaves) {
             String format = "For %s at leaf index %d, text \"%s\"";
             String text = expectedText.get(i);
@@ -95,6 +96,7 @@ public abstract class SpanTestBase<T extends SpanBranch> {
 
         int start = 0;
         System.out.println(input);
+
         for (SpanLeaf leaf : span.getLeafs()) {
             int end = start + leaf.getLength();
             System.out.println(input.substring(start, end) + leaf.getClassStyles().toString());

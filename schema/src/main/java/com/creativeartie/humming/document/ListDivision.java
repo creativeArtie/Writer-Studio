@@ -63,7 +63,7 @@ public class ListDivision extends Division implements ListSpan {
             case NUMBERED:
                 return addLine((ListLine) line);
             default:
-                return findParent(SectionDivision.class).map((span) -> (Division) span);
+                return findParent(SectionDivision.class).flatMap((span) -> span.addLine(line, style));
         }
     }
 

@@ -29,7 +29,7 @@ class SectionDivisionTest extends DivisionTestBase<SectionDivision> {
         addStyleTest(".", LineStyles.QUOTE, SpanStyles.TEXT);
         testStyles();
 
-        addChild(0, SectionDivision.class, 2, "No heading", 1);
+        newChildAtIndex("No heading", 0).setChildrenSize(2).setClass(SectionDivision.class).setData(1);
         testChildren();
     }
 
@@ -44,7 +44,7 @@ class SectionDivisionTest extends DivisionTestBase<SectionDivision> {
         addStyleTest("Some content.", LineStyles.NORMAL, SpanStyles.TEXT);
         testStyles();
 
-        addChild(0, SectionDivision.class, 2, "WithHeading", 1);
+        newChildAtIndex("With Heading", 0).setChildrenSize(2).setClass(SectionDivision.class).setData(1);
         testChildren();
     }
 
@@ -59,8 +59,8 @@ class SectionDivisionTest extends DivisionTestBase<SectionDivision> {
         addStyleTest("Some content.", LineStyles.NORMAL, SpanStyles.TEXT);
         testStyles();
 
-        TestChild child = addChild(0, SectionDivision.class, 1, "No heading", 1);
-        child.newChild(0, SectionDivision.class, 2, "Child", 2);
+        newChildAtIndex("No Heading", 0).setChildrenSize(1).setClass(SectionDivision.class).setData(1)
+                .newChildAtIndex("child", 0).setChildrenSize(2).setClass(SectionDivision.class).setData(2);
         testChildren();
     }
 
@@ -79,10 +79,11 @@ class SectionDivisionTest extends DivisionTestBase<SectionDivision> {
         addStyleTest("heading", LineStyles.HEADING, SpanStyles.TEXT);
         testStyles();
 
-        TestChild h1 = addChild(0, SectionDivision.class, 3, "Parent", 1);
-        TestChild h1_1 = h1.newChild(1, SectionDivision.class, 1, "First child", 2);
-        h1_1.newChild(0, SectionDivision.class, 1, "grandchild", 3);
-        h1.newChild(2, SectionDivision.class, 1, "Second child", 2);
+        TestChild h1 = newChildAtIndex("Parent", 0).setClass(SectionDivision.class).setChildrenSize(3).setData(1);
+        TestChild h1_1 =
+                h1.newChildAtIndex("First child", 1).setClass(SectionDivision.class).setChildrenSize(1).setData(2);
+        h1_1.newChildAtIndex("grandchild", 0).setClass(SectionDivision.class).setChildrenSize(1).setData(3);
+        h1.newChildAtIndex("second child", 2).setClass(SectionDivision.class).setChildrenSize(1).setData(2);
         testChildren();
     }
 
@@ -97,8 +98,8 @@ class SectionDivisionTest extends DivisionTestBase<SectionDivision> {
         addStyleTest("heading", LineStyles.HEADING, SpanStyles.TEXT);
         testStyles();
 
-        addChild(0, SectionDivision.class, 1, "First child", 1);
-        addChild(1, SectionDivision.class, 1, "Second child", 1);
+        newChildAtIndex("First Child", 0).setClass(SectionDivision.class).setChildrenSize(1).setData(1);
+        newChildAtIndex("Second Child", 0).setClass(SectionDivision.class).setChildrenSize(1).setData(1);
         testChildren();
     }
 
