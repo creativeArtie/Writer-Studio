@@ -63,18 +63,19 @@ public abstract class SpanTestBase<T extends SpanBranch> {
         Assertions.assertEquals(expectedStyles.size(), testLeaves.size(), "Leaves sizes");
         for (SpanLeaf leaf : testLeaves) {
             String format = "For %s at leaf index %d, text \"%s\"";
+            String text = expectedText.get(i);
 
             StyleClass[] expectedStyle = expectedStyles.get(i);
-            String styleText = String.format(format, "styles", i, expectedText.get(i));
+            String styleText = String.format(format, "styles", i, text);
 
             int expectedLength = expectedText.get(i).length();
-            String styleLength = String.format(format, "styles", i, expectedText.get(i));
+            String styleLength = String.format(format, "length", i, text);
 
             int expectedStart = startIdx;
-            String startIndex = String.format(format, "startIdx", i, expectedStart);
+            String startIndex = String.format(format, "startIdx", i, text);
 
             int expectedEnd = startIdx + expectedLength;
-            String endIndex = String.format(format, "endIdx", i, expectedEnd);
+            String endIndex = String.format(format, "endIdx", i, text);
 
             Assertions.assertAll(
                     () -> Assertions.assertArrayEquals(expectedStyle, leaf.getClassStyles().toArray(), styleText),
