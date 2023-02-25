@@ -16,13 +16,18 @@ public class SectionDivision extends Division {
     }
 
     private Optional<Division> addHeading(HeadingLine heading) {
+
         if (sectionLevel == heading.getLevel()) {
+
             if (isEmpty()) {
                 add(heading);
                 return Optional.of(this);
             }
             SectionDivision division = new SectionDivision(this, heading.getLevel());
-            addChild(division);
+
+            findParent(SectionDivision.class)
+                    .ifPresentOrElse((span) -> span.add(division), () -> getRoot().add(division));
+
             division.add(heading);
             return Optional.of(division);
         } else if (sectionLevel < heading.getLevel()) {
@@ -35,6 +40,7 @@ public class SectionDivision extends Division {
 
     @Override
     protected Optional<Division> addLine(LineSpan line, LineStyles style) {
+
         switch (style) {
             case BULLET:
             case NUMBERED:

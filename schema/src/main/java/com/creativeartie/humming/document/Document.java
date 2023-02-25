@@ -80,6 +80,7 @@ public class Document extends ForwardingList<Division> implements SpanParent {
     }
 
     public List<Span> locateChildren(int location) {
+
         try {
             return locateChildrenCache.get(location);
         } catch (ExecutionException e) {
@@ -91,9 +92,12 @@ public class Document extends ForwardingList<Division> implements SpanParent {
 
     private List<Span> getLocateChildrenCache(int location, List<? extends Span> children) {
         ImmutableList.Builder<Span> answer = ImmutableList.builder();
+
         for (Span child : children) {
+
             if (child.getEndIndex() > location) {
                 answer.add(child);
+
                 if (child instanceof SpanParent) {
                     answer.addAll(getLocateChildrenCache(location, (SpanBranch) child));
                     return answer.build();
@@ -107,6 +111,7 @@ public class Document extends ForwardingList<Division> implements SpanParent {
 
     @Override
     public List<Integer> findChild(Span span) {
+
         try {
             return findChildCache.get(span);
         } catch (ExecutionException e) {
@@ -119,14 +124,18 @@ public class Document extends ForwardingList<Division> implements SpanParent {
     protected List<Integer> getFindChildCache(Span span, List<Span> children) {
         ArrayList<Integer> answer = new ArrayList<>();
         int i = 0;
+
         for (Span child : children) {
+
             if (child == span) {
                 answer = new ArrayList<>();
                 answer.add(i);
                 return answer;
             }
+
             if (child instanceof SpanParent) {
                 List<Integer> addList = getFindChildCache(span, ((SpanBranch) child));
+
                 if (!addList.isEmpty()) {
                     answer.add(i);
                     answer.addAll(addList);
@@ -167,6 +176,7 @@ public class Document extends ForwardingList<Division> implements SpanParent {
     @Override
     public boolean cleanUp() {
         boolean changed = false;
+
         for (SpanBranch child : docChildren) {
             changed = changed || child.cleanUp();
         }
@@ -193,10 +203,13 @@ public class Document extends ForwardingList<Division> implements SpanParent {
         List<Integer> targetIndexes = span.getRoot().findChild(span);
         ForwardingList<? extends Span> parent = span.getRoot();
         int length = 0;
+
         for (int targetIndex : targetIndexes) {
+
             for (int childIndex = 0; childIndex < targetIndex; childIndex++) {
                 length += parent.get(childIndex).getLength();
             }
+
             if (parent.get(targetIndex) instanceof SpanLeaf) {
                 return length + (isStart ? 0 : parent.get(targetIndex).getLength());
             }
@@ -206,6 +219,7 @@ public class Document extends ForwardingList<Division> implements SpanParent {
     }
 
     protected int getCacheLength(SpanBranch span) {
+
         try {
             return lengthsCache.get(span);
         } catch (ExecutionException e) {
@@ -216,6 +230,7 @@ public class Document extends ForwardingList<Division> implements SpanParent {
     }
 
     protected int getCacheStart(Span span) {
+
         try {
             return startIdxCache.get(span);
         } catch (ExecutionException e) {
@@ -226,6 +241,7 @@ public class Document extends ForwardingList<Division> implements SpanParent {
     }
 
     protected int getCacheEnd(Span span) {
+
         try {
             return endIdxCache.get(span);
         } catch (ExecutionException e) {
@@ -244,6 +260,7 @@ public class Document extends ForwardingList<Division> implements SpanParent {
     }
 
     public void updateText(String text) {
+
         try {
             clear();
 
@@ -258,10 +275,12 @@ public class Document extends ForwardingList<Division> implements SpanParent {
             add(parent);
             List<String> texts = Splitter.on('\n').splitToList(text);
             int line = 1;
+
             for (String raw : texts) {
                 raw += (line == texts.size() ? "" : "\n");
                 LineSpan span = LineSpan.newLine(parent, raw);
                 Optional<Division> next = parent.addLine(span, span.getLineStyle());
+
                 if (next.isPresent()) {
                     parent = next.get();
                 }
@@ -276,7 +295,9 @@ public class Document extends ForwardingList<Division> implements SpanParent {
 
     public <T> List<T> convertLeaves(Function<SpanLeaf, T> convert) {
         ImmutableList.Builder<T> leaves = ImmutableList.builder();
+
         for (SpanBranch child : docChildren) {
+
             for (SpanLeaf leaf : child.getLeafs()) {
                 leaves.add(convert.apply(leaf));
             }
@@ -295,10 +316,7 @@ public class Document extends ForwardingList<Division> implements SpanParent {
     }
 
     @Override
-    public boolean add(Span span) {
-        if (span instanceof Division) {
-            return add((Division) span);
-        }
-        return false;
+    public <T> Optional<T> findParent(Class<T> clazz) {
+        return Optional.empty();
     }
 }
