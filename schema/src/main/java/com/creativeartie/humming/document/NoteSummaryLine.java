@@ -9,7 +9,7 @@ public class NoteSummaryLine extends LineSpan implements IdentitySpan.IdentityPa
     private Optional<IdentitySpan> noteId;
 
     protected NoteSummaryLine(SpanBranch parent) {
-        super(parent, LineStyles.SUMMARY);
+        super(parent, LineStyles.HEADER);
         noteId = Optional.empty();
     }
 

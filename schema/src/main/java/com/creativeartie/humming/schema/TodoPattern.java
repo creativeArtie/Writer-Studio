@@ -27,10 +27,7 @@ public enum TodoPattern implements PatternEnum {
     }
 
     public static String getFullPattern() {
-        if (fullPattern == null)
-        // @formatter:off
-        fullPattern = getFullPattern(false);
-         // @formatter:on
+        if (fullPattern == null) fullPattern = getFullPattern(false);
         return fullPattern;
     }
 

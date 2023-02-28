@@ -47,15 +47,13 @@ public class SectionDivision extends Division {
                 ListDivision division = new ListDivision(this, (ListLine) line);
                 add(division);
                 return division.addLine(line, style);
-            case HEADER:
-                break;
             case HEADING:
                 return addHeading((HeadingLine) line);
             case OUTLINE:
                 break;
             case ROW:
                 break;
-            case SUMMARY:
+            case HEADER:
                 break;
             case FIELD:
                 break;

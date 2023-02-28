@@ -6,12 +6,12 @@ class NoteSummaryLineTest extends SpanBranchTestBase<NoteSummaryLine> {
     @Test
     void testFull() {
         NoteSummaryLine span = newSpan("!%=title#id\n");
-        addStyleTest("!", LineStyles.SUMMARY, SpanStyles.OPERATOR);
-        addStyleTest("%=", LineStyles.SUMMARY, SpanStyles.OPERATOR);
-        addStyleTest("title", LineStyles.SUMMARY, SpanStyles.TEXT);
-        addStyleTest("#", LineStyles.SUMMARY, SpanStyles.OPERATOR);
-        addStyleTest("id", LineStyles.SUMMARY, SpanStyles.ID, SpanStyles.TEXT);
-        addStyleTest("\n", LineStyles.SUMMARY, SpanStyles.OPERATOR);
+        addStyleTest("!", LineStyles.HEADER, SpanStyles.OPERATOR);
+        addStyleTest("%=", LineStyles.HEADER, SpanStyles.OPERATOR);
+        addStyleTest("title", LineStyles.HEADER, SpanStyles.TEXT);
+        addStyleTest("#", LineStyles.HEADER, SpanStyles.OPERATOR);
+        addStyleTest("id", LineStyles.HEADER, SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest("\n", LineStyles.HEADER, SpanStyles.OPERATOR);
         testStyles(span);
         Assertions.assertTrue(span.getPointer().isPresent(), "Id");
     }
@@ -19,11 +19,11 @@ class NoteSummaryLineTest extends SpanBranchTestBase<NoteSummaryLine> {
     @Test
     void testNoEnder() {
         NoteSummaryLine span = newSpan("!%=title#id");
-        addStyleTest("!", LineStyles.SUMMARY, SpanStyles.OPERATOR);
-        addStyleTest("%=", LineStyles.SUMMARY, SpanStyles.OPERATOR);
-        addStyleTest("title", LineStyles.SUMMARY, SpanStyles.TEXT);
-        addStyleTest("#", LineStyles.SUMMARY, SpanStyles.OPERATOR);
-        addStyleTest("id", LineStyles.SUMMARY, SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest("!", LineStyles.HEADER, SpanStyles.OPERATOR);
+        addStyleTest("%=", LineStyles.HEADER, SpanStyles.OPERATOR);
+        addStyleTest("title", LineStyles.HEADER, SpanStyles.TEXT);
+        addStyleTest("#", LineStyles.HEADER, SpanStyles.OPERATOR);
+        addStyleTest("id", LineStyles.HEADER, SpanStyles.ID, SpanStyles.TEXT);
         testStyles(span);
         Assertions.assertTrue(span.getPointer().isPresent(), "Id");
     }
@@ -31,10 +31,10 @@ class NoteSummaryLineTest extends SpanBranchTestBase<NoteSummaryLine> {
     @Test
     void testMissingId() {
         NoteSummaryLine span = newSpan("!%=title#");
-        addStyleTest("!", LineStyles.SUMMARY, SpanStyles.OPERATOR);
-        addStyleTest("%=", LineStyles.SUMMARY, SpanStyles.OPERATOR);
-        addStyleTest("title", LineStyles.SUMMARY, SpanStyles.TEXT);
-        addStyleTest("#", LineStyles.SUMMARY, SpanStyles.OPERATOR);
+        addStyleTest("!", LineStyles.HEADER, SpanStyles.OPERATOR);
+        addStyleTest("%=", LineStyles.HEADER, SpanStyles.OPERATOR);
+        addStyleTest("title", LineStyles.HEADER, SpanStyles.TEXT);
+        addStyleTest("#", LineStyles.HEADER, SpanStyles.OPERATOR);
         testStyles(span);
         Assertions.assertFalse(span.getPointer().isPresent(), "Id");
     }
@@ -42,10 +42,10 @@ class NoteSummaryLineTest extends SpanBranchTestBase<NoteSummaryLine> {
     @Test
     void testNoTitle() {
         NoteSummaryLine span = newSpan("!%=#id");
-        addStyleTest("!", LineStyles.SUMMARY, SpanStyles.OPERATOR);
-        addStyleTest("%=", LineStyles.SUMMARY, SpanStyles.OPERATOR);
-        addStyleTest("#", LineStyles.SUMMARY, SpanStyles.OPERATOR);
-        addStyleTest("id", LineStyles.SUMMARY, SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest("!", LineStyles.HEADER, SpanStyles.OPERATOR);
+        addStyleTest("%=", LineStyles.HEADER, SpanStyles.OPERATOR);
+        addStyleTest("#", LineStyles.HEADER, SpanStyles.OPERATOR);
+        addStyleTest("id", LineStyles.HEADER, SpanStyles.ID, SpanStyles.TEXT);
         testStyles(span);
         Assertions.assertTrue(span.getPointer().isPresent(), "Id");
     }
@@ -53,9 +53,9 @@ class NoteSummaryLineTest extends SpanBranchTestBase<NoteSummaryLine> {
     @Test
     void testNoId() {
         NoteSummaryLine span = newSpan("!%=title");
-        addStyleTest("!", LineStyles.SUMMARY, SpanStyles.OPERATOR);
-        addStyleTest("%=", LineStyles.SUMMARY, SpanStyles.OPERATOR);
-        addStyleTest("title", LineStyles.SUMMARY, SpanStyles.TEXT);
+        addStyleTest("!", LineStyles.HEADER, SpanStyles.OPERATOR);
+        addStyleTest("%=", LineStyles.HEADER, SpanStyles.OPERATOR);
+        addStyleTest("title", LineStyles.HEADER, SpanStyles.TEXT);
         testStyles(span);
         Assertions.assertFalse(span.getPointer().isPresent(), "Id");
     }
@@ -63,8 +63,8 @@ class NoteSummaryLineTest extends SpanBranchTestBase<NoteSummaryLine> {
     @Test
     void testStartOnly() {
         NoteSummaryLine span = newSpan("!%=");
-        addStyleTest("!", LineStyles.SUMMARY, SpanStyles.OPERATOR);
-        addStyleTest("%=", LineStyles.SUMMARY, SpanStyles.OPERATOR);
+        addStyleTest("!", LineStyles.HEADER, SpanStyles.OPERATOR);
+        addStyleTest("%=", LineStyles.HEADER, SpanStyles.OPERATOR);
         testStyles(span);
         Assertions.assertFalse(span.getPointer().isPresent(), "Id");
     }

@@ -24,6 +24,8 @@ public abstract class LineSpan extends SpanBranch {
 
         else if ((match = LineSpanPatterns.AGENDA.matcher(text)) != null) returns = new AgendaLine(parent);
 
+        else if ((match = TableRowPattern.matcher(text)) != null) returns = TableRow.newLine(parent);
+
         else if ((match = LineSpanPatterns.QUOTE.matcher(text)) != null)
             returns = new LineSpan(parent, LineStyles.QUOTE) {
                 @Override
@@ -42,7 +44,6 @@ public abstract class LineSpan extends SpanBranch {
                     addLineEnd(match, LineSpanParts.ENDER);
                 }
             };
-
         else if ((match = LineSpanPatterns.TEXT.matcher(text)) != null)
             returns = new LineSpan(parent, LineStyles.NORMAL) {
                 @Override
@@ -59,6 +60,7 @@ public abstract class LineSpan extends SpanBranch {
 
     protected void addText(Matcher match, PatternEnum textPattern) {
         String raw;
+
         if ((raw = textPattern.group(match)) != null) {
             add(LineText.newBasicText(this, raw));
         }
@@ -66,7 +68,9 @@ public abstract class LineSpan extends SpanBranch {
 
     protected void addLineEnd(Matcher match, PatternEnum endPattern) {
         String raw;
+
         if ((raw = endPattern.group(match)) != null) {
+
             if (!raw.isEmpty()) {
                 add(new SpanLeaf(this, raw));
             }

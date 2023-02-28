@@ -7,11 +7,11 @@ public enum LineStyles implements StyleClass {
 
     NUMBERED, BULLET,
 
-    SUMMARY, NOTE, FIELD,
+    HEADER, NOTE, FIELD,
 
     FOOTNOTE, ENDNOTE,
 
-    ROW, HEADER;
+    ROW;
 
     @Override
     public String getCssName() {
