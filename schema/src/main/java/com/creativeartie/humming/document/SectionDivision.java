@@ -15,7 +15,7 @@ public class SectionDivision extends Division {
         sectionLevel = level;
     }
 
-    private Optional<Division> addHeading(HeadingLine heading) {
+    protected Optional<Division> addHeading(HeadingLine heading) {
         if (sectionLevel == heading.getLevel()) {
             if (isEmpty()) {
                 add(heading);
@@ -41,19 +41,19 @@ public class SectionDivision extends Division {
         switch (style) {
             case BULLET:
             case NUMBERED:
-                ListDivision division = new ListDivision(this, (ListLine) line);
-                add(division);
-                return division.addLine(line, style);
+                ListDivision list = new ListDivision(this, (ListLine) line);
+                add(list);
+                return list.addLine(line, style);
             case HEADING:
                 return addHeading((HeadingLine) line);
             case OUTLINE:
-                break;
+                OutlineDivision outline = new OutlineDivision(this, (HeadingLine) line);
+                add(outline);
+                return outline.addLine(line, style);
             case ROW:
                 break;
             case HEADER:
-                break;
             case FIELD:
-                break;
             case NOTE:
                 break;
             default:
@@ -80,7 +80,7 @@ public class SectionDivision extends Division {
         } else {
             for (Span span : parent.get()) {
                 if (span instanceof SectionDivision) {
-                    if (((SectionDivision) span) == this) {
+                    if (span == this) {
                         break;
                     }
                     position++;
