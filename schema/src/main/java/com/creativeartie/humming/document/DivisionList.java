@@ -36,7 +36,7 @@ public class DivisionList extends Division implements SpanList {
                 return Optional.of(this);
             } else {
                 // different type + same level = go to SectionDivision + new list
-                DivisionSection parent = findParent(DivisionSection.class).get();
+                DivisionSec parent = findParent(DivisionSecChapter.class).get();
                 DivisionList newList = new DivisionList(parent, line);
                 parent.add(newList);
                 return newList.addLine(line);
@@ -63,7 +63,7 @@ public class DivisionList extends Division implements SpanList {
             case NUMBERED:
                 return addLine((ParaList) line);
             default:
-                return findParent(DivisionSection.class).flatMap((span) -> span.addLine(line, style));
+                return findParent(DivisionSecChapter.class).flatMap((span) -> span.addLine(line, style));
         }
     }
 

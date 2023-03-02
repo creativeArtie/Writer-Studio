@@ -34,7 +34,7 @@ class DivisionListTest extends DivisionTestBase<DivisionList> {
         addStyleTest("item 2", StyleLines.NUMBERED, StylesSpans.TEXT);
         testStyles();
 
-        newChildAtIndex("parent", 0).setChildrenSize(1).setClass(DivisionSection.class).newChildAtIndex("list", 0)
+        newChildAtIndex("parent", 0).setChildrenSize(1).setClass(DivisionSecChapter.class).newChildAtIndex("list", 0)
                 .setChildrenSize(2).setClass(DivisionList.class).setData(false, 1, newPositions(1, 2));
         testChildren();
     }
@@ -61,7 +61,7 @@ class DivisionListTest extends DivisionTestBase<DivisionList> {
         addStyleTest("###", StyleLines.NUMBERED, StylesSpans.OPERATOR);
         addStyleTest("sub sub", StyleLines.NUMBERED, StylesSpans.TEXT);
         testStyles();
-        TestChild heading = newChildAtIndex("base", 0).setClass(DivisionSection.class).setChildrenSize(1);
+        TestChild heading = newChildAtIndex("base", 0).setClass(DivisionSecChapter.class).setChildrenSize(1);
         TestChild list = heading.newChildAtIndex("list", 0).setClass(DivisionList.class).setChildrenSize(3)
                 .setData(false, 1, newPositions(1, 2, 2));
         TestChild sub = list.newChildAtIndex("sub list", 2).setClass(DivisionList.class).setChildrenSize(3)
@@ -79,7 +79,7 @@ class DivisionListTest extends DivisionTestBase<DivisionList> {
         addStyleTest("sub item", StyleLines.NUMBERED, StylesSpans.TEXT);
         testStyles();
 
-        TestChild heading = newChildAtIndex("base", 0).setClass(DivisionSection.class).setChildrenSize(1);
+        TestChild heading = newChildAtIndex("base", 0).setClass(DivisionSecChapter.class).setChildrenSize(1);
         TestChild list = heading.newChildAtIndex("list", 0).setClass(DivisionList.class).setChildrenSize(1)
                 .setData(false, 1, newPositions(0));
         list.newChildAtIndex("sub list", 0).setClass(DivisionList.class).setChildrenSize(1)
@@ -102,7 +102,7 @@ class DivisionListTest extends DivisionTestBase<DivisionList> {
         addStyleTest("item 2", StyleLines.NUMBERED, StylesSpans.TEXT);
         testStyles();
 
-        TestChild heading = newChildAtIndex("base", 0).setClass(DivisionSection.class).setChildrenSize(1);
+        TestChild heading = newChildAtIndex("base", 0).setClass(DivisionSecChapter.class).setChildrenSize(1);
         TestChild list = heading.newChildAtIndex("list", 0).setClass(DivisionList.class).setChildrenSize(3)
                 .setData(false, 1, newPositions(1, 1, 2));
         list.newChildAtIndex("sub list", 1).setClass(DivisionList.class).setChildrenSize(1)
@@ -121,7 +121,7 @@ class DivisionListTest extends DivisionTestBase<DivisionList> {
         addStyleTest("item 2", StyleLines.BULLET, StylesSpans.TEXT);
         testStyles();
 
-        TestChild heading = newChildAtIndex("base", 0).setClass(DivisionSection.class).setChildrenSize(2);
+        TestChild heading = newChildAtIndex("base", 0).setClass(DivisionSecChapter.class).setChildrenSize(2);
         heading.newChildAtIndex("number", 0).setClass(DivisionList.class).setChildrenSize(1)
                 .setData(false, 1, newPositions(1));
         heading.newChildAtIndex("bullet", 1).setClass(DivisionList.class).setChildrenSize(1)
@@ -144,7 +144,7 @@ class DivisionListTest extends DivisionTestBase<DivisionList> {
         addStyleTest("item 2", StyleLines.NUMBERED, StylesSpans.TEXT);
         testStyles();
 
-        newChildAtIndex("base", 0).setClass(DivisionSection.class).setChildrenSize(1).newChildAtIndex("list", 0)
+        newChildAtIndex("base", 0).setClass(DivisionSecChapter.class).setChildrenSize(1).newChildAtIndex("list", 0)
                 .setChildrenSize(3).setClass(DivisionList.class).setData(false, 1, newPositions(1, -1, 2));
         testChildren();
     }
@@ -160,10 +160,10 @@ class DivisionListTest extends DivisionTestBase<DivisionList> {
         addStyleTest("heading 1", StyleLines.HEADING, StylesSpans.TEXT);
         testStyles();
 
-        newChildAtIndex("Ch 1", 0).setClass(DivisionSection.class).setChildrenSize(1).newChildAtIndex("list", 0)
+        newChildAtIndex("Ch 1", 0).setClass(DivisionSecChapter.class).setChildrenSize(1).newChildAtIndex("list", 0)
                 .setChildrenSize(1).setClass(DivisionList.class).setData(false, 1, newPositions(1));
 
-        newChildAtIndex("Ch 2", 1).setClass(DivisionSection.class).setChildrenSize(1);
+        newChildAtIndex("Ch 2", 1).setClass(DivisionSecChapter.class).setChildrenSize(1);
         testChildren();
     }
 

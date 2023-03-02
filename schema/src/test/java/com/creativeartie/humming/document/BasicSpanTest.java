@@ -107,7 +107,7 @@ public class BasicSpanTest {
         // @formatter:off
         TestData doc = new TestData("", "Hello World!{^note}\n!^note=*test* only\\!\n=Chapter 1", "", Document.class);
         testData.add(doc);
-        TestData sec = doc.add(     "", "Hello World!{^note}\n!^note=*test* only\\!\n", "=Chapter 1", DivisionSection.class);
+        TestData sec = doc.add(     "", "Hello World!{^note}\n!^note=*test* only\\!\n", "=Chapter 1", DivisionSecChapter.class);
 
         TestData lin = sec.add("", "Hello World!{^note}\n", "!^note=*test* only\\!\n=Chapter 1", Para.class);
         TestData lxt = lin.add("", "Hello World!{^note}", "\n!^note=*test* only\\!\n=Chapter 1", TextFormatted.class);
@@ -139,7 +139,7 @@ public class BasicSpanTest {
         txt.add(      "Hello World!{^note}\n!^note=*test* only", "\\!", "\n=Chapter 1", SpanLeaf.class);
         lin.add(      "Hello World!{^note}\n!^note=*test* only\\!", "\n", "=Chapter 1", SpanLeaf.class);
 
-        sec = doc.add("Hello World!{^note}\n!^note=*test* only\\!\n", "=Chapter 1", "", DivisionSection.class);
+        sec = doc.add("Hello World!{^note}\n!^note=*test* only\\!\n", "=Chapter 1", "", DivisionSecChapter.class);
         lin = sec.add("Hello World!{^note}\n!^note=*test* only\\!\n", "=Chapter 1", "", HeadingLine.class);
         lin.add(      "Hello World!{^note}\n!^note=*test* only\\!\n", "=", "Chapter 1", SpanLeaf.class);
         lxt = lin.add("Hello World!{^note}\n!^note=*test* only\\!\n=", "Chapter 1", "", TextFormatted.class);

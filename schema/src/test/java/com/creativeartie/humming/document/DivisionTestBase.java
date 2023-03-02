@@ -109,7 +109,7 @@ public abstract class DivisionTestBase<T extends Division> extends SpanTestBase<
         int idx = 0;
         Document root = getDocument();
         printSpanFormatted(root, "");
-        for (DivisionSection child : root) {
+        for (DivisionSec child : root) {
             Optional<SpanParent> parent = child.getParent();
             parent.ifPresent((span) -> {
                 if (span != root) {
@@ -131,7 +131,7 @@ public abstract class DivisionTestBase<T extends Division> extends SpanTestBase<
         if (span instanceof Document) {
             Document doc = (Document) span;
             System.out.println("{");
-            for (DivisionSection child : doc) {
+            for (DivisionSec child : doc) {
                 printSpanFormatted(child, baseTab);
             }
             System.out.println("}");

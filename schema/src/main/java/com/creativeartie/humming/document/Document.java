@@ -18,7 +18,7 @@ import com.google.common.collect.*;
  *
  * @author wai
  */
-public class Document extends ForwardingList<DivisionSection> implements SpanParent {
+public class Document extends ForwardingList<DivisionSecChapter> implements SpanParent {
     private IdentityStorage idStorage;
 
     public boolean isIdUnique(IdentitySpan span) {
@@ -38,7 +38,7 @@ public class Document extends ForwardingList<DivisionSection> implements SpanPar
     }
 
     // Methods add more styles for ids
-    private final ArrayList<DivisionSection> docChildren;
+    private final ArrayList<DivisionSecChapter> docChildren;
     private LoadingCache<Span, List<Integer>> findChildCache;
     private LoadingCache<SpanBranch, Integer> lengthsCache;
     private LoadingCache<Span, Integer> startIdxCache, endIdxCache;
@@ -148,18 +148,18 @@ public class Document extends ForwardingList<DivisionSection> implements SpanPar
     }
 
     @Override
-    public boolean add(DivisionSection child) {
+    public boolean add(DivisionSecChapter child) {
         child.setParent(this);
         return docChildren.add(child);
     }
 
     @Override
-    public List<DivisionSection> delegate() {
+    public List<DivisionSecChapter> delegate() {
         return docChildren;
     }
 
     @Override
-    public boolean addAll(Collection<? extends DivisionSection> c) {
+    public boolean addAll(Collection<? extends DivisionSecChapter> c) {
         c.forEach((child) -> child.setParent(this));
         return docChildren.addAll(c);
     }
@@ -272,8 +272,8 @@ public class Document extends ForwardingList<DivisionSection> implements SpanPar
             locateChildrenCache.invalidateAll();
             idStorage.clear();
 
-            Division parent = new DivisionSection(this);
-            add((DivisionSection) parent);
+            Division parent = new DivisionSecChapter(this);
+            add((DivisionSecChapter) parent);
             List<String> texts = Splitter.on('\n').splitToList(text);
             int line = 1;
 
