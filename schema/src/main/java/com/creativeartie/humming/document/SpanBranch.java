@@ -7,12 +7,12 @@ import com.google.common.collect.*;
 public class SpanBranch extends ForwardingList<Span> implements SpanParent {
     private ArrayList<Span> childrenSpans;
     private final Document spanRoot;
-    private Optional<SpanParent> spanParent;
+    private SpanParent spanParent;
     private ArrayList<StyleClass> inheritedStyles;
 
     protected SpanBranch(Document root, StyleClass... classes) {
         spanRoot = root;
-        spanParent = Optional.empty();
+        spanParent = root;
         inheritedStyles = new ArrayList<>();
         inheritedStyles.addAll(Arrays.asList(classes));
         childrenSpans = new ArrayList<>();
@@ -20,7 +20,7 @@ public class SpanBranch extends ForwardingList<Span> implements SpanParent {
 
     protected SpanBranch(SpanBranch parent, StyleClass... classes) {
         spanRoot = parent.getRoot();
-        spanParent = Optional.of(parent);
+        spanParent = parent;
         inheritedStyles = new ArrayList<>();
         inheritedStyles.addAll(Arrays.asList(classes));
         childrenSpans = new ArrayList<>();
@@ -45,22 +45,22 @@ public class SpanBranch extends ForwardingList<Span> implements SpanParent {
     @Override
     public List<StyleClass> getInheritedStyles() {
         ImmutableList.Builder<StyleClass> classes = ImmutableList.builder();
-        if (spanParent.isPresent()) {
-            classes.addAll(spanParent.get().getInheritedStyles());
-        }
+
+        classes.addAll(spanParent.getInheritedStyles());
+
         return classes.addAll(inheritedStyles).build();
     }
 
     @Override
     public boolean add(Span e) {
-        if (e instanceof SpanBranch) ((SpanBranch) e).spanParent = Optional.of(this);
+        if (e instanceof SpanBranch) ((SpanBranch) e).spanParent = this;
         return childrenSpans.add(e);
     }
 
     @Override
     public boolean addAll(Collection<? extends Span> c) {
         c.forEach((span) -> {
-            if (span instanceof SpanBranch) ((SpanBranch) span).spanParent = Optional.of(this);
+            if (span instanceof SpanBranch) ((SpanBranch) span).spanParent = this;
         });
         return childrenSpans.addAll(c);
     }
@@ -99,10 +99,11 @@ public class SpanBranch extends ForwardingList<Span> implements SpanParent {
 
     @Override
     public Optional<SpanParent> getParent() {
-        if (spanParent.isEmpty()) {
-            return Optional.of(spanRoot);
-        }
-        return spanParent;
+        return Optional.ofNullable(spanParent);
+    }
+
+    protected void setParent(Document document) {
+        spanParent = document;
     }
 
     @Override
@@ -134,9 +135,9 @@ public class SpanBranch extends ForwardingList<Span> implements SpanParent {
     @Override
     public String toString() {
         String simpleName = getClass().getSimpleName();
-        if (simpleName == "") {
-            simpleName = "LineSpan";
+        if (this instanceof LineSpan) {
+            simpleName = ((LineSpan) this).getLineStyle().name();
         }
-        return simpleName + super.toString();
+        return simpleName + super.toString().replace('\n', '␤');
     }
 }

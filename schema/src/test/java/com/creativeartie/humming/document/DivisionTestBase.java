@@ -100,10 +100,68 @@ public abstract class DivisionTestBase<T extends Division> extends SpanTestBase<
         Document doc = getDocument();
         printChild("", rootChild);
         System.out.println();
-        printChild("", doc, "");
-        System.out.println("\n");
 
         rootChild.test(doc);
+    }
+
+    @AfterEach
+    private void moreTest() {
+        int idx = 0;
+        Document root = getDocument();
+        printSpanFormatted(root, "");
+        for (SectionDivision child : root) {
+            Optional<SpanParent> parent = child.getParent();
+            parent.ifPresent((span) -> {
+                if (span != root) {
+                    printSpanFormatted(root, "");
+                    printSpanFormatted(span, "");
+                }
+            });
+            Assertions.assertAll(
+                    "Child at" + Integer.toString(idx), () -> Assertions.assertTrue(parent.isPresent()),
+                    () -> Assertions.assertSame(root, parent.get())
+            );
+            idx++;
+            testParent(child, Integer.toString(idx));
+        }
+    }
+
+    private void printSpanFormatted(Span span, String tabs) {
+        String baseTab = "    ";
+        if (span instanceof Document) {
+            Document doc = (Document) span;
+            System.out.println("{");
+            for (SectionDivision child : doc) {
+                printSpanFormatted(child, baseTab);
+            }
+            System.out.println("}");
+
+        } else if (span instanceof Division) {
+            String name = span.getClass().getSimpleName();
+            System.out.println(tabs + name + " [");
+            for (Span child : (Division) span) {
+                printSpanFormatted(child, tabs + baseTab);
+            }
+            System.out.println(tabs + "] //" + name);
+
+        } else {
+            System.out.println(tabs + span.toString());
+        }
+    }
+
+    private void testParent(SpanBranch test, String name) {
+        int idx = 0;
+        for (Span child : test) {
+            Optional<SpanParent> parent = child.getParent();
+            Assertions.assertAll(
+                    "Child at" + name + ":" + Integer.toString(idx), () -> Assertions.assertTrue(parent.isPresent()),
+                    () -> Assertions.assertSame(test, parent.get())
+            );
+            if (child instanceof SpanBranch) {
+                testParent((SpanBranch) child, name + ":" + Integer.toString(idx));
+            }
+            idx++;
+        }
     }
 
     private void printChild(String tab, TestChild child) {
@@ -113,48 +171,6 @@ public abstract class DivisionTestBase<T extends Division> extends SpanTestBase<
 
         for (TestChild ch : child.children) {
             printChild(tab + "=", ch);
-        }
-    }
-
-    private static char replaced = '-';
-
-    private void printChild(String tab, SpanParent span, String index) {
-        String name = span.getClass().getSimpleName();
-
-        switch (replaced) {
-            case '-':
-                replaced = '.';
-                break;
-            case '.':
-                replaced = '-';
-        }
-        String aTab = tab.replace(' ', (char) (' ' + tab.length()));
-        String full = "%-20s".formatted(aTab + (name == "" ? "LineSpan" : name)).replace(' ', replaced);
-
-        String format = "%-20s %s size: %d, index: %s\n";
-        String isDiv = (span instanceof Division) || (span instanceof Document) ? "++++" : " => ";
-        System.out.printf(format, full, isDiv, span.size(), index);
-        int i = 0;
-
-        if (isDiv == " => ") {
-            return;
-        }
-
-        if (span instanceof Document) {
-
-            for (Division child : (Document) span) {
-                printChild(tab + " ", child, Integer.toString(i));
-                i++;
-            }
-        } else if (span instanceof SpanBranch) {
-
-            for (Span child : (SpanBranch) span) {
-
-                if (child instanceof SpanBranch) {
-                    printChild(tab + " ", (SpanBranch) child, index + ":" + Integer.toString(i));
-                }
-                i++;
-            }
         }
     }
 

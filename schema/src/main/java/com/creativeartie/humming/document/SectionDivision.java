@@ -16,9 +16,7 @@ public class SectionDivision extends Division {
     }
 
     private Optional<Division> addHeading(HeadingLine heading) {
-
         if (sectionLevel == heading.getLevel()) {
-
             if (isEmpty()) {
                 add(heading);
                 return Optional.of(this);
@@ -40,7 +38,6 @@ public class SectionDivision extends Division {
 
     @Override
     protected Optional<Division> addLine(LineSpan line, LineStyles style) {
-
         switch (style) {
             case BULLET:
             case NUMBERED:
@@ -67,5 +64,31 @@ public class SectionDivision extends Division {
 
     public int getLevel() {
         return sectionLevel;
+    }
+
+    public String getLocation() {
+        Optional<SectionDivision> parent = findParent(SectionDivision.class);
+        int position = 1;
+
+        if (parent.isEmpty()) {
+            for (SectionDivision div : getRoot()) {
+                if (div == this) {
+                    return Integer.toString(position);
+                }
+                position++;
+            }
+        } else {
+            for (Span span : parent.get()) {
+                if (span instanceof SectionDivision) {
+                    if (((SectionDivision) span) == this) {
+                        break;
+                    }
+                    position++;
+                }
+            }
+            return parent.get().getLocation() + ":" + Integer.toString(position);
+        }
+
+        throw new IllegalStateException("Division not found.");
     }
 }

@@ -12,6 +12,4 @@ public abstract class Division extends SpanBranch {
     }
 
     protected abstract Optional<Division> addLine(LineSpan line, LineStyles style);
-
-    protected void setParent(Document document) {}
 }

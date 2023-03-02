@@ -18,7 +18,7 @@ import com.google.common.collect.*;
  *
  * @author wai
  */
-public class Document extends ForwardingList<Division> implements SpanParent {
+public class Document extends ForwardingList<SectionDivision> implements SpanParent {
     private IdentityStorage idStorage;
 
     public boolean isIdUnique(IdentitySpan span) {
@@ -38,7 +38,7 @@ public class Document extends ForwardingList<Division> implements SpanParent {
     }
 
     // Methods add more styles for ids
-    private final ArrayList<Division> docChildren;
+    private final ArrayList<SectionDivision> docChildren;
     private LoadingCache<Span, List<Integer>> findChildCache;
     private LoadingCache<SpanBranch, Integer> lengthsCache;
     private LoadingCache<Span, Integer> startIdxCache, endIdxCache;
@@ -148,18 +148,19 @@ public class Document extends ForwardingList<Division> implements SpanParent {
     }
 
     @Override
-    public boolean add(Division child) {
+    public boolean add(SectionDivision child) {
         child.setParent(this);
         return docChildren.add(child);
     }
 
     @Override
-    public List<Division> delegate() {
+    public List<SectionDivision> delegate() {
         return docChildren;
     }
 
     @Override
-    public boolean addAll(Collection<? extends Division> c) {
+    public boolean addAll(Collection<? extends SectionDivision> c) {
+        c.forEach((child) -> child.setParent(this));
         return docChildren.addAll(c);
     }
 
@@ -272,7 +273,7 @@ public class Document extends ForwardingList<Division> implements SpanParent {
             idStorage.clear();
 
             Division parent = new SectionDivision(this);
-            add(parent);
+            add((SectionDivision) parent);
             List<String> texts = Splitter.on('\n').splitToList(text);
             int line = 1;
 
