@@ -107,13 +107,13 @@ public class BasicSpanTest {
         // @formatter:off
         TestData doc = new TestData("", "Hello World!{^note}\n!^note=*test* only\\!\n=Chapter 1", "", Document.class);
         testData.add(doc);
-        TestData sec = doc.add(     "", "Hello World!{^note}\n!^note=*test* only\\!\n", "=Chapter 1", SectionDivision.class);
+        TestData sec = doc.add(     "", "Hello World!{^note}\n!^note=*test* only\\!\n", "=Chapter 1", DivisionSection.class);
 
-        TestData lin = sec.add("", "Hello World!{^note}\n", "!^note=*test* only\\!\n=Chapter 1", LineSpan.class);
-        TestData lxt = lin.add("", "Hello World!{^note}", "\n!^note=*test* only\\!\n=Chapter 1", LineText.class);
+        TestData lin = sec.add("", "Hello World!{^note}\n", "!^note=*test* only\\!\n=Chapter 1", Para.class);
+        TestData lxt = lin.add("", "Hello World!{^note}", "\n!^note=*test* only\\!\n=Chapter 1", TextFormatted.class);
         TestData txt = lxt.add("", "Hello World!", "{^note}\n!^note=*test* only\\!\n=Chapter 1", TextSpan.class);
         txt.add(               "", "Hello World!", "{^note}\n!^note=*test* only\\!\n=Chapter 1", SpanLeaf.class);
-        TestData ref = lxt.add("Hello World!", "{^note}", "\n!^note=*test* only\\!\n=Chapter 1", ReferenceSpan.class);
+        TestData ref = lxt.add("Hello World!", "{^note}", "\n!^note=*test* only\\!\n=Chapter 1", IdentityReference.class);
         ref.add(               "Hello World!", "{", "^note}\n!^note=*test* only\\!\n=Chapter 1", SpanLeaf.class);
         ref.add(               "Hello World!{", "^", "note}\n!^note=*test* only\\!\n=Chapter 1", SpanLeaf.class);
         TestData id = ref.add( "Hello World!{^", "note", "}\n!^note=*test* only\\!\n=Chapter 1", IdentitySpan.class);
@@ -122,14 +122,14 @@ public class BasicSpanTest {
         ref.add(               "Hello World!{^note", "}", "\n!^note=*test* only\\!\n=Chapter 1", SpanLeaf.class);
         lin.add(               "Hello World!{^note}", "\n", "!^note=*test* only\\!\n=Chapter 1", SpanLeaf.class);
 
-        lin = sec.add("Hello World!{^note}\n", "!^note=*test* only\\!\n", "=Chapter 1", ReferenceLine.class);
+        lin = sec.add("Hello World!{^note}\n", "!^note=*test* only\\!\n", "=Chapter 1", ParaReference.class);
         lin.add(      "Hello World!{^note}\n", "!", "^note=*test* only\\!\n=Chapter 1", SpanLeaf.class);
         lin.add(      "Hello World!{^note}\n!", "^", "note=*test* only\\!\n=Chapter 1", SpanLeaf.class);
         id = lin.add( "Hello World!{^note}\n!^", "note", "=*test* only\\!\n=Chapter 1", IdentitySpan.class);
         txt = id.add( "Hello World!{^note}\n!^", "note", "=*test* only\\!\n=Chapter 1", TextSpan.class);
         txt.add(      "Hello World!{^note}\n!^", "note", "=*test* only\\!\n=Chapter 1", SpanLeaf.class);
         lin.add(      "Hello World!{^note}\n!^note", "=", "*test* only\\!\n=Chapter 1", SpanLeaf.class);
-        lxt = lin.add("Hello World!{^note}\n!^note=", "*test* only\\!", "\n=Chapter 1", LineText.class);
+        lxt = lin.add("Hello World!{^note}\n!^note=", "*test* only\\!", "\n=Chapter 1", TextFormatted.class);
         lxt.add(      "Hello World!{^note}\n!^note=", "*", "test* only\\!\n=Chapter 1", SpanLeaf.class);
         txt = lxt.add("Hello World!{^note}\n!^note=*", "test", "* only\\!\n=Chapter 1", TextSpan.class);
         txt.add(      "Hello World!{^note}\n!^note=*", "test", "* only\\!\n=Chapter 1", SpanLeaf.class);
@@ -139,10 +139,10 @@ public class BasicSpanTest {
         txt.add(      "Hello World!{^note}\n!^note=*test* only", "\\!", "\n=Chapter 1", SpanLeaf.class);
         lin.add(      "Hello World!{^note}\n!^note=*test* only\\!", "\n", "=Chapter 1", SpanLeaf.class);
 
-        sec = doc.add("Hello World!{^note}\n!^note=*test* only\\!\n", "=Chapter 1", "", SectionDivision.class);
+        sec = doc.add("Hello World!{^note}\n!^note=*test* only\\!\n", "=Chapter 1", "", DivisionSection.class);
         lin = sec.add("Hello World!{^note}\n!^note=*test* only\\!\n", "=Chapter 1", "", HeadingLine.class);
         lin.add(      "Hello World!{^note}\n!^note=*test* only\\!\n", "=", "Chapter 1", SpanLeaf.class);
-        lxt = lin.add("Hello World!{^note}\n!^note=*test* only\\!\n=", "Chapter 1", "", LineText.class);
+        lxt = lin.add("Hello World!{^note}\n!^note=*test* only\\!\n=", "Chapter 1", "", TextFormatted.class);
         txt = lxt.add("Hello World!{^note}\n!^note=*test* only\\!\n=", "Chapter 1", "", TextSpan.class);
         txt.add(      "Hello World!{^note}\n!^note=*test* only\\!\n=", "Chapter 1", "", SpanLeaf.class);
         // @formatter:on
@@ -151,8 +151,8 @@ public class BasicSpanTest {
     private static String getSimpleName(Span span) {
         if (span instanceof SpanLeaf) {
             return ((SpanLeaf) span).getStyle().toString();
-        } else if (span instanceof LineSpan) {
-            return ((LineSpan) span).getLineStyle().toString();
+        } else if (span instanceof Para) {
+            return ((Para) span).getLineStyle().toString();
         }
         return span.getClass().getSimpleName();
     }

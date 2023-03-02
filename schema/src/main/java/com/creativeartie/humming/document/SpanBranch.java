@@ -8,9 +8,9 @@ public class SpanBranch extends ForwardingList<Span> implements SpanParent {
     private ArrayList<Span> childrenSpans;
     private final Document spanRoot;
     private SpanParent spanParent;
-    private ArrayList<StyleClass> inheritedStyles;
+    private ArrayList<SpanStyle> inheritedStyles;
 
-    protected SpanBranch(Document root, StyleClass... classes) {
+    protected SpanBranch(Document root, SpanStyle... classes) {
         spanRoot = root;
         spanParent = root;
         inheritedStyles = new ArrayList<>();
@@ -18,7 +18,7 @@ public class SpanBranch extends ForwardingList<Span> implements SpanParent {
         childrenSpans = new ArrayList<>();
     }
 
-    protected SpanBranch(SpanBranch parent, StyleClass... classes) {
+    protected SpanBranch(SpanBranch parent, SpanStyle... classes) {
         spanRoot = parent.getRoot();
         spanParent = parent;
         inheritedStyles = new ArrayList<>();
@@ -26,14 +26,14 @@ public class SpanBranch extends ForwardingList<Span> implements SpanParent {
         childrenSpans = new ArrayList<>();
     }
 
-    protected boolean addStyle(StyleClass style) {
+    protected boolean addStyle(SpanStyle style) {
         if (inheritedStyles.contains(style)) {
             return false;
         }
         return inheritedStyles.add(style);
     }
 
-    protected boolean removeStyle(StyleClass style) {
+    protected boolean removeStyle(SpanStyle style) {
         return inheritedStyles.remove(style);
     }
 
@@ -43,8 +43,8 @@ public class SpanBranch extends ForwardingList<Span> implements SpanParent {
     }
 
     @Override
-    public List<StyleClass> getInheritedStyles() {
-        ImmutableList.Builder<StyleClass> classes = ImmutableList.builder();
+    public List<SpanStyle> getInheritedStyles() {
+        ImmutableList.Builder<SpanStyle> classes = ImmutableList.builder();
 
         classes.addAll(spanParent.getInheritedStyles());
 
@@ -135,8 +135,8 @@ public class SpanBranch extends ForwardingList<Span> implements SpanParent {
     @Override
     public String toString() {
         String simpleName = getClass().getSimpleName();
-        if (this instanceof LineSpan) {
-            simpleName = ((LineSpan) this).getLineStyle().name();
+        if (this instanceof Para) {
+            simpleName = ((Para) this).getLineStyle().name();
         }
         return simpleName + super.toString().replace('\n', '␤');
     }

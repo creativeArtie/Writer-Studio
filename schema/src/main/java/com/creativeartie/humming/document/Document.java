@@ -18,7 +18,7 @@ import com.google.common.collect.*;
  *
  * @author wai
  */
-public class Document extends ForwardingList<SectionDivision> implements SpanParent {
+public class Document extends ForwardingList<DivisionSection> implements SpanParent {
     private IdentityStorage idStorage;
 
     public boolean isIdUnique(IdentitySpan span) {
@@ -38,7 +38,7 @@ public class Document extends ForwardingList<SectionDivision> implements SpanPar
     }
 
     // Methods add more styles for ids
-    private final ArrayList<SectionDivision> docChildren;
+    private final ArrayList<DivisionSection> docChildren;
     private LoadingCache<Span, List<Integer>> findChildCache;
     private LoadingCache<SpanBranch, Integer> lengthsCache;
     private LoadingCache<Span, Integer> startIdxCache, endIdxCache;
@@ -148,18 +148,18 @@ public class Document extends ForwardingList<SectionDivision> implements SpanPar
     }
 
     @Override
-    public boolean add(SectionDivision child) {
+    public boolean add(DivisionSection child) {
         child.setParent(this);
         return docChildren.add(child);
     }
 
     @Override
-    public List<SectionDivision> delegate() {
+    public List<DivisionSection> delegate() {
         return docChildren;
     }
 
     @Override
-    public boolean addAll(Collection<? extends SectionDivision> c) {
+    public boolean addAll(Collection<? extends DivisionSection> c) {
         c.forEach((child) -> child.setParent(this));
         return docChildren.addAll(c);
     }
@@ -272,14 +272,14 @@ public class Document extends ForwardingList<SectionDivision> implements SpanPar
             locateChildrenCache.invalidateAll();
             idStorage.clear();
 
-            Division parent = new SectionDivision(this);
-            add((SectionDivision) parent);
+            Division parent = new DivisionSection(this);
+            add((DivisionSection) parent);
             List<String> texts = Splitter.on('\n').splitToList(text);
             int line = 1;
 
             for (String raw : texts) {
                 raw += (line == texts.size() ? "" : "\n");
-                LineSpan span = LineSpan.newLine(parent, raw);
+                Para span = Para.newLine(parent, raw);
                 Optional<Division> next = parent.addLine(span, span.getLineStyle());
 
                 if (next.isPresent()) {
@@ -312,7 +312,7 @@ public class Document extends ForwardingList<SectionDivision> implements SpanPar
     }
 
     @Override
-    public List<StyleClass> getInheritedStyles() {
+    public List<SpanStyle> getInheritedStyles() {
         return ImmutableList.of();
     }
 

@@ -51,8 +51,8 @@ public class WritingCoderPane extends CodeArea {
             String name = "";
             for (Span child : rootDoc.locateChildren(chIdx)) {
                 String appendText = child.getClass().getSimpleName();
-                if (child instanceof LineSpan) {
-                    appendText = ((LineSpan) child).getLineStyle().toString();
+                if (child instanceof Para) {
+                    appendText = ((Para) child).getLineStyle().toString();
                 } else if (child instanceof SpanLeaf) {
                     appendText = ((SpanLeaf) child).getStyle().toString();
                 } else if (appendText == "") {

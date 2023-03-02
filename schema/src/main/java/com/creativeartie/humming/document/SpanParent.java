@@ -7,7 +7,7 @@ public interface SpanParent extends Span {
 
     List<Integer> findChild(Span span);
 
-    List<StyleClass> getInheritedStyles();
+    List<SpanStyle> getInheritedStyles();
 
     int size();
 }

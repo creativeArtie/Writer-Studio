@@ -5,15 +5,15 @@ import java.util.regex.*;
 import com.creativeartie.humming.schema.*;
 import com.google.common.base.*;
 
-public class HeadingLine extends LineSpan {
+public class HeadingLine extends Para {
     static HeadingLine newLine(SpanBranch parent, Matcher match) {
-        if (HeadingLinePattern.OUTLINE.group(match) == null) {
-            return new HeadingLine(parent, LineStyles.HEADING);
+        if (ParaHeadingPattern.OUTLINE.group(match) == null) {
+            return new HeadingLine(parent, StyleLines.HEADING);
         }
-        return new HeadingLine(parent, LineStyles.OUTLINE);
+        return new HeadingLine(parent, StyleLines.OUTLINE);
     }
 
-    private HeadingLine(SpanBranch parent, LineStyles style) {
+    private HeadingLine(SpanBranch parent, StyleLines style) {
         super(parent, style);
     }
 
@@ -29,8 +29,8 @@ public class HeadingLine extends LineSpan {
         private final String statusDetail;
 
         private Status(Matcher matcher) {
-            String raw = HeadingLinePattern.STATUS.group(matcher);
-            HeadingLinePattern.StatusPattern status = HeadingLinePattern.StatusPattern.getStatus(raw);
+            String raw = ParaHeadingPattern.STATUS.group(matcher);
+            ParaHeadingPattern.StatusPattern status = ParaHeadingPattern.StatusPattern.getStatus(raw);
             switch (status) {
                 case DRAFT:
                     currentStatus = DraftStatus.DRAFT;
@@ -52,7 +52,7 @@ public class HeadingLine extends LineSpan {
                     currentStatus = DraftStatus.NONE;
             }
             add(new SpanLeaf(HeadingLine.this, raw));
-            if ((raw = HeadingLinePattern.DETAILS.group(matcher)) != null) {
+            if ((raw = ParaHeadingPattern.DETAILS.group(matcher)) != null) {
                 TextSpan detail = TextSpan.newSimple(HeadingLine.this, raw);
                 add(detail);
                 statusDetail = detail.getText();
@@ -68,22 +68,22 @@ public class HeadingLine extends LineSpan {
     @Override
     protected void buildSpan(Matcher match) {
         String raw;
-        if ((raw = HeadingLinePattern.OUTLINE.group(match)) != null) {
+        if ((raw = ParaHeadingPattern.OUTLINE.group(match)) != null) {
             add(new SpanLeaf(this, raw));
         }
-        if ((raw = HeadingLinePattern.LEVEL.group(match)) != null) {
+        if ((raw = ParaHeadingPattern.LEVEL.group(match)) != null) {
             add(new SpanLeaf(this, raw));
             headingLevel = raw.length();
         }
-        if ((raw = HeadingLinePattern.TEXT.group(match)) != null) {
-            add(LineText.newHeadingText(this, raw));
+        if ((raw = ParaHeadingPattern.TEXT.group(match)) != null) {
+            add(TextFormatted.newHeadingText(this, raw));
         }
-        if ((raw = HeadingLinePattern.STATUS.group(match)) != null) {
+        if ((raw = ParaHeadingPattern.STATUS.group(match)) != null) {
             draftStatus = new Status(match);
         } else {
             draftStatus = new Status();
         }
-        addLineEnd(match, HeadingLinePattern.ENDER);
+        addLineEnd(match, ParaHeadingPattern.ENDER);
     }
 
     public DraftStatus getStatus() {

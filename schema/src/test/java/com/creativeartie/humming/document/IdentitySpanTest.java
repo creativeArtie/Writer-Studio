@@ -42,7 +42,7 @@ class IdentitySpanTest extends SpanBranchTestBase<IdentitySpan> {
     @Test
     void testNoCat() {
         IdentitySpan id = createIdPointer("no cat");
-        addStyleTest("no cat", SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest("no cat", StylesSpans.ID, StylesSpans.TEXT);
         testStyles(id);
         testId("no cat", id);
     }
@@ -50,7 +50,7 @@ class IdentitySpanTest extends SpanBranchTestBase<IdentitySpan> {
     @Test
     void testSpaces() {
         IdentitySpan id = createIdPointer("   no    cat   ");
-        addStyleTest("   no    cat   ", SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest("   no    cat   ", StylesSpans.ID, StylesSpans.TEXT);
         testStyles(id);
         testId("no cat", id);
     }
@@ -58,11 +58,11 @@ class IdentitySpanTest extends SpanBranchTestBase<IdentitySpan> {
     @Test
     void testWithEscape() {
         IdentitySpan id = createIdPointer("cat\\:egory:id");
-        addStyleTest("cat", SpanStyles.ID, SpanStyles.TEXT);
-        addStyleTest("\\:", SpanStyles.ID, SpanStyles.ESCAPE);
-        addStyleTest("egory", SpanStyles.ID, SpanStyles.TEXT);
-        addStyleTest(":", SpanStyles.ID, SpanStyles.OPERATOR);
-        addStyleTest("id", SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest("cat", StylesSpans.ID, StylesSpans.TEXT);
+        addStyleTest("\\:", StylesSpans.ID, StylesSpans.ESCAPE);
+        addStyleTest("egory", StylesSpans.ID, StylesSpans.TEXT);
+        addStyleTest(":", StylesSpans.ID, StylesSpans.OPERATOR);
+        addStyleTest("id", StylesSpans.ID, StylesSpans.TEXT);
         testStyles(id);
         testId("id", id, "cat:egory");
     }
@@ -70,13 +70,13 @@ class IdentitySpanTest extends SpanBranchTestBase<IdentitySpan> {
     @Test
     void testMultiCat() {
         IdentitySpan id = createIdPointer("cat1:cat2:cat3:id");
-        addStyleTest("cat1", SpanStyles.ID, SpanStyles.TEXT);
-        addStyleTest(":", SpanStyles.ID, SpanStyles.OPERATOR);
-        addStyleTest("cat2", SpanStyles.ID, SpanStyles.TEXT);
-        addStyleTest(":", SpanStyles.ID, SpanStyles.OPERATOR);
-        addStyleTest("cat3", SpanStyles.ID, SpanStyles.TEXT);
-        addStyleTest(":", SpanStyles.ID, SpanStyles.OPERATOR);
-        addStyleTest("id", SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest("cat1", StylesSpans.ID, StylesSpans.TEXT);
+        addStyleTest(":", StylesSpans.ID, StylesSpans.OPERATOR);
+        addStyleTest("cat2", StylesSpans.ID, StylesSpans.TEXT);
+        addStyleTest(":", StylesSpans.ID, StylesSpans.OPERATOR);
+        addStyleTest("cat3", StylesSpans.ID, StylesSpans.TEXT);
+        addStyleTest(":", StylesSpans.ID, StylesSpans.OPERATOR);
+        addStyleTest("id", StylesSpans.ID, StylesSpans.TEXT);
         testStyles(id);
         testId("id", id, "cat1", "cat2", "cat3");
     }
@@ -84,11 +84,11 @@ class IdentitySpanTest extends SpanBranchTestBase<IdentitySpan> {
     @Test
     void testOnlyPointer() {
         getDocument().updateText("{^error}");
-        addStyleTest("error", LineStyles.NORMAL, SpanStyles.FOOTNOTE, SpanStyles.ID, SpanStyles.ERROR, SpanStyles.TEXT);
+        addStyleTest("error", StyleLines.NORMAL, StylesSpans.FOOTNOTE, StylesSpans.ID, StylesSpans.ERROR, StylesSpans.TEXT);
         SpanBranch division = getDocument().get(0);
         SpanBranch normal = (SpanBranch) division.get(0);
         SpanBranch text = (SpanBranch) normal.get(0);
-        ReferenceSpan ref = (ReferenceSpan) text.get(0);
+        IdentityReference ref = (IdentityReference) text.get(0);
         testStyles(ref.getPointer().get());
     }
 
@@ -99,15 +99,15 @@ class IdentitySpanTest extends SpanBranchTestBase<IdentitySpan> {
         SpanBranch division = getDocument().get(0);
         SpanBranch normal = (SpanBranch) division.get(0);
         SpanBranch text = (SpanBranch) normal.get(0);
-        ReferenceSpan ref = (ReferenceSpan) text.get(0);
+        IdentityReference ref = (IdentityReference) text.get(0);
 
-        ReferenceLine footnote = (ReferenceLine) division.get(1);
+        ParaReference footnote = (ParaReference) division.get(1);
 
-        addStyleTest("ptrid", LineStyles.NORMAL, SpanStyles.FOOTNOTE, SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest("ptrid", StyleLines.NORMAL, StylesSpans.FOOTNOTE, StylesSpans.ID, StylesSpans.TEXT);
         testStyles(ref.getPointer().get());
 
         refreshLists();
-        addStyleTest("refid", LineStyles.FOOTNOTE, SpanStyles.ID, SpanStyles.TEXT);
+        addStyleTest("refid", StyleLines.FOOTNOTE, StylesSpans.ID, StylesSpans.TEXT);
         testStyles(footnote.getPointer().get());
     }
 }

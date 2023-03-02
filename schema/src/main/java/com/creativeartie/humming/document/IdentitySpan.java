@@ -53,7 +53,7 @@ public class IdentitySpan extends SpanBranch implements IdentityStorage.Identity
     }
 
     private IdentitySpan(SpanBranch parent, String text, IdentityGroup group, boolean isPtr) {
-        super(parent, SpanStyles.ID);
+        super(parent, StylesSpans.ID);
         Preconditions.checkArgument(parent instanceof IdentityParent);
         isPointer = isPtr;
         idGroup = group;
@@ -77,7 +77,7 @@ public class IdentitySpan extends SpanBranch implements IdentityStorage.Identity
 
     @Override
     public boolean cleanUpSelf() {
-        return getRoot().isIdUnique(this) ? removeStyle(SpanStyles.ERROR) : addStyle(SpanStyles.ERROR);
+        return getRoot().isIdUnique(this) ? removeStyle(StylesSpans.ERROR) : addStyle(StylesSpans.ERROR);
     }
 
     @Override

@@ -3,18 +3,18 @@ package com.creativeartie.humming.document;
 public enum IdentityGroup {
     FOOTNOTE, ENDNOTE, NOTE, META, IMAGE, TODO;
 
-    SpanStyles getStyleClass() {
+    StylesSpans getStyleClass() {
         switch (this) {
             case NOTE:
-                return SpanStyles.INFO;
+                return StylesSpans.INFO;
             case ENDNOTE:
-                return SpanStyles.ENDNOTE;
+                return StylesSpans.ENDNOTE;
             case FOOTNOTE:
-                return SpanStyles.FOOTNOTE;
+                return StylesSpans.FOOTNOTE;
             case META:
-                return SpanStyles.METADATA;
+                return StylesSpans.METADATA;
             default:
-                return SpanStyles.valueOf(name());
+                return StylesSpans.valueOf(name());
         }
     }
 }

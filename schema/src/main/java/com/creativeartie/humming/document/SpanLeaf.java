@@ -7,15 +7,15 @@ import com.google.common.collect.*;
 public final class SpanLeaf implements Span {
     private final Document spanRoot;
     private final SpanParent parentSpan;
-    private final SpanStyles styleClass;
+    private final StylesSpans styleClass;
     private final int styleLength;
     private final String referText;
 
     protected SpanLeaf(SpanParent parent, String text) {
-        this(parent, text, SpanStyles.OPERATOR);
+        this(parent, text, StylesSpans.OPERATOR);
     }
 
-    protected SpanLeaf(SpanParent parent, String text, SpanStyles style) {
+    protected SpanLeaf(SpanParent parent, String text, StylesSpans style) {
         spanRoot = parent.getRoot();
         parentSpan = parent;
         referText = text;
@@ -28,13 +28,13 @@ public final class SpanLeaf implements Span {
         return spanRoot;
     }
 
-    public List<StyleClass> getClassStyles() {
-        return ImmutableList.<StyleClass>builder().addAll(parentSpan.getInheritedStyles()).add(styleClass).build();
+    public List<SpanStyle> getClassStyles() {
+        return ImmutableList.<SpanStyle>builder().addAll(parentSpan.getInheritedStyles()).add(styleClass).build();
     }
 
     public List<String> getCssStyles() {
         ImmutableList.Builder<String> styles = ImmutableList.builder();
-        for (StyleClass style : getClassStyles()) {
+        for (SpanStyle style : getClassStyles()) {
             styles.add(style.getCssName());
         }
         return styles.build();
@@ -60,7 +60,7 @@ public final class SpanLeaf implements Span {
         return referText;
     }
 
-    public SpanStyles getStyle() {
+    public StylesSpans getStyle() {
         return styleClass;
     }
 }

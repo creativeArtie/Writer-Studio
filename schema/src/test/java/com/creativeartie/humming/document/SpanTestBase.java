@@ -7,7 +7,7 @@ import org.opentest4j.*;
 
 public abstract class SpanTestBase<T extends SpanBranch> {
     private static ArrayList<String> expectedText;
-    private static ArrayList<StyleClass[]> expectedStyles;
+    private static ArrayList<SpanStyle[]> expectedStyles;
     private static Document rootDoc;
     private static boolean testIndex;
 
@@ -40,7 +40,7 @@ public abstract class SpanTestBase<T extends SpanBranch> {
         expectedText.clear();
     }
 
-    protected void addStyleTest(String text, StyleClass... styles) {
+    protected void addStyleTest(String text, SpanStyle... styles) {
         expectedText.add(text.replace('\n', '␤'));
         expectedStyles.add(styles);
     }
@@ -66,7 +66,7 @@ public abstract class SpanTestBase<T extends SpanBranch> {
             String format = "For %s at leaf index %d, text \"%s\"";
             String text = expectedText.get(i);
 
-            StyleClass[] expectedStyle = expectedStyles.get(i);
+            SpanStyle[] expectedStyle = expectedStyles.get(i);
             String styleText = String.format(format, "styles", i, text);
 
             int expectedLength = expectedText.get(i).length();
