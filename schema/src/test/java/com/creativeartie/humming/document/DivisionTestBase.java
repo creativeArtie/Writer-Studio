@@ -37,7 +37,7 @@ public abstract class DivisionTestBase<T extends Division> extends SpanTestBase<
             return this;
         }
 
-        protected TestChild setChildrenSize(int size) {
+        protected TestChild setSize(int size) {
             childrenSize = size;
             isReady[1] = true;
             return this;
@@ -183,7 +183,7 @@ public abstract class DivisionTestBase<T extends Division> extends SpanTestBase<
 
     @Override
     protected void moreBeforeEach() {
-        rootChild = new TestChild("root", 0).setChildrenSize(0).setClass(Document.class);
+        rootChild = new TestChild("root", 0).setSize(0).setClass(Document.class);
     }
 
     protected void newDoc(String input) {

@@ -53,4 +53,8 @@ public class DivisionSecScene extends DivisionSec {
         }
         throw new IllegalStateException("Division not found.");
     }
+
+    public DivisionSecChapter getChapter() {
+        return findParent(DivisionSecChapter.class).get();
+    }
 }

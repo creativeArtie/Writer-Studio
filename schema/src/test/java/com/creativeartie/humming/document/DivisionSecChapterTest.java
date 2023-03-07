@@ -29,7 +29,7 @@ class DivisionSecChapterTest extends DivisionTestBase<DivisionSecChapter> {
         addStyleTest(".", StyleLines.QUOTE, StylesSpans.TEXT);
         testStyles();
 
-        newChildAtIndex("No heading", 0).setChildrenSize(2).setClass(DivisionSecChapter.class).setData(1, "1");
+        newChildAtIndex("No heading", 0).setSize(2).setClass(DivisionSecChapter.class).setData(1, "1");
         testChildren();
     }
 
@@ -44,7 +44,7 @@ class DivisionSecChapterTest extends DivisionTestBase<DivisionSecChapter> {
         addStyleTest("Some content.", StyleLines.NORMAL, StylesSpans.TEXT);
         testStyles();
 
-        newChildAtIndex("With Heading", 0).setChildrenSize(2).setClass(DivisionSecChapter.class).setData(1, "1");
+        newChildAtIndex("With Heading", 0).setSize(2).setClass(DivisionSecChapter.class).setData(1, "1");
         testChildren();
     }
 
@@ -59,8 +59,8 @@ class DivisionSecChapterTest extends DivisionTestBase<DivisionSecChapter> {
         addStyleTest("Some content.", StyleLines.NORMAL, StylesSpans.TEXT);
         testStyles();
 
-        newChildAtIndex("No Heading", 0).setChildrenSize(1).setClass(DivisionSecChapter.class).setData(1, "1")
-                .newChildAtIndex("child", 0).setChildrenSize(2).setClass(DivisionSecChapter.class).setData(2, "1:1");
+        newChildAtIndex("No Heading", 0).setSize(1).setClass(DivisionSecChapter.class).setData(1, "1")
+                .newChildAtIndex("child", 0).setSize(2).setClass(DivisionSecChapter.class).setData(2, "1:1");
         testChildren();
     }
 
@@ -79,11 +79,11 @@ class DivisionSecChapterTest extends DivisionTestBase<DivisionSecChapter> {
         addStyleTest("heading", StyleLines.HEADING, StylesSpans.TEXT);
         testStyles();
 
-        TestChild h1 = newChildAtIndex("Parent", 0).setClass(DivisionSecChapter.class).setChildrenSize(3).setData(1, "1");
-        TestChild h1_1 = h1.newChildAtIndex("First child", 1).setClass(DivisionSecChapter.class).setChildrenSize(1)
-                .setData(2, "1:1");
-        h1_1.newChildAtIndex("grandchild", 0).setClass(DivisionSecChapter.class).setChildrenSize(1).setData(3, "1:1:1");
-        h1.newChildAtIndex("second child", 2).setClass(DivisionSecChapter.class).setChildrenSize(1).setData(2, "1:2");
+        TestChild h1 = newChildAtIndex("Parent", 0).setClass(DivisionSecChapter.class).setSize(3).setData(1, "1");
+        TestChild h1_1 =
+                h1.newChildAtIndex("First child", 1).setClass(DivisionSecChapter.class).setSize(1).setData(2, "1:1");
+        h1_1.newChildAtIndex("grandchild", 0).setClass(DivisionSecChapter.class).setSize(1).setData(3, "1:1:1");
+        h1.newChildAtIndex("second child", 2).setClass(DivisionSecChapter.class).setSize(1).setData(2, "1:2");
         testChildren();
     }
 
@@ -98,8 +98,8 @@ class DivisionSecChapterTest extends DivisionTestBase<DivisionSecChapter> {
         addStyleTest("heading", StyleLines.HEADING, StylesSpans.TEXT);
         testStyles();
 
-        newChildAtIndex("First Child", 0).setClass(DivisionSecChapter.class).setChildrenSize(1).setData(1, "1");
-        newChildAtIndex("Second Child", 1).setClass(DivisionSecChapter.class).setChildrenSize(1).setData(1, "2");
+        newChildAtIndex("First Child", 0).setClass(DivisionSecChapter.class).setSize(1).setData(1, "1");
+        newChildAtIndex("Second Child", 1).setClass(DivisionSecChapter.class).setSize(1).setData(1, "2");
         testChildren();
     }
 
