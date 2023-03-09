@@ -5,8 +5,7 @@ import org.junit.jupiter.api.*;
 class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
     @Test
     void testFull() {
-        ParaNoteHead span = newSpan("!%=title#id\n");
-        addStyleTest("!", StyleLines.HEADER, StylesSpans.OPERATOR);
+        ParaNoteHead span = newSpan("%=title#id\n");
         addStyleTest("%=", StyleLines.HEADER, StylesSpans.OPERATOR);
         addStyleTest("title", StyleLines.HEADER, StylesSpans.TEXT);
         addStyleTest("#", StyleLines.HEADER, StylesSpans.OPERATOR);
@@ -18,8 +17,7 @@ class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
 
     @Test
     void testNoEnder() {
-        ParaNoteHead span = newSpan("!%=title#id");
-        addStyleTest("!", StyleLines.HEADER, StylesSpans.OPERATOR);
+        ParaNoteHead span = newSpan("%=title#id");
         addStyleTest("%=", StyleLines.HEADER, StylesSpans.OPERATOR);
         addStyleTest("title", StyleLines.HEADER, StylesSpans.TEXT);
         addStyleTest("#", StyleLines.HEADER, StylesSpans.OPERATOR);
@@ -30,8 +28,7 @@ class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
 
     @Test
     void testMissingId() {
-        ParaNoteHead span = newSpan("!%=title#");
-        addStyleTest("!", StyleLines.HEADER, StylesSpans.OPERATOR);
+        ParaNoteHead span = newSpan("%=title#");
         addStyleTest("%=", StyleLines.HEADER, StylesSpans.OPERATOR);
         addStyleTest("title", StyleLines.HEADER, StylesSpans.TEXT);
         addStyleTest("#", StyleLines.HEADER, StylesSpans.OPERATOR);
@@ -41,8 +38,7 @@ class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
 
     @Test
     void testNoTitle() {
-        ParaNoteHead span = newSpan("!%=#id");
-        addStyleTest("!", StyleLines.HEADER, StylesSpans.OPERATOR);
+        ParaNoteHead span = newSpan("%=#id");
         addStyleTest("%=", StyleLines.HEADER, StylesSpans.OPERATOR);
         addStyleTest("#", StyleLines.HEADER, StylesSpans.OPERATOR);
         addStyleTest("id", StyleLines.HEADER, StylesSpans.ID, StylesSpans.TEXT);
@@ -52,8 +48,7 @@ class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
 
     @Test
     void testNoId() {
-        ParaNoteHead span = newSpan("!%=title");
-        addStyleTest("!", StyleLines.HEADER, StylesSpans.OPERATOR);
+        ParaNoteHead span = newSpan("%=title");
         addStyleTest("%=", StyleLines.HEADER, StylesSpans.OPERATOR);
         addStyleTest("title", StyleLines.HEADER, StylesSpans.TEXT);
         testStyles(span);
@@ -62,8 +57,7 @@ class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
 
     @Test
     void testStartOnly() {
-        ParaNoteHead span = newSpan("!%=");
-        addStyleTest("!", StyleLines.HEADER, StylesSpans.OPERATOR);
+        ParaNoteHead span = newSpan("%=");
         addStyleTest("%=", StyleLines.HEADER, StylesSpans.OPERATOR);
         testStyles(span);
         Assertions.assertFalse(span.getPointer().isPresent(), "Id");

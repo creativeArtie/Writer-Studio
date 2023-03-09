@@ -12,7 +12,6 @@ public enum ParaNotePatterns implements PatternEnum {
         @Override
         protected String getValuePattern(boolean withName) {
             return // @formatter:off
-                NoteLineParts.STARTER.getPattern(withName) +
                 NoteLineParts.HEADING.getPattern(withName) +
                 NoteLineParts.TITLE.getPattern(withName)  + "?"+
                 "(" +
@@ -29,7 +28,6 @@ public enum ParaNotePatterns implements PatternEnum {
         @Override
         protected String getValuePattern(boolean withName) {
             return // @formatter:off
-                NoteLineParts.STARTER.getPattern(withName) +
                 NoteLineParts.NOTE.getPattern(withName) +
                 NoteLineParts.TEXT.getPattern(withName) + "?";
             //@formatter:on
@@ -39,7 +37,6 @@ public enum ParaNotePatterns implements PatternEnum {
         @Override
         protected String getValuePattern(boolean withName) {
             return // @formatter:off
-                NoteLineParts.STARTER.getPattern(withName) +
                 NoteLineParts.FIELD.getPattern(withName) +
                 "((" +
                     NoteLineParts.KEY.getPattern(withName) +
@@ -51,7 +48,7 @@ public enum ParaNotePatterns implements PatternEnum {
     };
 
     public enum NoteLineParts implements PatternEnum {
-        STARTER("!"), NOTE("%"), HEADING("%="), FIELD(">"), FIELDER("="), TEXT(TextPhrasePatterns.BASIC.getRawPattern()),
+        NOTE("%"), HEADING("%="), FIELD("%>"), FIELDER("="), TEXT(TextPhrasePatterns.BASIC.getRawPattern()),
         TITLE(TextPhrasePatterns.HEADING.getRawPattern()), IDER("#"), ID(IdentityPattern.getFullPattern()),
         ERROR(TextSpanPatterns.SIMPLE.getRawPattern()), KEY(TextSpanPatterns.KEY.getRawPattern()),
         VALUE(TextSpanPatterns.SIMPLE.getRawPattern()), ENDER("\n?");

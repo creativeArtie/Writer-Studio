@@ -16,8 +16,6 @@ public class ParaNoteHead extends Para implements IdentitySpan.IdentityParent {
     @Override
     protected void buildSpan(Matcher match) {
         String raw;
-
-        add(new SpanLeaf(this, ParaNotePatterns.NoteLineParts.STARTER.group(match)));
         add(new SpanLeaf(this, ParaNotePatterns.NoteLineParts.HEADING.group(match)));
         if ((raw = ParaNotePatterns.NoteLineParts.TITLE.group(match)) != null) {
             add(TextFormatted.newHeadingText(this, raw));

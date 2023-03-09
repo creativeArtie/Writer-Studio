@@ -5,8 +5,7 @@ import org.junit.jupiter.api.*;
 class ParaNoteDetailTest extends SpanBranchTestBase<ParaNoteDetail> {
     @Test
     void testFull() {
-        ParaNoteDetail span = newSpan("!%abc\n");
-        addStyleTest("!", StyleLines.NOTE, StylesSpans.OPERATOR);
+        ParaNoteDetail span = newSpan("%abc\n");
         addStyleTest("%", StyleLines.NOTE, StylesSpans.OPERATOR);
         addStyleTest("abc", StyleLines.NOTE, StylesSpans.TEXT);
         addStyleTest("\n", StyleLines.NOTE, StylesSpans.OPERATOR);
@@ -15,8 +14,7 @@ class ParaNoteDetailTest extends SpanBranchTestBase<ParaNoteDetail> {
 
     @Test
     void testNoEnd() {
-        ParaNoteDetail span = newSpan("!%abc");
-        addStyleTest("!", StyleLines.NOTE, StylesSpans.OPERATOR);
+        ParaNoteDetail span = newSpan("%abc");
         addStyleTest("%", StyleLines.NOTE, StylesSpans.OPERATOR);
         addStyleTest("abc", StyleLines.NOTE, StylesSpans.TEXT);
         testStyles(span);
@@ -24,8 +22,7 @@ class ParaNoteDetailTest extends SpanBranchTestBase<ParaNoteDetail> {
 
     @Test
     void testNoText() {
-        ParaNoteDetail span = newSpan("!%\n");
-        addStyleTest("!", StyleLines.NOTE, StylesSpans.OPERATOR);
+        ParaNoteDetail span = newSpan("%\n");
         addStyleTest("%", StyleLines.NOTE, StylesSpans.OPERATOR);
         addStyleTest("\n", StyleLines.NOTE, StylesSpans.OPERATOR);
         testStyles(span);
@@ -33,8 +30,7 @@ class ParaNoteDetailTest extends SpanBranchTestBase<ParaNoteDetail> {
 
     @Test
     void testStartOnly() {
-        ParaNoteDetail span = newSpan("!%");
-        addStyleTest("!", StyleLines.NOTE, StylesSpans.OPERATOR);
+        ParaNoteDetail span = newSpan("%");
         addStyleTest("%", StyleLines.NOTE, StylesSpans.OPERATOR);
         testStyles(span);
     }

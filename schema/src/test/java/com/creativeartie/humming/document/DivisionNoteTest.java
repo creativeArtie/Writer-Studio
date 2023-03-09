@@ -11,36 +11,32 @@ class DivisionNoteTest extends DivisionTestBase<DivisionNote> {
     }
 
     @Test
-    void testSimple() {
-        newDoc("!%=Heading#id\n!%text\n!>abc=dec\n!>afadf\ntext");
-        addStyleTest("!", StyleLines.HEADER, StylesSpans.OPERATOR);
+    void testFullNote() {
+        newDoc("%=Heading#id\n%text\n%>abc=dec\n%>afadf\ntext");
         addStyleTest("%=", StyleLines.HEADER, StylesSpans.OPERATOR);
         addStyleTest("Heading", StyleLines.HEADER, StylesSpans.TEXT);
         addStyleTest("#", StyleLines.HEADER, StylesSpans.OPERATOR);
         addStyleTest("id", StyleLines.HEADER, StylesSpans.ID, StylesSpans.TEXT);
         addStyleTest("\n", StyleLines.HEADER, StylesSpans.OPERATOR);
 
-        addStyleTest("!", StyleLines.NOTE, StylesSpans.OPERATOR);
         addStyleTest("%", StyleLines.NOTE, StylesSpans.OPERATOR);
         addStyleTest("text", StyleLines.NOTE, StylesSpans.TEXT);
         addStyleTest("\n", StyleLines.NOTE, StylesSpans.OPERATOR);
 
-        addStyleTest("!", StyleLines.FIELD, StylesSpans.OPERATOR);
-        addStyleTest(">", StyleLines.FIELD, StylesSpans.OPERATOR);
+        addStyleTest("%>", StyleLines.FIELD, StylesSpans.OPERATOR);
         addStyleTest("abc", StyleLines.FIELD, StylesSpans.TEXT);
         addStyleTest("=", StyleLines.FIELD, StylesSpans.OPERATOR);
         addStyleTest("dec", StyleLines.FIELD, StylesSpans.TEXT);
         addStyleTest("\n", StyleLines.FIELD, StylesSpans.OPERATOR);
 
-        addStyleTest("!", StyleLines.FIELD, StylesSpans.ERROR, StylesSpans.OPERATOR);
-        addStyleTest(">", StyleLines.FIELD, StylesSpans.ERROR, StylesSpans.OPERATOR);
+        addStyleTest("%>", StyleLines.FIELD, StylesSpans.ERROR, StylesSpans.OPERATOR);
         addStyleTest("afadf", StyleLines.FIELD, StylesSpans.ERROR, StylesSpans.TEXT);
         addStyleTest("\n", StyleLines.FIELD, StylesSpans.ERROR, StylesSpans.OPERATOR);
 
         addStyleTest("text", StyleLines.NORMAL, StylesSpans.TEXT);
         testStyles();
 
-        Span id = getSpan(0, 0, 0, 4);
+        Span id = getSpan(0, 0, 0, 3);
 
         ImmutableMap<String, String> expect = ImmutableMap.of("abc", "dec");
 
@@ -53,14 +49,12 @@ class DivisionNoteTest extends DivisionTestBase<DivisionNote> {
 
     @Test
     void testDouble() {
-        newDoc("!%Note 1\n!%=note 2");
+        newDoc("%Note 1\n%=note 2");
 
-        addStyleTest("!", StyleLines.NOTE, StylesSpans.OPERATOR);
         addStyleTest("%", StyleLines.NOTE, StylesSpans.OPERATOR);
         addStyleTest("Note 1", StyleLines.NOTE, StylesSpans.TEXT);
         addStyleTest("\n", StyleLines.NOTE, StylesSpans.OPERATOR);
 
-        addStyleTest("!", StyleLines.HEADER, StylesSpans.OPERATOR);
         addStyleTest("%=", StyleLines.HEADER, StylesSpans.OPERATOR);
         addStyleTest("note 2", StyleLines.HEADER, StylesSpans.TEXT);
         testStyles();

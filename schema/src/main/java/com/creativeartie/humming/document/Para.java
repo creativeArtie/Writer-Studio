@@ -11,8 +11,8 @@ public abstract class Para extends SpanBranch {
         Matcher match;
         // TODO add table rows and heading
         if ((match = ParaNotePatterns.SUMMARY.matcher(text)) != null) returns = new ParaNoteHead(parent);
-        else if ((match = ParaNotePatterns.NOTE.matcher(text)) != null) returns = new ParaNoteDetail(parent);
         else if ((match = ParaNotePatterns.FIELD.matcher(text)) != null) returns = new ParaNoteField(parent);
+        else if ((match = ParaNotePatterns.NOTE.matcher(text)) != null) returns = new ParaNoteDetail(parent);
         else if ((match = ParaReferencePatterns.ENDNOTE.matcher(text)) != null)
             returns = ParaReference.newEndnote(parent);
         else if ((match = ParaReferencePatterns.FOOTNOTE.matcher(text)) != null)
@@ -26,32 +26,29 @@ public abstract class Para extends SpanBranch {
 
         else if ((match = ParaTableRowPattern.matcher(text)) != null) returns = ParaTableRow.newLine(parent);
 
-        else if ((match = ParaBasicPatterns.QUOTE.matcher(text)) != null)
-            returns = new Para(parent, StyleLines.QUOTE) {
-                @Override
-                protected void buildSpan(Matcher match) {
-                    add(new SpanLeaf(this, LineSpanParts.QUOTER.group(match)));
-                    addText(match, LineSpanParts.FORMATTED);
-                    addLineEnd(match, LineSpanParts.ENDER);
-                }
-            };
+        else if ((match = ParaBasicPatterns.QUOTE.matcher(text)) != null) returns = new Para(parent, StyleLines.QUOTE) {
+            @Override
+            protected void buildSpan(Matcher match) {
+                add(new SpanLeaf(this, LineSpanParts.QUOTER.group(match)));
+                addText(match, LineSpanParts.FORMATTED);
+                addLineEnd(match, LineSpanParts.ENDER);
+            }
+        };
 
-        else if ((match = ParaBasicPatterns.BREAK.matcher(text)) != null)
-            returns = new Para(parent, StyleLines.BREAK) {
-                @Override
-                protected void buildSpan(Matcher match) {
-                    add(new SpanLeaf(this, LineSpanParts.BREAKER.group(match)));
-                    addLineEnd(match, LineSpanParts.ENDER);
-                }
-            };
-        else if ((match = ParaBasicPatterns.TEXT.matcher(text)) != null)
-            returns = new Para(parent, StyleLines.NORMAL) {
-                @Override
-                protected void buildSpan(Matcher match) {
-                    addText(match, LineSpanParts.FORMATTED);
-                    addLineEnd(match, LineSpanParts.ENDER);
-                }
-            };
+        else if ((match = ParaBasicPatterns.BREAK.matcher(text)) != null) returns = new Para(parent, StyleLines.BREAK) {
+            @Override
+            protected void buildSpan(Matcher match) {
+                add(new SpanLeaf(this, LineSpanParts.BREAKER.group(match)));
+                addLineEnd(match, LineSpanParts.ENDER);
+            }
+        };
+        else if ((match = ParaBasicPatterns.TEXT.matcher(text)) != null) returns = new Para(parent, StyleLines.NORMAL) {
+            @Override
+            protected void buildSpan(Matcher match) {
+                addText(match, LineSpanParts.FORMATTED);
+                addLineEnd(match, LineSpanParts.ENDER);
+            }
+        };
         else return null;
 
         returns.buildSpan(match);

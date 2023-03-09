@@ -13,7 +13,6 @@ public class ParaNoteDetail extends Para {
     protected void buildSpan(Matcher match) {
         String raw;
 
-        add(new SpanLeaf(this, ParaNotePatterns.NoteLineParts.STARTER.group(match)));
         add(new SpanLeaf(this, ParaNotePatterns.NoteLineParts.NOTE.group(match)));
         if ((raw = ParaNotePatterns.NoteLineParts.TEXT.group(match)) != null) {
             add(TextFormatted.newBasicText(this, raw));

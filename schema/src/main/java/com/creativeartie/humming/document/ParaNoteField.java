@@ -17,8 +17,6 @@ public class ParaNoteField extends Para {
     @Override
     protected void buildSpan(Matcher match) {
         String raw;
-
-        add(new SpanLeaf(this, ParaNotePatterns.NoteLineParts.STARTER.group(match)));
         add(new SpanLeaf(this, ParaNotePatterns.NoteLineParts.FIELD.group(match)));
         if ((raw = ParaNotePatterns.NoteLineParts.KEY.group(match)) != null) {
             TextSpan span = TextSpan.newFieldKey(this, raw);
