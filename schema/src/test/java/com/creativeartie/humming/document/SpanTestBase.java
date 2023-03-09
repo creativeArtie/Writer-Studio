@@ -105,4 +105,14 @@ public abstract class SpanTestBase<T extends SpanBranch> {
         }
         System.out.println();
     }
+
+    protected Span getSpan(int... indexes) {
+        Span answer = null;
+
+        for (int index : indexes) {
+            answer = answer == null ? rootDoc.get(index) : ((SpanBranch) answer).get(index);
+        }
+
+        return answer;
+    }
 }

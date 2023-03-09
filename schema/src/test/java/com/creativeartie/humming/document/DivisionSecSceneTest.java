@@ -4,8 +4,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.*;
 
 class DivisionSecSceneTest extends DivisionTestBase<DivisionSecScene> {
-    private static Integer[] head = new Integer[] { 0 };
-
     public DivisionSecSceneTest() {
         super(true, DivisionSecScene.class);
     }
@@ -23,6 +21,7 @@ class DivisionSecSceneTest extends DivisionTestBase<DivisionSecScene> {
         addStyleTest("=", StyleLines.OUTLINE, StylesSpans.OPERATOR);
         addStyleTest("heading 2.", StyleLines.OUTLINE, StylesSpans.TEXT);
         testStyles();
+        Span head = getSpan(0);
 
         TestChild chapter = newChildAtIndex("Chapter", 0).setSize(2).setClass(DivisionSecChapter.class);
         chapter.newChildAtIndex("Scene 1", 0).setSize(1).setClass(DivisionSecScene.class).setData(1, "1", head);
@@ -45,6 +44,7 @@ class DivisionSecSceneTest extends DivisionTestBase<DivisionSecScene> {
 
         addStyleTest("abc", StyleLines.NORMAL, StylesSpans.TEXT);
         testStyles();
+        Span head = getSpan(0);
 
         // @formatter:off
         newChildAtIndex("Chapter", 0).setSize(2).setClass(DivisionSecChapter.class)
@@ -72,6 +72,7 @@ class DivisionSecSceneTest extends DivisionTestBase<DivisionSecScene> {
         addStyleTest("=", StyleLines.OUTLINE, StylesSpans.OPERATOR);
         addStyleTest("child", StyleLines.OUTLINE, StylesSpans.TEXT);
         testStyles();
+        Span head = getSpan(0);
 
         TestChild chapter = newChildAtIndex("Chapter", 0).setSize(2).setClass(DivisionSecChapter.class);
         chapter.newChildAtIndex("Scene 1", 0).setSize(2).setClass(DivisionSecScene.class).setData(1, "1", head)
@@ -99,13 +100,14 @@ class DivisionSecSceneTest extends DivisionTestBase<DivisionSecScene> {
         addStyleTest("child", StyleLines.OUTLINE, StylesSpans.TEXT);
         testStyles();
 
-        Integer[] head2 = new Integer[] { 1 };
+        Span head = getSpan(0);
+        Span head1 = getSpan(1);
 
         // @formatter:off
         newChildAtIndex("Chapter 1", 0).setSize(1).setClass(DivisionSecChapter.class)
             .newChildAtIndex("Scene 1", 0).setSize(1).setClass(DivisionSecScene.class).setData(1, "1", head);
         newChildAtIndex("Chapter 2", 1).setSize(2).setClass(DivisionSecChapter.class)
-            .newChildAtIndex("Scene 2", 1).setSize(1).setClass(DivisionSecScene.class).setData(1, "2", head2);
+            .newChildAtIndex("Scene 2", 1).setSize(1).setClass(DivisionSecScene.class).setData(1, "2", head1);
         // @formatter:on
     }
 
@@ -113,12 +115,6 @@ class DivisionSecSceneTest extends DivisionTestBase<DivisionSecScene> {
     protected Executable testChild(int index, Object expect, DivisionSecScene child) {
         if (index == 0) return () -> Assertions.assertEquals(expect, child.getLevel(), "getLevel");
         else if (index == 1) return () -> Assertions.assertEquals(expect, child.getLocation(), "getLocation");
-        Integer[] locate = (Integer[]) expect;
-        Span find = getDocument();
-        for (int idx : locate) {
-            find = (find instanceof Document ? ((Document) find).get(idx) : ((SpanBranch) find).get(index));
-        }
-        Span chapter = find;
-        return () -> Assertions.assertSame(chapter, child.getChapter());
+        return () -> Assertions.assertSame(expect, child.getChapter());
     }
 }

@@ -66,7 +66,9 @@ public abstract class DivisionSec extends Division {
             case HEADER:
             case FIELD:
             case NOTE:
-                break;
+                DivisionNote note = new DivisionNote(this);
+                add(note);
+                return note.addLine(line, style);
             default:
                 add(line);
         }
