@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import org.fxmisc.richtext.*?>
+
+<GridPane fx:controller="com.creativeartie.humming.ui.ResearchController"
+	xmlns:fx="http://javafx.com/fxml">
+	<TableView GridPane.columnIndex="0" GridPane.rowIndex="0">
+		<TableColumn text="%note.category"></TableColumn>
+		<TableColumn text="%note.id"></TableColumn>
+		<TableColumn text="%note.name"></TableColumn>
+	</TableView>
+	<BorderPane GridPane.columnIndex="1" GridPane.rowIndex="0">
+		<top>
+			<VBox>
+				<TextField promptText="%note.titlePrompt" /> 
+				<Separator></Separator>
+			</VBox>
+		</top>
+		<center>
+			<TextArea promptText="%note.detailPrompt"></TextArea>
+		</center>
+	</BorderPane>
+	<TableView GridPane.columnIndex="2" GridPane.rowIndex="0">
+		<TableColumn text="%note.field" />
+		<TableColumn text="%note.value" />
+	</TableView>
+</GridPane>

@@ -4,13 +4,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import org.fxmisc.richtext.*?>
 
 <BorderPane fx:controller="com.creativeartie.humming.ui.MainWindowController" 
 	xmlns:fx="http://javafx.com/fxml">
 	<center><SplitPane orientation="VERTICAL" fx:id="topSplit">
 		<TabPane prefHeight="100" tabClosingPolicy="UNAVAILABLE">
-			<Tab text="%tab.research"></Tab>
+			<Tab text="%tab.research" >
+				<fx:include source="researchTab.fxml" fx:id="helpTips" />
+			</Tab>
 			<Tab text="%tab.todo"></Tab>
 			<Tab text="%tab.notes"></Tab>
 			<Tab text="%tab.setting"></Tab>
@@ -19,7 +20,7 @@
 		<SplitPane fx:id="centerSplit">
 			<TabPane tabClosingPolicy="UNAVAILABLE" side="LEFT">
 				<Tab text="%tab.toc">
-					<TreeView fx:id="tableOfContents" />
+					<TreeView fx:id="tableOfContents"></TreeView>
 				</Tab>
 				<Tab text="%tab.files"></Tab>
 				<Tab text="%tab.goals"></Tab>

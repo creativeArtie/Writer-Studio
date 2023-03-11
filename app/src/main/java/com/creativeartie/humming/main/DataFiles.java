@@ -3,7 +3,7 @@ package com.creativeartie.humming.main;
 import java.net.*;
 
 public enum DataFiles {
-    MAIN_FXML("main.fxml"), TEXT_CSS("text.css"), UI_TEXT("uiText.properties");
+    MAIN_FXML("main.fxml"), TEXT_CSS("text.css"), UI_TEXT("uiText.properties"), WRITER("writing.fxml");
 
     private static final String baseFolder = "/data/";
     private String fullPath;

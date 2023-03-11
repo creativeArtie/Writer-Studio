@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import org.fxmisc.richtext.*?>
+
+<BorderPane fx:controller="com.creativeartie.humming.ui.WritingController" 
+	xmlns:fx="http://javafx.com/fxml">
+	<center>
+	<CodeArea stylesheets="@text.css" fx:id="writingText">
+	</CodeArea>
+	</center>
+</BorderPane>

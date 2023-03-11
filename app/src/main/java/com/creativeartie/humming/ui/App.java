@@ -17,11 +17,6 @@ import javafx.stage.*;
  * @author wai
  */
 public class App extends Application {
-    /**
-     * Main window. TODO WritingCoderPane is temporary.
-     */
-    private WritingCoderPane mainText = new WritingCoderPane();
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
@@ -43,7 +38,5 @@ public class App extends Application {
     }
 
     @Override
-    public void stop() {
-        mainText.shutdown();
-    }
+    public void stop() {}
 }
