@@ -62,7 +62,9 @@ public abstract class DivisionSec extends Division {
             case OUTLINE:
                 return addOutlineLine((HeadingLine) line);
             case ROW:
-                break;
+                DivisionTable table = new DivisionTable(this);
+                add(table);
+                return table.addLine(line, style);
             case HEADER:
             case FIELD:
             case NOTE:
@@ -71,8 +73,8 @@ public abstract class DivisionSec extends Division {
                 return note.addLine(line, style);
             default:
                 add(line);
+                return Optional.empty();
         }
-        return Optional.empty();
     }
 
     protected abstract String getLocationAtRoot();
