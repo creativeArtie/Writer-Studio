@@ -20,11 +20,11 @@ public abstract class DivisionSec extends Division {
 
     protected abstract void addDivisionAtRoot(DivisionSec child);
 
-    protected Optional<Division> addHeading(HeadingLine heading) {
+    protected Division addHeading(HeadingLine heading) {
         if (sectionLevel == heading.getLevel()) {
             if (isEmpty()) {
                 add(heading);
-                return Optional.of(this);
+                return this;
             }
             DivisionSec division = newDivision(this, heading.getLevel());
 
@@ -32,7 +32,7 @@ public abstract class DivisionSec extends Division {
                     .ifPresentOrElse((span) -> span.add(division), () -> addDivisionAtRoot(division));
 
             division.add(heading);
-            return Optional.of(division);
+            return division;
         } else if (sectionLevel < heading.getLevel()) {
             DivisionSec division = newDivision(this, sectionLevel + 1);
             add(division);
@@ -45,12 +45,12 @@ public abstract class DivisionSec extends Division {
         return sectionLevel;
     }
 
-    protected abstract Optional<Division> addHeadingLine(HeadingLine line);
+    protected abstract Division addHeadingLine(HeadingLine line);
 
-    protected abstract Optional<Division> addOutlineLine(HeadingLine line);
+    protected abstract Division addOutlineLine(HeadingLine line);
 
     @Override
-    protected Optional<Division> addLine(Para line, StyleLines style) {
+    protected Division addLine(Para line, StyleLines style) {
         switch (style) {
             case BULLET:
             case NUMBERED:
@@ -73,7 +73,7 @@ public abstract class DivisionSec extends Division {
                 return note.addLine(line, style);
             default:
                 add(line);
-                return Optional.empty();
+                return this;
         }
     }
 

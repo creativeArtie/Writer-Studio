@@ -1,7 +1,5 @@
 package com.creativeartie.humming.document;
 
-import java.util.*;
-
 public class DivisionTable extends Division {
     private int maxTableColumns;
 
@@ -10,15 +8,15 @@ public class DivisionTable extends Division {
     }
 
     @Override
-    protected Optional<Division> addLine(Para line, StyleLines style) {
+    protected Division addLine(Para line, StyleLines style) {
         if (style == StyleLines.ROW) {
             ParaTableRow row = (ParaTableRow) line;
             if (row.getColumnSize() > maxTableColumns) maxTableColumns = row.getColumnSize();
             row.addStyle(size() == 0 ? StylesSpans.HEADCELL : StylesSpans.TEXTCELL);
             add(row);
-            return Optional.of(this);
+            return this;
         }
-        return findParent(Division.class);
+        return findParent(Division.class).get();
     }
 
     public int getColumnSize() {

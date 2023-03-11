@@ -280,11 +280,7 @@ public class Document extends ForwardingList<DivisionSecChapter> implements Span
             for (String raw : texts) {
                 raw += (line == texts.size() ? "" : "\n");
                 Para span = Para.newLine(parent, raw);
-                Optional<Division> next = parent.addLine(span, span.getLineStyle());
-
-                if (next.isPresent()) {
-                    parent = next.get();
-                }
+                parent = parent.addLine(span, span.getLineStyle());
                 line++;
             }
             cleanUp();

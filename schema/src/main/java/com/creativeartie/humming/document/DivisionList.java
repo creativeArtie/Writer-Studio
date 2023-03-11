@@ -1,7 +1,5 @@
 package com.creativeartie.humming.document;
 
-import java.util.*;
-
 public class DivisionList extends Division implements SpanList {
     private final boolean isBullet;
     private final int listLevel;
@@ -24,7 +22,7 @@ public class DivisionList extends Division implements SpanList {
         listSize = 1;
     }
 
-    protected Optional<Division> addLine(ParaList line) {
+    protected Division addLine(ParaList line) {
         int level = line.getLevel();
 
         if (level == listLevel) {
@@ -33,7 +31,7 @@ public class DivisionList extends Division implements SpanList {
                 // same type + same level = add to this
                 add(line);
                 line.setPosition(listSize++);
-                return Optional.of(this);
+                return this;
             } else {
                 // different type + same level = go to SectionDivision + new list
                 DivisionSec parent = findParent(DivisionSecChapter.class).get();
@@ -49,21 +47,21 @@ public class DivisionList extends Division implements SpanList {
             return child.addLine(line);
         }
         // shadower level = go back to parent
-        return findParent(DivisionList.class).flatMap((span) -> span.addLine(line));
+        return findParent(DivisionList.class).get().addLine(line);
     }
 
     @Override
-    protected Optional<Division> addLine(Para line, StyleLines style) {
+    protected Division addLine(Para line, StyleLines style) {
 
         switch (style) {
             case AGENDA:
                 add(line);
-                return Optional.empty();
+                return this;
             case BULLET:
             case NUMBERED:
                 return addLine((ParaList) line);
             default:
-                return findParent(DivisionSecChapter.class).flatMap((span) -> span.addLine(line, style));
+                return findParent(DivisionSecChapter.class).get().addLine(line, style);
         }
     }
 

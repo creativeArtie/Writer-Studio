@@ -31,12 +31,12 @@ public class DivisionSecScene extends DivisionSec {
     }
 
     @Override
-    protected Optional<Division> addHeadingLine(HeadingLine line) {
+    protected Division addHeadingLine(HeadingLine line) {
         return findParent(DivisionSecChapter.class).get().addLine(line, line.getLineStyle());
     }
 
     @Override
-    protected Optional<Division> addOutlineLine(HeadingLine line) {
+    protected Division addOutlineLine(HeadingLine line) {
         return addHeading(line);
     }
 

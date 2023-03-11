@@ -1,7 +1,5 @@
 package com.creativeartie.humming.document;
 
-import java.util.*;
-
 public class DivisionSecChapter extends DivisionSec {
     DivisionSecChapter(Document root) {
         super(root);
@@ -42,12 +40,12 @@ public class DivisionSecChapter extends DivisionSec {
     }
 
     @Override
-    protected Optional<Division> addHeadingLine(HeadingLine line) {
+    protected Division addHeadingLine(HeadingLine line) {
         return addHeading(line);
     }
 
     @Override
-    protected Optional<Division> addOutlineLine(HeadingLine line) {
+    protected Division addOutlineLine(HeadingLine line) {
         DivisionSecScene outline = new DivisionSecScene(this);
         add(outline);
         return outline.addHeading(line);
