@@ -1,45 +1,74 @@
-.identifier{
-	-fx-stroke:blue;
-} 
-
-.name {
-	-fx-stroke:blue;
-	-fx-font-weight: bold;
+.escape{
+	-rtfx-border-stroke-color:darkgray;
+	-rtfx-border-stroke-width:1px;
+	-rtfx-border-stroke-type:center;
 }
 
-.error {}
-
-.operator {
-	-fx-stroke: gray
+.operator{
+	-fx-stroke:darkgray;
 }
 
-.text{
+.id{
+	-fx-stroke:darkslateblue;
 }
 
-.footnote {}
-
-.endnote{}
-
-.source{
-	-rtfx-background-color: lightgray
+.error{
+	-rtfx-underline-color:firebrick;
+	-rtfx-underline-dash-array:10px 4px;
+	-rtfx-underline-width:2px;
 }
 
-.todo {
-	-rtfx-background-color: gold;
+.footnote{
+	-rtfx-background-color:lightgreen;
 }
 
-
-.bold {
-	-fx-font-weight: bolder;
+.endnote{
+	-rtfx-background-color:lightblue;
 }
 
-.italics{
+.metaData{}
+
+.image{}
+
+.agenda{
+	-rtfx-background-color:yellow;
+}
+
+.bold{
+	-fx-font-weight:bold;
 }
 
 .underline{
+	-fx-underline:true;
 }
 
-.escape {
-	-rtfx-border-stroke-color: lightgray;
-	-rtfx-border-stroke-width: 1
+.italics{
+	-fx-font-style:italic;
+}
+
+.textcell{}
+
+.quote{}
+
+.normal{}
+
+.break{
+	-fx-text-alignment:center;
+}
+
+.heading, .headcell, .outline, .header {
+	-fx-font-size:1.2em;
+}
+
+.outline, .note, .field, .header {
+	-rtfx-background-color:lightgray;
+}
+
+.numbered{}
+
+.bullet{}
+
+.row{
+	-rtfx-border-stroke-color:darkgray;
+	-rtfx-border-stroke-width:1px;
 }

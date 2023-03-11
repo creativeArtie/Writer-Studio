@@ -8,7 +8,7 @@
 
 <BorderPane fx:controller="com.creativeartie.humming.ui.MainWindowController" 
 	xmlns:fx="http://javafx.com/fxml">
-	<center><SplitPane orientation="VERTICAL">
+	<center><SplitPane orientation="VERTICAL" fx:id="topSplit">
 		<TabPane prefHeight="100" tabClosingPolicy="UNAVAILABLE">
 			<Tab text="%tab.research"></Tab>
 			<Tab text="%tab.todo"></Tab>
@@ -16,13 +16,15 @@
 			<Tab text="%tab.setting"></Tab>
 		</TabPane>
 
-		<SplitPane>
+		<SplitPane fx:id="centerSplit">
 			<TabPane tabClosingPolicy="UNAVAILABLE" side="LEFT">
-				<Tab text="%tab.toc"></Tab>
+				<Tab text="%tab.toc">
+					<TreeView fx:id="tableOfContents" />
+				</Tab>
 				<Tab text="%tab.files"></Tab>
 				<Tab text="%tab.goals"></Tab>
 			</TabPane>
-			<TabPane>
+			<TabPane fx:id="documentTabs">
 			</TabPane>
 		</SplitPane>
 	</SplitPane></center>

@@ -6,7 +6,7 @@ public enum IdentityGroup {
     StylesSpans getStyleClass() {
         switch (this) {
             case NOTE:
-                return StylesSpans.INFO;
+                return StylesSpans.NOTE;
             case ENDNOTE:
                 return StylesSpans.ENDNOTE;
             case FOOTNOTE:

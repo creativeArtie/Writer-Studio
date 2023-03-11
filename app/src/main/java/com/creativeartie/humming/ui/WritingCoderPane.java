@@ -29,6 +29,7 @@ public class WritingCoderPane extends CodeArea {
     public WritingCoderPane() {
         executor = Executors.newSingleThreadExecutor();
         setParagraphGraphicFactory(LineNumberFactory.get(this));
+        setWrapText(true);
 
         textProperty().addListener((observable, oldValue, newValue) -> {
             rootDoc.updateText(newValue);

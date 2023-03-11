@@ -11,7 +11,7 @@ class IdentityReferenceTest extends SpanBranchTestBase<IdentityReference> {
     private static Stream<Arguments> provideParameters() {
         return Stream.of(
                 Arguments.of("*", StylesSpans.ENDNOTE), Arguments.of("^", StylesSpans.FOOTNOTE),
-                Arguments.of("%", StylesSpans.METADATA), Arguments.of(">", StylesSpans.INFO),
+                Arguments.of("%", StylesSpans.METADATA), Arguments.of(">", StylesSpans.NOTE),
                 Arguments.of("+", StylesSpans.IMAGE)
         );
     }

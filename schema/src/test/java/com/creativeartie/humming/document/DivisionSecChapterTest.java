@@ -13,9 +13,9 @@ class DivisionSecChapterTest extends DivisionTestBase<DivisionSecChapter> {
         newDoc("No Heading {!help} #STUB\n>Some content: *\\*Hello World*\\*.");
 
         addStyleTest("No Heading ", StyleLines.NORMAL, StylesSpans.TEXT);
-        addStyleTest("{!", StyleLines.NORMAL, StylesSpans.TODO, StylesSpans.OPERATOR);
-        addStyleTest("help", StyleLines.NORMAL, StylesSpans.TODO, StylesSpans.TEXT);
-        addStyleTest("}", StyleLines.NORMAL, StylesSpans.TODO, StylesSpans.OPERATOR);
+        addStyleTest("{!", StyleLines.NORMAL, StylesSpans.AGENDA, StylesSpans.OPERATOR);
+        addStyleTest("help", StyleLines.NORMAL, StylesSpans.AGENDA, StylesSpans.TEXT);
+        addStyleTest("}", StyleLines.NORMAL, StylesSpans.AGENDA, StylesSpans.OPERATOR);
         addStyleTest(" #STUB", StyleLines.NORMAL, StylesSpans.TEXT);
         addStyleTest("\n", StyleLines.NORMAL, StylesSpans.OPERATOR);
 

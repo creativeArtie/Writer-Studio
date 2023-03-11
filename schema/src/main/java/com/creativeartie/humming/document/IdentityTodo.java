@@ -28,7 +28,7 @@ public class IdentityTodo extends SpanBranch implements IdentityStorage.Identity
 
     private IdentityTodo(SpanBranch parent, StylesSpans... classes) {
         super(parent, classes);
-        addStyle(StylesSpans.TODO);
+        addStyle(StylesSpans.AGENDA);
         todoText = "";
     }
 
