@@ -9,7 +9,7 @@ public enum StyleLines implements SpanStyle {
 
     HEADER, NOTE, FIELD,
 
-    FOOTNOTE, ENDNOTE,
+    FOOTNOTE, ENDNOTE, IMAGE,
 
     ROW;
 

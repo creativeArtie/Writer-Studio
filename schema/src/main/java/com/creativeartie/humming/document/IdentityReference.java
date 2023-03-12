@@ -23,8 +23,6 @@ public class IdentityReference extends SpanBranch implements IdentitySpan.Identi
             group = IdentityGroup.NOTE;
         } else if ((raw = IdentityReferencePattern.METAREF.group(match)) != null) {
             group = IdentityGroup.META;
-        } else if ((raw = IdentityReferencePattern.IMAGE.group(match)) != null) {
-            group = IdentityGroup.IMAGE;
         }
         if (group != null) {
             span.add(new SpanLeaf(span, raw));

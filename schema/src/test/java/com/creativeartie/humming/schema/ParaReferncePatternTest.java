@@ -11,6 +11,7 @@ class ParaReferncePatternTest extends PatternTestBase<RefLineParts> {
     public static void printPattern() {
         splitPrintPattern("Footnote", ParaReferencePatterns.FOOTNOTE.matcher("!^id:note"));
         splitPrintPattern("Endnote", ParaReferencePatterns.ENDNOTE.matcher("!*id:endnot"));
+        splitPrintPattern("Image", ParaReferencePatterns.IMAGE.matcher("!+id:endnot"));
     }
 
     @Test
@@ -61,6 +62,35 @@ class ParaReferncePatternTest extends PatternTestBase<RefLineParts> {
         assertGroup("!", matcher, RefLineParts.START, 1);
         assertGroup("*", matcher, RefLineParts.ENDNOTE, 2);
         assertGroup("test++note", matcher, RefLineParts.ERROR, 5);
+        assertEnd(matcher);
+    }
+
+    @Test
+    void testImageFull() {
+        final Matcher matcher = ParaReferencePatterns.IMAGE.matcher("!+test=note");
+        assertGroup("!", matcher, RefLineParts.START, 1);
+        assertGroup("+", matcher, RefLineParts.IMAGE, 2);
+        assertGroup("test", matcher, RefLineParts.ID, 3);
+        assertGroup("=", matcher, RefLineParts.SEP, 4);
+        assertGroup("note", matcher, RefLineParts.TEXT, 5);
+        assertEnd(matcher);
+    }
+
+    @Test
+    void testImageNoCaption() {
+        final Matcher matcher = ParaReferencePatterns.IMAGE.matcher("!+test");
+        assertGroup("!", matcher, RefLineParts.START, 1);
+        assertGroup("+", matcher, RefLineParts.IMAGE, 2);
+        assertGroup("test", matcher, RefLineParts.ID, 3);
+        assertEnd(matcher);
+    }
+
+    @Test
+    void testImageError() {
+        final Matcher matcher = ParaReferencePatterns.IMAGE.matcher("!+test++note=Hello");
+        assertGroup("!", matcher, RefLineParts.START, 1);
+        assertGroup("+", matcher, RefLineParts.IMAGE, 2);
+        assertGroup("test++note=Hello", matcher, RefLineParts.ERROR, 5);
         assertEnd(matcher);
     }
 }

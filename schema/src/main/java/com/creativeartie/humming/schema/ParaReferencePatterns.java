@@ -40,10 +40,28 @@ public enum ParaReferencePatterns implements PatternEnum {
                 ")";
          // @formatter:on
         }
+    },
+    IMAGE {
+        @Override
+        protected String getValuePattern(boolean withName) {
+            return // @formatter:off
+                    RefLineParts.START.getPattern(withName) +
+                    RefLineParts.IMAGE.getPattern(withName) +
+                    "(" +
+                        "(" +
+                            RefLineParts.ID.getPattern(withName) +
+                            "(" +
+                                RefLineParts.SEP.getPattern(withName) +
+                                RefLineParts.TEXT.getPattern(withName) +
+                            ")?" +
+                        ")|" + RefLineParts.ERROR.getPattern(withName) +
+                    ")";
+             // @formatter:on
+        }
     };
 
     public enum RefLineParts implements PatternEnum {
-        START("!"), FOOTNOTE("\\^"), ENDNOTE("\\*"), SEP("="), ID(IdentityPattern.getFullPattern()),
+        START("!"), FOOTNOTE("\\^"), ENDNOTE("\\*"), IMAGE("\\+"), SEP("="), ID(IdentityPattern.getFullPattern()),
         TEXT(TextPhrasePatterns.NOTE.getRawPattern()), ERROR(TextSpanPatterns.SIMPLE.getRawPattern()), ENDER("\n?");
 
         private final String rawPattern;

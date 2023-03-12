@@ -13,7 +13,7 @@ class IdentityReferencePatternTest extends PatternTestBase<IdentityReferencePatt
     }
 
     @ParameterizedTest
-    @CsvSource({ "^,FOOTREF", "*,ENDREF", ">,CITEREF", "%,METAREF", "+,IMAGE" })
+    @CsvSource({ "^,FOOTREF", "*,ENDREF", ">,CITEREF", "%,METAREF" })
     void testFullRef(String test, String type) {
         final String raw = "{" + test + "cat:id}";
         final IdentityReferencePattern pattern = IdentityReferencePattern.valueOf(type);

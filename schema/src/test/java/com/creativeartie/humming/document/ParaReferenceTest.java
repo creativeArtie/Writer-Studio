@@ -8,7 +8,12 @@ import org.junit.jupiter.params.provider.*;
 
 class ParaReferenceTest extends SpanBranchTestBase<ParaReference> {
     private static Stream<Arguments> provideParameters() {
-        return Stream.of(Arguments.of("^", StyleLines.FOOTNOTE), Arguments.of("*", StyleLines.ENDNOTE));
+        return // @formatter:off
+            Stream.of(
+                Arguments.of("^", StyleLines.FOOTNOTE),
+                Arguments.of("*", StyleLines.ENDNOTE),
+                Arguments.of("+", StyleLines.IMAGE)
+            );//@formatter:on
     }
 
     @ParameterizedTest
