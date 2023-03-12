@@ -3,7 +3,6 @@ package com.creativeartie.humming.document;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.*;
 
-@Disabled
 class DivisionTableTest extends DivisionTestBase<DivisionTable> {
     public DivisionTableTest() {
         super(true, DivisionTable.class);
@@ -31,8 +30,11 @@ class DivisionTableTest extends DivisionTestBase<DivisionTable> {
         addStyleTest("|", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.OPERATOR);
         testStyles();
 
-        newChildAtIndex("head", 0).setSize(1).setClass(DivisionSecChapter.class).newChildAtIndex("table", 0).setSize(3)
-                .setClass(DivisionTable.class).setData(2);
+        // @formatter:off
+        newChildAtIndex("head", 0).setSize(1).setClass(DivisionSecChapter.class)
+            .newChildAtIndex("table", 0).setSize(3).setClass(DivisionTable.class).setData(2);
+        // @formatter:on
+        testChildren();
     }
 
     @Test
@@ -59,8 +61,36 @@ class DivisionTableTest extends DivisionTestBase<DivisionTable> {
         addStyleTest("|", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.OPERATOR);
         testStyles();
 
-        newChildAtIndex("head", 0).setSize(1).setClass(DivisionSecChapter.class).newChildAtIndex("table", 0).setSize(3)
-                .setClass(DivisionTable.class).setData(3);
+        // @formatter:off
+        newChildAtIndex("head", 0).setSize(1).setClass(DivisionSecChapter.class)
+            .newChildAtIndex("table", 0).setSize(3).setClass(DivisionTable.class).setData(3);
+        // @formatter:on
+        testChildren();
+    }
+
+    @Test
+    void testMidTable() {
+        newDoc("abc\n|cell 1|cell 2|cell 3|\nabc");
+
+        addStyleTest("abc", StyleLines.NORMAL, StylesSpans.TEXT);
+        addStyleTest("\n", StyleLines.NORMAL, StylesSpans.OPERATOR);
+
+        addStyleTest("|", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.OPERATOR);
+        addStyleTest("cell 1", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.TEXT);
+        addStyleTest("|", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.OPERATOR);
+        addStyleTest("cell 2", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.TEXT);
+        addStyleTest("|", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.OPERATOR);
+        addStyleTest("cell 3", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.TEXT);
+        addStyleTest("|\n", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.OPERATOR);
+
+        addStyleTest("abc", StyleLines.NORMAL, StylesSpans.TEXT);
+        testStyles();
+
+        // @formatter:off
+        newChildAtIndex("head", 0).setSize(3).setClass(DivisionSecChapter.class)
+            .newChildAtIndex("table", 1).setSize(1).setClass(DivisionTable.class).setData(3);
+        // @formatter:on
+        testChildren();
     }
 
     @Override

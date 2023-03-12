@@ -16,7 +16,7 @@ public class DivisionTable extends Division {
             add(row);
             return this;
         }
-        return findParent(Division.class).get();
+        return findParent(Division.class).get().addLine(line, style);
     }
 
     public int getColumnSize() {

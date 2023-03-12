@@ -23,9 +23,7 @@ public abstract class Para extends SpanBranch {
 
         else if ((match = ParaBasicPatterns.AGENDA.matcher(text)) != null) returns = new ParaAgenda(parent);
 
-        // TODO table didn't work in the program...
-        // else if ((match = ParaTableRowPattern.matcher(text)) != null) returns =
-        // ParaTableRow.newLine(parent);
+        else if ((match = ParaTableRowPattern.matcher(text)) != null) returns = ParaTableRow.newLine(parent);
 
         else if ((match = ParaBasicPatterns.QUOTE.matcher(text)) != null) returns = new Para(parent, StyleLines.QUOTE) {
             @Override
