@@ -1,7 +1,5 @@
 package com.creativeartie.humming.ui;
 
-import java.util.*;
-
 import com.creativeartie.humming.main.*;
 
 import javafx.application.*;
@@ -19,7 +17,7 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
         Thread.setDefaultUncaughtExceptionHandler(App::handleExceptions);
         FXMLLoader loader = new FXMLLoader();
-        loader.setResources(ResourceBundle.getBundle("data.uiText"));
+        loader.setResources(UIText.getBundle());
         loader.setLocation(DataFiles.MAIN_FXML.getFile());
         Parent root;
         root = loader.load();

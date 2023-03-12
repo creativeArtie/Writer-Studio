@@ -12,6 +12,9 @@
 		<TableColumn text="%note.category"></TableColumn>
 		<TableColumn text="%note.id"></TableColumn>
 		<TableColumn text="%note.name"></TableColumn>
+		<placeholder>
+			<Label text="%note.noNotes" />
+		</placeholder>
 	</TableView>
 	<BorderPane GridPane.columnIndex="1" GridPane.rowIndex="0">
 		<top>
@@ -27,5 +30,8 @@
 	<TableView GridPane.columnIndex="2" GridPane.rowIndex="0">
 		<TableColumn text="%note.field" />
 		<TableColumn text="%note.value" />
+		<placeholder>
+			<Label text="%note.noSelect" fx:id="fieldsPlaceholder" />
+		</placeholder>
 	</TableView>
 </GridPane>
