@@ -7,8 +7,6 @@ import com.creativeartie.humming.main.*;
 import javafx.application.*;
 import javafx.fxml.*;
 import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
 import javafx.stage.*;
 
 /**
@@ -19,22 +17,22 @@ import javafx.stage.*;
 public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
+        Thread.setDefaultUncaughtExceptionHandler(App::handleExceptions);
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(ResourceBundle.getBundle("data.uiText"));
         loader.setLocation(DataFiles.MAIN_FXML.getFile());
-        Parent root = loader.load();
+        Parent root;
+        root = loader.load();
+
         Scene scene = new Scene(root, 800, 600);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Writer App");
         primaryStage.show();
     }
 
-    /** Develop the main pane. TODO maybe set to delete. */
-    BorderPane setup() {
-        BorderPane mainPane = new BorderPane();
-        // mainPane.setCenter(mainText);
-        mainPane.setCenter(new Label("hello"));
-        return mainPane;
+    public static void handleExceptions(Thread t, Throwable e) {
+        e.printStackTrace();
+        System.exit(-1);
     }
 
     @Override

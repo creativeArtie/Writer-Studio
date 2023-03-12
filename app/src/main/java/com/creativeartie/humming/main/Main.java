@@ -13,6 +13,12 @@ import javafx.application.*;
  */
 public class Main {
     public static void main(String[] args) {
+        Thread.setDefaultUncaughtExceptionHandler(App::handleExceptions);
         Application.launch(App.class, args);
+    }
+
+    public static void handleExceptions(Thread t, Throwable e) {
+        e.printStackTrace();
+        System.exit(-1);
     }
 }

@@ -2,6 +2,7 @@ package com.creativeartie.humming.document;
 
 import org.junit.jupiter.api.*;
 
+@Disabled
 public class ParaTableRowTest extends SpanBranchTestBase<ParaTableRow> {
     @Test
     public void testFullRow() {

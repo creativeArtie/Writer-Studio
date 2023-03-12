@@ -66,5 +66,10 @@ public class WritingController {
         final StyleSpansBuilder<Collection<String>> styleSpans = new StyleSpansBuilder<>();
         styleSpans.addAll(rootDoc.convertLeaves((leaf) -> new StyleSpan<>(leaf.getCssStyles(), leaf.getLength())));
         writingText.setStyleSpans(0, styleSpans.create());
+        int line = 0;
+        for (StyleLines style : rootDoc.convertLines((para) -> para.getLineStyle())) {
+            writingText.setParagraphStyle(line, List.of(style.getCssName()));
+            line++;
+        }
     }
 }

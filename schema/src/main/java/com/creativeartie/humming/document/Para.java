@@ -9,7 +9,6 @@ public abstract class Para extends SpanBranch {
     static Para newLine(SpanBranch parent, String text) {
         Para returns = null;
         Matcher match;
-        // TODO add table rows and heading
         if ((match = ParaNotePatterns.SUMMARY.matcher(text)) != null) returns = new ParaNoteHead(parent);
         else if ((match = ParaNotePatterns.FIELD.matcher(text)) != null) returns = new ParaNoteField(parent);
         else if ((match = ParaNotePatterns.NOTE.matcher(text)) != null) returns = new ParaNoteDetail(parent);
@@ -24,7 +23,9 @@ public abstract class Para extends SpanBranch {
 
         else if ((match = ParaBasicPatterns.AGENDA.matcher(text)) != null) returns = new ParaAgenda(parent);
 
-        else if ((match = ParaTableRowPattern.matcher(text)) != null) returns = ParaTableRow.newLine(parent);
+        // TODO table didn't work in the program...
+        // else if ((match = ParaTableRowPattern.matcher(text)) != null) returns =
+        // ParaTableRow.newLine(parent);
 
         else if ((match = ParaBasicPatterns.QUOTE.matcher(text)) != null) returns = new Para(parent, StyleLines.QUOTE) {
             @Override

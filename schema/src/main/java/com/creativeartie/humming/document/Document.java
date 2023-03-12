@@ -290,6 +290,26 @@ public class Document extends ForwardingList<DivisionSecChapter> implements Span
         }
     }
 
+    public <T> List<T> convertLines(Function<Para, T> convert) {
+        ImmutableList.Builder<T> lines = ImmutableList.builder();
+        for (Division child : this) {
+            lines.addAll(convertLines(convert, child));
+        }
+        return lines.build();
+    }
+
+    private <T> List<T> convertLines(Function<Para, T> convert, Division div) {
+        ImmutableList.Builder<T> lines = ImmutableList.builder();
+        for (Span child : div) {
+            if (child instanceof Division) {
+                lines.addAll(convertLines(convert, (Division) child));
+            } else if (child instanceof Para) {
+                lines.add(convert.apply((Para) child));
+            }
+        }
+        return lines.build();
+    }
+
     public <T> List<T> convertLeaves(Function<SpanLeaf, T> convert) {
         ImmutableList.Builder<T> leaves = ImmutableList.builder();
 

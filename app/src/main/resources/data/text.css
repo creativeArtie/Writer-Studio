@@ -28,7 +28,9 @@
 
 .metaData{}
 
-.image{}
+.image{
+	-rtfx-background-color:burlywood;
+}
 
 .agenda{
 	-rtfx-background-color:yellow;
@@ -48,7 +50,12 @@
 
 .textcell{}
 
-.quote{}
+.quote{
+	-fx-border-width: 0 0 0 5;
+	-fx-border-color: darkgray;
+	-fx-padding: 0 0 0 10;
+	
+}
 
 .normal{}
 
@@ -64,11 +71,13 @@
 	-rtfx-background-color:lightgray;
 }
 
-.numbered{}
+.numbered{
+	-fx-padding: 0 0 0 30;
+}
 
 .bullet{}
 
 .row{
-	-rtfx-border-stroke-color:darkgray;
-	-rtfx-border-stroke-width:1px;
+	-rtfx-border-stroke-color:black;
+	-rtfx-border-stroke-width:2px;
 }

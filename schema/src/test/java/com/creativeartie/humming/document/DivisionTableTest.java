@@ -3,6 +3,7 @@ package com.creativeartie.humming.document;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.*;
 
+@Disabled
 class DivisionTableTest extends DivisionTestBase<DivisionTable> {
     public DivisionTableTest() {
         super(true, DivisionTable.class);

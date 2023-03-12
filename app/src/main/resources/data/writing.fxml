@@ -9,7 +9,7 @@
 <BorderPane fx:controller="com.creativeartie.humming.ui.WritingController" 
 	xmlns:fx="http://javafx.com/fxml">
 	<center>
-	<CodeArea stylesheets="@text.css" fx:id="writingText">
+	<CodeArea stylesheets="@text.css" fx:id="writingText" wrapText="true">
 	</CodeArea>
 	</center>
 </BorderPane>
