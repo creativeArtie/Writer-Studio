@@ -30,7 +30,7 @@
 		</SplitPane>
 	</SplitPane></center>
 	
-	<bottom><GridPane>
+	<bottom>
 		<fx:include source="helpTip.fxml" fx:id="helpTips" />
-	</GridPane></bottom>
+	</bottom>
 </BorderPane>

@@ -8,6 +8,11 @@
 
 <GridPane fx:controller="com.creativeartie.humming.ui.ResearchController"
 	xmlns:fx="http://javafx.com/fxml">
+	<columnConstraints>
+	    <ColumnConstraints percentWidth="20" /> 
+	    <ColumnConstraints percentWidth="40" />
+	    <ColumnConstraints percentWidth="40" />
+  	</columnConstraints>
 	<TableView GridPane.columnIndex="0" GridPane.rowIndex="0">
 		<TableColumn text="%note.category"></TableColumn>
 		<TableColumn text="%note.id"></TableColumn>

@@ -22,6 +22,8 @@ public class App extends Application {
         Parent root;
         root = loader.load();
 
+        primaryStage.setMinWidth(800);
+        primaryStage.setMinHeight(600);
         Scene scene = new Scene(root, 800, 600);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Writer App");
