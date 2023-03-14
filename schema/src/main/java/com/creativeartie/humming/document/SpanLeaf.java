@@ -60,6 +60,10 @@ public final class SpanLeaf implements Span {
         return referText;
     }
 
+    public String getRefText() {
+        return referText;
+    }
+
     public StylesSpans getStyle() {
         return styleClass;
     }

@@ -192,5 +192,6 @@ public abstract class DivisionTestBase<T extends Division> extends SpanTestBase<
         for (SpanBranch child : getDocument()) {
             printSpan(child, input);
         }
+        Assertions.assertEquals(input, getDocument().getText(), "Manuscript Text");
     }
 }

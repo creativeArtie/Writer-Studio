@@ -327,6 +327,10 @@ public class Manuscript extends ForwardingList<DivisionSecChapter> implements Sp
         return convertLeaves((leaf) -> leaf);
     }
 
+    public String getText() {
+        return Joiner.on("").join(convertLeaves((leaf) -> leaf.getRefText()));
+    }
+
     @Override
     public List<SpanStyle> getInheritedStyles() {
         return ImmutableList.of();
