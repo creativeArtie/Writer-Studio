@@ -46,8 +46,8 @@ public class BasicSpanTest {
             try {
                 for (int i : indexes) {
                     if (isPrint) System.out.print(getSimpleName(parent) + ">");
-                    if (parent instanceof Document) {
-                        parent = ((Document) parent).get(i);
+                    if (parent instanceof Manuscript) {
+                        parent = ((Manuscript) parent).get(i);
                     } else if (parent instanceof SpanParent) {
                         parent = ((SpanBranch) parent).get(i);
                     }
@@ -105,7 +105,7 @@ public class BasicSpanTest {
 
     private static void provideData() {
         // @formatter:off
-        TestData doc = new TestData("", "Hello World!{^note}\n!^note=*test* only\\!\n=Chapter 1", "", Document.class);
+        TestData doc = new TestData("", "Hello World!{^note}\n!^note=*test* only\\!\n=Chapter 1", "", Manuscript.class);
         testData.add(doc);
         TestData sec = doc.add(     "", "Hello World!{^note}\n!^note=*test* only\\!\n", "=Chapter 1", DivisionSecChapter.class);
 
@@ -157,12 +157,12 @@ public class BasicSpanTest {
         return span.getClass().getSimpleName();
     }
 
-    private static Document useDoc;
+    private static Manuscript useDoc;
     private static List<TestData> testData;
 
     @BeforeAll
     public static void setup() {
-        useDoc = new Document();
+        useDoc = new Manuscript();
         useDoc.updateText("Hello World!{^note}\n!^note=*test* only\\!\n=Chapter 1");
         testData = new ArrayList<>();
         provideData();
@@ -353,8 +353,8 @@ public class BasicSpanTest {
             Span parent = useDoc;
             String display = "";
             for (int index : expectLeaf.getIndexes()) {
-                if (parent instanceof Document) {
-                    parent = ((Document) parent).get(index);
+                if (parent instanceof Manuscript) {
+                    parent = ((Manuscript) parent).get(index);
                 } else if (parent instanceof SpanParent) {
                     expectedSpans.add(parent);
                     parent = ((SpanBranch) parent).get(index);

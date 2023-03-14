@@ -6,7 +6,7 @@ import com.creativeartie.humming.document.IdentitySpan.*;
 
 public abstract class SpanBranchTestBase<T extends SpanBranch> extends SpanTestBase<T> {
     private static class HolderSpan extends SpanBranch implements IdentityParent {
-        protected HolderSpan(Document root, SpanStyle... classes) {
+        protected HolderSpan(Manuscript root, SpanStyle... classes) {
             super(root, classes);
         }
 

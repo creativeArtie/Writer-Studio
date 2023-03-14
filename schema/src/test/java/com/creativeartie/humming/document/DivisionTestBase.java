@@ -77,8 +77,8 @@ public abstract class DivisionTestBase<T extends Division> extends SpanTestBase<
             Assertions.assertAll(spanName, tests.toArray(new Executable[tests.size()]));
 
             // Get children
-            if (test instanceof Document) {
-                Document doc = (Document) test;
+            if (test instanceof Manuscript) {
+                Manuscript doc = (Manuscript) test;
 
                 for (TestChild child : children) {
                     Division div = doc.get(child.index);
@@ -97,7 +97,7 @@ public abstract class DivisionTestBase<T extends Division> extends SpanTestBase<
     }
 
     protected void testChildren() {
-        Document doc = getDocument();
+        Manuscript doc = getDocument();
         printChild("", rootChild);
         System.out.println();
 
@@ -107,7 +107,7 @@ public abstract class DivisionTestBase<T extends Division> extends SpanTestBase<
     @AfterEach
     private void moreTest() {
         int idx = 0;
-        Document root = getDocument();
+        Manuscript root = getDocument();
         printSpanFormatted(root, "");
         for (DivisionSec child : root) {
             Optional<SpanParent> parent = child.getParent();
@@ -128,8 +128,8 @@ public abstract class DivisionTestBase<T extends Division> extends SpanTestBase<
 
     private void printSpanFormatted(Span span, String tabs) {
         String baseTab = "    ";
-        if (span instanceof Document) {
-            Document doc = (Document) span;
+        if (span instanceof Manuscript) {
+            Manuscript doc = (Manuscript) span;
             System.out.println("{");
             for (DivisionSec child : doc) {
                 printSpanFormatted(child, baseTab);
@@ -183,7 +183,7 @@ public abstract class DivisionTestBase<T extends Division> extends SpanTestBase<
 
     @Override
     protected void moreBeforeEach() {
-        rootChild = new TestChild("root", 0).setSize(0).setClass(Document.class);
+        rootChild = new TestChild("root", 0).setSize(0).setClass(Manuscript.class);
     }
 
     protected void newDoc(String input) {

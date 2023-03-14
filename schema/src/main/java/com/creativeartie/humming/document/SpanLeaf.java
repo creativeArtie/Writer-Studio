@@ -5,7 +5,7 @@ import java.util.*;
 import com.google.common.collect.*;
 
 public final class SpanLeaf implements Span {
-    private final Document spanRoot;
+    private final Manuscript spanRoot;
     private final SpanParent parentSpan;
     private final StylesSpans styleClass;
     private final int styleLength;
@@ -24,7 +24,7 @@ public final class SpanLeaf implements Span {
     }
 
     @Override
-    public Document getRoot() {
+    public Manuscript getRoot() {
         return spanRoot;
     }
 

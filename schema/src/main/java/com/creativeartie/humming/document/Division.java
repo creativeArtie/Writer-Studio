@@ -1,7 +1,7 @@
 package com.creativeartie.humming.document;
 
 public abstract class Division extends SpanBranch {
-    protected Division(Document root) {
+    protected Division(Manuscript root) {
         super(root);
     }
 

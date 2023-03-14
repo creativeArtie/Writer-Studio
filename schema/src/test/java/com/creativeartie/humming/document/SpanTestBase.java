@@ -8,7 +8,7 @@ import org.opentest4j.*;
 public abstract class SpanTestBase<T extends SpanBranch> {
     private static ArrayList<String> expectedText;
     private static ArrayList<SpanStyle[]> expectedStyles;
-    private static Document rootDoc;
+    private static Manuscript rootDoc;
     private static boolean testIndex;
 
     public SpanTestBase() {
@@ -29,7 +29,7 @@ public abstract class SpanTestBase<T extends SpanBranch> {
     @BeforeEach
     protected void beforeEach() {
         refreshLists();
-        rootDoc = new Document();
+        rootDoc = new Manuscript();
         moreBeforeEach();
     }
 
@@ -45,7 +45,7 @@ public abstract class SpanTestBase<T extends SpanBranch> {
         expectedStyles.add(styles);
     }
 
-    protected Document getDocument() {
+    protected Manuscript getDocument() {
         return rootDoc;
     }
 

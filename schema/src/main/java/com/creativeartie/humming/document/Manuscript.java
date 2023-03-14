@@ -18,7 +18,7 @@ import com.google.common.collect.*;
  *
  * @author wai
  */
-public class Document extends ForwardingList<DivisionSecChapter> implements SpanParent {
+public class Manuscript extends ForwardingList<DivisionSecChapter> implements SpanParent {
     private IdentityStorage idStorage;
 
     public boolean isIdUnique(IdentitySpan span) {
@@ -44,7 +44,7 @@ public class Document extends ForwardingList<DivisionSecChapter> implements Span
     private LoadingCache<Span, Integer> startIdxCache, endIdxCache;
     private LoadingCache<Integer, List<Span>> locateChildrenCache;
 
-    public Document() {
+    public Manuscript() {
         idStorage = new IdentityStorage();
         docChildren = new ArrayList<>();
         findChildCache = CacheBuilder.newBuilder().recordStats().build(new CacheLoader<Span, List<Integer>>() {
@@ -74,7 +74,7 @@ public class Document extends ForwardingList<DivisionSecChapter> implements Span
         locateChildrenCache = CacheBuilder.newBuilder().recordStats().build(new CacheLoader<Integer, List<Span>>() {
             @Override
             public List<Span> load(Integer key) {
-                return getLocateChildrenCache(key, Document.this);
+                return getLocateChildrenCache(key, Manuscript.this);
             }
         });
     }
@@ -165,7 +165,7 @@ public class Document extends ForwardingList<DivisionSecChapter> implements Span
     }
 
     @Override
-    public Document getRoot() {
+    public Manuscript getRoot() {
         return this;
     }
 

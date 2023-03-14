@@ -6,11 +6,11 @@ import com.google.common.collect.*;
 
 public class SpanBranch extends ForwardingList<Span> implements SpanParent {
     private ArrayList<Span> childrenSpans;
-    private final Document spanRoot;
+    private final Manuscript spanRoot;
     private SpanParent spanParent;
     private ArrayList<SpanStyle> inheritedStyles;
 
-    protected SpanBranch(Document root, SpanStyle... classes) {
+    protected SpanBranch(Manuscript root, SpanStyle... classes) {
         spanRoot = root;
         spanParent = root;
         inheritedStyles = new ArrayList<>();
@@ -38,7 +38,7 @@ public class SpanBranch extends ForwardingList<Span> implements SpanParent {
     }
 
     @Override
-    public Document getRoot() {
+    public Manuscript getRoot() {
         return spanRoot;
     }
 
@@ -102,7 +102,7 @@ public class SpanBranch extends ForwardingList<Span> implements SpanParent {
         return Optional.ofNullable(spanParent);
     }
 
-    protected void setParent(Document document) {
+    protected void setParent(Manuscript document) {
         spanParent = document;
     }
 

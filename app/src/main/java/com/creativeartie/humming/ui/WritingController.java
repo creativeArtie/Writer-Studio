@@ -17,9 +17,9 @@ import javafx.scene.control.*;
 import javafx.stage.*;
 
 public class WritingController {
-    private class DocumentProperty extends ReadOnlyObjectWrapper<Document> {
-        DocumentProperty() {
-            super(new Document());
+    private class ManuscriptProperty extends ReadOnlyObjectWrapper<Manuscript> {
+        ManuscriptProperty() {
+            super(new Manuscript());
         }
 
         private void updateText(String text) {
@@ -40,7 +40,7 @@ public class WritingController {
     }
 
     @FXML
-    private DocumentProperty rootDoc;
+    private ManuscriptProperty rootDoc;
     private Popup popup;
     private Label popupMsg;
     @FXML
@@ -57,7 +57,7 @@ public class WritingController {
     @FXML
     public void initialize() {
 
-        rootDoc = new DocumentProperty();
+        rootDoc = new ManuscriptProperty();
         writingText.textProperty().addListener(this::textEdited);
 
         writingText.setMouseOverTextDelay(Duration.ofSeconds(1));
@@ -91,7 +91,7 @@ public class WritingController {
         rootDoc.updateText(newValue);
     }
 
-    public ReadOnlyObjectProperty<Document> documentProperty() {
+    public ReadOnlyObjectProperty<Manuscript> documentProperty() {
         return rootDoc.getReadOnlyProperty();
     }
 }

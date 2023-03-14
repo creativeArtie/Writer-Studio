@@ -1,7 +1,7 @@
 package com.creativeartie.humming.document;
 
 public class DivisionSecChapter extends DivisionSec {
-    DivisionSecChapter(Document root) {
+    DivisionSecChapter(Manuscript root) {
         super(root);
         sectionLevel = 1;
     }

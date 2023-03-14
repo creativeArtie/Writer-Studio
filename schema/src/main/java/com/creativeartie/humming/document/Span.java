@@ -3,7 +3,7 @@ package com.creativeartie.humming.document;
 import java.util.*;
 
 public interface Span {
-    Document getRoot();
+    Manuscript getRoot();
 
     Optional<SpanParent> getParent();
 

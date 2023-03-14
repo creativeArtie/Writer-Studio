@@ -5,7 +5,7 @@ import java.util.*;
 public abstract class DivisionSec extends Division {
     protected int sectionLevel;
 
-    protected DivisionSec(Document root) {
+    protected DivisionSec(Manuscript root) {
         super(root);
     }
 
