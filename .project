@@ -2,17 +2,9 @@
 <projectDescription>
 	<name>hummingbird-writer</name>
 	<comment></comment>
-	<projects>
-		<project>app</project>
-	</projects>
-	<buildSpec>
-		<buildCommand>
-			<name>org.eclipse.buildship.core.gradleprojectbuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-	</buildSpec>
-	<natures>
-		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
-	</natures>
+	<projects/>
+	<natures/>
+	<buildSpec/>
+	<linkedResources/>
+	<filteredResources/>
 </projectDescription>

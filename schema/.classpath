@@ -15,22 +15,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17/"/>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-fxml/16/ea88d4a03ee5e2c1279212596a8f0002b643d7c3/javafx-fxml-16-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-fxml/16/c7147c450773c3d4fd038ac9d1a6fdebbc3c11e0/javafx-fxml-16-linux.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-web/16/dbcb63ea2581875e0b4a091f7b6bd2c74a70c303/javafx-web-16-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-web/16/522f626e1798a7d589d9b187ca5c74c5c2f8a0ee/javafx-web-16-linux.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/16/9851c81a573ec4d63d61882c46a9916c3d4dad8a/javafx-controls-16-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/16/116b127e512d23ddb84c62017c256e7f67f5b9eb/javafx-controls-16-linux.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/16/9851c81a573ec4d63d61882c46a9916c3d4dad8a/javafx-controls-16-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/16/d8334d505d5eb64400ae57f989c3db9dd47dcee3/javafx-controls-16.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
@@ -41,6 +26,21 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-media/16/3fc57b700567384957ea75a6306a18f923b3ee5b/javafx-media-16-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-media/16/2c564c4d3859447d7ef4c7490e2a48afe7a5db7a/javafx-media-16.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-fxml/16/ea88d4a03ee5e2c1279212596a8f0002b643d7c3/javafx-fxml-16-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-fxml/16/c7147c450773c3d4fd038ac9d1a6fdebbc3c11e0/javafx-fxml-16-linux.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/16/9851c81a573ec4d63d61882c46a9916c3d4dad8a/javafx-controls-16-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/16/116b127e512d23ddb84c62017c256e7f67f5b9eb/javafx-controls-16-linux.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/16/9851c81a573ec4d63d61882c46a9916c3d4dad8a/javafx-controls-16-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/16/d8334d505d5eb64400ae57f989c3db9dd47dcee3/javafx-controls-16.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
