@@ -22,10 +22,18 @@ public class ProjectZip {
     }
 
     public void save() throws FileNotFoundException, IOException {
-        try (FileOutputStream output = new FileOutputStream(fileLocation);
-                ZipOutputStream zos = new ZipOutputStream(output)) {
-            ZipEntry ze = new ZipEntry("log.csv");
-            zos.putNextEntry(ze);
+        ObjectOutputStream log = null;
+        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(fileLocation))) {
+            zos.putNextEntry(new ZipEntry("log.obj"));
+            log = new ObjectOutputStream(zos);
+            log.writeObject(writingLog);
+            zos.closeEntry();
+
+            zos.putNextEntry(new ZipEntry("info.properties"));
+            projectProps.save(zos);
+            zos.closeEntry();
+        } finally {
+            log.close();
         }
     }
 

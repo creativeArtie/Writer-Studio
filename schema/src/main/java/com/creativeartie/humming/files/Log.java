@@ -15,18 +15,6 @@ public class Log extends ForwardingList<Entry> implements Serializable {
         currentEntry = Entry.newEntry();
     }
 
-    public void writeToFile(String path) throws FileNotFoundException, IOException {
-        try (ObjectOutputStream file = new ObjectOutputStream(new FileOutputStream(path))) {
-            file.writeObject(this);
-        }
-    }
-
-    public static Log loadFromFile(String path) throws FileNotFoundException, IOException, ClassNotFoundException {
-        try (ObjectInputStream file = new ObjectInputStream(new FileInputStream(path))) {
-            return (Log) file.readObject();
-        }
-    }
-
     @Override
     public boolean add(Entry e) {
         return logEntries.add(e);

@@ -5,11 +5,13 @@ import java.util.*;
 
 public class ProjectProperties implements Serializable {
     private static final long serialVersionUID = -6786244514727898783L;
-    // private Properties projectProp;
-    private ArrayList<String> savePaths;
+    private Properties projectProp;
 
     public ProjectProperties() {
-        // projectProp = new Properties();
-        savePaths = new ArrayList<>();
+        projectProp = new Properties();
+    }
+
+    void save(OutputStream output) throws IOException {
+        projectProp.store(output, "");
     }
 }
