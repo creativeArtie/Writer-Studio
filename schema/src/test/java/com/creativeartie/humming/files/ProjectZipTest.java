@@ -9,5 +9,7 @@ class ProjectZipTest {
     void test() throws FileNotFoundException, IOException {
         ProjectZip data = new ProjectZip("test.zip");
         data.save();
+        File file = new File("test.zip");
+        file.delete();
     }
 }
