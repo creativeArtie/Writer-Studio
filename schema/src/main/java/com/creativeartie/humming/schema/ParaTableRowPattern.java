@@ -2,10 +2,27 @@ package com.creativeartie.humming.schema;
 
 import java.util.regex.*;
 
+/**
+ * A table row
+ *
+ * @see ParaBasicPatterns
+ * @see ParaHeadingPattern
+ * @see ParaListPattern
+ * @see ParaNotePatterns
+ * @see ParaReferencePatterns
+ * @see com.creativeartie.humming.document.Para#newLine where is used
+ * @see IdentityReferencePattern pointers of footnotes and endnotes
+ */
 public enum ParaTableRowPattern implements PatternEnum {
-    SEP("\\|"), TEXT(TextSpanPatterns.CELL.getRawPattern()), END("\\|?\\n?"), STARTER("\\|\\n?");
+    /** Table cell pattern. */
+    TEXT(TextSpanPatterns.CELL.getRawPattern()),
+    /** Table cell separator pattern. */
+    SEP("\\|"),
+    /** Line ending pattern */
+    END("\\|?\\n?"),
+    /** Empty table row pattern. */
+    EMPTY("\\|\\n?");
 
-    private static String fullPattern;
     private static Pattern matchPattern;
     private static Pattern checkPattern;
 
@@ -17,17 +34,19 @@ public enum ParaTableRowPattern implements PatternEnum {
                     SEP.getPattern(withName) +
                     TEXT.getPattern(withName) +
                 ")+" + END.getPattern(withName) +
-            ")|" + STARTER.getPattern(withName);
+            ")|" + EMPTY.getPattern(withName);
          // @formatter:on
     }
 
-    public static String getFullPattern() {
-        if (fullPattern == null) fullPattern = getFullPattern(false);
-        return fullPattern;
-    }
-
+    /**
+     * Match text to this pattern
+     *
+     * @param text
+     *        the text to match
+     *
+     * @return Matcher of null if not matched
+     */
     public static Matcher matcher(String text) {
-
         if (matchPattern == null) {
             checkPattern = Pattern.compile("^" + getFullPattern(true) + "$");
             matchPattern = Pattern.compile(
@@ -45,7 +64,7 @@ public enum ParaTableRowPattern implements PatternEnum {
 
     private String rawPattern;
 
-    private ParaTableRowPattern(String pattern) {
+    ParaTableRowPattern(String pattern) {
         rawPattern = pattern;
     }
 

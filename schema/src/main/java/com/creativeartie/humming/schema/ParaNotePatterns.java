@@ -5,9 +5,16 @@ import java.util.regex.*;
 /**
  * Lines that can be grouped into a single note with heading and sources.
  *
- * @see IdentityReferencePattern#CITEREF
+ * @see ParaBasicPatterns
+ * @see ParaHeadingPattern
+ * @see ParaListPattern
+ * @see ParaReferencePatterns
+ * @see ParaTableRowPattern
+ * @see com.creativeartie.humming.document.Para#newLine where is used
+ * @see IdentityReferencePattern pointer to citation / notes
  */
 public enum ParaNotePatterns implements PatternEnum {
+    /** Summary heading line with ID pattern. */
     SUMMARY() {
         @Override
         protected String getValuePattern(boolean withName) {
@@ -24,15 +31,7 @@ public enum ParaNotePatterns implements PatternEnum {
             //@formatter:on
         }
     },
-    NOTE() {
-        @Override
-        protected String getValuePattern(boolean withName) {
-            return // @formatter:off
-                NoteLineParts.NOTE.getPattern(withName) +
-                NoteLineParts.TEXT.getPattern(withName) + "?";
-            //@formatter:on
-        }
-    },
+    /** Field line pattern. */
     FIELD {
         @Override
         protected String getValuePattern(boolean withName) {
@@ -45,13 +44,50 @@ public enum ParaNotePatterns implements PatternEnum {
                 ")|" + NoteLineParts.ERROR.getPattern(withName) + ")";
             //@formatter:on
         }
+    },
+    /** Note detail line pattern. */
+    NOTE() {
+        @Override
+        protected String getValuePattern(boolean withName) {
+            return // @formatter:off
+                NoteLineParts.NOTE.getPattern(withName) +
+                NoteLineParts.TEXT.getPattern(withName) + "?";
+            //@formatter:on
+        }
     };
 
+    /** Parts of a note */
     public enum NoteLineParts implements PatternEnum {
-        NOTE("%"), HEADING("%="), FIELD("%>"), FIELDER("="), TEXT(TextPhrasePatterns.BASIC.getRawPattern()),
-        TITLE(TextPhrasePatterns.HEADING.getRawPattern()), IDER("#"), ID(IdentityPattern.getFullPattern()),
-        ERROR(TextSpanPatterns.SIMPLE.getRawPattern()), KEY(TextSpanPatterns.KEY.getRawPattern()),
-        VALUE(TextSpanPatterns.SIMPLE.getRawPattern()), ENDER("\n?");
+        /** Note heading starter pattern. */
+        HEADING("%="),
+        /** Note field starter pattern. */
+        FIELD("%>"),
+        /** Note detail starter pattern. */
+        NOTE("%"),
+
+        /** Note detail pattern. */
+        TEXT(TextFormattedPatterns.BASIC.getRawPattern()),
+
+        /** Note heading text pattern. */
+        TITLE(TextFormattedPatterns.HEADING.getRawPattern()),
+        /** Note ID marker pattern. */
+        IDER("#"),
+        /** Note Id pattern */
+        ID(IdentityPattern.getFullPattern()),
+
+        /** Note field key pattern. */
+        KEY(TextSpanPatterns.KEY.getRawPattern()),
+
+        /** Note field separator pattern. */
+        FIELDER("="),
+        /** Note field value pattern. */
+        VALUE(TextSpanPatterns.SIMPLE.getRawPattern()),
+
+        /** Note error pattern. */
+        ERROR(TextSpanPatterns.SIMPLE.getRawPattern()),
+
+        /** Line ending pattern */
+        ENDER("\n?");
 
         private String rawPattern;
 
@@ -79,6 +115,14 @@ public enum ParaNotePatterns implements PatternEnum {
         return rawPattern;
     }
 
+    /**
+     * Match text to this pattern
+     *
+     * @param text
+     *        the text to match
+     *
+     * @return Matcher of null if not matched
+     */
     public Matcher matcher(String text) {
         if (matchPattern == null)
             matchPattern = Pattern.compile("^" + getValuePattern(true) + NoteLineParts.ENDER.getPattern(true) + "$");
@@ -88,7 +132,15 @@ public enum ParaNotePatterns implements PatternEnum {
         return null;
     }
 
-    protected abstract String getValuePattern(boolean withName);
+    /**
+     * Gets the note line special pattern.
+     *
+     * @param withName
+     *        use name pattern?
+     *
+     * @return the note pattern.
+     */
+    abstract String getValuePattern(boolean withName);
 
     @Override
     public String getPatternName() {

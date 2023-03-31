@@ -4,11 +4,24 @@ import java.util.regex.*;
 
 /**
  * Lines that are part a numbered/bullet lists.
+ *
+ * @see ParaBasicPatterns
+ * @see ParaHeadingPattern
+ * @see ParaNotePatterns
+ * @see ParaReferencePatterns
+ * @see ParaTableRowPattern
+ * @see com.creativeartie.humming.document.Para#newLine where is used
  */
 public enum ParaListPattern implements PatternEnum {
-    NUMBERED("\\#{1,6}"), BULLET("\\-{1,6}"), TEXT(TextPhrasePatterns.BASIC.getRawPattern()), ENDER("\n?");
+    /** Numbered line start pattern. */
+    NUMBERED("\\#{1,6}"),
+    /** Bullet line start pattern. */
+    BULLET("\\-{1,6}"),
+    /** List text pattern. */
+    TEXT(TextFormattedPatterns.BASIC.getRawPattern()),
+    /** Line ending pattern */
+    ENDER("\n?");
 
-    private static String fullPattern;
     private static Pattern matchPattern;
 
     private static String getFullPattern(boolean withName) {
@@ -22,11 +35,14 @@ public enum ParaListPattern implements PatternEnum {
         // @formatter:on
     }
 
-    public static String getFullPattern() {
-        if (fullPattern == null) fullPattern = getFullPattern(false);
-        return fullPattern;
-    }
-
+    /**
+     * Match text to this pattern
+     *
+     * @param text
+     *        the text to match
+     *
+     * @return Matcher of null if not matched
+     */
     public static Matcher matcher(String text) {
         if (matchPattern == null) matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
         final Matcher matcher = matchPattern.matcher(text);

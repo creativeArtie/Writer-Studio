@@ -6,16 +6,54 @@ import com.google.common.base.*;
 
 /**
  * Headings for print and to describe scenes in an outline
+ *
+ * @see ParaBasicPatterns
+ * @see ParaListPattern
+ * @see ParaNotePatterns
+ * @see ParaReferencePatterns
+ * @see ParaTableRowPattern
+ * @see com.creativeartie.humming.document.Para#newLine where is used
  */
 public enum ParaHeadingPattern implements PatternEnum {
-    OUTLINE("!"), LEVEL("\\={1,6}"), TEXT(TextPhrasePatterns.HEADING.getRawPattern()), STATUS("\\#[a-zA-Z]*"),
-    DETAILS(TextSpanPatterns.SIMPLE.getRawPattern()), ENDER("\n?");
+    /** Outline start pattern. */
+    OUTLINE("!"),
+    /** Heading start + level pattern. */
+    LEVEL("\\={1,6}"),
 
+    /** Heading text pattern. */
+    TEXT(TextFormattedPatterns.HEADING.getRawPattern()),
+
+    /** Status text pattern. @see StatusPattern */
+    STATUS("\\#[a-zA-Z]*"),
+    /** Status detail pattern. */
+    DETAILS(TextSpanPatterns.SIMPLE.getRawPattern()),
+
+    /** Line ending pattern */
+    ENDER("\n?");
+
+    /** List of status pattern. */
     public enum StatusPattern {
-        STUB, OUTLINE, DRAFT, FINAL, OTHERS;
+        /** Stub status. */
+        STUB,
+        /** Outline status. */
+        OUTLINE,
+        /** Draft status. */
+        DRAFT,
+        /** Final status. */
+        FINAL,
+        /** Other status. */
+        OTHERS;
 
         private static Pattern testPattern;
 
+        /**
+         * Get the status from text
+         *
+         * @param text
+         *        the text to test
+         *
+         * @return the {@linkplain StatusPattern} found.
+         */
         public static StatusPattern getStatus(String text) {
             if (testPattern == null) testPattern = Pattern.compile("\\#[^\\n]+");
             Preconditions.checkArgument(testPattern.matcher(text).find(), "Pattern not found");
@@ -38,14 +76,16 @@ public enum ParaHeadingPattern implements PatternEnum {
         // @formatter:on
     }
 
-    private static String fullPattern;
     private static Pattern matchPattern;
 
-    public static String getFullPattern() {
-        if (fullPattern == null) fullPattern = getFullPattern(false);
-        return fullPattern;
-    }
-
+    /**
+     * Match text to this pattern
+     *
+     * @param text
+     *        the text to match
+     *
+     * @return Matcher of null if not matched
+     */
     public static Matcher matcher(String text) {
         if (matchPattern == null) matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
         final Matcher matcher = matchPattern.matcher(text);

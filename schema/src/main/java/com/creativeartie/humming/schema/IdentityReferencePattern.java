@@ -3,28 +3,55 @@ package com.creativeartie.humming.schema;
 import java.util.regex.*;
 
 /**
- * List of references, excluding links. Links references are defined in
- * {@link ImageRefPattern}. Spans declared here are:
- * <ul>
- * <li>{@link ParaReferencePatterns#FOOTNOTE foot note}
- * <li>{@link ParaReferencePatterns#ENDNOTE end note}
- * <li>{@link ParaNotePatterns#SUMMARY sources and notes}
- * <li>References TODO add reference items
- * </ul>
+ * Pointers for footnotes, endnotes, notes, meta data and errors. <br>
+ * TODO Missing span version for meta data
  *
- * @see ImageRefPattern
- * @see IdentityTodoPattern
- * @see ImageDirectPattern
- * @see ErrorRefPattern
+ * @see TextFormattedPatterns.TextFormattedParts as a span in a text line
+ * @see ParaReferencePatterns address for footnote and endnote
+ * @see ParaNotePatterns address for citations / note
+ * @see com.creativeartie.humming.document.IdentityReference span counter part
  */
 public enum IdentityReferencePattern implements PatternEnum {
-    FOOTREF("\\^"), ENDREF("\\*"), CITEREF("\\>"), METAREF("\\%"), START("\\{"), ID(IdentityPattern.getFullPattern()),
-    ERROR(TextSpanPatterns.SPECIAL.getRawPattern()), END("\\}");
+    /** Pointer start pattern */
+    START("\\{"),
+
+    /** Footnote indicator pattern */
+    FOOTREF("\\^"),
+    /** Endnote indicator pattern */
+    ENDREF("\\*"),
+    /** Citation (aka note) indicator pattern */
+    CITEREF("\\>"),
+    /** Meta data indicator pattern */
+    METAREF("\\%"),
+
+    /** Identity pattern */
+    ID(IdentityPattern.getFullPattern()),
+    /** Error pattern */
+    ERROR(TextSpanPatterns.SPECIAL.getRawPattern()),
+
+    /** Pointer end pattern */
+    END("\\}");
 
     private static String fullPattern;
     private static Pattern matchPattern;
 
-    public static String getFullPattern() {
+    /**
+     * Match text to this pattern
+     *
+     * @param text
+     *        the text to match
+     *
+     * @return Matcher of null if not matched
+     */
+    public static Matcher matcher(String text) {
+        if (matchPattern == null) matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
+        final Matcher answer = matchPattern.matcher(text);
+        if (answer.find()) return answer;
+        return null;
+    }
+
+    /** Get raw full pattern */
+    static String getFullPattern() {
         if (fullPattern == null) fullPattern = getFullPattern(false);
         return fullPattern;
     }
@@ -44,13 +71,6 @@ public enum IdentityReferencePattern implements PatternEnum {
          // @formatter:on
     }
 
-    public static Matcher matcher(String text) {
-        if (matchPattern == null) matchPattern = Pattern.compile("^" + getFullPattern(true) + "$");
-        final Matcher answer = matchPattern.matcher(text);
-        if (answer.find()) return answer;
-        return null;
-    }
-
     private final String pattern;
 
     IdentityReferencePattern(String pat) {
@@ -58,12 +78,12 @@ public enum IdentityReferencePattern implements PatternEnum {
     }
 
     @Override
-    public String getRawPattern() {
-        return pattern;
+    public String getPatternName() {
+        return name();
     }
 
     @Override
-    public String getPatternName() {
-        return name();
+    public String getRawPattern() {
+        return pattern;
     }
 }

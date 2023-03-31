@@ -3,12 +3,18 @@ package com.creativeartie.humming.schema;
 import java.util.regex.*;
 
 /**
- * Lines that describes footnotes, end notes, and links.
+ * Lines that describes footnotes, end notes, and images.
  *
- * @see ImageRefPattern
- * @see IdentityReferencePattern
+ * @see ParaBasicPatterns
+ * @see ParaHeadingPattern
+ * @see ParaListPattern
+ * @see ParaNotePatterns
+ * @see ParaTableRowPattern
+ * @see com.creativeartie.humming.document.Para#newLine where is used
+ * @see IdentityReferencePattern pointers of footnotes and endnotes
  */
 public enum ParaReferencePatterns implements PatternEnum {
+    /** Footnote line pattern. */
     FOOTNOTE {
         @Override
         protected String getValuePattern(boolean withName) {
@@ -25,6 +31,7 @@ public enum ParaReferencePatterns implements PatternEnum {
          // @formatter:on
         }
     },
+    /** Endnote line pattern. */
     ENDNOTE {
         @Override
         protected String getValuePattern(boolean withName) {
@@ -41,6 +48,7 @@ public enum ParaReferencePatterns implements PatternEnum {
          // @formatter:on
         }
     },
+    /** Image line pattern. */
     IMAGE {
         @Override
         protected String getValuePattern(boolean withName) {
@@ -60,9 +68,28 @@ public enum ParaReferencePatterns implements PatternEnum {
         }
     };
 
+    /** Parts of a reference */
     public enum RefLineParts implements PatternEnum {
-        START("!"), FOOTNOTE("\\^"), ENDNOTE("\\*"), IMAGE("\\+"), SEP("="), ID(IdentityPattern.getFullPattern()),
-        TEXT(TextPhrasePatterns.NOTE.getRawPattern()), ERROR(TextSpanPatterns.SIMPLE.getRawPattern()), ENDER("\n?");
+        /** Reference starter pattern. */
+        START("!"),
+        /** Footnote indicator pattern. */
+        FOOTNOTE("\\^"),
+        /** Endnote indicator pattern. */
+        ENDNOTE("\\*"),
+        /** Image indicator pattern. */
+        IMAGE("\\+"),
+
+        /** Pointer / Address ID pattern. */
+        ID(IdentityPattern.getFullPattern()),
+        /** ID separator pattern. */
+        SEP("="),
+        /** Note text / caption pattern */
+        TEXT(TextFormattedPatterns.NOTE.getRawPattern()),
+
+        /** error text pattern */
+        ERROR(TextSpanPatterns.SIMPLE.getRawPattern()),
+        /** Line ending pattern */
+        ENDER("\n?");
 
         private final String rawPattern;
 
@@ -81,6 +108,14 @@ public enum ParaReferencePatterns implements PatternEnum {
         }
     }
 
+    /**
+     * Gets the note line special pattern.
+     *
+     * @param withName
+     *        use name pattern?
+     *
+     * @return the note pattern.
+     */
     protected abstract String getValuePattern(boolean withName);
 
     private String fullPattern;
@@ -92,6 +127,14 @@ public enum ParaReferencePatterns implements PatternEnum {
         return fullPattern;
     }
 
+    /**
+     * Match text to this pattern
+     *
+     * @param text
+     *        the text to match
+     *
+     * @return Matcher of null if not matched
+     */
     public Matcher matcher(String text) {
         if (matchPattern == null)
             matchPattern = Pattern.compile("^" + getValuePattern(true) + RefLineParts.ENDER.getPattern(true) + "$");

@@ -68,7 +68,9 @@ public interface PatternEnum {
      * Names a pattern
      *
      * @param name
+     *        the name to use
      * @param pattern
+     *        the pattern to use
      *
      * @return pattern
      *
