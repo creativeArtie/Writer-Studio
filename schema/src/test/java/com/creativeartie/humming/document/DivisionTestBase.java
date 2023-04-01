@@ -5,7 +5,7 @@ import java.util.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.*;
 
-public abstract class DivisionTestBase<T extends Division> extends SpanTestBase<SpanBranch> {
+abstract class DivisionTestBase<T extends Division> extends SpanTestBase<SpanBranch> {
     private Class<T> checkClass;
 
     public DivisionTestBase(boolean testIdx, Class<T> used) {

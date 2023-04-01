@@ -4,7 +4,7 @@ import java.util.*;
 
 import com.creativeartie.humming.document.IdentitySpan.*;
 
-public abstract class SpanBranchTestBase<T extends SpanBranch> extends SpanTestBase<T> {
+abstract class SpanBranchTestBase<T extends SpanBranch> extends SpanTestBase<T> {
     private static class HolderSpan extends SpanBranch implements IdentityParent {
         protected HolderSpan(Manuscript root, SpanStyle... classes) {
             super(root, classes);

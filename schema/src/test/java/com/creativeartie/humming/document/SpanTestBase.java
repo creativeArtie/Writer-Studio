@@ -5,7 +5,7 @@ import java.util.*;
 import org.junit.jupiter.api.*;
 import org.opentest4j.*;
 
-public abstract class SpanTestBase<T extends SpanBranch> {
+abstract class SpanTestBase<T extends SpanBranch> {
     private static ArrayList<String> expectedText;
     private static ArrayList<SpanStyle[]> expectedStyles;
     private static Manuscript rootDoc;

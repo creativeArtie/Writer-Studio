@@ -2,7 +2,7 @@ package com.creativeartie.humming.document;
 
 import org.junit.jupiter.api.*;
 
-public class ParaTableRowTest extends SpanBranchTestBase<ParaTableRow> {
+class ParaTableRowTest extends SpanBranchTestBase<ParaTableRow> {
     @Test
     public void testFullRow() {
         ParaTableRow test = newSpan("|Col 1|Col2|\n");

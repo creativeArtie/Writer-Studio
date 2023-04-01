@@ -10,7 +10,7 @@ import org.opentest4j.*;
 
 import com.google.common.collect.*;
 
-public class BasicSpanTest {
+class BasicSpanTest {
     private static class TestData {
         private String textPrefix;
         private String spanText;
