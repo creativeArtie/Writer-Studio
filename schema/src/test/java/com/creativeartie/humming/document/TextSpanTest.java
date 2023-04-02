@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.*;
 
-class TextSpanTest extends SpanBranchTestBase<TextSpan> {
+final class TextSpanTest extends SpanBranchTestBase<TextSpan> {
     private enum SubTests {
         ID, SIMPLE;
     }

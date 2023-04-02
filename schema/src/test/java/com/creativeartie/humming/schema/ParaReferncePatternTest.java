@@ -6,7 +6,7 @@ import org.junit.jupiter.api.*;
 
 import com.creativeartie.humming.schema.ParaReferencePatterns.*;
 
-class ParaReferncePatternTest extends PatternTestBase<RefLineParts> {
+final class ParaReferncePatternTest extends PatternTestBase<RefLineParts> {
     @BeforeAll
     public static void printPattern() {
         splitPrintPattern("Footnote", ParaReferencePatterns.FOOTNOTE.matcher("!^id:note"));

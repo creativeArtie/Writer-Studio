@@ -2,7 +2,7 @@ package com.creativeartie.humming.document;
 
 import org.junit.jupiter.api.*;
 
-class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
+final class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
     @Test
     void testFull() {
         ParaNoteHead span = newSpan("%=title#id\n");

@@ -4,7 +4,7 @@ import java.util.regex.*;
 
 import org.junit.jupiter.api.*;
 
-class IdentityTodoPatternTest extends PatternTestBase<IdentityTodoPattern> {
+final class IdentityTodoPatternTest extends PatternTestBase<IdentityTodoPattern> {
     @BeforeAll
     static void displayPattern() throws Exception {
         splitPrintPattern(IdentityTodoPattern.matcher("{!ad}"));

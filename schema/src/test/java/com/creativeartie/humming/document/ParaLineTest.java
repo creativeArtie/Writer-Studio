@@ -2,7 +2,7 @@ package com.creativeartie.humming.document;
 
 import org.junit.jupiter.api.*;
 
-class ParaLineTest extends SpanBranchTestBase<ParaList> {
+final class ParaLineTest extends SpanBranchTestBase<ParaList> {
     @Test
     void testBullet() {
         Para test = newSpan("--bullet\n");

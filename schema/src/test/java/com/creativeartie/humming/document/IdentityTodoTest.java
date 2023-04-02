@@ -2,7 +2,7 @@ package com.creativeartie.humming.document;
 
 import org.junit.jupiter.api.*;
 
-class IdentityTodoTest extends SpanBranchTestBase<IdentityTodo> {
+final class IdentityTodoTest extends SpanBranchTestBase<IdentityTodo> {
     @Test
     void testFull() {
         IdentityTodo span = newSpan("{!todo}");

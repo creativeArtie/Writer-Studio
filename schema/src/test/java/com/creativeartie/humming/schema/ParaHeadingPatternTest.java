@@ -6,7 +6,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
-class ParaHeadingPatternTest extends PatternTestBase<ParaHeadingPattern> {
+final class ParaHeadingPatternTest extends PatternTestBase<ParaHeadingPattern> {
     @BeforeAll
     static void displayPattern() throws Exception {
         splitPrintPattern(ParaHeadingPattern.matcher("!=abc"));

@@ -4,7 +4,7 @@ import java.util.regex.*;
 
 import org.junit.jupiter.api.*;
 
-public class ParaTableRowPatternTest extends PatternTestBase<ParaTableRowPattern> {
+final class ParaTableRowPatternTest extends PatternTestBase<ParaTableRowPattern> {
     @BeforeAll
     public static void printPattern() {
         splitPrintPattern(ParaTableRowPattern.matcher("|Hello"));

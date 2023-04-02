@@ -6,7 +6,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
-class IdentityReferencePatternTest extends PatternTestBase<IdentityReferencePattern> {
+final class IdentityReferencePatternTest extends PatternTestBase<IdentityReferencePattern> {
     @BeforeAll
     static void displayPattern() throws Exception {
         splitPrintPattern(IdentityReferencePattern.matcher("{^ad}"));

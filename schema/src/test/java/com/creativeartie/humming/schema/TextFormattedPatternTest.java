@@ -6,7 +6,7 @@ import org.junit.jupiter.api.*;
 
 import com.creativeartie.humming.schema.TextFormattedPatterns.*;
 
-class TextFormattedPatternTest extends PatternTestBase<TextFormattedPatterns.TextFormattedParts> {
+final class TextFormattedPatternTest extends PatternTestBase<TextFormattedPatterns.TextFormattedParts> {
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
         splitPrintPattern(TextFormattedPatterns.BASIC.matcher("abc"));

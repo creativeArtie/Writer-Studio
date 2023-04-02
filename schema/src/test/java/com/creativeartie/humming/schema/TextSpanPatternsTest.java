@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.*;
 
 import com.creativeartie.humming.schema.TextSpanPatterns.*;
 
-class TextSpanPatternsTest extends PatternTestBase<TextSpanParts> {
+final class TextSpanPatternsTest extends PatternTestBase<TextSpanParts> {
     @BeforeAll
     static void displayPattern() {
         final String raw = "abc";

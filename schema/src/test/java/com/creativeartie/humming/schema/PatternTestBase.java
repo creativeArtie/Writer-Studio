@@ -6,7 +6,7 @@ import org.junit.jupiter.api.*;
 
 import com.google.common.base.*;
 
-public class PatternTestBase<T extends PatternEnum> {
+class PatternTestBase<T extends PatternEnum> {
     private int expectedLength;
 
     /**

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.function.*;
 
 import com.google.common.collect.*;
 
-class DivisionNoteTest extends DivisionTestBase<DivisionNote> {
+final class DivisionNoteTest extends DivisionTestBase<DivisionNote> {
     public DivisionNoteTest() {
         super(true, DivisionNote.class);
     }

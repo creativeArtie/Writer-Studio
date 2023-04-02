@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.*;
 
 import com.creativeartie.humming.schema.ParaNotePatterns.*;
 
-class ParaNotePatternsTest extends PatternTestBase<NoteLineParts> {
+final class ParaNotePatternsTest extends PatternTestBase<NoteLineParts> {
     @BeforeAll
     static void displayPatterns() throws Exception {
         splitPrintPattern("Heading", ParaNotePatterns.SUMMARY.matcher("%=abc"));

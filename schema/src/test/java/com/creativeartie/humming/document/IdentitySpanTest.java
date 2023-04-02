@@ -9,7 +9,7 @@ import org.junit.jupiter.api.*;
 import com.google.common.base.*;
 import com.google.common.collect.*;
 
-class IdentitySpanTest extends SpanBranchTestBase<IdentitySpan> {
+final class IdentitySpanTest extends SpanBranchTestBase<IdentitySpan> {
     private boolean isAddress;
 
     public IdentitySpan createIdPointer(String text) {
@@ -84,7 +84,9 @@ class IdentitySpanTest extends SpanBranchTestBase<IdentitySpan> {
     @Test
     void testOnlyPointer() {
         getDocument().updateText("{^error}");
-        addStyleTest("error", StyleLines.NORMAL, StylesSpans.FOOTNOTE, StylesSpans.ID, StylesSpans.ERROR, StylesSpans.TEXT);
+        addStyleTest(
+                "error", StyleLines.NORMAL, StylesSpans.FOOTNOTE, StylesSpans.ID, StylesSpans.ERROR, StylesSpans.TEXT
+        );
         SpanBranch division = getDocument().get(0);
         SpanBranch normal = (SpanBranch) division.get(0);
         SpanBranch text = (SpanBranch) normal.get(0);

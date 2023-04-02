@@ -3,7 +3,7 @@ package com.creativeartie.humming.document;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.*;
 
-class DivisionSecSceneTest extends DivisionTestBase<DivisionSecScene> {
+final class DivisionSecSceneTest extends DivisionTestBase<DivisionSecScene> {
     public DivisionSecSceneTest() {
         super(true, DivisionSecScene.class);
     }

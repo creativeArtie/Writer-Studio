@@ -7,7 +7,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
-class IdentityReferenceTest extends SpanBranchTestBase<IdentityReference> {
+final class IdentityReferenceTest extends SpanBranchTestBase<IdentityReference> {
     private static Stream<Arguments> provideParameters() {
         return Stream.of(
                 Arguments.of("*", StylesSpans.ENDNOTE), Arguments.of("^", StylesSpans.FOOTNOTE),
