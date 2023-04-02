@@ -5,15 +5,15 @@ import java.util.regex.*;
 import com.creativeartie.humming.schema.*;
 import com.google.common.base.*;
 
-public class HeadingLine extends Para {
-    static HeadingLine newLine(SpanBranch parent, Matcher match) {
+public class ParaHeading extends Para {
+    static ParaHeading newLine(SpanBranch parent, Matcher match) {
         if (ParaHeadingPattern.OUTLINE.group(match) == null) {
-            return new HeadingLine(parent, StyleLines.HEADING);
+            return new ParaHeading(parent, StyleLines.HEADING);
         }
-        return new HeadingLine(parent, StyleLines.OUTLINE);
+        return new ParaHeading(parent, StyleLines.OUTLINE);
     }
 
-    private HeadingLine(SpanBranch parent, StyleLines style) {
+    private ParaHeading(SpanBranch parent, StyleLines style) {
         super(parent, style);
     }
 
@@ -51,9 +51,9 @@ public class HeadingLine extends Para {
                     assert false : "new Status(Matcher) called without status";
                     currentStatus = DraftStatus.NONE;
             }
-            add(new SpanLeaf(HeadingLine.this, raw));
+            add(new SpanLeaf(ParaHeading.this, raw));
             if ((raw = ParaHeadingPattern.DETAILS.group(matcher)) != null) {
-                TextSpan detail = TextSpan.newSimple(HeadingLine.this, raw);
+                TextSpan detail = TextSpan.newSimple(ParaHeading.this, raw);
                 add(detail);
                 statusDetail = detail.getText();
             } else statusDetail = "";

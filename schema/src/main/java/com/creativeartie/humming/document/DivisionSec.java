@@ -20,7 +20,7 @@ public abstract class DivisionSec extends Division {
 
     protected abstract void addDivisionAtRoot(DivisionSec child);
 
-    protected Division addHeading(HeadingLine heading) {
+    protected Division addHeading(ParaHeading heading) {
         if (sectionLevel == heading.getLevel()) {
             if (isEmpty()) {
                 add(heading);
@@ -45,9 +45,9 @@ public abstract class DivisionSec extends Division {
         return sectionLevel;
     }
 
-    protected abstract Division addHeadingLine(HeadingLine line);
+    protected abstract Division addHeadingLine(ParaHeading line);
 
-    protected abstract Division addOutlineLine(HeadingLine line);
+    protected abstract Division addOutlineLine(ParaHeading line);
 
     @Override
     protected Division addLine(Para line, StyleLines style) {
@@ -58,9 +58,9 @@ public abstract class DivisionSec extends Division {
                 add(list);
                 return list.addLine(line, style);
             case HEADING:
-                return addHeadingLine((HeadingLine) line);
+                return addHeadingLine((ParaHeading) line);
             case OUTLINE:
-                return addOutlineLine((HeadingLine) line);
+                return addOutlineLine((ParaHeading) line);
             case ROW:
                 DivisionTable table = new DivisionTable(this);
                 add(table);

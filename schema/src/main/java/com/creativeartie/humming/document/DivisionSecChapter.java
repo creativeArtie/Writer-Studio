@@ -40,12 +40,12 @@ public class DivisionSecChapter extends DivisionSec {
     }
 
     @Override
-    protected Division addHeadingLine(HeadingLine line) {
+    protected Division addHeadingLine(ParaHeading line) {
         return addHeading(line);
     }
 
     @Override
-    protected Division addOutlineLine(HeadingLine line) {
+    protected Division addOutlineLine(ParaHeading line) {
         DivisionSecScene outline = new DivisionSecScene(this);
         add(outline);
         return outline.addHeading(line);

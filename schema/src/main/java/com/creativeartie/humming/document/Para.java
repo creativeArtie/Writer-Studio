@@ -21,7 +21,7 @@ public abstract class Para extends SpanBranch {
 
         else if ((match = ParaListPattern.matcher(text)) != null) returns = ParaList.newLine(parent, match);
 
-        else if ((match = ParaHeadingPattern.matcher(text)) != null) returns = HeadingLine.newLine(parent, match);
+        else if ((match = ParaHeadingPattern.matcher(text)) != null) returns = ParaHeading.newLine(parent, match);
 
         else if ((match = ParaBasicPatterns.AGENDA.matcher(text)) != null) returns = new ParaAgenda(parent);
 

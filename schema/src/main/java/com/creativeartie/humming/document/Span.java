@@ -3,20 +3,31 @@ package com.creativeartie.humming.document;
 import java.util.*;
 
 public interface Span {
-    Manuscript getRoot();
+    boolean cleanUp();
 
-    Optional<SpanParent> getParent();
+    default <T> Optional<T> findParent(Class<T> clazz) {
+        Optional<SpanParent> parent = getParent();
 
-    public boolean cleanUp();
+        while (parent.filter(span -> clazz.isInstance(span)).isEmpty()) {
 
-    public default int getStartIndex() {
-        return getRoot().getCacheStart(this);
+            if (parent.isEmpty()) return Optional.empty();
+            parent = parent.get().getParent();
+        }
+        return parent.map(span -> clazz.cast(span));
     }
-
-    public int getLength();
 
     default int getEndIndex() {
         return getRoot().getCacheEnd(this);
+    }
+
+    int getLength();
+
+    Optional<SpanParent> getParent();
+
+    Manuscript getRoot();
+
+    default int getStartIndex() {
+        return getRoot().getCacheStart(this);
     }
 
     default SpanParent useParent() {
@@ -24,19 +35,6 @@ public interface Span {
     }
 
     default <T> T useParent(Class<T> clazz) {
-        return getParent().filter((span) -> clazz.isInstance(span)).map((span) -> clazz.cast(span)).get();
-    }
-
-    default <T> Optional<T> findParent(Class<T> clazz) {
-        Optional<SpanParent> parent = getParent();
-
-        while (parent.filter((span) -> clazz.isInstance(span)).isEmpty()) {
-
-            if (parent.isEmpty()) {
-                return Optional.empty();
-            }
-            parent = parent.get().getParent();
-        }
-        return parent.map((span) -> clazz.cast(span));
+        return getParent().filter(span -> clazz.isInstance(span)).map(span -> clazz.cast(span)).get();
     }
 }

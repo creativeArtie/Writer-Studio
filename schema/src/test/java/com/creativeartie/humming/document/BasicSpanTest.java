@@ -140,7 +140,7 @@ class BasicSpanTest {
         lin.add(      "Hello World!{^note}\n!^note=*test* only\\!", "\n", "=Chapter 1", SpanLeaf.class);
 
         sec = doc.add("Hello World!{^note}\n!^note=*test* only\\!\n", "=Chapter 1", "", DivisionSecChapter.class);
-        lin = sec.add("Hello World!{^note}\n!^note=*test* only\\!\n", "=Chapter 1", "", HeadingLine.class);
+        lin = sec.add("Hello World!{^note}\n!^note=*test* only\\!\n", "=Chapter 1", "", ParaHeading.class);
         lin.add(      "Hello World!{^note}\n!^note=*test* only\\!\n", "=", "Chapter 1", SpanLeaf.class);
         lxt = lin.add("Hello World!{^note}\n!^note=*test* only\\!\n=", "Chapter 1", "", TextFormatted.class);
         txt = lxt.add("Hello World!{^note}\n!^note=*test* only\\!\n=", "Chapter 1", "", TextSpan.class);
