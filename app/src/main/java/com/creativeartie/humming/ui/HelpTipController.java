@@ -5,11 +5,9 @@ import javafx.scene.control.*;
 
 public class HelpTipController {
     @FXML
-    private Label headingText, outlineText;
+    private Label headingText, outlineText, catSpan, idSpan, breakLine;
     @FXML
-    private Label stubStatus, outlineStatus, draftStatus, finalStatus, othersStatus, statusDetails;
-    @FXML
-    private Label quoteLine, todoLine, normalLine, tableLine, breakLine;
+    private Label quoteLine, todoLine, normalLine, tableLine;
     @FXML
     private Label footnoteLine, endnoteLine, imageLine, numberedLine;
     @FXML
@@ -17,7 +15,7 @@ public class HelpTipController {
     @FXML
     private Label footRef, endRef, noteRef, metaRef, todoRef;
     @FXML
-    private Label errRef, boldSpan, underSpan, italicSpan, catSpan, idSpan;
+    private Label boldSpan, underSpan, italicSpan;
 
     @FXML
     protected void initialize() {}

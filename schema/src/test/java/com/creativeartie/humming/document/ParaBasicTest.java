@@ -108,7 +108,7 @@ class ParaBasicTest extends SpanBranchTestBase<Para> {
     }
 
     @Test
-    void testHeadingNoStatus() {
+    void testHeadingNoId() {
         Para span = newSpan("=abc");
         Assertions.assertEquals(StyleLines.HEADING, span.getLineStyle(), "Line style");
         addStyleTest("=", StyleLines.HEADING, StylesSpans.OPERATOR);
@@ -116,24 +116,22 @@ class ParaBasicTest extends SpanBranchTestBase<Para> {
         testStyles(span);
         Assertions.assertInstanceOf(ParaHeading.class, span);
         ParaHeading heading = (ParaHeading) span;
-        Assertions.assertEquals(ParaHeading.DraftStatus.NONE, heading.getStatus());
-        Assertions.assertEquals("", heading.getDetail());
+        Assertions.assertFalse(heading.getPointer().isPresent());
         Assertions.assertEquals(1, heading.getLevel());
     }
 
     @Test
-    void testHeadingDraftStatus() {
-        Para span = newSpan("==abc#Draft 1");
+    void testHeadingWithID() {
+        Para span = newSpan("==abc#chapter");
         Assertions.assertEquals(StyleLines.HEADING, span.getLineStyle(), "Line style");
         addStyleTest("==", StyleLines.HEADING, StylesSpans.OPERATOR);
         addStyleTest("abc", StyleLines.HEADING, StylesSpans.TEXT);
-        addStyleTest("#Draft", StyleLines.HEADING, StylesSpans.OPERATOR);
-        addStyleTest(" 1", StyleLines.HEADING, StylesSpans.TEXT);
+        addStyleTest("#", StyleLines.HEADING, StylesSpans.OPERATOR);
+        addStyleTest("chapter", StyleLines.HEADING, StylesSpans.ID, StylesSpans.TEXT);
         testStyles(span);
         Assertions.assertInstanceOf(ParaHeading.class, span);
         ParaHeading heading = (ParaHeading) span;
-        Assertions.assertEquals(ParaHeading.DraftStatus.DRAFT, heading.getStatus());
-        Assertions.assertEquals("1", heading.getDetail());
+        Assertions.assertTrue(heading.getPointer().isPresent());
         Assertions.assertEquals(2, heading.getLevel());
     }
 

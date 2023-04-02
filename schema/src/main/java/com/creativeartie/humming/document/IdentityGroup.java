@@ -1,7 +1,7 @@
 package com.creativeartie.humming.document;
 
 public enum IdentityGroup {
-    FOOTNOTE, ENDNOTE, NOTE, META, IMAGE, TODO;
+    FOOTNOTE, ENDNOTE, NOTE, META, IMAGE, TODO, HEADING;
 
     StylesSpans getStyleClass() {
         switch (this) {

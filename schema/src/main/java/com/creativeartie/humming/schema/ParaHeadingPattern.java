@@ -2,8 +2,6 @@ package com.creativeartie.humming.schema;
 
 import java.util.regex.*;
 
-import com.google.common.base.*;
-
 /**
  * Headings for print and to describe scenes in an outline
  *
@@ -23,45 +21,15 @@ public enum ParaHeadingPattern implements PatternEnum {
     /** Heading text pattern. */
     TEXT(TextFormattedPatterns.HEADING.getRawPattern()),
 
-    /** Status text pattern. @see StatusPattern */
-    STATUS("\\#[a-zA-Z]*"),
-    /** Status detail pattern. */
-    DETAILS(TextSpanPatterns.SIMPLE.getRawPattern()),
+    /** Heading ID marker pattern. */
+    IDER("\\#"),
+    /** Heading ID pattern */
+    ID(IdentityPattern.getFullPattern()),
+    /** Header ID error pattern. */
+    ERROR(TextSpanPatterns.SIMPLE.getRawPattern()),
 
     /** Line ending pattern */
     ENDER("\n?");
-
-    /** List of status pattern. */
-    public enum StatusPattern {
-        /** Stub status. */
-        STUB,
-        /** Outline status. */
-        OUTLINE,
-        /** Draft status. */
-        DRAFT,
-        /** Final status. */
-        FINAL,
-        /** Other status. */
-        OTHERS;
-
-        private static Pattern testPattern;
-
-        /**
-         * Get the status from text
-         *
-         * @param text
-         *        the text to test
-         *
-         * @return the {@linkplain StatusPattern} found.
-         */
-        public static StatusPattern getStatus(String text) {
-            if (testPattern == null) testPattern = Pattern.compile("\\#[^\\n]+");
-            Preconditions.checkArgument(testPattern.matcher(text).find(), "Pattern not found");
-            final String name = text.toUpperCase();
-            for (final StatusPattern value : values()) if (name.startsWith("#" + value.name())) return value;
-            return OTHERS;
-        }
-    }
 
     private final String rawPattern;
 
@@ -71,7 +39,9 @@ public enum ParaHeadingPattern implements PatternEnum {
             OUTLINE.getPattern(withName) + "?" +
             LEVEL.getPattern(withName) +
             TEXT.getPattern(withName) + "?" +
-            "(" + STATUS.getPattern(withName) + DETAILS.getPattern(withName) + "?)?" +
+            "(" + IDER.getPattern(withName) + "(" +
+                 ID.getPattern(withName)+ "|" + ERROR.getPattern(withName) + "?" +
+            "))?" +
             ENDER.getPattern(withName);
         // @formatter:on
     }

@@ -1,11 +1,11 @@
 package com.creativeartie.humming.document;
 
+import java.util.*;
 import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
-import com.google.common.base.*;
 
-public class ParaHeading extends Para {
+public class ParaHeading extends Para implements IdentitySpan.IdentityParent {
     static ParaHeading newLine(SpanBranch parent, Matcher match) {
         if (ParaHeadingPattern.OUTLINE.group(match) == null) {
             return new ParaHeading(parent, StyleLines.HEADING);
@@ -17,53 +17,8 @@ public class ParaHeading extends Para {
         super(parent, style);
     }
 
-    private Status draftStatus;
+    private Optional<IdentitySpan> headingId;
     private int headingLevel;
-
-    public enum DraftStatus {
-        NONE, STUB, OUTLINE, DRAFT, FINAL, OTHERS;
-    }
-
-    private class Status {
-        private final DraftStatus currentStatus;
-        private final String statusDetail;
-
-        private Status(Matcher matcher) {
-            String raw = ParaHeadingPattern.STATUS.group(matcher);
-            ParaHeadingPattern.StatusPattern status = ParaHeadingPattern.StatusPattern.getStatus(raw);
-            switch (status) {
-                case DRAFT:
-                    currentStatus = DraftStatus.DRAFT;
-                    break;
-                case FINAL:
-                    currentStatus = DraftStatus.FINAL;
-                    break;
-                case OTHERS:
-                    currentStatus = DraftStatus.OTHERS;
-                    break;
-                case OUTLINE:
-                    currentStatus = DraftStatus.OUTLINE;
-                    break;
-                case STUB:
-                    currentStatus = DraftStatus.STUB;
-                    break;
-                default:
-                    assert false : "new Status(Matcher) called without status";
-                    currentStatus = DraftStatus.NONE;
-            }
-            add(new SpanLeaf(ParaHeading.this, raw));
-            if ((raw = ParaHeadingPattern.DETAILS.group(matcher)) != null) {
-                TextSpan detail = TextSpan.newSimple(ParaHeading.this, raw);
-                add(detail);
-                statusDetail = detail.getText();
-            } else statusDetail = "";
-        }
-
-        private Status() {
-            currentStatus = DraftStatus.NONE;
-            statusDetail = "";
-        }
-    }
 
     @Override
     protected void buildSpan(Matcher match) {
@@ -78,23 +33,30 @@ public class ParaHeading extends Para {
         if ((raw = ParaHeadingPattern.TEXT.group(match)) != null) {
             add(TextFormatted.newHeadingText(this, raw));
         }
-        if ((raw = ParaHeadingPattern.STATUS.group(match)) != null) {
-            draftStatus = new Status(match);
-        } else {
-            draftStatus = new Status();
+        headingId = Optional.empty();
+        if ((raw = ParaHeadingPattern.IDER.group(match)) != null) {
+            add(new SpanLeaf(this, raw));
+            if ((raw = ParaHeadingPattern.ID.group(match)) != null) {
+                headingId = Optional.of(IdentitySpan.newAddressId(this, raw, IdentityGroup.HEADING));
+                add(headingId.get());
+            } else if ((raw = ParaHeadingPattern.ERROR.group(match)) != null) {
+                add(TextSpan.newSimple(this, raw, StylesSpans.ERROR));
+            }
         }
         addLineEnd(match, ParaHeadingPattern.ENDER);
     }
 
-    public DraftStatus getStatus() {
-        return draftStatus.currentStatus;
-    }
-
-    public String getDetail() {
-        return CharMatcher.whitespace().trimAndCollapseFrom(draftStatus.statusDetail, ' ');
-    }
-
     public int getLevel() {
         return headingLevel;
+    }
+
+    @Override
+    public int getIdPosition() {
+        return getStartIndex();
+    }
+
+    @Override
+    public Optional<IdentitySpan> getPointer() {
+        return headingId;
     }
 }
