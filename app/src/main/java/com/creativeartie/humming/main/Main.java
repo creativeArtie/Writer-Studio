@@ -13,7 +13,7 @@ import javafx.application.*;
  */
 public class Main {
     public static void main(String[] args) {
-        Thread.setDefaultUncaughtExceptionHandler(App::handleExceptions);
+        Thread.setDefaultUncaughtExceptionHandler(Main::handleExceptions);
         Application.launch(App.class, args);
     }
 

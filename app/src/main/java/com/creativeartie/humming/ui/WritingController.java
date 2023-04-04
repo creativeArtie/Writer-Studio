@@ -44,7 +44,7 @@ public class WritingController {
     private Popup popup;
     private Label popupMsg;
     @FXML
-    public CodeArea writingText;
+    private CodeArea writingText;
 
     public WritingController() {
 
@@ -55,7 +55,7 @@ public class WritingController {
     }
 
     @FXML
-    public void initialize() {
+    void initialize() {
 
         rootDoc = new ManuscriptProperty();
         writingText.textProperty().addListener(this::textEdited);

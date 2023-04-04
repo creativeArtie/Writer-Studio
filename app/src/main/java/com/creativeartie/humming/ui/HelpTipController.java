@@ -18,5 +18,5 @@ public class HelpTipController {
     private Label boldSpan, underSpan, italicSpan;
 
     @FXML
-    protected void initialize() {}
+    void initialize() {}
 }

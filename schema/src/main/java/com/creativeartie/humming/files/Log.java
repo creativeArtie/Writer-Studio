@@ -5,12 +5,12 @@ import java.util.*;
 
 import com.google.common.collect.*;
 
-public class Log extends ForwardingList<Entry> implements Serializable {
+public final class Log extends ForwardingList<Entry> implements Serializable {
     private static final long serialVersionUID = -6902261600169770008L;
     private ArrayList<Entry> logEntries;
     private Entry currentEntry;
 
-    public Log() {
+    Log() {
         logEntries = new ArrayList<>();
         currentEntry = Entry.newEntry();
     }

@@ -32,7 +32,7 @@ public class Entry implements Serializable {
         return writtenCount + outlineCount;
     }
 
-    protected static Entry newEntry() {
+    static Entry newEntry() {
         return new Entry(LocalDate.now(), Duration.ZERO, 0, 0);
     }
 

@@ -7,7 +7,7 @@ public class ProjectProperties implements Serializable {
     private static final long serialVersionUID = -6786244514727898783L;
     private Properties projectProp;
 
-    public ProjectProperties() {
+    ProjectProperties() {
         projectProp = new Properties();
     }
 

@@ -15,7 +15,7 @@ import javafx.stage.*;
 public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Thread.setDefaultUncaughtExceptionHandler(App::handleExceptions);
+        Thread.setDefaultUncaughtExceptionHandler(Main::handleExceptions);
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(UIText.getBundle());
         loader.setLocation(DataFiles.MAIN_FXML.getFile());
@@ -28,11 +28,6 @@ public class App extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Writer App");
         primaryStage.show();
-    }
-
-    public static void handleExceptions(Thread t, Throwable e) {
-        e.printStackTrace();
-        System.exit(-1);
     }
 
     @Override
