@@ -29,7 +29,7 @@ abstract class SpanTestBase<T extends SpanBranch> {
     @BeforeEach
     protected void beforeEach() {
         refreshLists();
-        rootDoc = new Manuscript();
+        rootDoc = new Manuscript("main");
         moreBeforeEach();
     }
 

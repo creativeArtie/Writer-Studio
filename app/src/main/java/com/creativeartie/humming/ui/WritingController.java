@@ -19,7 +19,7 @@ import javafx.stage.*;
 public class WritingController {
     private class ManuscriptProperty extends ReadOnlyObjectWrapper<Manuscript> {
         ManuscriptProperty() {
-            super(new Manuscript());
+            super(new Manuscript("main"));
         }
 
         private void updateText(String text) {

@@ -1,25 +1,21 @@
 package com.creativeartie.humming.document;
 
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 import com.google.common.base.*;
+import com.google.common.collect.*;
 
 /**
  * An agenda Paragraph
  */
-public final class ParaAgenda extends Para implements IdentityParent {
+public final class ParaAgenda extends Para implements IdentityStorage.Identity {
     private String todoText;
 
     ParaAgenda(SpanBranch parent) {
         super(parent, CssLineStyles.AGENDA);
         todoText = "";
-    }
-
-    @Override
-    public int getIdPosition() {
-        return getStartIndex();
     }
 
     @Override
@@ -44,8 +40,27 @@ public final class ParaAgenda extends Para implements IdentityParent {
     }
 
     @Override
-    public Optional<IdentitySpan> getPointer() {
-        // TODO Set a identity address here
-        return Optional.empty();
+    public List<String> getCategories() {
+        return Lists.newArrayList(getRoot().getFileName(), "lined");
+    }
+
+    @Override
+    public String getId() {
+        return Integer.toString(getStartIndex());
+    }
+
+    @Override
+    public IdentityGroup getIdGroup() {
+        return IdentityGroup.TODO;
+    }
+
+    @Override
+    public int getPosition() {
+        return getStartIndex();
+    }
+
+    @Override
+    public boolean isPointer() {
+        return false;
     }
 }

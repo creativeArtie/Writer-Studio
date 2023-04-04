@@ -5,6 +5,7 @@ import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 import com.google.common.base.*;
+import com.google.common.collect.*;
 
 /**
  * In line agenda span.
@@ -46,7 +47,7 @@ public final class IdentityTodo extends SpanBranch implements IdentityStorage.Id
 
     @Override
     public List<String> getCategories() {
-        return new ArrayList<>();
+        return Lists.newArrayList(getRoot().getFileName(), "phrase");
     }
 
     @Override
