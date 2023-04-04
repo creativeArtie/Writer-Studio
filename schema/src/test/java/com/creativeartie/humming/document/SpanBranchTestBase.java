@@ -2,11 +2,9 @@ package com.creativeartie.humming.document;
 
 import java.util.*;
 
-import com.creativeartie.humming.document.IdentitySpan.*;
-
 abstract class SpanBranchTestBase<T extends SpanBranch> extends SpanTestBase<T> {
     private static class HolderSpan extends SpanBranch implements IdentityParent {
-        protected HolderSpan(Manuscript root, SpanStyle... classes) {
+        protected HolderSpan(Manuscript root, CssStyle... classes) {
             super(root, classes);
         }
 

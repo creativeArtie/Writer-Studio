@@ -5,12 +5,15 @@ import java.util.regex.*;
 import com.creativeartie.humming.schema.*;
 import com.google.common.base.*;
 
-public class TextSpan extends SpanBranch {
+/**
+ * Basic text span.
+ */
+public final class TextSpan extends SpanBranch {
     static class Builder {
         private TextSpan outputSpan;
         private TextSpanPatterns usePattern;
 
-        private Builder(SpanBranch parent, StylesSpans... styles) {
+        private Builder(SpanBranch parent, CssSpanStyles... styles) {
             outputSpan = new TextSpan(parent, styles);
         }
 
@@ -25,28 +28,28 @@ public class TextSpan extends SpanBranch {
         }
     }
 
-    static Builder builder(SpanBranch parent, StylesSpans... styles) {
+    static Builder builder(SpanBranch parent, CssSpanStyles... styles) {
         return new Builder(parent, styles);
     }
 
-    static TextSpan newId(SpanBranch span, String text, StylesSpans... styles) {
-        return parseText(new TextSpan(span, styles), TextSpanPatterns.ID, text);
+    static TextSpan newFieldKey(SpanBranch span, String raw, CssSpanStyles... styles) {
+        return parseText(new TextSpan(span, styles), TextSpanPatterns.KEY, raw);
     }
 
-    static TextSpan newSpecial(SpanBranch span, String raw, StylesSpans... styles) {
-        return parseText(new TextSpan(span, styles), TextSpanPatterns.SPECIAL, raw);
-    }
-
-    static TextSpan newSimple(SpanBranch span, String raw, StylesSpans... styles) {
-        return parseText(new TextSpan(span, styles), TextSpanPatterns.SIMPLE, raw);
-    }
-
-    static TextSpan newHeading(SpanBranch span, String raw, StylesSpans... styles) {
+    static TextSpan newHeading(SpanBranch span, String raw, CssSpanStyles... styles) {
         return parseText(new TextSpan(span, styles), TextSpanPatterns.HEADING, raw);
     }
 
-    static TextSpan newFieldKey(SpanBranch span, String raw, StylesSpans... styles) {
-        return parseText(new TextSpan(span, styles), TextSpanPatterns.KEY, raw);
+    static TextSpan newId(SpanBranch span, String text, CssSpanStyles... styles) {
+        return parseText(new TextSpan(span, styles), TextSpanPatterns.ID, text);
+    }
+
+    static TextSpan newSimple(SpanBranch span, String raw, CssSpanStyles... styles) {
+        return parseText(new TextSpan(span, styles), TextSpanPatterns.SIMPLE, raw);
+    }
+
+    static TextSpan newSpecial(SpanBranch span, String raw, CssSpanStyles... styles) {
+        return parseText(new TextSpan(span, styles), TextSpanPatterns.SPECIAL, raw);
     }
 
     private static TextSpan parseText(TextSpan span, TextSpanPatterns pattern, String text) {
@@ -56,12 +59,12 @@ public class TextSpan extends SpanBranch {
             String raw = TextSpanPatterns.TextSpanParts.TEXT.group(match);
             if (raw != null) {
                 builder.append(raw);
-                span.add(new SpanLeaf(span, raw, StylesSpans.TEXT));
+                span.add(new SpanLeaf(span, raw, CssSpanStyles.TEXT));
                 continue;
             }
             raw = TextSpanPatterns.TextSpanParts.ESCAPE.group(match);
             if (raw.length() == 2) builder.append(raw.charAt(1));
-            span.add(new SpanLeaf(span, raw, StylesSpans.ESCAPE));
+            span.add(new SpanLeaf(span, raw, CssSpanStyles.ESCAPE));
         }
         span.spanText = builder.toString();
         return span;
@@ -69,10 +72,15 @@ public class TextSpan extends SpanBranch {
 
     private String spanText;
 
-    private TextSpan(SpanBranch parent, StylesSpans... styles) {
+    private TextSpan(SpanBranch parent, CssSpanStyles... styles) {
         super(parent, styles);
     }
 
+    /**
+     * return the span text
+     *
+     * @return the span text
+     */
     public String getText() {
         return CharMatcher.whitespace().trimAndCollapseFrom(spanText, ' ');
     }

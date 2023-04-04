@@ -1,20 +1,36 @@
 package com.creativeartie.humming.document;
 
+/**
+ * Type of Identity.
+ */
 public enum IdentityGroup {
-    FOOTNOTE, ENDNOTE, NOTE, META, IMAGE, TODO, HEADING;
+    /** a footnote identity. */
+    FOOTNOTE,
+    /** a endnote identity. */
+    ENDNOTE,
+    /** a research note identity. */
+    NOTE,
+    /** a meta data identity. */
+    META,
+    /** an image identity. */
+    IMAGE,
+    /** an agenda identity. */
+    TODO,
+    /** a heading identity. */
+    HEADING;
 
-    StylesSpans getStyleClass() {
+    CssSpanStyles getStyleClass() {
         switch (this) {
             case NOTE:
-                return StylesSpans.NOTE;
+                return CssSpanStyles.NOTE;
             case ENDNOTE:
-                return StylesSpans.ENDNOTE;
+                return CssSpanStyles.ENDNOTE;
             case FOOTNOTE:
-                return StylesSpans.FOOTNOTE;
+                return CssSpanStyles.FOOTNOTE;
             case META:
-                return StylesSpans.METADATA;
+                return CssSpanStyles.METADATA;
             default:
-                return StylesSpans.valueOf(name());
+                return CssSpanStyles.valueOf(name());
         }
     }
 }

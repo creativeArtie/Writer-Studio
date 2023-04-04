@@ -6,9 +6,9 @@ final class ParaLineTest extends SpanBranchTestBase<ParaList> {
     @Test
     void testBullet() {
         Para test = newSpan("--bullet\n");
-        addStyleTest("--", StyleLines.BULLET, StylesSpans.OPERATOR);
-        addStyleTest("bullet", StyleLines.BULLET, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.BULLET, StylesSpans.OPERATOR);
+        addStyleTest("--", CssLineStyles.BULLET, CssSpanStyles.OPERATOR);
+        addStyleTest("bullet", CssLineStyles.BULLET, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.BULLET, CssSpanStyles.OPERATOR);
         testStyles(test);
         Assertions.assertInstanceOf(ParaList.class, test);
         Assertions.assertEquals(2, ((SpanList) test).getLevel());
@@ -17,9 +17,9 @@ final class ParaLineTest extends SpanBranchTestBase<ParaList> {
     @Test
     void testNumbered() {
         Para test = newSpan("#numbered\n");
-        addStyleTest("#", StyleLines.NUMBERED, StylesSpans.OPERATOR);
-        addStyleTest("numbered", StyleLines.NUMBERED, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.NUMBERED, StylesSpans.OPERATOR);
+        addStyleTest("#", CssLineStyles.NUMBERED, CssSpanStyles.OPERATOR);
+        addStyleTest("numbered", CssLineStyles.NUMBERED, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.NUMBERED, CssSpanStyles.OPERATOR);
         testStyles(test);
         Assertions.assertInstanceOf(ParaList.class, test);
         Assertions.assertEquals(1, ((SpanList) test).getLevel());
@@ -28,8 +28,8 @@ final class ParaLineTest extends SpanBranchTestBase<ParaList> {
     @Test
     void testEndOnly() {
         Para test = newSpan("#\n");
-        addStyleTest("#", StyleLines.NUMBERED, StylesSpans.OPERATOR);
-        addStyleTest("\n", StyleLines.NUMBERED, StylesSpans.OPERATOR);
+        addStyleTest("#", CssLineStyles.NUMBERED, CssSpanStyles.OPERATOR);
+        addStyleTest("\n", CssLineStyles.NUMBERED, CssSpanStyles.OPERATOR);
         testStyles(test);
         Assertions.assertInstanceOf(ParaList.class, test);
         Assertions.assertEquals(1, ((SpanList) test).getLevel());
@@ -38,8 +38,8 @@ final class ParaLineTest extends SpanBranchTestBase<ParaList> {
     @Test
     void testNoEnder() {
         Para test = newSpan("#numbered");
-        addStyleTest("#", StyleLines.NUMBERED, StylesSpans.OPERATOR);
-        addStyleTest("numbered", StyleLines.NUMBERED, StylesSpans.TEXT);
+        addStyleTest("#", CssLineStyles.NUMBERED, CssSpanStyles.OPERATOR);
+        addStyleTest("numbered", CssLineStyles.NUMBERED, CssSpanStyles.TEXT);
         testStyles(test);
         Assertions.assertInstanceOf(ParaList.class, test);
         Assertions.assertEquals(1, ((SpanList) test).getLevel());
@@ -48,7 +48,7 @@ final class ParaLineTest extends SpanBranchTestBase<ParaList> {
     @Test
     void testStartOnly() {
         Para test = newSpan("#");
-        addStyleTest("#", StyleLines.NUMBERED, StylesSpans.OPERATOR);
+        addStyleTest("#", CssLineStyles.NUMBERED, CssSpanStyles.OPERATOR);
         testStyles(test);
         Assertions.assertEquals(1, ((SpanList) test).getLevel());
     }

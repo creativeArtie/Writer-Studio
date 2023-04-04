@@ -6,11 +6,11 @@ final class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
     @Test
     void testFull() {
         ParaNoteHead span = newSpan("%=title#id\n");
-        addStyleTest("%=", StyleLines.HEADER, StylesSpans.OPERATOR);
-        addStyleTest("title", StyleLines.HEADER, StylesSpans.TEXT);
-        addStyleTest("#", StyleLines.HEADER, StylesSpans.OPERATOR);
-        addStyleTest("id", StyleLines.HEADER, StylesSpans.ID, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.HEADER, StylesSpans.OPERATOR);
+        addStyleTest("%=", CssLineStyles.HEADER, CssSpanStyles.OPERATOR);
+        addStyleTest("title", CssLineStyles.HEADER, CssSpanStyles.TEXT);
+        addStyleTest("#", CssLineStyles.HEADER, CssSpanStyles.OPERATOR);
+        addStyleTest("id", CssLineStyles.HEADER, CssSpanStyles.ID, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.HEADER, CssSpanStyles.OPERATOR);
         testStyles(span);
         Assertions.assertTrue(span.getPointer().isPresent(), "Id");
     }
@@ -18,10 +18,10 @@ final class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
     @Test
     void testNoEnder() {
         ParaNoteHead span = newSpan("%=title#id");
-        addStyleTest("%=", StyleLines.HEADER, StylesSpans.OPERATOR);
-        addStyleTest("title", StyleLines.HEADER, StylesSpans.TEXT);
-        addStyleTest("#", StyleLines.HEADER, StylesSpans.OPERATOR);
-        addStyleTest("id", StyleLines.HEADER, StylesSpans.ID, StylesSpans.TEXT);
+        addStyleTest("%=", CssLineStyles.HEADER, CssSpanStyles.OPERATOR);
+        addStyleTest("title", CssLineStyles.HEADER, CssSpanStyles.TEXT);
+        addStyleTest("#", CssLineStyles.HEADER, CssSpanStyles.OPERATOR);
+        addStyleTest("id", CssLineStyles.HEADER, CssSpanStyles.ID, CssSpanStyles.TEXT);
         testStyles(span);
         Assertions.assertTrue(span.getPointer().isPresent(), "Id");
     }
@@ -29,9 +29,9 @@ final class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
     @Test
     void testMissingId() {
         ParaNoteHead span = newSpan("%=title#");
-        addStyleTest("%=", StyleLines.HEADER, StylesSpans.OPERATOR);
-        addStyleTest("title", StyleLines.HEADER, StylesSpans.TEXT);
-        addStyleTest("#", StyleLines.HEADER, StylesSpans.OPERATOR);
+        addStyleTest("%=", CssLineStyles.HEADER, CssSpanStyles.OPERATOR);
+        addStyleTest("title", CssLineStyles.HEADER, CssSpanStyles.TEXT);
+        addStyleTest("#", CssLineStyles.HEADER, CssSpanStyles.OPERATOR);
         testStyles(span);
         Assertions.assertFalse(span.getPointer().isPresent(), "Id");
     }
@@ -39,9 +39,9 @@ final class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
     @Test
     void testNoTitle() {
         ParaNoteHead span = newSpan("%=#id");
-        addStyleTest("%=", StyleLines.HEADER, StylesSpans.OPERATOR);
-        addStyleTest("#", StyleLines.HEADER, StylesSpans.OPERATOR);
-        addStyleTest("id", StyleLines.HEADER, StylesSpans.ID, StylesSpans.TEXT);
+        addStyleTest("%=", CssLineStyles.HEADER, CssSpanStyles.OPERATOR);
+        addStyleTest("#", CssLineStyles.HEADER, CssSpanStyles.OPERATOR);
+        addStyleTest("id", CssLineStyles.HEADER, CssSpanStyles.ID, CssSpanStyles.TEXT);
         testStyles(span);
         Assertions.assertTrue(span.getPointer().isPresent(), "Id");
     }
@@ -49,8 +49,8 @@ final class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
     @Test
     void testNoId() {
         ParaNoteHead span = newSpan("%=title");
-        addStyleTest("%=", StyleLines.HEADER, StylesSpans.OPERATOR);
-        addStyleTest("title", StyleLines.HEADER, StylesSpans.TEXT);
+        addStyleTest("%=", CssLineStyles.HEADER, CssSpanStyles.OPERATOR);
+        addStyleTest("title", CssLineStyles.HEADER, CssSpanStyles.TEXT);
         testStyles(span);
         Assertions.assertFalse(span.getPointer().isPresent(), "Id");
     }
@@ -58,7 +58,7 @@ final class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
     @Test
     void testStartOnly() {
         ParaNoteHead span = newSpan("%=");
-        addStyleTest("%=", StyleLines.HEADER, StylesSpans.OPERATOR);
+        addStyleTest("%=", CssLineStyles.HEADER, CssSpanStyles.OPERATOR);
         testStyles(span);
         Assertions.assertFalse(span.getPointer().isPresent(), "Id");
     }

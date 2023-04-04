@@ -5,11 +5,14 @@ import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 
-public class ParaNoteHead extends Para implements IdentitySpan.IdentityParent {
+/**
+ * A note heading.
+ */
+public final class ParaNoteHead extends Para implements IdentityParent {
     private Optional<IdentitySpan> noteId;
 
-    protected ParaNoteHead(SpanBranch parent) {
-        super(parent, StyleLines.HEADER);
+    ParaNoteHead(SpanBranch parent) {
+        super(parent, CssLineStyles.HEADER);
         noteId = Optional.empty();
     }
 

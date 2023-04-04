@@ -6,32 +6,32 @@ final class ParaNoteFieldTest extends SpanBranchTestBase<ParaNoteField> {
     @Test
     void testFull() {
         ParaNoteField span = newSpan("%>first_name=John\n");
-        addStyleTest("%>", StyleLines.FIELD, StylesSpans.OPERATOR);
-        addStyleTest("first_name", StyleLines.FIELD, StylesSpans.TEXT);
-        addStyleTest("=", StyleLines.FIELD, StylesSpans.OPERATOR);
-        addStyleTest("John", StyleLines.FIELD, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.FIELD, StylesSpans.OPERATOR);
+        addStyleTest("%>", CssLineStyles.FIELD, CssSpanStyles.OPERATOR);
+        addStyleTest("first_name", CssLineStyles.FIELD, CssSpanStyles.TEXT);
+        addStyleTest("=", CssLineStyles.FIELD, CssSpanStyles.OPERATOR);
+        addStyleTest("John", CssLineStyles.FIELD, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.FIELD, CssSpanStyles.OPERATOR);
         testStyles(span);
     }
 
     @Test
     void testNoEnd() {
         ParaNoteField span = newSpan("%>first_name=John");
-        addStyleTest("%>", StyleLines.FIELD, StylesSpans.OPERATOR);
-        addStyleTest("first_name", StyleLines.FIELD, StylesSpans.TEXT);
-        addStyleTest("=", StyleLines.FIELD, StylesSpans.OPERATOR);
-        addStyleTest("John", StyleLines.FIELD, StylesSpans.TEXT);
+        addStyleTest("%>", CssLineStyles.FIELD, CssSpanStyles.OPERATOR);
+        addStyleTest("first_name", CssLineStyles.FIELD, CssSpanStyles.TEXT);
+        addStyleTest("=", CssLineStyles.FIELD, CssSpanStyles.OPERATOR);
+        addStyleTest("John", CssLineStyles.FIELD, CssSpanStyles.TEXT);
         testStyles(span);
     }
 
     @Test
     void testErrorFull() {
         ParaNoteField span = newSpan("%>first_name\\=John\n");
-        addStyleTest("%>", StyleLines.FIELD, StylesSpans.ERROR, StylesSpans.OPERATOR);
-        addStyleTest("first_name", StyleLines.FIELD, StylesSpans.ERROR, StylesSpans.TEXT);
-        addStyleTest("\\=", StyleLines.FIELD, StylesSpans.ERROR, StylesSpans.ESCAPE);
-        addStyleTest("John", StyleLines.FIELD, StylesSpans.ERROR, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.FIELD, StylesSpans.ERROR, StylesSpans.OPERATOR);
+        addStyleTest("%>", CssLineStyles.FIELD, CssSpanStyles.ERROR, CssSpanStyles.OPERATOR);
+        addStyleTest("first_name", CssLineStyles.FIELD, CssSpanStyles.ERROR, CssSpanStyles.TEXT);
+        addStyleTest("\\=", CssLineStyles.FIELD, CssSpanStyles.ERROR, CssSpanStyles.ESCAPE);
+        addStyleTest("John", CssLineStyles.FIELD, CssSpanStyles.ERROR, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.FIELD, CssSpanStyles.ERROR, CssSpanStyles.OPERATOR);
         testStyles(span);
     }
 

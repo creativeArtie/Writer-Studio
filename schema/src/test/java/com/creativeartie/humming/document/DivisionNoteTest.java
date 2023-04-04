@@ -13,27 +13,27 @@ final class DivisionNoteTest extends DivisionTestBase<DivisionNote> {
     @Test
     void testFullNote() {
         newDoc("%=Heading#id\n%text\n%>abc=dec\n%>afadf\ntext");
-        addStyleTest("%=", StyleLines.HEADER, StylesSpans.OPERATOR);
-        addStyleTest("Heading", StyleLines.HEADER, StylesSpans.TEXT);
-        addStyleTest("#", StyleLines.HEADER, StylesSpans.OPERATOR);
-        addStyleTest("id", StyleLines.HEADER, StylesSpans.ID, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.HEADER, StylesSpans.OPERATOR);
+        addStyleTest("%=", CssLineStyles.HEADER, CssSpanStyles.OPERATOR);
+        addStyleTest("Heading", CssLineStyles.HEADER, CssSpanStyles.TEXT);
+        addStyleTest("#", CssLineStyles.HEADER, CssSpanStyles.OPERATOR);
+        addStyleTest("id", CssLineStyles.HEADER, CssSpanStyles.ID, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.HEADER, CssSpanStyles.OPERATOR);
 
-        addStyleTest("%", StyleLines.NOTE, StylesSpans.OPERATOR);
-        addStyleTest("text", StyleLines.NOTE, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.NOTE, StylesSpans.OPERATOR);
+        addStyleTest("%", CssLineStyles.NOTE, CssSpanStyles.OPERATOR);
+        addStyleTest("text", CssLineStyles.NOTE, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.NOTE, CssSpanStyles.OPERATOR);
 
-        addStyleTest("%>", StyleLines.FIELD, StylesSpans.OPERATOR);
-        addStyleTest("abc", StyleLines.FIELD, StylesSpans.TEXT);
-        addStyleTest("=", StyleLines.FIELD, StylesSpans.OPERATOR);
-        addStyleTest("dec", StyleLines.FIELD, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.FIELD, StylesSpans.OPERATOR);
+        addStyleTest("%>", CssLineStyles.FIELD, CssSpanStyles.OPERATOR);
+        addStyleTest("abc", CssLineStyles.FIELD, CssSpanStyles.TEXT);
+        addStyleTest("=", CssLineStyles.FIELD, CssSpanStyles.OPERATOR);
+        addStyleTest("dec", CssLineStyles.FIELD, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.FIELD, CssSpanStyles.OPERATOR);
 
-        addStyleTest("%>", StyleLines.FIELD, StylesSpans.ERROR, StylesSpans.OPERATOR);
-        addStyleTest("afadf", StyleLines.FIELD, StylesSpans.ERROR, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.FIELD, StylesSpans.ERROR, StylesSpans.OPERATOR);
+        addStyleTest("%>", CssLineStyles.FIELD, CssSpanStyles.ERROR, CssSpanStyles.OPERATOR);
+        addStyleTest("afadf", CssLineStyles.FIELD, CssSpanStyles.ERROR, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.FIELD, CssSpanStyles.ERROR, CssSpanStyles.OPERATOR);
 
-        addStyleTest("text", StyleLines.NORMAL, StylesSpans.TEXT);
+        addStyleTest("text", CssLineStyles.NORMAL, CssSpanStyles.TEXT);
         testStyles();
 
         Span id = getSpan(0, 0, 0, 3);
@@ -51,12 +51,12 @@ final class DivisionNoteTest extends DivisionTestBase<DivisionNote> {
     void testDouble() {
         newDoc("%Note 1\n%=note 2");
 
-        addStyleTest("%", StyleLines.NOTE, StylesSpans.OPERATOR);
-        addStyleTest("Note 1", StyleLines.NOTE, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.NOTE, StylesSpans.OPERATOR);
+        addStyleTest("%", CssLineStyles.NOTE, CssSpanStyles.OPERATOR);
+        addStyleTest("Note 1", CssLineStyles.NOTE, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.NOTE, CssSpanStyles.OPERATOR);
 
-        addStyleTest("%=", StyleLines.HEADER, StylesSpans.OPERATOR);
-        addStyleTest("note 2", StyleLines.HEADER, StylesSpans.TEXT);
+        addStyleTest("%=", CssLineStyles.HEADER, CssSpanStyles.OPERATOR);
+        addStyleTest("note 2", CssLineStyles.HEADER, CssSpanStyles.TEXT);
         testStyles();
 
         Span id = null;

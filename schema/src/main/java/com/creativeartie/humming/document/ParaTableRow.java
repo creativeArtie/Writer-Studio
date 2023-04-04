@@ -4,16 +4,28 @@ import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 
-public class ParaTableRow extends Para {
-    private int numberOfColumns;
-
-    protected static ParaTableRow newLine(SpanBranch parent) {
+/**
+ * A table row.
+ */
+public final class ParaTableRow extends Para {
+    static ParaTableRow newLine(SpanBranch parent) {
         return new ParaTableRow(parent);
     }
 
+    private int numberOfColumns;
+
     private ParaTableRow(SpanBranch parent) {
-        super(parent, StyleLines.ROW);
+        super(parent, CssLineStyles.ROW);
         numberOfColumns = 0;
+    }
+
+    /**
+     * get the number of columns of a row
+     *
+     * @return number columns
+     */
+    public int getColumnSize() {
+        return numberOfColumns;
     }
 
     @Override
@@ -35,9 +47,5 @@ public class ParaTableRow extends Para {
                 return;
             }
         }
-    }
-
-    public int getColumnSize() {
-        return numberOfColumns;
     }
 }

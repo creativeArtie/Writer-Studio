@@ -5,37 +5,87 @@ import java.util.Optional;
 
 import com.google.common.base.*;
 
-public class IdentityStorage {
+/**
+ * Stores a list of identities. It can contain a parent
+ * {@linkplain IdentityStorage}.
+ */
+public final class IdentityStorage {
+    /**
+     * An single Identity
+     */
     public interface Identity {
-        public abstract IdentityGroup getIdGroup();
+        /**
+         * Get the user defined categories
+         *
+         * @return categories
+         */
+        List<String> getCategories();
 
-        public abstract List<String> getCategories();
-
-        public abstract String getId();
-
-        public default String getFullId() {
+        /**
+         * Get the full user defined id
+         *
+         * @return full id with {@link #getCategories()} and {@link #getId()}.
+         */
+        default String getFullId() {
             List<String> ids = getCategories();
             if (ids.isEmpty()) return getId();
 
             return Joiner.on(":").join(ids) + ":" + getId();
         }
 
-        public default String getInternalId() {
+        /**
+         * Get the user defined id
+         *
+         * @return id name
+         */
+        String getId();
+
+        /**
+         * The id group that this id is part of
+         *
+         * @return identity group like footnote and agenda
+         */
+        IdentityGroup getIdGroup();
+
+        /**
+         * Get the id for internal use
+         *
+         * @return id with {@link #getIdGroup()} and {@link #getFullId()}.
+         */
+        default String getInternalId() {
             return getIdGroup().name() + ":" + getFullId();
         }
 
-        public abstract boolean isPointer();
+        /**
+         * Get the position of the id span.
+         *
+         * @return the id span
+         */
+        int getPosition();
 
-        public default boolean isAddress() {
+        /**
+         * Is the is an ID address.
+         *
+         * @return {@code true} if this is a address
+         */
+        default boolean isAddress() {
             return !isPointer();
         }
 
-        public abstract int getPosition();
+        /**
+         * Is the is an ID pointer.
+         *
+         * @return {@code true} if this is a pointer
+         */
+        boolean isPointer();
     }
 
-    public class Manager implements Comparable<Manager> {
-        private ArrayList<Identity> pointerIds;
-        private ArrayList<Identity> addressIds;
+    /**
+     * Manages a single id with its pointers and addresses.
+     */
+    private static class Manager implements Comparable<Manager> {
+        private final ArrayList<Identity> pointerIds;
+        private final ArrayList<Identity> addressIds;
         private final String fullIdName;
 
         private Manager(String name) {
@@ -44,28 +94,14 @@ public class IdentityStorage {
             fullIdName = name;
         }
 
-        public boolean isCorrect() {
-            return addressIds.size() == 1;
-        }
-
-        public String getFullId() {
-            return fullIdName;
-        }
-
-        public void cleanUpIds() {
-            for (Identity ptr : pointerIds) {
-                ((Span) ptr).cleanUp();
-            }
-            for (Identity address : addressIds) {
-                ((Span) address).cleanUp();
-            }
+        @Override
+        public int compareTo(Manager o) {
+            return fullIdName.compareTo(o.fullIdName);
         }
 
         @Override
         public boolean equals(Object obj) {
-            if (obj instanceof Manager) {
-                return ((Manager) obj).fullIdName == fullIdName;
-            }
+            if (obj instanceof Manager) return ((Manager) obj).fullIdName == fullIdName;
             return false;
         }
 
@@ -73,57 +109,36 @@ public class IdentityStorage {
         public int hashCode() {
             return fullIdName.hashCode();
         }
-
-        @Override
-        public int compareTo(Manager o) {
-            return fullIdName.compareTo(o.fullIdName);
-        }
     }
 
-    private TreeSet<Manager> idManager;
-    private Optional<IdentityStorage> parentStorage;
+    private final TreeSet<Manager> idManager;
+    private final Optional<IdentityStorage> parentStorage;
 
-    public IdentityStorage(IdentityStorage parent) {
-        idManager = new TreeSet<>();
-        parentStorage = Optional.of(parent);
-    }
-
+    /**
+     * Constructor without a parent
+     */
     public IdentityStorage() {
         idManager = new TreeSet<>();
         parentStorage = Optional.empty();
     }
 
-    public boolean isIdUnique(Identity span) {
-        Manager name = new Manager(span.getInternalId());
-        Manager manager = idManager.floor(name);
-        boolean isUnique = false;
-        if (manager != null) {
-            isUnique = manager.addressIds.size() == 1;
-        }
-        if (parentStorage.isPresent()) {
-            boolean isParentUnique = parentStorage.get().isIdUnique(span);
-            if (isUnique) {
-                return !isParentUnique;
-            } else {
-                return isParentUnique;
-            }
-        }
-        return isUnique;
+    /**
+     * Constructor with a parent
+     *
+     * @param parent
+     *        the parent storage
+     */
+    public IdentityStorage(IdentityStorage parent) {
+        idManager = new TreeSet<>();
+        parentStorage = Optional.ofNullable(parent);
     }
 
-    public int getPointerCount(Identity span) {
-        Manager name = new Manager(span.getInternalId());
-        Manager manager = idManager.floor(name);
-        int count = 0;
-        if (manager != null) {
-            manager.pointerIds.size();
-        }
-        if (parentStorage.isPresent()) {
-            count += parentStorage.get().getPointerCount(span);
-        }
-        return count;
-    }
-
+    /**
+     * Adds an ID
+     *
+     * @param id
+     *        the id to add
+     */
     public void addId(Identity id) {
         Manager name = new Manager(id.getInternalId());
         Manager manager = idManager.floor(name);
@@ -131,28 +146,67 @@ public class IdentityStorage {
             manager = name;
             idManager.add(manager);
         }
-        if (id.isPointer()) {
-            manager.pointerIds.add(id);
-        } else {
-            manager.addressIds.add(id);
-        }
+        if (id.isPointer()) manager.pointerIds.add(id);
+        else manager.addressIds.add(id);
     }
 
+    /**
+     * Clear the list of ID.
+     */
+    public void clear() {
+        idManager.clear();
+    }
+
+    /**
+     * Get the ID pointer count
+     *
+     * @param span
+     *        the id to check
+     *
+     * @return id count
+     */
+    public int getPointerCount(Identity span) {
+        Manager name = new Manager(span.getInternalId());
+        Manager manager = idManager.floor(name);
+        int count = 0;
+        if (manager != null) manager.pointerIds.size();
+        if (parentStorage.isPresent()) count += parentStorage.get().getPointerCount(span);
+        return count;
+    }
+
+    /**
+     * Check an ID is unique. That is the ID only have single address
+     *
+     * @param span
+     *        the id to check
+     *
+     * @return {@code true} if it is unique
+     */
+    public boolean isIdUnique(Identity span) {
+        Manager name = new Manager(span.getInternalId());
+        Manager manager = idManager.floor(name);
+        boolean isUnique = false;
+        if (manager != null) isUnique = manager.addressIds.size() == 1;
+        if (parentStorage.isPresent()) {
+            boolean isParentUnique = parentStorage.get().isIdUnique(span);
+            if (isUnique) return !isParentUnique;
+            return isParentUnique;
+        }
+        return isUnique;
+    }
+
+    /**
+     * Removes an ID
+     *
+     * @param id
+     *        the id to remove
+     */
     public void removeId(Identity id) {
         Manager name = new Manager(id.getInternalId());
         Manager manager = idManager.floor(name);
         if (manager == null) return;
-        if (id.isPointer()) {
-            manager.pointerIds.remove(id);
-        } else {
-            manager.addressIds.remove(id);
-        }
-        if (manager.pointerIds.isEmpty() && manager.addressIds.isEmpty()) {
-            idManager.remove(manager);
-        }
-    }
-
-    public void clear() {
-        idManager.clear();
+        if (id.isPointer()) manager.pointerIds.remove(id);
+        else manager.addressIds.remove(id);
+        if (manager.pointerIds.isEmpty() && manager.addressIds.isEmpty()) idManager.remove(manager);
     }
 }

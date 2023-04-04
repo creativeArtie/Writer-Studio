@@ -12,14 +12,14 @@ final class DivisionSecSceneTest extends DivisionTestBase<DivisionSecScene> {
     void testTwoOutline() {
         newDoc("!=heading\n!=heading 2.");
 
-        addStyleTest("!", StyleLines.OUTLINE, StylesSpans.OPERATOR);
-        addStyleTest("=", StyleLines.OUTLINE, StylesSpans.OPERATOR);
-        addStyleTest("heading", StyleLines.OUTLINE, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.OUTLINE, StylesSpans.OPERATOR);
+        addStyleTest("!", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
+        addStyleTest("=", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
+        addStyleTest("heading", CssLineStyles.OUTLINE, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
 
-        addStyleTest("!", StyleLines.OUTLINE, StylesSpans.OPERATOR);
-        addStyleTest("=", StyleLines.OUTLINE, StylesSpans.OPERATOR);
-        addStyleTest("heading 2.", StyleLines.OUTLINE, StylesSpans.TEXT);
+        addStyleTest("!", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
+        addStyleTest("=", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
+        addStyleTest("heading 2.", CssLineStyles.OUTLINE, CssSpanStyles.TEXT);
         testStyles();
         Span head = getSpan(0);
 
@@ -33,16 +33,16 @@ final class DivisionSecSceneTest extends DivisionTestBase<DivisionSecScene> {
     void testBasicOutline() {
         newDoc("!=heading\n#content\nabc");
 
-        addStyleTest("!", StyleLines.OUTLINE, StylesSpans.OPERATOR);
-        addStyleTest("=", StyleLines.OUTLINE, StylesSpans.OPERATOR);
-        addStyleTest("heading", StyleLines.OUTLINE, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.OUTLINE, StylesSpans.OPERATOR);
+        addStyleTest("!", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
+        addStyleTest("=", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
+        addStyleTest("heading", CssLineStyles.OUTLINE, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
 
-        addStyleTest("#", StyleLines.NUMBERED, StylesSpans.OPERATOR);
-        addStyleTest("content", StyleLines.NUMBERED, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.NUMBERED, StylesSpans.OPERATOR);
+        addStyleTest("#", CssLineStyles.NUMBERED, CssSpanStyles.OPERATOR);
+        addStyleTest("content", CssLineStyles.NUMBERED, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.NUMBERED, CssSpanStyles.OPERATOR);
 
-        addStyleTest("abc", StyleLines.NORMAL, StylesSpans.TEXT);
+        addStyleTest("abc", CssLineStyles.NORMAL, CssSpanStyles.TEXT);
         testStyles();
         Span head = getSpan(0);
 
@@ -58,19 +58,19 @@ final class DivisionSecSceneTest extends DivisionTestBase<DivisionSecScene> {
     void testSubOutline() {
         newDoc("!=heading\n!==child 1\n!=child");
 
-        addStyleTest("!", StyleLines.OUTLINE, StylesSpans.OPERATOR);
-        addStyleTest("=", StyleLines.OUTLINE, StylesSpans.OPERATOR);
-        addStyleTest("heading", StyleLines.OUTLINE, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.OUTLINE, StylesSpans.OPERATOR);
+        addStyleTest("!", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
+        addStyleTest("=", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
+        addStyleTest("heading", CssLineStyles.OUTLINE, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
 
-        addStyleTest("!", StyleLines.OUTLINE, StylesSpans.OPERATOR);
-        addStyleTest("==", StyleLines.OUTLINE, StylesSpans.OPERATOR);
-        addStyleTest("child 1", StyleLines.OUTLINE, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.OUTLINE, StylesSpans.OPERATOR);
+        addStyleTest("!", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
+        addStyleTest("==", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
+        addStyleTest("child 1", CssLineStyles.OUTLINE, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
 
-        addStyleTest("!", StyleLines.OUTLINE, StylesSpans.OPERATOR);
-        addStyleTest("=", StyleLines.OUTLINE, StylesSpans.OPERATOR);
-        addStyleTest("child", StyleLines.OUTLINE, StylesSpans.TEXT);
+        addStyleTest("!", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
+        addStyleTest("=", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
+        addStyleTest("child", CssLineStyles.OUTLINE, CssSpanStyles.TEXT);
         testStyles();
         Span head = getSpan(0);
 
@@ -86,18 +86,18 @@ final class DivisionSecSceneTest extends DivisionTestBase<DivisionSecScene> {
     void testSplitOutline() {
         newDoc("!=heading\n=child 1\n!=child");
 
-        addStyleTest("!", StyleLines.OUTLINE, StylesSpans.OPERATOR);
-        addStyleTest("=", StyleLines.OUTLINE, StylesSpans.OPERATOR);
-        addStyleTest("heading", StyleLines.OUTLINE, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.OUTLINE, StylesSpans.OPERATOR);
+        addStyleTest("!", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
+        addStyleTest("=", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
+        addStyleTest("heading", CssLineStyles.OUTLINE, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
 
-        addStyleTest("=", StyleLines.HEADING, StylesSpans.OPERATOR);
-        addStyleTest("child 1", StyleLines.HEADING, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.HEADING, StylesSpans.OPERATOR);
+        addStyleTest("=", CssLineStyles.HEADING, CssSpanStyles.OPERATOR);
+        addStyleTest("child 1", CssLineStyles.HEADING, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.HEADING, CssSpanStyles.OPERATOR);
 
-        addStyleTest("!", StyleLines.OUTLINE, StylesSpans.OPERATOR);
-        addStyleTest("=", StyleLines.OUTLINE, StylesSpans.OPERATOR);
-        addStyleTest("child", StyleLines.OUTLINE, StylesSpans.TEXT);
+        addStyleTest("!", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
+        addStyleTest("=", CssLineStyles.OUTLINE, CssSpanStyles.OPERATOR);
+        addStyleTest("child", CssLineStyles.OUTLINE, CssSpanStyles.TEXT);
         testStyles();
 
         Span head = getSpan(0);

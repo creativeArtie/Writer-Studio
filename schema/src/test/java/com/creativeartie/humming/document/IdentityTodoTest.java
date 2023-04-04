@@ -6,9 +6,9 @@ final class IdentityTodoTest extends SpanBranchTestBase<IdentityTodo> {
     @Test
     void testFull() {
         IdentityTodo span = newSpan("{!todo}");
-        addStyleTest("{!", StylesSpans.AGENDA, StylesSpans.OPERATOR);
-        addStyleTest("todo", StylesSpans.AGENDA, StylesSpans.TEXT);
-        addStyleTest("}", StylesSpans.AGENDA, StylesSpans.OPERATOR);
+        addStyleTest("{!", CssSpanStyles.AGENDA, CssSpanStyles.OPERATOR);
+        addStyleTest("todo", CssSpanStyles.AGENDA, CssSpanStyles.TEXT);
+        addStyleTest("}", CssSpanStyles.AGENDA, CssSpanStyles.OPERATOR);
         testStyles(span);
         Assertions.assertEquals("todo", span.getAgenda());
     }
@@ -16,8 +16,8 @@ final class IdentityTodoTest extends SpanBranchTestBase<IdentityTodo> {
     @Test
     void testNoEnd() {
         IdentityTodo span = newSpan("{!todo");
-        addStyleTest("{!", StylesSpans.AGENDA, StylesSpans.OPERATOR);
-        addStyleTest("todo", StylesSpans.AGENDA, StylesSpans.TEXT);
+        addStyleTest("{!", CssSpanStyles.AGENDA, CssSpanStyles.OPERATOR);
+        addStyleTest("todo", CssSpanStyles.AGENDA, CssSpanStyles.TEXT);
         testStyles(span);
         Assertions.assertEquals("todo", span.getAgenda());
     }
@@ -25,8 +25,8 @@ final class IdentityTodoTest extends SpanBranchTestBase<IdentityTodo> {
     @Test
     void testNoText() {
         IdentityTodo span = newSpan("{!}");
-        addStyleTest("{!", StylesSpans.AGENDA, StylesSpans.OPERATOR);
-        addStyleTest("}", StylesSpans.AGENDA, StylesSpans.OPERATOR);
+        addStyleTest("{!", CssSpanStyles.AGENDA, CssSpanStyles.OPERATOR);
+        addStyleTest("}", CssSpanStyles.AGENDA, CssSpanStyles.OPERATOR);
         testStyles(span);
         Assertions.assertEquals("", span.getAgenda());
     }
@@ -34,7 +34,7 @@ final class IdentityTodoTest extends SpanBranchTestBase<IdentityTodo> {
     @Test
     void testStartOnly() {
         IdentityTodo span = newSpan("{!");
-        addStyleTest("{!", StylesSpans.AGENDA, StylesSpans.OPERATOR);
+        addStyleTest("{!", CssSpanStyles.AGENDA, CssSpanStyles.OPERATOR);
         testStyles(span);
         Assertions.assertEquals("", span.getAgenda());
     }

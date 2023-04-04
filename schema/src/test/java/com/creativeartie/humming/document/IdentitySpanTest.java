@@ -42,7 +42,7 @@ final class IdentitySpanTest extends SpanBranchTestBase<IdentitySpan> {
     @Test
     void testNoCat() {
         IdentitySpan id = createIdPointer("no cat");
-        addStyleTest("no cat", StylesSpans.ID, StylesSpans.TEXT);
+        addStyleTest("no cat", CssSpanStyles.ID, CssSpanStyles.TEXT);
         testStyles(id);
         testId("no cat", id);
     }
@@ -50,7 +50,7 @@ final class IdentitySpanTest extends SpanBranchTestBase<IdentitySpan> {
     @Test
     void testSpaces() {
         IdentitySpan id = createIdPointer("   no    cat   ");
-        addStyleTest("   no    cat   ", StylesSpans.ID, StylesSpans.TEXT);
+        addStyleTest("   no    cat   ", CssSpanStyles.ID, CssSpanStyles.TEXT);
         testStyles(id);
         testId("no cat", id);
     }
@@ -58,11 +58,11 @@ final class IdentitySpanTest extends SpanBranchTestBase<IdentitySpan> {
     @Test
     void testWithEscape() {
         IdentitySpan id = createIdPointer("cat\\:egory:id");
-        addStyleTest("cat", StylesSpans.ID, StylesSpans.TEXT);
-        addStyleTest("\\:", StylesSpans.ID, StylesSpans.ESCAPE);
-        addStyleTest("egory", StylesSpans.ID, StylesSpans.TEXT);
-        addStyleTest(":", StylesSpans.ID, StylesSpans.OPERATOR);
-        addStyleTest("id", StylesSpans.ID, StylesSpans.TEXT);
+        addStyleTest("cat", CssSpanStyles.ID, CssSpanStyles.TEXT);
+        addStyleTest("\\:", CssSpanStyles.ID, CssSpanStyles.ESCAPE);
+        addStyleTest("egory", CssSpanStyles.ID, CssSpanStyles.TEXT);
+        addStyleTest(":", CssSpanStyles.ID, CssSpanStyles.OPERATOR);
+        addStyleTest("id", CssSpanStyles.ID, CssSpanStyles.TEXT);
         testStyles(id);
         testId("id", id, "cat:egory");
     }
@@ -70,13 +70,13 @@ final class IdentitySpanTest extends SpanBranchTestBase<IdentitySpan> {
     @Test
     void testMultiCat() {
         IdentitySpan id = createIdPointer("cat1:cat2:cat3:id");
-        addStyleTest("cat1", StylesSpans.ID, StylesSpans.TEXT);
-        addStyleTest(":", StylesSpans.ID, StylesSpans.OPERATOR);
-        addStyleTest("cat2", StylesSpans.ID, StylesSpans.TEXT);
-        addStyleTest(":", StylesSpans.ID, StylesSpans.OPERATOR);
-        addStyleTest("cat3", StylesSpans.ID, StylesSpans.TEXT);
-        addStyleTest(":", StylesSpans.ID, StylesSpans.OPERATOR);
-        addStyleTest("id", StylesSpans.ID, StylesSpans.TEXT);
+        addStyleTest("cat1", CssSpanStyles.ID, CssSpanStyles.TEXT);
+        addStyleTest(":", CssSpanStyles.ID, CssSpanStyles.OPERATOR);
+        addStyleTest("cat2", CssSpanStyles.ID, CssSpanStyles.TEXT);
+        addStyleTest(":", CssSpanStyles.ID, CssSpanStyles.OPERATOR);
+        addStyleTest("cat3", CssSpanStyles.ID, CssSpanStyles.TEXT);
+        addStyleTest(":", CssSpanStyles.ID, CssSpanStyles.OPERATOR);
+        addStyleTest("id", CssSpanStyles.ID, CssSpanStyles.TEXT);
         testStyles(id);
         testId("id", id, "cat1", "cat2", "cat3");
     }
@@ -85,7 +85,7 @@ final class IdentitySpanTest extends SpanBranchTestBase<IdentitySpan> {
     void testOnlyPointer() {
         getDocument().updateText("{^error}");
         addStyleTest(
-                "error", StyleLines.NORMAL, StylesSpans.FOOTNOTE, StylesSpans.ID, StylesSpans.ERROR, StylesSpans.TEXT
+                "error", CssLineStyles.NORMAL, CssSpanStyles.FOOTNOTE, CssSpanStyles.ID, CssSpanStyles.ERROR, CssSpanStyles.TEXT
         );
         SpanBranch division = getDocument().get(0);
         SpanBranch normal = (SpanBranch) division.get(0);
@@ -105,11 +105,11 @@ final class IdentitySpanTest extends SpanBranchTestBase<IdentitySpan> {
 
         ParaReference footnote = (ParaReference) division.get(1);
 
-        addStyleTest("ptrid", StyleLines.NORMAL, StylesSpans.FOOTNOTE, StylesSpans.ID, StylesSpans.TEXT);
+        addStyleTest("ptrid", CssLineStyles.NORMAL, CssSpanStyles.FOOTNOTE, CssSpanStyles.ID, CssSpanStyles.TEXT);
         testStyles(ref.getPointer().get());
 
         refreshLists();
-        addStyleTest("refid", StyleLines.FOOTNOTE, StylesSpans.ID, StylesSpans.TEXT);
+        addStyleTest("refid", CssLineStyles.FOOTNOTE, CssSpanStyles.ID, CssSpanStyles.TEXT);
         testStyles(footnote.getPointer().get());
     }
 }

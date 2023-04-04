@@ -3,15 +3,17 @@ package com.creativeartie.humming.document;
 import java.util.Optional;
 import java.util.regex.*;
 
-import com.creativeartie.humming.document.IdentitySpan.*;
 import com.creativeartie.humming.schema.*;
 import com.google.common.base.*;
 
-public class ParaAgenda extends Para implements IdentityParent {
+/**
+ * An agenda Paragraph
+ */
+public final class ParaAgenda extends Para implements IdentityParent {
     private String todoText;
 
-    protected ParaAgenda(SpanBranch parent) {
-        super(parent, StyleLines.AGENDA);
+    ParaAgenda(SpanBranch parent) {
+        super(parent, CssLineStyles.AGENDA);
         todoText = "";
     }
 
@@ -32,13 +34,18 @@ public class ParaAgenda extends Para implements IdentityParent {
         addLineEnd(match, ParaBasicPatterns.LineSpanParts.ENDER);
     }
 
+    /**
+     * Gets the agenda text.
+     *
+     * @return the agenda text
+     */
     public String getAgenda() {
         return CharMatcher.whitespace().trimAndCollapseFrom(todoText, ' ');
     }
 
     @Override
     public Optional<IdentitySpan> getPointer() {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO Set a identity address here
+        return Optional.empty();
     }
 }

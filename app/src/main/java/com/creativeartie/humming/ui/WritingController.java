@@ -31,7 +31,7 @@ public class WritingController {
             );
             writingText.setStyleSpans(0, styleSpans.create());
             int line = 0;
-            for (StyleLines style : rootDoc.get().convertLines((para) -> para.getLineStyle())) {
+            for (CssLineStyles style : rootDoc.get().convertLines((para) -> para.getLineStyle())) {
                 writingText.setParagraphStyle(line, List.of(style.getCssName()));
                 line++;
             }

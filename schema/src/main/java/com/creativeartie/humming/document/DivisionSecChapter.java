@@ -1,9 +1,11 @@
 package com.creativeartie.humming.document;
 
-public class DivisionSecChapter extends DivisionSec {
+/**
+ * A Division of a Chapter
+ */
+public final class DivisionSecChapter extends DivisionSec {
     DivisionSecChapter(Manuscript root) {
         super(root);
-        sectionLevel = 1;
     }
 
     @Override
@@ -18,7 +20,6 @@ public class DivisionSecChapter extends DivisionSec {
 
     private DivisionSecChapter(SpanBranch parent, int level) {
         super(parent, level);
-        sectionLevel = level;
     }
 
     @Override

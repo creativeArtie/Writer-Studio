@@ -15,8 +15,8 @@ final class TextSpanTest extends SpanBranchTestBase<TextSpan> {
     void testTextEsape() {
         subTest = SubTests.ID;
         TextSpan text = newSpan("abc\\:");
-        addStyleTest("abc", StylesSpans.TEXT);
-        addStyleTest("\\:", StylesSpans.ESCAPE);
+        addStyleTest("abc", CssSpanStyles.TEXT);
+        addStyleTest("\\:", CssSpanStyles.ESCAPE);
         testStyles(text);
         assertEquals("abc:", text.getText());
     }
@@ -25,8 +25,8 @@ final class TextSpanTest extends SpanBranchTestBase<TextSpan> {
     void testEsapeText() {
         subTest = SubTests.ID;
         TextSpan text = newSpan("\\:abc");
-        addStyleTest("\\:", StylesSpans.ESCAPE);
-        addStyleTest("abc", StylesSpans.TEXT);
+        addStyleTest("\\:", CssSpanStyles.ESCAPE);
+        addStyleTest("abc", CssSpanStyles.TEXT);
         testStyles(text);
         assertEquals(":abc", text.getText());
     }
@@ -35,11 +35,11 @@ final class TextSpanTest extends SpanBranchTestBase<TextSpan> {
     void testLong() {
         subTest = SubTests.ID;
         TextSpan text = newSpan("abc\\:efg\\topq");
-        addStyleTest("abc", StylesSpans.TEXT);
-        addStyleTest("\\:", StylesSpans.ESCAPE);
-        addStyleTest("efg", StylesSpans.TEXT);
-        addStyleTest("\\t", StylesSpans.ESCAPE);
-        addStyleTest("opq", StylesSpans.TEXT);
+        addStyleTest("abc", CssSpanStyles.TEXT);
+        addStyleTest("\\:", CssSpanStyles.ESCAPE);
+        addStyleTest("efg", CssSpanStyles.TEXT);
+        addStyleTest("\\t", CssSpanStyles.ESCAPE);
+        addStyleTest("opq", CssSpanStyles.TEXT);
         testStyles(text);
         assertEquals("abc:efgtopq", text.getText());
     }
@@ -48,7 +48,7 @@ final class TextSpanTest extends SpanBranchTestBase<TextSpan> {
     void testEscapeEnd() {
         subTest = SubTests.SIMPLE;
         TextSpan text = newSpan("\\");
-        addStyleTest("\\", StylesSpans.ESCAPE);
+        addStyleTest("\\", CssSpanStyles.ESCAPE);
         testStyles(text);
         assertEquals("", text.getText());
     }

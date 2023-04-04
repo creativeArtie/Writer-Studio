@@ -12,21 +12,21 @@ final class DivisionSecChapterTest extends DivisionTestBase<DivisionSecChapter> 
     void testNoHeading() {
         newDoc("No Heading {!help} #STUB\n>Some content: *\\*Hello World*\\*.");
 
-        addStyleTest("No Heading ", StyleLines.NORMAL, StylesSpans.TEXT);
-        addStyleTest("{!", StyleLines.NORMAL, StylesSpans.AGENDA, StylesSpans.OPERATOR);
-        addStyleTest("help", StyleLines.NORMAL, StylesSpans.AGENDA, StylesSpans.TEXT);
-        addStyleTest("}", StyleLines.NORMAL, StylesSpans.AGENDA, StylesSpans.OPERATOR);
-        addStyleTest(" #STUB", StyleLines.NORMAL, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.NORMAL, StylesSpans.OPERATOR);
+        addStyleTest("No Heading ", CssLineStyles.NORMAL, CssSpanStyles.TEXT);
+        addStyleTest("{!", CssLineStyles.NORMAL, CssSpanStyles.AGENDA, CssSpanStyles.OPERATOR);
+        addStyleTest("help", CssLineStyles.NORMAL, CssSpanStyles.AGENDA, CssSpanStyles.TEXT);
+        addStyleTest("}", CssLineStyles.NORMAL, CssSpanStyles.AGENDA, CssSpanStyles.OPERATOR);
+        addStyleTest(" #STUB", CssLineStyles.NORMAL, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.NORMAL, CssSpanStyles.OPERATOR);
 
-        addStyleTest(">", StyleLines.QUOTE, StylesSpans.OPERATOR);
-        addStyleTest("Some content: ", StyleLines.QUOTE, StylesSpans.TEXT);
-        addStyleTest("*", StyleLines.QUOTE, StylesSpans.OPERATOR);
-        addStyleTest("\\*", StyleLines.QUOTE, StylesSpans.BOLD, StylesSpans.ESCAPE);
-        addStyleTest("Hello World", StyleLines.QUOTE, StylesSpans.BOLD, StylesSpans.TEXT);
-        addStyleTest("*", StyleLines.QUOTE, StylesSpans.OPERATOR);
-        addStyleTest("\\*", StyleLines.QUOTE, StylesSpans.ESCAPE);
-        addStyleTest(".", StyleLines.QUOTE, StylesSpans.TEXT);
+        addStyleTest(">", CssLineStyles.QUOTE, CssSpanStyles.OPERATOR);
+        addStyleTest("Some content: ", CssLineStyles.QUOTE, CssSpanStyles.TEXT);
+        addStyleTest("*", CssLineStyles.QUOTE, CssSpanStyles.OPERATOR);
+        addStyleTest("\\*", CssLineStyles.QUOTE, CssSpanStyles.BOLD, CssSpanStyles.ESCAPE);
+        addStyleTest("Hello World", CssLineStyles.QUOTE, CssSpanStyles.BOLD, CssSpanStyles.TEXT);
+        addStyleTest("*", CssLineStyles.QUOTE, CssSpanStyles.OPERATOR);
+        addStyleTest("\\*", CssLineStyles.QUOTE, CssSpanStyles.ESCAPE);
+        addStyleTest(".", CssLineStyles.QUOTE, CssSpanStyles.TEXT);
         testStyles();
 
         newChildAtIndex("No heading", 0).setSize(2).setClass(DivisionSecChapter.class).setData(1, "1");
@@ -37,11 +37,11 @@ final class DivisionSecChapterTest extends DivisionTestBase<DivisionSecChapter> 
     void testWithHeading() {
         newDoc("=heading\nSome content.");
 
-        addStyleTest("=", StyleLines.HEADING, StylesSpans.OPERATOR);
-        addStyleTest("heading", StyleLines.HEADING, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.HEADING, StylesSpans.OPERATOR);
+        addStyleTest("=", CssLineStyles.HEADING, CssSpanStyles.OPERATOR);
+        addStyleTest("heading", CssLineStyles.HEADING, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.HEADING, CssSpanStyles.OPERATOR);
 
-        addStyleTest("Some content.", StyleLines.NORMAL, StylesSpans.TEXT);
+        addStyleTest("Some content.", CssLineStyles.NORMAL, CssSpanStyles.TEXT);
         testStyles();
 
         newChildAtIndex("With Heading", 0).setSize(2).setClass(DivisionSecChapter.class).setData(1, "1");
@@ -52,11 +52,11 @@ final class DivisionSecChapterTest extends DivisionTestBase<DivisionSecChapter> 
     void testStraightToSub() {
         newDoc("==heading\nSome content.");
         Assertions.assertEquals(1, getDocument().size(), "Doc size");
-        addStyleTest("==", StyleLines.HEADING, StylesSpans.OPERATOR);
-        addStyleTest("heading", StyleLines.HEADING, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.HEADING, StylesSpans.OPERATOR);
+        addStyleTest("==", CssLineStyles.HEADING, CssSpanStyles.OPERATOR);
+        addStyleTest("heading", CssLineStyles.HEADING, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.HEADING, CssSpanStyles.OPERATOR);
 
-        addStyleTest("Some content.", StyleLines.NORMAL, StylesSpans.TEXT);
+        addStyleTest("Some content.", CssLineStyles.NORMAL, CssSpanStyles.TEXT);
         testStyles();
 
         newChildAtIndex("No Heading", 0).setSize(1).setClass(DivisionSecChapter.class).setData(1, "1")
@@ -67,16 +67,16 @@ final class DivisionSecChapterTest extends DivisionTestBase<DivisionSecChapter> 
     @Test
     void testWithSub() {
         newDoc("=heading\n===heading 3\n==heading");
-        addStyleTest("=", StyleLines.HEADING, StylesSpans.OPERATOR); // 1
-        addStyleTest("heading", StyleLines.HEADING, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.HEADING, StylesSpans.OPERATOR);
+        addStyleTest("=", CssLineStyles.HEADING, CssSpanStyles.OPERATOR); // 1
+        addStyleTest("heading", CssLineStyles.HEADING, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.HEADING, CssSpanStyles.OPERATOR);
 
-        addStyleTest("===", StyleLines.HEADING, StylesSpans.OPERATOR); // 1.1.1
-        addStyleTest("heading 3", StyleLines.HEADING, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.HEADING, StylesSpans.OPERATOR);
+        addStyleTest("===", CssLineStyles.HEADING, CssSpanStyles.OPERATOR); // 1.1.1
+        addStyleTest("heading 3", CssLineStyles.HEADING, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.HEADING, CssSpanStyles.OPERATOR);
 
-        addStyleTest("==", StyleLines.HEADING, StylesSpans.OPERATOR); // 1.2
-        addStyleTest("heading", StyleLines.HEADING, StylesSpans.TEXT);
+        addStyleTest("==", CssLineStyles.HEADING, CssSpanStyles.OPERATOR); // 1.2
+        addStyleTest("heading", CssLineStyles.HEADING, CssSpanStyles.TEXT);
         testStyles();
 
         TestChild h1 = newChildAtIndex("Parent", 0).setClass(DivisionSecChapter.class).setSize(3).setData(1, "1");
@@ -90,12 +90,12 @@ final class DivisionSecChapterTest extends DivisionTestBase<DivisionSecChapter> 
     @Test
     void testDouble() {
         newDoc("=heading\n=heading");
-        addStyleTest("=", StyleLines.HEADING, StylesSpans.OPERATOR); // 1
-        addStyleTest("heading", StyleLines.HEADING, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.HEADING, StylesSpans.OPERATOR);
+        addStyleTest("=", CssLineStyles.HEADING, CssSpanStyles.OPERATOR); // 1
+        addStyleTest("heading", CssLineStyles.HEADING, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.HEADING, CssSpanStyles.OPERATOR);
 
-        addStyleTest("=", StyleLines.HEADING, StylesSpans.OPERATOR); // 2
-        addStyleTest("heading", StyleLines.HEADING, StylesSpans.TEXT);
+        addStyleTest("=", CssLineStyles.HEADING, CssSpanStyles.OPERATOR); // 2
+        addStyleTest("heading", CssLineStyles.HEADING, CssSpanStyles.TEXT);
         testStyles();
 
         newChildAtIndex("First Child", 0).setClass(DivisionSecChapter.class).setSize(1).setData(1, "1");

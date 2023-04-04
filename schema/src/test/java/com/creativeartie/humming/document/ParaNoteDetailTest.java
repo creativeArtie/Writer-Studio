@@ -6,32 +6,32 @@ final class ParaNoteDetailTest extends SpanBranchTestBase<ParaNoteDetail> {
     @Test
     void testFull() {
         ParaNoteDetail span = newSpan("%abc\n");
-        addStyleTest("%", StyleLines.NOTE, StylesSpans.OPERATOR);
-        addStyleTest("abc", StyleLines.NOTE, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.NOTE, StylesSpans.OPERATOR);
+        addStyleTest("%", CssLineStyles.NOTE, CssSpanStyles.OPERATOR);
+        addStyleTest("abc", CssLineStyles.NOTE, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.NOTE, CssSpanStyles.OPERATOR);
         testStyles(span);
     }
 
     @Test
     void testNoEnd() {
         ParaNoteDetail span = newSpan("%abc");
-        addStyleTest("%", StyleLines.NOTE, StylesSpans.OPERATOR);
-        addStyleTest("abc", StyleLines.NOTE, StylesSpans.TEXT);
+        addStyleTest("%", CssLineStyles.NOTE, CssSpanStyles.OPERATOR);
+        addStyleTest("abc", CssLineStyles.NOTE, CssSpanStyles.TEXT);
         testStyles(span);
     }
 
     @Test
     void testNoText() {
         ParaNoteDetail span = newSpan("%\n");
-        addStyleTest("%", StyleLines.NOTE, StylesSpans.OPERATOR);
-        addStyleTest("\n", StyleLines.NOTE, StylesSpans.OPERATOR);
+        addStyleTest("%", CssLineStyles.NOTE, CssSpanStyles.OPERATOR);
+        addStyleTest("\n", CssLineStyles.NOTE, CssSpanStyles.OPERATOR);
         testStyles(span);
     }
 
     @Test
     void testStartOnly() {
         ParaNoteDetail span = newSpan("%");
-        addStyleTest("%", StyleLines.NOTE, StylesSpans.OPERATOR);
+        addStyleTest("%", CssLineStyles.NOTE, CssSpanStyles.OPERATOR);
         testStyles(span);
     }
 

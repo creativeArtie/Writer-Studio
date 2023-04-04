@@ -4,12 +4,15 @@ import java.util.Optional;
 
 import com.google.common.base.*;
 
-public class DivisionSecScene extends DivisionSec {
-    public DivisionSecScene(SpanBranch parent) {
+/**
+ * A scene in a chapter.
+ */
+public final class DivisionSecScene extends DivisionSec {
+    DivisionSecScene(SpanBranch parent) {
         super(parent, 1);
     }
 
-    public DivisionSecScene(SpanBranch parent, int level) {
+    DivisionSecScene(SpanBranch parent, int level) {
         super(parent, level);
     }
 
@@ -54,6 +57,11 @@ public class DivisionSecScene extends DivisionSec {
         throw new IllegalStateException("Division not found.");
     }
 
+    /**
+     * Get the chapter of this scene
+     *
+     * @return the chapter
+     */
     public DivisionSecChapter getChapter() {
         return findParent(DivisionSecChapter.class).get();
     }

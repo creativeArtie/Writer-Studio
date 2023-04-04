@@ -5,24 +5,37 @@ import java.util.regex.*;
 
 import com.creativeartie.humming.schema.ParaReferencePatterns.*;
 
-public class ParaReference extends Para implements IdentitySpan.IdentityParent {
-    public static ParaReference newFootnote(SpanBranch parent) {
-        return new ParaReference(parent, StyleLines.FOOTNOTE);
+/**
+ * Footnote/endnote/image reference line.
+ */
+public final class ParaReference extends Para implements IdentityParent {
+    static ParaReference newEndnote(SpanBranch parent) {
+        return new ParaReference(parent, CssLineStyles.ENDNOTE);
     }
 
-    public static ParaReference newEndnote(SpanBranch parent) {
-        return new ParaReference(parent, StyleLines.ENDNOTE);
+    static ParaReference newFootnote(SpanBranch parent) {
+        return new ParaReference(parent, CssLineStyles.FOOTNOTE);
     }
 
-    public static ParaReference newImage(SpanBranch parent) {
-        return new ParaReference(parent, StyleLines.IMAGE);
+    static ParaReference newImage(SpanBranch parent) {
+        return new ParaReference(parent, CssLineStyles.IMAGE);
     }
 
     private Optional<IdentitySpan> idAddress;
 
-    private ParaReference(SpanBranch parent, StyleLines style) {
+    private ParaReference(SpanBranch parent, CssLineStyles style) {
         super(parent, style);
         idAddress = Optional.empty();
+    }
+
+    @Override
+    public int getIdPosition() {
+        return getStartIndex();
+    }
+
+    @Override
+    public Optional<IdentitySpan> getPointer() {
+        return idAddress;
     }
 
     @Override
@@ -30,10 +43,10 @@ public class ParaReference extends Para implements IdentitySpan.IdentityParent {
         RefLineParts pattern;
         IdentityGroup group;
         boolean isAddress = true;
-        if (getLineStyle() == StyleLines.FOOTNOTE) {
+        if (getLineStyle() == CssLineStyles.FOOTNOTE) {
             pattern = RefLineParts.FOOTNOTE;
             group = IdentityGroup.FOOTNOTE;
-        } else if (getLineStyle() == StyleLines.ENDNOTE) {
+        } else if (getLineStyle() == CssLineStyles.ENDNOTE) {
             pattern = RefLineParts.ENDNOTE;
             group = IdentityGroup.ENDNOTE;
         } else {
@@ -58,20 +71,10 @@ public class ParaReference extends Para implements IdentitySpan.IdentityParent {
                 add(TextFormatted.newNoteText(this, RefLineParts.TEXT.group(match)));
             }
         } else {
-            addStyle(StylesSpans.ERROR);
+            addStyle(CssSpanStyles.ERROR);
             add(TextFormatted.newBasicText(this, RefLineParts.ERROR.group(match)));
         }
 
         addLineEnd(match, RefLineParts.ENDER);
-    }
-
-    @Override
-    public int getIdPosition() {
-        return getStartIndex();
-    }
-
-    @Override
-    public Optional<IdentitySpan> getPointer() {
-        return idAddress;
     }
 }

@@ -10,20 +10,20 @@ import org.junit.jupiter.params.provider.*;
 final class IdentityReferenceTest extends SpanBranchTestBase<IdentityReference> {
     private static Stream<Arguments> provideParameters() {
         return Stream.of(
-                Arguments.of("*", StylesSpans.ENDNOTE), Arguments.of("^", StylesSpans.FOOTNOTE),
-                Arguments.of("%", StylesSpans.METADATA), Arguments.of(">", StylesSpans.NOTE)
+                Arguments.of("*", CssSpanStyles.ENDNOTE), Arguments.of("^", CssSpanStyles.FOOTNOTE),
+                Arguments.of("%", CssSpanStyles.METADATA), Arguments.of(">", CssSpanStyles.NOTE)
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideParameters")
-    void testFull(String type, StylesSpans style) {
+    void testFull(String type, CssSpanStyles style) {
         IdentityReference test = newSpan("{" + type + "id}");
 
-        addStyleTest("{", style, StylesSpans.OPERATOR);
-        addStyleTest(type, style, StylesSpans.OPERATOR);
-        addStyleTest("id", style, StylesSpans.ID, StylesSpans.TEXT);
-        addStyleTest("}", style, StylesSpans.OPERATOR);
+        addStyleTest("{", style, CssSpanStyles.OPERATOR);
+        addStyleTest(type, style, CssSpanStyles.OPERATOR);
+        addStyleTest("id", style, CssSpanStyles.ID, CssSpanStyles.TEXT);
+        addStyleTest("}", style, CssSpanStyles.OPERATOR);
         testStyles(test);
 
         Optional<IdentitySpan> id = test.getPointer();
@@ -34,9 +34,9 @@ final class IdentityReferenceTest extends SpanBranchTestBase<IdentityReference> 
     void testNoEnd() {
         IdentityReference test = newSpan("{*id");
 
-        addStyleTest("{", StylesSpans.ENDNOTE, StylesSpans.OPERATOR);
-        addStyleTest("*", StylesSpans.ENDNOTE, StylesSpans.OPERATOR);
-        addStyleTest("id", StylesSpans.ENDNOTE, StylesSpans.ID, StylesSpans.TEXT);
+        addStyleTest("{", CssSpanStyles.ENDNOTE, CssSpanStyles.OPERATOR);
+        addStyleTest("*", CssSpanStyles.ENDNOTE, CssSpanStyles.OPERATOR);
+        addStyleTest("id", CssSpanStyles.ENDNOTE, CssSpanStyles.ID, CssSpanStyles.TEXT);
         testStyles(test);
 
         Optional<IdentitySpan> id = test.getPointer();
@@ -47,9 +47,9 @@ final class IdentityReferenceTest extends SpanBranchTestBase<IdentityReference> 
     void testNoRef() {
         IdentityReference test = newSpan("{id}");
 
-        addStyleTest("{", StylesSpans.ERROR, StylesSpans.OPERATOR);
-        addStyleTest("id", StylesSpans.ERROR, StylesSpans.TEXT);
-        addStyleTest("}", StylesSpans.ERROR, StylesSpans.OPERATOR);
+        addStyleTest("{", CssSpanStyles.ERROR, CssSpanStyles.OPERATOR);
+        addStyleTest("id", CssSpanStyles.ERROR, CssSpanStyles.TEXT);
+        addStyleTest("}", CssSpanStyles.ERROR, CssSpanStyles.OPERATOR);
         testStyles(test);
 
         Optional<IdentitySpan> id = test.getPointer();

@@ -5,15 +5,18 @@ import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 
-public class ParaHeading extends Para implements IdentitySpan.IdentityParent {
+/**
+ * A heading paragraph with id
+ */
+public final class ParaHeading extends Para implements IdentityParent {
     static ParaHeading newLine(SpanBranch parent, Matcher match) {
         if (ParaHeadingPattern.OUTLINE.group(match) == null) {
-            return new ParaHeading(parent, StyleLines.HEADING);
+            return new ParaHeading(parent, CssLineStyles.HEADING);
         }
-        return new ParaHeading(parent, StyleLines.OUTLINE);
+        return new ParaHeading(parent, CssLineStyles.OUTLINE);
     }
 
-    private ParaHeading(SpanBranch parent, StyleLines style) {
+    private ParaHeading(SpanBranch parent, CssLineStyles style) {
         super(parent, style);
     }
 
@@ -40,12 +43,17 @@ public class ParaHeading extends Para implements IdentitySpan.IdentityParent {
                 headingId = Optional.of(IdentitySpan.newAddressId(this, raw, IdentityGroup.HEADING));
                 add(headingId.get());
             } else if ((raw = ParaHeadingPattern.ERROR.group(match)) != null) {
-                add(TextSpan.newSimple(this, raw, StylesSpans.ERROR));
+                add(TextSpan.newSimple(this, raw, CssSpanStyles.ERROR));
             }
         }
         addLineEnd(match, ParaHeadingPattern.ENDER);
     }
 
+    /**
+     * Get heading level
+     *
+     * @return heading level
+     */
     public int getLevel() {
         return headingLevel;
     }

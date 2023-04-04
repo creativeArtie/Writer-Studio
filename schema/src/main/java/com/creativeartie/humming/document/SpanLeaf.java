@@ -4,18 +4,21 @@ import java.util.*;
 
 import com.google.common.collect.*;
 
+/**
+ * The basic span
+ */
 public final class SpanLeaf implements Span {
     private final Manuscript spanRoot;
     private final SpanParent parentSpan;
-    private final StylesSpans styleClass;
+    private final CssSpanStyles styleClass;
     private final int styleLength;
     private final String referText;
 
-    protected SpanLeaf(SpanParent parent, String text) {
-        this(parent, text, StylesSpans.OPERATOR);
+    SpanLeaf(SpanParent parent, String text) {
+        this(parent, text, CssSpanStyles.OPERATOR);
     }
 
-    protected SpanLeaf(SpanParent parent, String text, StylesSpans style) {
+    SpanLeaf(SpanParent parent, String text, CssSpanStyles style) {
         spanRoot = parent.getRoot();
         parentSpan = parent;
         referText = text;
@@ -28,13 +31,27 @@ public final class SpanLeaf implements Span {
         return spanRoot;
     }
 
-    public List<SpanStyle> getClassStyles() {
-        return ImmutableList.<SpanStyle>builder().addAll(parentSpan.getInheritedStyles()).add(styleClass).build();
+    /**
+     * Get the style as {@link CssStyle}
+     *
+     * @return the list of styles
+     *
+     * @see #getCssStyles()
+     */
+    public List<CssStyle> getClassStyles() {
+        return ImmutableList.<CssStyle>builder().addAll(parentSpan.getInheritedStyles()).add(styleClass).build();
     }
 
+    /**
+     * Get the style as {@linkplain String}
+     *
+     * @return the list of styles
+     *
+     * @see #getClassStyles()
+     */
     public List<String> getCssStyles() {
         ImmutableList.Builder<String> styles = ImmutableList.builder();
-        for (SpanStyle style : getClassStyles()) {
+        for (CssStyle style : getClassStyles()) {
             styles.add(style.getCssName());
         }
         return styles.build();
@@ -60,11 +77,21 @@ public final class SpanLeaf implements Span {
         return referText;
     }
 
+    /**
+     * Gets the text it represent
+     *
+     * @return the text
+     */
     public String getRefText() {
         return referText;
     }
 
-    public StylesSpans getStyle() {
+    /**
+     * Get the span style
+     *
+     * @return the span style
+     */
+    public CssSpanStyles getStyle() {
         return styleClass;
     }
 }

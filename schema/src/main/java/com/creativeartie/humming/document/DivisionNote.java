@@ -4,18 +4,40 @@ import java.util.*;
 
 import com.google.common.collect.*;
 
-public class DivisionNote extends Division implements IdentitySpan.IdentityParent {
+/**
+ * Division for a note.
+ */
+public final class DivisionNote extends Division implements IdentityParent {
     Optional<IdentitySpan> noteId;
     Map<String, String> fields;
 
-    protected DivisionNote(SpanBranch parent) {
+    DivisionNote(SpanBranch parent) {
         super(parent);
         noteId = Optional.empty();
         fields = new TreeMap<>();
     }
 
+    /**
+     * gets the list of fields
+     *
+     * @return an {@linkplain ImmutableMap} of fields.
+     */
+    public Map<String, String> getFields() {
+        return ImmutableMap.copyOf(fields);
+    }
+
     @Override
-    protected Division addLine(Para line, StyleLines style) {
+    public int getIdPosition() {
+        return getStartIndex();
+    }
+
+    @Override
+    public Optional<IdentitySpan> getPointer() {
+        return noteId;
+    }
+
+    @Override
+    protected Division addLine(Para line, CssLineStyles style) {
         switch (style) {
             case FIELD:
                 ParaNoteField field = (ParaNoteField) line;
@@ -29,26 +51,12 @@ public class DivisionNote extends Division implements IdentitySpan.IdentityParen
                     add(head);
                     return this;
                 }
-                return useParent(Division.class).addLine(line, style);
+                return findParent(Division.class).get().addLine(line, style);
             case NOTE:
                 add(line);
                 return this;
             default:
-                return useParent(Division.class).addLine(line, style);
+                return findParent(Division.class).get().addLine(line, style);
         }
-    }
-
-    @Override
-    public int getIdPosition() {
-        return getStartIndex();
-    }
-
-    @Override
-    public Optional<IdentitySpan> getPointer() {
-        return noteId;
-    }
-
-    public Map<String, String> getFields() {
-        return ImmutableMap.copyOf(fields);
     }
 }

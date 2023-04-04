@@ -4,19 +4,18 @@ import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 
-public class ParaNoteDetail extends Para {
-    protected ParaNoteDetail(SpanBranch parent) {
-        super(parent, StyleLines.NOTE);
+/**
+ * Main note text paragraph.
+ */
+public final class ParaNoteDetail extends Para {
+    ParaNoteDetail(SpanBranch parent) {
+        super(parent, CssLineStyles.NOTE);
     }
 
     @Override
     protected void buildSpan(Matcher match) {
-        String raw;
-
         add(new SpanLeaf(this, ParaNotePatterns.NoteLineParts.NOTE.group(match)));
-        if ((raw = ParaNotePatterns.NoteLineParts.TEXT.group(match)) != null) {
-            add(TextFormatted.newBasicText(this, raw));
-        }
+        addText(match, ParaNotePatterns.NoteLineParts.TEXT);
         addLineEnd(match, ParaNotePatterns.NoteLineParts.ENDER);
     }
 }

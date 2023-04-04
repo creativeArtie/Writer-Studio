@@ -1,25 +1,23 @@
 package com.creativeartie.humming.document;
 
 import java.util.*;
-import java.util.Optional;
 import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 import com.google.common.base.*;
 import com.google.common.collect.*;
 
-public class IdentitySpan extends SpanBranch implements IdentityStorage.Identity {
+/**
+ * An identity.
+ *
+ * @see IdentityPattern Pattern version
+ */
+public final class IdentitySpan extends SpanBranch implements IdentityStorage.Identity {
     private List<String> idCategories;
     private String idName;
     private boolean isPointer;
     private IdentityGroup idGroup;
     private IdentityParent parentSpan;
-
-    public interface IdentityParent {
-        public int getIdPosition();
-
-        Optional<IdentitySpan> getPointer();
-    }
 
     static IdentitySpan newPointerId(SpanBranch parent, String text, IdentityGroup group) {
         IdentitySpan span = new IdentitySpan(parent, text, group, true);
@@ -53,7 +51,7 @@ public class IdentitySpan extends SpanBranch implements IdentityStorage.Identity
     }
 
     private IdentitySpan(SpanBranch parent, String text, IdentityGroup group, boolean isPtr) {
-        super(parent, StylesSpans.ID);
+        super(parent, CssSpanStyles.ID);
         Preconditions.checkArgument(parent instanceof IdentityParent);
         isPointer = isPtr;
         idGroup = group;
@@ -77,7 +75,7 @@ public class IdentitySpan extends SpanBranch implements IdentityStorage.Identity
 
     @Override
     public boolean cleanUpSelf() {
-        return getRoot().isIdUnique(this) ? removeStyle(StylesSpans.ERROR) : addStyle(StylesSpans.ERROR);
+        return getRoot().isIdUnique(this) ? removeStyle(CssSpanStyles.ERROR) : addStyle(CssSpanStyles.ERROR);
     }
 
     @Override

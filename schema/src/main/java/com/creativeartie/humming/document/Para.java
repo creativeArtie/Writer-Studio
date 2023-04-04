@@ -5,6 +5,9 @@ import java.util.regex.*;
 import com.creativeartie.humming.schema.*;
 import com.creativeartie.humming.schema.ParaBasicPatterns.*;
 
+/**
+ * A single paragraph ending with {@code \n}.
+ */
 public abstract class Para extends SpanBranch {
     static Para newLine(SpanBranch parent, String text) {
         Para returns = null;
@@ -27,7 +30,7 @@ public abstract class Para extends SpanBranch {
 
         else if ((match = ParaTableRowPattern.matcher(text)) != null) returns = ParaTableRow.newLine(parent);
 
-        else if ((match = ParaBasicPatterns.QUOTE.matcher(text)) != null) returns = new Para(parent, StyleLines.QUOTE) {
+        else if ((match = ParaBasicPatterns.QUOTE.matcher(text)) != null) returns = new Para(parent, CssLineStyles.QUOTE) {
             @Override
             protected void buildSpan(Matcher match) {
                 add(new SpanLeaf(this, LineSpanParts.QUOTER.group(match)));
@@ -36,14 +39,14 @@ public abstract class Para extends SpanBranch {
             }
         };
 
-        else if ((match = ParaBasicPatterns.BREAK.matcher(text)) != null) returns = new Para(parent, StyleLines.BREAK) {
+        else if ((match = ParaBasicPatterns.BREAK.matcher(text)) != null) returns = new Para(parent, CssLineStyles.BREAK) {
             @Override
             protected void buildSpan(Matcher match) {
                 add(new SpanLeaf(this, LineSpanParts.BREAKER.group(match)));
                 addLineEnd(match, LineSpanParts.ENDER);
             }
         };
-        else if ((match = ParaBasicPatterns.TEXT.matcher(text)) != null) returns = new Para(parent, StyleLines.NORMAL) {
+        else if ((match = ParaBasicPatterns.TEXT.matcher(text)) != null) returns = new Para(parent, CssLineStyles.NORMAL) {
             @Override
             protected void buildSpan(Matcher match) {
                 addText(match, LineSpanParts.FORMATTED);
@@ -56,6 +59,14 @@ public abstract class Para extends SpanBranch {
         return returns;
     }
 
+    /**
+     * Adds a text to paragraph
+     *
+     * @param match
+     * @param textPattern
+     *
+     * @see #newLine(SpanBranch, String)
+     */
     protected void addText(Matcher match, PatternEnum textPattern) {
         String raw;
 
@@ -64,6 +75,14 @@ public abstract class Para extends SpanBranch {
         }
     }
 
+    /**
+     * Adds a line end to paragraph
+     *
+     * @param match
+     * @param textPattern
+     *
+     * @see #newLine(SpanBranch, String)
+     */
     protected void addLineEnd(Matcher match, PatternEnum endPattern) {
         String raw;
 
@@ -75,16 +94,26 @@ public abstract class Para extends SpanBranch {
         }
     }
 
-    private StyleLines lineStyle;
+    private CssLineStyles lineStyle;
 
-    protected Para(SpanBranch parent, StyleLines style) {
+    Para(SpanBranch parent, CssLineStyles style) {
         super(parent, style);
         lineStyle = style;
     }
 
+    /**
+     * Builds the paragraph
+     *
+     * @param match
+     */
     protected abstract void buildSpan(Matcher match);
 
-    public StyleLines getLineStyle() {
+    /**
+     * Get the line style
+     *
+     * @return line style.
+     */
+    public CssLineStyles getLineStyle() {
         return lineStyle;
     }
 }

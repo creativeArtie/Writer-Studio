@@ -6,29 +6,29 @@ final class ParaTableRowTest extends SpanBranchTestBase<ParaTableRow> {
     @Test
     public void testFullRow() {
         ParaTableRow test = newSpan("|Col 1|Col2|\n");
-        addStyleTest("|", StyleLines.ROW, StylesSpans.OPERATOR);
-        addStyleTest("Col 1", StyleLines.ROW, StylesSpans.TEXT);
-        addStyleTest("|", StyleLines.ROW, StylesSpans.OPERATOR);
-        addStyleTest("Col2", StyleLines.ROW, StylesSpans.TEXT);
-        addStyleTest("|\n", StyleLines.ROW, StylesSpans.OPERATOR);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.OPERATOR);
+        addStyleTest("Col 1", CssLineStyles.ROW, CssSpanStyles.TEXT);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.OPERATOR);
+        addStyleTest("Col2", CssLineStyles.ROW, CssSpanStyles.TEXT);
+        addStyleTest("|\n", CssLineStyles.ROW, CssSpanStyles.OPERATOR);
         testStyles(test);
     }
 
     @Test
     public void testEndRow() {
         ParaTableRow test = newSpan("|Col 1|Col2|");
-        addStyleTest("|", StyleLines.ROW, StylesSpans.OPERATOR);
-        addStyleTest("Col 1", StyleLines.ROW, StylesSpans.TEXT);
-        addStyleTest("|", StyleLines.ROW, StylesSpans.OPERATOR);
-        addStyleTest("Col2", StyleLines.ROW, StylesSpans.TEXT);
-        addStyleTest("|", StyleLines.ROW, StylesSpans.OPERATOR);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.OPERATOR);
+        addStyleTest("Col 1", CssLineStyles.ROW, CssSpanStyles.TEXT);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.OPERATOR);
+        addStyleTest("Col2", CssLineStyles.ROW, CssSpanStyles.TEXT);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.OPERATOR);
         testStyles(test);
     }
 
     @Test
     public void testStartOnly() {
         ParaTableRow test = newSpan("|");
-        addStyleTest("|", StyleLines.ROW, StylesSpans.OPERATOR);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.OPERATOR);
         testStyles(test);
     }
 

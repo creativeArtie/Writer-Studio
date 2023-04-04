@@ -4,12 +4,15 @@ import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 
-public class ParaNoteField extends Para {
+/**
+ * A property of note.
+ */
+public final class ParaNoteField extends Para {
     private String noteKey;
     private String noteValue;
 
-    public ParaNoteField(SpanBranch parent) {
-        super(parent, StyleLines.FIELD);
+    ParaNoteField(SpanBranch parent) {
+        super(parent, CssLineStyles.FIELD);
         noteKey = "";
         noteValue = "";
     }
@@ -30,16 +33,26 @@ public class ParaNoteField extends Para {
             add(span);
         } else {
             add(TextSpan.newSimple(this, ParaNotePatterns.NoteLineParts.ERROR.group(match)));
-            addStyle(StylesSpans.ERROR);
+            addStyle(CssSpanStyles.ERROR);
         }
 
         addLineEnd(match, ParaNotePatterns.NoteLineParts.ENDER);
     }
 
+    /**
+     * get the property key
+     *
+     * @return the key
+     */
     public String getKey() {
         return noteKey;
     }
 
+    /**
+     * Gets the property value
+     *
+     * @return property value
+     */
     public String getValue() {
         return noteValue;
     }

@@ -11,23 +11,23 @@ final class DivisionTableTest extends DivisionTestBase<DivisionTable> {
     @Test
     void testBasic() {
         newDoc("|Heading 1|Heading 2|\n|cell 1|cell 2|\n|cell 3|cell 4|");
-        addStyleTest("|", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.OPERATOR);
-        addStyleTest("Heading 1", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.TEXT);
-        addStyleTest("|", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.OPERATOR);
-        addStyleTest("Heading 2", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.TEXT);
-        addStyleTest("|\n", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.OPERATOR);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.HEADCELL, CssSpanStyles.OPERATOR);
+        addStyleTest("Heading 1", CssLineStyles.ROW, CssSpanStyles.HEADCELL, CssSpanStyles.TEXT);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.HEADCELL, CssSpanStyles.OPERATOR);
+        addStyleTest("Heading 2", CssLineStyles.ROW, CssSpanStyles.HEADCELL, CssSpanStyles.TEXT);
+        addStyleTest("|\n", CssLineStyles.ROW, CssSpanStyles.HEADCELL, CssSpanStyles.OPERATOR);
 
-        addStyleTest("|", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.OPERATOR);
-        addStyleTest("cell 1", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.TEXT);
-        addStyleTest("|", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.OPERATOR);
-        addStyleTest("cell 2", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.TEXT);
-        addStyleTest("|\n", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.OPERATOR);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.OPERATOR);
+        addStyleTest("cell 1", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.TEXT);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.OPERATOR);
+        addStyleTest("cell 2", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.TEXT);
+        addStyleTest("|\n", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.OPERATOR);
 
-        addStyleTest("|", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.OPERATOR);
-        addStyleTest("cell 3", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.TEXT);
-        addStyleTest("|", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.OPERATOR);
-        addStyleTest("cell 4", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.TEXT);
-        addStyleTest("|", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.OPERATOR);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.OPERATOR);
+        addStyleTest("cell 3", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.TEXT);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.OPERATOR);
+        addStyleTest("cell 4", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.TEXT);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.OPERATOR);
         testStyles();
 
         // @formatter:off
@@ -40,25 +40,25 @@ final class DivisionTableTest extends DivisionTestBase<DivisionTable> {
     @Test
     void testExtraColumn() {
         newDoc("|Heading 1|Heading 2|\n|cell 1|cell 2|cell 3|\n|cell 3|cell 4|");
-        addStyleTest("|", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.OPERATOR);
-        addStyleTest("Heading 1", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.TEXT);
-        addStyleTest("|", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.OPERATOR);
-        addStyleTest("Heading 2", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.TEXT);
-        addStyleTest("|\n", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.OPERATOR);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.HEADCELL, CssSpanStyles.OPERATOR);
+        addStyleTest("Heading 1", CssLineStyles.ROW, CssSpanStyles.HEADCELL, CssSpanStyles.TEXT);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.HEADCELL, CssSpanStyles.OPERATOR);
+        addStyleTest("Heading 2", CssLineStyles.ROW, CssSpanStyles.HEADCELL, CssSpanStyles.TEXT);
+        addStyleTest("|\n", CssLineStyles.ROW, CssSpanStyles.HEADCELL, CssSpanStyles.OPERATOR);
 
-        addStyleTest("|", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.OPERATOR);
-        addStyleTest("cell 1", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.TEXT);
-        addStyleTest("|", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.OPERATOR);
-        addStyleTest("cell 2", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.TEXT);
-        addStyleTest("|", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.OPERATOR);
-        addStyleTest("cell 3", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.TEXT);
-        addStyleTest("|\n", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.OPERATOR);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.OPERATOR);
+        addStyleTest("cell 1", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.TEXT);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.OPERATOR);
+        addStyleTest("cell 2", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.TEXT);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.OPERATOR);
+        addStyleTest("cell 3", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.TEXT);
+        addStyleTest("|\n", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.OPERATOR);
 
-        addStyleTest("|", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.OPERATOR);
-        addStyleTest("cell 3", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.TEXT);
-        addStyleTest("|", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.OPERATOR);
-        addStyleTest("cell 4", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.TEXT);
-        addStyleTest("|", StyleLines.ROW, StylesSpans.TEXTCELL, StylesSpans.OPERATOR);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.OPERATOR);
+        addStyleTest("cell 3", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.TEXT);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.OPERATOR);
+        addStyleTest("cell 4", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.TEXT);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.OPERATOR);
         testStyles();
 
         // @formatter:off
@@ -72,18 +72,18 @@ final class DivisionTableTest extends DivisionTestBase<DivisionTable> {
     void testMidTable() {
         newDoc("abc\n|cell 1|cell 2|cell 3|\nabc");
 
-        addStyleTest("abc", StyleLines.NORMAL, StylesSpans.TEXT);
-        addStyleTest("\n", StyleLines.NORMAL, StylesSpans.OPERATOR);
+        addStyleTest("abc", CssLineStyles.NORMAL, CssSpanStyles.TEXT);
+        addStyleTest("\n", CssLineStyles.NORMAL, CssSpanStyles.OPERATOR);
 
-        addStyleTest("|", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.OPERATOR);
-        addStyleTest("cell 1", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.TEXT);
-        addStyleTest("|", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.OPERATOR);
-        addStyleTest("cell 2", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.TEXT);
-        addStyleTest("|", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.OPERATOR);
-        addStyleTest("cell 3", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.TEXT);
-        addStyleTest("|\n", StyleLines.ROW, StylesSpans.HEADCELL, StylesSpans.OPERATOR);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.HEADCELL, CssSpanStyles.OPERATOR);
+        addStyleTest("cell 1", CssLineStyles.ROW, CssSpanStyles.HEADCELL, CssSpanStyles.TEXT);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.HEADCELL, CssSpanStyles.OPERATOR);
+        addStyleTest("cell 2", CssLineStyles.ROW, CssSpanStyles.HEADCELL, CssSpanStyles.TEXT);
+        addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.HEADCELL, CssSpanStyles.OPERATOR);
+        addStyleTest("cell 3", CssLineStyles.ROW, CssSpanStyles.HEADCELL, CssSpanStyles.TEXT);
+        addStyleTest("|\n", CssLineStyles.ROW, CssSpanStyles.HEADCELL, CssSpanStyles.OPERATOR);
 
-        addStyleTest("abc", StyleLines.NORMAL, StylesSpans.TEXT);
+        addStyleTest("abc", CssLineStyles.NORMAL, CssSpanStyles.TEXT);
         testStyles();
 
         // @formatter:off

@@ -6,8 +6,13 @@ import java.util.regex.*;
 import com.creativeartie.humming.schema.*;
 import com.google.common.base.*;
 
-public class IdentityTodo extends SpanBranch implements IdentityStorage.Identity {
-    public static IdentityTodo newSpan(SpanBranch parent, String text, StylesSpans... classes) {
+/**
+ * In line agenda span.
+ *
+ * @see IdentityTodoPattern Pattern version
+ */
+public final class IdentityTodo extends SpanBranch implements IdentityStorage.Identity {
+    static IdentityTodo newSpan(SpanBranch parent, String text, CssSpanStyles... classes) {
         IdentityTodo span = new IdentityTodo(parent, classes);
         Matcher matcher = IdentityTodoPattern.matcher(text);
 
@@ -18,23 +23,25 @@ public class IdentityTodo extends SpanBranch implements IdentityStorage.Identity
             span.add(test);
             span.todoText = test.getText();
         }
-        if ((raw = IdentityTodoPattern.END.group(matcher)) != null) {
-            span.add(new SpanLeaf(span, raw));
-        }
+        if ((raw = IdentityTodoPattern.END.group(matcher)) != null) span.add(new SpanLeaf(span, raw));
         return span;
     }
 
     private String todoText;
 
-    private IdentityTodo(SpanBranch parent, StylesSpans... classes) {
+    private IdentityTodo(SpanBranch parent, CssSpanStyles... classes) {
         super(parent, classes);
-        addStyle(StylesSpans.AGENDA);
+        addStyle(CssSpanStyles.AGENDA);
         todoText = "";
     }
 
-    @Override
-    public IdentityGroup getIdGroup() {
-        return IdentityGroup.TODO;
+    /**
+     * Get the agenda text
+     *
+     * @return the text
+     */
+    public String getAgenda() {
+        return CharMatcher.whitespace().trimAndCollapseFrom(todoText, ' ');
     }
 
     @Override
@@ -48,8 +55,8 @@ public class IdentityTodo extends SpanBranch implements IdentityStorage.Identity
     }
 
     @Override
-    public boolean isPointer() {
-        return true;
+    public IdentityGroup getIdGroup() {
+        return IdentityGroup.TODO;
     }
 
     @Override
@@ -57,7 +64,8 @@ public class IdentityTodo extends SpanBranch implements IdentityStorage.Identity
         return getStartIndex();
     }
 
-    public String getAgenda() {
-        return CharMatcher.whitespace().trimAndCollapseFrom(todoText, ' ');
+    @Override
+    public boolean isPointer() {
+        return true;
     }
 }

@@ -5,8 +5,18 @@ import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 
-public class IdentityReference extends SpanBranch implements IdentitySpan.IdentityParent {
-    static IdentityReference newSpan(SpanBranch parent, String text, StylesSpans... classes) {
+/**
+ * A span for pointing references. Such as {@code {^note}}. List of pointers
+ * used:
+ * <ul>
+ * <li>{@link IdentityGroup#FOOTNOTE} footnote
+ * <li>{@link IdentityGroup#ENDNOTE} endnote
+ * <li>{@link IdentityGroup#NOTE} research note
+ * <li>{@link IdentityGroup#META} meta data
+ * </ul>
+ */
+public final class IdentityReference extends SpanBranch implements IdentityParent {
+    static IdentityReference newSpan(SpanBranch parent, String text, CssSpanStyles... classes) {
         Matcher match = IdentityReferencePattern.matcher(text);
         if (match == null) return null;
 
@@ -28,7 +38,7 @@ public class IdentityReference extends SpanBranch implements IdentitySpan.Identi
             span.add(new SpanLeaf(span, raw));
             span.addStyle(group.getStyleClass());
         } else {
-            span.addStyle(StylesSpans.ERROR);
+            span.addStyle(CssSpanStyles.ERROR);
         }
         if ((raw = IdentityReferencePattern.ID.group(match)) != null) {
             IdentitySpan id = IdentitySpan.newPointerId(span, raw, group);
@@ -46,7 +56,7 @@ public class IdentityReference extends SpanBranch implements IdentitySpan.Identi
 
     private Optional<IdentitySpan> idPointer;
 
-    private IdentityReference(SpanBranch parent, StylesSpans... classes) {
+    private IdentityReference(SpanBranch parent, CssSpanStyles... classes) {
         super(parent, classes);
         idPointer = Optional.empty();
     }
