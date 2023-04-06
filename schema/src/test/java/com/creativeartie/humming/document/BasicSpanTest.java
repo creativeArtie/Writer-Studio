@@ -162,7 +162,7 @@ class BasicSpanTest {
 
     @BeforeAll
     public static void setup() {
-        useDoc = new Manuscript("main");
+        useDoc = new Manuscript();
         useDoc.updateText("Hello World!{^note}\n!^note=*test* only\\!\n=Chapter 1");
         testData = new ArrayList<>();
         provideData();

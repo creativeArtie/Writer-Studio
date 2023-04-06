@@ -47,16 +47,11 @@ public final class Manuscript extends ForwardingList<DivisionSecChapter> impleme
     private LoadingCache<SpanBranch, Integer> lengthsCache;
     private LoadingCache<Span, Integer> startIdxCache, endIdxCache;
     private LoadingCache<Integer, List<Span>> locateChildrenCache;
-    private final String fileName;
 
     /**
      * Create a new instance of Manuscript
-     *
-     * @param name
-     *        file name
      */
-    public Manuscript(String name) {
-        fileName = name;
+    public Manuscript() {
         idStorage = new IdentityStorage();
         docChildren = new ArrayList<>();
         findChildCache = CacheBuilder.newBuilder().recordStats().build(new CacheLoader<Span, List<Integer>>() {
@@ -89,15 +84,6 @@ public final class Manuscript extends ForwardingList<DivisionSecChapter> impleme
                 return getLocateChildrenCache(key, Manuscript.this);
             }
         });
-    }
-
-    /**
-     * gets the file name
-     *
-     * @return file name
-     */
-    public String getFileName() {
-        return fileName;
     }
 
     @Override

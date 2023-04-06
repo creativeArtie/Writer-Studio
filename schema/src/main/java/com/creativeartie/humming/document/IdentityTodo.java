@@ -47,7 +47,7 @@ public final class IdentityTodo extends SpanBranch implements IdentityStorage.Id
 
     @Override
     public List<String> getCategories() {
-        return Lists.newArrayList(getRoot().getFileName(), "phrase");
+        return Lists.newArrayList("phrase");
     }
 
     @Override

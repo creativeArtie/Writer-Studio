@@ -41,7 +41,7 @@ public final class ParaAgenda extends Para implements IdentityStorage.Identity {
 
     @Override
     public List<String> getCategories() {
-        return Lists.newArrayList(getRoot().getFileName(), "lined");
+        return Lists.newArrayList("lined");
     }
 
     @Override
