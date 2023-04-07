@@ -7,6 +7,10 @@ import com.creativeartie.humming.main.*;
 import javafx.fxml.*;
 import javafx.scene.control.*;
 
+/**
+ * Controller for <a href="../../../../../resources/data/main.fxml"> main.fxml
+ * </a>
+ */
 public class MainWindowController {
     @FXML
     private TabPane documentTabs;

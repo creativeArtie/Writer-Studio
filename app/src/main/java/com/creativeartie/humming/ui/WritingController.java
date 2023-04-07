@@ -16,6 +16,10 @@ import javafx.geometry.*;
 import javafx.scene.control.*;
 import javafx.stage.*;
 
+/**
+ * Controller for <a href="../../../../../resources/data/writing.fxml">
+ * writing.fxml </a>
+ */
 public class WritingController {
     private class ManuscriptProperty extends ReadOnlyObjectWrapper<Manuscript> {
         ManuscriptProperty() {

@@ -3,6 +3,10 @@ package com.creativeartie.humming.ui;
 import javafx.fxml.*;
 import javafx.scene.control.*;
 
+/**
+ * Controller for <a href="../../../../../resources/data/helpTip.fxml">
+ * helpTip.fxml </a>
+ */
 public class HelpTipController {
     @FXML
     private Label headingText, outlineText, catSpan, idSpan, breakLine;

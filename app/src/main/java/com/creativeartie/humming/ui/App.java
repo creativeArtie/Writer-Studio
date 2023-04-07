@@ -8,7 +8,8 @@ import javafx.scene.*;
 import javafx.stage.*;
 
 /**
- * Not having Main extending Application seem to work here.
+ * The starter method for the {@link Application}. <b>Not having Main extending
+ * Application seem to work here.</b>
  *
  * @author wai
  */
