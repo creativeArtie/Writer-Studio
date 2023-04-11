@@ -5,6 +5,7 @@ import java.util.regex.*;
 import com.google.common.base.*;
 
 /** Different formatted patterns. */
+@SuppressWarnings("nls")
 public enum TextFormattedPatterns implements PatternEnum {
     /**
      * Basic formatted pattern.

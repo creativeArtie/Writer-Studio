@@ -3,6 +3,7 @@ package com.creativeartie.humming.document;
 import java.util.*;
 import java.util.regex.*;
 
+import com.creativeartie.humming.files.*;
 import com.creativeartie.humming.schema.*;
 import com.google.common.base.*;
 import com.google.common.collect.*;
@@ -33,7 +34,7 @@ public final class IdentityTodo extends SpanBranch implements IdentityStorage.Id
     private IdentityTodo(SpanBranch parent, CssSpanStyles... classes) {
         super(parent, classes);
         addStyle(CssSpanStyles.AGENDA);
-        todoText = "";
+        todoText = new String();
     }
 
     /**
@@ -47,7 +48,7 @@ public final class IdentityTodo extends SpanBranch implements IdentityStorage.Id
 
     @Override
     public List<String> getCategories() {
-        return Lists.newArrayList("phrase");
+        return Lists.newArrayList(Literals.TODO_PHRASE_ID.getText());
     }
 
     @Override

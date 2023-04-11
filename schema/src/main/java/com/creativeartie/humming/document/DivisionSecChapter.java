@@ -37,7 +37,7 @@ public final class DivisionSecChapter extends DivisionSec {
             }
             position++;
         }
-        throw new IllegalStateException("Division not found.");
+        throw new IllegalStateException("Division not found."); //$NON-NLS-1$
     }
 
     @Override

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.*;
 
 import com.google.common.base.*;
 
+@SuppressWarnings("nls")
 class PatternTestBase<T extends PatternEnum> {
     private int expectedLength;
 

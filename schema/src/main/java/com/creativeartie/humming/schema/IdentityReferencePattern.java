@@ -11,6 +11,7 @@ import java.util.regex.*;
  * @see ParaNotePatterns address for citations / note
  * @see com.creativeartie.humming.document.IdentityReference span counter part
  */
+@SuppressWarnings("nls")
 public enum IdentityReferencePattern implements PatternEnum {
     /** Pointer start pattern */
     START("\\{"),

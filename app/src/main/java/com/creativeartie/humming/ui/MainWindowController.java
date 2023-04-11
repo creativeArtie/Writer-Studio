@@ -21,7 +21,7 @@ public class MainWindowController {
 
     @FXML
     void initialize() throws IOException {
-        Tab tab = new Tab("Document", FXMLLoader.load(DataFiles.WRITER.getFile()));
+        Tab tab = new Tab(UIText.General.WRITER_TAB.getText(), FXMLLoader.load(DataFiles.WRITER.getFile()));
         documentTabs.getTabs().add(tab);
         topSplit.setDividerPosition(0, .3);
         centerSplit.setDividerPosition(0, .3);

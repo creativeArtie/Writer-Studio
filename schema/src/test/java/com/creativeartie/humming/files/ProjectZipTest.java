@@ -4,6 +4,7 @@ import java.io.*;
 
 import org.junit.jupiter.api.*;
 
+@SuppressWarnings("nls")
 class ProjectZipTest {
     @Test
     void test() throws FileNotFoundException, IOException {

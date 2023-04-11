@@ -12,6 +12,7 @@ import java.util.regex.*;
  * @see ParaTableRowPattern
  * @see com.creativeartie.humming.document.Para#newLine where is used
  */
+@SuppressWarnings("nls")
 public enum ParaListPattern implements PatternEnum {
     /** Numbered line start pattern. */
     NUMBERED("\\#{1,6}"),

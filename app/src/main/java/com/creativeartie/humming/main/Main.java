@@ -12,11 +12,25 @@ import javafx.application.*;
  * @author wai-kin
  */
 public class Main {
+    /**
+     * The main method
+     *
+     * @param args
+     *        console arguments
+     */
     public static void main(String[] args) {
         Thread.setDefaultUncaughtExceptionHandler(Main::handleExceptions);
         Application.launch(App.class, args);
     }
 
+    /**
+     * Handle exceptions
+     *
+     * @param t
+     *        the thread throwing error
+     * @param e
+     *        the error
+     */
     public static void handleExceptions(Thread t, Throwable e) {
         e.printStackTrace();
         System.exit(-1);

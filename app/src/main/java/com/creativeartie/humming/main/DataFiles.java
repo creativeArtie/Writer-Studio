@@ -2,8 +2,18 @@ package com.creativeartie.humming.main;
 
 import java.net.*;
 
+/**
+ * Lit of data files us in the program. Does not include files in jar that is
+ * not used.
+ *
+ * @author wai
+ */
+@SuppressWarnings("nls")
 public enum DataFiles {
-    MAIN_FXML("main.fxml"), TEXT_CSS("text.css"), UI_TEXT("uiText.properties"), WRITER("writing.fxml");
+    /** The main window. @see App#start() */
+    MAIN_FXML("main.fxml"),
+    /** The writer panel. @see MainWindowController */
+    WRITER("writing.fxml");
 
     private static final String baseFolder = "/data/";
     private String fullPath;
@@ -13,6 +23,11 @@ public enum DataFiles {
         fullPath = baseFolder + path;
     }
 
+    /**
+     * Gets the file path as URL
+     *
+     * @return file path
+     */
     public URL getFile() {
         if (file == null) {
             file = getClass().getResource(fullPath);

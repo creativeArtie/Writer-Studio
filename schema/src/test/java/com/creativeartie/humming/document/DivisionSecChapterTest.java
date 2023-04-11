@@ -3,6 +3,7 @@ package com.creativeartie.humming.document;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.*;
 
+@SuppressWarnings("nls")
 final class DivisionSecChapterTest extends DivisionTestBase<DivisionSecChapter> {
     public DivisionSecChapterTest() {
         super(true, DivisionSecChapter.class);

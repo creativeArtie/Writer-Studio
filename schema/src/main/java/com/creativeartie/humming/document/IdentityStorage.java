@@ -10,6 +10,8 @@ import com.google.common.base.*;
  * {@linkplain IdentityStorage}.
  */
 public final class IdentityStorage {
+    private static String separator = ":"; //$NON-NLS-1$
+
     /**
      * An single Identity
      */
@@ -30,7 +32,7 @@ public final class IdentityStorage {
             List<String> ids = getCategories();
             if (ids.isEmpty()) return getId();
 
-            return Joiner.on(":").join(ids) + ":" + getId();
+            return Joiner.on(separator).join(ids) + separator + getId();
         }
 
         /**
@@ -53,7 +55,7 @@ public final class IdentityStorage {
          * @return id with {@link #getIdGroup()} and {@link #getFullId()}.
          */
         default String getInternalId() {
-            return getIdGroup().name() + ":" + getFullId();
+            return getIdGroup().name() + separator + getFullId();
         }
 
         /**

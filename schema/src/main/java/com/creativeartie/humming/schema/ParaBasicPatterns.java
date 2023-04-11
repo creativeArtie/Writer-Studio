@@ -19,6 +19,7 @@ import java.util.regex.*;
  * @see ParaTableRowPattern
  * @see com.creativeartie.humming.document.Para#newLine where is used
  */
+@SuppressWarnings("nls")
 public enum ParaBasicPatterns implements PatternEnum {
     /** Quote paragraph pattern. */
     QUOTE(LineSpanParts.QUOTER, LineSpanParts.FORMATTED),

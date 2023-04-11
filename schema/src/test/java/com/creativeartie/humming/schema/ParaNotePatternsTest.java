@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.*;
 
 import com.creativeartie.humming.schema.ParaNotePatterns.*;
 
+@SuppressWarnings("nls")
 final class ParaNotePatternsTest extends PatternTestBase<NoteLineParts> {
     @BeforeAll
     static void displayPatterns() throws Exception {

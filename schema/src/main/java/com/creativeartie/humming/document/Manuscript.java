@@ -219,7 +219,7 @@ public final class Manuscript extends ForwardingList<DivisionSecChapter> impleme
      * @return list of text
      */
     public String getText() {
-        return Joiner.on("").join(convertLeaves(@Nullable SpanLeaf::getRefText));
+        return Joiner.on(new String()).join(convertLeaves(@Nullable SpanLeaf::getRefText));
     }
 
     /**
@@ -255,6 +255,7 @@ public final class Manuscript extends ForwardingList<DivisionSecChapter> impleme
     /**
      * Prints the cache stats
      */
+    @SuppressWarnings("nls")
     public void printCacheStats() {
         System.out.printf("findChildCache %s\n", findChildCache.stats());
         System.out.printf("  lengthsCache %s\n", lengthsCache.stats());
@@ -285,7 +286,7 @@ public final class Manuscript extends ForwardingList<DivisionSecChapter> impleme
             int line = 1;
 
             for (String raw : texts) {
-                raw += (line == texts.size() ? "" : "\n");
+                if (line != texts.size()) raw += Character.toString('\n');
                 Para span = Para.newLine(parent, raw);
                 parent = parent.addLine(span, span.getLineStyle());
                 line++;

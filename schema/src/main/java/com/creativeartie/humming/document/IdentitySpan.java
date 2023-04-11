@@ -32,7 +32,7 @@ public final class IdentitySpan extends SpanBranch implements IdentityStorage.Id
     private static IdentitySpan parseText(IdentitySpan span, String text) {
         Matcher matcher = IdentityPattern.matcher(text);
         ImmutableList.Builder<String> builder = ImmutableList.builder();
-        String name = "";
+        String name = new String();
         while (matcher.find()) {
             name = IdentityPattern.NAME.group(matcher);
             TextSpan id = TextSpan.newId(span, name);

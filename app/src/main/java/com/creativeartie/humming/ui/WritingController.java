@@ -50,11 +50,15 @@ public class WritingController {
     @FXML
     private CodeArea writingText;
 
+    /**
+     * Constructor for the class. It is public to allow FXML.
+     */
     public WritingController() {
 
+        // TODO replace popup message
         popup = new Popup();
         popupMsg = new Label();
-        popupMsg.setStyle("-fx-background-color: black;" + "-fx-text-fill: white;" + "-fx-padding: 5;");
+        popupMsg.setStyle("-fx-background-color: black;-fx-text-fill: white;-fx-padding: 5;"); //$NON-NLS-1$
         popup.getContent().add(popupMsg);
     }
 
@@ -72,18 +76,18 @@ public class WritingController {
     private void mouseOverTextEvent(MouseOverTextEvent e) {
         int chIdx = e.getCharacterIndex();
         Point2D pos = e.getScreenPosition();
-        String name = "";
+        String name = new String();
         for (Span child : rootDoc.get().locateChildren(chIdx)) {
             String appendText = child.getClass().getSimpleName();
             if (child instanceof Para) {
                 appendText = ((Para) child).getLineStyle().toString();
             } else if (child instanceof SpanLeaf) {
                 appendText = ((SpanLeaf) child).getStyle().toString();
-            } else if (appendText == "") {
-                appendText = "LineSpan";
+            } else if (appendText.isEmpty()) {
+                appendText = "LineSpan"; //$NON-NLS-1$
             }
-            if (name != "") {
-                name += ", ";
+            if (!name.isEmpty()) {
+                name += ", "; //$NON-NLS-1$
             }
             name += appendText;
         }
@@ -95,6 +99,11 @@ public class WritingController {
         rootDoc.updateText(newValue);
     }
 
+    /**
+     * The property document
+     *
+     * @return document property
+     */
     public ReadOnlyObjectProperty<Manuscript> documentProperty() {
         return rootDoc.getReadOnlyProperty();
     }

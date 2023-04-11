@@ -3,6 +3,7 @@ package com.creativeartie.humming.document;
 import java.util.*;
 import java.util.regex.*;
 
+import com.creativeartie.humming.files.*;
 import com.creativeartie.humming.schema.*;
 import com.google.common.base.*;
 import com.google.common.collect.*;
@@ -15,7 +16,7 @@ public final class ParaAgenda extends Para implements IdentityStorage.Identity {
 
     ParaAgenda(SpanBranch parent) {
         super(parent, CssLineStyles.AGENDA);
-        todoText = "";
+        todoText = new String();
     }
 
     @Override
@@ -41,7 +42,7 @@ public final class ParaAgenda extends Para implements IdentityStorage.Identity {
 
     @Override
     public List<String> getCategories() {
-        return Lists.newArrayList("lined");
+        return Lists.newArrayList(Literals.TODO_LINE_ID.getText());
     }
 
     @Override

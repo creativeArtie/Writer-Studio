@@ -6,6 +6,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
+@SuppressWarnings("nls")
 final class IdentityReferencePatternTest extends PatternTestBase<IdentityReferencePattern> {
     @BeforeAll
     static void displayPattern() throws Exception {

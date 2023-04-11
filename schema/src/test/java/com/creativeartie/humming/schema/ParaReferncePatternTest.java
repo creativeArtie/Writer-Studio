@@ -6,6 +6,7 @@ import org.junit.jupiter.api.*;
 
 import com.creativeartie.humming.schema.ParaReferencePatterns.*;
 
+@SuppressWarnings("nls")
 final class ParaReferncePatternTest extends PatternTestBase<RefLineParts> {
     @BeforeAll
     public static void printPattern() {

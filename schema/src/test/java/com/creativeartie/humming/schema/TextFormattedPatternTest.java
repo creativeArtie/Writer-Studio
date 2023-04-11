@@ -6,6 +6,7 @@ import org.junit.jupiter.api.*;
 
 import com.creativeartie.humming.schema.TextFormattedPatterns.*;
 
+@SuppressWarnings("nls")
 final class TextFormattedPatternTest extends PatternTestBase<TextFormattedPatterns.TextFormattedParts> {
     @BeforeAll
     static void setUpBeforeClass() throws Exception {

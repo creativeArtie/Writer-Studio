@@ -5,6 +5,7 @@ import java.util.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.*;
 
+@SuppressWarnings("nls")
 final class DivisionListTest extends DivisionTestBase<DivisionList> {
     private static class ListPositions extends ArrayList<Integer> {
         private static final long serialVersionUID = -2815430445917427332L;

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.*;
 
 import com.google.common.io.*;
 
+@SuppressWarnings("nls")
 class ResourcesTest {
     @Test
     void test() {

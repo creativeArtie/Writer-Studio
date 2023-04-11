@@ -6,6 +6,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
+@SuppressWarnings("nls")
 final class ParaListPatternTest extends PatternTestBase<ParaListPattern> {
     @BeforeAll
     static void displayPattern() throws Exception {

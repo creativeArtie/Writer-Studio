@@ -10,6 +10,7 @@ import com.google.common.base.*;
  * @see ParaBasicPatterns#AGENDA line counter part
  * @see TextFormattedPatterns.TextFormattedParts as a span in a text line
  */
+@SuppressWarnings("nls")
 public enum IdentityTodoPattern implements PatternEnum {
     /** Pointer start pattern */
     START("\\{\\!"),

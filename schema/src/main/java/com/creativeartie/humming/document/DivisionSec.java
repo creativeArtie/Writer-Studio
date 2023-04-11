@@ -178,7 +178,7 @@ public abstract class DivisionSec extends Division {
                     position++;
                 }
             }
-            return parent.get().getLocation() + ":" + Integer.toString(position);
+            return parent.get().getLocation() + ":" + Integer.toString(position); //$NON-NLS-1$
         }
     }
 }

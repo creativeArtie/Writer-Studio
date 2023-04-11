@@ -11,6 +11,7 @@ import java.util.regex.*;
  *      endnote.
  * @see com.creativeartie.humming.document.IdentitySpan span counter part
  */
+@SuppressWarnings("nls")
 public enum IdentityPattern implements PatternEnum {
     /** Category and ID name pattern. */
     NAME(TextSpanPatterns.ID.getRawPattern()),

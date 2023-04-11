@@ -27,7 +27,7 @@ public class App extends Application {
         primaryStage.setMinHeight(600);
         Scene scene = new Scene(root, 800, 600);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Writer App");
+        primaryStage.setTitle(UIText.General.TITLE.getText());
         primaryStage.show();
     }
 

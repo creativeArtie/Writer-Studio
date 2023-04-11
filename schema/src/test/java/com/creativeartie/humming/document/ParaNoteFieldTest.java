@@ -2,6 +2,7 @@ package com.creativeartie.humming.document;
 
 import org.junit.jupiter.api.*;
 
+@SuppressWarnings("nls")
 final class ParaNoteFieldTest extends SpanBranchTestBase<ParaNoteField> {
     @Test
     void testFull() {

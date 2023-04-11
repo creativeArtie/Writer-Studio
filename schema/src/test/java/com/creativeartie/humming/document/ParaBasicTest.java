@@ -6,6 +6,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
+@SuppressWarnings("nls")
 final class ParaBasicTest extends SpanBranchTestBase<Para> {
     private static Stream<Arguments> provideParameters() {
         return Stream.of(

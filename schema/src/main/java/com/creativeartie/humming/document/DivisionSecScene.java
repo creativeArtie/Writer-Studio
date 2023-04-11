@@ -29,7 +29,7 @@ public final class DivisionSecScene extends DivisionSec {
     @Override
     protected void addDivisionAtRoot(DivisionSec child) {
         Optional<DivisionSecChapter> parent = findParent(DivisionSecChapter.class);
-        Preconditions.checkState(parent.isPresent(), "Parent not found");
+        Preconditions.checkState(parent.isPresent(), "Parent not found"); //$NON-NLS-1$
         parent.get().add(child);
     }
 
@@ -54,7 +54,7 @@ public final class DivisionSecScene extends DivisionSec {
                 position++;
             }
         }
-        throw new IllegalStateException("Division not found.");
+        throw new IllegalStateException("Division not found."); //$NON-NLS-1$
     }
 
     /**

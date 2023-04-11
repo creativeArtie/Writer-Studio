@@ -1,4 +1,4 @@
-package com.creativeartie.writer.main;
+package com.creativeartie.humming.main;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.*;
 
 /** The hello world test class. */
 @DisplayName("Basic System")
+@SuppressWarnings("nls")
 class HelloWorld {
     /** If this run, JUnit5 is working! */
     @Test

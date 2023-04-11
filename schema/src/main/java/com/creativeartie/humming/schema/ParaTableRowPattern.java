@@ -13,6 +13,7 @@ import java.util.regex.*;
  * @see com.creativeartie.humming.document.Para#newLine where is used
  * @see IdentityReferencePattern pointers of footnotes and endnotes
  */
+@SuppressWarnings("nls")
 public enum ParaTableRowPattern implements PatternEnum {
     /** Table cell pattern. */
     TEXT(TextSpanPatterns.CELL.getRawPattern()),

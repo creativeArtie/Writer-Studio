@@ -4,6 +4,7 @@ import java.util.regex.*;
 
 import org.junit.jupiter.api.*;
 
+@SuppressWarnings("nls")
 final class IdentityTodoPatternTest extends PatternTestBase<IdentityTodoPattern> {
     @BeforeAll
     static void displayPattern() throws Exception {

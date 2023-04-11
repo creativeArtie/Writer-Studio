@@ -13,8 +13,8 @@ public final class ParaNoteField extends Para {
 
     ParaNoteField(SpanBranch parent) {
         super(parent, CssLineStyles.FIELD);
-        noteKey = "";
-        noteValue = "";
+        noteKey = new String();
+        noteValue = new String();
     }
 
     @Override

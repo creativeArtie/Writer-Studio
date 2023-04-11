@@ -13,6 +13,7 @@ import java.util.regex.*;
  * @see com.creativeartie.humming.document.Para#newLine where is used
  * @see IdentityReferencePattern pointers of footnotes and endnotes
  */
+@SuppressWarnings("nls")
 public enum ParaReferencePatterns implements PatternEnum {
     /** Footnote line pattern. */
     FOOTNOTE {

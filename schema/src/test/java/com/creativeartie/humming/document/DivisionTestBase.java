@@ -5,6 +5,7 @@ import java.util.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.*;
 
+@SuppressWarnings("nls")
 abstract class DivisionTestBase<T extends Division> extends SpanTestBase<SpanBranch> {
     private Class<T> checkClass;
 

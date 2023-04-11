@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.*;
 
 import com.creativeartie.humming.schema.TextSpanPatterns.*;
 
+@SuppressWarnings("nls")
 final class TextSpanPatternsTest extends PatternTestBase<TextSpanParts> {
     @BeforeAll
     static void displayPattern() {

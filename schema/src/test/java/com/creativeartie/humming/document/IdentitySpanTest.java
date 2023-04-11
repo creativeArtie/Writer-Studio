@@ -9,6 +9,7 @@ import org.junit.jupiter.api.*;
 import com.google.common.base.*;
 import com.google.common.collect.*;
 
+@SuppressWarnings("nls")
 final class IdentitySpanTest extends SpanBranchTestBase<IdentitySpan> {
     private boolean isAddress;
 
@@ -85,7 +86,8 @@ final class IdentitySpanTest extends SpanBranchTestBase<IdentitySpan> {
     void testOnlyPointer() {
         getDocument().updateText("{^error}");
         addStyleTest(
-                "error", CssLineStyles.NORMAL, CssSpanStyles.FOOTNOTE, CssSpanStyles.ID, CssSpanStyles.ERROR, CssSpanStyles.TEXT
+                "error", CssLineStyles.NORMAL, CssSpanStyles.FOOTNOTE, CssSpanStyles.ID, CssSpanStyles.ERROR,
+                CssSpanStyles.TEXT
         );
         SpanBranch division = getDocument().get(0);
         SpanBranch normal = (SpanBranch) division.get(0);

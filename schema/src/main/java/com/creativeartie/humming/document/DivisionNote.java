@@ -42,7 +42,7 @@ public final class DivisionNote extends Division implements IdentityParent {
             case FIELD:
                 ParaNoteField field = (ParaNoteField) line;
                 add(field);
-                if (field.getKey() != "") fields.put(field.getKey(), field.getValue());
+                if (!field.getKey().isEmpty()) fields.put(field.getKey(), field.getValue());
                 return this;
             case HEADER:
                 if (isEmpty()) {

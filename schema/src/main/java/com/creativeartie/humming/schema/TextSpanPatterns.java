@@ -7,6 +7,7 @@ import com.creativeartie.humming.document.*;
 /**
  * Patterns for basic text with escape chars.
  */
+@SuppressWarnings("nls")
 public enum TextSpanPatterns implements PatternEnum {
     /**
      * Text pattern for ID

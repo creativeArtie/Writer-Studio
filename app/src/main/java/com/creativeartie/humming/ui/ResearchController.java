@@ -11,7 +11,8 @@ public class ResearchController {
     @FXML
     private Label fieldsPlaceholder;
 
-    ResearchController() {
-        // TODO Auto-generated constructor stub
-    }
+    /**
+     * Constructor for the class. It is public to allow FXML.
+     */
+    public ResearchController() {}
 }

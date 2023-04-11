@@ -4,6 +4,7 @@ import java.util.regex.*;
 
 import org.junit.jupiter.api.*;
 
+@SuppressWarnings("nls")
 final class ParaTableRowPatternTest extends PatternTestBase<ParaTableRowPattern> {
     @BeforeAll
     public static void printPattern() {

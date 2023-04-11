@@ -3,6 +3,7 @@ package com.creativeartie.humming.document;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.*;
 
+@SuppressWarnings("nls")
 final class DivisionSecSceneTest extends DivisionTestBase<DivisionSecScene> {
     public DivisionSecSceneTest() {
         super(true, DivisionSecScene.class);

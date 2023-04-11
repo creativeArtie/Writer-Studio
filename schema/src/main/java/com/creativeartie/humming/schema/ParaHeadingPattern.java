@@ -12,6 +12,7 @@ import java.util.regex.*;
  * @see ParaTableRowPattern
  * @see com.creativeartie.humming.document.Para#newLine where is used
  */
+@SuppressWarnings("nls")
 public enum ParaHeadingPattern implements PatternEnum {
     /** Outline start pattern. */
     OUTLINE("!"),

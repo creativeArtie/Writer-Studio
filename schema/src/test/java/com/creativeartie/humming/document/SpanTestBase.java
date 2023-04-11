@@ -5,6 +5,7 @@ import java.util.*;
 import org.junit.jupiter.api.*;
 import org.opentest4j.*;
 
+@SuppressWarnings("nls")
 abstract class SpanTestBase<T extends SpanBranch> {
     private static ArrayList<String> expectedText;
     private static ArrayList<CssStyle[]> expectedStyles;

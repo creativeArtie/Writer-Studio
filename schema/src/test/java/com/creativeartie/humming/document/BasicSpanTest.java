@@ -10,6 +10,7 @@ import org.opentest4j.*;
 
 import com.google.common.collect.*;
 
+@SuppressWarnings("nls")
 class BasicSpanTest {
     private static class TestData {
         private String textPrefix;

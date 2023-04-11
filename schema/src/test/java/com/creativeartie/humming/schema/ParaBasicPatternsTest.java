@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.*;
 
 import com.creativeartie.humming.schema.ParaBasicPatterns.*;
 
+@SuppressWarnings("nls")
 class ParaBasicPatternsTest extends PatternTestBase<LineSpanParts> {
     @BeforeAll
     static void displayPattern() throws Exception {

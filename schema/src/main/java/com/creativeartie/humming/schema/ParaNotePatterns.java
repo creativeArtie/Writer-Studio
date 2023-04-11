@@ -13,6 +13,7 @@ import java.util.regex.*;
  * @see com.creativeartie.humming.document.Para#newLine where is used
  * @see IdentityReferencePattern pointer to citation / notes
  */
+@SuppressWarnings("nls")
 public enum ParaNotePatterns implements PatternEnum {
     /** Summary heading line with ID pattern. */
     SUMMARY() {
