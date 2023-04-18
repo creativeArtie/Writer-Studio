@@ -18,7 +18,6 @@ public final class Log extends ForwardingList<Log.Entry> implements Serializable
     public class Entry implements Serializable {
         private static final long serialVersionUID = 3858758562130562079L;
         private LocalDate createdDate;
-        private Optional<LocalTime> startTime;
         private Duration timeSpent;
         private int writtenCount;
         private int outlineCount;
@@ -37,9 +36,6 @@ public final class Log extends ForwardingList<Log.Entry> implements Serializable
          * get the time spent
          *
          * @return time spent on writing
-         *
-         * @see #start()
-         * @see #end(int, int)
          */
         public Duration getTimeSpent() {
             return timeSpent;
@@ -50,8 +46,6 @@ public final class Log extends ForwardingList<Log.Entry> implements Serializable
          *
          * @return time spent on writing
          *
-         * @see #start()
-         * @see #end(int, int)
          * @see #getTodayWritten()
          */
         public int getTotalWritten() {
@@ -63,8 +57,6 @@ public final class Log extends ForwardingList<Log.Entry> implements Serializable
          *
          * @return today count
          *
-         * @see #start()
-         * @see #end(int, int)
          * @see #getTotalWritten()
          */
         public int getTodayWritten() {
@@ -75,25 +67,22 @@ public final class Log extends ForwardingList<Log.Entry> implements Serializable
         }
 
         /**
-         * get the outline count count
+         * get the outline word count
          *
-         * @return time spent on writing
+         * @return time spent on outline
          *
-         * @see #start()
-         * @see #end(int, int)
+         * @see #getTodayOutline()
          */
         public int getTotalOutline() {
             return outlineCount;
         }
 
         /**
-         * Get today written word count
+         * Get today outline word count
          *
-         * @return today count
+         * @return today outline
          *
-         * @see #start()
-         * @see #end(int, int)
-         * @see #getTotalWritten()
+         * @see #getTotalOutline()
          */
         public int getTodayOutline() {
             if (arrayIndex == 0) {
@@ -102,65 +91,80 @@ public final class Log extends ForwardingList<Log.Entry> implements Serializable
             return logEntries.get(arrayIndex - 1).outlineCount - outlineCount;
         }
 
-        private Entry(LocalDate created, Duration time, int written, int outline, int index) {
+        private Entry(LocalDate created, Duration time, int written, int index) {
             this.createdDate = created;
             this.timeSpent = time;
             this.writtenCount = written;
-            this.outlineCount = outline;
             arrayIndex = index;
         }
 
-        /**
-         * Start writing
-         *
-         * @return {@code true} if timer starts.
-         */
-        public boolean start() {
-            if (startTime.isEmpty()) {
-                startTime = Optional.of(LocalTime.now());
-                return true;
-            }
-            return false;
+        void setWrittenCount(int wordCount) {
+            writtenCount = wordCount;
         }
 
-        /**
-         * Ending writing
-         *
-         * @param written
-         *        total written text
-         * @param outline
-         *        total outline text
-         *
-         * @return {@code true} if timer ends.
-         */
-        public boolean end(int written, int outline) {
-            writtenCount = written;
-            outlineCount = outline;
-            if (startTime.isPresent()) {
-                timeSpent = timeSpent.plus(Duration.between(startTime.get(), LocalTime.now()));
-                startTime = Optional.empty();
-                return true;
-            }
-            return false;
+        void setOutlineCount(int wordCount) {
+            outlineCount = wordCount;
         }
 
-        /**
-         * Get time worked, excluding researching
-         *
-         * @return {@code time worked}
-         */
-        public Duration getDuration() {
-            if (startTime.isPresent()) {
-                return timeSpent.plus(Duration.between(startTime.get(), LocalTime.now()));
-            }
-            return timeSpent;
+        void addTime(Duration duration) {
+            timeSpent = duration.plus(timeSpent);
+        }
+
+        public boolean meetDurationTarget() {
+            return getTargetDuration().map((duration) -> timeSpent.compareTo(duration) > -1).orElseGet(() -> true);
+        }
+
+        public boolean meetWordTarget() {
+            return getTargetWordCount().map((goal) -> goal <= writtenCount).orElseGet(() -> true);
         }
     }
 
+    private Duration targetDuration;
+    private Integer targetWordCount;
     private ArrayList<Entry> logEntries;
 
     Log() {
         logEntries = new ArrayList<>();
+        targetDuration = null;
+        targetWordCount = null;
+    }
+
+    /**
+     * Get the target duration.
+     *
+     * @return target duration
+     */
+    public Optional<Duration> getTargetDuration() {
+        return Optional.ofNullable(targetDuration);
+    }
+
+    /**
+     * Get the target word count.
+     *
+     * @return target word count
+     */
+    public Optional<Integer> getTargetWordCount() {
+        return Optional.ofNullable(targetWordCount);
+    }
+
+    /**
+     * Set the target duration.
+     *
+     * @param duration
+     *        new target duration
+     */
+    public void setTargetDuration(Duration duration) {
+        targetDuration = duration;
+    }
+
+    /**
+     * Set the target word count.
+     *
+     * @param wordCount
+     *        new target word count
+     */
+    public void setTargetWordCount(Integer wordCount) {
+        targetWordCount = wordCount;
     }
 
     @Override
@@ -188,7 +192,7 @@ public final class Log extends ForwardingList<Log.Entry> implements Serializable
         LocalDate today = LocalDate.now();
 
         if (logEntries.isEmpty()) {
-            entry = new Entry(today, Duration.ZERO, 0, 0, 0);
+            entry = new Entry(today, Duration.ZERO, 0, 0);
             logEntries.add(entry);
             return entry;
         }
@@ -198,7 +202,7 @@ public final class Log extends ForwardingList<Log.Entry> implements Serializable
             return entry;
         }
 
-        entry = new Entry(today, Duration.ZERO, entry.writtenCount, entry.outlineCount, logEntries.size());
+        entry = new Entry(today, Duration.ZERO, entry.writtenCount, logEntries.size());
         logEntries.add(entry);
         return entry;
     }

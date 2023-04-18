@@ -385,4 +385,14 @@ public final class Manuscript extends ForwardingList<DivisionSecChapter> impleme
         }
         return answer.build();
     }
+
+    public int getWordCount() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    public int getOutlineCount() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 }
