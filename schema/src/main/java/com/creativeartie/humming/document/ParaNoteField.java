@@ -3,6 +3,7 @@ package com.creativeartie.humming.document;
 import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
+import com.google.common.base.*;
 
 /**
  * A property of note.
@@ -55,5 +56,15 @@ public final class ParaNoteField extends Para {
      */
     public String getValue() {
         return noteValue;
+    }
+
+    @Override
+    public int getOutlineCount() {
+        return Splitter.on(' ').omitEmptyStrings().trimResults().splitToList(noteValue).size();
+    }
+
+    @Override
+    public int getWrittenCount() {
+        return 0;
     }
 }

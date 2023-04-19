@@ -64,4 +64,14 @@ public final class ParaAgenda extends Para implements IdentityStorage.Identity {
     public boolean isPointer() {
         return false;
     }
+
+    @Override
+    public int getOutlineCount() {
+        return Splitter.on(' ').omitEmptyStrings().trimResults().splitToList(todoText).size();
+    }
+
+    @Override
+    public int getWrittenCount() {
+        return 0;
+    }
 }

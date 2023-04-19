@@ -82,7 +82,7 @@ public final class SpanLeaf implements Span {
      *
      * @return the text
      */
-    public String getRefText() {
+    public String getReferText() {
         return referText;
     }
 

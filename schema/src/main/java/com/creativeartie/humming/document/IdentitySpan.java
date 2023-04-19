@@ -36,7 +36,7 @@ public final class IdentitySpan extends SpanBranch implements IdentityStorage.Id
         while (matcher.find()) {
             name = IdentityPattern.NAME.group(matcher);
             TextSpan id = TextSpan.newId(span, name);
-            name = id.getText();
+            name = CharMatcher.whitespace().trimAndCollapseFrom(id.getText(), ' ');
             span.add(id);
             if (matcher.find()) {
                 String sep = IdentityPattern.SEP.group(matcher);

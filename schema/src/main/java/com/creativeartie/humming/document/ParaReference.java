@@ -22,6 +22,7 @@ public final class ParaReference extends Para implements IdentityParent {
     }
 
     private Optional<IdentitySpan> idAddress;
+    private Optional<TextFormatted> refText;
 
     private ParaReference(SpanBranch parent, CssLineStyles style) {
         super(parent, style);
@@ -58,6 +59,7 @@ public final class ParaReference extends Para implements IdentityParent {
         add(new SpanLeaf(this, RefLineParts.START.group(match)));
         add(new SpanLeaf(this, pattern.group(match)));
         String raw;
+        TextFormatted text = null;
         if ((raw = RefLineParts.ID.group(match)) != null) {
 
             idAddress = Optional.of(
@@ -68,13 +70,25 @@ public final class ParaReference extends Para implements IdentityParent {
             String sep = RefLineParts.SEP.group(match);
             if (sep != null) {
                 add(new SpanLeaf(this, RefLineParts.SEP.group(match)));
-                add(TextFormatted.newNoteText(this, RefLineParts.TEXT.group(match)));
+                text = TextFormatted.newNoteText(this, RefLineParts.TEXT.group(match));
+                add(text);
             }
         } else {
             addStyle(CssSpanStyles.ERROR);
             add(TextFormatted.newBasicText(this, RefLineParts.ERROR.group(match)));
         }
+        refText = Optional.ofNullable(text);
 
         addLineEnd(match, RefLineParts.ENDER);
+    }
+
+    @Override
+    public int getOutlineCount() {
+        return getOutline(refText);
+    }
+
+    @Override
+    public int getWrittenCount() {
+        return getWritten(refText);
     }
 }

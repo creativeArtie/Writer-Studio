@@ -1,5 +1,6 @@
 package com.creativeartie.humming.document;
 
+import java.util.*;
 import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
@@ -15,6 +16,7 @@ public final class ParaList extends Para implements SpanList {
 
     private int listLevel;
     private int listPosition;
+    private Optional<TextFormatted> listText;
 
     private ParaList(SpanBranch parent, CssLineStyles style) {
         super(parent, style);
@@ -43,11 +45,21 @@ public final class ParaList extends Para implements SpanList {
         if (raw == null) raw = ParaListPattern.NUMBERED.group(match);
         add(new SpanLeaf(this, raw));
         listLevel = raw.length();
-        addText(match, ParaListPattern.TEXT);
+        listText = addText(match, ParaListPattern.TEXT);
         addLineEnd(match, ParaListPattern.ENDER);
     }
 
     void setPosition(int pos) {
         listPosition = pos;
+    }
+
+    @Override
+    public int getOutlineCount() {
+        return getOutline(listText);
+    }
+
+    @Override
+    public int getWrittenCount() {
+        return getWritten(listText);
     }
 }

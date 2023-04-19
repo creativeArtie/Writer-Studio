@@ -22,6 +22,7 @@ public final class ParaHeading extends Para implements IdentityParent {
 
     private Optional<IdentitySpan> headingId;
     private int headingLevel;
+    private Optional<TextFormatted> headingText;
 
     @Override
     protected void buildSpan(Matcher match) {
@@ -33,9 +34,12 @@ public final class ParaHeading extends Para implements IdentityParent {
             add(new SpanLeaf(this, raw));
             headingLevel = raw.length();
         }
+        TextFormatted text = null;
         if ((raw = ParaHeadingPattern.TEXT.group(match)) != null) {
-            add(TextFormatted.newHeadingText(this, raw));
+            text = TextFormatted.newHeadingText(this, raw);
+            add(text);
         }
+        headingText = Optional.ofNullable(text);
         headingId = Optional.empty();
         if ((raw = ParaHeadingPattern.IDER.group(match)) != null) {
             add(new SpanLeaf(this, raw));
@@ -66,5 +70,15 @@ public final class ParaHeading extends Para implements IdentityParent {
     @Override
     public Optional<IdentitySpan> getPointer() {
         return headingId;
+    }
+
+    @Override
+    public int getOutlineCount() {
+        return getOutline(headingText);
+    }
+
+    @Override
+    public int getWrittenCount() {
+        return getWritten(headingText);
     }
 }

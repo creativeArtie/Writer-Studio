@@ -5,6 +5,7 @@ import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
 import com.creativeartie.humming.schema.TextFormattedPatterns.*;
+import com.google.common.base.*;
 
 /**
  * Formatted text
@@ -72,5 +73,26 @@ public final class TextFormatted extends SpanBranch {
 
     private TextFormatted(SpanBranch parent, CssSpanStyles... classes) {
         super(parent, classes);
+    }
+
+    public int getWrittenCount() {
+        String answer = new String();
+        for (Span child : this) {
+            if (child instanceof TextSpan) {
+                answer += ((TextSpan) child).getText();
+            }
+        }
+        return Splitter.on(' ').omitEmptyStrings().trimResults().splitToList(answer).size();
+    }
+
+    public int getOutlineCount() {
+        int answer = 0;
+        for (Span child : this) {
+            if (child instanceof IdentityTodo) {
+                String text = ((IdentityTodo) child).getAgenda();
+                answer += Splitter.on(' ').omitEmptyStrings().trimResults().splitToList(text).size();
+            }
+        }
+        return answer;
     }
 }

@@ -82,6 +82,6 @@ public final class TextSpan extends SpanBranch {
      * @return the span text
      */
     public String getText() {
-        return CharMatcher.whitespace().trimAndCollapseFrom(spanText, ' ');
+        return CharMatcher.whitespace().collapseFrom(spanText, ' ');
     }
 }

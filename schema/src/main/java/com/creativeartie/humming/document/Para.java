@@ -1,5 +1,6 @@
 package com.creativeartie.humming.document;
 
+import java.util.*;
 import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
@@ -30,59 +31,91 @@ public abstract class Para extends SpanBranch {
 
         else if ((match = ParaTableRowPattern.matcher(text)) != null) returns = ParaTableRow.newLine(parent);
 
-        else if ((match = ParaBasicPatterns.QUOTE.matcher(text)) != null) returns = new Para(parent, CssLineStyles.QUOTE) {
-            @Override
-            protected void buildSpan(Matcher match) {
-                add(new SpanLeaf(this, LineSpanParts.QUOTER.group(match)));
-                addText(match, LineSpanParts.FORMATTED);
-                addLineEnd(match, LineSpanParts.ENDER);
-            }
-        };
+        else if ((match = ParaBasicPatterns.QUOTE.matcher(text)) != null)
+            returns = new Para(parent, CssLineStyles.QUOTE) {
+                private Optional<TextFormatted> formatted = null;
 
-        else if ((match = ParaBasicPatterns.BREAK.matcher(text)) != null) returns = new Para(parent, CssLineStyles.BREAK) {
-            @Override
-            protected void buildSpan(Matcher match) {
-                add(new SpanLeaf(this, LineSpanParts.BREAKER.group(match)));
-                addLineEnd(match, LineSpanParts.ENDER);
-            }
-        };
-        else if ((match = ParaBasicPatterns.TEXT.matcher(text)) != null) returns = new Para(parent, CssLineStyles.NORMAL) {
-            @Override
-            protected void buildSpan(Matcher match) {
-                addText(match, LineSpanParts.FORMATTED);
-                addLineEnd(match, LineSpanParts.ENDER);
-            }
-        };
+                @Override
+                protected void buildSpan(Matcher match) {
+                    add(new SpanLeaf(this, LineSpanParts.QUOTER.group(match)));
+                    formatted = addText(match, LineSpanParts.FORMATTED);
+                    addLineEnd(match, LineSpanParts.ENDER);
+                }
+
+                @Override
+                public int getWrittenCount() {
+                    return getWritten(formatted);
+                }
+
+                @Override
+                public int getOutlineCount() {
+                    return getOutline(formatted);
+                }
+            };
+
+        else if ((match = ParaBasicPatterns.BREAK.matcher(text)) != null)
+            returns = new Para(parent, CssLineStyles.BREAK) {
+                @Override
+                protected void buildSpan(Matcher match) {
+                    add(new SpanLeaf(this, LineSpanParts.BREAKER.group(match)));
+                    addLineEnd(match, LineSpanParts.ENDER);
+                }
+
+                @Override
+                public int getWrittenCount() {
+                    return 0;
+                }
+
+                @Override
+                public int getOutlineCount() {
+                    return 0;
+                }
+            };
+        else if ((match = ParaBasicPatterns.TEXT.matcher(text)) != null)
+            returns = new Para(parent, CssLineStyles.NORMAL) {
+                private Optional<TextFormatted> formatted = null;
+
+                @Override
+                protected void buildSpan(Matcher match) {
+                    formatted = addText(match, LineSpanParts.FORMATTED);
+                    addLineEnd(match, LineSpanParts.ENDER);
+                }
+
+                @Override
+                public int getOutlineCount() {
+                    return getOutline(formatted);
+                }
+
+                @Override
+                public int getWrittenCount() {
+                    return getWritten(formatted);
+                }
+            };
         else return null;
 
         returns.buildSpan(match);
         return returns;
     }
 
-    /**
-     * Adds a text to paragraph
-     *
-     * @param match
-     * @param textPattern
-     *
-     * @see #newLine(SpanBranch, String)
-     */
-    protected void addText(Matcher match, PatternEnum textPattern) {
-        String raw;
-
-        if ((raw = textPattern.group(match)) != null) {
-            add(TextFormatted.newBasicText(this, raw));
-        }
+    static int getOutline(Optional<TextFormatted> formatted) {
+        return formatted.map((text) -> text.getOutlineCount()).orElse(0);
     }
 
-    /**
-     * Adds a line end to paragraph
-     *
-     * @param match
-     * @param textPattern
-     *
-     * @see #newLine(SpanBranch, String)
-     */
+    static int getWritten(Optional<TextFormatted> formatted) {
+        return formatted.map((text) -> text.getWrittenCount()).orElse(0);
+    }
+
+    protected Optional<TextFormatted> addText(Matcher match, PatternEnum textPattern) {
+        String raw;
+        TextFormatted formatted = null;
+
+        if ((raw = textPattern.group(match)) != null) {
+            formatted = TextFormatted.newBasicText(this, raw);
+            add(formatted);
+        }
+        return Optional.ofNullable(formatted);
+    }
+
     protected void addLineEnd(Matcher match, PatternEnum endPattern) {
         String raw;
 
@@ -116,4 +149,8 @@ public abstract class Para extends SpanBranch {
     public CssLineStyles getLineStyle() {
         return lineStyle;
     }
+
+    public abstract int getOutlineCount();
+
+    public abstract int getWrittenCount();
 }

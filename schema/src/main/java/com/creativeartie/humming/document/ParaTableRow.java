@@ -13,6 +13,7 @@ public final class ParaTableRow extends Para {
     }
 
     private int numberOfColumns;
+    private int writtenCount, outlineCount;
 
     private ParaTableRow(SpanBranch parent) {
         super(parent, CssLineStyles.ROW);
@@ -30,13 +31,17 @@ public final class ParaTableRow extends Para {
 
     @Override
     protected void buildSpan(Matcher match) {
-
+        writtenCount = 0;
+        outlineCount = 0;
         while (match.find()) {
             String sep = ParaTableRowPattern.SEP.group(match);
 
             if (sep != null) {
                 add(new SpanLeaf(this, sep));
-                add(TextFormatted.newCellText(this, ParaTableRowPattern.TEXT.group(match)));
+                TextFormatted text = TextFormatted.newCellText(this, ParaTableRowPattern.TEXT.group(match));
+                add(text);
+                writtenCount += text.getWrittenCount();
+                outlineCount += text.getOutlineCount();
                 numberOfColumns++;
                 continue;
             }
@@ -47,5 +52,15 @@ public final class ParaTableRow extends Para {
                 return;
             }
         }
+    }
+
+    @Override
+    public int getOutlineCount() {
+        return outlineCount;
+    }
+
+    @Override
+    public int getWrittenCount() {
+        return writtenCount;
     }
 }

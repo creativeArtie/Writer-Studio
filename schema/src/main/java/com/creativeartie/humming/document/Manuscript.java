@@ -219,7 +219,7 @@ public final class Manuscript extends ForwardingList<DivisionSecChapter> impleme
      * @return list of text
      */
     public String getText() {
-        return Joiner.on(new String()).join(convertLeaves(@Nullable SpanLeaf::getRefText));
+        return Joiner.on(new String()).join(convertLeaves(@Nullable SpanLeaf::getReferText));
     }
 
     /**

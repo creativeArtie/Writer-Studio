@@ -10,6 +10,7 @@ import com.creativeartie.humming.schema.*;
  */
 public final class ParaNoteHead extends Para implements IdentityParent {
     private Optional<IdentitySpan> noteId;
+    private Optional<TextFormatted> noteHeading;
 
     ParaNoteHead(SpanBranch parent) {
         super(parent, CssLineStyles.HEADER);
@@ -20,9 +21,12 @@ public final class ParaNoteHead extends Para implements IdentityParent {
     protected void buildSpan(Matcher match) {
         String raw;
         add(new SpanLeaf(this, ParaNotePatterns.NoteLineParts.HEADING.group(match)));
+        TextFormatted text = null;
         if ((raw = ParaNotePatterns.NoteLineParts.TITLE.group(match)) != null) {
-            add(TextFormatted.newHeadingText(this, raw));
+            text = TextFormatted.newHeadingText(this, raw);
+            add(text);
         }
+        noteHeading = Optional.ofNullable(text);
         if ((raw = ParaNotePatterns.NoteLineParts.IDER.group(match)) != null) {
             add(new SpanLeaf(this, raw));
             if ((raw = ParaNotePatterns.NoteLineParts.ID.group(match)) != null) {
@@ -41,5 +45,15 @@ public final class ParaNoteHead extends Para implements IdentityParent {
     @Override
     public Optional<IdentitySpan> getPointer() {
         return noteId;
+    }
+
+    @Override
+    public int getOutlineCount() {
+        return getWritten(noteHeading) + getOutline(noteHeading);
+    }
+
+    @Override
+    public int getWrittenCount() {
+        return 0;
     }
 }
