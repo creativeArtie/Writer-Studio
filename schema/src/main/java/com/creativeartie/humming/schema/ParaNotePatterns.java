@@ -82,10 +82,10 @@ public enum ParaNotePatterns implements PatternEnum {
         /** Note field separator pattern. */
         FIELDER("="),
         /** Note field value pattern. */
-        VALUE(TextSpanPatterns.SIMPLE.getRawPattern()),
+        VALUE(TextSpanPatterns.ERROR.getRawPattern()),
 
         /** Note error pattern. */
-        ERROR(TextSpanPatterns.SIMPLE.getRawPattern()),
+        ERROR(TextSpanPatterns.ERROR.getRawPattern()),
 
         /** Line ending pattern */
         ENDER("\n?");

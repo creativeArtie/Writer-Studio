@@ -27,7 +27,7 @@ public enum TextFormattedPatterns implements PatternEnum {
      *
      * @see ParaReferencePatterns
      */
-    NOTE(TextSpanPatterns.TEXT, false),
+    NOTE(TextSpanPatterns.NOTE, false),
     /**
      * Table cell formatted pattern.
      *
@@ -114,8 +114,10 @@ public enum TextFormattedPatterns implements PatternEnum {
         builder.append(TextFormattedParts.ITALICS.getPattern(withName) + "|");
         builder.append(TextFormattedParts.TODO.getPattern(withName) + "|");
         if (withRefers) builder.append(TextFormattedParts.REFER.getPattern(withName) + "|");
+
         String raw = textPattern.getRawPattern();
         builder.append(withName ? PatternEnum.namePattern(TextFormattedParts.TEXT.getPatternName(), raw) : raw);
+
         if (withName) return builder.toString();
         return "(" + builder.toString() + ")+";
     }

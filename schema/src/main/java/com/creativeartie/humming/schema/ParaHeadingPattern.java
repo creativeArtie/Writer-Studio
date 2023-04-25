@@ -27,7 +27,7 @@ public enum ParaHeadingPattern implements PatternEnum {
     /** Heading ID pattern */
     ID(IdentityPattern.getFullPattern()),
     /** Header ID error pattern. */
-    ERROR(TextSpanPatterns.SIMPLE.getRawPattern()),
+    ERROR(TextSpanPatterns.ERROR.getRawPattern()),
 
     /** Line ending pattern */
     ENDER("\n?");

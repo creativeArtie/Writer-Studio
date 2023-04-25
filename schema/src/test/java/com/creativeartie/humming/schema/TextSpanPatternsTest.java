@@ -1,7 +1,6 @@
 package com.creativeartie.humming.schema;
 
 import java.util.regex.*;
-import java.util.stream.*;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
@@ -28,7 +27,16 @@ final class TextSpanPatternsTest extends PatternTestBase<TextSpanParts> {
     }
 
     @ParameterizedTest
-    @EnumSource(TextSpanPatterns.class)
+    @ValueSource(strings = { "abc", "  Hello", "Hello_abc" })
+    void testBasicKey(String raw) {
+        final Matcher matcher = TextSpanPatterns.KEY.matcher(raw);
+        matcher.find();
+        assertGroup(raw, matcher, TextSpanPatterns.TextSpanParts.TEXT, 1);
+        assertEnd(matcher);
+    }
+
+    @ParameterizedTest
+    @EnumSource
     void testEscapedText(TextSpanPatterns pattern) {
         final Matcher matcher = pattern.matcher("avdd\\-ade");
         matcher.find();
@@ -49,35 +57,129 @@ final class TextSpanPatternsTest extends PatternTestBase<TextSpanParts> {
         assertEnd(matcher);
     }
 
-    static Stream<? extends Arguments> getLeftOvers() {
-        return Stream.<Arguments>of(
-
-                Arguments.of(" ", TextSpanPatterns.KEY), Arguments.of(":", TextSpanPatterns.KEY),
-
-                Arguments.of("\n", TextSpanPatterns.HEADING), Arguments.of("#", TextSpanPatterns.HEADING),
-                Arguments.of("{", TextSpanPatterns.HEADING),
-
-                Arguments.of("\n", TextSpanPatterns.ID), Arguments.of("-", TextSpanPatterns.ID),
-                Arguments.of("*", TextSpanPatterns.ID),
-
-                Arguments.of("}", TextSpanPatterns.SPECIAL), Arguments.of("\n", TextSpanPatterns.SPECIAL),
-                Arguments.of("*", TextSpanPatterns.SPECIAL),
-
-                Arguments.of("\n", TextSpanPatterns.TEXT), Arguments.of("{", TextSpanPatterns.TEXT),
-
-                Arguments.of("\n", TextSpanPatterns.SIMPLE),
-
-                Arguments.of("\n", TextSpanPatterns.NOTE), Arguments.of("*", TextSpanPatterns.NOTE)
-        );
+    @ParameterizedTest
+    @EnumSource
+    void testBoldEnd(TextSpanPatterns pattern) {
+        final String raw = "text*";
+        final Matcher matcher = pattern.matcher(raw);
+        matcher.find();
+        switch (pattern) {
+            case ERROR:
+                assertGroup(raw, matcher, TextSpanPatterns.TextSpanParts.TEXT, 1);
+                break;
+            case CELL:
+            case HEADING:
+            case ID:
+            case KEY:
+            case NOTE:
+            case SPECIAL:
+            case TEXT:
+                assertGroup("text", matcher, TextSpanPatterns.TextSpanParts.TEXT, 1);
+        }
+        assertEnd(matcher);
     }
 
     @ParameterizedTest
-    @MethodSource("getLeftOvers")
-    void testWithLeftover(String ender, TextSpanPatterns tester) {
-        final String raw = "text" + ender;
-        final Matcher matcher = tester.matcher(raw);
+    @EnumSource
+    void testItalicsEnd(TextSpanPatterns pattern) {
+        final String raw = "text`";
+        final Matcher matcher = pattern.matcher(raw);
+        matcher.find();
+        switch (pattern) {
+            case ERROR:
+                assertGroup(raw, matcher, TextSpanPatterns.TextSpanParts.TEXT, 1);
+                break;
+            case CELL:
+            case HEADING:
+            case ID:
+            case KEY:
+            case NOTE:
+            case SPECIAL:
+            case TEXT:
+                assertGroup("text", matcher, TextSpanPatterns.TextSpanParts.TEXT, 1);
+        }
+        assertEnd(matcher);
+    }
+
+    @ParameterizedTest
+    @EnumSource
+    void testUnderlineEnd(TextSpanPatterns pattern) {
+        final String raw = "text_";
+        final Matcher matcher = pattern.matcher(raw);
+        matcher.find();
+        switch (pattern) {
+            case ERROR:
+            case ID:
+            case KEY:
+                assertGroup(raw, matcher, TextSpanPatterns.TextSpanParts.TEXT, 1);
+                break;
+            case CELL:
+            case HEADING:
+            case NOTE:
+            case SPECIAL:
+            case TEXT:
+                assertGroup("text", matcher, TextSpanPatterns.TextSpanParts.TEXT, 1);
+        }
+        assertEnd(matcher);
+    }
+
+    @ParameterizedTest
+    @EnumSource
+    void testLinend(TextSpanPatterns pattern) {
+        final String raw = "text\n";
+        final Matcher matcher = pattern.matcher(raw);
         matcher.find();
         assertGroup("text", matcher, TextSpanPatterns.TextSpanParts.TEXT, 1);
+        assertEnd(matcher);
+    }
+
+    @ParameterizedTest
+    @EnumSource
+    void testRefStart(TextSpanPatterns pattern) {
+        final String raw = "text{";
+        final Matcher matcher = pattern.matcher(raw);
+        matcher.find();
+        switch (pattern) {
+            case ERROR:
+            case SPECIAL:
+                assertGroup(raw, matcher, TextSpanPatterns.TextSpanParts.TEXT, 1);
+                break;
+            case NOTE:
+            case TEXT:
+            case ID:
+            case KEY:
+            case CELL:
+            case HEADING:
+                assertGroup("text", matcher, TextSpanPatterns.TextSpanParts.TEXT, 1);
+        }
+        assertEnd(matcher);
+    }
+
+    @ParameterizedTest
+    @EnumSource
+    void testTodoStart(TextSpanPatterns pattern) {
+        final String raw = "text{!";
+        final Matcher matcher = pattern.matcher(raw);
+        matcher.find();
+        switch (pattern) {
+            case ERROR:
+            case SPECIAL:
+                assertGroup(raw, matcher, TextSpanPatterns.TextSpanParts.TEXT, 1);
+                break;
+            case ID:
+            case KEY:
+                assertGroup("text", matcher, TextSpanPatterns.TextSpanParts.TEXT, 1);
+                break;
+            case NOTE:
+            case TEXT:
+            case CELL:
+            case HEADING:
+                assertGroup("text", matcher, TextSpanPatterns.TextSpanParts.TEXT, 1);
+                matcher.find();
+                // agenda pattern is not matched here, making "!" being matched as text
+                assertGroup("!", matcher, TextSpanPatterns.TextSpanParts.TEXT, 2);
+                return; // length missing "{"
+        }
         assertEnd(matcher);
     }
 }

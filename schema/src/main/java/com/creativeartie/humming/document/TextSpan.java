@@ -45,7 +45,7 @@ public final class TextSpan extends SpanBranch {
     }
 
     static TextSpan newSimple(SpanBranch span, String raw, CssSpanStyles... styles) {
-        return parseText(new TextSpan(span, styles), TextSpanPatterns.SIMPLE, raw);
+        return parseText(new TextSpan(span, styles), TextSpanPatterns.ERROR, raw);
     }
 
     static TextSpan newSpecial(SpanBranch span, String raw, CssSpanStyles... styles) {

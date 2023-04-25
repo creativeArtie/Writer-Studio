@@ -188,7 +188,7 @@ abstract class DivisionTestBase<T extends Division> extends SpanTestBase<SpanBra
     }
 
     protected void newDoc(String input) {
-        getDocument().updateText(input);
+        Assertions.assertDoesNotThrow(() -> getDocument().updateText(input));
 
         for (SpanBranch child : getDocument()) {
             printSpan(child, input);

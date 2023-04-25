@@ -88,7 +88,7 @@ public enum ParaReferencePatterns implements PatternEnum {
         TEXT(TextFormattedPatterns.NOTE.getRawPattern()),
 
         /** error text pattern */
-        ERROR(TextSpanPatterns.SIMPLE.getRawPattern()),
+        ERROR(TextSpanPatterns.ERROR.getRawPattern()),
         /** Line ending pattern */
         ENDER("\n?");
 

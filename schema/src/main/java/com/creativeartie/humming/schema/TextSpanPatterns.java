@@ -14,68 +14,92 @@ public enum TextSpanPatterns implements PatternEnum {
      *
      * @see IdentityPattern
      */
-    ID("\\p{IsIdeographic}\\p{IsAlphabetic}\\p{IsDigit} _\t", false),
+    ID() {
+        @Override
+        String getValuePattern() {
+            return "[\\p{IsIdeographic}\\p{IsAlphabetic}\\p{IsDigit} _\\t]+";
+        }
+    },
     /**
-     * Text pattern for malformed address id error and Todo.
+     * Text pattern for in-line malformed address id error and Todo.
      *
      * @see IdentityReferencePattern
      * @see IdentityTodoPattern
      */
-    SPECIAL("\\}\\n", true),
+    SPECIAL() {
+        @Override
+        String getValuePattern() {
+            return "[^\\}\\n" + FormatPattern.getFormatPattern() + "]+";
+        }
+    },
     /**
      * Text pattern for basic cases
      *
      * @see TextFormattedPatterns#BASIC
      * @see TextFormattedPatterns#NOTE
      */
-    TEXT("\\n", true),
+    TEXT() {
+        @Override
+        String getValuePattern() {
+            return "[^\\n" + FormatPattern.getWithRefPattern() + "]+";
+        }
+    },
     /**
-     * Text pattern for malformed address id text
+     * Text pattern for malformed address line id text
      *
      * @see ParaHeadingPattern
      * @see ParaNotePatterns
      * @see ParaReferencePatterns
      * @see ParaBasicPatterns
      */
-    SIMPLE("^\\\\\\n", false),
+    ERROR() {
+        @Override
+        String getValuePattern() {
+            return "[^\\n" + FormatPattern.getEscapePattern() + "]+";
+        }
+    },
     /**
      * Text format for heading
      *
      * @see TextFormattedPatterns#HEADING
      */
-    HEADING("\\n\\#", true),
+    HEADING() {
+        @Override
+        String getValuePattern() {
+            return "[^\\n\\#" + FormatPattern.getWithRefPattern() + "]+";
+        }
+    },
     /**
      * Text for for note field's key
      *
      * @see ParaNotePatterns
      */
-    KEY("\\p{IsAlphabetic}_", false),
+    KEY() {
+        @Override
+        String getValuePattern() {
+            return "[\\p{IsAlphabetic}_\s]+";
+        }
+    },
     /**
      * Text format for table cell
      *
      * @see TextFormattedPatterns#CELL
      */
-    CELL("\\|\\n", true),
+    CELL() {
+        @Override
+        String getValuePattern() {
+            return "[^\\n\\|" + FormatPattern.getWithRefPattern() + "]+";
+        }
+    },
     /**
      * Text format for note. Uses in {@link TextFormatted}.
      */
-    NOTE;
-
-    private enum BasicFormatParts {
-        REF("\\{"), BOLD("\\*"), UNDERLINE("_"), ITALICS("`"), ESCAPE("\\\\");
-
-        private static String listPatterns() {
-            StringBuilder builder = new StringBuilder();
-            for (BasicFormatParts part : values()) builder.append(part.rawPattern);
-            return builder.toString();
+    NOTE {
+        @Override
+        String getValuePattern() {
+            return "([^\\n" + FormatPattern.getWithRefPattern() + "]|(\\{[^!]))+";
         }
-
-        private String rawPattern;
-
-        BasicFormatParts(String pattern) {
-            rawPattern = pattern;
-        }
-    }
+    };
 
     /** Parts of a text */
     public enum TextSpanParts implements PatternEnum {
@@ -101,26 +125,16 @@ public enum TextSpanPatterns implements PatternEnum {
         }
     }
 
-    private final String textPattern;
+    abstract String getValuePattern();
+
     private final String basePattern;
     private Pattern compiledPattern;
 
-    TextSpanPatterns(String pat, boolean isNegate) {
-        textPattern = isNegate ? ("[^" + pat + BasicFormatParts.listPatterns() + "]+") : ("[" + pat + "]+");
+    TextSpanPatterns() {
         // @formatter:off
         basePattern = "(" +
                 TextSpanParts.ESCAPE.getRawPattern() + "|" +
-                textPattern +
-            ")+";
-        // @formatter:on
-    }
-
-    TextSpanPatterns() { // For footnote and endnote
-        textPattern = "[^\\n" + BasicFormatParts.listPatterns().substring(1) + "]+";
-        // @formatter:off
-        basePattern = "(" +
-                TextSpanParts.ESCAPE.getRawPattern() + "|" +
-                textPattern +
+                getValuePattern() +
             ")+";
         // @formatter:on
     }
@@ -138,7 +152,10 @@ public enum TextSpanPatterns implements PatternEnum {
         // @formatter:off
             "(" +
                 TextSpanParts.ESCAPE.getNamedPattern() + "|" +
-                PatternEnum.namePattern(TextSpanParts.TEXT.name(), textPattern) +
+                PatternEnum.namePattern(TextSpanParts.TEXT.name(),
+                    TextSpanParts.ESCAPE.getRawPattern() + "|" +
+                    getValuePattern()
+                ) +
             ")"
         // @formatter:on
         );

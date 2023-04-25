@@ -91,7 +91,9 @@ public abstract class Para extends SpanBranch {
                     return getWritten(formatted);
                 }
             };
-        else return null;
+        else {
+            throw new IllegalStateException("Line type not found."); //$NON-NLS-1$
+        }
 
         returns.buildSpan(match);
         return returns;

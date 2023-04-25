@@ -40,7 +40,7 @@ public enum ParaBasicPatterns implements PatternEnum {
         BREAKER("\\*+"),
 
         /** Basic text pattern for agenda. */
-        TEXT("(" + TextSpanPatterns.SIMPLE.getRawPattern() + ")?"),
+        TEXT("(" + TextSpanPatterns.ERROR.getRawPattern() + ")?"),
         /** Formatted text pattern */
         FORMATTED("(" + TextFormattedPatterns.BASIC.getRawPattern() + ")?"),
 

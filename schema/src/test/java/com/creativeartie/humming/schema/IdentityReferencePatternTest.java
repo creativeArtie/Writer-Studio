@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.*;
 
 @SuppressWarnings("nls")
 final class IdentityReferencePatternTest extends PatternTestBase<IdentityReferencePattern> {
-    @BeforeAll
+    @AfterAll
     static void displayPattern() throws Exception {
         splitPrintPattern(IdentityReferencePattern.matcher("{^ad}"));
     }
