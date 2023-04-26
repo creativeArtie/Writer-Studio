@@ -3,6 +3,7 @@ package com.creativeartie.humming.schema;
 import java.util.regex.*;
 
 import com.creativeartie.humming.document.*;
+import com.creativeartie.humming.files.*;
 
 /**
  * Patterns for basic text with escape chars.
@@ -29,7 +30,7 @@ public enum TextSpanPatterns implements PatternEnum {
     SPECIAL() {
         @Override
         String getValuePattern() {
-            return "[^\\}\\n" + FormatPattern.getFormatPattern() + "]+";
+            return "[^\\}\\n" + Literals.TEXTPAT_FORMATS.getText() + "]+";
         }
     },
     /**
@@ -41,7 +42,7 @@ public enum TextSpanPatterns implements PatternEnum {
     TEXT() {
         @Override
         String getValuePattern() {
-            return "[^\\n" + FormatPattern.getWithRefPattern() + "]+";
+            return "[^\\n" + Literals.TEXTPAT_REF.getText() + "]+";
         }
     },
     /**
@@ -55,7 +56,7 @@ public enum TextSpanPatterns implements PatternEnum {
     ERROR() {
         @Override
         String getValuePattern() {
-            return "[^\\n" + FormatPattern.getEscapePattern() + "]+";
+            return "[^\\n" + Literals.TEXTPAT_ESCAPE.getText() + "]+";
         }
     },
     /**
@@ -66,7 +67,7 @@ public enum TextSpanPatterns implements PatternEnum {
     HEADING() {
         @Override
         String getValuePattern() {
-            return "[^\\n\\#" + FormatPattern.getWithRefPattern() + "]+";
+            return "[^\\n\\#" + Literals.TEXTPAT_REF.getText() + "]+";
         }
     },
     /**
@@ -88,7 +89,7 @@ public enum TextSpanPatterns implements PatternEnum {
     CELL() {
         @Override
         String getValuePattern() {
-            return "[^\\n\\|" + FormatPattern.getWithRefPattern() + "]+";
+            return "[^\\n\\|" + Literals.TEXTPAT_REF.getText() + "]+";
         }
     },
     /**
@@ -97,7 +98,7 @@ public enum TextSpanPatterns implements PatternEnum {
     NOTE {
         @Override
         String getValuePattern() {
-            return "([^\\n" + FormatPattern.getWithRefPattern() + "]|(\\{[^!]))+";
+            return "([^\\n" + Literals.TEXTPAT_REF.getText() + "]|(\\{[^!]))+";
         }
     };
 

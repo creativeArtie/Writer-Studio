@@ -107,7 +107,7 @@ public abstract class Para extends SpanBranch {
         return formatted.map((text) -> text.getWrittenCount()).orElse(0);
     }
 
-    protected Optional<TextFormatted> addText(Matcher match, PatternEnum textPattern) {
+    Optional<TextFormatted> addText(Matcher match, PatternEnum textPattern) {
         String raw;
         TextFormatted formatted = null;
 
@@ -118,7 +118,7 @@ public abstract class Para extends SpanBranch {
         return Optional.ofNullable(formatted);
     }
 
-    protected void addLineEnd(Matcher match, PatternEnum endPattern) {
+    void addLineEnd(Matcher match, PatternEnum endPattern) {
         String raw;
 
         if ((raw = endPattern.group(match)) != null) {
@@ -152,7 +152,7 @@ public abstract class Para extends SpanBranch {
         return lineStyle;
     }
 
-    public abstract int getOutlineCount();
+    abstract int getOutlineCount();
 
-    public abstract int getWrittenCount();
+    abstract int getWrittenCount();
 }

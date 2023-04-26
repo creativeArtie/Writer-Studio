@@ -110,23 +110,44 @@ public final class Log extends ForwardingList<Log.Entry> implements Serializable
             timeSpent = duration.plus(timeSpent);
         }
 
+        /**
+         * Dose it meet the duration target
+         *
+         * @return {@code false} if goal not met or no goal set
+         */
         public boolean meetDurationTarget() {
-            return getTargetDuration().map((duration) -> timeSpent.compareTo(duration) > -1).orElseGet(() -> true);
+            return getTargetDuration().map((duration) -> timeSpent.compareTo(duration) > -1).orElseGet(() -> false);
         }
 
+        /**
+         * Dose it meet the word count target
+         *
+         * @return {@code false} if goal not met or no goal set
+         */
         public boolean meetWordTarget() {
-            return getTargetWordCount().map((goal) -> goal <= writtenCount).orElseGet(() -> true);
+            return getTargetWordCount().map((goal) -> goal <= writtenCount).orElseGet(() -> false);
+        }
+
+        /**
+         * Dose it meet the outline count target
+         *
+         * @return {@code false} if goal not met or no goal set
+         */
+        public boolean meetOutlineTarget() {
+            return getTargetOutlineCount().map((goal) -> goal <= writtenCount).orElseGet(() -> false);
         }
     }
 
     private Duration targetDuration;
     private Integer targetWordCount;
+    private Integer targetOutlineCount;
     private ArrayList<Entry> logEntries;
 
     Log() {
         logEntries = new ArrayList<>();
         targetDuration = null;
         targetWordCount = null;
+        targetOutlineCount = null;
     }
 
     /**
@@ -148,6 +169,15 @@ public final class Log extends ForwardingList<Log.Entry> implements Serializable
     }
 
     /**
+     * Get the target word count.
+     *
+     * @return target word count
+     */
+    public Optional<Integer> getTargetOutlineCount() {
+        return Optional.ofNullable(targetOutlineCount);
+    }
+
+    /**
      * Set the target duration.
      *
      * @param duration
@@ -165,6 +195,16 @@ public final class Log extends ForwardingList<Log.Entry> implements Serializable
      */
     public void setTargetWordCount(Integer wordCount) {
         targetWordCount = wordCount;
+    }
+
+    /**
+     * Set the target word count.
+     *
+     * @param wordCount
+     *        new target word count
+     */
+    public void setTargetOutlineCount(Integer wordCount) {
+        targetOutlineCount = wordCount;
     }
 
     @Override

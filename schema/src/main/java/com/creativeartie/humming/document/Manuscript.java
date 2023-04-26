@@ -386,11 +386,21 @@ public final class Manuscript extends ForwardingList<DivisionSecChapter> impleme
         return answer.build();
     }
 
+    /**
+     * Gets the word count
+     *
+     * @return word count
+     */
     public int getWordCount() {
         // TODO Auto-generated method stub
         return 0;
     }
 
+    /**
+     * Gets the outline count
+     *
+     * @return outline count
+     */
     public int getOutlineCount() {
         // TODO Auto-generated method stub
         return 0;

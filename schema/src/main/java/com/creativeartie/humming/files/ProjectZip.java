@@ -21,10 +21,30 @@ public class ProjectZip {
     private String fileLocation;
     private Optional<LocalDateTime> startTime;
 
+    /**
+     * Create a new project
+     *
+     * @param location
+     *        the file path
+     *
+     * @return a new project
+     */
     public static ProjectZip newProject(String location) {
         return new ProjectZip(location);
     }
 
+    /**
+     * Loads a project
+     *
+     * @param location
+     *        the file path
+     *
+     * @return a loaded project
+     *
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public static ProjectZip loadProject(String location)
             throws FileNotFoundException, IOException, ClassNotFoundException {
         File file = new File(location);

@@ -57,9 +57,37 @@ public enum Literals {
      *
      * @see ProjectZip#save()
      */
-    IMAGE_FOLDER("images");
+    IMAGE_FOLDER("images"),
+    /**
+     * Text escape pattern.
+     *
+     * @see com.creativeartie.humming.schema.TextSpanPatterns
+     */
+    TEXTPAT_ESCAPE("\\\\"),
+    /**
+     * Text format pattern.
+     *
+     * @see com.creativeartie.humming.schema.TextSpanPatterns
+     */
+    TEXTPAT_FORMATS("\\*`\\_") {
+        @Override
+        public String getText() {
+            return TEXTPAT_ESCAPE.getText() + this.literalText;
+        }
+    },
+    /**
+     * Text reference start pattern.
+     *
+     * @see com.creativeartie.humming.schema.TextSpanPatterns
+     */
+    TEXTPAT_REF("\\{") {
+        @Override
+        public String getText() {
+            return TEXTPAT_FORMATS.getText() + this.literalText;
+        }
+    };
 
-    private final String literalText;
+    final String literalText;
 
     private Literals(String text) {
         literalText = text;

@@ -75,7 +75,7 @@ public final class TextFormatted extends SpanBranch {
         super(parent, classes);
     }
 
-    public int getWrittenCount() {
+    int getWrittenCount() {
         String answer = new String();
         for (Span child : this) {
             if (child instanceof TextSpan) {
@@ -85,7 +85,7 @@ public final class TextFormatted extends SpanBranch {
         return Splitter.on(' ').omitEmptyStrings().trimResults().splitToList(answer).size();
     }
 
-    public int getOutlineCount() {
+    int getOutlineCount() {
         int answer = 0;
         for (Span child : this) {
             if (child instanceof IdentityTodo) {
