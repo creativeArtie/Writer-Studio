@@ -15,8 +15,7 @@ abstract class SpanBranchTestBase<T extends SpanBranch> extends SpanTestBase<T> 
 
         @Override
         public Optional<IdentitySpan> getPointer() {
-            // TODO Auto-generated method stub
-            return null;
+            throw new UnsupportedOperationException("The node is a test template, does not work"); //$NON-NLS-1$
         }
     }
 
