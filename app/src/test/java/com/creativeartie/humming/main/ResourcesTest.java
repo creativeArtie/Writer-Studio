@@ -10,7 +10,7 @@ import com.google.common.io.*;
 @SuppressWarnings("nls")
 class ResourcesTest {
     @Test
-    void test() {
+    void resourceTest() {
         URL url = Resources.getResource("data/text.css");
         System.out.println(url.getPath());
         File f = new File(url.getPath());
