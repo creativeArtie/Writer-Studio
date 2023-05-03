@@ -74,11 +74,14 @@ public final class ParaHeading extends Para implements IdentityParent {
 
     @Override
     public int getOutlineCount() {
-        return getOutline(headingText);
+        return getOutline(headingText) + (getLineStyle() == CssLineStyles.OUTLINE ? getWritten(headingText) : 0);
     }
 
     @Override
     public int getWrittenCount() {
+        if (getLineStyle() == CssLineStyles.OUTLINE) {
+            return 0;
+        }
         return getWritten(headingText);
     }
 }

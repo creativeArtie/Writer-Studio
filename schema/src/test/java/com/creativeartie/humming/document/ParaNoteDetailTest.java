@@ -11,6 +11,8 @@ final class ParaNoteDetailTest extends SpanBranchTestBase<ParaNoteDetail> {
         addStyleTest("abc", CssLineStyles.NOTE, CssSpanStyles.TEXT);
         addStyleTest("\n", CssLineStyles.NOTE, CssSpanStyles.OPERATOR);
         testStyles(span);
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(1, span.getOutlineCount(), "outline");
     }
 
     @Test
@@ -19,6 +21,8 @@ final class ParaNoteDetailTest extends SpanBranchTestBase<ParaNoteDetail> {
         addStyleTest("%", CssLineStyles.NOTE, CssSpanStyles.OPERATOR);
         addStyleTest("abc", CssLineStyles.NOTE, CssSpanStyles.TEXT);
         testStyles(span);
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(1, span.getOutlineCount(), "outline");
     }
 
     @Test
@@ -27,6 +31,8 @@ final class ParaNoteDetailTest extends SpanBranchTestBase<ParaNoteDetail> {
         addStyleTest("%", CssLineStyles.NOTE, CssSpanStyles.OPERATOR);
         addStyleTest("\n", CssLineStyles.NOTE, CssSpanStyles.OPERATOR);
         testStyles(span);
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(0, span.getOutlineCount(), "outline");
     }
 
     @Test
@@ -34,6 +40,8 @@ final class ParaNoteDetailTest extends SpanBranchTestBase<ParaNoteDetail> {
         ParaNoteDetail span = newSpan("%");
         addStyleTest("%", CssLineStyles.NOTE, CssSpanStyles.OPERATOR);
         testStyles(span);
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(0, span.getOutlineCount(), "outline");
     }
 
     @Override

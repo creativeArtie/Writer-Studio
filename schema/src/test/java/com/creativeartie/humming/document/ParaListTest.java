@@ -3,7 +3,7 @@ package com.creativeartie.humming.document;
 import org.junit.jupiter.api.*;
 
 @SuppressWarnings("nls")
-final class ParaLineTest extends SpanBranchTestBase<ParaList> {
+final class ParaListTest extends SpanBranchTestBase<ParaList> {
     @Test
     void testBullet() {
         Para test = newSpan("--bullet\n");
@@ -13,6 +13,8 @@ final class ParaLineTest extends SpanBranchTestBase<ParaList> {
         testStyles(test);
         Assertions.assertInstanceOf(ParaList.class, test);
         Assertions.assertEquals(2, ((SpanList) test).getLevel());
+        Assertions.assertEquals(1, test.getWrittenCount(), "written");
+        Assertions.assertEquals(0, test.getOutlineCount(), "outline");
     }
 
     @Test
@@ -24,6 +26,8 @@ final class ParaLineTest extends SpanBranchTestBase<ParaList> {
         testStyles(test);
         Assertions.assertInstanceOf(ParaList.class, test);
         Assertions.assertEquals(1, ((SpanList) test).getLevel());
+        Assertions.assertEquals(1, test.getWrittenCount(), "written");
+        Assertions.assertEquals(0, test.getOutlineCount(), "outline");
     }
 
     @Test
@@ -34,6 +38,8 @@ final class ParaLineTest extends SpanBranchTestBase<ParaList> {
         testStyles(test);
         Assertions.assertInstanceOf(ParaList.class, test);
         Assertions.assertEquals(1, ((SpanList) test).getLevel());
+        Assertions.assertEquals(0, test.getWrittenCount(), "written");
+        Assertions.assertEquals(0, test.getOutlineCount(), "outline");
     }
 
     @Test
@@ -44,6 +50,8 @@ final class ParaLineTest extends SpanBranchTestBase<ParaList> {
         testStyles(test);
         Assertions.assertInstanceOf(ParaList.class, test);
         Assertions.assertEquals(1, ((SpanList) test).getLevel());
+        Assertions.assertEquals(1, test.getWrittenCount(), "written");
+        Assertions.assertEquals(0, test.getOutlineCount(), "outline");
     }
 
     @Test
@@ -52,6 +60,8 @@ final class ParaLineTest extends SpanBranchTestBase<ParaList> {
         addStyleTest("#", CssLineStyles.NUMBERED, CssSpanStyles.OPERATOR);
         testStyles(test);
         Assertions.assertEquals(1, ((SpanList) test).getLevel());
+        Assertions.assertEquals(0, test.getWrittenCount(), "written");
+        Assertions.assertEquals(0, test.getOutlineCount(), "outline");
     }
 
     @Override

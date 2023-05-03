@@ -182,7 +182,7 @@ public class ProjectZip {
         int written = 0;
         int outline = 0;
         for (ManuscriptFile writing : documentFiles.values()) {
-            written += writing.getManuscript().getWordCount();
+            written += writing.getManuscript().getWritingCount();
             outline += writing.getManuscript().getOutlineCount();
         }
         writingLog.getCurrent().setWrittenCount(written);

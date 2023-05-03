@@ -44,6 +44,8 @@ final class ParaReferenceTest extends SpanBranchTestBase<ParaReference> {
         addStyleTest("=", style, CssSpanStyles.OPERATOR);
         addStyleTest("data text", style, CssSpanStyles.TEXT);
         testStyles(span);
+        Assertions.assertEquals(2, span.getWrittenCount(), "written");
+        Assertions.assertEquals(0, span.getOutlineCount(), "outline");
     }
 
     @ParameterizedTest
@@ -54,6 +56,8 @@ final class ParaReferenceTest extends SpanBranchTestBase<ParaReference> {
         addStyleTest(type, style, CssSpanStyles.ERROR, CssSpanStyles.OPERATOR);
         addStyleTest("cat-did text", style, CssSpanStyles.ERROR, CssSpanStyles.TEXT);
         testStyles(span);
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(0, span.getOutlineCount(), "outline");
     }
 
     @Override

@@ -391,9 +391,12 @@ public final class Manuscript extends ForwardingList<DivisionSecChapter> impleme
      *
      * @return word count
      */
-    public int getWordCount() {
-        // TODO Auto-generated method stub
-        return 0;
+    public int getWritingCount() {
+        int count = 0;
+        for (DivisionSecChapter child : this) {
+            count += child.getWritingCount();
+        }
+        return count;
     }
 
     /**
@@ -402,7 +405,10 @@ public final class Manuscript extends ForwardingList<DivisionSecChapter> impleme
      * @return outline count
      */
     public int getOutlineCount() {
-        // TODO Auto-generated method stub
-        return 0;
+        int count = 0;
+        for (DivisionSecChapter child : this) {
+            count += child.getOutlineCount();
+        }
+        return count;
     }
 }

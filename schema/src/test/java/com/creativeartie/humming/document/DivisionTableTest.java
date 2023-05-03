@@ -31,9 +31,10 @@ final class DivisionTableTest extends DivisionTestBase<DivisionTable> {
         addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.OPERATOR);
         testStyles();
 
+        setCounter(12, 0);
         // @formatter:off
-        newChildAtIndex("head", 0).setSize(1).setClass(DivisionSecChapter.class)
-            .newChildAtIndex("table", 0).setSize(3).setClass(DivisionTable.class).setData(2);
+        newChildAtIndex("head", 0).setSize(1).setClass(DivisionSecChapter.class).setCounter(12, 0)
+            .newChildAtIndex("table", 0).setSize(3).setClass(DivisionTable.class).setData(2).setCounter(12, 0);
         // @formatter:on
         testChildren();
     }
@@ -62,9 +63,10 @@ final class DivisionTableTest extends DivisionTestBase<DivisionTable> {
         addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.TEXTCELL, CssSpanStyles.OPERATOR);
         testStyles();
 
+        setCounter(14, 0);
         // @formatter:off
-        newChildAtIndex("head", 0).setSize(1).setClass(DivisionSecChapter.class)
-            .newChildAtIndex("table", 0).setSize(3).setClass(DivisionTable.class).setData(3);
+        newChildAtIndex("head", 0).setSize(1).setClass(DivisionSecChapter.class).setCounter(14, 0)
+            .newChildAtIndex("table", 0).setSize(3).setClass(DivisionTable.class).setData(3).setCounter(14, 0);
         // @formatter:on
         testChildren();
     }
@@ -87,9 +89,10 @@ final class DivisionTableTest extends DivisionTestBase<DivisionTable> {
         addStyleTest("abc", CssLineStyles.NORMAL, CssSpanStyles.TEXT);
         testStyles();
 
+        setCounter(8, 0);
         // @formatter:off
-        newChildAtIndex("head", 0).setSize(3).setClass(DivisionSecChapter.class)
-            .newChildAtIndex("table", 1).setSize(1).setClass(DivisionTable.class).setData(3);
+        newChildAtIndex("head", 0).setSize(3).setClass(DivisionSecChapter.class).setCounter(8, 0)
+            .newChildAtIndex("table", 1).setSize(1).setClass(DivisionTable.class).setData(3).setCounter(6, 0);
         // @formatter:on
         testChildren();
     }

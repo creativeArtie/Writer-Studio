@@ -23,10 +23,13 @@ final class DivisionSecSceneTest extends DivisionTestBase<DivisionSecScene> {
         addStyleTest("heading 2.", CssLineStyles.OUTLINE, CssSpanStyles.TEXT);
         testStyles();
         Span head = getSpan(0);
-
-        TestChild chapter = newChildAtIndex("Chapter", 0).setSize(2).setClass(DivisionSecChapter.class);
-        chapter.newChildAtIndex("Scene 1", 0).setSize(1).setClass(DivisionSecScene.class).setData(1, "1", head);
-        chapter.newChildAtIndex("Scene 2", 1).setSize(1).setClass(DivisionSecScene.class).setData(1, "2", head);
+        setCounter(0, 3);
+        TestChild chapter =
+                newChildAtIndex("Chapter", 0).setSize(2).setClass(DivisionSecChapter.class).setCounter(0, 3);
+        chapter.newChildAtIndex("Scene 1", 0).setSize(1).setClass(DivisionSecScene.class).setData(1, "1", head)
+                .setCounter(0, 1);
+        chapter.newChildAtIndex("Scene 2", 1).setSize(1).setClass(DivisionSecScene.class).setData(1, "2", head)
+                .setCounter(0, 2);
         testChildren();
     }
 
@@ -47,10 +50,12 @@ final class DivisionSecSceneTest extends DivisionTestBase<DivisionSecScene> {
         testStyles();
         Span head = getSpan(0);
 
+        setCounter(2, 1);
         // @formatter:off
-        newChildAtIndex("Chapter", 0).setSize(2).setClass(DivisionSecChapter.class)
-            .newChildAtIndex("Scene", 0).setSize(2).setClass(DivisionSecScene.class).setData(1, "1", head)
-            .newChildAtIndex("List", 1).setSize(1).setClass(DivisionList.class);
+        newChildAtIndex("Chapter", 0).setSize(1).setClass(DivisionSecChapter.class).setCounter(2, 1)
+            .newChildAtIndex("Scene", 0).setSize(3).setClass(DivisionSecScene.class).setData(1, "1", head)
+                .setCounter(2, 1)
+            .newChildAtIndex("List", 1).setSize(1).setClass(DivisionList.class).setCounter(1, 0);
         // @formatter:on
         testChildren();
     }
@@ -75,10 +80,17 @@ final class DivisionSecSceneTest extends DivisionTestBase<DivisionSecScene> {
         testStyles();
         Span head = getSpan(0);
 
-        TestChild chapter = newChildAtIndex("Chapter", 0).setSize(2).setClass(DivisionSecChapter.class);
+        setCounter(0, 4);
+        TestChild chapter =
+                newChildAtIndex("Chapter", 0).setSize(2).setClass(DivisionSecChapter.class).setCounter(0, 4);
+        // @formatter:off
         chapter.newChildAtIndex("Scene 1", 0).setSize(2).setClass(DivisionSecScene.class).setData(1, "1", head)
-                .newChildAtIndex("child", 1).setSize(1).setClass(DivisionSecScene.class).setData(2, "1:1", head);
-        chapter.newChildAtIndex("Scene 2", 1).setSize(1).setClass(DivisionSecScene.class).setData(1, "2", head);
+                .setCounter(0, 3)
+            .newChildAtIndex("child", 1).setSize(1).setClass(DivisionSecScene.class)
+                .setData(2, "1:1", head).setCounter(0, 2);
+        // @formatter:on
+        chapter.newChildAtIndex("Scene 2", 1).setSize(1).setClass(DivisionSecScene.class).setData(1, "2", head)
+                .setCounter(0, 1);
 
         testChildren();
     }
@@ -104,12 +116,16 @@ final class DivisionSecSceneTest extends DivisionTestBase<DivisionSecScene> {
         Span head = getSpan(0);
         Span head1 = getSpan(1);
 
+        setCounter(2, 2);
         // @formatter:off
-        newChildAtIndex("Chapter 1", 0).setSize(1).setClass(DivisionSecChapter.class)
-            .newChildAtIndex("Scene 1", 0).setSize(1).setClass(DivisionSecScene.class).setData(1, "1", head);
-        newChildAtIndex("Chapter 2", 1).setSize(2).setClass(DivisionSecChapter.class)
-            .newChildAtIndex("Scene 2", 1).setSize(1).setClass(DivisionSecScene.class).setData(1, "2", head1);
+        newChildAtIndex("Chapter 1", 0).setSize(1).setClass(DivisionSecChapter.class).setCounter(0, 1)
+            .newChildAtIndex("Scene 1", 0).setSize(1).setClass(DivisionSecScene.class).setData(1, "1", head)
+                .setCounter(0, 1);
+        newChildAtIndex("Chapter 2", 1).setSize(2).setClass(DivisionSecChapter.class).setCounter(2, 1)
+            .newChildAtIndex("Scene 2", 1).setSize(1).setClass(DivisionSecScene.class).setData(1, "1", head1)
+                .setCounter(0, 1);
         // @formatter:on
+        testChildren();
     }
 
     @Override

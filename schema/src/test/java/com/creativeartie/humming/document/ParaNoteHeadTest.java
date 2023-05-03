@@ -14,6 +14,8 @@ final class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
         addStyleTest("\n", CssLineStyles.HEADER, CssSpanStyles.OPERATOR);
         testStyles(span);
         Assertions.assertTrue(span.getPointer().isPresent(), "Id");
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(1, span.getOutlineCount(), "outline");
     }
 
     @Test
@@ -25,6 +27,8 @@ final class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
         addStyleTest("id", CssLineStyles.HEADER, CssSpanStyles.ID, CssSpanStyles.TEXT);
         testStyles(span);
         Assertions.assertTrue(span.getPointer().isPresent(), "Id");
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(1, span.getOutlineCount(), "outline");
     }
 
     @Test
@@ -35,6 +39,8 @@ final class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
         addStyleTest("#", CssLineStyles.HEADER, CssSpanStyles.OPERATOR);
         testStyles(span);
         Assertions.assertFalse(span.getPointer().isPresent(), "Id");
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(1, span.getOutlineCount(), "outline");
     }
 
     @Test
@@ -45,6 +51,8 @@ final class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
         addStyleTest("id", CssLineStyles.HEADER, CssSpanStyles.ID, CssSpanStyles.TEXT);
         testStyles(span);
         Assertions.assertTrue(span.getPointer().isPresent(), "Id");
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(0, span.getOutlineCount(), "outline");
     }
 
     @Test
@@ -54,6 +62,8 @@ final class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
         addStyleTest("title", CssLineStyles.HEADER, CssSpanStyles.TEXT);
         testStyles(span);
         Assertions.assertFalse(span.getPointer().isPresent(), "Id");
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(1, span.getOutlineCount(), "outline");
     }
 
     @Test
@@ -62,6 +72,8 @@ final class ParaNoteHeadTest extends SpanBranchTestBase<ParaNoteHead> {
         addStyleTest("%=", CssLineStyles.HEADER, CssSpanStyles.OPERATOR);
         testStyles(span);
         Assertions.assertFalse(span.getPointer().isPresent(), "Id");
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(0, span.getOutlineCount(), "outline");
     }
 
     @Override

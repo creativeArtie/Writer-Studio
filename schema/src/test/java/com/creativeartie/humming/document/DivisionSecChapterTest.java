@@ -29,8 +29,8 @@ final class DivisionSecChapterTest extends DivisionTestBase<DivisionSecChapter> 
         addStyleTest("\\*", CssLineStyles.QUOTE, CssSpanStyles.ESCAPE);
         addStyleTest(".", CssLineStyles.QUOTE, CssSpanStyles.TEXT);
         testStyles();
-
-        newChildAtIndex("No heading", 0).setSize(2).setClass(DivisionSecChapter.class).setData(1, "1");
+        setCounter(7, 1);
+        newChildAtIndex("No heading", 0).setSize(2).setClass(DivisionSecChapter.class).setData(1, "1").setCounter(7, 1);
         testChildren();
     }
 
@@ -44,8 +44,9 @@ final class DivisionSecChapterTest extends DivisionTestBase<DivisionSecChapter> 
 
         addStyleTest("Some content.", CssLineStyles.NORMAL, CssSpanStyles.TEXT);
         testStyles();
-
-        newChildAtIndex("With Heading", 0).setSize(2).setClass(DivisionSecChapter.class).setData(1, "1");
+        setCounter(3, 0);
+        newChildAtIndex("With Heading", 0).setSize(2).setClass(DivisionSecChapter.class).setData(1, "1")
+                .setCounter(3, 0);
         testChildren();
     }
 
@@ -60,8 +61,11 @@ final class DivisionSecChapterTest extends DivisionTestBase<DivisionSecChapter> 
         addStyleTest("Some content.", CssLineStyles.NORMAL, CssSpanStyles.TEXT);
         testStyles();
 
-        newChildAtIndex("No Heading", 0).setSize(1).setClass(DivisionSecChapter.class).setData(1, "1")
-                .newChildAtIndex("child", 0).setSize(2).setClass(DivisionSecChapter.class).setData(2, "1:1");
+        setCounter(3, 0);
+        // @formatter:off
+        newChildAtIndex("No Heading", 0).setSize(1).setClass(DivisionSecChapter.class).setData(1, "1").setCounter(3, 0)
+                .newChildAtIndex("child", 0).setSize(2).setClass(DivisionSecChapter.class).setData(2, "1:1").setCounter(3, 0);
+        // @formatter:on
         testChildren();
     }
 
@@ -79,12 +83,15 @@ final class DivisionSecChapterTest extends DivisionTestBase<DivisionSecChapter> 
         addStyleTest("==", CssLineStyles.HEADING, CssSpanStyles.OPERATOR); // 1.2
         addStyleTest("heading", CssLineStyles.HEADING, CssSpanStyles.TEXT);
         testStyles();
-
-        TestChild h1 = newChildAtIndex("Parent", 0).setClass(DivisionSecChapter.class).setSize(3).setData(1, "1");
-        TestChild h1_1 =
-                h1.newChildAtIndex("First child", 1).setClass(DivisionSecChapter.class).setSize(1).setData(2, "1:1");
-        h1_1.newChildAtIndex("grandchild", 0).setClass(DivisionSecChapter.class).setSize(1).setData(3, "1:1:1");
-        h1.newChildAtIndex("second child", 2).setClass(DivisionSecChapter.class).setSize(1).setData(2, "1:2");
+        setCounter(4, 0);
+        TestChild h1 = newChildAtIndex("Parent", 0).setClass(DivisionSecChapter.class).setSize(3).setData(1, "1")
+                .setCounter(4, 0);
+        TestChild h1_1 = h1.newChildAtIndex("First child", 1).setClass(DivisionSecChapter.class).setSize(1)
+                .setData(2, "1:1").setCounter(2, 0);
+        h1_1.newChildAtIndex("grandchild", 0).setClass(DivisionSecChapter.class).setSize(1).setData(3, "1:1:1")
+                .setCounter(2, 0);
+        h1.newChildAtIndex("second child", 2).setClass(DivisionSecChapter.class).setSize(1).setData(2, "1:2")
+                .setCounter(1, 0);
         testChildren();
     }
 
@@ -98,9 +105,11 @@ final class DivisionSecChapterTest extends DivisionTestBase<DivisionSecChapter> 
         addStyleTest("=", CssLineStyles.HEADING, CssSpanStyles.OPERATOR); // 2
         addStyleTest("heading", CssLineStyles.HEADING, CssSpanStyles.TEXT);
         testStyles();
-
-        newChildAtIndex("First Child", 0).setClass(DivisionSecChapter.class).setSize(1).setData(1, "1");
-        newChildAtIndex("Second Child", 1).setClass(DivisionSecChapter.class).setSize(1).setData(1, "2");
+        setCounter(2, 0);
+        newChildAtIndex("First Child", 0).setClass(DivisionSecChapter.class).setSize(1).setData(1, "1")
+                .setCounter(1, 0);
+        newChildAtIndex("Second Child", 1).setClass(DivisionSecChapter.class).setSize(1).setData(1, "2")
+                .setCounter(1, 0);
         testChildren();
     }
 

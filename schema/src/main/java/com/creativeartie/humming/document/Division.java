@@ -24,4 +24,38 @@ public abstract class Division extends SpanBranch {
      * @return the division to add the next line in
      */
     protected abstract Division addLine(Para line, CssLineStyles style);
+
+    /**
+     * Gets the outline word count
+     *
+     * @return the current word count
+     */
+    public int getOutlineCount() {
+        int count = 0;
+        for (Span child : this) {
+            if (child instanceof Division) {
+                count += ((Division) child).getOutlineCount();
+            } else if (child instanceof Para) {
+                count += ((Para) child).getOutlineCount();
+            }
+        }
+        return count;
+    }
+
+    /**
+     * Gets the writing word count
+     *
+     * @return the current word count
+     */
+    public int getWritingCount() {
+        int count = 0;
+        for (Span child : this) {
+            if (child instanceof Division) {
+                count += ((Division) child).getWritingCount();
+            } else if (child instanceof Para) {
+                count += ((Para) child).getWrittenCount();
+            }
+        }
+        return count;
+    }
 }

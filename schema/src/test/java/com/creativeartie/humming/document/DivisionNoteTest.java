@@ -41,9 +41,10 @@ final class DivisionNoteTest extends DivisionTestBase<DivisionNote> {
 
         ImmutableMap<String, String> expect = ImmutableMap.of("abc", "dec");
 
+        setCounter(1, 3);
         // @formatter:off
-        newChildAtIndex("section", 0).setSize(2).setClass(DivisionSecChapter.class)
-            .newChildAtIndex("note", 0).setSize(4).setClass(DivisionNote.class).setData(id, expect);
+        newChildAtIndex("section", 0).setSize(2).setClass(DivisionSecChapter.class).setCounter(1, 3)
+            .newChildAtIndex("note", 0).setSize(4).setClass(DivisionNote.class).setData(id, expect).setCounter(0, 3);
         // @formatter:on
         testChildren();
     }
@@ -63,10 +64,11 @@ final class DivisionNoteTest extends DivisionTestBase<DivisionNote> {
         Span id = null;
         ImmutableMap<String, String> expect = ImmutableMap.of();
 
+        setCounter(0, 4);
         // @formatter:off
-        TestChild head= newChildAtIndex("section", 0).setSize(2).setClass(DivisionSecChapter.class);
-        head.newChildAtIndex("note 1", 0).setSize(1).setClass(DivisionNote.class).setData(id, expect);
-        head.newChildAtIndex("note 2", 1).setSize(1).setClass(DivisionNote.class).setData(id, expect);
+        TestChild head = newChildAtIndex("section", 0).setSize(2).setClass(DivisionSecChapter.class).setCounter(0, 4);
+        head.newChildAtIndex("note 1", 0).setSize(1).setClass(DivisionNote.class).setData(id, expect).setCounter(0, 2);
+        head.newChildAtIndex("note 2", 1).setSize(1).setClass(DivisionNote.class).setData(id, expect).setCounter(0, 2);
         // @formatter:on
         testChildren();
     }

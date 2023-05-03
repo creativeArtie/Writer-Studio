@@ -50,7 +50,7 @@ public final class DivisionList extends Division implements SpanList {
             case NUMBERED:
                 return addLine((ParaList) line);
             default:
-                return findParent(DivisionSecChapter.class).get().addLine(line, style);
+                return findParent(DivisionSec.class).get().addLine(line, style);
         }
     }
 

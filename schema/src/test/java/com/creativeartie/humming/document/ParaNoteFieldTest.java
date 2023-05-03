@@ -13,6 +13,8 @@ final class ParaNoteFieldTest extends SpanBranchTestBase<ParaNoteField> {
         addStyleTest("John", CssLineStyles.FIELD, CssSpanStyles.TEXT);
         addStyleTest("\n", CssLineStyles.FIELD, CssSpanStyles.OPERATOR);
         testStyles(span);
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(1, span.getOutlineCount(), "outline");
     }
 
     @Test
@@ -23,6 +25,8 @@ final class ParaNoteFieldTest extends SpanBranchTestBase<ParaNoteField> {
         addStyleTest("=", CssLineStyles.FIELD, CssSpanStyles.OPERATOR);
         addStyleTest("John", CssLineStyles.FIELD, CssSpanStyles.TEXT);
         testStyles(span);
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(1, span.getOutlineCount(), "outline");
     }
 
     @Test
@@ -34,6 +38,8 @@ final class ParaNoteFieldTest extends SpanBranchTestBase<ParaNoteField> {
         addStyleTest("John", CssLineStyles.FIELD, CssSpanStyles.ERROR, CssSpanStyles.TEXT);
         addStyleTest("\n", CssLineStyles.FIELD, CssSpanStyles.ERROR, CssSpanStyles.OPERATOR);
         testStyles(span);
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(0, span.getOutlineCount(), "outline");
     }
 
     @Override

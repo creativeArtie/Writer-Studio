@@ -22,6 +22,8 @@ final class ParaBasicTest extends SpanBranchTestBase<Para> {
         Assertions.assertEquals(style, span.getLineStyle(), "Line style");
         if (starter != "") addStyleTest(starter, style, CssSpanStyles.OPERATOR);
         testStyles(span);
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(0, span.getOutlineCount(), "outline");
     }
 
     @ParameterizedTest
@@ -32,6 +34,8 @@ final class ParaBasicTest extends SpanBranchTestBase<Para> {
         if (starter != "") addStyleTest(starter, style, CssSpanStyles.OPERATOR);
         addStyleTest("\n", style, CssSpanStyles.OPERATOR);
         testStyles(span);
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(0, span.getOutlineCount(), "outline");
     }
 
     @ParameterizedTest
@@ -42,6 +46,14 @@ final class ParaBasicTest extends SpanBranchTestBase<Para> {
         if (starter != "") addStyleTest(starter, style, CssSpanStyles.OPERATOR);
         addStyleTest("abc", style, CssSpanStyles.TEXT);
         testStyles(span);
+        if (style == CssLineStyles.AGENDA) {
+            Assertions.assertEquals(0, span.getWrittenCount(), "written");
+            Assertions.assertEquals(1, span.getOutlineCount(), "outline");
+
+        } else {
+            Assertions.assertEquals(1, span.getWrittenCount(), "written");
+            Assertions.assertEquals(0, span.getOutlineCount(), "outline");
+        }
     }
 
     @ParameterizedTest
@@ -53,6 +65,14 @@ final class ParaBasicTest extends SpanBranchTestBase<Para> {
         addStyleTest("abc", style, CssSpanStyles.TEXT);
         addStyleTest("\n", style, CssSpanStyles.OPERATOR);
         testStyles(span);
+        if (style == CssLineStyles.AGENDA) {
+            Assertions.assertEquals(0, span.getWrittenCount(), "written");
+            Assertions.assertEquals(1, span.getOutlineCount(), "outline");
+
+        } else {
+            Assertions.assertEquals(1, span.getWrittenCount(), "written");
+            Assertions.assertEquals(0, span.getOutlineCount(), "outline");
+        }
     }
 
     @Test
@@ -61,6 +81,8 @@ final class ParaBasicTest extends SpanBranchTestBase<Para> {
         Assertions.assertEquals(CssLineStyles.BREAK, span.getLineStyle(), "Line style");
         addStyleTest("**", CssLineStyles.BREAK, CssSpanStyles.OPERATOR);
         testStyles(span);
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(0, span.getOutlineCount(), "outline");
     }
 
     @Test
@@ -69,6 +91,8 @@ final class ParaBasicTest extends SpanBranchTestBase<Para> {
         Assertions.assertEquals(CssLineStyles.BREAK, span.getLineStyle(), "Line style");
         addStyleTest("*******", CssLineStyles.BREAK, CssSpanStyles.OPERATOR);
         testStyles(span);
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(0, span.getOutlineCount(), "outline");
     }
 
     @Test
@@ -77,6 +101,8 @@ final class ParaBasicTest extends SpanBranchTestBase<Para> {
         Assertions.assertEquals(CssLineStyles.BREAK, span.getLineStyle(), "Line style");
         addStyleTest("*", CssLineStyles.BREAK, CssSpanStyles.OPERATOR);
         testStyles(span);
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(0, span.getOutlineCount(), "outline");
     }
 
     @Test
@@ -85,6 +111,8 @@ final class ParaBasicTest extends SpanBranchTestBase<Para> {
         Assertions.assertEquals(CssLineStyles.BREAK, span.getLineStyle(), "Line style");
         addStyleTest("***", CssLineStyles.BREAK, CssSpanStyles.OPERATOR);
         testStyles(span);
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(0, span.getOutlineCount(), "outline");
     }
 
     @Test
@@ -94,6 +122,8 @@ final class ParaBasicTest extends SpanBranchTestBase<Para> {
         addStyleTest("***", CssLineStyles.BREAK, CssSpanStyles.OPERATOR);
         addStyleTest("\n", CssLineStyles.BREAK, CssSpanStyles.OPERATOR);
         testStyles(span);
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(0, span.getOutlineCount(), "outline");
     }
 
     @Test
@@ -106,6 +136,8 @@ final class ParaBasicTest extends SpanBranchTestBase<Para> {
         testStyles(span);
         Assertions.assertInstanceOf(ParaAgenda.class, span);
         Assertions.assertEquals("Hello*", ((ParaAgenda) span).getAgenda());
+        Assertions.assertEquals(0, span.getWrittenCount(), "written");
+        Assertions.assertEquals(1, span.getOutlineCount(), "outline");
     }
 
     @Test
@@ -119,6 +151,8 @@ final class ParaBasicTest extends SpanBranchTestBase<Para> {
         ParaHeading heading = (ParaHeading) span;
         Assertions.assertFalse(heading.getPointer().isPresent());
         Assertions.assertEquals(1, heading.getLevel());
+        Assertions.assertEquals(1, span.getWrittenCount(), "written");
+        Assertions.assertEquals(0, span.getOutlineCount(), "outline");
     }
 
     @Test
@@ -134,6 +168,8 @@ final class ParaBasicTest extends SpanBranchTestBase<Para> {
         ParaHeading heading = (ParaHeading) span;
         Assertions.assertTrue(heading.getPointer().isPresent());
         Assertions.assertEquals(2, heading.getLevel());
+        Assertions.assertEquals(1, span.getWrittenCount(), "written");
+        Assertions.assertEquals(0, span.getOutlineCount(), "outline");
     }
 
     @Override

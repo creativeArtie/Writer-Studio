@@ -24,12 +24,14 @@ abstract class DivisionTestBase<T extends Division> extends SpanTestBase<SpanBra
         private String spanName;
         private Object[] spanData;
         private boolean isReady[];
+        private int writtenCount;
+        private int outlineCount;
 
         private TestChild(String name, int idx) {
             spanName = name;
             children = new ArrayList<>();
             index = idx;
-            isReady = new boolean[] { false, false, false };
+            isReady = new boolean[] { false, false, false, false };
         }
 
         protected TestChild setClass(Class<?> clazz) {
@@ -47,6 +49,13 @@ abstract class DivisionTestBase<T extends Division> extends SpanTestBase<SpanBra
         protected TestChild setData(Object... expect) {
             spanData = expect;
             isReady[2] = true;
+            return this;
+        }
+
+        protected TestChild setCounter(int written, int outline) {
+            writtenCount = written;
+            outlineCount = outline;
+            isReady[3] = true;
             return this;
         }
 
@@ -70,29 +79,44 @@ abstract class DivisionTestBase<T extends Division> extends SpanTestBase<SpanBra
                 }
             }
 
-            assert isReady[1] == true : "Child size not set";
+            assert isReady[1] : "Child size not set";
             tests.add(() -> Assertions.assertEquals(childrenSize, test.size(), "child size"));
 
-            assert isReady[0] == true : "Child class not set";
+            assert isReady[0] : "Child class not set";
             tests.add(() -> Assertions.assertInstanceOf(spanClass, test, "child class"));
-            Assertions.assertAll(spanName, tests.toArray(new Executable[tests.size()]));
 
             // Get children
             if (test instanceof Manuscript) {
                 Manuscript doc = (Manuscript) test;
-
+                assert isReady[3] : "word count not set";
+                tests.add(() -> Assertions.assertEquals(writtenCount, doc.getWritingCount(), "written"));
+                tests.add(() -> Assertions.assertEquals(outlineCount, doc.getOutlineCount(), "outline"));
+                Assertions.assertAll(spanName, tests.toArray(new Executable[tests.size()]));
                 for (TestChild child : children) {
                     Division div = doc.get(child.index);
                     child.test(div);
                 }
-            } else {
-                SpanBranch branch = (SpanBranch) test;
 
-                for (TestChild child : children) {
-                    Span span = branch.get(child.index);
-                    Assertions.assertInstanceOf(SpanBranch.class, span);
-                    child.test((SpanBranch) span);
-                }
+                return;
+            }
+            Assertions.assertAll(spanName, tests.toArray(new Executable[tests.size()]));
+            SpanBranch branch = (SpanBranch) test;
+
+            if (branch instanceof Division) {
+                assert isReady[3] : "word count not set";
+                tests.add(
+                        () -> Assertions.assertEquals(writtenCount, ((Division) branch).getWritingCount(), "written")
+                );
+                tests.add(
+                        () -> Assertions.assertEquals(outlineCount, ((Division) branch).getOutlineCount(), "outline")
+                );
+            }
+            Assertions.assertAll(spanName, tests.toArray(new Executable[tests.size()]));
+
+            for (TestChild child : children) {
+                Span span = branch.get(child.index);
+                Assertions.assertInstanceOf(SpanBranch.class, span);
+                child.test((SpanBranch) span);
             }
         }
     }
@@ -163,6 +187,10 @@ abstract class DivisionTestBase<T extends Division> extends SpanTestBase<SpanBra
             }
             idx++;
         }
+    }
+
+    protected void setCounter(int written, int outline) {
+        rootChild.setCounter(written, outline);
     }
 
     private void printChild(String tab, TestChild child) {
