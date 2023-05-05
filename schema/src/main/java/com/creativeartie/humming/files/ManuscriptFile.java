@@ -86,4 +86,9 @@ public class ManuscriptFile {
     public Manuscript getManuscript() {
         return mainWriting;
     }
+
+    @Override
+    public String toString() {
+        return "Draft Number: " + Integer.toString(draftNumber) + '\n' + mainWriting.getText().replace('\n', '␤'); //$NON-NLS-1$
+    }
 }

@@ -47,20 +47,66 @@ public class ProjectZip {
      */
     public static ProjectZip loadProject(String location)
             throws FileNotFoundException, IOException, ClassNotFoundException {
-        File file = new File(location);
-        Preconditions.checkArgument(file.isFile() && file.canWrite() && file.canRead());
-
+        {
+            File file = new File(location);
+            Preconditions.checkArgument(file.isFile() && file.canWrite() && file.canRead());
+        }
         ProjectZip project = new ProjectZip(location);
-        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(location))) {
-            ZipEntry entry;
-            while ((entry = zis.getNextEntry()) != null) {
-                if (entry.getName() == Literals.LOG_FILE.getText()) {
-                    ObjectInputStream log = new ObjectInputStream(zis);
-                    project.writingLog = (Log) log.readObject();
-                } else if (entry.getName() == Literals.LOG_FILE.getText()) System.out.println(entry.getName());
-                zis.closeEntry();
+
+        TreeMap<String, TreeMap<Integer, String>> scripts;
+        scripts = new TreeMap<>();
+
+        try (ZipFile zipFile = new ZipFile(location)) {
+            Enumeration<? extends ZipEntry> entries = zipFile.entries();
+            Splitter nameSplit = Splitter.on(File.separator);
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                InputStream input = zipFile.getInputStream(entry);
+
+                // log file
+                if (entry.getName().equals(Literals.LOG_FILE.getText())) {
+                    try (ObjectInputStream obj = new ObjectInputStream(input)) {
+                        project.writingLog = (Log) obj.readObject();
+                    }
+
+                } else if (entry.getName().equals(Literals.PROP_FILE.getText())) {
+                    project.projectProps.load(input);
+
+                } else if (entry.getName().startsWith(Literals.DOC_FOLDER.getText())) {
+
+                    String[] names = nameSplit.splitToList(entry.getName()).toArray(new String[3]);
+                    if (!scripts.containsKey(names[1])) {
+                        scripts.put(names[1], new TreeMap<>());
+                    }
+                    String rawIdx = names[2].substring(0, names[2].indexOf(Literals.DOC_EXT.getText()));
+
+                    try (Scanner scanner = new Scanner(input)) {
+                        StringBuilder text = new StringBuilder();
+                        while (scanner.hasNextLine()) {
+                            if (!text.isEmpty()) {
+                                text.append('\n');
+                            }
+                            text.append(scanner.nextLine());
+                        }
+                        scripts.get(names[1]).put(Integer.parseInt(rawIdx), text.toString());
+                    }
+
+                    // Images
+                } else if (entry.getName().equals(Literals.IMAGES_FILE.getText())) {
+                    project.imageFiles.load(input);
+                }
+                input.close();
+
             }
 
+            for (Entry<String, TreeMap<Integer, String>> entry : scripts.entrySet()) {
+                ManuscriptFile data = new ManuscriptFile(entry.getKey());
+                for (Entry<Integer, String> child : entry.getValue().entrySet()) {
+                    if (child.getKey() != 1) data = new ManuscriptFile(data);
+                    data.getManuscript().updateText(child.getValue());
+                }
+                project.documentFiles.put(entry.getKey(), data);
+            }
         }
         return project;
     }
@@ -85,17 +131,19 @@ public class ProjectZip {
         @SuppressWarnings("resource")
         ObjectOutputStream log = null;
         try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(fileLocation))) {
+            // log file
             zos.putNextEntry(new ZipEntry(Literals.LOG_FILE.getText()));
             log = new ObjectOutputStream(zos);
             log.writeObject(writingLog);
             zos.closeEntry();
 
+            // property file
             zos.putNextEntry(new ZipEntry(Literals.PROP_FILE.getText()));
             projectProps.save(zos);
             zos.closeEntry();
 
+            // text files
             String ext = Literals.DOC_EXT.getText();
-
             for (Entry<String, ManuscriptFile> file : documentFiles.entrySet()) {
                 String key = Literals.DOC_FOLDER.getText() + File.separator + file.getKey();
                 Optional<ManuscriptFile> value = Optional.of(file.getValue());
@@ -109,23 +157,9 @@ public class ProjectZip {
                     value = value.get().getPreviousDraft();
                 } while (value.isPresent());
             }
-            Properties saveFiles = new Properties();
-
-            for (String key : imageFiles.stringPropertyNames()) {
-                File file = new File(imageFiles.getProperty(key));
-                if (!file.canRead()) continue;
-
-                try (FileInputStream image = new FileInputStream(file)) {
-                    String path = Literals.IMAGE_FOLDER.getText() + File.separator + file.getName();
-                    saveFiles.setProperty(key, path);
-                    zos.putNextEntry(new ZipEntry(path));
-                    zos.write(image.readAllBytes());
-                    zos.closeEntry();
-                }
-            }
 
             zos.putNextEntry(new ZipEntry(Literals.IMAGES_FILE.getText()));
-            saveFiles.store(zos, new String());
+            imageFiles.store(zos, new String());
             zos.closeEntry();
         } finally {
             log.close();
@@ -329,13 +363,19 @@ public class ProjectZip {
      *        the image file
      *
      * @return {@true} if successful
+     *
+     * @throws IOException
+     * @throws FileNotFoundException
      */
-    public boolean addImage(String name, File image) {
+    public boolean addImage(String name, File image) throws FileNotFoundException, IOException {
         if (imageFiles.containsKey(name)) {
             return false;
         }
-        imageFiles.put(name, image.getAbsolutePath());
-        return true;
+        try (FileInputStream data = new FileInputStream(image)) {
+            String read = Base64.getEncoder().encodeToString(data.readAllBytes());
+            imageFiles.put(name, read);
+            return true;
+        }
     }
 
     /**
@@ -385,7 +425,8 @@ public class ProjectZip {
      *
      * @return File or null if not exist
      */
-    public File getImage(String name) {
-        return new File(imageFiles.getProperty(name));
+    public String getEncodedImage(String name) {
+        if (imageFiles.containsKey(name)) return imageFiles.getProperty(name);
+        return null;
     }
 }

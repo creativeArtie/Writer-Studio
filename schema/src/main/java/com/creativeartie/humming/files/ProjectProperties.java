@@ -17,4 +17,8 @@ public class ProjectProperties implements Serializable {
     void save(OutputStream output) throws IOException {
         projectProp.store(output, new String());
     }
+
+    void load(InputStream input) throws IOException {
+        projectProp.load(input);
+    }
 }
