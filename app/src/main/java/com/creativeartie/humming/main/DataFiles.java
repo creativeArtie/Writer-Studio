@@ -13,7 +13,7 @@ public enum DataFiles {
     /** The main window. @see App#start() */
     MAIN_FXML("main.fxml"),
     /** The writer panel. @see MainWindowController */
-    WRITER("writing.fxml");
+    WRITER("writing.fxml"), WRITER_STYLE("writing.css");
 
     private static final String baseFolder = "/data/";
     private String fullPath;

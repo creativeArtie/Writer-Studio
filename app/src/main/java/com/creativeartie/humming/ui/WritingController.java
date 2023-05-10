@@ -8,6 +8,7 @@ import org.fxmisc.richtext.event.*;
 import org.fxmisc.richtext.model.*;
 
 import com.creativeartie.humming.document.*;
+import com.creativeartie.humming.main.*;
 
 import javafx.beans.property.*;
 import javafx.beans.value.*;
@@ -20,7 +21,7 @@ import javafx.stage.*;
  * Controller for <a href="../../../../../resources/data/writing.fxml">
  * writing.fxml </a>
  */
-public class WritingController {
+public class WritingController extends ActiveFile {
     private class ManuscriptProperty extends ReadOnlyObjectWrapper<Manuscript> {
         ManuscriptProperty() {
             super(new Manuscript());
@@ -67,6 +68,7 @@ public class WritingController {
 
         rootDoc = new ManuscriptProperty();
         writingText.textProperty().addListener(this::textEdited);
+        writingText.getStylesheets().add(DataFiles.WRITER_STYLE.getFile().toString());
 
         writingText.setMouseOverTextDelay(Duration.ofSeconds(1));
         writingText.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_BEGIN, this::mouseOverTextEvent);
@@ -105,6 +107,16 @@ public class WritingController {
      * @return document property
      */
     public ReadOnlyObjectProperty<Manuscript> documentProperty() {
+        return rootDoc.getReadOnlyProperty();
+    }
+
+    @Override
+    protected ObservableValue<Integer> docCursorProperty() {
+        return writingText.caretPositionProperty();
+    }
+
+    @Override
+    protected ReadOnlyObjectProperty<Manuscript> manuscriptProperty() {
         return rootDoc.getReadOnlyProperty();
     }
 }

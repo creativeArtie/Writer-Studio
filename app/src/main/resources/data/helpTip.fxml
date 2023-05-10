@@ -6,7 +6,7 @@
 <?import javafx.scene.text.*?>
 
 <BorderPane fx:controller="com.creativeartie.humming.ui.HelpTipController"
-	xmlns:fx="http://javafx.com/fxml"
+	xmlns:fx="http://javafx.com/fxml" stylesheets="@main.css"
 >
 	<center><TitledPane text="%highlight.title"><content><GridPane>
 	

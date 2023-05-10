@@ -1,0 +1,7 @@
+.active {
+	-fx-font-weight:bold;
+}
+
+.inactive {
+	-fx-text-fill:dimgray;
+}
