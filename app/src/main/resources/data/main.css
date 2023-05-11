@@ -1,7 +1,9 @@
 .active {
 	-fx-font-weight:bold;
+	-fx-font-family:monospace;
 }
 
 .inactive {
 	-fx-text-fill:dimgray;
+	-fx-font-family:monospace;
 }

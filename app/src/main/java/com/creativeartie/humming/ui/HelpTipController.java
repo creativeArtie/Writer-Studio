@@ -11,17 +11,19 @@ import javafx.scene.control.*;
  */
 public class HelpTipController {
     @FXML
-    private Label headingText, outlineText, catSpan, idSpan, breakLine;
+    private Label headingText, outlineText, normalLine, breakLine;
     @FXML
-    private Label quoteLine, todoLine, normalLine, tableLine;
+    private Label  tableHeadLine, tableCellLine, numberedLine, bulletLine;
     @FXML
-    private Label footnoteLine, endnoteLine, imageLine, numberedLine;
+    private Label footnoteLine, imageLine, todoLine, quoteLine;
     @FXML
-    private Label summaryLine, noteLine, fieldLine, bulletLine;
+    private Label summaryLine, noteLine, fieldLine;
     @FXML
-    private Label footRef, endRef, noteRef, metaRef, todoRef;
+    private Label footRef, noteRef, metaRef, errorRef;
     @FXML
-    private Label boldSpan, underSpan, italicSpan;
+    private Label todoRef, boldSpan, underSpan, italicSpan;
+    @FXML
+    private Label catSpan, idSpan;
 
     @FXML
     void initialize() {
@@ -40,18 +42,22 @@ public class HelpTipController {
     private void updateParagraphHighlight(CssLineStyles style) {
         updateHighlightStyle(headingText, style == CssLineStyles.HEADING);
         updateHighlightStyle(outlineText, style == CssLineStyles.OUTLINE);
+        updateHighlightStyle(normalLine, style == CssLineStyles.NORMAL);
+        updateHighlightStyle(breakLine, style == CssLineStyles.BREAK);
+        
+        updateHighlightStyle(tableHeadLine, style == CssLineStyles.ROW);
+        updateHighlightStyle(tableCellLine, style == CssLineStyles.ROW);
+        updateHighlightStyle(numberedLine, style == CssLineStyles.NUMBERED);
+        updateHighlightStyle(bulletLine, style == CssLineStyles.BULLET);
+        
+        updateHighlightStyle(footnoteLine, style == CssLineStyles.FOOTNOTE);
+        updateHighlightStyle(imageLine, style == CssLineStyles.IMAGE);
         updateHighlightStyle(quoteLine, style == CssLineStyles.QUOTE);
         updateHighlightStyle(todoLine, style == CssLineStyles.AGENDA);
-        updateHighlightStyle(normalLine, style == CssLineStyles.NORMAL);
-        updateHighlightStyle(tableLine, style == CssLineStyles.ROW);
-        updateHighlightStyle(footnoteLine, style == CssLineStyles.FOOTNOTE);
-        updateHighlightStyle(endnoteLine, style == CssLineStyles.ENDNOTE);
-        updateHighlightStyle(imageLine, style == CssLineStyles.IMAGE);
-        updateHighlightStyle(numberedLine, style == CssLineStyles.NUMBERED);
+        
         updateHighlightStyle(summaryLine, style == CssLineStyles.HEADER);
         updateHighlightStyle(noteLine, style == CssLineStyles.NOTE);
         updateHighlightStyle(fieldLine, style == CssLineStyles.FIELD);
-        updateHighlightStyle(bulletLine, style == CssLineStyles.BULLET);
     }
 
     private void updateHighlightStyle(Label label, boolean matched) {

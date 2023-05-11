@@ -11,45 +11,51 @@
 	<center><TitledPane text="%highlight.title"><content><GridPane>
 	
 		<columnConstraints>
-		    <ColumnConstraints percentWidth="18" /> <!-- heading + outline --> 
-		    <ColumnConstraints percentWidth="16" /> <!-- basic lines -->
-		    <ColumnConstraints percentWidth="18" /> <!-- endnote/footnote lines -->
-		    <ColumnConstraints percentWidth="20" /> <!-- notes lines -->
-		    <ColumnConstraints percentWidth="16" /> <!-- ref spans -->
-		    <ColumnConstraints percentWidth="12" /> <!-- format spans -->
+		    <ColumnConstraints percentWidth="14" /> <!-- heading + outline + basic --> 
+		    <ColumnConstraints percentWidth="18" /> <!-- table and lists -->
+		    <ColumnConstraints percentWidth="19" /> <!-- reference lines -->
+		    <ColumnConstraints percentWidth="14" /> <!-- notes lines -->
+		    <ColumnConstraints percentWidth="14" /> <!-- ref spans -->
+		    <ColumnConstraints percentWidth="11" /> <!-- format spans -->
+		    <ColumnConstraints percentWidth="10" /> <!-- id -->
 	 	</columnConstraints>
 		<Label text="%highlight.headingText" GridPane.columnIndex="0" GridPane.rowIndex="0" fx:id="headingText"/> 
 		<Label text="%highlight.outlineText" GridPane.columnIndex="0" GridPane.rowIndex="1"  fx:id="outlineText"/>
-		<HBox GridPane.columnIndex="0" GridPane.rowIndex="2">
-			<Label text="%hightlight.cat"  fx:id="catSpan"/>
-			<Label text="%hightlight.sep"/>
-			<Label text="%hightlight.id" fx:id="idSpan"/>
+		<Label text="%highlight.normalText" GridPane.columnIndex="0" GridPane.rowIndex="2" fx:id="normalLine"/>
+		<HBox GridPane.columnIndex="0" GridPane.rowIndex="3">
+			<Label text="%highlight.break"  fx:id="breakLine"/>
+			<Label text="%highlight.breakDetail"/>
 		</HBox>
-		<Label text="%highlight.break" GridPane.columnIndex="0" GridPane.rowIndex="3" fx:id="breakLine"/>
 		
-		<Label text="%highlight.quoteText" GridPane.columnIndex="1" GridPane.rowIndex="0" fx:id="quoteLine"/>
-		<Label text="%highlight.todoText" GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="todoLine"/>
-		<Label text="%highlight.normalText" GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="normalLine"/>
-		<Label text="%highlight.table" GridPane.columnIndex="1" GridPane.rowIndex="3" fx:id="tableLine"/>
+		<Label text="%highlight.tableHeading" GridPane.columnIndex="1" GridPane.rowIndex="0" fx:id="tableHeadLine"/>
+		<Label text="%highlight.tableRow" GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="tableCellLine"/>
+		<Label text="%highlight.numbered" GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="numberedLine"/>
+		<Label text="%highlight.bullet" GridPane.columnIndex="1" GridPane.rowIndex="3" fx:id="bulletLine"/>
 		
-		<Label text="%hightlight.footnote" GridPane.columnIndex="2" GridPane.rowIndex="0" fx:id="footnoteLine"/>
-		<Label text="%hightlight.endnote" GridPane.columnIndex="2" GridPane.rowIndex="1" fx:id="endnoteLine"/>
-		<Label text="%hightlight.image" GridPane.columnIndex="2" GridPane.rowIndex="2" fx:id="imageLine"/>
-		<Label text="%hightlight.numbered" GridPane.columnIndex="2" GridPane.rowIndex="3" fx:id="numberedLine"/>
+		<Label text="%highlight.footnote" GridPane.columnIndex="2" GridPane.rowIndex="0" fx:id="footnoteLine"/>
+		<Label text="%highlight.image" GridPane.columnIndex="2" GridPane.rowIndex="1" fx:id="imageLine"/>
+		<Label text="%highlight.todoText" GridPane.columnIndex="2" GridPane.rowIndex="2" fx:id="todoLine"/>
+		<Label text="%highlight.quoteText" GridPane.columnIndex="2" GridPane.rowIndex="3" fx:id="quoteLine"/>
 		
-		<Label text="%hightlight.summary" GridPane.columnIndex="3" GridPane.rowIndex="0" fx:id="summaryLine"/>
-		<Label text="%hightlight.note" GridPane.columnIndex="3" GridPane.rowIndex="1" fx:id="noteLine"/>
-		<Label text="%hightlight.field" GridPane.columnIndex="3" GridPane.rowIndex="2" fx:id="fieldLine"/>
-		<Label text="%hightlight.bullet" GridPane.columnIndex="3" GridPane.rowIndex="3" fx:id="bulletLine"/>
+		<Label text="%highlight.summary" GridPane.columnIndex="3" GridPane.rowIndex="0" fx:id="summaryLine"/>
+		<Label text="%highlight.note" GridPane.columnIndex="3" GridPane.rowIndex="1" fx:id="noteLine"/>
+		<Label text="%highlight.field" GridPane.columnIndex="3" GridPane.rowIndex="2" fx:id="fieldLine"/>
 		
-		<Label text="%hightlight.footRef" GridPane.columnIndex="4" GridPane.rowIndex="0" fx:id="footRef"/>
-		<Label text="%hightlight.endRef" GridPane.columnIndex="4" GridPane.rowIndex="1" fx:id="endRef"/>
-		<Label text="%hightlight.noteRef" GridPane.columnIndex="4" GridPane.rowIndex="2" fx:id="noteRef"/>
-		<Label text="%hightlight.metaRef" GridPane.columnIndex="4" GridPane.rowIndex="3" fx:id="metaRef"/>
+		<Label text="%highlight.footRef" GridPane.columnIndex="4" GridPane.rowIndex="0" fx:id="footRef"/>
+		<Label text="%highlight.noteRef" GridPane.columnIndex="4" GridPane.rowIndex="1" fx:id="noteRef"/>
+		<Label text="%highlight.metaRef" GridPane.columnIndex="4" GridPane.rowIndex="2" fx:id="metaRef"/>
+		<Label text="%highlight.error" GridPane.columnIndex="4" GridPane.rowIndex="3" fx:id="errorRef"/>
 		
-		<Label text="%hightlight.todoRef" GridPane.columnIndex="5" GridPane.rowIndex="0" fx:id="todoRef"/>
-		<Label text="%hightlight.bold" GridPane.columnIndex="5" GridPane.rowIndex="1" fx:id="boldSpan"/>
-		<Label text="%hightlight.under" GridPane.columnIndex="5" GridPane.rowIndex="2" fx:id="underSpan"/>
-		<Label text="%hightlight.italic" GridPane.columnIndex="5" GridPane.rowIndex="3" fx:id="italicSpan"/>
+		<Label text="%highlight.todoRef" GridPane.columnIndex="5" GridPane.rowIndex="0" fx:id="todoRef"/>
+		<Label text="%highlight.bold" GridPane.columnIndex="5" GridPane.rowIndex="1" fx:id="boldSpan"/>
+		<Label text="%highlight.under" GridPane.columnIndex="5" GridPane.rowIndex="2" fx:id="underSpan"/>
+		<Label text="%highlight.italic" GridPane.columnIndex="5" GridPane.rowIndex="3" fx:id="italicSpan"/>
+		
+		
+		<HBox GridPane.columnIndex="6" GridPane.rowIndex="0">
+			<Label text="%highlight.cat"  fx:id="catSpan"/>
+			<Label text="%highlight.sep"/>
+			<Label text="%highlight.id" fx:id="idSpan"/>
+		</HBox>
 	</GridPane></content></TitledPane></center>
 </BorderPane>
