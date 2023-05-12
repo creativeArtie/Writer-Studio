@@ -1,86 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="output" path="bin/default"/>
-	<classpathentry output="bin/main" kind="src" path="src/main/java">
+	<classpathentry kind="src" output="bin/main" path="src/main/java">
 		<attributes>
 			<attribute name="gradle_scope" value="main"/>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry output="bin/test" kind="src" path="src/test/resources">
+	<classpathentry kind="src" output="bin/test" path="src/test/resources">
 		<attributes>
+			<attribute name="test" value="true"/>
 			<attribute name="gradle_scope" value="test"/>
 			<attribute name="gradle_used_by_scope" value="test"/>
-			<attribute name="test" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17/"/>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-web/16/dbcb63ea2581875e0b4a091f7b6bd2c74a70c303/javafx-web-16-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-web/16/522f626e1798a7d589d9b187ca5c74c5c2f8a0ee/javafx-web-16-linux.jar">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-fxml/16/c7147c450773c3d4fd038ac9d1a6fdebbc3c11e0/javafx-fxml-16-linux.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-fxml/16/ea88d4a03ee5e2c1279212596a8f0002b643d7c3/javafx-fxml-16-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-media/16/3fc57b700567384957ea75a6306a18f923b3ee5b/javafx-media-16-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-media/16/10edb5fd8eb64b3312b31225c396e1850b9d178b/javafx-media-16-linux.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-web/16/522f626e1798a7d589d9b187ca5c74c5c2f8a0ee/javafx-web-16-linux.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-web/16/dbcb63ea2581875e0b4a091f7b6bd2c74a70c303/javafx-web-16-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-media/16/3fc57b700567384957ea75a6306a18f923b3ee5b/javafx-media-16-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-media/16/2c564c4d3859447d7ef4c7490e2a48afe7a5db7a/javafx-media-16.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/16/116b127e512d23ddb84c62017c256e7f67f5b9eb/javafx-controls-16-linux.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/16/9851c81a573ec4d63d61882c46a9916c3d4dad8a/javafx-controls-16-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-fxml/16/ea88d4a03ee5e2c1279212596a8f0002b643d7c3/javafx-fxml-16-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-fxml/16/c7147c450773c3d4fd038ac9d1a6fdebbc3c11e0/javafx-fxml-16-linux.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/16/d8334d505d5eb64400ae57f989c3db9dd47dcee3/javafx-controls-16.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/16/9851c81a573ec4d63d61882c46a9916c3d4dad8a/javafx-controls-16-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/16/9851c81a573ec4d63d61882c46a9916c3d4dad8a/javafx-controls-16-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/16/116b127e512d23ddb84c62017c256e7f67f5b9eb/javafx-controls-16-linux.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-media/16/10edb5fd8eb64b3312b31225c396e1850b9d178b/javafx-media-16-linux.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-media/16/3fc57b700567384957ea75a6306a18f923b3ee5b/javafx-media-16-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/16/9851c81a573ec4d63d61882c46a9916c3d4dad8a/javafx-controls-16-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/16/d8334d505d5eb64400ae57f989c3db9dd47dcee3/javafx-controls-16.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-media/16/2c564c4d3859447d7ef4c7490e2a48afe7a5db7a/javafx-media-16.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-media/16/3fc57b700567384957ea75a6306a18f923b3ee5b/javafx-media-16-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-graphics/16/f69a16a65efd17daa15aa262d13e65a6fcd85e6/javafx-graphics-16-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-graphics/16/1bf2fd9f083daa2f492c4c58c4f7d5acb6f4b7d/javafx-graphics-16-linux.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-graphics/16/1bf2fd9f083daa2f492c4c58c4f7d5acb6f4b7d/javafx-graphics-16-linux.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-graphics/16/f69a16a65efd17daa15aa262d13e65a6fcd85e6/javafx-graphics-16-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-graphics/16/f69a16a65efd17daa15aa262d13e65a6fcd85e6/javafx-graphics-16-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-graphics/16/ddd09436524cfea7995db18f93b6c9a2ec54bff3/javafx-graphics-16.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-graphics/16/ddd09436524cfea7995db18f93b6c9a2ec54bff3/javafx-graphics-16.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-graphics/16/f69a16a65efd17daa15aa262d13e65a6fcd85e6/javafx-graphics-16-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-base/16/2e1bc3824c8ba566c331d011cda06f7670a02087/javafx-base-16-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-base/16/7d6b85ec89e99ea40c2a63bb1f23d43e05cd2557/javafx-base-16-linux.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-base/16/7d6b85ec89e99ea40c2a63bb1f23d43e05cd2557/javafx-base-16-linux.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-base/16/2e1bc3824c8ba566c331d011cda06f7670a02087/javafx-base-16-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-base/16/2e1bc3824c8ba566c331d011cda06f7670a02087/javafx-base-16-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-base/16/56c3d09fb6cb5136ce9abc1d0d6a6914e0eed944/javafx-base-16.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-base/16/56c3d09fb6cb5136ce9abc1d0d6a6914e0eed944/javafx-base-16.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-base/16/2e1bc3824c8ba566c331d011cda06f7670a02087/javafx-base-16-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/30.1.1-jre/fac882f35fd501581954dcaffa410ee4b5cd8d1b/guava-30.1.1-jre-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/30.1.1-jre/87e0fd1df874ea3cbe577702fe6f17068b790fd8/guava-30.1.1-jre.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/30.1.1-jre/87e0fd1df874ea3cbe577702fe6f17068b790fd8/guava-30.1.1-jre.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/30.1.1-jre/fac882f35fd501581954dcaffa410ee4b5cd8d1b/guava-30.1.1-jre-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.apache.pdfbox/pdfbox/3.0.0-RC1/4959b6930b96e40a55a3f11e177f54edfe48e7f0/pdfbox-3.0.0-RC1-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.apache.pdfbox/pdfbox/3.0.0-RC1/37aaf7c1b1f34bb627eb7be45a8a8efc3363c45c/pdfbox-3.0.0-RC1.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.apache.pdfbox/pdfbox/3.0.0-RC1/37aaf7c1b1f34bb627eb7be45a8a8efc3363c45c/pdfbox-3.0.0-RC1.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.apache.pdfbox/pdfbox/3.0.0-RC1/4959b6930b96e40a55a3f11e177f54edfe48e7f0/pdfbox-3.0.0-RC1-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.fxmisc.richtext/richtextfx/0.10.9/2bed6bc6d3487c58e460567f8449f0bfdf0d93c1/richtextfx-0.10.9-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.fxmisc.richtext/richtextfx/0.10.9/9c837d0e6b7978d9965e0c212cd781087d2f214c/richtextfx-0.10.9.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.fxmisc.richtext/richtextfx/0.10.9/9c837d0e6b7978d9965e0c212cd781087d2f214c/richtextfx-0.10.9.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.fxmisc.richtext/richtextfx/0.10.9/2bed6bc6d3487c58e460567f8449f0bfdf0d93c1/richtextfx-0.10.9-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1d064e61aad6c51cc77f9b59dc2cccc78e792f5a/failureaccess-1.0.1-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1dcf1de382a0bf95a3d8b0849546c88bac1292c9/failureaccess-1.0.1.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1dcf1de382a0bf95a3d8b0849546c88bac1292c9/failureaccess-1.0.1.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1d064e61aad6c51cc77f9b59dc2cccc78e792f5a/failureaccess-1.0.1-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
@@ -90,102 +93,103 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/b19b5927c2c25b6c70f093767041e641ae0b1b35/jsr305-3.0.2-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/25ea2e8b0c338a877313bd4672d3fe056ea78f0d/jsr305-3.0.2.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/25ea2e8b0c338a877313bd4672d3fe056ea78f0d/jsr305-3.0.2.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/b19b5927c2c25b6c70f093767041e641ae0b1b35/jsr305-3.0.2-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/3.8.0/e2256c40ffa8bbca3a82727dd1e262904cc2f922/checker-qual-3.8.0-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/3.8.0/6b83e4a33220272c3a08991498ba9dc09519f190/checker-qual-3.8.0.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/3.8.0/6b83e4a33220272c3a08991498ba9dc09519f190/checker-qual-3.8.0.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/3.8.0/e2256c40ffa8bbca3a82727dd1e262904cc2f922/checker-qual-3.8.0-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.5.1/600a12b3f1ec5aab8f10aff4e11cd28c6ee52697/error_prone_annotations-2.5.1-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.5.1/562d366678b89ce5d6b6b82c1a073880341e3fba/error_prone_annotations-2.5.1.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.5.1/562d366678b89ce5d6b6b82c1a073880341e3fba/error_prone_annotations-2.5.1.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.5.1/600a12b3f1ec5aab8f10aff4e11cd28c6ee52697/error_prone_annotations-2.5.1-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.3/d26c56180205cbb50447c3eca98ecb617cf9f58b/j2objc-annotations-1.3-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.3/ba035118bc8bac37d7eff77700720999acd9986d/j2objc-annotations-1.3.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.3/ba035118bc8bac37d7eff77700720999acd9986d/j2objc-annotations-1.3.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.3/d26c56180205cbb50447c3eca98ecb617cf9f58b/j2objc-annotations-1.3-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.apache.pdfbox/fontbox/3.0.0-RC1/8a6aee81cb60188d9e373073d265aff3526f78bc/fontbox-3.0.0-RC1-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.apache.pdfbox/fontbox/3.0.0-RC1/1cbfa55db29671dadcf837817eb9920ed4a83cf4/fontbox-3.0.0-RC1.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.apache.pdfbox/fontbox/3.0.0-RC1/1cbfa55db29671dadcf837817eb9920ed4a83cf4/fontbox-3.0.0-RC1.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.apache.pdfbox/fontbox/3.0.0-RC1/8a6aee81cb60188d9e373073d265aff3526f78bc/fontbox-3.0.0-RC1-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/ecf26c7507d67782a3bbd148d170b31dfad001aa/commons-logging-1.2-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/ecf26c7507d67782a3bbd148d170b31dfad001aa/commons-logging-1.2-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.fxmisc.undo/undofx/2.1.1/b493e1975ccfd393443e468b09f06193e0a025a6/undofx-2.1.1-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.fxmisc.undo/undofx/2.1.1/69e1b938bd6d12c48ab07478cc09386a1fba3d2d/undofx-2.1.1.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.fxmisc.undo/undofx/2.1.1/69e1b938bd6d12c48ab07478cc09386a1fba3d2d/undofx-2.1.1.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.fxmisc.undo/undofx/2.1.1/b493e1975ccfd393443e468b09f06193e0a025a6/undofx-2.1.1-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.reactfx/reactfx/2.0-M5/ac8e445dd40ceb48172c782144fb16c133f7743c/reactfx-2.0-M5-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.reactfx/reactfx/2.0-M5/aa02bc40ebbb87a76d4b188516294612c8972b80/reactfx-2.0-M5.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.reactfx/reactfx/2.0-M5/aa02bc40ebbb87a76d4b188516294612c8972b80/reactfx-2.0-M5.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.reactfx/reactfx/2.0-M5/ac8e445dd40ceb48172c782144fb16c133f7743c/reactfx-2.0-M5-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.fxmisc.flowless/flowless/0.6.9/2c2f6cb377cc4b607df93afa1ec6d545124fe58c/flowless-0.6.9-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.fxmisc.flowless/flowless/0.6.9/86c828faf857f0332ef8710ae8acf2f253d0053c/flowless-0.6.9.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.fxmisc.flowless/flowless/0.6.9/86c828faf857f0332ef8710ae8acf2f253d0053c/flowless-0.6.9.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.fxmisc.flowless/flowless/0.6.9/2c2f6cb377cc4b607df93afa1ec6d545124fe58c/flowless-0.6.9-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.fxmisc.wellbehaved/wellbehavedfx/0.3.3/358702e39bca56d3e6f89c27fb7d73b8603b02da/wellbehavedfx-0.3.3-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.fxmisc.wellbehaved/wellbehavedfx/0.3.3/c69c986469f23feee75f09812357e6b6a0657d57/wellbehavedfx-0.3.3.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.fxmisc.wellbehaved/wellbehavedfx/0.3.3/c69c986469f23feee75f09812357e6b6a0657d57/wellbehavedfx-0.3.3.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.fxmisc.wellbehaved/wellbehavedfx/0.3.3/358702e39bca56d3e6f89c27fb7d73b8603b02da/wellbehavedfx-0.3.3-sources.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.8.1/d69300e26c3af1d798f412df28d060333e052472/junit-jupiter-params-5.8.1-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.8.1/13afdb5d414cbe991fce3ef6b864de77c9644dae/junit-jupiter-params-5.8.1.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.8.1/13afdb5d414cbe991fce3ef6b864de77c9644dae/junit-jupiter-params-5.8.1.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.8.1/d69300e26c3af1d798f412df28d060333e052472/junit-jupiter-params-5.8.1-sources.jar">
 		<attributes>
-			<attribute name="gradle_used_by_scope" value="test"/>
 			<attribute name="test" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.8.1/a3e13f34a2a47fb2c0d7385c5e6e0e8623194061/junit-jupiter-api-5.8.1-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.8.1/6538b88eb8bf8811bc7b6efb5246f835c15e0bfe/junit-jupiter-api-5.8.1.jar">
-		<attributes>
 			<attribute name="gradle_used_by_scope" value="test"/>
-			<attribute name="test" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.8.1/386b61876dd33d0ef0381189d3c1db9455d99659/junit-platform-commons-1.8.1-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.8.1/1e362cbe6d0f225b066757865e233972557484/junit-platform-commons-1.8.1.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.8.1/6538b88eb8bf8811bc7b6efb5246f835c15e0bfe/junit-jupiter-api-5.8.1.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.8.1/a3e13f34a2a47fb2c0d7385c5e6e0e8623194061/junit-jupiter-api-5.8.1-sources.jar">
 		<attributes>
+			<attribute name="test" value="true"/>
 			<attribute name="gradle_used_by_scope" value="test"/>
-			<attribute name="test" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.8.1/5fd01c33132462aab3905cb74bd1097a713ab91a/junit-jupiter-5.8.1-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.8.1/73a218cf02d36d4e87bb9697fdbe0780e92b6bd3/junit-jupiter-5.8.1.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.8.1/1e362cbe6d0f225b066757865e233972557484/junit-platform-commons-1.8.1.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.8.1/386b61876dd33d0ef0381189d3c1db9455d99659/junit-platform-commons-1.8.1-sources.jar">
 		<attributes>
+			<attribute name="test" value="true"/>
 			<attribute name="gradle_used_by_scope" value="test"/>
-			<attribute name="test" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.2.0/41d55b3c2254de9837b4ec8923cbd371b8a7eab5/opentest4j-1.2.0-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.2.0/28c11eb91f9b6d8e200631d46e20a7f407f2a046/opentest4j-1.2.0.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.8.1/73a218cf02d36d4e87bb9697fdbe0780e92b6bd3/junit-jupiter-5.8.1.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.8.1/5fd01c33132462aab3905cb74bd1097a713ab91a/junit-jupiter-5.8.1-sources.jar">
 		<attributes>
+			<attribute name="test" value="true"/>
 			<attribute name="gradle_used_by_scope" value="test"/>
-			<attribute name="test" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.apiguardian/apiguardian-api/1.1.2/e0787a997746ac32639e0bf3cb27af8dce8a3428/apiguardian-api-1.1.2-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.apiguardian/apiguardian-api/1.1.2/a231e0d844d2721b0fa1b238006d15c6ded6842a/apiguardian-api-1.1.2.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.2.0/28c11eb91f9b6d8e200631d46e20a7f407f2a046/opentest4j-1.2.0.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.2.0/41d55b3c2254de9837b4ec8923cbd371b8a7eab5/opentest4j-1.2.0-sources.jar">
 		<attributes>
+			<attribute name="test" value="true"/>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.apiguardian/apiguardian-api/1.1.2/a231e0d844d2721b0fa1b238006d15c6ded6842a/apiguardian-api-1.1.2.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.apiguardian/apiguardian-api/1.1.2/e0787a997746ac32639e0bf3cb27af8dce8a3428/apiguardian-api-1.1.2-sources.jar">
+		<attributes>
+			<attribute name="test" value="true"/>
 			<attribute name="gradle_used_by_scope" value=""/>
-			<attribute name="test" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.8.1/ea87fe3d752e24397f71f347872e79a89c61a704/junit-jupiter-engine-5.8.1-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.8.1/21b86e08aae2720bbf017703669948be96d1388c/junit-jupiter-engine-5.8.1.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.8.1/21b86e08aae2720bbf017703669948be96d1388c/junit-jupiter-engine-5.8.1.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.8.1/ea87fe3d752e24397f71f347872e79a89c61a704/junit-jupiter-engine-5.8.1-sources.jar">
 		<attributes>
-			<attribute name="gradle_used_by_scope" value="test"/>
 			<attribute name="test" value="true"/>
+			<attribute name="gradle_used_by_scope" value="test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.8.1/9d87ea7959823714ad803aa91e0618bf2213b52c/junit-platform-engine-1.8.1-sources.jar" kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.8.1/e6c63bf990dc88a6527b4ed617b23e47048f07e0/junit-platform-engine-1.8.1.jar">
+	<classpathentry kind="lib" path="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.8.1/e6c63bf990dc88a6527b4ed617b23e47048f07e0/junit-platform-engine-1.8.1.jar" sourcepath="/home/wai/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.8.1/9d87ea7959823714ad803aa91e0618bf2213b52c/junit-platform-engine-1.8.1-sources.jar">
 		<attributes>
-			<attribute name="gradle_used_by_scope" value="test"/>
 			<attribute name="test" value="true"/>
+			<attribute name="gradle_used_by_scope" value="test"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="output" path="bin/default"/>
 </classpath>
