@@ -17,8 +17,6 @@ public abstract class Para extends SpanBranch {
         else if ((match = ParaNotePatterns.FIELD.matcher(text)) != null) returns = new ParaNoteField(parent);
         else if ((match = ParaNotePatterns.NOTE.matcher(text)) != null) returns = new ParaNoteDetail(parent);
 
-        else if ((match = ParaReferencePatterns.ENDNOTE.matcher(text)) != null)
-            returns = ParaReference.newEndnote(parent);
         else if ((match = ParaReferencePatterns.FOOTNOTE.matcher(text)) != null)
             returns = ParaReference.newFootnote(parent);
         else if ((match = ParaReferencePatterns.IMAGE.matcher(text)) != null) returns = ParaReference.newImage(parent);

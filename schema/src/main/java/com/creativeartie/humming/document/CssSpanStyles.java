@@ -17,8 +17,6 @@ public enum CssSpanStyles implements CssStyle {
 
     /** foot note pointer span. */
     FOOTNOTE,
-    /** end note pointer span. */
-    ENDNOTE,
     /** research note pointer span. */
     NOTE,
     /** meta data pointer span. */

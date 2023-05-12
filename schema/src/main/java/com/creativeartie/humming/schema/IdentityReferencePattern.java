@@ -18,8 +18,6 @@ public enum IdentityReferencePattern implements PatternEnum {
 
     /** Footnote indicator pattern */
     FOOTREF("\\^"),
-    /** Endnote indicator pattern */
-    ENDREF("\\*"),
     /** Citation (aka note) indicator pattern */
     CITEREF("\\>"),
     /** Meta data indicator pattern */
@@ -63,7 +61,6 @@ public enum IdentityReferencePattern implements PatternEnum {
             START.getPattern(withName) + "((" +
                 "(" +
                     FOOTREF.getPattern(withName) + "|" +
-                    ENDREF.getPattern(withName) + "|" +
                     CITEREF.getPattern(withName) + "|" +
                     METAREF.getPattern(withName) +
                 ")" + ID.getPattern(withName) +

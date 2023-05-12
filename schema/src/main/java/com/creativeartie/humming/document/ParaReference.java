@@ -9,10 +9,6 @@ import com.creativeartie.humming.schema.ParaReferencePatterns.*;
  * Footnote/endnote/image reference line.
  */
 public final class ParaReference extends Para implements IdentityParent {
-    static ParaReference newEndnote(SpanBranch parent) {
-        return new ParaReference(parent, CssLineStyles.ENDNOTE);
-    }
-
     static ParaReference newFootnote(SpanBranch parent) {
         return new ParaReference(parent, CssLineStyles.FOOTNOTE);
     }
@@ -47,10 +43,7 @@ public final class ParaReference extends Para implements IdentityParent {
         if (getLineStyle() == CssLineStyles.FOOTNOTE) {
             pattern = RefLineParts.FOOTNOTE;
             group = IdentityGroup.FOOTNOTE;
-        } else if (getLineStyle() == CssLineStyles.ENDNOTE) {
-            pattern = RefLineParts.ENDNOTE;
-            group = IdentityGroup.ENDNOTE;
-        } else {
+        } else { // if getLineStyle() == CssLineStyles.IMAGE
             pattern = RefLineParts.IMAGE;
             group = IdentityGroup.IMAGE;
             isAddress = false;

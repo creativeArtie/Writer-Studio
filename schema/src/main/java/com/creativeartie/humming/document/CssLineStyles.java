@@ -32,8 +32,6 @@ public enum CssLineStyles implements CssStyle {
 
     /** Foot note line. */
     FOOTNOTE,
-    /** End note line. */
-    ENDNOTE,
     /** Image line. */
     IMAGE,
 

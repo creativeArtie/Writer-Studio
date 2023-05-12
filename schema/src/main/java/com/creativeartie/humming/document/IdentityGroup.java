@@ -6,8 +6,6 @@ package com.creativeartie.humming.document;
 public enum IdentityGroup {
     /** a footnote identity. */
     FOOTNOTE,
-    /** a endnote identity. */
-    ENDNOTE,
     /** a research note identity. */
     NOTE,
     /** a meta data identity. */
@@ -23,8 +21,6 @@ public enum IdentityGroup {
         switch (this) {
             case NOTE:
                 return CssSpanStyles.NOTE;
-            case ENDNOTE:
-                return CssSpanStyles.ENDNOTE;
             case FOOTNOTE:
                 return CssSpanStyles.FOOTNOTE;
             case META:

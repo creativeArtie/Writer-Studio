@@ -10,7 +10,6 @@ import com.creativeartie.humming.schema.*;
  * used:
  * <ul>
  * <li>{@link IdentityGroup#FOOTNOTE} footnote
- * <li>{@link IdentityGroup#ENDNOTE} endnote
  * <li>{@link IdentityGroup#NOTE} research note
  * <li>{@link IdentityGroup#META} meta data
  * </ul>
@@ -27,8 +26,6 @@ public final class IdentityReference extends SpanBranch implements IdentityParen
         IdentityGroup group = null;
         if ((raw = IdentityReferencePattern.FOOTREF.group(match)) != null) {
             group = IdentityGroup.FOOTNOTE;
-        } else if ((raw = IdentityReferencePattern.ENDREF.group(match)) != null) {
-            group = IdentityGroup.ENDNOTE;
         } else if ((raw = IdentityReferencePattern.CITEREF.group(match)) != null) {
             group = IdentityGroup.NOTE;
         } else if ((raw = IdentityReferencePattern.METAREF.group(match)) != null) {

@@ -12,7 +12,6 @@ final class ParaReferenceTest extends SpanBranchTestBase<ParaReference> {
         return // @formatter:off
             Stream.of(
                 Arguments.of("^", CssLineStyles.FOOTNOTE),
-                Arguments.of("*", CssLineStyles.ENDNOTE),
                 Arguments.of("+", CssLineStyles.IMAGE)
             );//@formatter:on
     }

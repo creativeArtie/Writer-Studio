@@ -11,13 +11,11 @@ final class ParaReferncePatternTest extends PatternTestBase<RefLineParts> {
     @BeforeAll
     public static void printPattern() {
         splitPrintPattern("Footnote", ParaReferencePatterns.FOOTNOTE.matcher("!^id:note"));
-        splitPrintPattern("Endnote", ParaReferencePatterns.ENDNOTE.matcher("!*id:endnot"));
         splitPrintPattern("Image", ParaReferencePatterns.IMAGE.matcher("!+id:endnot"));
     }
 
     @Test
     void testAgenda() {
-        Assertions.assertNull(ParaReferencePatterns.ENDNOTE.matcher("!hello"));
         Assertions.assertNull(ParaReferencePatterns.FOOTNOTE.matcher("!hello"));
     }
 
@@ -43,14 +41,14 @@ final class ParaReferncePatternTest extends PatternTestBase<RefLineParts> {
 
     @Test
     void testNonFootnote() {
-        Assertions.assertNull(ParaReferencePatterns.FOOTNOTE.matcher("!*"));
+        Assertions.assertNull(ParaReferencePatterns.FOOTNOTE.matcher("!^"));
     }
 
     @Test
     void testEndnote() {
-        final Matcher matcher = ParaReferencePatterns.ENDNOTE.matcher("!*test=note");
+        final Matcher matcher = ParaReferencePatterns.FOOTNOTE.matcher("!^test=note");
         assertGroup("!", matcher, RefLineParts.START, 1);
-        assertGroup("*", matcher, RefLineParts.ENDNOTE, 2);
+        assertGroup("^", matcher, RefLineParts.FOOTNOTE, 2);
         assertGroup("test", matcher, RefLineParts.ID, 3);
         assertGroup("=", matcher, RefLineParts.SEP, 4);
         assertGroup("note", matcher, RefLineParts.TEXT, 5);
@@ -59,9 +57,9 @@ final class ParaReferncePatternTest extends PatternTestBase<RefLineParts> {
 
     @Test
     void testEndnoteError() {
-        final Matcher matcher = ParaReferencePatterns.ENDNOTE.matcher("!*test++note");
+        final Matcher matcher = ParaReferencePatterns.FOOTNOTE.matcher("!^test++note");
         assertGroup("!", matcher, RefLineParts.START, 1);
-        assertGroup("*", matcher, RefLineParts.ENDNOTE, 2);
+        assertGroup("^", matcher, RefLineParts.FOOTNOTE, 2);
         assertGroup("test++note", matcher, RefLineParts.ERROR, 5);
         assertEnd(matcher);
     }

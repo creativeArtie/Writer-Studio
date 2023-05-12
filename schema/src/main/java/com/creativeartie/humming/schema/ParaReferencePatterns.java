@@ -32,23 +32,6 @@ public enum ParaReferencePatterns implements PatternEnum {
          // @formatter:on
         }
     },
-    /** Endnote line pattern. */
-    ENDNOTE {
-        @Override
-        protected String getValuePattern(boolean withName) {
-            return // @formatter:off
-                RefLineParts.START.getPattern(withName) +
-                RefLineParts.ENDNOTE.getPattern(withName) +
-                "(" +
-                    "(" +
-                        RefLineParts.ID.getPattern(withName) +
-                        RefLineParts.SEP.getPattern(withName) +
-                        RefLineParts.TEXT.getPattern(withName) +
-                    ")|" + RefLineParts.ERROR.getPattern(withName) +
-                ")";
-         // @formatter:on
-        }
-    },
     /** Image line pattern. */
     IMAGE {
         @Override
@@ -75,8 +58,6 @@ public enum ParaReferencePatterns implements PatternEnum {
         START("!"),
         /** Footnote indicator pattern. */
         FOOTNOTE("\\^"),
-        /** Endnote indicator pattern. */
-        ENDNOTE("\\*"),
         /** Image indicator pattern. */
         IMAGE("\\+"),
 
