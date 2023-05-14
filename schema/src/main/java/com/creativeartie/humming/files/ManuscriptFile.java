@@ -91,4 +91,26 @@ public class ManuscriptFile {
     public String toString() {
         return "Draft Number: " + Integer.toString(draftNumber) + '\n' + mainWriting.getText().replace('\n', '␤'); //$NON-NLS-1$
     }
+
+    /**
+     * Changes the draft name in all versions
+     *
+     * @param name
+     *        the name to change
+     */
+    public void setDraftName(String name) {
+        draftName = name;
+        previousDraft.ifPresent((draft) -> draft.changePreviousDraft(name));
+        nextDraft.ifPresent((draft) -> draft.changeNextDraft(name));
+    }
+
+    private void changePreviousDraft(String name) {
+        draftName = name;
+        previousDraft.ifPresent((draft) -> draft.changePreviousDraft(name));
+    }
+
+    private void changeNextDraft(String name) {
+        draftName = name;
+        nextDraft.ifPresent((draft) -> draft.changeNextDraft(name));
+    }
 }

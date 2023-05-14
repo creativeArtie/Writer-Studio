@@ -428,6 +428,14 @@ public class ProjectZip {
         return null;
     }
 
+    /**
+     * Set the file path
+     *
+     * @param name
+     *        the file path to set
+     *
+     * @throws IOException
+     */
     public void setFilePath(String name) throws IOException {
         File file = new File(name);
         if (file.isFile()) {

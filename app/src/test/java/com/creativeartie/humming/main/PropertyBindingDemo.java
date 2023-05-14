@@ -4,7 +4,7 @@ import org.junit.jupiter.api.*;
 
 import javafx.beans.property.*;
 
-public class PropertyBindingDemo {
+class PropertyBindingDemo {
     @SuppressWarnings("nls")
     @Test
     void tester() {
