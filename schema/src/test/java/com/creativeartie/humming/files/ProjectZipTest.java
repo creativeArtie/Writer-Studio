@@ -1,6 +1,7 @@
 package com.creativeartie.humming.files;
 
 import java.io.*;
+import java.nio.file.*;
 import java.time.*;
 
 import org.junit.jupiter.api.*;
@@ -11,7 +12,8 @@ class ProjectZipTest {
 
     @Test
     void test() throws FileNotFoundException, IOException, ClassNotFoundException {
-        ProjectZip data = ProjectZip.newProject(zipFile);
+        ProjectZip data = ProjectZip.newProject();
+        data.setFilePath(zipFile);
         ManuscriptFile draft = data.createManuscript("draft");
 
         String firstDraft = "Hello World!";
@@ -45,5 +47,23 @@ class ProjectZipTest {
 
         File file = new File("test.zip");
         file.delete();
+    }
+
+    @Test
+    void testNotFound() {
+        ProjectZip data = ProjectZip.newProject();
+        Assertions.assertThrowsExactly(IOException.class, () -> data.setFilePath("abc/abc.zip"));
+    }
+
+    @Test
+    void testOverwrite() {
+        ProjectZip data = ProjectZip.newProject();
+        Assertions.assertThrowsExactly(FileAlreadyExistsException.class, () -> data.setFilePath("build.gradle"));
+    }
+
+    @Test
+    void notSave() {
+        ProjectZip data = ProjectZip.newProject();
+        Assertions.assertThrowsExactly(NullPointerException.class, () -> data.save());
     }
 }

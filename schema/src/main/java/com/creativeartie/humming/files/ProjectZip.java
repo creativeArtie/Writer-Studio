@@ -1,6 +1,7 @@
 package com.creativeartie.humming.files;
 
 import java.io.*;
+import java.nio.file.*;
 import java.time.*;
 import java.util.*;
 import java.util.Map.*;
@@ -18,19 +19,16 @@ public class ProjectZip {
     private Log writingLog;
     private Properties imageFiles;
     private TreeMap<String, ManuscriptFile> documentFiles;
-    private String fileLocation;
+    private Optional<String> fileLocation;
     private Optional<LocalDateTime> startTime;
 
     /**
      * Create a new project
      *
-     * @param location
-     *        the file path
-     *
      * @return a new project
      */
-    public static ProjectZip newProject(String location) {
-        return new ProjectZip(location);
+    public static ProjectZip newProject() {
+        return new ProjectZip();
     }
 
     /**
@@ -51,7 +49,7 @@ public class ProjectZip {
             File file = new File(location);
             Preconditions.checkArgument(file.isFile() && file.canWrite() && file.canRead());
         }
-        ProjectZip project = new ProjectZip(location);
+        ProjectZip project = new ProjectZip();
 
         TreeMap<String, TreeMap<Integer, String>> scripts;
         scripts = new TreeMap<>();
@@ -111,12 +109,12 @@ public class ProjectZip {
         return project;
     }
 
-    private ProjectZip(String location) {
+    private ProjectZip() {
         projectProps = new ProjectProperties();
         writingLog = new Log();
         imageFiles = new Properties();
         documentFiles = new TreeMap<>();
-        fileLocation = location;
+        fileLocation = Optional.empty();
         startTime = Optional.empty();
     }
 
@@ -130,7 +128,7 @@ public class ProjectZip {
         // Needs to be create after new entry + close after the zip output stream closes
         @SuppressWarnings("resource")
         ObjectOutputStream log = null;
-        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(fileLocation))) {
+        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(fileLocation.get()))) {
             // log file
             zos.putNextEntry(new ZipEntry(Literals.LOG_FILE.getText()));
             log = new ObjectOutputStream(zos);
@@ -428,5 +426,14 @@ public class ProjectZip {
     public String getEncodedImage(String name) {
         if (imageFiles.containsKey(name)) return imageFiles.getProperty(name);
         return null;
+    }
+
+    public void setFilePath(String name) throws IOException {
+        File file = new File(name);
+        if (file.isFile()) {
+            throw new FileAlreadyExistsException(name);
+        }
+        file.createNewFile();
+        fileLocation = Optional.of(file.getPath());
     }
 }
