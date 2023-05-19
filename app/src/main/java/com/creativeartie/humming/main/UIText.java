@@ -39,7 +39,18 @@ public class UIText {
         TITLE,
         /** Writing tab. */
         WRITER_TAB;
+    }
 
+    /**
+     * Default names
+     *
+     * @author wai
+     */
+    public enum DefaultNames implements GetText {
+        /** Default note file */
+        NOTE,
+        /** Default draft file */
+        DRAFT;
     }
 
     private static ResourceBundle textBundle;

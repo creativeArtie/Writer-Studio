@@ -84,9 +84,9 @@ public abstract class ActiveFile {
      *
      * @return the manuscript.
      */
-    protected abstract ReadOnlyObjectProperty<Manuscript> manuscriptProperty();
+    protected abstract ReadOnlyObjectProperty<ManuscriptFile> manuscriptProperty();
 
-    private Manuscript getManuscript() {
+    private ManuscriptFile getManuscript() {
         return manuscriptProperty().get();
     }
 
@@ -112,6 +112,6 @@ public abstract class ActiveFile {
      * @see #locateChildrenAtCursor()
      */
     public List<Span> locateChildren(int location) {
-        return getManuscript().locateChildren(location);
+        return getManuscript().getManuscript().locateChildren(location);
     }
 }

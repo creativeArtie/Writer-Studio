@@ -8,6 +8,7 @@ import org.fxmisc.richtext.event.*;
 import org.fxmisc.richtext.model.*;
 
 import com.creativeartie.humming.document.*;
+import com.creativeartie.humming.files.*;
 import com.creativeartie.humming.main.*;
 
 import javafx.beans.property.*;
@@ -22,21 +23,16 @@ import javafx.stage.*;
  * writing.fxml </a>
  */
 public class WritingController extends ActiveFile {
-    private class ManuscriptProperty extends ReadOnlyObjectWrapper<Manuscript> {
-        ManuscriptProperty() {
-            super(new Manuscript());
-        }
-
+    private class ManuscriptProperty extends ReadOnlyObjectWrapper<ManuscriptFile> {
         private void updateText(String text) {
-            getValue().updateText(text);
+            Manuscript script = getValue().getManuscript();
+            script.updateText(text);
             if (text.isEmpty()) return;
             final StyleSpansBuilder<Collection<String>> styleSpans = new StyleSpansBuilder<>();
-            styleSpans.addAll(
-                    rootDoc.get().convertLeaves((leaf) -> new StyleSpan<>(leaf.getCssStyles(), leaf.getLength()))
-            );
+            styleSpans.addAll(script.convertLeaves((leaf) -> new StyleSpan<>(leaf.getCssStyles(), leaf.getLength())));
             writingText.setStyleSpans(0, styleSpans.create());
             int line = 0;
-            for (CssLineStyles style : rootDoc.get().convertLines((para) -> para.getLineStyle())) {
+            for (CssLineStyles style : script.convertLines((para) -> para.getLineStyle())) {
                 writingText.setParagraphStyle(line, List.of(style.getCssName()));
                 line++;
             }
@@ -44,7 +40,6 @@ public class WritingController extends ActiveFile {
         }
     }
 
-    @FXML
     private ManuscriptProperty rootDoc;
     private Popup popup;
     private Label popupMsg;
@@ -56,6 +51,7 @@ public class WritingController extends ActiveFile {
      */
     public WritingController() {
 
+        rootDoc = new ManuscriptProperty();
         // TODO replace popup message
         popup = new Popup();
         popupMsg = new Label();
@@ -66,7 +62,6 @@ public class WritingController extends ActiveFile {
     @FXML
     void initialize() {
 
-        rootDoc = new ManuscriptProperty();
         writingText.textProperty().addListener(this::textEdited);
         writingText.getStylesheets().add(DataFiles.WRITER_STYLE.getFile().toString());
 
@@ -79,7 +74,7 @@ public class WritingController extends ActiveFile {
         int chIdx = e.getCharacterIndex();
         Point2D pos = e.getScreenPosition();
         String name = new String();
-        for (Span child : rootDoc.get().locateChildren(chIdx)) {
+        for (Span child : rootDoc.get().getManuscript().locateChildren(chIdx)) {
             String appendText = child.getClass().getSimpleName();
             if (child instanceof Para) {
                 appendText = ((Para) child).getLineStyle().toString();
@@ -101,22 +96,17 @@ public class WritingController extends ActiveFile {
         rootDoc.updateText(newValue);
     }
 
-    /**
-     * The property document
-     *
-     * @return document property
-     */
-    public ReadOnlyObjectProperty<Manuscript> documentProperty() {
-        return rootDoc.getReadOnlyProperty();
-    }
-
     @Override
     protected ObservableValue<Integer> docCursorProperty() {
         return writingText.caretPositionProperty();
     }
 
     @Override
-    protected ReadOnlyObjectProperty<Manuscript> manuscriptProperty() {
+    protected ReadOnlyObjectProperty<ManuscriptFile> manuscriptProperty() {
         return rootDoc.getReadOnlyProperty();
+    }
+
+    void setManuscript(ManuscriptFile file) {
+        rootDoc.set(file);
     }
 }
