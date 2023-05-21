@@ -14,7 +14,10 @@ import com.google.common.base.*;
 /**
  * Project zip file
  */
-public class ProjectZip {
+public enum ProjectZip {
+    /** Singleton object */
+    INSTANCE;
+
     private ProjectProperties projectProps;
     private Log writingLog;
     private Properties imageFiles;
@@ -22,13 +25,23 @@ public class ProjectZip {
     private Optional<String> fileLocation;
     private Optional<LocalDateTime> startTime;
 
+    private ProjectZip() {
+        newProject();
+    }
+
     /**
      * Create a new project
      *
      * @return a new project
      */
-    public static ProjectZip newProject() {
-        return new ProjectZip();
+    public ProjectZip newProject() {
+        projectProps = new ProjectProperties();
+        writingLog = new Log();
+        imageFiles = new Properties();
+        documentFiles = new TreeMap<>();
+        fileLocation = Optional.empty();
+        startTime = Optional.empty();
+        return this;
     }
 
     /**
@@ -43,14 +56,11 @@ public class ProjectZip {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public static ProjectZip loadProject(String location)
-            throws FileNotFoundException, IOException, ClassNotFoundException {
+    public ProjectZip loadProject(String location) throws FileNotFoundException, IOException, ClassNotFoundException {
         {
             File file = new File(location);
             Preconditions.checkArgument(file.isFile() && file.canWrite() && file.canRead());
         }
-        ProjectZip project = new ProjectZip();
-
         TreeMap<String, TreeMap<Integer, String>> scripts;
         scripts = new TreeMap<>();
 
@@ -64,11 +74,11 @@ public class ProjectZip {
                 // log file
                 if (entry.getName().equals(Literals.LOG_FILE.getText())) {
                     try (ObjectInputStream obj = new ObjectInputStream(input)) {
-                        project.writingLog = (Log) obj.readObject();
+                        writingLog = (Log) obj.readObject();
                     }
 
                 } else if (entry.getName().equals(Literals.PROP_FILE.getText())) {
-                    project.projectProps.load(input);
+                    projectProps.load(input);
 
                 } else if (entry.getName().startsWith(Literals.DOC_FOLDER.getText())) {
 
@@ -91,7 +101,7 @@ public class ProjectZip {
 
                     // Images
                 } else if (entry.getName().equals(Literals.IMAGES_FILE.getText())) {
-                    project.imageFiles.load(input);
+                    imageFiles.load(input);
                 }
                 input.close();
 
@@ -103,19 +113,10 @@ public class ProjectZip {
                     if (child.getKey() != 1) data = new ManuscriptFile(data);
                     data.getManuscript().updateText(child.getValue());
                 }
-                project.documentFiles.put(entry.getKey(), data);
+                documentFiles.put(entry.getKey(), data);
             }
         }
-        return project;
-    }
-
-    private ProjectZip() {
-        projectProps = new ProjectProperties();
-        writingLog = new Log();
-        imageFiles = new Properties();
-        documentFiles = new TreeMap<>();
-        fileLocation = Optional.empty();
-        startTime = Optional.empty();
+        return this;
     }
 
     /**
@@ -251,6 +252,10 @@ public class ProjectZip {
      */
     public ManuscriptFile getManuscript(String name) {
         return documentFiles.get(name);
+    }
+
+    void setManuscriptFile(ManuscriptFile file) {
+        documentFiles.put(file.getDraftName(), file);
     }
 
     /**

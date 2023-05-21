@@ -113,4 +113,21 @@ public class ManuscriptFile {
         draftName = name;
         nextDraft.ifPresent((draft) -> draft.changeNextDraft(name));
     }
+
+    /**
+     * Created a new empty version.
+     */
+    public void newEmptyVersion() {
+        ManuscriptFile newVersion = new ManuscriptFile(this);
+        ProjectZip.INSTANCE.setManuscriptFile(newVersion);
+    }
+
+    /**
+     * Created a new filled version.
+     */
+    public void newFilledVersion() {
+        ManuscriptFile file = new ManuscriptFile(this);
+        file.getManuscript().updateText(getManuscript().getText());
+        ProjectZip.INSTANCE.setManuscriptFile(file);
+    }
 }

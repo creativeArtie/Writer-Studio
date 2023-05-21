@@ -12,21 +12,8 @@ import javafx.beans.value.*;
  * A tab containing current manuscript file.
  */
 public abstract class ActiveFile {
-    private static SimpleObjectProperty<ProjectZip> openedProject;
     private static ReadOnlyObjectWrapper<ActiveFile> activeFile;
     private static ReadOnlyIntegerWrapper currentPosition;
-
-    /**
-     * Gets the property for the project zip
-     *
-     * @return the project zip property
-     */
-    public static SimpleObjectProperty<ProjectZip> getOpenedProject() {
-        if (openedProject == null) {
-            openedProject = new SimpleObjectProperty<>();
-        }
-        return openedProject;
-    }
 
     /**
      * Gets the read only active file. Require because setting the active file using

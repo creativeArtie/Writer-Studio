@@ -12,7 +12,7 @@ class ProjectZipTest {
 
     @Test
     void test() throws FileNotFoundException, IOException, ClassNotFoundException {
-        ProjectZip data = ProjectZip.newProject();
+        ProjectZip data = ProjectZip.INSTANCE.newProject();
         data.setFilePath(zipFile);
         ManuscriptFile draft = data.createManuscript("draft");
 
@@ -33,7 +33,7 @@ class ProjectZipTest {
 
         data.save();
 
-        ProjectZip result = ProjectZip.loadProject(zipFile);
+        ProjectZip result = ProjectZip.INSTANCE.loadProject(zipFile);
         Assertions.assertEquals(time, result.getWritingLog().getCurrent().getTimeSpent(), "time spent");
         Assertions.assertEquals(date, result.getWritingLog().getCurrent().getCreatedDate(), "created date");
 
@@ -51,19 +51,19 @@ class ProjectZipTest {
 
     @Test
     void testNotFound() {
-        ProjectZip data = ProjectZip.newProject();
+        ProjectZip data = ProjectZip.INSTANCE.newProject();
         Assertions.assertThrowsExactly(IOException.class, () -> data.setFilePath("abc/abc.zip"));
     }
 
     @Test
     void testOverwrite() {
-        ProjectZip data = ProjectZip.newProject();
+        ProjectZip data = ProjectZip.INSTANCE.newProject();
         Assertions.assertThrowsExactly(FileAlreadyExistsException.class, () -> data.setFilePath("build.gradle"));
     }
 
     @Test
     void notSave() {
-        ProjectZip data = ProjectZip.newProject();
+        ProjectZip data = ProjectZip.INSTANCE.newProject();
         Assertions.assertThrowsExactly(NullPointerException.class, () -> data.save());
     }
 }

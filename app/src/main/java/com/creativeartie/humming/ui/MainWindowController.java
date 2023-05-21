@@ -29,7 +29,7 @@ public class MainWindowController {
     }
 
     private void createDefaults() throws IOException {
-        ProjectZip project = ProjectZip.newProject();
+        ProjectZip project = ProjectZip.INSTANCE.newProject();
         ManuscriptFile active = project.createManuscript(UIText.DefaultNames.DRAFT.getText());
         project.createManuscript(UIText.DefaultNames.NOTE.getText());
 
