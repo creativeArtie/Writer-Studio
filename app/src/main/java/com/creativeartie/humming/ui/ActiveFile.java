@@ -14,6 +14,7 @@ import javafx.beans.value.*;
 public abstract class ActiveFile {
     private static ReadOnlyObjectWrapper<ActiveFile> activeFile;
     private static ReadOnlyIntegerWrapper currentPosition;
+    private static ReadOnlyObjectWrapper<ManuscriptFile> manuscriptFile;
 
     /**
      * Gets the read only active file. Require because setting the active file using
@@ -32,6 +33,17 @@ public abstract class ActiveFile {
         return activeFile;
     }
 
+    private static ReadOnlyObjectWrapper<ManuscriptFile> getManuscriptFile() {
+        if (manuscriptFile == null) {
+            manuscriptFile = new ReadOnlyObjectWrapper<>();
+        }
+        return manuscriptFile;
+    }
+
+    public static ReadOnlyObjectProperty<ManuscriptFile> manuscriptFileProperty() {
+        return getManuscriptFile().getReadOnlyProperty();
+    }
+
     /**
      * Set the currently active file.
      *
@@ -41,6 +53,7 @@ public abstract class ActiveFile {
     public static void setActiveFile(ActiveFile file) {
         getActiveFile().setValue(file);
         currentPosition.bind(file.docCursorProperty());
+        manuscriptFile.bind(file.manuscriptProperty());
     }
 
     private static ReadOnlyIntegerWrapper getCurrentPosWrapper() {
@@ -85,7 +98,11 @@ public abstract class ActiveFile {
      * @see #locateChildren(int)
      */
     public List<Span> locateChildrenAtCursor() {
-        return locateChildren(docCursorProperty().getValue());
+        int pos = docCursorProperty().getValue();
+        if (pos == manuscriptFile.get().getManuscript().getLength() && pos > 1) {
+            pos--;
+        }
+        return locateChildren(pos);
     }
 
     /**

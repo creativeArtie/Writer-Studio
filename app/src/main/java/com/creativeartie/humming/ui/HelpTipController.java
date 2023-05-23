@@ -13,7 +13,7 @@ public class HelpTipController {
     @FXML
     private Label headingText, outlineText, normalLine, breakLine;
     @FXML
-    private Label  tableHeadLine, tableCellLine, numberedLine, bulletLine;
+    private Label tableHeadLine, tableCellLine, numberedLine, bulletLine;
     @FXML
     private Label footnoteLine, imageLine, todoLine, quoteLine;
     @FXML
@@ -29,6 +29,7 @@ public class HelpTipController {
     void initialize() {
         updateParagraphHighlight(null);
         ActiveFile.getCurrentPosProperty().addListener((prop, oldValue, newValue) -> runUpdate());
+        ActiveFile.manuscriptFileProperty().addListener((prop, oldValue, newValue) -> runUpdate());
     }
 
     private void runUpdate() {
@@ -44,17 +45,17 @@ public class HelpTipController {
         updateHighlightStyle(outlineText, style == CssLineStyles.OUTLINE);
         updateHighlightStyle(normalLine, style == CssLineStyles.NORMAL);
         updateHighlightStyle(breakLine, style == CssLineStyles.BREAK);
-        
+
         updateHighlightStyle(tableHeadLine, style == CssLineStyles.ROW);
         updateHighlightStyle(tableCellLine, style == CssLineStyles.ROW);
         updateHighlightStyle(numberedLine, style == CssLineStyles.NUMBERED);
         updateHighlightStyle(bulletLine, style == CssLineStyles.BULLET);
-        
+
         updateHighlightStyle(footnoteLine, style == CssLineStyles.FOOTNOTE);
         updateHighlightStyle(imageLine, style == CssLineStyles.IMAGE);
         updateHighlightStyle(quoteLine, style == CssLineStyles.QUOTE);
         updateHighlightStyle(todoLine, style == CssLineStyles.AGENDA);
-        
+
         updateHighlightStyle(summaryLine, style == CssLineStyles.HEADER);
         updateHighlightStyle(noteLine, style == CssLineStyles.NOTE);
         updateHighlightStyle(fieldLine, style == CssLineStyles.FIELD);

@@ -36,6 +36,7 @@ public class WritingController extends ActiveFile {
                 writingText.setParagraphStyle(line, List.of(style.getCssName()));
                 line++;
             }
+            assert text.length() == script.getLength();
             fireValueChangedEvent();
         }
     }
