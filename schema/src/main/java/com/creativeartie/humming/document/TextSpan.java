@@ -1,5 +1,6 @@
 package com.creativeartie.humming.document;
 
+import java.util.Optional;
 import java.util.regex.*;
 
 import com.creativeartie.humming.schema.*;
@@ -57,14 +58,16 @@ public final class TextSpan extends SpanBranch {
         StringBuilder builder = new StringBuilder();
         while (match.find()) {
             String raw = TextSpanPatterns.TextSpanParts.TEXT.group(match);
-            if (raw != null) {
-                builder.append(raw);
-                SpanLeaf.addLeaf(span, raw, CssSpanStyles.TEXT);
+            Optional<String> data = SpanLeaf.addLeaf(span, raw, CssSpanStyles.TEXT);
+            if (data.isPresent()) {
+                builder.append(data.get());
                 continue;
             }
+
             raw = TextSpanPatterns.TextSpanParts.ESCAPE.group(match);
-            if (raw.length() == 2) builder.append(raw.charAt(1));
-            SpanLeaf.addLeaf(span, raw, CssSpanStyles.ESCAPE);
+            SpanLeaf.addLeaf(span, raw, CssSpanStyles.ESCAPE).filter((found) -> found.length() == 2)
+                    .ifPresent((found) -> builder.append(found.charAt(1)));
+
         }
         span.spanText = builder.toString();
         return span;

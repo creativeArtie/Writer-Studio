@@ -21,8 +21,10 @@ public final class ParaAgenda extends Para implements IdentityStorage.Identity {
 
     @Override
     protected void buildSpan(Matcher match) {
-        String raw = ParaBasicPatterns.LineSpanParts.TODOER.group(match);
-        SpanLeaf.addLeaf(this, raw);
+
+        SpanLeaf.addLeaf(this, ParaBasicPatterns.LineSpanParts.TODOER.group(match));
+
+        String raw;
         if ((raw = ParaBasicPatterns.LineSpanParts.TEXT.group(match)) != null) {
             TextSpan child = TextSpan.newSimple(this, raw);
             add(child);

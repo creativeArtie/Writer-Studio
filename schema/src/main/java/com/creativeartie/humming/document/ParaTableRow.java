@@ -34,10 +34,7 @@ public final class ParaTableRow extends Para {
         writtenCount = 0;
         outlineCount = 0;
         while (match.find()) {
-            String sep = ParaTableRowPattern.SEP.group(match);
-
-            if (sep != null) {
-                SpanLeaf.addLeaf(this, sep);
+            if (SpanLeaf.addLeaf(this, ParaTableRowPattern.SEP.group(match)).isPresent()) {
                 TextFormatted text = TextFormatted.newCellText(this, ParaTableRowPattern.TEXT.group(match));
                 add(text);
                 writtenCount += text.getWrittenCount();
@@ -45,10 +42,8 @@ public final class ParaTableRow extends Para {
                 numberOfColumns++;
                 continue;
             }
-            String end = ParaTableRowPattern.END.group(match);
 
-            if (end != null) {
-                SpanLeaf.addLeaf(this, end);
+            if (SpanLeaf.addLeaf(this, ParaTableRowPattern.END.group(match)).isPresent()) {
                 return;
             }
         }

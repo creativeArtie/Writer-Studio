@@ -50,6 +50,7 @@ public final class ParaReference extends Para implements IdentityParent {
         }
         SpanLeaf.addLeaf(this, RefLineParts.START.group(match));
         SpanLeaf.addLeaf(this, pattern.group(match));
+
         String raw;
         TextFormatted text = null;
         if ((raw = RefLineParts.ID.group(match)) != null) {
@@ -59,9 +60,7 @@ public final class ParaReference extends Para implements IdentityParent {
                             IdentitySpan.newPointerId(this, raw, group)
             );
             add(idAddress.get());
-            String sep = RefLineParts.SEP.group(match);
-            if (sep != null) {
-                SpanLeaf.addLeaf(this, RefLineParts.SEP.group(match));
+            if (SpanLeaf.addLeaf(this, RefLineParts.SEP.group(match)).isPresent()) {
                 text = TextFormatted.newNoteText(this, RefLineParts.TEXT.group(match));
                 add(text);
             }

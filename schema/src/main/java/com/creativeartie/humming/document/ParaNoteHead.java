@@ -19,16 +19,16 @@ public final class ParaNoteHead extends Para implements IdentityParent {
 
     @Override
     protected void buildSpan(Matcher match) {
-        String raw;
         SpanLeaf.addLeaf(this, ParaNotePatterns.NoteLineParts.HEADING.group(match));
         TextFormatted text = null;
+        String raw;
         if ((raw = ParaNotePatterns.NoteLineParts.TITLE.group(match)) != null) {
             text = TextFormatted.newHeadingText(this, raw);
             add(text);
         }
         noteHeading = Optional.ofNullable(text);
-        if ((raw = ParaNotePatterns.NoteLineParts.IDER.group(match)) != null) {
-            SpanLeaf.addLeaf(this, raw);
+
+        if (SpanLeaf.addLeaf(this, ParaNotePatterns.NoteLineParts.IDER.group(match)).isPresent()) {
             if ((raw = ParaNotePatterns.NoteLineParts.ID.group(match)) != null) {
                 noteId = Optional.of(IdentitySpan.newAddressId(this, raw, IdentityGroup.NOTE));
                 add(noteId.get());

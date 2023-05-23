@@ -18,14 +18,16 @@ public final class IdentityTodo extends SpanBranch implements IdentityStorage.Id
         IdentityTodo span = new IdentityTodo(parent, classes);
         Matcher matcher = IdentityTodoPattern.matcher(text);
 
-        String raw = IdentityTodoPattern.START.group(matcher);
-        SpanLeaf.addLeaf(span, raw);
+        SpanLeaf.addLeaf(span, IdentityTodoPattern.START.group(matcher));
+
+        String raw;
         if ((raw = IdentityTodoPattern.TEXT.group(matcher)) != null) {
             TextSpan test = TextSpan.newSpecial(span, raw, classes);
             span.add(test);
             span.todoText = test.getText();
         }
-        if ((raw = IdentityTodoPattern.END.group(matcher)) != null) SpanLeaf.addLeaf(span, raw);
+
+        SpanLeaf.addLeaf(span, IdentityTodoPattern.END.group(matcher));
         return span;
     }
 

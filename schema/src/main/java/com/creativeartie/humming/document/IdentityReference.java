@@ -21,22 +21,24 @@ public final class IdentityReference extends SpanBranch implements IdentityParen
 
         IdentityReference span = new IdentityReference(parent, classes);
 
-        String raw = IdentityReferencePattern.START.group(match);
-        SpanLeaf.addLeaf(span, raw);
+        SpanLeaf.addLeaf(span, IdentityReferencePattern.START.group(match));
+
         IdentityGroup group = null;
-        if ((raw = IdentityReferencePattern.FOOTREF.group(match)) != null) {
+        String raw;
+        if (SpanLeaf.addLeaf(span, IdentityReferencePattern.FOOTREF.group(match)).isPresent()) {
             group = IdentityGroup.FOOTNOTE;
-        } else if ((raw = IdentityReferencePattern.CITEREF.group(match)) != null) {
+        } else if (SpanLeaf.addLeaf(span, IdentityReferencePattern.CITEREF.group(match)).isPresent()) {
             group = IdentityGroup.NOTE;
-        } else if ((raw = IdentityReferencePattern.METAREF.group(match)) != null) {
+        } else if (SpanLeaf.addLeaf(span, IdentityReferencePattern.METAREF.group(match)).isPresent()) {
             group = IdentityGroup.META;
         }
+
         if (group != null) {
-            SpanLeaf.addLeaf(span, raw);
             span.addStyle(group.getStyleClass());
         } else {
             span.addStyle(CssSpanStyles.ERROR);
         }
+
         if ((raw = IdentityReferencePattern.ID.group(match)) != null) {
             IdentitySpan id = IdentitySpan.newPointerId(span, raw, group);
             span.add(id);
@@ -44,8 +46,7 @@ public final class IdentityReference extends SpanBranch implements IdentityParen
         } else if ((raw = IdentityReferencePattern.ERROR.group(match)) != null) {
             span.add(TextSpan.newSpecial(span, raw));
         }
-        raw = IdentityReferencePattern.END.group(match);
-        SpanLeaf.addLeaf(span, raw);
+        SpanLeaf.addLeaf(span, IdentityReferencePattern.END.group(match));
         return span;
     }
 

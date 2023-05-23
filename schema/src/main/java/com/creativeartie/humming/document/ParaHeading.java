@@ -26,31 +26,30 @@ public final class ParaHeading extends Para implements IdentityParent {
 
     @Override
     protected void buildSpan(Matcher match) {
-        String raw;
-        if ((raw = ParaHeadingPattern.OUTLINE.group(match)) != null) {
-            SpanLeaf.addLeaf(this, raw);
+        SpanLeaf.addLeaf(this, ParaHeadingPattern.OUTLINE.group(match));
 
-        }
-        if ((raw = ParaHeadingPattern.LEVEL.group(match)) != null) {
-            SpanLeaf.addLeaf(this, raw);
-            headingLevel = raw.length();
-        }
+        headingLevel = SpanLeaf.addLeaf(this, ParaHeadingPattern.LEVEL.group(match)).map((raw) -> raw.length()).get();
+
+        String raw;
         TextFormatted text = null;
         if ((raw = ParaHeadingPattern.TEXT.group(match)) != null) {
             text = TextFormatted.newHeadingText(this, raw);
             add(text);
         }
         headingText = Optional.ofNullable(text);
+
         headingId = Optional.empty();
-        if ((raw = ParaHeadingPattern.IDER.group(match)) != null) {
-            SpanLeaf.addLeaf(this, raw);
+        if (SpanLeaf.addLeaf(this, ParaHeadingPattern.IDER.group(match)).isPresent()) {
+
             if ((raw = ParaHeadingPattern.ID.group(match)) != null) {
                 headingId = Optional.of(IdentitySpan.newAddressId(this, raw, IdentityGroup.HEADING));
                 add(headingId.get());
+
             } else if ((raw = ParaHeadingPattern.ERROR.group(match)) != null) {
                 add(TextSpan.newSimple(this, raw, CssSpanStyles.ERROR));
             }
         }
+
         SpanLeaf.addLeaf(this, ParaHeadingPattern.ENDER.group(match));
     }
 

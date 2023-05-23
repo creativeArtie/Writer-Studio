@@ -14,16 +14,16 @@ public final class SpanLeaf implements Span {
     private final int styleLength;
     private final String referText;
 
-    static boolean addLeaf(SpanBranch parent, String text) {
+    static Optional<String> addLeaf(SpanBranch parent, String text) {
         return addLeaf(parent, text, CssSpanStyles.OPERATOR);
     }
 
-    static boolean addLeaf(SpanBranch parent, String text, CssSpanStyles style) {
+    static Optional<String> addLeaf(SpanBranch parent, String text, CssSpanStyles style) {
         if (text == null || text.isEmpty()) {
-            return false;
+            return Optional.empty();
         }
         parent.add(new SpanLeaf(parent, text, style));
-        return true;
+        return Optional.of(text);
     }
 
     private SpanLeaf(SpanParent parent, String text, CssSpanStyles style) {

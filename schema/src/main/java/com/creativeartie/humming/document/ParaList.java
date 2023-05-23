@@ -41,11 +41,12 @@ public final class ParaList extends Para implements SpanList {
 
     @Override
     protected void buildSpan(Matcher match) {
-        String raw = ParaListPattern.BULLET.group(match);
-        if (raw == null) raw = ParaListPattern.NUMBERED.group(match);
-        SpanLeaf.addLeaf(this, raw);
-        listLevel = raw.length();
+        listLevel = SpanLeaf.addLeaf(this, ParaListPattern.BULLET.group(match))
+                .or(() -> SpanLeaf.addLeaf(this, ParaListPattern.NUMBERED.group(match))).map(((raw) -> raw.length()))
+                .get();
+
         listText = addText(match, ParaListPattern.TEXT);
+
         SpanLeaf.addLeaf(this, ParaListPattern.ENDER.group(match));
     }
 

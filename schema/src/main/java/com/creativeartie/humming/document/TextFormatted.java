@@ -39,11 +39,9 @@ public final class TextFormatted extends SpanBranch {
             Matcher match, TextFormatted span, TreeSet<CssSpanStyles> formatting, TextFormattedParts finder,
             CssSpanStyles style
     ) {
-        String raw;
-        if ((raw = finder.group(match)) != null) {
+        if (SpanLeaf.addLeaf(span, finder.group(match)).isPresent()) {
             if (formatting.contains(style)) formatting.remove(style);
             else formatting.add(style);
-            SpanLeaf.addLeaf(span, raw);
         }
     }
 
