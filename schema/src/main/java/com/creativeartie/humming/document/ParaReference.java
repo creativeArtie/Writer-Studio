@@ -71,7 +71,7 @@ public final class ParaReference extends Para implements IdentityParent {
         }
         refText = Optional.ofNullable(text);
 
-        addLineEnd(match, RefLineParts.ENDER);
+        SpanLeaf.addLeaf(this, RefLineParts.ENDER.group(match));
     }
 
     @Override

@@ -51,7 +51,7 @@ public final class ParaHeading extends Para implements IdentityParent {
                 add(TextSpan.newSimple(this, raw, CssSpanStyles.ERROR));
             }
         }
-        addLineEnd(match, ParaHeadingPattern.ENDER);
+        SpanLeaf.addLeaf(this, ParaHeadingPattern.ENDER.group(match));
     }
 
     /**

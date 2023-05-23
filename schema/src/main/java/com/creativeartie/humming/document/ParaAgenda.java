@@ -28,7 +28,7 @@ public final class ParaAgenda extends Para implements IdentityStorage.Identity {
             add(child);
             todoText = child.getText();
         }
-        addLineEnd(match, ParaBasicPatterns.LineSpanParts.ENDER);
+        SpanLeaf.addLeaf(this, ParaBasicPatterns.LineSpanParts.ENDER.group(match));
     }
 
     /**

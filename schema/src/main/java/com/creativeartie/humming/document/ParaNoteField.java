@@ -36,7 +36,7 @@ public final class ParaNoteField extends Para {
             addStyle(CssSpanStyles.ERROR);
         }
 
-        addLineEnd(match, ParaNotePatterns.NoteLineParts.ENDER);
+        SpanLeaf.addLeaf(this, ParaNotePatterns.NoteLineParts.ENDER.group(match));
     }
 
     /**

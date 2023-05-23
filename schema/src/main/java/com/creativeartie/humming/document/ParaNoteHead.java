@@ -34,7 +34,7 @@ public final class ParaNoteHead extends Para implements IdentityParent {
                 add(noteId.get());
             }
         }
-        addLineEnd(match, ParaNotePatterns.NoteLineParts.ENDER);
+        SpanLeaf.addLeaf(this, ParaNotePatterns.NoteLineParts.ENDER.group(match));
     }
 
     @Override

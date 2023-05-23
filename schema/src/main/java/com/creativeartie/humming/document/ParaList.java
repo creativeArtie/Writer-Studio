@@ -46,7 +46,7 @@ public final class ParaList extends Para implements SpanList {
         SpanLeaf.addLeaf(this, raw);
         listLevel = raw.length();
         listText = addText(match, ParaListPattern.TEXT);
-        addLineEnd(match, ParaListPattern.ENDER);
+        SpanLeaf.addLeaf(this, ParaListPattern.ENDER.group(match));
     }
 
     void setPosition(int pos) {

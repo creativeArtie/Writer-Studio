@@ -37,7 +37,7 @@ public abstract class Para extends SpanBranch {
                 protected void buildSpan(Matcher match) {
                     SpanLeaf.addLeaf(this, LineSpanParts.QUOTER.group(match));
                     formatted = addText(match, LineSpanParts.FORMATTED);
-                    addLineEnd(match, LineSpanParts.ENDER);
+                    SpanLeaf.addLeaf(this, LineSpanParts.ENDER.group(match));
                 }
 
                 @Override
@@ -56,7 +56,7 @@ public abstract class Para extends SpanBranch {
                 @Override
                 protected void buildSpan(Matcher match) {
                     SpanLeaf.addLeaf(this, LineSpanParts.BREAKER.group(match));
-                    addLineEnd(match, LineSpanParts.ENDER);
+                    SpanLeaf.addLeaf(this, LineSpanParts.ENDER.group(match));
                 }
 
                 @Override
@@ -76,7 +76,7 @@ public abstract class Para extends SpanBranch {
                 @Override
                 protected void buildSpan(Matcher match) {
                     formatted = addText(match, LineSpanParts.FORMATTED);
-                    addLineEnd(match, LineSpanParts.ENDER);
+                    SpanLeaf.addLeaf(this, LineSpanParts.ENDER.group(match));
                 }
 
                 @Override
@@ -114,14 +114,6 @@ public abstract class Para extends SpanBranch {
             add(formatted);
         }
         return Optional.ofNullable(formatted);
-    }
-
-    void addLineEnd(Matcher match, PatternEnum endPattern) {
-        String raw;
-
-        if ((raw = endPattern.group(match)) != null) {
-            SpanLeaf.addLeaf(this, raw);
-        }
     }
 
     private CssLineStyles lineStyle;

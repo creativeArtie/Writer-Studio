@@ -19,7 +19,7 @@ public final class ParaNoteDetail extends Para {
     protected void buildSpan(Matcher match) {
         SpanLeaf.addLeaf(this, ParaNotePatterns.NoteLineParts.NOTE.group(match));
         noteText = addText(match, ParaNotePatterns.NoteLineParts.TEXT);
-        addLineEnd(match, ParaNotePatterns.NoteLineParts.ENDER);
+        SpanLeaf.addLeaf(this, ParaNotePatterns.NoteLineParts.ENDER.group(match));
     }
 
     @Override
