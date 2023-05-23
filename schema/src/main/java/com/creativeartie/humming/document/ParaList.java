@@ -43,7 +43,7 @@ public final class ParaList extends Para implements SpanList {
     protected void buildSpan(Matcher match) {
         String raw = ParaListPattern.BULLET.group(match);
         if (raw == null) raw = ParaListPattern.NUMBERED.group(match);
-        add(new SpanLeaf(this, raw));
+        SpanLeaf.addLeaf(this, raw);
         listLevel = raw.length();
         listText = addText(match, ParaListPattern.TEXT);
         addLineEnd(match, ParaListPattern.ENDER);

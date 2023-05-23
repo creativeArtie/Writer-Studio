@@ -22,7 +22,7 @@ public final class IdentityReference extends SpanBranch implements IdentityParen
         IdentityReference span = new IdentityReference(parent, classes);
 
         String raw = IdentityReferencePattern.START.group(match);
-        span.add(new SpanLeaf(span, raw));
+        SpanLeaf.addLeaf(span, raw);
         IdentityGroup group = null;
         if ((raw = IdentityReferencePattern.FOOTREF.group(match)) != null) {
             group = IdentityGroup.FOOTNOTE;
@@ -32,7 +32,7 @@ public final class IdentityReference extends SpanBranch implements IdentityParen
             group = IdentityGroup.META;
         }
         if (group != null) {
-            span.add(new SpanLeaf(span, raw));
+            SpanLeaf.addLeaf(span, raw);
             span.addStyle(group.getStyleClass());
         } else {
             span.addStyle(CssSpanStyles.ERROR);
@@ -45,9 +45,7 @@ public final class IdentityReference extends SpanBranch implements IdentityParen
             span.add(TextSpan.newSpecial(span, raw));
         }
         raw = IdentityReferencePattern.END.group(match);
-        if (raw != null) {
-            span.add(new SpanLeaf(span, raw));
-        }
+        SpanLeaf.addLeaf(span, raw);
         return span;
     }
 

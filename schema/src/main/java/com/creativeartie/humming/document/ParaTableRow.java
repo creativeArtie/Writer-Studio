@@ -37,7 +37,7 @@ public final class ParaTableRow extends Para {
             String sep = ParaTableRowPattern.SEP.group(match);
 
             if (sep != null) {
-                add(new SpanLeaf(this, sep));
+                SpanLeaf.addLeaf(this, sep);
                 TextFormatted text = TextFormatted.newCellText(this, ParaTableRowPattern.TEXT.group(match));
                 add(text);
                 writtenCount += text.getWrittenCount();
@@ -48,7 +48,7 @@ public final class ParaTableRow extends Para {
             String end = ParaTableRowPattern.END.group(match);
 
             if (end != null) {
-                add(new SpanLeaf(this, end));
+                SpanLeaf.addLeaf(this, end);
                 return;
             }
         }

@@ -59,12 +59,12 @@ public final class TextSpan extends SpanBranch {
             String raw = TextSpanPatterns.TextSpanParts.TEXT.group(match);
             if (raw != null) {
                 builder.append(raw);
-                span.add(new SpanLeaf(span, raw, CssSpanStyles.TEXT));
+                SpanLeaf.addLeaf(span, raw, CssSpanStyles.TEXT);
                 continue;
             }
             raw = TextSpanPatterns.TextSpanParts.ESCAPE.group(match);
             if (raw.length() == 2) builder.append(raw.charAt(1));
-            span.add(new SpanLeaf(span, raw, CssSpanStyles.ESCAPE));
+            SpanLeaf.addLeaf(span, raw, CssSpanStyles.ESCAPE);
         }
         span.spanText = builder.toString();
         return span;

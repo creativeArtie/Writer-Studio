@@ -41,7 +41,7 @@ public final class IdentitySpan extends SpanBranch implements IdentityStorage.Id
             if (matcher.find()) {
                 String sep = IdentityPattern.SEP.group(matcher);
                 builder.add(name);
-                span.add(new SpanLeaf(span, sep));
+                SpanLeaf.addLeaf(span, sep);
             }
         }
         span.idCategories = builder.build();

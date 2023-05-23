@@ -21,13 +21,12 @@ public final class ParaNoteField extends Para {
     @Override
     protected void buildSpan(Matcher match) {
         String raw;
-        add(new SpanLeaf(this, ParaNotePatterns.NoteLineParts.FIELD.group(match)));
+        SpanLeaf.addLeaf(this, ParaNotePatterns.NoteLineParts.FIELD.group(match));
         if ((raw = ParaNotePatterns.NoteLineParts.KEY.group(match)) != null) {
             TextSpan span = TextSpan.newFieldKey(this, raw);
             noteKey = span.getText();
             add(span);
-
-            add(new SpanLeaf(this, ParaNotePatterns.NoteLineParts.FIELDER.group(match)));
+            SpanLeaf.addLeaf(this, ParaNotePatterns.NoteLineParts.FIELDER.group(match));
 
             span = TextSpan.newSimple(this, ParaNotePatterns.NoteLineParts.VALUE.group(match));
             noteValue = span.getText();

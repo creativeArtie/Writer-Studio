@@ -28,10 +28,11 @@ public final class ParaHeading extends Para implements IdentityParent {
     protected void buildSpan(Matcher match) {
         String raw;
         if ((raw = ParaHeadingPattern.OUTLINE.group(match)) != null) {
-            add(new SpanLeaf(this, raw));
+            SpanLeaf.addLeaf(this, raw);
+
         }
         if ((raw = ParaHeadingPattern.LEVEL.group(match)) != null) {
-            add(new SpanLeaf(this, raw));
+            SpanLeaf.addLeaf(this, raw);
             headingLevel = raw.length();
         }
         TextFormatted text = null;
@@ -42,7 +43,7 @@ public final class ParaHeading extends Para implements IdentityParent {
         headingText = Optional.ofNullable(text);
         headingId = Optional.empty();
         if ((raw = ParaHeadingPattern.IDER.group(match)) != null) {
-            add(new SpanLeaf(this, raw));
+            SpanLeaf.addLeaf(this, raw);
             if ((raw = ParaHeadingPattern.ID.group(match)) != null) {
                 headingId = Optional.of(IdentitySpan.newAddressId(this, raw, IdentityGroup.HEADING));
                 add(headingId.get());

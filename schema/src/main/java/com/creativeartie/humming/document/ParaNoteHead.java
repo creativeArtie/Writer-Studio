@@ -20,7 +20,7 @@ public final class ParaNoteHead extends Para implements IdentityParent {
     @Override
     protected void buildSpan(Matcher match) {
         String raw;
-        add(new SpanLeaf(this, ParaNotePatterns.NoteLineParts.HEADING.group(match)));
+        SpanLeaf.addLeaf(this, ParaNotePatterns.NoteLineParts.HEADING.group(match));
         TextFormatted text = null;
         if ((raw = ParaNotePatterns.NoteLineParts.TITLE.group(match)) != null) {
             text = TextFormatted.newHeadingText(this, raw);
@@ -28,7 +28,7 @@ public final class ParaNoteHead extends Para implements IdentityParent {
         }
         noteHeading = Optional.ofNullable(text);
         if ((raw = ParaNotePatterns.NoteLineParts.IDER.group(match)) != null) {
-            add(new SpanLeaf(this, raw));
+            SpanLeaf.addLeaf(this, raw);
             if ((raw = ParaNotePatterns.NoteLineParts.ID.group(match)) != null) {
                 noteId = Optional.of(IdentitySpan.newAddressId(this, raw, IdentityGroup.NOTE));
                 add(noteId.get());

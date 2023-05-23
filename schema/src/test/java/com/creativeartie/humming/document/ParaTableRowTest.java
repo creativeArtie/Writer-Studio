@@ -37,7 +37,6 @@ final class ParaTableRowTest extends SpanBranchTestBase<ParaTableRow> {
         addStyleTest("Col 1", CssLineStyles.ROW, CssSpanStyles.TEXT);
         addStyleTest("|", CssLineStyles.ROW, CssSpanStyles.OPERATOR);
         addStyleTest("Col2", CssLineStyles.ROW, CssSpanStyles.TEXT);
-        addStyleTest("", CssLineStyles.ROW, CssSpanStyles.OPERATOR);
         testStyles(test);
         Assertions.assertEquals(3, test.getWrittenCount(), "written");
         Assertions.assertEquals(0, test.getOutlineCount(), "outline");
