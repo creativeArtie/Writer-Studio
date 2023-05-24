@@ -69,6 +69,8 @@ public class WritingController extends ActiveFile {
         writingText.setMouseOverTextDelay(Duration.ofSeconds(1));
         writingText.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_BEGIN, this::mouseOverTextEvent);
         writingText.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_END, e -> popup.hide());
+
+        writingText.setParagraphGraphicFactory(LineNumberFactory.get(writingText));
     }
 
     private void mouseOverTextEvent(MouseOverTextEvent e) {

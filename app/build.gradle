@@ -40,7 +40,7 @@ dependencies {
     implementation 'com.google.guava:guava:30.1.1-jre'
 
     // https://github.com/FXMisc/RichTextFX
-    implementation group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.10.9'
+    implementation group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.11.0'
     // https://mvnrepository.com/artifact/org.openjfx/javafx-controls
 	// shadow 'org.openjfx:javafx-controls:20-ea+11'
     
