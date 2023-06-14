@@ -25,8 +25,7 @@ class ProjectZipTest {
         draft.getManuscript().updateText(secondDraft);
         data.end();
         data.addImage("tmp", new File("../doc/clean.png"));
-        String image = data.getEncodedImage("tmp");
-
+        byte[] image = data.getEncodedImage("tmp");
         Log.Entry log = data.getWritingLog().getCurrent();
         Duration time = log.getTimeSpent();
         LocalDate date = log.getCreatedDate();
@@ -42,10 +41,14 @@ class ProjectZipTest {
         Assertions.assertEquals(secondDraft, savedDraft.getManuscript().getText(), "Second Draft");
         Assertions.assertEquals(firstDraft, draft.getPreviousDraft().get().getManuscript().getText(), "first draft");
 
-        String imageData = result.getEncodedImage("tmp");
-        Assertions.assertEquals(image, imageData, "image file");
+        byte[] imageData = result.getEncodedImage("tmp");
 
-        File file = new File("test.zip");
+        Assertions.assertArrayEquals(image, imageData, "image file");
+    }
+
+    @AfterEach
+    private void deleteOldFile() {
+        File file = new File(zipFile);
         file.delete();
     }
 

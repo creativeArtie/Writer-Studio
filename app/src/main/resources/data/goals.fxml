@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+
+<GridPane fx:controller="com.creativeartie.humming.ui.GoalsController"
+	xmlns:fx="http://javafx.com/fxml"
+>
+	<Button text="◄" GridPane.columnIndex="0" GridPane.rowIndex="0" fx:id="last"/>
+	<Label text="Jan 2022" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.rowSpan="5" fx:id="yearMonth"/> 
+	<Button text="►" GridPane.columnIndex="6" GridPane.rowIndex="0" fx:id="next"/>
+</GridPane>

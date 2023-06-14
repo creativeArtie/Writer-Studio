@@ -7,3 +7,16 @@
 	-fx-text-fill:dimgray;
 	-fx-font-family:monospace;
 }
+
+.fileHeading {
+	-fx-text-weight:bold;
+	-fx-content-display:center;
+	-fx-alignment: center;
+	-fx-font-size: 1.2em;
+	-fx-text-alignment: center
+}
+
+.fileDetails {
+	-fx-text-fill:dimgray;
+}
+

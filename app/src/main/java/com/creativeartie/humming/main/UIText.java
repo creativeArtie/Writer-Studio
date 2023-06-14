@@ -38,7 +38,21 @@ public class UIText {
         /** Window Title */
         TITLE,
         /** Writing tab. */
-        WRITER_TAB;
+        WRITER_TAB,
+    }
+
+    /**
+     * File list texts
+     *
+     * @author wai
+     */
+    public enum Files implements GetText {
+        /** Draft number in File's list */
+        DRAFT_NUMBER,
+        /** Draft count in File's list */
+        DRAFT_COUNT,
+        /** Outline count in File's list */
+        OUTLINE_COUNT;
     }
 
     /**

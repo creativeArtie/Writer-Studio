@@ -1,6 +1,7 @@
 package com.creativeartie.humming.ui;
 
 import com.creativeartie.humming.document.*;
+import com.creativeartie.humming.main.*;
 
 import javafx.fxml.*;
 import javafx.scene.control.*;
@@ -62,6 +63,6 @@ public class HelpTipController {
     }
 
     private void updateHighlightStyle(Label label, boolean matched) {
-        label.getStyleClass().setAll(matched ? "active" : "inactive"); //$NON-NLS-1$ //$NON-NLS-2$
+        label.getStyleClass().setAll(matched ? CssStyles.ACTIVE.toString() : CssStyles.INACTIVE.toString());
     }
 }

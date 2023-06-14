@@ -10,6 +10,7 @@ import java.util.zip.*;
 
 import com.creativeartie.humming.schema.*;
 import com.google.common.base.*;
+import com.google.common.collect.*;
 
 /**
  * Project zip file
@@ -399,13 +400,19 @@ public enum ProjectZip {
      *        the image file
      *
      * @return {@true} if successful
+     *
+     * @throws IOException
+     * @throws FileNotFoundException
      */
-    public boolean replaceImage(String name, File image) {
-        if (imageFiles.containsKey(name)) {
-            imageFiles.put(name, image);
+    public boolean replaceImage(String name, File image) throws FileNotFoundException, IOException {
+        if (!imageFiles.containsKey(name)) {
+            return false;
+        }
+        try (FileInputStream data = new FileInputStream(image)) {
+            String read = Base64.getEncoder().encodeToString(data.readAllBytes());
+            imageFiles.put(name, read);
             return true;
         }
-        return false;
     }
 
     /**
@@ -428,9 +435,11 @@ public enum ProjectZip {
      *
      * @return File or null if not exist
      */
-    public String getEncodedImage(String name) {
-        if (imageFiles.containsKey(name)) return imageFiles.getProperty(name);
-        return null;
+    public byte[] getEncodedImage(String name) {
+
+        if (!imageFiles.containsKey(name)) return null;
+
+        return Base64.getDecoder().decode(imageFiles.getProperty(name));
     }
 
     /**
@@ -448,5 +457,14 @@ public enum ProjectZip {
         }
         file.createNewFile();
         fileLocation = Optional.of(file.getPath());
+    }
+
+    /**
+     * Gets the list of files
+     *
+     * @return list of files
+     */
+    public List<ManuscriptFile> getManuscriptList() {
+        return ImmutableList.copyOf(documentFiles.values());
     }
 }

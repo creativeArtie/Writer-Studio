@@ -6,14 +6,34 @@
 <?import javafx.scene.text.*?>
 
 <BorderPane fx:controller="com.creativeartie.humming.ui.MainWindowController" 
-	xmlns:fx="http://javafx.com/fxml">
+	xmlns:fx="http://javafx.com/fxml"  stylesheets="@main.css">
 	<center><SplitPane orientation="VERTICAL" fx:id="topSplit">
 		<TabPane prefHeight="100" tabClosingPolicy="UNAVAILABLE">
 			<Tab text="%tab.research" >
 				<fx:include source="researchTab.fxml" fx:id="helpTips" />
 			</Tab>
-			<Tab text="%tab.todo"></Tab>
-			<Tab text="%tab.notes"></Tab>
+			<Tab text="%tab.todo">
+				<TableView GridPane.columnIndex="0" GridPane.rowIndex="0">
+					<TableColumn text="%todo.file"></TableColumn>
+					<TableColumn text="%todo.line"></TableColumn>
+					<TableColumn text="%todo.type"></TableColumn>
+					<TableColumn text="%todo.text"></TableColumn>
+					<placeholder>
+						<Label text="%todo.noToDos" />
+					</placeholder>
+				</TableView>
+			</Tab>
+			<Tab text="%tab.footnotes">
+				<TableView GridPane.columnIndex="0" GridPane.rowIndex="0">
+					<TableColumn text="%footnote.id"></TableColumn>
+					<TableColumn text="%footnote.note"></TableColumn>
+					<TableColumn text="%footnote.location"></TableColumn>
+					<TableColumn text="%footnote.referred"></TableColumn>
+					<placeholder>
+						<Label text="%footnote.notNote" />
+					</placeholder>
+				</TableView>
+			</Tab>
 			<Tab text="%tab.setting"></Tab>
 		</TabPane>
 
@@ -22,8 +42,19 @@
 				<Tab text="%tab.toc">
 					<TreeView fx:id="tableOfContents"></TreeView>
 				</Tab>
-				<Tab text="%tab.files"></Tab>
-				<Tab text="%tab.goals"></Tab>
+				<Tab text="%tab.files">
+					<VBox>
+						<TitledPane text="%files.texts">
+							<ListView fx:id="textFiles"></ListView>
+						</TitledPane>
+						<TitledPane text="%files.images">
+							<ListView fx:id="imageFiles"></ListView>
+						</TitledPane>
+					</VBox>
+				</Tab>
+				<Tab text="%tab.goals">
+					<fx:include source="goals.fxml"></fx:include>
+				</Tab>
 			</TabPane>
 			<TabPane fx:id="documentTabs">
 			</TabPane>
