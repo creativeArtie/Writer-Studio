@@ -8,15 +8,47 @@
 	-fx-font-family:monospace;
 }
 
-.fileHeading {
+.file-heading {
 	-fx-text-weight:bold;
 	-fx-content-display:center;
 	-fx-alignment: center;
 	-fx-font-size: 1.2em;
-	-fx-text-alignment: center
+	-fx-text-alignment: center;
 }
 
-.fileDetails {
+.file-details {
 	-fx-text-fill:dimgray;
 }
 
+.calendar-grid {
+    -fx-background-color: white ;
+    -fx-padding: 10 ;
+}
+
+.calendar-grid-cell {
+    -fx-border-color: dimgray;
+    -fx-border-width: 0 1 1 0;
+    -fx-background-color: transparent;
+}
+
+.calendar-title {
+    -fx-border-width: 1 1 1 0 ;
+    -fx-alignment: center;
+}
+
+.calendar-label {
+	-fx-text-overrun:"clip";
+}
+
+.calendar-first-column {
+	-fx-border-width: 0 1 1 1 ;
+}
+
+.calendar-first-label {
+	-fx-border-width: 1;
+    -fx-alignment: center;
+}
+
+.calendar-date {
+	-fx-background-fill: "white"
+}

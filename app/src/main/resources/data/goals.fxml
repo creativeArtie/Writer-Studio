@@ -6,10 +6,69 @@
 <?import javafx.scene.text.*?>
 
 
-<GridPane fx:controller="com.creativeartie.humming.ui.GoalsController"
+<BorderPane fx:controller="com.creativeartie.humming.ui.GoalsController"
 	xmlns:fx="http://javafx.com/fxml"
 >
-	<Button text="◄" GridPane.columnIndex="0" GridPane.rowIndex="0" fx:id="last"/>
-	<Label text="Jan 2022" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.rowSpan="5" fx:id="yearMonth"/> 
-	<Button text="►" GridPane.columnIndex="6" GridPane.rowIndex="0" fx:id="next"/>
-</GridPane>
+	<top><BorderPane>
+		<left><Button text="◄" fx:id="last"/></left>
+		<center><Label fx:id="yearMonth"/> </center>
+		<right><Button text="►" fx:id="next"/></right>
+	</BorderPane></top>
+	<center>
+		<GridPane fx:id="days" styleClass="calendar-grid">
+			<columnConstraints>
+				<ColumnConstraints percentWidth="15" hgrow="always"/> 
+				
+				<ColumnConstraints percentWidth="14" />
+				<ColumnConstraints percentWidth="14" />
+				<ColumnConstraints percentWidth="14" />
+				<ColumnConstraints percentWidth="14" />
+				
+				<ColumnConstraints percentWidth="15" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints percentHeight="8"/> 
+				
+				<RowConstraints percentHeight="10" vgrow="always"/>
+				<RowConstraints percentHeight="10" vgrow="always"/>
+				<RowConstraints percentHeight="10" vgrow="always"/>
+				
+				<RowConstraints percentHeight="10" vgrow="always"/>
+				<RowConstraints percentHeight="10" vgrow="always"/>
+				<RowConstraints percentHeight="10" vgrow="always"/>
+			</rowConstraints>
+			<HBox styleClass="calendar-grid-cell, calendar-first-label" 
+				GridPane.columnIndex="0" GridPane.rowIndex="0">
+				<Label text="%goals.sun" styleClass="calendar-label" />
+			</HBox>
+			
+			<HBox styleClass="calendar-grid-cell, calendar-title" 
+				GridPane.columnIndex="1" GridPane.rowIndex="0">
+				<Label text="%goals.mon" styleClass="calendar-label" />
+			</HBox>
+			<HBox styleClass="calendar-grid-cell, calendar-title" 
+				GridPane.columnIndex="2" GridPane.rowIndex="0">
+				<Label text="%goals.tue" styleClass="calendar-label" />
+			</HBox>
+			<HBox styleClass="calendar-grid-cell, calendar-title" 
+				GridPane.columnIndex="3" GridPane.rowIndex="0">
+				<Label text="%goals.wed" styleClass="calendar-label" />
+			</HBox>
+			<HBox styleClass="calendar-grid-cell, calendar-title" 
+				GridPane.columnIndex="4" GridPane.rowIndex="0">
+				<Label text="%goals.thur" styleClass="calendar-label" />
+			</HBox>
+			<HBox styleClass="calendar-grid-cell, calendar-title" 
+				GridPane.columnIndex="5" GridPane.rowIndex="0">
+				<Label text="%goals.fri" styleClass="calendar-label" />
+			</HBox>
+			
+			
+			<HBox styleClass="calendar-grid-cell, calendar-title" 
+				GridPane.columnIndex="6" GridPane.rowIndex="0"
+				 GridPane.hgrow="always">
+				<Label text="%goals.sat" styleClass="calendar-label" />
+			</HBox>
+		</GridPane>
+	</center>
+</BorderPane>

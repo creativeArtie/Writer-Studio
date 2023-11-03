@@ -39,6 +39,8 @@ public class UIText {
         TITLE,
         /** Writing tab. */
         WRITER_TAB,
+        /** Year Month formatter */
+        YEAR_MONTH_FORMAT
     }
 
     /**

@@ -40,6 +40,12 @@ public abstract class ActiveFile {
         return manuscriptFile;
     }
 
+    /**
+     * Gets the read only manuscript file. Require because setting the active file
+     * using property binding
+     *
+     * @return the read only manuscript property.
+     */
     public static ReadOnlyObjectProperty<ManuscriptFile> manuscriptFileProperty() {
         return getManuscriptFile().getReadOnlyProperty();
     }
